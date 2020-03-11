@@ -329,7 +329,7 @@
     "title": {
       "change.self": "Alterar sua senha",
       "change.user": "Alterar senha do usuário",
-      "forgotten": "User identification / password recovery",
+      "forgotten": "Identificação do usuário / recuperação de senha",
       "manage.single.self": "Gerenciar sua senha",
       "manage.multiple.self": "Gerenciar as suas senhas",
       "manage.single.user": "Gerenciar senhas do usuário",
@@ -339,7 +339,7 @@
     "mobileTitle": {
       "change.self": "Alteração de senha",
       "change.user": "Alteração de senha",
-      "forgotten": "User / password recovery",
+      "forgotten": "Usuário / senha de recuperação",
       "manage.single.self": "Senha",
       "manage.multiple.self": "Senhas",
       "manage.single.user": "Senha do usuário",
@@ -347,16 +347,16 @@
       "securityAnswer": "Resposta de segurança"
     },
     "forgotten": {
-      "preface": "Here you can recover your user identification and change your password. Fill in your user identification below, and you will receive a verification code. You can use one of the following:",
+      "preface": "Aqui você pode recuperar sua identificação de usuário e alterar sua senha. Preencha sua identificação de usuário abaixo e você receberá um código de verificação. Você pode usar um dos seguintes:",
       "principal": "Usuário",
-      "captcha": "Captcha validation",
-      "code": "Verification code",
-      "code.sent": "The verification code was sent to {to}",
-      "sendMedium": "Receive code by",
-      "generate": "Generate password",
+      "captcha": "Validação de Captcha",
+      "code": "Código de verificação",
+      "code.sent": "O código de verificação foi enviado para {to}",
+      "sendMedium": "Receber código por",
+      "generate": "Gerar Senha",
       "generated.message": "Uma vez que você enviar, uma nova senha será gerada e enviada para seu endereço de e-mail",
       "generated.done.email": "Você deve receber em breve um e-mail com sua nova senha.",
-      "generated.done.sms": "You should receive shortly an SMS message with your new password.",
+      "generated.done.sms": "Você deve receber em breve uma mensagem SMS com sua nova senha.",
       "manual.done": "Sua senha foi alterada com sucesso. Agora você pode usá-la para acessar.",
       "title.changePassword": "Alterar sua senha"
     },
