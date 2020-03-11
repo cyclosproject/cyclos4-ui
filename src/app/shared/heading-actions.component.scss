@@ -34,15 +34,6 @@
 
   .btn {
     margin-right: 0.5rem;
-    display: flex;
-    height: calc(#{$input-height} - 3px);
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    padding-left: calc(#{$btn-padding-x} - 2px);
-
-    icon {
-      margin-right: 0.5rem;
-    }
   }
 }
 
