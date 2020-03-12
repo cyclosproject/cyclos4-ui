@@ -78,13 +78,17 @@ export class SearchAdsComponent
 
   protected toSearchParams(value: any): AdQueryFilters {
     const params: AdQueryFilters = value;
+    const isMap = this.resultType === ResultType.MAP;
     params.customFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
-    params.addressResult = this.resultType === ResultType.MAP ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
+    params.addressResult = isMap ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
     const distanceFilter: MaxDistance = value.distanceFilter;
     if (distanceFilter) {
       params.maxDistance = distanceFilter.maxDistance;
       params.latitude = distanceFilter.latitude;
       params.longitude = distanceFilter.longitude;
+    }
+    if (isMap) {
+      params.pageSize = 99999;
     }
     return params;
   }

@@ -210,6 +210,7 @@ export class SearchUsersComponent
     // When searching as manager (admin / broker) the map is a simple map view, not the "map directory"
     const isMap = this.resultType === ResultType.MAP;
     if (isMap) {
+      filters.pageSize = 99999;
       filters.addressResult = UserAddressResultEnum.ALL;
     }
     return filters;
