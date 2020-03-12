@@ -97,8 +97,9 @@ export class SearchAdsComponent
 
   protected toSearchParams(value: any): AdQueryFilters {
     const params: AdQueryFilters = value;
+    const isMap = this.resultType === ResultType.MAP;
     params.customFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
-    params.addressResult = this.resultType === ResultType.MAP ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
+    params.addressResult = isMap ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
     const distanceFilter: MaxDistance = value.distanceFilter;
     if (distanceFilter) {
       params.maxDistance = distanceFilter.maxDistance;
@@ -113,6 +114,9 @@ export class SearchAdsComponent
     params.priceRange = ApiHelper.rangeFilter(value.minAmount, value.maxAmount);
     delete params['minAmount'];
     delete params['maxAmount'];
+    if (isMap) {
+      params.pageSize = 99999;
+    }
     return params;
   }
 
