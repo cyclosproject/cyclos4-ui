@@ -4,6 +4,7 @@
     "type": "Type",
     "code": "Code",
     "period": "Période",
+    "period.to": "to",
     "now": "Maintenant",
     "action": "Action",
     "actions": "Actions",
