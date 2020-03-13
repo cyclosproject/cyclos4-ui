@@ -87,16 +87,19 @@
           [prefix]="currency.prefix" [suffix]="currency.suffix"
           [required]="webshop">
         </decimal-field>
-        <label-value [label]="i18n.ad.publicationPeriod" labelPosition="side"
+        <label-value [label]="i18n.ad.publicationPeriod" kind="field"
           [fieldSize]="(layout.ltsm$ | async) ? 'medium' : ''" required>
-          <div class="row">
-            <div class="col-md-6">
+          <div class="d-flex flex-column flex-sm-row flex-wrap">
+            <div class="flex-grow">
               <date-field labelPosition="side"
                 formControlName="publicationBeginDate" minDate="past5"
                 fieldSize="full">
               </date-field>
             </div>
-            <div class="col-md-6">
+            <div class="mx-2 d-flex align-items-center">
+              {{ i18n.general.periodTo }}
+            </div>
+            <div class="flex-grow mt-2 mt-xl-0">
               <date-field labelPosition="side"
                 formControlName="publicationEndDate" minDate="past5"
                 fieldSize="full">
@@ -109,16 +112,18 @@
         <ng-container
           *ngIf="
         (form.get('setPromotionalPeriod').valueChanges | async) || form.get('setPromotionalPeriod').value">
-          <label-value [label]="i18n.ad.promotionalPeriod"
-            labelPosition="side">
-            <div class="row">
-              <div class="col-md-6">
+          <label-value [label]="i18n.ad.promotionalPeriod" kind="field">
+            <div class="d-flex flex-column flex-sm-row flex-wrap">
+              <div class="flex-grow">
                 <date-field labelPosition="side"
                   formControlName="promotionalBeginDate" minDate="past5"
                   fieldSize="full">
                 </date-field>
               </div>
-              <div class="col-md-6">
+              <div class="mx-2 d-flex align-items-center">
+                {{ i18n.general.periodTo }}
+              </div>
+              <div class="flex-grow mt-2 mt-xl-0">
                 <date-field labelPosition="side"
                   formControlName="promotionalEndDate" minDate="past5"
                   fieldSize="full">
