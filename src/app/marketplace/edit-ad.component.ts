@@ -268,8 +268,8 @@ export class EditAdComponent
       }
     };
 
-    if (this.data.requiresAuthorization) {
-      value.submitForAuthorization = !this.self;
+    if (this.data.requiresAuthorization && this.self) {
+      value.submitForAuthorization = false;
     }
 
     if (this.create) {
