@@ -1150,6 +1150,7 @@
     "choosePaymentType": "Choose payment type",
     "customAddress": "Custom address",
     "customDeliveryMethod": "Custom delivery method",
+    "customQuantity": "Custom quantity...",
     "discount": "Discount %",
     "endDate": "Published end date",
     "error": {

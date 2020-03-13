@@ -35,9 +35,9 @@
         </label-value>
       </div>
     </div>
-    <h2 class="mb-2" class="mt-4">{{ i18n.ad.products }}
+    <h2 class="mt-4 mb-2">{{ i18n.ad.products }}
     </h2>
-    <table class="table table-hover cursor-pointer">
+    <table class="table table-hover cursor-pointer small-height">
       <thead>
         <th *ngIf="layout.gtxs$ | async" class="no-border">
           {{ i18n.ad.number }}</th>
@@ -62,21 +62,21 @@
             {{ row.totalPrice | currency:data.currency }}
           </td>
         </tr>
-        <tr>
+        <tr class="no-hover">
           <td class="table-head-color"
             [attr.colspan]="(layout.gtxs$ | async) ? 4 : 2">
             {{ i18n.ad.subtotal }}</td>
           <td class="table-head-color text-right">
             {{ subtotal | currency:data.currency }}</td>
         </tr>
-        <tr>
+        <tr class="no-hover">
           <td [attr.colspan]="(layout.gtxs$ | async) ? 4 : 2">
             {{ i18n.ad.deliveryMethod + ': ' + resolveDeliveryLabel() }}
           </td>
           <td class="text-right">
             {{ data.deliveryPrice | currency:data.currency }}</td>
         </tr>
-        <tr class="totalAmount">
+        <tr class="totalAmount no-hover">
           <td class="border-bottom-0 label label-value-label"
             [attr.colspan]="(layout.gtxs$ | async) ? 4 : 2">
             {{ i18n.ad.total }}</td>

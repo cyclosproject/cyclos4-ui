@@ -155,9 +155,10 @@ export class ViewCartComponent
       this.addSub(this.shoppingCartService.modifyItemQuantityOnShoppingCart({
         ad: item[1].product.id,
         quantity: +quantity,
-      }).subscribe(() => {
+      }).subscribe(items => {
         ViewCartComponent.details = true;
         this.reload();
+        this.marketplaceHelper.cartItems = items;
       }));
     };
 

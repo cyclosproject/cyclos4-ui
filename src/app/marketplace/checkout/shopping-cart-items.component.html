@@ -58,6 +58,8 @@
         <td>
           <form *ngIf="useForm(layout.gtsm$ | async)" [formGroup]="form">
             <decimal-field *ngIf="isAvailable(row)" [formControlName]="row.id"
+              [minRange]="minItemsRange(row)" [maxRange]="maxItemsRange(row)"
+              [customValueLabel]="i18n.ad.customQuantity"
               [scale]="row.product.allowDecimalQuantity ? 2 : 0">
             </decimal-field>
           </form>

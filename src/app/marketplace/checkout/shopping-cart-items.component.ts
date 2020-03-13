@@ -77,6 +77,35 @@ export class ShoppingCartItemsComponent extends BaseComponent implements OnInit 
   }
 
   /**
+   * Returns the minimum allowed to buy (or 1 as default)
+   * Range is not used for decimal quantities
+   */
+  minItemsRange(row: ShoppingCartItemDetailed): number {
+    if (row.product.allowDecimalQuantity) {
+      return null;
+    }
+    return row.product.minAllowedInCart ?
+      +row.product.minAllowedInCart : 1;
+  }
+
+  /**
+   * Returns the maximum predefined range or maximum allowed to buy
+   * Range is not used for decimal quantities
+   */
+  maxItemsRange(row: ShoppingCartItemDetailed): number {
+    if (row.product.allowDecimalQuantity) {
+      return null;
+    }
+    if (row.product.maxAllowedInCart) {
+      return +row.product.maxAllowedInCart;
+    }
+    if (row.product.minAllowedInCart) {
+      return +row.product.minAllowedInCart + 10;
+    }
+    return 10;
+  }
+
+  /**
    * Resolves the label for available/unavailable/out of stock item
    */
   resolveQuantityLabel(item: ShoppingCartItemDetailed): string {

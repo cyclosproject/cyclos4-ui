@@ -10,6 +10,7 @@ import { CustomFieldSizeEnum } from 'app/api/models';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Renders a widget for a decimal field
@@ -40,9 +41,22 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
   @Input() suffix: string;
 
   /**
-   * Aligh text to left or right
+   * Align text to left or right
    */
   @Input() textRight = true;
+
+  /**
+   * Fixed values minimum range (min & max required)
+   */
+  @Input() minRange: number;
+
+  /**
+   * Fixed values maximum range (min & max required)
+   */
+  @Input() maxRange: number;
+
+  /** Text to show when there is a fixed value range and value is custom (outside range) */
+  @Input() customValueLabel: '';
 
   /** Text to show when component is disabled and value is empty  */
   @Input() emptyLabel: '';
@@ -50,6 +64,10 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
   @ViewChild('inputField', { static: false }) private inputRef: ElementRef;
 
   internalControl: FormControl;
+  fixedValuesControl: FormControl;
+
+  fixedValues: string[];
+  useCustom$ = new BehaviorSubject<boolean>(true);
 
   private _scale = 0;
   private autoSize = false;
@@ -79,6 +97,13 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
   }
 
   onValueInitialized(value: string) {
+    if (this.fixedValuesControl) {
+      const str = this.format.numberToFixed(value, this.scale);
+      if (this.fixedValues.indexOf(str) !== -1) {
+        this.fixedValuesControl.setValue(str);
+      }
+    }
+
     this.setInternalControlValue();
 
     // As a workaround to https://github.com/angular/angular/issues/13792, manually update the input value
@@ -90,22 +115,43 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
 
   ngOnInit() {
     super.ngOnInit();
+
     if (this.fieldSize == null) {
       this.autoSize = true;
       this.fieldSize = this.prefix && this.suffix ? CustomFieldSizeEnum.MEDIUM : CustomFieldSizeEnum.SMALL;
     }
     this.internalControl = new FormControl();
-    this.addSub(this.internalControl.valueChanges.subscribe((input: string) => {
-      if (empty(input)) {
-        this.value = null;
-      } else {
-        if (this.format.decimalSeparator !== '.') {
-          input = input.replace(this.format.decimalSeparator, '.');
-        }
-        this.value = this.format.numberToFixed(input, this.scale);
+    this.addSub(this.internalControl.valueChanges.subscribe((input: string) => this.updateInternalControl(input)));
+
+    if (this.minRange && this.maxRange) {
+      this.fixedValuesControl = new FormControl();
+      this.fixedValues = [];
+      for (let index = this.minRange; index <= this.maxRange; index++) {
+        this.fixedValues.push(this.format.numberToFixed(index, this.scale));
       }
-      this.formControl.markAsTouched();
-    }));
+      this.addSub(this.fixedValuesControl.valueChanges.subscribe((input: string) => {
+        if (input === 'custom') {
+          this.internalControl.setValue(null);
+          this.useCustom = true;
+        } else {
+          this.internalControl.setValue(input);
+          this.onBlur();
+          this.useCustom = false;
+        }
+      }));
+    }
+  }
+
+  private updateInternalControl(input: string) {
+    if (empty(input)) {
+      this.value = null;
+    } else {
+      if (this.format.decimalSeparator !== '.') {
+        input = input.replace(this.format.decimalSeparator, '.');
+      }
+      this.value = this.format.numberToFixed(input, this.scale);
+    }
+    this.formControl.markAsTouched();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -137,6 +183,14 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
     if (this.inputRef && this.inputRef.nativeElement) {
       this.inputRef.nativeElement.disabled = isDisabled;
     }
+  }
+
+  get useCustom() {
+    return this.useCustom$.value;
+  }
+
+  set useCustom(value: boolean) {
+    this.useCustom$.next(value);
   }
 
   protected getFocusableControl() {

@@ -55,7 +55,7 @@
             </button>
           </td>
         </tr>
-        <tr>
+        <tr class="no-hover">
           <td class="table-head-color" [attr.colspan]="4">
             {{ i18n.ad.subtotal }}</td>
           <td class="table-head-color text-right ellipsis" [attr.colspan]="3">
@@ -65,7 +65,7 @@
           </td>
           <td></td>
         </tr>
-        <tr>
+        <tr class="no-hover">
           <td [attr.colspan]="4">
             <ng-container *ngIf="deliveryMethod$ | async">
               {{ i18n.ad.deliveryMethod + ': ' + (deliveryMethod.name || '')}}
@@ -80,7 +80,7 @@
           </td>
           <td></td>
         </tr>
-        <tr class="totalAmount">
+        <tr class="totalAmount no-hover">
           <td class="border-bottom-0 label label-value-label"
             [attr.colspan]="4">
             {{ i18n.ad.total }}</td>
