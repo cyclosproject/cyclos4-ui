@@ -1,6 +1,7 @@
 {
   "general": {
     "period": "Período",
+    "period.to": "to",
     "now": "Agora",
     "action": "Ação",
     "actions": "Ações",
