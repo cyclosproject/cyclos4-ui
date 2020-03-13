@@ -210,9 +210,6 @@ export class DateFieldComponent
     const docHeight = (window.innerHeight || document.documentElement.clientHeight);
     this.dropdown.dropup = rect.bottom > docHeight - 100;
 
-    // Workaround: ngx-bootstrap sets top sometimes when we set dropup, which causes a position error
-    // setTimeout(() => menu.style.top = '', 1);
-
     if (this.layout.ltsm) {
       // For small screens, the datepicker is shown centered with a backdrop
       this.layout.showBackdrop(() => this.dropdown.hide());
@@ -222,6 +219,10 @@ export class DateFieldComponent
   onHidden() {
     this.calendar.forEach(c => c.clearShortcuts());
     this.layout.hideBackdrop();
+  }
+
+  hide() {
+    this.dropdown.hide();
   }
 
   selectFromCalendar(date: Moment) {
