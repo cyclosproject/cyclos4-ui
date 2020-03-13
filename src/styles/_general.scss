@@ -193,4 +193,14 @@ body.dark {
   hr {
     border-color: black !important;
   }
+  ngx-gallery {
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+  .ngx-gallery-icon {
+    display: none !important;
+  }
+  .ngx-gallery-thumbnail {
+    border: none !important;
+  }
 }
