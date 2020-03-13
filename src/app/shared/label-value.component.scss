@@ -34,6 +34,11 @@
   min-height: $input-height;
 }
 
+:host.field-view ::ng-deep .label-value-value user-link {
+  position: relative;
+  top: -2px;
+}
+
 @include media-breakpoint-up(xs) {
   :host:not(.label-on-side) .label-value-label {
     padding-bottom: calc(#{$input-padding-y} + #{$input-border-width}) !important;
