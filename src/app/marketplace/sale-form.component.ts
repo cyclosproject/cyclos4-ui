@@ -24,6 +24,8 @@ export class SaleFormComponent
   extends BasePageComponent<OrderDataForNew | OrderDataForEdit>
   implements OnInit {
 
+  id: string;
+  user: string;
   create: boolean;
 
   form: FormGroup;
@@ -48,18 +50,18 @@ export class SaleFormComponent
 
     const buyer = this.route.snapshot.queryParams.buyer;
     const currency = this.route.snapshot.queryParams.currency;
-    const id = this.route.snapshot.params.id;
-    const user = this.route.snapshot.params.user;
-    this.create = id == null;
+    this.id = this.route.snapshot.params.id;
+    this.user = this.route.snapshot.params.user;
+    this.create = this.id == null;
 
     const request: Observable<OrderDataForNew | OrderDataForEdit> = this.create
       ? this.orderService.getOrderDataForNew({
         buyer: buyer,
-        user: user,
+        user: this.user,
         currency: currency
       })
       : this.orderService.getOrderDataForEdit({
-        order: id
+        order: this.id
       });
 
     this.addSub(request.subscribe(data => {
@@ -242,7 +244,28 @@ export class SaleFormComponent
       (this.data as OrderDataForEdit).currency;
   }
 
-  submit() {
+  save(asDraft?: boolean) {
+    const order = this.data.order;
+    this.products.forEach(item => {
+      order.items.push({
+        price: item.price,
+        product: item.product.id || item.product.productNumber,
+        quantity: item.quantity
+      });
+    });
+    order.deliveryMethod = this.deliveryForm.value;
+    order.deliveryAddress = this.addressForm.value;
+    order.remarks = this.form.controls.remarks.value;
+    order.draft = asDraft;
+
+    const onFinish = () => {
+      this.notification.snackBar(asDraft ? this.i18n.ad.orderSavedAsDraft : this.i18n.ad.orderSavedAsDraft);
+      history.back();
+    };
+
+    this.addSub(this.create ?
+      this.orderService.createOrder({ user: this.user, body: order }).subscribe(onFinish) :
+      this.orderService.updateOrder({ order: this.id, body: order }).subscribe(onFinish));
   }
 
   resolveStatusLabel() {

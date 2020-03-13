@@ -71,10 +71,12 @@
         </textarea-field>
       </div>
       <actions>
-        <button class="btn btn-primary">
+        <button class="btn btn-primary" [disabled]="requesting$ | async"
+          (click)="save()">
           {{ i18n.ad.submitToBuyer }}
         </button>
-        <button class="btn btn-outline-primary">
+        <button class="btn btn-outline-primary"
+          [disabled]="requesting$ | async" (click)="save(true)">
           {{ i18n.ad.saveDraft }}
         </button>
       </actions>
