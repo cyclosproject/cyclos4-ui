@@ -51,25 +51,12 @@ export class SearchUsersComponent
   basicField$ = new BehaviorSubject<CustomFieldDetailed>(null);
   advancedFields$ = new BehaviorSubject<CustomFieldDetailed[]>([]);
 
-  // As the custom fields are dynamically fetched, and form.setControl doesn't have a way to avoid emitting the value.
-  // Hence, we need to avoid the extra page update manually.
-  // See https://github.com/angular/angular/issues/20439
-  private ignoreNextUpdate = false;
-
   constructor(
     injector: Injector,
     private usersService: UsersService,
     private countriesResolve: CountriesResolve
   ) {
     super(injector);
-  }
-
-  shouldUpdateOnChange(value: any): boolean {
-    if (this.ignoreNextUpdate) {
-      this.ignoreNextUpdate = false;
-      return false;
-    }
-    return super.shouldUpdateOnChange(value);
   }
 
   protected getFormControlNames() {
@@ -146,6 +133,13 @@ export class SearchUsersComponent
     this.onResultTypeChanged(this.resultType, null);
   }
 
+  /**
+   * Never update automatically on result type change - we'll do it manually
+   */
+  shouldUpdateOnResultTypeChange() {
+    return false;
+  }
+
   protected onResultTypeChanged(resultType: ResultType, previousResultType: ResultType) {
     const isMap = resultType === ResultType.MAP;
     const wasMap = previousResultType === ResultType.MAP;
@@ -164,19 +158,18 @@ export class SearchUsersComponent
         data.fieldsInList = ['display'];
       }
       const fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
-      // See the comment on ignoreNextUpdate
-      this.ignoreNextUpdate = true;
-      this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(fieldsInSearch, {
-        useDefaults: false
-      }));
-      this.ignoreNextUpdate = false;
-      this.basicField$.next(fieldsInSearch.length === 0 ? null : fieldsInSearch[0]);
-      this.advancedFields$.next(fieldsInSearch.length > 1 ? fieldsInSearch.slice(1) : []);
-      if (!this.broker && data.broker) {
-        this.broker = data.broker;
-      }
-      this.data = data;
-      this.headingActions = empty(this.advancedFields$.value) ? [] : [this.moreFiltersAction];
+      this.doIgnoringUpdate(() => {
+        this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(fieldsInSearch, {
+          useDefaults: false
+        }));
+        this.basicField$.next(fieldsInSearch.length === 0 ? null : fieldsInSearch[0]);
+        this.advancedFields$.next(fieldsInSearch.length > 1 ? fieldsInSearch.slice(1) : []);
+        if (!this.broker && data.broker) {
+          this.broker = data.broker;
+        }
+        this.data = data;
+        this.headingActions = empty(this.advancedFields$.value) ? [] : [this.moreFiltersAction];
+      });
     };
 
     if (this.data == null) {
