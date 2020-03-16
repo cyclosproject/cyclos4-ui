@@ -99,17 +99,11 @@ export class SearchAdsComponent
       this.form.patchValue({ category: null }, { emitEvent: false });
       this.categoryTrail$.next([]);
     } else {
-      if (previousResultType === ResultType.CATEGORIES) {
-        // Force a new query when changing from categories
-        this.results = null;
-      } else {
-        const isMap = resultType === ResultType.MAP;
-        const wasMap = previousResultType === ResultType.MAP;
-        if (isMap !== wasMap) {
-          // Should update again, as the `addressResult` will change
-          this.results = null;
-          this.update({ page: 0 });
-        }
+      // Changing from / to map will implicitly update - just reset the page to 0
+      const isMap = resultType === ResultType.MAP;
+      const wasMap = previousResultType === ResultType.MAP;
+      if (isMap !== wasMap) {
+        this.form.patchValue({ page: 0 }, { emitEvent: false });
       }
     }
   }
