@@ -262,7 +262,7 @@ export class SaleFormComponent
       this.notification.snackBar(asDraft ? this.i18n.ad.orderSavedAsDraft : this.i18n.ad.orderSavedAsDraft);
       history.back();
     };
-
+    // TODO check if the user is sure to submit the order to buyer (copy message from web)
     this.addSub(this.create ?
       this.orderService.createOrder({ user: this.user, body: order }).subscribe(onFinish) :
       this.orderService.updateOrder({ order: this.id, body: order }).subscribe(onFinish));
