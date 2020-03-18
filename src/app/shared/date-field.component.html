@@ -5,8 +5,9 @@
 <ng-template #widget>
   <!-- Need a relatively-positioned element to position the dropdown corretcly -->
   <div class="date-field-wrapper" style="position:relative" dropdown
-    #dropdown="bs-dropdown" container="body" (onShown)="onShown()"
-    (onHidden)="onHidden(); toggleButton.focus()">
+    #dropdown="bs-dropdown"
+    [container]="(layout.ltsm$ | async) ? undefined : 'body'"
+    (onShown)="onShown()" (onHidden)="onHidden(); toggleButton.focus()">
     <div class="date-field d-flex align-items-center">
       <ng-container
         *ngFor="let control of partControls.controls; let index = index">
@@ -33,12 +34,19 @@
         class="calendar-toggle btn btn-icon">
         <icon icon="calendar_today"></icon>
       </button>
-      <div class="dropdown-menu" *dropdownMenu role="dialog"
+      <div class="dropdown-menu calendar-dropdown" *dropdownMenu role="dialog"
         attr.id="'calendar-' + id" attr.aria-labelledby="id"
         (click)="$event.preventDefault(); $event.stopPropagation();">
-        <calendar [id]="id" [formControl]="formControl" [minDate]="minDate"
-          [maxDate]="maxDate" (select)="selectFromCalendar($event)">
+        <calendar class="flex-grow-1" [id]="id" [formControl]="formControl"
+          [minDate]="minDate" [maxDate]="maxDate"
+          (select)="selectFromCalendar($event)">
         </calendar>
+        <actions *ngIf="(layout.ltsm$ | async)">
+          <button type="button" class="btn btn-primary"
+            (click)="dropdown.hide()">
+            {{ i18n.general.close }}
+          </button>
+        </actions>
       </div>
     </div>
   </div>

@@ -4,6 +4,7 @@
     "type": "Type",
     "code": "Code",
     "period": "Période",
+    "period.to": "to",
     "now": "Maintenant",
     "action": "Action",
     "actions": "Actions",
@@ -329,7 +330,7 @@
     "title": {
       "change.self": "Modifier votre mot de passe",
       "change.user": "Change user password",
-      "forgotten": "Recover your password",
+      "forgotten": "User identification / password recovery",
       "manage.single.self": "Gérer votre mot de passe",
       "manage.multiple.self": "Gérer vos mots de passe",
       "manage.single.user": "Manage user password",
@@ -339,7 +340,7 @@
     "mobileTitle": {
       "change.self": "Password change",
       "change.user": "Password change",
-      "forgotten": "Password recovery",
+      "forgotten": "User / password recovery",
       "manage.single.self": "Password",
       "manage.multiple.self": "Passwords",
       "manage.single.user": "User password",
@@ -347,13 +348,18 @@
       "securityAnswer": "Security answer"
     },
     "forgotten": {
-      "preface": "Ici, vous pouvez récupérer votre mot de passe. Remplissez votre identification d'utilisateur ci-dessous. Vous pouvez utiliser l'un des éléments suivants :",
+      "preface": "Here you can recover your user identification and change your password. Fill in your user identification below, and you will receive a verification code. You can use one of the following:",
       "principal": "Utilisateur",
-      "captcha": "Tapez les caractères ci-dessous",
-      "email": "Vous recevrez prochainement un courrier électronique avec votre identifiant d'utilisateur et des instructions pour réinitialiser votre mot de passe.",
+      "captcha": "Captcha validation",
+      "code": "Verification code",
+      "code.sent": "The verification code was sent to {to}",
+      "sendMedium": "Receive code by",
+      "generate": "Generate password",
       "generated.message": "Une fois que vous avez soumis, un nouveau mot de passe sera généré et envoyé à votre adresse e-mail.",
-      "generated.done": "Vous devriez recevoir sous peu un e-mail avec votre nouveau mot de passe.",
-      "manual.done": "Votre mot de passe a été changé avec succès. Vous pouvez maintenant l'utiliser pour vous connecter."
+      "generated.done.email": "Vous devriez recevoir sous peu un e-mail avec votre nouveau mot de passe.",
+      "generated.done.sms": "You should receive shortly an SMS message with your new password.",
+      "manual.done": "Votre mot de passe a été changé avec succès. Vous pouvez maintenant l'utiliser pour vous connecter.",
+      "title.changePassword": "Modifier votre mot de passe"
     },
     "expired": {
       "preface": "Votre {type} a expiré.",
@@ -1316,7 +1322,7 @@
       "webshopSettings": "Webshop settings",
       "unansweredQuestions": "Unanswered questions",
       "answerQuestion": "Answer question",
-      "adInterests": "Advertisment interests",
+      "adInterests": "Advertisement interests",
       "adInterestNew": "New advertisement interest",
       "adInterest": "Advertisement interest"
     }

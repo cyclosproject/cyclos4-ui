@@ -4,6 +4,7 @@
     "type": "Tipo",
     "code": "Código",
     "period": "Período",
+    "period.to": "até",
     "now": "Agora",
     "action": "Ação",
     "actions": "Ações",
@@ -329,7 +330,7 @@
     "title": {
       "change.self": "Alterar sua senha",
       "change.user": "Alterar senha do usuário",
-      "forgotten": "Recuperar sua senha",
+      "forgotten": "Identificação do usuário / recuperação de senha",
       "manage.single.self": "Gerenciar sua senha",
       "manage.multiple.self": "Gerenciar as suas senhas",
       "manage.single.user": "Gerenciar senhas do usuário",
@@ -339,7 +340,7 @@
     "mobileTitle": {
       "change.self": "Alteração de senha",
       "change.user": "Alteração de senha",
-      "forgotten": "Recuperação de senha",
+      "forgotten": "Usuário / senha de recuperação",
       "manage.single.self": "Senha",
       "manage.multiple.self": "Senhas",
       "manage.single.user": "Senha do usuário",
@@ -347,13 +348,18 @@
       "securityAnswer": "Resposta de segurança"
     },
     "forgotten": {
-      "preface": "Aqui você pode recuperar sua senha. Preencha a sua identificação de usuário abaixo. Você pode usar um dos seguintes:",
+      "preface": "Aqui você pode recuperar sua identificação de usuário e alterar sua senha. Preencha sua identificação de usuário abaixo e você receberá um código de verificação. Você pode usar um dos seguintes:",
       "principal": "Usuário",
-      "captcha": "Digite os caracteres abaixo",
-      "email": "Você irá receber em breve um e-mail com seu nome de usuário e instruções para redefinir sua senha",
+      "captcha": "Validação de Captcha",
+      "code": "Código de verificação",
+      "code.sent": "O código de verificação foi enviado para {to}",
+      "sendMedium": "Receber código por",
+      "generate": "Gerar Senha",
       "generated.message": "Uma vez que você enviar, uma nova senha será gerada e enviada para seu endereço de e-mail",
-      "generated.done": "Você deve receber em breve um e-mail com sua nova senha.",
-      "manual.done": "Sua senha foi alterada com sucesso. Agora você pode usá-la para acessar."
+      "generated.done.email": "Você deve receber em breve um e-mail com sua nova senha.",
+      "generated.done.sms": "Você deve receber em breve uma mensagem SMS com sua nova senha.",
+      "manual.done": "Sua senha foi alterada com sucesso. Agora você pode usá-la para acessar.",
+      "title.changePassword": "Alterar sua senha"
     },
     "expired": {
       "preface": "Sua {type} expirou.",
@@ -874,9 +880,9 @@
       "edit": "Editar perfil",
       "managePasswords": "Gerenciar senhas",
       "viewIdentityProviders": "Ver provedores de identidade",
-      "addContact": "Add to contacts",
+      "addContact": "Adicionar aos contatos",
       "addContact.done": "{user} foi adicionado à sua lista de contactos",
-      "removeContact": "Remove from contacts",
+      "removeContact": "Remover dos contatos",
       "removeContact.done": "{user} foi removido da sua lista de contatos",
       "pay": "Fazer pagamento",
       "paySystemToUser": "Pagamento de sistema para usuário",
