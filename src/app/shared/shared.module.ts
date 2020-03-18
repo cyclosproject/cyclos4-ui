@@ -1,4 +1,3 @@
-import { AgmCoreModule } from '@agm/core';
 import { LayoutModule } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -218,9 +217,7 @@ export function initTooltipConfig(): TooltipConfig {
     TooltipModule.forRoot(),
     NgxGalleryModule,
 
-    LayoutModule,
-
-    AgmCoreModule
+    LayoutModule
   ],
   exports: [
     CommonModule,
@@ -238,8 +235,6 @@ export function initTooltipConfig(): TooltipConfig {
     NgxGalleryModule,
 
     LayoutModule,
-
-    AgmCoreModule,
 
     NotFoundComponent,
     NotificationComponent,
