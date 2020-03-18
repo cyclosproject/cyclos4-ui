@@ -1198,6 +1198,7 @@
     "orderAccepted": "The order was processed",
     "orderRejected": "The order was rejected",
     "orderSavedAsDraft": "The order was saved as draft",
+    "orderSubmittedToBuyer": "The order was submitted to buyer",
     "publicationPeriod": "Publication period",
     "productNumberMask": "Mask",
     "promotionalPeriod": "Promotional period",
