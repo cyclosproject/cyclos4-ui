@@ -330,7 +330,7 @@
     "title": {
       "change.self": "Cambiar su contraseña",
       "change.user": "Cambiar contraseña de usuario",
-      "forgotten": "User identification / password recovery",
+      "forgotten": "Recuperación de identificación de usuario / contraseña",
       "manage.single.self": "Administrar su contraseña",
       "manage.multiple.self": "Administrar sus contraseñas",
       "manage.single.user": "Administrar contraseña de usuario",
@@ -340,7 +340,7 @@
     "mobileTitle": {
       "change.self": "Cambio de contraseña",
       "change.user": "Cambio de contraseña",
-      "forgotten": "User / password recovery",
+      "forgotten": "Recuperar usuario / contraseña",
       "manage.single.self": "Contraseña",
       "manage.multiple.self": "Contraseñas",
       "manage.single.user": "Contraseña de usuario",
@@ -348,16 +348,16 @@
       "securityAnswer": "Respuesta de seguridad"
     },
     "forgotten": {
-      "preface": "Here you can recover your user identification and change your password. Fill in your user identification below, and you will receive a verification code. You can use one of the following:",
+      "preface": "Aquí usted puede recuperar su identificación de usuario y cambiar su contraseña. Complete a continuación los datos que nos permiten identificarle, y recibirá un código de verificación. Usted puede utilizar uno de los siguientes métodos:",
       "principal": "Usuario",
-      "captcha": "Captcha validation",
-      "code": "Verification code",
-      "code.sent": "The verification code was sent to {to}",
-      "sendMedium": "Receive code by",
-      "generate": "Generate password",
+      "captcha": "Validación de captcha",
+      "code": "Código de verificación",
+      "code.sent": "El código de verificación fue enviado a {to}",
+      "sendMedium": "Recibir código por",
+      "generate": "Generar contraseña",
       "generated.message": "Una vez que acepte los datos, una nueva contraseña será generada y le será enviada mediante correo electrónico",
       "generated.done.email": "En breve, usted recibirá un correo electrónico con su nueva contraseña.",
-      "generated.done.sms": "You should receive shortly an SMS message with your new password.",
+      "generated.done.sms": "En breve, usted recibirá un SMS con su nueva contraseña.",
       "manual.done": "Su contraseña ha sido restablecida con éxito.\nUsted ya puede utilizarla para acceder al sistema.",
       "title.changePassword": "Cambiar su contraseña"
     },
