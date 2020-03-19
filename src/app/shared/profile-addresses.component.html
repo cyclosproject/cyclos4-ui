@@ -17,26 +17,9 @@
     </div>
   </div>
 </ng-container>
-<ng-container *ngIf="addresses?.length > 1">
+<ng-container *ngIf="locatedAddresses?.length > 1">
   <!-- Multiple addresses -->
-  <div class="map-container">
-    <agm-map [styles]="layout.googleMapStyles"
-      [fitBounds]="mapBounds$ | async" [fullscreenControl]="true" maxZoom="17"
-      minZoom="2" (mapClick)="closeAllInfoWindows()"
-      (mapReady)="adjustMap();">
-      <ng-container *ngFor="let addr of addresses">
-        <ng-container *ngIf="addr.location">
-          <agm-marker [title]="addr.name" [iconUrl]="mainMarker"
-            [tooltip]="addr.name" [latitude]="addr.location.latitude"
-            [longitude]="addr.location.longitude"
-            (markerClick)="closeAllInfoWindows()">
-            <agm-info-window>
-              {{ addr.name }}
-            </agm-info-window>
-          </agm-marker>
-        </ng-container>
-      </ng-container>
-    </agm-map>
+  <div #mapContainer class="map-container">
   </div>
 
   <div class="row no-gutters">

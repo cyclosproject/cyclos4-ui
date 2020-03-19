@@ -1,10 +1,10 @@
-import { MapTypeStyle } from '@agm/core';
+/// <reference types="@types/googlemaps" />
 
 /** Light theme styles */
-export const LightMapStyles: MapTypeStyle[] = [];
+export const LightMapStyles: google.maps.MapTypeStyle[] = [];
 
 /** Dark theme styles */
-export const DarkMapStyles: MapTypeStyle[] = [
+export const DarkMapStyles: google.maps.MapTypeStyle[] = [
   {
     elementType: 'geometry',
     stylers: [{ color: '#242f3e' }]

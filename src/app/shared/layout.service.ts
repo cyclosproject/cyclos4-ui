@@ -1,3 +1,5 @@
+/// <reference types="@types/googlemaps" />
+
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
@@ -12,7 +14,6 @@ import { isEqual, trim } from 'lodash';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { ShortcutService, Escape } from 'app/shared/shortcut.service';
-import { MapTypeStyle } from '@agm/core';
 import { LightMapStyles, DarkMapStyles } from 'app/shared/google-map-styles';
 
 export type Theme = 'light' | 'dark';
@@ -609,7 +610,7 @@ export class LayoutService {
     return this.getColor('theme-color');
   }
 
-  get googleMapStyles(): MapTypeStyle[] {
+  get googleMapStyles(): google.maps.MapTypeStyle[] {
     return this.darkTheme ? DarkMapStyles : LightMapStyles;
   }
 

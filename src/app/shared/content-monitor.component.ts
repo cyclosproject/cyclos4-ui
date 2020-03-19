@@ -10,7 +10,8 @@ import { Component, ChangeDetectionStrategy, EventEmitter, Output, AfterContentI
 })
 export class ContentMonitorComponent implements AfterContentInit {
 
-  @HostBinding('style.display') styleDisplay = 'block';
+  @HostBinding('style.display') styleDisplay = 'flex';
+  @HostBinding('style.flexDirection') styleDirection = 'column';
   @HostBinding('style.width') styleWidth = '100%';
 
   @Output() ready = new EventEmitter<boolean>();

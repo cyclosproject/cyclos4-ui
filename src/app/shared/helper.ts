@@ -1,9 +1,7 @@
-/// <reference types="@types/googlemaps" />
-import { LatLngBounds } from '@agm/core';
 import { HttpResponse } from '@angular/common/http';
 import { ElementRef } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
-import { Address, GeographicalCoordinate, Image } from 'app/api/models';
+import { Image } from 'app/api/models';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { LayoutService } from 'app/shared/layout.service';
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, End, Home, PageDown, PageUp } from 'app/shared/shortcut.service';
@@ -384,30 +382,6 @@ export function blank(input: any): boolean {
     input.trim();
   }
   return empty(input);
-}
-
-/**
- * Returns a LatLngBounds containing all the given addresses or coordinates
- * @param locations The coordinates or addresses
- */
-export function fitBounds(locations: (GeographicalCoordinate | Address)[]): LatLngBounds {
-  if (typeof google === 'undefined' || empty(locations)) {
-    return null;
-  }
-  let bounds = new google.maps.LatLngBounds(null);
-  for (const loc of locations) {
-    if (loc == null) { continue; }
-    let coord: GeographicalCoordinate;
-    if (loc.hasOwnProperty('location')) {
-      coord = loc['location'] as GeographicalCoordinate;
-    } else {
-      coord = loc as GeographicalCoordinate;
-    }
-    if (coord && (coord.latitude != null && coord.longitude != null)) {
-      bounds = bounds.extend(new google.maps.LatLng(coord.latitude, coord.longitude));
-    }
-  }
-  return bounds.isEmpty() ? null : bounds as any as LatLngBounds;
 }
 
 export interface ResizeResult {
