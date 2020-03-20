@@ -199,22 +199,14 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
       this.map.addListener('click', () => this.closeAllInfoWindows());
       this.markerClusterer = new MarkerClusterer(this.map, [], {
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-        maxZoom: 15
+        minimumClusterSize: 5,
+        maxZoom: 16
       });
     }
 
-
-    // If there's a reference point, render it
-    if (this.referencePoint) {
-      this.referenceMarker = new google.maps.Marker({
-        position: new google.maps.LatLng(this.referencePoint.latitude, this.referencePoint.longitude),
-        icon: Configuration.altMapMarker
-      });
-      this.referenceMarker.setMap(this.map);
-    }
+    const bounds = new google.maps.LatLngBounds();
 
     // Convert each result to a point
-    const bounds = new google.maps.LatLngBounds();
     const markers = new Array<google.maps.Marker>(rows.length);
     rows.forEach(r => {
       const address = this.toAddress(r);
@@ -229,11 +221,7 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
         bounds.extend(marker.getPosition());
         marker.addListener('click', () => {
           this.closeAllInfoWindows();
-          let infoWindow = marker['infoWindow'] as google.maps.InfoWindow;
-          if (!infoWindow) {
-            infoWindow = new google.maps.InfoWindow();
-            this.infoWindows.push(infoWindow);
-          }
+          const infoWindow = this.infoWindow(marker);
           const view = this.infoWindowContent.createEmbeddedView({
             $implicit: r, address: address
           });
@@ -241,15 +229,43 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
           const roots = view.rootNodes;
           if (!empty(roots)) {
             infoWindow.setContent(roots[0]);
-            infoWindow.open(marker.getMap(), marker);
+            infoWindow.open(this.map, marker);
           }
         });
         markers.push(marker);
       }
     });
 
+    // If there's a reference point, render it
+    if (this.referencePoint) {
+      this.referenceMarker = new google.maps.Marker({
+        position: new google.maps.LatLng(this.referencePoint.latitude, this.referencePoint.longitude),
+        title: this.referencePoint.name,
+        icon: Configuration.altMapMarker
+      });
+      if (this.referencePoint.name) {
+        this.referenceMarker.addListener('click', () => {
+          const infoWindow = this.infoWindow(this.referenceMarker);
+          infoWindow.setContent(this.referencePoint.name);
+          infoWindow.open(this.map, this.referenceMarker);
+        });
+      }
+      this.referenceMarker.setMap(this.map);
+      bounds.extend(this.referenceMarker.getPosition());
+    }
+
     mapContainerParent.appendChild(this.mapContainer);
     this.markerClusterer.addMarkers(markers);
     setTimeout(() => this.map.fitBounds(bounds));
+  }
+
+  private infoWindow(marker: google.maps.Marker): google.maps.InfoWindow {
+    let infoWindow = marker['infoWindow'] as google.maps.InfoWindow;
+    if (!infoWindow) {
+      infoWindow = new google.maps.InfoWindow();
+      marker['infoWindow'] = infoWindow;
+      this.infoWindows.push(infoWindow);
+    }
+    return infoWindow;
   }
 }
