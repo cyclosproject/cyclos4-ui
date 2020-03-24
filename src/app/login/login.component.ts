@@ -136,6 +136,7 @@ export class LoginComponent
           }));
           break;
         case IdentityProviderCallbackStatusEnum.LOGIN_NO_EMAIL:
+          this.identityProviderRequestId = callback.requestId;
           this.notification.info(this.i18n.identityProvider.loginNoEmail({
             app: this.format.appTitleSmall,
             provider: idp.name
