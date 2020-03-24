@@ -95,18 +95,24 @@ export class SearchOrdersComponent
   }
 
   private addNew() {
-
     this.notification.confirm({
       title: this.i18n.ad.title.newOrder,
       labelPosition: 'above',
       customFields: this.newOrderFields(),
       callback: res => {
-        this.router.navigate(['marketplace', this.param, 'sale', 'new'], {
-          queryParams: {
-            buyer: res.customValues.buyer,
-            currency: res.customValues.currency
-          }
-        });
+        // Validate the user can create a new sale
+        this.addSub(this.orderService.getOrderDataForNew({
+          buyer: res.customValues.buyer,
+          user: this.param,
+          currency: res.customValues.currency
+        }).subscribe(() => {
+          this.router.navigate(['marketplace', this.param, 'sale', 'new'], {
+            queryParams: {
+              buyer: res.customValues.buyer,
+              currency: res.customValues.currency
+            }
+          });
+        }));
       }
     });
   }

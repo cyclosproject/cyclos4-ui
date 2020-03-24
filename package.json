@@ -36,7 +36,7 @@
     "@angular/router": "^8.2.14",
     "@googlemaps/loader": "0.0.7",
     "@types/autosize": "^3.0.7",
-    "@types/chart.js": "^2.9.15",
+    "@types/chart.js": "^2.9.16",
     "@types/downloadjs": "^1.4.1",
     "@types/googlemaps": "^3.39.3",
     "@types/lodash": "^4.14.149",

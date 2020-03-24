@@ -1,10 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { Address, AdResult, DeliveryMethod, OrderDataForEdit, OrderDataForNew, OrderDeliveryMethod, OrderItem } from 'app/api/models';
 import { OrdersService } from 'app/api/services';
 import { AddressHelperService } from 'app/core/address-helper.service';
-import { ErrorStatus } from 'app/core/error-status';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { SearchProductsComponent } from 'app/marketplace/search/search-products.component';
 import { BasePageComponent } from 'app/shared/base-page.component';
@@ -66,13 +64,6 @@ export class SaleFormComponent
 
     this.addSub(request.subscribe(data => {
       this.data = data;
-    }, (resp: HttpErrorResponse) => {
-      if (this.create && ErrorStatus.UNPROCESSABLE_ENTITY === resp.status) {
-        // Go back to sales list if there is an error when starting the sale
-        history.back();
-      } else {
-        this.errorHandler.handleHttpError(resp);
-      }
     }));
   }
 
