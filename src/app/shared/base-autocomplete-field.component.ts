@@ -16,7 +16,7 @@ import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/oper
 export abstract class BaseAutocompleteFieldComponent<T, A>
   extends BaseFormFieldComponent<T> implements OnInit, OnDestroy, AfterViewInit {
   inputFieldControl: FormControl;
-  @ViewChild('inputField', { static: false }) inputField: ElementRef;
+  @ViewChild('inputField', { static: false }) inputField: ElementRef<HTMLInputElement>;
   @ViewChild('dropdown', { static: false }) dropdown: BsDropdownDirective;
 
   @Input() container = 'body';

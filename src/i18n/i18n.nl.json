@@ -778,7 +778,13 @@
       "placeholder.principal": "Typ het gebruiker-id",
       "contact.tooltip": "Kies uit de lijst",
       "contact.title": "Selecteer een contact",
-      "contact.empty": "Uw contact lijst is leeg"
+      "contact.empty": "Uw contact lijst is leeg",
+      "scanQrCode.tooltip": "Scan a QR-code with your camera"
+    },
+    "scanQr": {
+      "title": "Scan QR-code",
+      "noCameras": "No cameras found on this device.",
+      "noPermission": "In order to scan a QR-code, please, grant permission for the application to access your camera."
     }
   },
   "user": {

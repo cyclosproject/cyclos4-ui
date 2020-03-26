@@ -8,10 +8,5 @@ export function setup() {
   Configuration.appTitle = 'Cyclos';
   Configuration.appTitleSmall = 'Cyclos';
   Configuration.appTitleMenu = 'Cyclos menu';
-  Configuration.operations = {
-    thingNew: {
-      icon: 'add'
-    }
-  };
 }
 

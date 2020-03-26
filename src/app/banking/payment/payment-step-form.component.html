@@ -68,7 +68,8 @@
       <user-field #toUser focused [autoSearch]="!allowPrincipal"
         [filters]="{usersToExclude: fromUser && !fromSelf ? [fromParam] : null}"
         formControlName="subject" [allowContacts]="allowContacts"
-        [allowSearch]="allowSearch" [allowPrincipal]="allowPrincipal"
+        [allowQrCode]="true" [allowSearch]="allowSearch"
+        [allowPrincipal]="allowPrincipal"
         [principalTypes]="data.principalTypes"
         (selected)="$event ? amount.focus() : null"></user-field>
     </ng-template>

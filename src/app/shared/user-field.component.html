@@ -33,11 +33,17 @@
         </div>
       </div>
     </div>
-    <div *ngIf="user == null && allowContacts" class="d-flex ml-2">
-      <button class="btn btn-icon" *ngIf="allowContacts" #contactListButton
-        [tooltip]="i18n.field.user.contactTooltip"
+    <div *ngIf="user == null && (allowContacts || allowQrCode)"
+      class="d-flex">
+      <button class="btn btn-icon ml-2" *ngIf="allowContacts"
+        #contactListButton [tooltip]="i18n.field.user.contactTooltip"
         (click)="showContactList()">
         <icon icon="import_contacts"></icon>
+      </button>
+      <button class="btn btn-icon ml-2" *ngIf="allowQrCode" #scanQrCodeButton
+        [tooltip]="i18n.field.user.scanQrCodeTooltip"
+        (click)="showScanQrCode()">
+        <icon icon="scan_qr_code"></icon>
       </button>
     </div>
   </div>

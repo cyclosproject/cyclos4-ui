@@ -778,7 +778,13 @@
       "placeholder.principal": "Tapez l'identifiant de l'utilisateur",
       "contact.tooltip": "Choisissez parmi votre liste de contacts",
       "contact.title": "Selectionner un contact",
-      "contact.empty": "Votre liste de contact est vide"
+      "contact.empty": "Votre liste de contact est vide",
+      "scanQrCode.tooltip": "Scan a QR-code with your camera"
+    },
+    "scanQr": {
+      "title": "Scan QR-code",
+      "noCameras": "No cameras found on this device.",
+      "noPermission": "In order to scan a QR-code, please, grant permission for the application to access your camera."
     }
   },
   "user": {

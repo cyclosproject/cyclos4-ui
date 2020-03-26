@@ -1,11 +1,15 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Injector, ViewChild, ElementRef } from '@angular/core';
 import { VoucherInitialDataForRedeem, VoucherDataForRedeem } from 'app/api/models';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { VouchersService } from 'app/api/services';
-import { validateBeforeSubmit } from 'app/shared/helper';
+import { validateBeforeSubmit, focus } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
 import { Menu } from 'app/shared/menu';
+import { BsModalService } from 'ngx-bootstrap';
+import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
+import { first } from 'rxjs/operators';
+import { InputFieldComponent } from 'app/shared/input-field.component';
 
 export type RedeemStep = 'form' | 'confirm';
 
@@ -24,6 +28,10 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
   userId: string;
   self: boolean;
 
+  @ViewChild('inputField', { static: false }) inputField: ElementRef<InputFieldComponent>;
+
+  allowQrCode = true;
+
   get dataForRedeem(): VoucherDataForRedeem {
     return this.dataForRedeem$.value;
   }
@@ -34,7 +42,8 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
 
   constructor(
     injector: Injector,
-    private voucherService: VouchersService
+    private voucherService: VouchersService,
+    private modal: BsModalService
   ) {
     super(injector);
   }
@@ -91,5 +100,17 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
 
   resolveMenu(data: VoucherInitialDataForRedeem) {
     return this.authHelper.userMenu(data.user, Menu.REDEEM_VOUCHER);
+  }
+
+  showScanQrCode() {
+    const ref = this.modal.show(ScanQrCodeComponent, {
+      class: 'modal-form'
+    });
+    const component = ref.content as ScanQrCodeComponent;
+    component.select.pipe(first()).subscribe(value => {
+      this.token.setValue(value);
+      this.submit();
+    });
+    this.modal.onHide.pipe(first()).subscribe(() => focus(this.inputField, true));
   }
 }
