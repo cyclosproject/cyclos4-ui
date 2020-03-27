@@ -6,17 +6,16 @@
       <ng-container [ngTemplateOutlet]="active_user"></ng-container>
       <div class="d-flex flex-grow-1">
         <div class="flex-grow-1">
-          <input-field #inputField type="text" [label]="i18n.voucher.token"
-            focused [mask]="mask" [formControl]="token" [placeholder]="mask"
-            required>
-          </input-field>
-        </div>
-        <div class="ml-2" *ngIf="allowQrCode">
-          <button class="btn btn-icon ml-2" #scanQrCodeButton
-            [tooltip]="i18n.field.user.scanQrCodeTooltip"
-            (click)="showScanQrCode()">
-            <icon icon="scan_qr_code"></icon>
-          </button>
+          <label-value kind="field" [label]="i18n.voucher.token">
+            <input-field #inputField type="text" focused [mask]="mask"
+              [formControl]="token" [placeholder]="mask" required>
+            </input-field>
+            <button *extraCell class="btn btn-icon" #scanQrCodeButton
+              [tooltip]="i18n.field.user.scanQrCodeTooltip"
+              (click)="showScanQrCode()">
+              <icon icon="scan_qr_code"></icon>
+            </button>
+          </label-value>
         </div>
       </div>
       <actions>

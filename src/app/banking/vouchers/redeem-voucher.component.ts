@@ -30,8 +30,6 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
 
   @ViewChild('inputField', { static: false }) inputField: ElementRef<InputFieldComponent>;
 
-  allowQrCode = true;
-
   get dataForRedeem(): VoucherDataForRedeem {
     return this.dataForRedeem$.value;
   }
