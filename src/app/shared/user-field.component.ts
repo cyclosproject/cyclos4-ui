@@ -166,12 +166,12 @@ export class UserFieldComponent
 
   setAsPrincipal(value: string) {
     if (value != null && this.allowPrincipal) {
-      value = ApiHelper.escapeNumeric(value);
-      if (!/^\w+\:/.test(value)) {
+      let locator = ApiHelper.escapeNumeric(value);
+      if (!/^[\w\*]+\:/.test(locator)) {
         // When not already using a specific principal (such as id: when searching), use a wildcard
-        value = '*:' + value;
+        locator = '*:' + locator;
       }
-      this.value = value;
+      this.value = locator;
       this.inputField.nativeElement.value = value;
     }
   }
