@@ -779,12 +779,12 @@
       "contact.tooltip": "Escolha a partir de sua lista de contatos",
       "contact.title": "Selecione um contato",
       "contact.empty": "Sua lista de contatos está vazia",
-      "scanQrCode.tooltip": "Scan a QR-code with your camera"
+      "scanQrCode.tooltip": "Leia um código QR com sua câmera"
     },
     "scanQr": {
-      "title": "Scan QR-code",
-      "noCameras": "No cameras found on this device.",
-      "noPermission": "In order to scan a QR-code, please, grant permission for the application to access your camera."
+      "title": "Ler código QR",
+      "noCameras": "Nenhuma câmera encontrada neste dispositivo.",
+      "noPermission": "Para ler um código QR, por favor, conceda permissão para o aplicativo acessar sua câmera."
     }
   },
   "user": {
