@@ -1,12 +1,17 @@
-import { ChangeDetectionStrategy, OnInit, Component, Injector } from '@angular/core';
-import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
-import { UserOrderResult } from 'app/api/models/user-order-result';
-import { QueryFilters, OrderStatusEnum, OrderResult, OrderDataForSearch } from 'app/api/models';
-import { OrdersService, MarketplaceService } from 'app/api/services';
-import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
-import { Menu } from 'app/shared/menu';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import {
+  CustomFieldControlEnum, CustomFieldDetailed, CustomFieldTypeEnum,
+  LinkedEntityTypeEnum, OrderDataForSearch, OrderResult, OrderStatusEnum, QueryFilters
+} from 'app/api/models';
+import { UserOrderResult } from 'app/api/models/user-order-result';
+import { OrdersService } from 'app/api/services';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { HeadingAction } from 'app/shared/action';
+import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
+import { empty } from 'app/shared/helper';
+import { Menu } from 'app/shared/menu';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 type SearchUserOrdersParams = QueryFilters & {
   user: string,
@@ -28,7 +33,7 @@ type SearchUserOrdersParams = QueryFilters & {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchOrdersComponent
-  extends BaseSearchPageComponent<any, SearchUserOrdersParams, UserOrderResult>
+  extends BaseSearchPageComponent<OrderDataForSearch, SearchUserOrdersParams, UserOrderResult>
   implements OnInit {
 
   param: string;
@@ -39,9 +44,8 @@ export class SearchOrdersComponent
 
   constructor(
     injector: Injector,
-    protected marketplaceHelper: MarketplaceHelperService,
-    protected marketplaceService: MarketplaceService,
-    protected orderService: OrdersService
+    private marketplaceHelper: MarketplaceHelperService,
+    private orderService: OrdersService
   ) {
     super(injector);
   }
@@ -68,11 +72,81 @@ export class SearchOrdersComponent
     return value;
   }
 
-  onDataInitialized(data: any) {
+  onDataInitialized(data: OrderDataForSearch) {
     super.onDataInitialized(data);
+
+    this.headingActions = this.initActions(data);
+
     this.addSub(this.layout.ltsm$.subscribe(() => {
-      this.headingActions = this.layout.ltsm ? [this.moreFiltersAction] : [];
+      this.headingActions = this.initActions(data);
     }));
+  }
+
+  protected initActions(data: OrderDataForSearch) {
+    const actions: HeadingAction[] = [];
+    if (this.sales && data.canCreateNew) {
+      const newAction = new HeadingAction('add', this.i18n.general.addNew, () => this.addNew(), true);
+      actions.push(newAction);
+    }
+    if (this.layout.ltsm) {
+      actions.push(this.moreFiltersAction);
+    }
+    return actions;
+  }
+
+  private addNew() {
+    this.notification.confirm({
+      title: this.i18n.ad.title.newOrder,
+      labelPosition: 'above',
+      customFields: this.newOrderFields(),
+      callback: res => {
+        // Validate the user can create a new sale
+        this.addSub(this.orderService.getOrderDataForNew({
+          buyer: res.customValues.buyer,
+          user: this.param,
+          currency: res.customValues.currency
+        }).subscribe(() => {
+          this.router.navigate(['marketplace', this.param, 'sale', 'new'], {
+            queryParams: {
+              buyer: res.customValues.buyer,
+              currency: res.customValues.currency
+            }
+          });
+        }));
+      }
+    });
+  }
+
+  protected newOrderFields(): CustomFieldDetailed[] {
+    const fields: CustomFieldDetailed[] = [
+      {
+        internalName: 'buyer',
+        name: this.i18n.ad.buyer,
+        type: CustomFieldTypeEnum.LINKED_ENTITY,
+        control: CustomFieldControlEnum.ENTITY_SELECTION,
+        linkedEntityType: LinkedEntityTypeEnum.USER,
+        hasValuesList: false,
+        required: true
+      }
+    ];
+    if (!empty(this.data.currencies) && this.data.currencies.length > 1) {
+      fields.push({
+        internalName: 'currency',
+        name: this.i18n.general.currency,
+        type: CustomFieldTypeEnum.SINGLE_SELECTION,
+        control: CustomFieldControlEnum.SINGLE_SELECTION,
+        hasValuesList: true,
+        defaultValue: this.data.currencies[0].id,
+        possibleValues: this.data.currencies.map(c => {
+          return {
+            id: c.id,
+            value: c.name
+          };
+        }),
+        required: true
+      });
+    }
+    return fields;
   }
 
   showMoreFiltersLabel() {
@@ -95,6 +169,9 @@ export class SearchOrdersComponent
   }
 
   path(row: UserOrderResult): string[] {
+    if (row.status === OrderStatusEnum.DRAFT) {
+      return ['/marketplace', 'sale', row.id];
+    }
     return ['/marketplace', 'order', row.id];
   }
 

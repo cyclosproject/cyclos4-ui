@@ -26,7 +26,7 @@
         </button>
         <button [tooltip]="i18n.general.remove" class="btn btn-icon mt-2"
           (click)="remove.emit(row); $event.stopPropagation(); $event.preventDefault()">
-          <icon icon="clear"></icon>
+          <icon icon="delete"></icon>
         </button>
       </div>
     </div>
@@ -58,6 +58,8 @@
         <td>
           <form *ngIf="useForm(layout.gtsm$ | async)" [formGroup]="form">
             <decimal-field *ngIf="isAvailable(row)" [formControlName]="row.id"
+              [minRange]="minItemsRange(row)" [maxRange]="maxItemsRange(row)"
+              [customValueLabel]="i18n.ad.customQuantity"
               [scale]="row.product.allowDecimalQuantity ? 2 : 0">
             </decimal-field>
           </form>
@@ -79,7 +81,7 @@
           <button [tooltip]="i18n.general.remove" class="btn btn-icon"
             [ngClass]="{'ml-3' : !useForm(layout.gtsm$ | async) && isAvailable(row)}"
             (click)="remove.emit(row); $event.stopPropagation()">
-            <icon icon="clear"></icon>
+            <icon icon="delete"></icon>
           </button>
         </td>
       </tr>

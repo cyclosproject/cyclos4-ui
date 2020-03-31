@@ -1,0 +1,44 @@
+<h1>{{ i18n.ad.addProducts }}</h1>
+<form [formGroup]="form" class="mb-2 mb-md-0">
+  <input-field formControlName="keywords" [label]="i18n.general.keywords">
+  </input-field>
+</form>
+<results-layout resultType="list" [results]="results$ | async"
+  (update)="update($event)" [onClick]="onClick" [rendering$]="rendering$"
+  [ngStyle]="{'min-height': '44vh'}">
+  <mobile-result *mobileResult="let row" [avatarImage]="row.image"
+    avatarIcon="shopping_basket">
+    <div class="cell-main"
+      [ngStyle]="{'text-decoration': resolveStockLabel(row) ? 'line-through' : ''}">
+      {{ row.name }}</div>
+    <div *ngIf="resolveStockLabel(row)" class="cell-text text-muted">
+      {{ i18n.ad.outOfStock }}</div>
+  </mobile-result>
+  <table *resultTable class="table table-hover cursor-pointer">
+    <tbody>
+      <ng-container *ngFor="let row of (results$ | async).results">
+        <tr (click)="addProduct(row)">
+          <td class=" avatar">
+            <avatar [image]="row.image" icon="shopping_basket"></avatar>
+          </td>
+          <td>
+            <div
+              [ngStyle]="{'text-decoration': resolveStockLabel(row) ? 'line-through' : ''}">
+              {{ row.name }}</div>
+            <div *ngIf="resolveStockLabel(row)" class="text-muted">
+              {{ i18n.ad.outOfStock }}</div>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</results-layout>
+<actions>
+  <button class="btn btn-primary" (click)="close()">
+    {{ i18n.general.close }}
+  </button>
+</actions>
+
+<ng-template #spinner>
+  <spinner class="mx-auto my-3"></spinner>
+</ng-template>

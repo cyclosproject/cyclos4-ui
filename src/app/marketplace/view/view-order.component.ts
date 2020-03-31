@@ -262,10 +262,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
    * Returns the remarks for the given order or a generic label if not set
    */
   get remarks(): string {
-    if (this.canSetRemarks) {
-      return this.data.remarks;
-    }
-    return this.data.remarks ? this.data.remarks : this.i18n.ad.noRemarksGiven;
+    return this.data.remarks ? this.data.remarks : null;
   }
 
   /**

@@ -1,6 +1,7 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content mode="empty" [heading]="i18n.ad.title.deliveryMethods"
+    <page-content mode="empty" class="no-padding"
+      [heading]="i18n.ad.title.deliveryMethods"
       [mobileHeading]="i18n.ad.mobileTitle.deliveryMethods"
       [headingActions]="headingActions$ | async">
       <div class="col-12 col-md-6" *ngIf="!self">

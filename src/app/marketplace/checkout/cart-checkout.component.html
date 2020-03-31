@@ -109,7 +109,7 @@
           (deliveryMethod.chargeAmount | currency: deliveryMethod.chargeCurrency) : i18n.ad.toBeConfirmedBySeller }}
       </label-value>
       <hr>
-      <label-value class="totalAmount" [label]="i18n.transaction.totalAmount">
+      <label-value class="totalAmount" [label]="i18n.ad.total">
         {{ totalPrice | currency: data.cart.currency }}
       </label-value>
       <label class="any-label-value notice text-muted">

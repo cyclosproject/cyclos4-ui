@@ -20,6 +20,7 @@ import { AnswerFormComponent } from 'app/marketplace/answer-form.component';
 import { ListAdInterestsComponent } from 'app/marketplace/interests/list-ad-interests.component';
 import { ViewAdInterestComponent } from 'app/marketplace/interests/view-ad-interest.component';
 import { EditAdInterestComponent } from 'app/marketplace/interests/edit-ad-interest.component';
+import { SaleFormComponent } from 'app/marketplace/sale-form.component';
 
 const marketplaceRoutes: Routes = [
   {
@@ -40,6 +41,14 @@ const marketplaceRoutes: Routes = [
       {
         path: ':user/sales',
         component: SearchOrdersComponent
+      },
+      {
+        path: 'sale/:id',
+        component: SaleFormComponent
+      },
+      {
+        path: ':user/sale/new',
+        component: SaleFormComponent
       },
       {
         path: ':user/:kind/ad/new',

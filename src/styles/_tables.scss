@@ -18,6 +18,10 @@ table.table {
     }
   }
 
+  tr.no-hover {
+    background-color: $table-bg !important;
+  }
+
   td {
     vertical-align: middle;
     border-top: none;
@@ -117,6 +121,11 @@ table.table {
     }
     th {
       height: 3.3rem;
+    }
+  }
+  table.small-height {
+    td {
+      height: 2.8rem !important;
     }
   }
 }
