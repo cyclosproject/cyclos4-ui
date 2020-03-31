@@ -103,7 +103,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const scheduledPayments = permissions.scheduledPayments || {};
     const authorizedPayments = permissions.authorizedPayments || {};
     const marketplace = permissions.marketplace || {};
-    const simple = marketplace.simple || {};
+    const simpleAds = marketplace.simple || {};
     const webshop = marketplace.webshop || {};
     const notificationSettings = permissions.notificationSettings || {};
     const status = permissions.status || {};
@@ -244,7 +244,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/banking', ApiHelper.SELF, 'payment', this.param]);
         }));
       }
-      if (simple.view) {
+      if (simpleAds.view) {
         actions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewAds, () => {
           this.router.navigate(['/marketplace', this.param, AdKind.SIMPLE, 'list']);
         }));

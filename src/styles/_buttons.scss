@@ -31,6 +31,7 @@ button.btn-transparent {
 }
 
 .btn-icon {
+  display: inline-flex;
   padding: 0.4rem 0.4rem 0.4rem 0.6rem;
   width: 2.6rem;
   @include button-variant($button-icon-bg, $button-icon-border-color);

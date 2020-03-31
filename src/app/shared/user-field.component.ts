@@ -16,6 +16,7 @@ import { PickContactComponent } from 'app/shared/pick-contact.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, of, Subscription } from 'rxjs';
 import { distinctUntilChanged, first } from 'rxjs/operators';
+import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
 
 /**
  * Field used to select a user
@@ -43,6 +44,7 @@ export class UserFieldComponent
   @Input() principalTypes: PrincipalType[];
   @Input() allowSearch = true;
   @Input() allowContacts = true;
+  @Input() allowQrCode = false;
   @Input() filters: UserQueryFilters;
 
   @ViewChild('contactListButton', { static: false }) contactListButton: ElementRef;
@@ -65,16 +67,7 @@ export class UserFieldComponent
     super.ngOnInit();
     this.fieldSub = this.inputFieldControl.valueChanges
       .pipe(distinctUntilChanged())
-      .subscribe(value => {
-        if (value != null && this.allowPrincipal) {
-          value = ApiHelper.escapeNumeric(value);
-          if (!/^\w+\:/.test(value)) {
-            // When not already using a specific principal (such as id: when searching), use a wildcard
-            value = '*:' + value;
-          }
-          this.value = value;
-        }
-      });
+      .subscribe(value => this.setAsPrincipal(value));
     if (this.allowSearch) {
       this.placeholder = this.i18n.field.user.placeholderAllowSearch;
     } else if (this.allowPrincipal) {
@@ -160,6 +153,27 @@ export class UserFieldComponent
     const component = ref.content as PickContactComponent;
     component.select.pipe(first()).subscribe(u => this.select(u));
     this.modal.onHide.pipe(first()).subscribe(() => focus(this.inputField, true));
+  }
+
+  showScanQrCode() {
+    const ref = this.modal.show(ScanQrCodeComponent, {
+      class: 'modal-form'
+    });
+    const component = ref.content as ScanQrCodeComponent;
+    component.select.pipe(first()).subscribe(value => this.setAsPrincipal(value));
+    this.modal.onHide.pipe(first()).subscribe(() => focus(this.inputField, true));
+  }
+
+  setAsPrincipal(value: string) {
+    if (value != null && this.allowPrincipal) {
+      let locator = ApiHelper.escapeNumeric(value);
+      if (!/^[\w\*]+\:/.test(locator)) {
+        // When not already using a specific principal (such as id: when searching), use a wildcard
+        locator = '*:' + locator;
+      }
+      this.value = locator;
+      this.inputField.nativeElement.value = value;
+    }
   }
 
   onInputFocus() {

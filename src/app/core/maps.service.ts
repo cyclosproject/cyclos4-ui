@@ -196,6 +196,7 @@ export class MapsService {
     return new google.maps.Map(container, {
       mapTypeControl: false,
       streetViewControl: false,
+      gestureHandling: this.layout.ltsm ? 'cooperative' : 'greedy',
       minZoom: 2,
       maxZoom: 17,
       styles: this.layout.googleMapStyles

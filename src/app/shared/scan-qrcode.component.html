@@ -1,0 +1,15 @@
+<h1>{{ i18n.field.scanQr.title }}</h1>
+
+<zxing-scanner [ngClass]="{'d-none': !(ready$ | async)}"
+  (scanSuccess)="emit($event)" (camerasFound)="initialize()"
+  (camerasNotFound)="noCameras()"
+  (permissionResponse)="permissionResponse($event)"></zxing-scanner>
+
+<spinner *ngIf="!(ready$ | async)"></spinner>
+
+<actions>
+  <span></span>
+  <button class="btn btn-outline-primary" (click)="modalRef.hide()">
+    {{ i18n.general.cancel }}
+  </button>
+</actions>

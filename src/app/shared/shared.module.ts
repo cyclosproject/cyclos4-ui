@@ -99,6 +99,8 @@ import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ProfileImagesComponent } from 'app/shared/profile-images.component';
 import { TextSelectionFieldComponent } from 'app/shared/text-selection-field.component';
 import { ActionsToolbarComponent } from 'app/shared/actions-toolbar.component';
+import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 
 
 export function initTooltipConfig(): TooltipConfig {
@@ -190,6 +192,7 @@ export function initTooltipConfig(): TooltipConfig {
     ContentMonitorComponent,
     ChipComponent,
     CaptchaComponent,
+    ScanQrCodeComponent,
     IconWithCounterComponent,
     ButtonToggleComponent,
     NotificationTypeSettingComponent,
@@ -216,6 +219,7 @@ export function initTooltipConfig(): TooltipConfig {
     SortableModule.forRoot(),
     TooltipModule.forRoot(),
     NgxGalleryModule,
+    ZXingScannerModule,
 
     LayoutModule
   ],
@@ -233,6 +237,7 @@ export function initTooltipConfig(): TooltipConfig {
     SortableModule,
     TooltipModule,
     NgxGalleryModule,
+    ZXingScannerModule,
 
     LayoutModule,
 
@@ -308,6 +313,7 @@ export function initTooltipConfig(): TooltipConfig {
     ContentMonitorComponent,
     ChipComponent,
     CaptchaComponent,
+    ScanQrCodeComponent,
     IconWithCounterComponent,
     ButtonToggleComponent,
     NotificationTypeSettingComponent,
@@ -335,6 +341,7 @@ export function initTooltipConfig(): TooltipConfig {
     ManageFilesComponent,
     PickContactComponent,
     TextDialogComponent,
+    ScanQrCodeComponent
   ]
 })
 export class SharedModule {
