@@ -198,7 +198,7 @@ export class EditProfileComponent
   }
 
   canManagePrivacy(field: string | CustomField): boolean {
-    if (!this.data.enablePrivacy) {
+    if (!this.data.userConfiguration.enablePrivacy) {
       return false;
     }
     switch (field) {
