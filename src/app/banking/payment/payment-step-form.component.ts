@@ -269,6 +269,9 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
   get fixedUsersList(): boolean {
     return !empty(this.data.allowedUsers);
   }
+  get allowQrCode(): boolean {
+    return this.allowPrincipal && this.data.allowScanQrCode;
+  }
   get allowPrincipal(): boolean {
     return !empty(this.data.principalTypes);
   }

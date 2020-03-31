@@ -69,7 +69,7 @@
         [filters]="{usersToExclude: fromUser && !fromSelf ? [fromParam] : null}"
         formControlName="subject" [allowContacts]="allowContacts"
         [allowSearch]="allowSearch" [allowPrincipal]="allowPrincipal"
-        [allowQrCode]="allowPrincipal" [principalTypes]="data.principalTypes"
+        [allowQrCode]="allowQrCode" [principalTypes]="data.principalTypes"
         (selected)="$event ? amount.focus() : null"></user-field>
     </ng-template>
   </label-value>
