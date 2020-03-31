@@ -362,6 +362,9 @@ tags:
   - name: PrivacySettings
     description: >-
       Provides a way to define how the personal data can be accessed.
+  - name: Firebase
+    description: >-
+      Provides integration with Firebase products, e.g. FCM.
 
 
 security:
@@ -492,14 +495,13 @@ paths:
 
   /auth/session:
     post:
-      security:
-        - basic: []
-        - accessClient: []
       operationId: login
       summary: >-
-        Logs-in the currently authenticated user
+        Logs-in the currently authenticated user or perform a login through a trusted device.
       description: >-
-        Logs-in the currently authenticated user, returning the session token.
+        Logs-in the currently authenticated user (if any) or the user owner of the given deviceId only if the device
+        confirmation (returned in /auth/data-for-login) can be approved. If the login was successful then the session
+        token is returned.
         This token can then be used on subsequent requests. After finishing the
         session, the user can then logout by sending an HTTP DELETE to /auth.
       tags:
@@ -551,8 +553,11 @@ paths:
           required: false
           description: >-
             When using an [external identity provider](https://wiki4.cyclos.org/index.php/External_identity_providers),
-            this is the request id used to automatically link the user to the provider. Is only needed when no user
-            was matched, either by being previously linked to the provider or by having the same e-mail.
+            this is the request id used to automatically link the user to the
+            provider. Is only needed when no user was matched, that is, no user
+            in Cyclos was linked to the identifier returned by the provider,
+            and no user was found in Cyclos with the same e-mail address as
+            returned by the provider.
           schema:
             type: string
       responses:
@@ -563,7 +568,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Auth'
+                $ref: '#/components/schemas/LoginAuth'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -1055,7 +1060,8 @@ paths:
           x-remove-version: 4.15
           required: false
           description: >-
-            Use both `user` and `code`.
+            Use both `user` and `code` instead.
+
 
 
             The validation key which was sent by e-mail to the user
@@ -3387,7 +3393,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       summary: >-
         Validates an user registration via a key sent by e-mail
       description: >-
-        Use `POST /validate/registration/{key}`
+        Use `POST /validate/registration/{key}` instead.
 
 
 
@@ -15884,7 +15890,7 @@ Either the ids or identification methods of users' broker"
         This path will be removed in Cyclos 4.15.
         Returns data regarding the limits of all accounts of a given user.
       description: >-
-        Please use `GET /{user}/accounts/data-for-balance-limits`.
+        Use `GET /{user}/accounts/data-for-balance-limits` instead.
 
 
 
@@ -15948,7 +15954,7 @@ Either the ids or identification methods of users' broker"
         This path will be removed in Cyclos 4.15.
         Returns data for the limits of a given account
       description: >-
-        Please use `GET /{user}/accounts/{accountType}/balance-limits`.
+        Use `GET /{user}/accounts/{accountType}/balance-limits` instead.
 
 
 
@@ -16008,7 +16014,7 @@ Either the ids or identification methods of users' broker"
         This path will be removed in Cyclos 4.15.
         Sets the limits for a given user account.
       description: >-
-        Please use `POST /{user}/accounts/{accountType}/balance-limits`.
+        Use `POST /{user}/accounts/{accountType}/balance-limits` instead.
 
 
 
@@ -16080,7 +16086,7 @@ Either the ids or identification methods of users' broker"
         This path will be removed in Cyclos 4.15.
         Returns data for a general search of account balance limits.
       description: >-
-        Please use `GET /accounts/data-for-balance-limits`.
+        Use `GET /accounts/data-for-balance-limits` instead.
 
 
 
@@ -16141,7 +16147,7 @@ Either the ids or identification methods of users' broker"
         This path will be removed in Cyclos 4.15.
         Searches for account balance limits.
       description: >-
-        Please use `GET /accounts/balance-limits`.
+        Use `GET /accounts/balance-limits` instead.
 
 
 
@@ -16336,7 +16342,7 @@ Either the ids or identification methods of users' broker"
         This path will be removed in Cyclos 4.15.
         Exports the account balance limits results as file.
       description: >-
-        Please use `GET /accounts/balance-limits/export/{format}`.
+        Use `GET /accounts/balance-limits/export/{format}` instead.
 
 
 
@@ -21739,6 +21745,10 @@ Reference to the broker of users involved in transfers. Is only taken into accou
 
         Processes a single scheduled payment installment.
       description: >-
+        Use `POST /installments/{key}/process` instead.
+
+
+
         Processes a single installment. The installment status must be either
         `scheduled`,  `failed`
         or `blocked`. This action is
@@ -21807,6 +21817,10 @@ Reference to the broker of users involved in transfers. Is only taken into accou
 
         Settles a single scheduled payment installment.
       description: >-
+        Use `POST /installments/{key}/process` instead.
+
+
+
         Settles a single installment. The installment status must be either
         `scheduled`,  `failed`
         or `blocked`. This action is
@@ -21920,6 +21934,10 @@ Reference to the broker of users involved in transfers. Is only taken into accou
 
         Processes a failed recurring payment occurrence.
       description: >-
+        Use `POST /installments/{key}/process` instead.
+
+
+
         Processes a failed recurring payment occurrence. The occurrence status
         must be `failed`.
       tags:
@@ -25306,7 +25324,7 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         Returns the voucher types the authenticated user can buy vouchers to the
         given user
       description: >-
-        Instead use "/{user}/vouchers/data-for-buy" without passing a type.
+        Use `GET /{user}/vouchers/data-for-buy` without passing a type instead.
 
 
 
@@ -38164,6 +38182,184 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/PrivacySettingsParams'
+  /firebase/fcm-tokens:
+    post:
+      operationId: assignFcmToken
+      summary: >-
+        Assign a new FCM registration token to the authenticated user
+      description: >-
+        Assign a new FCM registration token to the authenticated user only if the token is not already assigned.
+        Otherwise it does nothing (no-op).
+      tags:
+        - Firebase
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      requestBody:
+        description: >-
+          The registration token
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        '204':
+          description: >-
+            The token was assigned, nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      operationId: updateFcmToken
+      summary: >-
+        Updates an existing FCM token
+      description: >-
+        Updates an existing FCM token. This operation allows guest users.
+      tags:
+        - Firebase
+      responses:
+        '204':
+          description: >-
+            The token was updated
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The old and new token values
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFcmTokenParams'
+
+    delete:
+      operationId: deleteFcmToken
+      summary: >-
+        Removes a FCM token from a set of users
+      description: >-
+        Removes a FCM token from a set of users. This operation allows guest users.
+      tags:
+        - Firebase
+      requestBody:
+        description: >-
+          The token and the users to whom the token will be removed from.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveFcmTokenParams'
+      responses:
+        '204':
+          description: >-
+            The token was deleted
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 
 
 components:
@@ -39597,6 +39793,20 @@ components:
         - loginNoMatch
         - registrationData
         - registrationDone
+
+    IdentityProviderNotLinkReason:
+      description: >
+        Possible reasons why the link between user and identity provider could not be created
+
+        Possible values are:
+        
+        - `globalUserNetworkIdpIgnored`: A login from a global administrator together with an identity provider request for an identity provider defined in a network.
+        
+        - `unsupportedPrincipalType`: The user identification method used in the login is not supported for linking. E.g trusted devices are not supported, it's quite strange situation because it means the user choose to login with an identity provider, then the user doesn't match and at the moment of perform the login to Cyclos he/her choose to login with a trusted device. The login with trusted device and with an identity provider both offer the same kind of ease for a quick login the probably the user will choose to login with a trusted device from the beginning.
+      type: string
+      enum:
+        - globalUserNetworkIdpIgnored
+        - unsupportedPrincipalType
 
     ImageKind:
       description: >
@@ -41173,6 +41383,8 @@ components:
         
         - `token`: A token identifies the user
         
+        - `trustedDevice`: A trusted device identifies the user
+        
         - `username`: The username identifies the user
       type: string
       enum:
@@ -41182,6 +41394,7 @@ components:
         - email
         - mobilePhone
         - token
+        - trustedDevice
         - username
 
     ProductAssignmentActionEnum:
@@ -41554,20 +41767,26 @@ components:
         
         - `custom`: Custom alerts thrown by scripts
         
+        - `emailSendingFailed`: An E-mail couldn't be sent
+        
         - `maxBlockedUsersReached`: The max number of users blocked from the same IP has been reached
         
         - `maxGlobalSmsReached`: The groups under a certain configuration have run out of SMS messages
         
         - `maxIncorrectLoginAttempts`: Someone tried for a given number of tries to login with an invalid username
+        
+        - `smsSendingFailed`: An SMS couldn't be sent
       type: string
       enum:
         - accountFeeChargedNoFailures
         - accountFeeChargedWithFailures
         - applicationRestarted
         - custom
+        - emailSendingFailed
         - maxBlockedUsersReached
         - maxGlobalSmsReached
         - maxIncorrectLoginAttempts
+        - smsSendingFailed
 
     TempImageTargetEnum:
       description: >
@@ -43150,8 +43369,8 @@ components:
             $ref: '#/components/schemas/AdCategoryWithChildren'
         addresses:
           description: >-
-            The addresses of the advertisement owner, so specific ones can be linked
-            to the advertisement.
+            The public addresses of the advertisement owner, so specific ones can be
+            linked to the advertisement.
           type: array
           items:
             $ref: '#/components/schemas/Address'
@@ -43693,7 +43912,7 @@ components:
             type: string
         addresses:
           description: >-
-            Ids of addresses (belonging to the advertisement owner) this
+            Ids of the public addresses (belonging to the advertisement owner) this
             advertisement is available at.
           type: array
           items:
@@ -48242,12 +48461,6 @@ components:
           $ref: '#/components/schemas/UserDataForEdit'
         user:
           $ref: '#/components/schemas/UserEdit'
-        enablePrivacy:
-          type: boolean
-          description: >-
-            Whether privacy control is enabled for profile fields, phones
-            and addresses.
-
         display:
           type: string
           description: >-
@@ -51176,6 +51389,16 @@ components:
             The locale selected by user to work with the according language and
             settings.
           type: string
+
+    LoginAuth:
+      description: >-
+        Contains information for the recently logged in user
+      allOf:
+        - $ref: '#/components/schemas/Auth'
+        - type: object
+          properties:
+            identityProviderNotLinkReason:
+              $ref: '#/components/schemas/IdentityProviderNotLinkReason'
 
     LoginUser:
       description: >-
@@ -56025,6 +56248,23 @@ components:
               allOf:
                 - $ref: '#/components/schemas/EntityReference'
 
+    RemoveFcmTokenParams:
+      description: >-
+        Parameters for removing a FCM token.
+      type: object
+      properties:
+        token:
+          description: >-
+            The FCM registration token
+          type: string
+        users:
+          description: >-
+            The user identifiers which the token will be removed from.
+          type: array
+          items:
+            type: string
+
+
     ResendActivationCodeRequest:
       description: >-
         Parameters for sending a device activation code.
@@ -58622,6 +58862,21 @@ components:
           description: >-
             Is the OAuth2 / OpenID Connect required error message.
             Is only returned when `code` is `invalidAccessToken`.
+          type: string
+
+
+    UpdateFcmTokenParams:
+      description: >-
+        Parameters for updating a FCM token.
+      type: object
+      properties:
+        oldToken:
+          description: >-
+            The FCM registration token to be updated
+          type: string
+        newToken:
+          description: >-
+            The new FCM registration token
           type: string
 
 
