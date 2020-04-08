@@ -268,11 +268,11 @@
     "marketplace.advertisements": "Anuncios",
     "marketplace.adInterests": "Anuncios de interés",
     "marketplace.deliveryMethods": "Métodos de entrega",
-    "marketplace.webshopSettings": "Web shop settings",
+    "marketplace.webshopSettings": "Ajustes de tienda virtual",
     "marketplace.myAdvertisements": "Mis anuncios",
     "marketplace.myPurchases": "Mis compras",
     "marketplace.mySales": "Mis ventas",
-    "marketplace.myWebshop": "My web shop",
+    "marketplace.myWebshop": "Mi tienda virtual",
     "marketplace.unansweredQuestions": "Preguntas sin respuesta",
     "marketplace.connectedUsers": "Usuarios conectados",
     "marketplace.userAlerts": "Alertas de usuario",
@@ -779,11 +779,11 @@
       "contact.tooltip": "Seleccionar de la lista de contactos",
       "contact.title": "Seleccione un contacto",
       "contact.empty": "Su lista de contactos se encuentra vacía",
-      "scanQrCode.tooltip": "Scan a QR-code with your camera"
+      "scanQrCode.tooltip": "Leer un código QR con su cámara"
     },
     "scanQr": {
-      "title": "Scan QR-code",
-      "noCameras": "No cameras found on this device.",
+      "title": "Leer código QR",
+      "noCameras": "No se encontraron cámaras en este dispositivo",
       "noPermission": "Para leer un código QR, por favor, permita a la aplicación acceder a su cámara."
     }
   },
@@ -904,7 +904,7 @@
       "viewBrokerings": "Ver miembros asignados",
       "viewBrokers": "Ver brokers",
       "viewOperators": "Ver operadores",
-      "viewWebshop": "View web shop",
+      "viewWebshop": "Ver tienda virtual",
       "adInterests": "Anuncios de interés",
       "deliveryMethods": "Métodos de entrega",
       "webshopSettings": "Ajustes de tienda virtual",
