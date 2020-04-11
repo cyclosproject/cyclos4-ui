@@ -1130,20 +1130,20 @@
       "min": "- La quantità richiesta non può essere consegnata, perché non è stato raggiunto il numero minimo di articoli per attivare l'ordine. La quantità di questo articolo viene automaticamente aumentata.  <br>\n ",
       "stock": "- la quantità richiesta non può essere consegnata, perché l'articolo è quasi esaurito. La quantità di questo articolo è automaticamente ridotta.<br>"
     },
-    "adInterestCreated": "The ad interest was created",
-    "adInterestSaved": "The ad interest was saved",
-    "addProducts": "Add products",
+    "adInterestCreated": "L'avviso è stato creato",
+    "adInterestSaved": "L'avviso è stato salvato",
+    "addProducts": "Aggiungi prodotti",
     "adSaved": "L'annuncio è stato salvato",
     "adHidden": "L'annuncio è stato nascosto",
     "adUnhidden": "L'annuncio è ora visibile",
-    "allowDecimalQuantity": "Allow decimal quantity",
-    "answer": "Answer",
-    "articlesNotice": "Please notice, some articles in your shopping cart:<br> {notice}",
+    "allowDecimalQuantity": "Consenti quantità decimale",
+    "answer": "Risposta",
+    "articlesNotice": "Si prega di notare, alcuni articoli nel tuo carrello:<br>",
     "authorize": "Autorizza",
     "authorized": "L'annuncio è stato autorizzato",
     "askQuestion": "Fai una domanda",
-    "available": "Available",
-    "notAvailable": "Not available",
+    "available": "Disponibile",
+    "notAvailable": "Non disponibile",
     "backToDraft": "L'annuncio è ora in modalità bozza",
     "basePrice": "Base price",
     "beginDate": "Published begin date",
@@ -1422,11 +1422,11 @@
         "memberUnassigned": "Utente non assegnato"
       },
       "buyer": {
-        "adInterestNotification": "New ad matching interest",
-        "adQuestionAnswered": "Ad question answered",
-        "orderCanceled": "Purchase order canceled",
-        "orderPaymentCanceled": "Purchase order payment canceled",
-        "orderPaymentDenied": "Purchase order payment denied",
+        "adInterestNotification": "Nuovo annuncio corrispondente  ad un tuo interesse",
+        "adQuestionAnswered": "Risposta alla tua domanda",
+        "orderCanceled": "Ordine di acquisto annullato",
+        "orderPaymentCanceled": "Pagamento ordine d'acquisto annullato",
+        "orderPaymentDenied": "Pagamento ordine d'acquisto negato",
         "orderPaymentExpired": "Purchase order payment expired",
         "orderPending": "Pending order",
         "orderPendingAuthorization": "Purchase order awaiting payment authorization",
@@ -1489,15 +1489,15 @@
     "personal": "Personal",
     "payments": "Payments",
     "marketplaceAsBuyer": "Marketplace as buyer",
-    "marketplaceAsSeller": "Marketplace as seller",
-    "feedbackAndReferences": "Feedback and references",
-    "smsCount": "You have used {count} of {total} free SMS messages this month.",
-    "paymentNotifications.above": "Only notify payments above",
-    "paymentNotifications.below": "Only notify payments below",
-    "saved": "The notification settings were saved",
-    "enableOrDisable": "Enable or disable {section}",
-    "enableAll": "Enable all",
-    "disableAll": "Disable all"
+    "marketplaceAsSeller": "Marketplace come venditore",
+    "feedbackAndReferences": "Rating e referenze",
+    "smsCount": "Hai usato {count} di {total} SMS gratuiti di questo mese.",
+    "paymentNotifications.above": "Notifica solo i pagamenti sopra",
+    "paymentNotifications.below": "Notifica solo i pagamenti sotto",
+    "saved": "Le impostazioni di notifica sono state salvate",
+    "enableOrDisable": "Abilita o disabilita {section}",
+    "enableAll": "Abilita tutto",
+    "disableAll": "Disabilita tutto"
   },
   "connectedUser": {
     "title": "Utenti connessi",
@@ -1516,32 +1516,32 @@
     "disconnected": "{user} è stato disconnesso"
   },
   "identityProvider": {
-    "popup": "Contacting {provider}. Please, wait...",
-    "login": "Continue with <b>{provider}</b>",
-    "login.noMatch": "No user found with e-mail {email}. You will need to login with your regular user and password. After logging-in, your {app} account will be automatically linked, so, on the next time, the 'Continue with {provider}' functionality will work directly.",
-    "login.noEmail": "Couldn't read an e-mail address from your {provider} account. You will need to login with your regular user and password. After logging-in, your {app} account will be automatically linked, so, on the next time, the 'Continue with {provider}' functionality will work directly.",
-    "registration": "Register faster with your identity provider:",
-    "registration.or": "Or",
-    "registration.fillForm": "Fill-in the registration form",
-    "registration.disclaimer": "<b>Disclaimer:</b> None of your {app} data will be shared with these providers, and the only purpose of reading your personal data from them is to fill in the registration form and logging you in after you're registered.",
-    "disclaimer": "<b>Disclaimer</b>: None of your {app} data will be shared with any provider. The only data read from the providers are your display name and e-mail, with the sole purpose to logging-in faster on {app}.",
+    "popup": "Stiamo contattando {provider}. Un attimo di pazienza...",
+    "login": "Continua con <b>{provider}</b>",
+    "login.noMatch": "Nessun utente trovato con l'email {email}. Dovrai effettuare il login con il tuo normale utente e password. Dopo il login, il tuo account {app} verrà automaticamente collegato, così la prossima volta, la funzionalità 'Continua con {provider}' funzionerà direttamente.",
+    "login.noEmail": "Impossibile leggere l'indirizzo e-mail dal tuo account {provider} . Dovrai effettuare il login con il tuo utente normale e la password. Dopo il login, il tuo account {app} verrà automaticamente collegato, così la prossima volta, la funzionalità 'Continua con {provider}' funzionerà direttamente.",
+    "registration": "Registrati più velocemente con il tuo identity provider:",
+    "registration.or": "o",
+    "registration.fillForm": "Compila il modulo di registrazione",
+    "registration.disclaimer": "<b>Avviso:</b> Nessuno dei tuoi dati {app} sarà condiviso con questi fornitori, e l'unico scopo di leggere i tuoi dati personali è quello di compilare il modulo di registrazione e di accedere dopo la registrazione.",
+    "disclaimer": "<b>Avviso</b>: nessuno dei tuoi dati {app} sarà condiviso con qualsiasi provider. Gli unici dati letti dai provider sono il nome visualizzato e l'e-mail, con l'unico scopo di accedere più velocemente su {app}.",
     "title": {
-      "manage.self": "Manage your identity providers",
-      "manage.user": "Manage user identity providers"
+      "manage.self": "Gestisci i tuoi identity provider",
+      "manage.user": "Gestisci gli identity provider utente"
     },
     "mobileTitle": {
-      "manage.self": "Identity providers",
-      "manage.user": "Identity providers"
+      "manage.self": "Identity provider (IdP)",
+      "manage.user": "Identity provider (IdP)"
     },
     "action": {
-      "connect": "Connect",
-      "connect.done": "You can now login as {name} using {provider}",
-      "disconnect": "Disconnect",
-      "disconnect.confirm": "This will disable the 'Continue with {provider}' functionality. Are you sure?",
-      "disconnect.done": "The login with {provider} has been disabled"
+      "connect": "Connettiti",
+      "connect.done": "Ora puoi effettuare il login come {name} usando {provider}",
+      "disconnect": "Disconnetti",
+      "disconnect.confirm": "Questo disabiliterà la funzionalità 'Continua con {provider}'. Sei sicuro?",
+      "disconnect.done": "Il login con {provider} è stato disabilitato"
     },
-    "connectedOn": "Connected on {date}",
-    "disconnected": "Disconnected"
+    "connectedOn": "Connesso il {date}",
+    "disconnected": "Disconnesso"
   },
   "operation": {
     "user": "Utente",
@@ -1602,12 +1602,12 @@
   },
   "systemAlert": {
     "type": {
-      "accountFeeChargedNoFailures": "Account fee has finished without any failures",
-      "accountFeeChargedWithFailures": "Account fee has finished with at least one failure",
-      "applicationRestarted": "Application restarted",
-      "custom": "Custom",
-      "maxGlobalSmsReached": "The global maximum of SMS messages per month has been reached",
-      "maxIncorrectLoginAttempts": "Max incorrect login attempts for invalid user"
+      "accountFeeChargedNoFailures": "L'addebito della commissione sul conto è terminato senza errori",
+      "accountFeeChargedWithFailures": "L'addebito della commissione sul conto è terminato con almeno un errore",
+      "applicationRestarted": "Applicazione riavviata",
+      "custom": "Personalizzato",
+      "maxGlobalSmsReached": "È stato raggiunto il massimo globale di SMS al mese",
+      "maxIncorrectLoginAttempts": "Numero massimo di tentativi di accesso non corretti per l'utente non valido"
     }
   }
 }
