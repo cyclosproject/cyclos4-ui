@@ -14,7 +14,7 @@
         <div *ngIf="index > 0 && (layout.gtxs$ | async)" class="mx-1">
           {{ format.dateSeparator }}
         </div>
-        <select #part class="custom-select" [attr.id]="id + '_0'"
+        <select #part class="custom-select" [attr.id]="id + '_' + index"
           [formControl]="control" (click)="dropdown.hide()"
           (input)="onPartChanged($event)" [ngClass]="{
             'mx-1': index === 1 && (layout.ltsm$ | async),
