@@ -182,6 +182,7 @@ export class SearchUsersComponent
       } else {
         // Get the data for regular user search
         this.stateManager.cache('dataForSearch', this.usersService.getUserDataForSearch({
+          fromMenu: true,
           broker: this.kind === UserSearchKind.Broker ? this.param : null
         })).subscribe(setData);
       }
@@ -202,6 +203,7 @@ export class SearchUsersComponent
     }
     // When searching as manager (admin / broker) the map is a simple map view, not the "map directory"
     const isMap = this.resultType === ResultType.MAP;
+    filters.fromMenu = true;
     if (isMap) {
       filters.pageSize = 99999;
       filters.addressResult = UserAddressResultEnum.ALL;
