@@ -24,9 +24,9 @@ import { RadioGroupFieldComponent } from 'app/shared/radio-group-field.component
 import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
 import { TextAreaFieldComponent } from 'app/shared/textarea-field.component';
 import { UserFieldComponent } from 'app/shared/user-field.component';
+import { HtmlFieldComponent } from 'app/shared/html-field.component';
 
 const INPUT_TYPES = [CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.LINKED_ENTITY];
-const TEXTAREA_TYPES = [CustomFieldTypeEnum.TEXT, CustomFieldTypeEnum.RICH_TEXT];
 const ENUMERATED = [CustomFieldTypeEnum.SINGLE_SELECTION, CustomFieldTypeEnum.MULTI_SELECTION];
 
 /**
@@ -81,6 +81,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
 
   @ViewChild('inputField', { static: false }) inputField: InputFieldComponent;
   @ViewChild('textareaField', { static: false }) textareaField: TextAreaFieldComponent;
+  @ViewChild('richTextField', { static: false }) richTextField: HtmlFieldComponent;
   @ViewChild('dateField', { static: false }) dateField: DateFieldComponent;
   @ViewChild('decimalField', { static: false }) decimalField: DecimalFieldComponent;
   @ViewChild('booleanField', { static: false }) booleanField: BooleanFieldComponent;
@@ -156,10 +157,6 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
     return INPUT_TYPES.includes(this.type) && this.linkedEntityType !== LinkedEntityTypeEnum.USER;
   }
 
-  get textarea(): boolean {
-    return TEXTAREA_TYPES.includes(this.type);
-  }
-
   // Validator methods
   validate(c: AbstractControl): ValidationErrors {
     if (this.field.type === CustomFieldTypeEnum.DATE && this.dateField) {
@@ -172,6 +169,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
     return [
       this.inputField,
       this.textareaField,
+      this.richTextField,
       this.dateField,
       this.decimalField,
       this.booleanField,

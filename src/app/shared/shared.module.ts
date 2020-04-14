@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NgxGalleryModule } from 'ngx-gallery';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { AccountPipe } from 'app/shared/account.pipe';
+import { ActionsToolbarComponent } from 'app/shared/actions-toolbar.component';
 import { ActionsComponent } from 'app/shared/actions.component';
 import { AddressDetailsComponent } from 'app/shared/address-details.component';
 import { AddressFormComponent } from 'app/shared/address-form.component';
@@ -37,13 +38,16 @@ import { FilesFieldComponent } from 'app/shared/files-field.component';
 import { FocusedDirective } from 'app/shared/focused.directive';
 import { FormatFieldValueComponent } from 'app/shared/format-field-value.component';
 import { HeadingActionsComponent } from 'app/shared/heading-actions.component';
+import { HtmlFieldComponent } from 'app/shared/html-field.component';
 import { IconWithCounterComponent } from 'app/shared/icon-with-counter.component';
 import { IconComponent } from 'app/shared/icon.component';
+import { ImagePropertiesDialogComponent } from 'app/shared/image-properties-dialog.component';
 import { ImageUploadComponent } from 'app/shared/image-upload.component';
 import { ImagesFieldComponent } from 'app/shared/images-field.component';
 import { InputFieldComponent } from 'app/shared/input-field.component';
-import { UrlFieldComponent } from 'app/shared/url-field.component';
+import { InsertImageDialogComponent } from 'app/shared/insert-image-dialog.component';
 import { LabelValueComponent } from 'app/shared/label-value.component';
+import { LinkPropertiesDialogComponent } from 'app/shared/link-properties-dialog.component';
 import { ManageFilesComponent } from 'app/shared/manage-files.component';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
 import { MapResultComponent } from 'app/shared/map-result.component';
@@ -64,6 +68,7 @@ import { PaginatorComponent } from 'app/shared/paginator.component';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { PickContactComponent } from 'app/shared/pick-contact.component';
 import { ProfileAddressesComponent } from 'app/shared/profile-addresses.component';
+import { ProfileImagesComponent } from 'app/shared/profile-images.component';
 import { RadioGroupFieldComponent } from 'app/shared/radio-group-field.component';
 import { ResultCategoryDirective } from 'app/shared/result-category.directive';
 import { ResultInfoWindowDirective } from 'app/shared/result-info-window.directive';
@@ -72,6 +77,7 @@ import { ResultTileDirective } from 'app/shared/result-tile.directive';
 import { ResultTypeFieldComponent } from 'app/shared/result-type-field.component';
 import { ResultsLayoutComponent } from 'app/shared/results-layout.component';
 import { RichTextContainerComponent } from 'app/shared/rich-text-container.component';
+import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
 import { ShowContentComponent } from 'app/shared/show-content.component';
 import { SideMenuComponent } from 'app/shared/side-menu.component';
 import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
@@ -79,11 +85,13 @@ import { SpinnerComponent } from 'app/shared/spinner.component';
 import { StaticMapComponent } from 'app/shared/static-map.component';
 import { TempFileUploadComponent } from 'app/shared/temp-file-upload.component';
 import { TextDialogComponent } from 'app/shared/text-dialog.component';
+import { TextSelectionFieldComponent } from 'app/shared/text-selection-field.component';
 import { TextAreaFieldComponent } from 'app/shared/textarea-field.component';
 import { TiledResultComponent } from 'app/shared/tiled-result.component';
 import { TimeIntervalFieldComponent } from 'app/shared/time-interval-field.component';
 import { TimePipe } from 'app/shared/time.pipe';
 import { TrustPipe } from 'app/shared/trust.pipe';
+import { UrlFieldComponent } from 'app/shared/url-field.component';
 import { UserFieldComponent } from 'app/shared/user-field.component';
 import { UserInfoComponent } from 'app/shared/user-info.component';
 import { UserLinkComponent } from 'app/shared/user-link.component';
@@ -96,12 +104,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { ProfileImagesComponent } from 'app/shared/profile-images.component';
-import { TextSelectionFieldComponent } from 'app/shared/text-selection-field.component';
-import { ActionsToolbarComponent } from 'app/shared/actions-toolbar.component';
-import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
-import { ZXingScannerModule } from '@zxing/ngx-scanner';
-
+import { NgxGalleryModule } from 'ngx-gallery';
 
 export function initTooltipConfig(): TooltipConfig {
   const config = new TooltipConfig();
@@ -154,6 +157,10 @@ export function initTooltipConfig(): TooltipConfig {
     CustomFieldValueComponent,
     BooleanFieldComponent,
     InputFieldComponent,
+    HtmlFieldComponent,
+    InsertImageDialogComponent,
+    ImagePropertiesDialogComponent,
+    LinkPropertiesDialogComponent,
     UrlFieldComponent,
     TextAreaFieldComponent,
     TextDialogComponent,
@@ -276,6 +283,10 @@ export function initTooltipConfig(): TooltipConfig {
     CustomFieldValueComponent,
     BooleanFieldComponent,
     InputFieldComponent,
+    HtmlFieldComponent,
+    InsertImageDialogComponent,
+    ImagePropertiesDialogComponent,
+    LinkPropertiesDialogComponent,
     UrlFieldComponent,
     TextAreaFieldComponent,
     FieldErrorsComponent,
@@ -340,6 +351,9 @@ export function initTooltipConfig(): TooltipConfig {
     ManageImagesComponent,
     ManageFilesComponent,
     PickContactComponent,
+    InsertImageDialogComponent,
+    ImagePropertiesDialogComponent,
+    LinkPropertiesDialogComponent,
     TextDialogComponent,
     ScanQrCodeComponent
   ]

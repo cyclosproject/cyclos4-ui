@@ -12,7 +12,7 @@ import { FieldOption } from 'app/shared/field-option';
   templateUrl: 'transaction-filters.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TransactionFitersComponentComponent
+export class TransactionFitersComponent
   extends BaseComponent implements OnInit {
 
   @Input() data: TransactionDataForSearch;

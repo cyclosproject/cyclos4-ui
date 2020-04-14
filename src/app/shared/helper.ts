@@ -620,6 +620,9 @@ export function focus(control: any, force = false) {
   if (!force && !document.body.classList.contains('gt-sm')) {
     return;
   }
+  if (typeof control === 'string') {
+    control = document.getElementById(control);
+  }
   if (control.nativeElement) {
     // Handle element ref
     control = control.nativeElement;

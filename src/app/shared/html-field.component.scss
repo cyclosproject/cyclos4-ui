@@ -1,0 +1,96 @@
+@import 'src/definitions';
+
+$editor-height: 20rem;
+$group-gap: 0.55rem;
+
+:host {
+  width: 100%;
+}
+
+.wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: $group-gap;
+  margin-left: -$group-gap;
+  margin-top: -$group-gap;
+
+  .toolbar-group {
+    display: inline-flex;
+    margin-left: $group-gap;
+    margin-top: $group-gap;
+  }
+}
+
+.editor {
+  overflow: auto;
+  background-color: $input-bg;
+  color: $input-color;
+  border: 1px solid $input-border-color;
+  box-shadow: $input-box-shadow;
+  outline: none;
+  border-radius: $input-border-radius;
+  padding: $input-padding-y $input-padding-x;
+  height: $editor-height;
+
+  &:focus {
+    background-color: $input-focus-bg;
+    color: $input-focus-color;
+    border-color: $input-focus-border-color;
+    box-shadow: $input-focus-box-shadow;
+    outline: none;
+  }
+}
+
+button, select {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 2rem;
+  min-width: 2rem;
+  width: auto;
+}
+button {
+  padding: 0;
+}
+button:not(:first-of-type) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+button:not(:last-of-type) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+button + button {
+  margin-left: -1px;
+}
+button:hover {
+  z-index: 1;
+}
+
+select {
+  padding: 0 0.75rem 0 0.2rem;
+  background-position: right 0.25rem center !important;
+}
+
+textarea.source {
+  font-family: $font-family-monospace;
+  height: $editor-height;
+}
+
+:host ::ng-deep {
+  h1, h2, h3, h4, h5, h6, hr {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  b, strong {
+    font-weight: bold;
+  }
+}

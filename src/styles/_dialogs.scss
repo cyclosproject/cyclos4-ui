@@ -32,6 +32,10 @@ alert .close {
   max-width: 460px;
 }
 
+.modal-form-medium {
+  max-width: 570px;
+}
+
 .toast {
   border-color: $push-notification-border-color;
 
@@ -84,6 +88,10 @@ alert .close {
     border-bottom-style: solid;
     margin: 0 -1rem 1rem -1rem;
     padding: 0 1rem 1rem 1rem;
+  }
+  hr {
+    margin: 1rem -1rem;
+    padding: 0 1rem;
   }
   .modal-content {
     padding: 1rem;

@@ -8,7 +8,7 @@ import { PaymentStepFormComponent } from 'app/banking/payment/payment-step-form.
 import { PaymentComponent } from 'app/banking/payment/payment.component';
 import { SearchAuthorizedPaymentsComponent } from 'app/banking/transactions/search-authorized-payments.component';
 import { SearchScheduledPaymentsComponent } from 'app/banking/transactions/search-scheduled-payments.component';
-import { TransactionFitersComponentComponent } from 'app/banking/transactions/transaction-filters.component';
+import { TransactionFitersComponent } from 'app/banking/transactions/transaction-filters.component';
 import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view-authorization-history.component';
 import { ViewTransactionComponent } from 'app/banking/transactions/view-transaction.component';
 import { SearchTransfersOverviewComponent } from 'app/banking/transfers/search-transfers-overview.component';
@@ -45,7 +45,7 @@ import { BuyVouchersStepFormComponent } from 'app/banking/vouchers/buy-vouchers-
 
     SearchScheduledPaymentsComponent,
     SearchAuthorizedPaymentsComponent,
-    TransactionFitersComponentComponent,
+    TransactionFitersComponent,
     ViewTransactionComponent,
 
     PaymentComponent,

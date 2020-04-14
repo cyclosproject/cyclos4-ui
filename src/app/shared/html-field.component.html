@@ -1,0 +1,44 @@
+<label-value *ngIf="label; else widget" [formField]="self">
+  <ng-container *ngTemplateOutlet="widget"></ng-container>
+</label-value>
+
+<ng-template #widget>
+  <div class="wrapper">
+    <div class="toolbar">
+      <div class="toolbar-group" *ngFor="let group of actions">
+        <ng-container *ngFor="let action of group">
+          <select *ngIf="action.widget === 'select'" [id]="action.fieldId"
+            class="form-control custom-select" [tooltip]="action.tooltip"
+            (change)="run(action)">
+            <option *ngFor="let value of values(action)"
+              [value]="value.value">
+              {{ value.label }}</option>
+          </select>
+          <button *ngIf="action.widget === 'button'" [id]="action.fieldId"
+            class="btn btn-icon" (click)="run(action)"
+            [tooltip]="action.tooltip">
+            <i class="fa" [ngClass]="action.icon"></i>
+          </button>
+        </ng-container>
+      </div>
+      <div class="toolbar-group flex-grow-1 d-flex justify-content-end">
+        <button [id]="id + '_toggleSource'" class="btn btn-icon"
+          [ngClass]="{'active': source$ | async}" (click)="toggleSource()"
+          [tooltip]="i18n.field.html.source">
+          <i class="fa fa-code"></i>
+        </button>
+      </div>
+    </div>
+    <div [ngClass]="{'d-none': source$ | async}" class="editor" #editor
+      [attr.contenteditable]="!disabled" [id]="id + '_editor'"
+      (click)="updateToolbarState()" (keydown)="updateToolbarState()"
+      (input)="formControl.setValue(editor.innerHTML)">
+    </div>
+    <textarea [id]="id + '_source'" class="form-control source" [ngClass]="{
+        'd-none': !(source$ | async),
+        'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
+      }" [formControl]="formControl">
+    </textarea>
+    <field-errors [control]="formControl"></field-errors>
+  </div>
+</ng-template>

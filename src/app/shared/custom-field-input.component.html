@@ -31,7 +31,7 @@
   <input-field #inputField *ngIf="input" [id]="id" [label]="label"
     [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
     [required]="required" [formControl]="formControl"
-    [autocomplete]="autocomplete" [type]="type == 'integer' ? 'tel' : 'text'"
+    [autocomplete]="autocomplete" [type]="type === 'integer' ? 'tel' : 'text'"
     [mask]="field.pattern"></input-field>
 
   <!-- url -->
@@ -40,11 +40,17 @@
     [required]="required" [formControl]="formControl"
     [autocomplete]="autocomplete"></url-field>
 
-  <!-- text or rich text (no WYSIWYG editor yet!) -->
-  <textarea-field #textareaField *ngIf="textarea" #textComponent [id]="id"
+  <!-- text -->
+  <textarea-field #textareaField *ngIf="type === 'text'" [id]="id"
     [label]="label" [name]="name" [labelPosition]="labelPosition"
     [fieldSize]="fieldSize" [required]="required" [formControl]="formControl">
   </textarea-field>
+
+  <!-- richText -->
+  <html-field #richTextField *ngIf="type === 'richText'" [id]="id"
+    [label]="label" [name]="name" [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl">
+  </html-field>
 
   <!-- boolean -->
   <boolean-field #booleanField *ngIf="type == 'boolean'" [id]="id"

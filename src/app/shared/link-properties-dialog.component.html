@@ -1,0 +1,20 @@
+<h1>{{ i18n.field.html.link.title }}</h1>
+
+<ng-container [formGroup]="form">
+  <input-field *ngIf="link" required formControlName="text"
+    [label]="i18n.field.html.link.text" focused>
+  </input-field>
+  <url-field required formControlName="href" [focused]="!link"
+    [label]="i18n.field.html.link.href">
+  </url-field>
+</ng-container>
+
+<actions>
+  <button class="btn btn-primary" (click)="save()">
+    {{ i18n.general.save }}
+  </button>
+
+  <button class="btn btn-outline-primary" (click)="modalRef.hide()">
+    {{ i18n.general.cancel }}
+  </button>
+</actions>
