@@ -167,7 +167,7 @@
         [formControl]="defineSingleAddress" [label]="i18n.user.addressDefine">
       </boolean-field>
       <ng-container *ngIf="defineSingleAddress.value">
-        <address-form [addressForm]="singleAddress"
+        <address-form [addressForm]="singleAddress" ignoreContactFields
           [configuration]="data.addressConfiguration"
           [managePrivacy]="data.addressConfiguration.managePrivacy"
           [binaryValues]="data.addressBinaryValues[data.addresses[0]?.id]">
@@ -300,6 +300,7 @@
           formControlName="name" required [label]="i18n.general.name">
         </input-field>
         <address-form [addressForm]="address['form']"
+          [ignoreContactFields]="addresses.length === 1"
           [configuration]="data.addressConfiguration" idPrefix="address_"
           [idSuffix]="address['idSuffix']" [managePrivacy]="false"
           [binaryValues]="data.addressBinaryValues[address['id']]">

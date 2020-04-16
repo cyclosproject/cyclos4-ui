@@ -12,7 +12,8 @@
       [label]="getLabel(field)" [required]="isRequired(field)"></input-field>
   </ng-template>
 </ng-container>
-<ng-container *ngIf="profileConfiguration.contactInfoEnabled"
+<ng-container
+  *ngIf="!ignoreContactFields && profileConfiguration.contactInfoEnabled"
   [formGroup]="addressForm.get('contactInfo')">
   <input-field [id]="idPrefix + 'email' + idSuffix" formControlName="email"
     [label]="i18n.user.email">

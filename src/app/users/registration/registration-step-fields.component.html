@@ -99,7 +99,7 @@
     [formControl]="defineAddress" [label]="i18n.user.addressDefine">
   </boolean-field>
   <address-form *ngIf="defineAddress.value" [addressForm]="addressForm"
-    [configuration]="data.addressConfiguration"
+    ignoreContactFields [configuration]="data.addressConfiguration"
     [managePrivacy]="data.addressConfiguration.managePrivacy">
   </address-form>
   <label-value [label]="i18n.general.map" kind="field"

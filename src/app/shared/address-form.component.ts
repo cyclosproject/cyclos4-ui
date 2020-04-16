@@ -33,6 +33,14 @@ export class AddressFormComponent extends BaseComponent implements OnInit {
   @Input() idSuffix = '';
   @Input() binaryValues: CustomFieldBinaryValues;
 
+  _ignoreContactFields: boolean | string = false;
+  @Input() get ignoreContactFields(): boolean | string {
+    return this._ignoreContactFields;
+  }
+  set ignoreContactFields(flag: boolean | string) {
+    this._ignoreContactFields = truthyAttr(flag);
+  }
+
   profileConfiguration: AddressConfigurationForUserProfile;
 
   private _managePrivacy: boolean | string = false;
