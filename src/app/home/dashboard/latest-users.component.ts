@@ -31,6 +31,7 @@ export class LatestUsersComponent extends BaseDashboardComponent implements OnIn
     super.ngOnInit();
     this.addSub(this.usersService.searchUsers({
       addressResult: UserAddressResultEnum.NONE,
+      fromMenu: true,
       groups: this.groups,
       ignoreProfileFieldsInList: true,
       orderBy: UserOrderByEnum.CREATION_DATE,
