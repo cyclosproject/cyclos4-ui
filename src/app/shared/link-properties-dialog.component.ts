@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnIn
 import { FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from 'app/shared/base.component';
 import { LinkProperties } from 'app/shared/link-properties';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 /**
  * A dialog used by `html-field` to edit an hyperlink properties

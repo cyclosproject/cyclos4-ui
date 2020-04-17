@@ -133,6 +133,7 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
         if (input === 'custom') {
           this.internalControl.setValue(null);
           this.useCustom = true;
+          setTimeout(() => this.inputRef.nativeElement.focus(), 100);
         } else {
           this.internalControl.setValue(input);
           this.onBlur();

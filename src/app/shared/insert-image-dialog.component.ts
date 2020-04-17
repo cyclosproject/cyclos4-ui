@@ -4,7 +4,7 @@ import { ImagesListData, UserImageKind, RoleEnum, SystemImagesListData, Image, I
 import { ImagesService } from 'app/api/services';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 
 /**

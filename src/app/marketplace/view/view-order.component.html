@@ -108,15 +108,5 @@
       [formGroup]="form">
       <textarea-field formControlName="remarks"></textarea-field>
     </form>
-    <actions>
-      <button *ngIf="data.canAccept || data.canSetDeliveryInformation"
-        class="btn btn-primary" (click)="accept()">
-        {{ data.canSetDeliveryInformation ? i18n.ad.setDeliveryMethod : i18n.ad.accept }}
-      </button>
-      <button *ngIf="data.canReject" class="btn"
-        [ngClass]="data.canAccept || data.canSetDeliveryInformation ? 'btn-outline-primary' : 'btn-primary'"
-        [disabled]="requesting$ | async"
-        (click)="reject()">{{ i18n.ad.reject }}</button>
-    </actions>
   </page-content>
 </page-layout>

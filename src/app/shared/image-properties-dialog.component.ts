@@ -7,7 +7,7 @@ import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
 import { ImageProperties } from 'app/shared/image-properties';
 import { endsWith } from 'lodash';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 /**
  * A dialog used by `html-field` to edit an image properties

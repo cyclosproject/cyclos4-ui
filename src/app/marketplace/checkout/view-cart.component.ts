@@ -152,6 +152,11 @@ export class ViewCartComponent
   changeQuantity(item: [string, ShoppingCartItemDetailed, boolean]) {
 
     const req: any = (quantity: string) => {
+      if (+quantity === 0) {
+        // Avoid deleting cart items by mistake,
+        // user should remove items with the remove button
+        return;
+      }
       this.addSub(this.shoppingCartService.modifyItemQuantityOnShoppingCart({
         ad: item[1].product.id,
         quantity: +quantity,

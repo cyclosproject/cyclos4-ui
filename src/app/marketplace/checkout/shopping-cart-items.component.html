@@ -1,61 +1,68 @@
-<results-layout [results]="items" resultType="list"
-  [toLink]="detailed ? toLink : null">
-  <mobile-result *mobileResult="let row" [avatarImage]="row.product.image"
-    avatarIcon="shopping_basket" [title]="row.product.name">
-    <div class="d-flex">
-      <div>
-        <div class="cell-text">
-          {{ i18n.transaction.amount }}:
-          {{ row.totalPrice | currency:currency }}
+<ng-container *ngIf="layout.ltsm$ | async; else largeTable">
+  <results-layout [results]="items" resultType="list"
+    [toLink]="detailed ? toLink : null">
+    <mobile-result *mobileResult="let row" [avatarImage]="row.product.image"
+      avatarIcon="shopping_basket" [title]="row.product.name">
+      <div class="d-flex">
+        <div>
+          <div class="cell-text">
+            {{ i18n.transaction.amount }}:
+            {{ row.totalPrice | currency:currency }}
+          </div>
+          <div class="cell-text">
+            {{ i18n.ad.number }}: {{ row.product.productNumber }}
+          </div>
+          <div class="cell-text">
+            {{ i18n.ad.unitPrice }}:
+            {{ row.price | currency: currency}}
+          </div>
+          <div class="cell-text">
+            {{ i18n.ad.quantity }}: {{ resolveQuantityLabel(row) }}
+          </div>
         </div>
-        <div class="cell-text">
-          {{ i18n.ad.number }}: {{ row.product.productNumber }}
-        </div>
-        <div class="cell-text">
-          {{ i18n.ad.unitPrice }}:
-          {{ row.price | currency: currency}}
-        </div>
-        <div class="cell-text">
-          {{ i18n.ad.quantity }}: {{ resolveQuantityLabel(row) }}
+        <div *ngIf="detailed" class="ml-auto text-right d-flex flex-column">
+          <button [tooltip]="i18n.ad.changeQuantity" class="btn btn-icon"
+            (click)="changeQuantity.emit([null, row, false]); $event.stopPropagation(); $event.preventDefault()">
+            <icon icon="edit"></icon>
+          </button>
+          <button [tooltip]="i18n.general.remove" class="btn btn-icon mt-2"
+            (click)="remove.emit(row); $event.stopPropagation(); $event.preventDefault()">
+            <icon icon="delete"></icon>
+          </button>
         </div>
       </div>
-      <div *ngIf="detailed" class="ml-auto text-right d-flex flex-column">
-        <button [tooltip]="i18n.ad.changeQuantity" class="btn btn-icon"
-          (click)="changeQuantity.emit([null, row, false]); $event.stopPropagation(); $event.preventDefault()">
-          <icon icon="edit"></icon>
-        </button>
-        <button [tooltip]="i18n.general.remove" class="btn btn-icon mt-2"
-          (click)="remove.emit(row); $event.stopPropagation(); $event.preventDefault()">
-          <icon icon="delete"></icon>
-        </button>
-      </div>
-    </div>
-  </mobile-result>
-
-  <table *resultTable class="table table-hover cursor-pointer">
+    </mobile-result>
+  </results-layout>
+</ng-container>
+<ng-template #largeTable>
+  <h2 class="mt-4 mb-2">{{ i18n.ad.products }}
+  </h2>
+  <table class="table table-hover cursor-pointer">
     <thead>
-      <th class="avatar"></th>
-      <th width="30%">{{ i18n.ad.product }}</th>
-      <th>{{ i18n.ad.number }}</th>
-      <th width="10%">{{ i18n.ad.quantity }}</th>
-      <th class="text-right">{{ i18n.ad.unitPrice }}</th>
-      <th class="text-right">{{ i18n.transaction.amount }}</th>
-      <th *ngIf="detailed" class="actions"></th>
+      <th colspan="2" class="avatar no-border">{{ i18n.ad.product }}</th>
+      <th class="no-border">{{ i18n.ad.number }}</th>
+      <th class="no-border" width="10%">{{ i18n.ad.quantity }}</th>
+      <th class="text-right no-border">{{ i18n.ad.unitPrice }}</th>
+      <th class="text-right no-border">{{ i18n.transaction.amount }}</th>
+      <th *ngIf="detailed" class="actions no-border"></th>
     </thead>
     <tbody>
-      <tr *ngFor="let row of items">
-        <td class=" avatar" [ngClass]="{
+      <tr *ngFor="let row of items; let last = last">
+        <td class="avatar" [ngClass]="{
               'pb-0': layout.xxs$ | async,
-              'border-0': layout.xxs$ | async
+              'border-0': layout.xxs$ | async,
+              'border-bottom-0': last
             }">
           <avatar [image]="row.product.image" [tooltip]="row.product.name"
             icon="shopping_basket"></avatar>
-        <td [ngClass]="{'link' : detailed}"
+        <td width="30%"
+          [ngClass]="{'link' : detailed, 'border-bottom-0': last}"
           [ngStyle]="{'text-decoration': !isAvailable(row) ? 'line-through' : ''}">
           <span (click)="navigate(row)">{{ row.product.name }}</span>
         </td>
-        <td>{{ row.product.productNumber }}</td>
-        <td>
+        <td [ngClass]="{'border-bottom-0': last}">
+          {{ row.product.productNumber }}</td>
+        <td [ngClass]="{'border-bottom-0': last}">
           <form *ngIf="useForm(layout.gtsm$ | async)" [formGroup]="form">
             <decimal-field *ngIf="isAvailable(row)" [formControlName]="row.id"
               [minRange]="minItemsRange(row)" [maxRange]="maxItemsRange(row)"
@@ -67,12 +74,13 @@
             {{ resolveQuantityLabel(row) }}
           </ng-container>
         </td>
-        <td class="text-right">
+        <td [ngClass]="{'border-bottom-0': last}" class="text-right">
           {{ row.price | currency: currency }}
         </td>
-        <td class="text-right">
+        <td [ngClass]="{'border-bottom-0': last}" class="text-right">
           {{ row.totalPrice | currency: currency }}</td>
-        <td *ngIf="detailed" class="actions actions-multiple">
+        <td *ngIf="detailed" class="actions actions-multiple"
+          [ngClass]="{'border-bottom-0': last}">
           <button *ngIf="!useForm(layout.gtsm$ | async) && isAvailable(row)"
             [tooltip]="i18n.ad.changeQuantity" class="btn btn-icon"
             (click)="changeQuantity.emit([null, row, false]); $event.stopPropagation()">
@@ -87,4 +95,4 @@
       </tr>
     </tbody>
   </table>
-</results-layout>
+</ng-template>

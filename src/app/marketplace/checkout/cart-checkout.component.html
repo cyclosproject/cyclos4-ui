@@ -115,8 +115,11 @@
       <label class="any-label-value notice text-muted">
         {{ negotiated ? i18n.ad.deliveryPriceToBeConfirmed : i18n.ad.reserveAmount }}
       </label>
+      <shopping-cart-items [items]="data.cart.items"
+        [currency]="data.cart.currency">
+      </shopping-cart-items>
       <ng-container *ngIf="!negotiated && data.confirmationPasswordInput">
-        <hr *ngIf="layout.gtxxs$ | async">
+        <hr class="mt-0" *ngIf="layout.gtxxs$ | async">
         <form [formGroup]="form">
           <confirmation-password focused
             formControlName="confirmationPassword"
@@ -140,9 +143,6 @@
         </button>
       </actions>
     </page-content>
-    <shopping-cart-items [items]="data.cart.items"
-      [currency]="data.cart.currency">
-    </shopping-cart-items>
   </ng-container>
 
 </page-layout>

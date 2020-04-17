@@ -11,7 +11,7 @@ import { ImagePropertiesDialogComponent } from 'app/shared/image-properties-dial
 import { InsertImageDialogComponent } from 'app/shared/insert-image-dialog.component';
 import { LinkProperties } from 'app/shared/link-properties';
 import { LinkPropertiesDialogComponent } from 'app/shared/link-properties-dialog.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import * as rangy from 'rangy';
 import { BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';

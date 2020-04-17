@@ -13,9 +13,9 @@
         {{ data.totalPrice | currency:data.currency }}
       </label-value>
     </ng-container>
+    <shopping-cart-items *ngIf="data" [detailed]="true" [items]="data.items"
+      [currency]="data.currency" (changeQuantity)="changeQuantity($event)"
+      (remove)="remove($event)">
+    </shopping-cart-items>
   </page-content>
-  <shopping-cart-items *ngIf="data" [detailed]="true" [items]="data.items"
-    [currency]="data.currency" (changeQuantity)="changeQuantity($event)"
-    (remove)="remove($event)">
-  </shopping-cart-items>
 </page-layout>

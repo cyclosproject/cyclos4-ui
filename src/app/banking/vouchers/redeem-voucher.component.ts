@@ -6,7 +6,7 @@ import { VouchersService } from 'app/api/services';
 import { validateBeforeSubmit, focus } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
 import { Menu } from 'app/shared/menu';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
 import { first } from 'rxjs/operators';
 import { InputFieldComponent } from 'app/shared/input-field.component';

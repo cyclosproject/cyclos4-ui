@@ -56,6 +56,19 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
     this.form = this.formBuilder.group({ remarks: null });
     const headingActions: HeadingAction[] = [];
 
+    if (data.canAccept || data.canSetDeliveryInformation) {
+      headingActions.push(new HeadingAction('done',
+        data.canSetDeliveryInformation ?
+          this.i18n.ad.setDeliveryMethod : this.i18n.ad.accept, () =>
+        this.accept(), true));
+    }
+
+    if (data.canReject) {
+      headingActions.push(new HeadingAction('clear',
+        this.i18n.ad.reject, () =>
+        this.reject(), true));
+    }
+
     if (data.history) {
       headingActions.push(new HeadingAction('history', this.i18n.general.viewHistory, () =>
         this.router.navigate(['/marketplace', 'order', this.id, 'history']), true));
