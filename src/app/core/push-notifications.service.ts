@@ -4,6 +4,7 @@ import { DeviceConfirmationView, NewNotificationPush, IdentityProviderCallbackRe
 import { NextRequestState } from 'app/core/next-request-state';
 import { EventSourcePolyfill } from 'ng-event-source';
 import { Subject } from 'rxjs';
+import { empty } from 'app/shared/helper';
 
 export const Kinds: PushNotificationEventKind[] = [
   PushNotificationEventKind.LOGGED_OUT,
@@ -87,7 +88,7 @@ export class PushNotificationsService {
   private setupListener(kind: PushNotificationEventKind, subject: Subject<any>) {
     this.eventSource.addEventListener(kind, (event: any) => {
       this.zone.run(() => {
-        const data = JSON.parse(event.data);
+        const data = empty(event.data) ? null : JSON.parse(event.data);
         subject.next(data);
       });
     });
