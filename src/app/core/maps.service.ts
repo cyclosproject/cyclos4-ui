@@ -8,7 +8,7 @@ import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { blank, empty } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { from, Observable, of, timer } from 'rxjs';
-import { filter, switchMap, take } from 'rxjs/operators';
+import { filter, switchMap, take, first } from 'rxjs/operators';
 
 const StaticUrl = 'https://maps.googleapis.com/maps/api/staticmap';
 const ExternalUrl = 'https://www.google.com/maps/search/?api=1';
@@ -60,7 +60,10 @@ export class MapsService {
     if (!this.enabled || fields == null) {
       return of(null);
     }
-    return this.doGeocode(fields);
+    return this.ensureScriptLoaded().pipe(
+      first(),
+      switchMap(() => this.doGeocode(fields))
+    );
   }
 
   /**
