@@ -45,8 +45,13 @@ export class SearchAdsComponent
       'minAmount', 'maxAmount', 'currency', 'beginDate', 'endDate'];
   }
 
+
   getInitialResultType() {
-    return ResultType.CATEGORIES;
+    const fromConfig = this.layout.getBreakpointConfiguration('defaultAdsResultType') as ResultType;
+    if (fromConfig && this.allowedResultTypes.includes(fromConfig)) {
+      return fromConfig;
+    }
+    return (this.layout.xxs ? ResultType.LIST : ResultType.CATEGORIES);
   }
 
   getInitialFormValue(data: AdDataForSearch) {
@@ -63,6 +68,7 @@ export class SearchAdsComponent
     this.allowedResultTypes = this.layout.xxs
       ? [ResultType.CATEGORIES, ResultType.LIST]
       : [ResultType.CATEGORIES, ResultType.TILES, ResultType.LIST, ResultType.MAP];
+    this.resultType = this.getInitialResultType();
     this.stateManager.cache('data', this.marketplaceService.getAdDataForSearch({}))
       .subscribe(data => {
         this.data = data;

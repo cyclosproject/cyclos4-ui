@@ -15,6 +15,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { ShortcutService, Escape } from 'app/shared/shortcut.service';
 import { LightMapStyles, DarkMapStyles } from 'app/shared/google-map-styles';
+import { BreakpointConfiguration } from 'app/content/breakpoint-configuration';
 
 export type Theme = 'light' | 'dark';
 export const Themes: Theme[] = ['light', 'dark'];
@@ -612,6 +613,20 @@ export class LayoutService {
 
   get googleMapStyles(): google.maps.MapTypeStyle[] {
     return this.darkTheme ? DarkMapStyles : LightMapStyles;
+  }
+
+  /**
+   * Returns a breakpoint configuration according to the given breakpoints.
+   * If the set of breakpoints isn't passed in, assumes the currently active breakpoints.
+   */
+  getBreakpointConfiguration<K extends keyof BreakpointConfiguration>(key: K, breakpoints?: Set<Breakpoint>): BreakpointConfiguration[K] {
+    const configs = Configuration.breakpoints;
+    for (const bp of breakpoints || this.activeBreakpoints) {
+      const config = configs[bp];
+      if (config && config[key] != null) {
+        return config[key];
+      }
+    }
   }
 
   private getColor(name: string) {

@@ -332,8 +332,9 @@ Also, greater-than and lower-than variations are available: `gt-xxs` (`xs` or gr
 This frontend allows configuring, per [layout breakpoint](#layout-breakpoints):
 
 - Whether the image will be displayed, and which image URL (different from the default);
-- Which title to show: the large, the small or none;
-- What is the landing page, that is, the initial page the users see when browsing to the application root - home page or login page.
+- Which title to show: large, small, none or a customized one;
+- Which is the landing page, that is, the initial page the users see when browsing to the application root - home page or login page;
+- The initial result type on users and advertisements search.
 
 The `xxs` breakpoint is an exception, and is fixed: the logo is never shown and the title actually shows the current page title. The other defaults are:
 

@@ -64,6 +64,10 @@ export class SearchUsersComponent
   }
 
   getInitialResultType() {
+    const fromConfig = this.layout.getBreakpointConfiguration('defaultUsersResultType') as ResultType;
+    if (fromConfig && this.allowedResultTypes.includes(fromConfig)) {
+      return fromConfig;
+    }
     return this.layout.xxs ? ResultType.LIST : ResultType.TILES;
   }
 
@@ -130,6 +134,7 @@ export class SearchUsersComponent
 
     this.countries$ = this.countriesResolve.data;
 
+    this.resultType = this.getInitialResultType();
     this.onResultTypeChanged(this.resultType, null);
   }
 
