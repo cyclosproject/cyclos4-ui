@@ -203,7 +203,7 @@ export class HtmlFieldComponent
 
   ngAfterViewInit() {
     const editor = this.editor.nativeElement;
-    editor.innerHTML = this.value;
+    editor.innerHTML = this.value || '';
     editor.querySelectorAll('img').forEach(img => this.setupImage(img));
   }
 
