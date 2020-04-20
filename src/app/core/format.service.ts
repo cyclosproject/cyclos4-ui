@@ -7,6 +7,7 @@ import moment from 'moment-mini-ts';
 import { DataForUiHolder } from './data-for-ui-holder';
 import { Configuration } from 'app/configuration';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
+import { empty } from 'app/shared/helper';
 
 export const ISO_DATE = 'YYYY-MM-DD';
 
@@ -457,13 +458,17 @@ export class FormatService {
     const field = names.get(fieldValue).toLowerCase();
     return this.i18n.general.timeField.pattern({ amount, field });
   }
+
   /**
    * Formats a boolean value, returning a key for yes / no
    * @param value The boolean value
    */
-  formatBoolean(value: boolean): string {
-    if (value == null) {
+  formatBoolean(value: boolean | string): string {
+    if (empty(value)) {
       return '';
+    }
+    if (typeof value === 'string') {
+      value = value === 'true';
     }
     return value ? this.i18n.general.yes : this.i18n.general.no;
   }

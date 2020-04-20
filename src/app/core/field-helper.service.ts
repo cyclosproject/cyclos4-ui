@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AsyncValidatorFn, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum, CustomFieldSizeEnum, CustomField } from 'app/api/models';
+import { AsyncValidatorFn, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CustomField, CustomFieldDetailed, CustomFieldSizeEnum, CustomFieldTypeEnum, CustomFieldValue, LinkedEntityTypeEnum, CustomFieldBinaryValues } from 'app/api/models';
 import { FormatService } from 'app/core/format.service';
+import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';
-import { I18n } from 'app/i18n/i18n';
 
 /**
  * Helper service for custom fields
@@ -205,5 +205,75 @@ export class FieldHelperService {
       }
     }
     return result;
+  }
+
+  /**
+   * Returns a view of the custom field value as `CustomFieldValue`
+   */
+  asFieldValue(cf: CustomFieldDetailed, value: string, binaryValues?: CustomFieldBinaryValues): CustomFieldValue {
+    const fieldValue: CustomFieldValue = { field: cf };
+    if (!empty(value)) {
+      switch (cf.type) {
+        case CustomFieldTypeEnum.BOOLEAN:
+          fieldValue.booleanValue = value === 'true';
+          break;
+        case CustomFieldTypeEnum.INTEGER:
+          fieldValue.integerValue = parseInt(value, 10);
+          break;
+        case CustomFieldTypeEnum.DECIMAL:
+          fieldValue.decimalValue = value;
+          break;
+        case CustomFieldTypeEnum.DATE:
+          fieldValue.dateValue = value;
+          break;
+        case CustomFieldTypeEnum.STRING:
+        case CustomFieldTypeEnum.TEXT:
+        case CustomFieldTypeEnum.RICH_TEXT:
+        case CustomFieldTypeEnum.URL:
+          fieldValue.stringValue = value;
+          break;
+        case CustomFieldTypeEnum.DYNAMIC_SELECTION:
+          const dynamicParts = value.split(/\|/g);
+          fieldValue.dynamicValue = {
+            value: dynamicParts[0],
+            label: dynamicParts[1] || dynamicParts[0]
+          };
+          break;
+        case CustomFieldTypeEnum.SINGLE_SELECTION:
+        case CustomFieldTypeEnum.MULTI_SELECTION:
+          const pvs = value.split(/\|/g);
+          fieldValue.enumeratedValues = (cf.possibleValues || []).filter(pv => pvs.includes(pv.id) || pvs.includes(pv.internalName));
+          break;
+        case CustomFieldTypeEnum.LINKED_ENTITY:
+          const entityParts = value.split(/\|/g);
+          const id = entityParts[0];
+          const display = entityParts[1] || entityParts[0];
+          switch (cf.linkedEntityType) {
+            case LinkedEntityTypeEnum.USER:
+              fieldValue.userValue = { id: id, display: display };
+              break;
+            case LinkedEntityTypeEnum.ADVERTISEMENT:
+              fieldValue.adValue = { id: id, name: display };
+              break;
+            case LinkedEntityTypeEnum.RECORD:
+              fieldValue.recordValue = { id: id, display: display };
+              break;
+            case LinkedEntityTypeEnum.TRANSFER:
+              fieldValue.transferValue = { id: id, display: display };
+              break;
+            case LinkedEntityTypeEnum.TRANSACTION:
+              fieldValue.transactionValue = { id: id, display: display };
+              break;
+          }
+          break;
+        case CustomFieldTypeEnum.FILE:
+          fieldValue.fileValues = binaryValues.fileValues[cf.id] || binaryValues.fileValues[cf.internalName];
+          break;
+        case CustomFieldTypeEnum.IMAGE:
+          fieldValue.imageValues = binaryValues.imageValues[cf.id] || binaryValues.imageValues[cf.internalName];
+          break;
+      }
+    }
+    return fieldValue;
   }
 }

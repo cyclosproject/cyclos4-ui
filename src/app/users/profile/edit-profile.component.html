@@ -11,7 +11,7 @@
         </h2>
         <div class="d-flex justify-content-center justify-content-sm-start">
           <avatar *ngIf="images.length > 0" [image]="images[0]" size="huge"
-            useLightbox>
+            useLightbox [roundBorders]="false">
           </avatar>
           <div class="my-3" *ngIf="images.length === 0">
             {{ i18n.user.noImage }}
@@ -47,7 +47,8 @@
             class="col-12 col-xs-6 col-sm-4 col-md-3 d-flex justify-content-center justify-content-center"
             *ngFor="let image of images">
             <avatar [image]="image" size="huge" useLightbox
-              [additionalImages]="images" class="mb-1 mb-xs-3">
+              [roundBorders]="false" [additionalImages]="images"
+              class="mb-1 mb-xs-3">
             </avatar>
           </div>
           <ng-container *ngIf="images.length === 0">
@@ -108,10 +109,14 @@
         [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'"
         [ignoreExtraCell]="!canManagePrivacy(cf)" [fieldSize]="fieldSize(cf)"
         [required]="cf.required">
-        <custom-field-input [field]="cf" hideLabel
-          [formControlName]="cf.internalName"
+        <custom-field-input *ngIf="canEdit(cf); else plainFieldValue"
+          [field]="cf" hideLabel [formControlName]="cf.internalName"
           [binaryValues]="data.userConfiguration.binaryValues">
         </custom-field-input>
+        <ng-template #plainFieldValue>
+          <format-field-value [fieldValue]="fieldValue(cf)">
+          </format-field-value>
+        </ng-template>
         <field-privacy *extraCell [field]="cf.internalName"
           [control]="user.get('hiddenFields')"></field-privacy>
       </label-value>
@@ -123,23 +128,40 @@
         [required]="data.phoneConfiguration.mobileAvailability === 'required'"
         [ignoreExtraCell]="!canManagePrivacy('phone')" kind="field"
         fieldSize="small">
-        <input-field formControlName="number"
+        <input-field *ngIf="canEdit('phone'); else plainPhoneNumber"
+          formControlName="number"
           [placeholder]="data.phoneConfiguration.mobileExample"></input-field>
+        <ng-template #plainPhoneNumber>
+          {{ singleMobile.get('number').value }}
+        </ng-template>
         <field-privacy *extraCell [control]="singleMobile.get('hidden')">
         </field-privacy>
       </label-value>
 
       <ng-container *ngIf="phoneHasSms(singleMobileManage)">
         <boolean-field [label]="i18n.phone.verified"
+          *ngIf="canEdit('phone'); else plainVerified"
           [formControl]="singleMobile.get('verified')">
         </boolean-field>
+        <ng-template #plainVerified>
+          <label-value kind="fieldView" [label]="i18n.phone.verified">
+            {{ format.formatBoolean(singleMobile.get('verified').value) }}
+          </label-value>
+        </ng-template>
       </ng-container>
 
-      <boolean-field *ngIf="showEnableForSms(singleMobile)"
-        [label]="i18n.phone.enabledSms"
-        [formControl]="singleMobile.get('enabledForSms')"
-        (click)="maybeVerify($event)">
-      </boolean-field>
+      <ng-container *ngIf="showEnableForSms(singleMobile)">
+        <boolean-field *ngIf="canEdit('phone'); else plainSms"
+          [label]="i18n.phone.enabledSms"
+          [formControl]="singleMobile.get('enabledForSms')"
+          (click)="maybeVerify($event)">
+        </boolean-field>
+        <ng-template #plainSms>
+          <label-value kind="fieldView" [label]="i18n.phone.enabledSms">
+            {{ format.formatBoolean(singleMobile.get('enabledForSms').value) }}
+          </label-value>
+        </ng-template>
+      </ng-container>
     </ng-container>
 
     <!-- Single land-line phone -->
@@ -148,22 +170,30 @@
         [required]="data.phoneConfiguration.landLineAvailability === 'required'"
         [ignoreExtraCell]="!canManagePrivacy('address')" kind="field"
         fieldSize="small">
-        <input-field formControlName="number"
+        <input-field *ngIf="canEdit('phone'); else plainPhoneNumber"
+          formControlName="number"
           [placeholder]="data.phoneConfiguration.landLineExample">
         </input-field>
+        <ng-template #plainPhoneNumber>
+          {{ singleLandLine.get('number').value }}
+        </ng-template>
         <field-privacy *extraCell [control]="singleLandLine.get('hidden')">
         </field-privacy>
       </label-value>
-      <input-field *ngIf="data.phoneConfiguration.extensionEnabled"
-        formControlName="extension" fieldSize="tiny"
-        [label]="i18n.phone.extension"></input-field>
+      <ng-container
+        *ngIf="data.phoneConfiguration.extensionEnabled && singleLandLine.get('extension') as extensionControl">
+        <input-field
+          *ngIf="!extensionControl.disabled || extensionControl.value"
+          formControlName="extension" fieldSize="tiny"
+          [label]="i18n.phone.extension"></input-field>
+      </ng-container>
     </ng-container>
 
     <!-- Single address -->
     <ng-container *ngIf="singleAddress">
       <h2 class="mb-2">{{ i18n.address.address }}</h2>
       <boolean-field
-        *ngIf="data.addressConfiguration.availability !== 'required'"
+        *ngIf="canEdit('address') && data.addressConfiguration.availability !== 'required'"
         [formControl]="defineSingleAddress" [label]="i18n.user.addressDefine">
       </boolean-field>
       <ng-container *ngIf="defineSingleAddress.value">
@@ -238,25 +268,47 @@
         <input-field type="tel" [id]="'phone_number' + phone['idSuffix']"
           formControlName="number" required [label]="phoneNumberLabel(phone)"
           [placeholder]="phoneExample(phone)"></input-field>
-        <input-field *ngIf="hasExtension(phone)"
-          [id]="'phone_extension' + phone['idSuffix']" type="tel"
-          formControlName="extension" [label]="i18n.phone.extension">
-        </input-field>
-        <ng-container *ngIf="phoneHasSms(phone)">
+        <ng-container
+          *ngIf="hasExtension(phone) && phone['form'].get('extension') as extensionControl">
+          <input-field
+            *ngIf="!extensionControl.disabled || extensionControl.value"
+            formControlName="extension" fieldSize="tiny"
+            [label]="i18n.phone.extension"></input-field>
+        </ng-container>
+
+        <ng-container
+          *ngIf="phone['kind'] === 'mobile' && phoneHasSms(phone['form'])">
           <boolean-field [label]="i18n.phone.verified"
+            *ngIf="canEdit('phone'); else plainVerified"
             formControlName="verified">
           </boolean-field>
-          <boolean-field *ngIf="showEnableForSms(phone['form'])"
+          <ng-template #plainVerified>
+            <label-value kind="fieldView" [label]="i18n.phone.verified">
+              {{ format.formatBoolean(phone.verified) }}
+            </label-value>
+          </ng-template>
+        </ng-container>
+
+        <ng-container
+          *ngIf="phone['kind'] === 'mobile' && showEnableForSms(phone['form'])">
+          <boolean-field *ngIf="canEdit('phone'); else plainSms"
             [label]="i18n.phone.enabledSms" formControlName="enabledForSms"
             (click)="maybeVerify($event, phone['id'])">
           </boolean-field>
+          <ng-template #plainSms>
+            <label-value kind="fieldView" [label]="i18n.phone.enabledSms">
+              {{ format.formatBoolean(phone.enabledForSms) }}
+            </label-value>
+          </ng-template>
         </ng-container>
-        <label-value *ngIf="!canManagePrivacy('phone')"
+
+        <label-value *ngIf="canManagePrivacy('phone')"
           [label]="i18n.field.privacy.name" kind="field">
           <div class="d-flex w-100 justify-content-between">
             <field-privacy [control]="phone['form'].get('hidden')"
               justifyStart></field-privacy>
-            <button *ngIf="(layout.gtxxs$ | async)"
+            <button
+              *ngIf="editableFields.has('phone') && (layout.gtxxs$ | async)"
               class="btn btn-outline-primary" type="button"
               (click)="removePhone(phone)">
               {{ i18n.user.phoneRemove }}
@@ -268,7 +320,8 @@
           class="d-flex justify-content-end" [ngClass]="{
             'mt-3': !data.phoneConfiguration.managePrivacy
           }">
-          <button class="btn btn-outline-primary" type="button"
+          <button *ngIf="editableFields.has('phone')"
+            class="btn btn-outline-primary" type="button"
             (click)="removePhone(phone)">
             {{ i18n.user.phoneRemove }}
           </button>
@@ -310,7 +363,8 @@
           <div class="d-flex w-100 justify-content-between">
             <field-privacy [control]="address['form'].get('hidden')"
               justifyStart></field-privacy>
-            <button *ngIf="!maps.enabled && (layout.gtxxs$ | async)"
+            <button
+              *ngIf="editableFields.has('address') && !maps.enabled && (layout.gtxxs$ | async)"
               class="btn btn-outline-primary" type="button"
               (click)="removeAddress(address)">
               {{ i18n.user.addressRemove }}
@@ -327,7 +381,8 @@
           <div *ngIf="layout.gtxs$ | async" class="col-4"></div>
           <div class="col-12 col-sm-8">
             <actions class="mt-0" forceRow>
-              <button class="btn btn-outline-primary" type="button"
+              <button *ngIf="editableFields.has('address')"
+                class="btn btn-outline-primary" type="button"
                 (click)="removeAddress(address)">
                 {{ i18n.user.addressRemove }}
               </button>

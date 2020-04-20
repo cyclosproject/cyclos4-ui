@@ -3,7 +3,7 @@ import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '
 import {
   AddressManage, AvailabilityEnum, ContactInfoManage, CreateDeviceConfirmation,
   CustomField, CustomFieldDetailed, DataForEditFullProfile, DeviceConfirmationTypeEnum,
-  FullProfileEdit, Image, PhoneEditWithId, PhoneKind, PhoneManage
+  FullProfileEdit, Image, PhoneEditWithId, PhoneKind, PhoneManage, CustomFieldValue
 } from 'app/api/models';
 import { ImagesService, PhonesService, UsersService } from 'app/api/services';
 import { AddressHelperService } from 'app/core/address-helper.service';
@@ -189,8 +189,12 @@ export class EditProfileComponent
 
   isEmpty(field: string | CustomField): boolean {
     const name = this.fieldName(field);
-    const user = this.user.value;
-    return empty(user[name]) && empty((user.customValues || {})[name]);
+    if (typeof field === 'string') {
+      return empty(this.user.get(name).value);
+    } else {
+      const customValues = this.user.get('customValues');
+      return customValues ? empty(customValues.get(name).value) : true;
+    }
   }
 
   canEdit(field: string | CustomField): boolean {
@@ -523,7 +527,11 @@ export class EditProfileComponent
     const single = data.maxLandLines === 1;
     const form = this.buildPhoneForm(single, data.landLineAvailability === AvailabilityEnum.REQUIRED);
     if (data.extensionEnabled) {
-      form.setControl('extension', this.formBuilder.control(null));
+      const extension = this.formBuilder.control(null);
+      if (!this.editableFields.has('phone')) {
+        extension.disable();
+      }
+      form.setControl('extension', extension);
     }
     this.stampDataAndInitForm(phone, form);
     return form;
@@ -545,13 +553,17 @@ export class EditProfileComponent
   private buildPhoneForm(single: boolean, required: boolean): FormGroup {
     // When multiple phones, number is always required. Otherwise, is required when phones are required.
     const numberRequired = !single || required;
-    return this.formBuilder.group({
+    const form = this.formBuilder.group({
       id: null,
       version: null,
       hidden: null,
       name: [null, Validators.required],
       number: [null, numberRequired ? Validators.required : null]
     });
+    if (!this.editableFields.has('phone')) {
+      form.disable();
+    }
+    return form;
   }
 
   private buildAddressForm(address: AddressManage): FormGroup {
@@ -566,6 +578,9 @@ export class EditProfileComponent
         }
         previous = newVal;
       }));
+    }
+    if (!this.editableFields.has('address')) {
+      form.disable();
     }
     return form;
   }
@@ -628,7 +643,7 @@ export class EditProfileComponent
   }
 
   get canCreateLandLine(): boolean {
-    if (this.landLineAvailability !== 'multiple') {
+    if (this.landLineAvailability !== 'multiple' || !this.editableFields.has('phone')) {
       return false;
     }
     const max = this.data.phoneConfiguration.maxLandLines;
@@ -637,7 +652,7 @@ export class EditProfileComponent
   }
 
   get canCreateMobile(): boolean {
-    if (this.mobileAvailability !== 'multiple') {
+    if (this.mobileAvailability !== 'multiple' || !this.editableFields.has('phone')) {
       return false;
     }
     const max = this.data.phoneConfiguration.maxMobiles;
@@ -646,7 +661,7 @@ export class EditProfileComponent
   }
 
   get canCreateAddress(): boolean {
-    if (this.addressAvailability !== 'multiple') {
+    if (this.addressAvailability !== 'multiple' || !this.editableFields.has('address')) {
       return false;
     }
     const max = this.data.addressConfiguration.maxAddresses;
@@ -912,6 +927,11 @@ export class EditProfileComponent
   resolveMenu(data: DataForEditFullProfile) {
     const user = data.userConfiguration.details;
     return this.authHelper.userMenu(user, Menu.EDIT_MY_PROFILE);
+  }
+
+  fieldValue(cf: CustomFieldDetailed): CustomFieldValue {
+    const value = this.user.get('customValues').get(cf.internalName).value;
+    return this.fieldHelper.asFieldValue(cf, value, this.data.userConfiguration.binaryValues);
   }
 
 }
