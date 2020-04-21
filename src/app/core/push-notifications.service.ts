@@ -89,6 +89,10 @@ export class PushNotificationsService {
     this.eventSource.addEventListener(kind, (event: any) => {
       this.zone.run(() => {
         const data = empty(event.data) ? null : JSON.parse(event.data);
+        if (kind === PushNotificationEventKind.LOGGED_OUT) {
+          // Close the EventSource immediately after being logged out
+          this.close();
+        }
         subject.next(data);
       });
     });

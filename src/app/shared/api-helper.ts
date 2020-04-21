@@ -50,10 +50,12 @@ export class ApiHelper {
 
   /**
    * If the given value is fully numeric, escape it by prepending a single quote.
-   * This is the Cyclos' way to distinguish between ids and other keys
+   * This is the Cyclos' way to distinguish between ids and other keys.
+   * The result is never null, and is always trimmed.
    * @param value The value
    */
   static escapeNumeric(value: string): string {
+    value = (value || '').trim();
     if (/^[\-\+]?\d+$/.test(value)) {
       // The transaction number is fully numeric. Escape it to avoid clashing with id
       return `'${value}`;
