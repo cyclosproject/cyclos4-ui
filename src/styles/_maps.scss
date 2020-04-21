@@ -22,3 +22,26 @@
     padding-right: 0;
   }
 }
+
+.map-info-window, body.dark .map-info-window {
+  display: block;
+  background-color: $card-bg;
+  &, & * {
+    color: $card-color;
+  }
+
+  &:hover, &:focus, &:visited {
+    text-decoration: none;
+    color: $card-color;
+    outline: none;
+    box-shadow: none;
+  }
+
+  avatar {
+    margin: 0.25rem 0 1rem 0;
+  }
+
+  icon {
+    color: $tiled-results-icon-color !important;
+  }
+}

@@ -68,24 +68,6 @@
   }
 }
 
-.map-info-window {
-  // Map info window always use the light style
-  display: block;
-  color: $card-color !important;
-  background-color: $card-bg !important;
-
-  &:hover, &:focus, &:visited {
-    text-decoration: none;
-    color: $card-color !important;
-    outline: none;
-    box-shadow: none;
-  }
-
-  avatar {
-    margin: 0.25rem 0 1rem 0;
-  }
-}
-
 .cell-main {
   font-weight: $font-weight-bold;
   color: $label-color;
