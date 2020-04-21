@@ -518,6 +518,7 @@ export class EditProfileComponent
   private stampDataAndInitForm(model: any, form: FormGroup) {
     model.idSuffix = `_${model.id || modelIndex++}`;
     model.form = form;
+    form['locating$'] = new BehaviorSubject(false);
     form.patchValue(model);
   }
 
@@ -918,10 +919,16 @@ export class EditProfileComponent
 
   locateAddress(addressForm: FormGroup) {
     const value = addressForm.value;
+    addressForm['locating$'].next(true);
     this.addSub(this.maps.geocode(value).subscribe(coords => {
       addressForm.patchValue({ location: coords });
       this.changeDetector.detectChanges();
-    }));
+    }, () => this.mapShown(addressForm)));
+  }
+
+  mapShown(addressForm: FormGroup) {
+    addressForm['locating$'].next(false);
+    this.changeDetector.detectChanges();
   }
 
   resolveMenu(data: DataForEditFullProfile) {

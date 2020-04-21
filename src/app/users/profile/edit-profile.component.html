@@ -205,13 +205,17 @@
         <label-value [label]="i18n.general.map" kind="field"
           *ngIf="maps.enabled">
           <static-map
-            *ngIf="singleAddress.get('location').value.latitude != null"
+            *ngIf="singleAddress.get('location').value.latitude != null; else viewMap"
+            (imageLoaded)="mapShown(singleAddress)"
             [address]="singleAddress.value"></static-map>
-          <button *ngIf="singleAddress.get('location').value.latitude == null"
-            class="btn btn-outline-primary" type="button"
-            (click)="locateAddress(singleAddress)">
-            {{ i18n.general.mapView }}
-          </button>
+          <ng-template #viewMap>
+            <button
+              *ngIf="!(singleAddress['locating$'] | async); else locatingSpinner"
+              class="btn btn-outline-primary" type="button"
+              (click)="locateAddress(singleAddress)">
+              {{ i18n.general.mapView }}
+            </button>
+          </ng-template>
         </label-value>
       </ng-container>
     </ng-container>
@@ -372,9 +376,14 @@
           </div>
         </label-value>
         <label-value kind="field"
-          *ngIf="maps.enabled && address['form'].get('location').value.latitude != null"
+          *ngIf="maps.enabled && (address['form'].get('location').value.latitude != null || (address['form']['locating$'] | async))"
           [label]="i18n.general.map" class="pb-0">
-          <static-map [address]="address['form'].value"></static-map>
+          <static-map [address]="address['form'].value"
+            (imageLoaded)="mapShown(address['form'])">
+          </static-map>
+          <ng-container
+            *ngIf="address['form']['locating$'] | async; then locatingSpinner">
+          </ng-container>
         </label-value>
         <div class="row mt-3 no-gutters"
           *ngIf="maps.enabled || (layout.xxs$ | async) || !data.addressConfiguration.managePrivacy">
@@ -387,7 +396,7 @@
                 {{ i18n.user.addressRemove }}
               </button>
               <ng-container
-                *ngIf="address['form'].get('location').value.latitude == null">
+                *ngIf="(address['form'].get('location').value.latitude == null) && !(address['form']['locating$'] | async)">
                 <div class="flex-grow-1"></div>
                 <button class="btn btn-outline-primary" type="button"
                   (click)="locateAddress(address['form'])">
@@ -493,3 +502,7 @@
     </actions>
   </page-content>
 </page-layout>
+
+<ng-template #locatingSpinner>
+  <spinner></spinner>
+</ng-template>

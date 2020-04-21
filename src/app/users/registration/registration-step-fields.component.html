@@ -104,11 +104,18 @@
   </address-form>
   <label-value [label]="i18n.general.map" kind="field"
     *ngIf="defineAddress.value && maps.enabled">
-    <static-map *ngIf="addressForm.get('location').value.latitude != null"
-      [address]="addressForm.value"></static-map>
-    <button *ngIf="addressForm.get('location').value.latitude == null"
-      class="btn btn-outline-primary" type="button" (click)="locateAddress()">
-      {{ i18n.general.mapView }}
-    </button>
+    <static-map
+      *ngIf="addressForm.get('location').value.latitude != null; else viewMap"
+      (imageLoaded)="mapShown()" [address]="addressForm.value"></static-map>
+    <ng-template #viewMap>
+      <button *ngIf="!(locatingAddress$ | async); else locatingSpinner"
+        class="btn btn-outline-primary" type="button"
+        (click)="locateAddress()">
+        {{ i18n.general.mapView }}
+      </button>
+    </ng-template>
+    <ng-template #locatingSpinner>
+      <spinner></spinner>
+    </ng-template>
   </label-value>
 </ng-container>
