@@ -114,8 +114,8 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
     // Get the payment subject
     const value = this.form.value;
-    const subject = (value.subject || '').trim();
-    if (subject.length === 0) {
+    const subject = ApiHelper.escapeNumeric(value.subject);
+    if (subject === '') {
       return;
     }
 
