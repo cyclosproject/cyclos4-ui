@@ -1307,6 +1307,7 @@
     "setPromotionalPeriod": "Definir período promocional",
     "submitForAuthorization": "Enviar para autorização",
     "submitToBuyer": "Enviar para o comprador",
+    "submitToBuyerConfirmation": "Are you sure to submit this order to the buyer? After this step, no further changes will be allowed in this order, and it will be awaiting for buyer's approval.",
     "subtotal": "Subtotal",
     "stockType": "Tipo de estoque",
     "pendingForAuth": "O anúncio foi submetido para autorização adicional",
