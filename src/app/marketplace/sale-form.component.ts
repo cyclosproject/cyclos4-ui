@@ -236,6 +236,10 @@ export class SaleFormComponent
 
   save(asDraft?: boolean) {
     const order = this.data.order;
+
+    // Initialize order items (as this.products already has the updated information)
+    order.items = [];
+
     this.products.forEach(item => {
       order.items.push({
         price: item.price,
@@ -246,16 +250,29 @@ export class SaleFormComponent
     order.deliveryMethod = this.deliveryForm.value;
     order.deliveryAddress = this.addressForm.value;
     order.remarks = this.form.controls.remarks.value;
-    order.draft = asDraft;
+    order.draft = asDraft || false;
 
     const onFinish = () => {
-      this.notification.snackBar(asDraft ? this.i18n.ad.orderSavedAsDraft : this.i18n.ad.orderSavedAsDraft);
+      this.notification.snackBar(asDraft ? this.i18n.ad.orderSavedAsDraft : this.i18n.ad.orderSubmittedToBuyer);
       history.back();
     };
-    // TODO check if the user is sure to submit the order to buyer (copy message from web)
-    this.addSub(this.create ?
-      this.orderService.createOrder({ user: this.user, body: order }).subscribe(onFinish) :
-      this.orderService.updateOrder({ order: this.id, body: order }).subscribe(onFinish));
+
+    const request = () => {
+      this.addSub(this.create ?
+        this.orderService.createOrder({ user: this.user, body: order }).subscribe(onFinish) :
+        this.orderService.updateOrder({ order: this.id, body: order }).subscribe(onFinish));
+
+    };
+    if (!asDraft) {
+      this.notification.confirm({
+        message: this.i18n.ad.submitToBuyerConfirmation,
+        callback: request
+      });
+    } else {
+      request();
+    }
+
+
   }
 
   resolveStatusLabel() {
