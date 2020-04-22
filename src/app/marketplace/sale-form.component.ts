@@ -110,7 +110,7 @@ export class SaleFormComponent
     const ads = (data as OrderDataForEdit).items || [];
     const orderItems = [];
     ads.forEach(product => {
-      const orderItem = data.order.items.filter(item => item.product === product.id || item.product === product.productNumber)[0];
+      const orderItem = data.order.items.filter(item => item.product === product.id)[0];
       orderItems.push({
         price: orderItem.price,
         totalPrice: +orderItem.price * +orderItem.quantity,
@@ -149,6 +149,9 @@ export class SaleFormComponent
     }));
   }
 
+  /**
+   * Adds a product to the order (or increment quantity) with the given ad
+   */
   protected addProduct(ad: AdResult) {
     // Check if it was already added and increment quantity
     const result = this.products || [];
@@ -234,6 +237,9 @@ export class SaleFormComponent
       (this.data as OrderDataForEdit).currency;
   }
 
+  /**
+   * Submits the order to buyer or saves it as draft based on the given flag
+   */
   save(asDraft?: boolean) {
     const order = this.data.order;
 
@@ -243,7 +249,7 @@ export class SaleFormComponent
     this.products.forEach(item => {
       order.items.push({
         price: item.price,
-        product: item.product.id || item.product.productNumber,
+        product: item.product.id,
         quantity: item.quantity,
       });
     });
