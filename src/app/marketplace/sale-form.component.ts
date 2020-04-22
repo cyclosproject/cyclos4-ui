@@ -262,7 +262,6 @@ export class SaleFormComponent
       this.addSub(this.create ?
         this.orderService.createOrder({ user: this.user, body: order }).subscribe(onFinish) :
         this.orderService.updateOrder({ order: this.id, body: order }).subscribe(onFinish));
-
     };
     if (!asDraft) {
       this.notification.confirm({
@@ -272,8 +271,6 @@ export class SaleFormComponent
     } else {
       request();
     }
-
-
   }
 
   resolveStatusLabel() {
