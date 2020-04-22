@@ -20,7 +20,6 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   @ViewChild('inputField') inputField: ElementRef<HTMLInputElement>;
   @ViewChild('dropdown') dropdown: BsDropdownDirective;
 
-  @Input() container = 'body';
   @Input() autoSearch = true;
 
   @Output() selected = new EventEmitter<A>();

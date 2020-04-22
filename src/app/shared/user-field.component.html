@@ -7,8 +7,7 @@
     <div class="d-flex flex-grow-1 mw-100">
       <div style="position:relative" class="w-100 d-flex align-items-center"
         dropdown #dropdown="bs-dropdown" [autoClose]="false"
-        [container]="container" [insideClick]="false" (onShown)="onShown()"
-        (onHidden)="onHidden()">
+        [insideClick]="false" (onShown)="onShown()" (onHidden)="onHidden()">
 
         <chip *ngIf="selection$ | async" [image]="user.image" icon="user"
           (close)="select(null)">
