@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
-import { ControlContainer, NG_VALUE_ACCESSOR, FormControl } from '@angular/forms';
-import { User, PrincipalType } from 'app/api/models';
+import { ControlContainer, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { PrincipalType, User } from 'app/api/models';
 import { UserCacheService } from 'app/core/user-cache.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { UserFieldComponent } from 'app/shared/user-field.component';
@@ -15,8 +15,8 @@ import { map } from 'rxjs/operators';
   templateUrl: 'multiple-users-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: MultipleUsersFieldComponent, multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: MultipleUsersFieldComponent, multi: true },
+  ],
 })
 export class MultipleUsersFieldComponent
   extends BaseFormFieldComponent<string[]> implements OnInit {
@@ -35,7 +35,7 @@ export class MultipleUsersFieldComponent
   @Input() allowSearch = true;
   @Input() allowContacts = true;
 
-  @ViewChild('userField', { static: false }) userField: UserFieldComponent;
+  @ViewChild('userField') userField: UserFieldComponent;
 
   userFieldControl = new FormControl(null);
 

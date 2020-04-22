@@ -17,8 +17,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['result-type-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: ResultTypeFieldComponent, multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: ResultTypeFieldComponent, multi: true },
+  ],
 })
 export class ResultTypeFieldComponent
   extends BaseControlComponent<ResultType>
@@ -41,7 +41,7 @@ export class ResultTypeFieldComponent
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     public layout: LayoutService,
-    private maps: MapsService
+    private maps: MapsService,
   ) {
     super(injector, controlContainer);
   }

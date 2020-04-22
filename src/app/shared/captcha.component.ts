@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewChild, Injector } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Injector, Input, OnDestroy, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CaptchaService } from 'app/api/services';
 import { AbstractComponent } from 'app/shared/abstract.component';
@@ -9,7 +9,7 @@ import { switchMap, tap } from 'rxjs/operators';
   selector: 'captcha',
   templateUrl: 'captcha.component.html',
   styleUrls: ['captcha.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CaptchaComponent extends AbstractComponent implements AfterViewInit, OnDestroy {
 
@@ -27,7 +27,7 @@ export class CaptchaComponent extends AbstractComponent implements AfterViewInit
 
   constructor(
     injector: Injector,
-    private captchaService: CaptchaService
+    private captchaService: CaptchaService,
   ) {
     super(injector);
   }
@@ -57,9 +57,9 @@ export class CaptchaComponent extends AbstractComponent implements AfterViewInit
       switchMap(id => {
         this.form.patchValue({
           challenge: id,
-          response: ''
+          response: '',
         });
-        return this.captchaService.getCaptchaContent({ id: id, group: this.group }).pipe(tap(blob => {
+        return this.captchaService.getCaptchaContent({ id, group: this.group }).pipe(tap(blob => {
           this.revokeCurrent();
           this.currentUrl = URL.createObjectURL(blob);
           this.image.nativeElement.style.display = 'none';

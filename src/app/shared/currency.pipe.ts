@@ -1,13 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { FormatService } from 'app/core/format.service';
 import { Currency } from 'app/api/models';
+import { FormatService } from 'app/core/format.service';
 import { truthyAttr } from 'app/shared/helper';
 
 /**
  * Pipe used to format a number as currency
  */
 @Pipe({
-  name: 'currency'
+  name: 'currency',
 })
 export class CurrencyPipe implements PipeTransform {
 

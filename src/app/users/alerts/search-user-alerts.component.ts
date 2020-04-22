@@ -1,17 +1,16 @@
-import { ChangeDetectionStrategy, Component, OnInit, Injector } from '@angular/core';
-import { UserAlert } from 'app/api/models/user-alert';
-import { AlertsService } from 'app/api/services/alerts.service';
-import { UserAlertDataForSearch } from 'app/api/models/user-alert-data-for-search';
-import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { UserAlertQueryFilters } from 'app/api/models';
+import { UserAlert } from 'app/api/models/user-alert';
+import { UserAlertDataForSearch } from 'app/api/models/user-alert-data-for-search';
+import { AlertsService } from 'app/api/services/alerts.service';
 import { ApiHelper } from 'app/shared/api-helper';
+import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { Menu } from 'app/shared/menu';
-
 
 @Component({
   selector: 'search-user-alerts',
   templateUrl: 'search-user-alerts.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchUserAlertsComponent
   extends BaseSearchPageComponent<UserAlertDataForSearch, UserAlertQueryFilters, UserAlert>
@@ -39,7 +38,7 @@ export class SearchUserAlertsComponent
       page: value.page,
       pageSize: value.pageSize,
       types: value.types,
-      user: value.user
+      user: value.user,
     };
   }
 

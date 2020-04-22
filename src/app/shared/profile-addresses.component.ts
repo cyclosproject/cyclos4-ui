@@ -15,18 +15,18 @@ import { Breakpoint } from 'app/shared/layout.service';
   selector: 'profile-addresses',
   templateUrl: 'profile-addresses.component.html',
   styleUrls: ['profile-addresses.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileAddressesComponent extends BaseComponent implements OnInit, AfterViewInit {
   constructor(
     injector: Injector,
     public addressHelper: AddressHelperService,
-    public countriesResolve: CountriesResolve
+    public countriesResolve: CountriesResolve,
   ) {
     super(injector);
   }
 
-  @ViewChild('mapContainer', { static: false }) mapContainer: ElementRef;
+  @ViewChild('mapContainer') mapContainer: ElementRef;
   map: google.maps.Map;
 
   private allInfoWindows: google.maps.InfoWindow[] = [];
@@ -68,14 +68,14 @@ export class ProfileAddressesComponent extends BaseComponent implements OnInit, 
       streetViewControl: false,
       minZoom: 2,
       maxZoom: 17,
-      styles: this.layout.googleMapStyles
+      styles: this.layout.googleMapStyles,
     });
     const bounds = new google.maps.LatLngBounds();
     this.locatedAddresses.map(a => {
       const marker = new google.maps.Marker({
         title: a.name,
         icon: Configuration.mainMapMarker,
-        position: new google.maps.LatLng(a.location.latitude, a.location.longitude)
+        position: new google.maps.LatLng(a.location.latitude, a.location.longitude),
       });
       bounds.extend(marker.getPosition());
       marker.addListener('click', () => {
@@ -83,7 +83,7 @@ export class ProfileAddressesComponent extends BaseComponent implements OnInit, 
         let infoWindow = marker['infoWindow'] as google.maps.InfoWindow;
         if (!infoWindow) {
           infoWindow = new google.maps.InfoWindow({
-            content: marker.getTitle()
+            content: marker.getTitle(),
           });
           this.allInfoWindows.push(infoWindow);
         }

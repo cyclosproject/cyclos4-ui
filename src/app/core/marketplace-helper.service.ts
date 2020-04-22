@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import { AdStatusEnum, OrderStatusEnum, ShoppingCartItemDetailed, AdCategoryWithChildren } from 'app/api/models';
-import { I18n } from 'app/i18n/i18n';
+import { AdCategoryWithChildren, AdStatusEnum, OrderStatusEnum, ShoppingCartItemDetailed } from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
-import { BehaviorSubject } from 'rxjs';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
-import { empty } from 'app/shared/helper';
+import { I18n } from 'app/i18n/i18n';
 import { HierarchyItem } from 'app/marketplace/hierarchy-item.component';
+import { empty } from 'app/shared/helper';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Helper service for marketplace functions
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MarketplaceHelperService {
 
@@ -22,7 +22,7 @@ export class MarketplaceHelperService {
     private i18n: I18n,
     protected authHelper: AuthHelperService,
     protected dataForUiHolder: DataForUiHolder,
-    protected format: FormatService
+    protected format: FormatService,
   ) {
 
     // Subscribe for cart items count on UI initialization
@@ -54,8 +54,8 @@ export class MarketplaceHelperService {
   }
 
   /**
- * Resolves the label for the given order status
- */
+   * Resolves the label for the given order status
+   */
   resolveOrderStatusLabel(status: OrderStatusEnum) {
     switch (status) {
       case OrderStatusEnum.COMPLETED:
@@ -84,8 +84,8 @@ export class MarketplaceHelperService {
   }
 
   /**
- * Returns the items quantity formatted with decimals based on the webshop definition
- */
+   * Returns the items quantity formatted with decimals based on the webshop definition
+   */
   getFormattedQuantity(item: ShoppingCartItemDetailed): string {
     return this.format.formatAsNumber(item.quantity, item.product.allowDecimalQuantity ? 2 : 0);
   }

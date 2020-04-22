@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  OperatorGroupAccountAccessEnum, OperatorGroupAccountView, OperatorGroupView,
-  OperatorGroupPaymentView, TransferTypeWithCurrency
+  OperatorGroupAccountAccessEnum, OperatorGroupAccountView, OperatorGroupPaymentView,
+  OperatorGroupView, TransferTypeWithCurrency,
 } from 'app/api/models';
 import { OperatorGroupsService } from 'app/api/services';
 import { UserHelperService } from 'app/core/user-helper.service';
@@ -15,7 +15,7 @@ import { Menu } from 'app/shared/menu';
 @Component({
   selector: 'view-operator-group',
   templateUrl: 'view-operator-group.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewOperatorGroupComponent
   extends BaseViewPageComponent<OperatorGroupView>
@@ -66,11 +66,11 @@ export class ViewOperatorGroupComponent
       const headingActions: HeadingAction[] = [
         new HeadingAction('edit', this.i18n.general.edit, () => {
           this.router.navigateByUrl(this.router.url + '/edit');
-        }, true)
+        }, true),
       ];
       if (this.layout.ltsm) {
         headingActions.push(
-          new HeadingAction('clear', this.i18n.general.remove, () => this.remove())
+          new HeadingAction('clear', this.i18n.general.remove, () => this.remove()),
         );
       }
       this.headingActions = headingActions;
@@ -80,7 +80,7 @@ export class ViewOperatorGroupComponent
   remove() {
     this.notification.confirm({
       message: this.i18n.general.removeConfirm(this.group.name),
-      callback: () => this.doRemove()
+      callback: () => this.doRemove(),
     });
   }
 

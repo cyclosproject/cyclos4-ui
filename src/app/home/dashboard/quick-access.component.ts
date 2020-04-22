@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { QuickAccessDescriptor } from 'app/content/quick-access-descriptor';
 import { QuickAccessType } from 'app/content/quick-access-type';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
-import { empty, handleKeyboardFocus, blurIfClick } from 'app/shared/helper';
+import { blurIfClick, empty, handleKeyboardFocus } from 'app/shared/helper';
 import { Icon } from 'app/shared/icon';
 import { Breakpoint } from 'app/shared/layout.service';
 import { ActiveMenu, Menu, MenuEntry } from 'app/shared/menu';
@@ -23,7 +23,7 @@ export interface QuickAccessAction {
   selector: 'quick-access',
   templateUrl: 'quick-access.component.html',
   styleUrls: ['quick-access.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuickAccessComponent extends BaseDashboardComponent implements OnInit {
 
@@ -46,7 +46,7 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
     const auth = dataForUi.auth;
     const permissions = auth.permissions;
     const addAction = (descriptor: QuickAccessDescriptor | QuickAccessType,
-      icon: Icon, label: string, activeMenu: ActiveMenu, onClick?: () => void): void => {
+                       icon: Icon, label: string, activeMenu: ActiveMenu, onClick?: () => void): void => {
       let desc: QuickAccessDescriptor;
       if (typeof descriptor === 'string') {
         desc = desc = this.descriptors.find(d => d.type === descriptor);
@@ -57,11 +57,11 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
         const entry = this.menu.menuEntry(activeMenu);
         if (entry) {
           this.actions.push({
-            icon: icon,
-            label: label,
-            entry: entry,
+            icon,
+            label,
+            entry,
             breakpoints: desc.breakpoints,
-            onClick: onClick
+            onClick,
           });
         }
       }
@@ -77,7 +77,7 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
         if (accountDescriptor) {
           const accountLabel = accounts.length === 1 ? this.i18n.dashboard.action.account : accountType.name;
           addAction(accountDescriptor, 'quick_access_account', accountLabel, new ActiveMenu(Menu.ACCOUNT_HISTORY, {
-            accountType: accountType
+            accountType,
           }));
         }
       }
@@ -127,7 +127,7 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
     // Handle keyboard shortcuts: arrows to navigate correctly on the grid
     this.addShortcut(Arrows, event => {
       handleKeyboardFocus(this.layout, this.element, event, {
-        horizontalOffset: 1, verticalOffset: 2
+        horizontalOffset: 1, verticalOffset: 2,
       });
     });
 
@@ -155,7 +155,7 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
       this.menu.navigate({
         entry: action.entry,
         clear: false,
-        event: event
+        event,
       });
     }
   }

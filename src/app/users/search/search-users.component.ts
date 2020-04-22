@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  Country, CustomFieldDetailed, RoleEnum, UserAddressResultEnum, UserDataForMap,
-  UserDataForSearch, User, UserQueryFilters
+  Country, CustomFieldDetailed, RoleEnum, User, UserAddressResultEnum,
+  UserDataForMap, UserDataForSearch, UserQueryFilters,
 } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { UsersService } from 'app/api/services';
@@ -10,15 +10,15 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { MaxDistance } from 'app/shared/max-distance';
+import { Menu } from 'app/shared/menu';
 import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Menu } from 'app/shared/menu';
 
 export enum UserSearchKind {
   Public,
   Member,
   Admin,
-  Broker
+  Broker,
 }
 
 /**
@@ -27,7 +27,7 @@ export enum UserSearchKind {
 @Component({
   selector: 'search-users',
   templateUrl: 'search-users.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchUsersComponent
   extends BaseSearchPageComponent<UserDataForSearch | UserDataForMap, UserQueryFilters, UserResult> implements OnInit {
@@ -54,7 +54,7 @@ export class SearchUsersComponent
   constructor(
     injector: Injector,
     private usersService: UsersService,
-    private countriesResolve: CountriesResolve
+    private countriesResolve: CountriesResolve,
   ) {
     super(injector);
   }
@@ -165,7 +165,7 @@ export class SearchUsersComponent
       const fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
       this.doIgnoringUpdate(() => {
         this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(fieldsInSearch, {
-          useDefaults: false
+          useDefaults: false,
         }));
         this.basicField$.next(fieldsInSearch.length === 0 ? null : fieldsInSearch[0]);
         this.advancedFields$.next(fieldsInSearch.length > 1 ? fieldsInSearch.slice(1) : []);
@@ -188,7 +188,7 @@ export class SearchUsersComponent
         // Get the data for regular user search
         this.stateManager.cache('dataForSearch', this.usersService.getUserDataForSearch({
           fromMenu: true,
-          broker: this.kind === UserSearchKind.Broker ? this.param : null
+          broker: this.kind === UserSearchKind.Broker ? this.param : null,
         })).subscribe(setData);
       }
     }

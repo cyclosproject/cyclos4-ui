@@ -7,7 +7,7 @@ import {
   ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError, NotFoundError,
   OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, RedeemVoucherError,
   RedeemVoucherErrorCode, ShoppingCartError, ShoppingCartErrorCode,
-  UnauthorizedError, UnauthorizedErrorCode
+  UnauthorizedError, UnauthorizedErrorCode,
 } from 'app/api/models';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
@@ -26,7 +26,7 @@ import { NextRequestState } from './next-request-state';
  * Service used to handle application errors
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ErrorHandlerService {
 
@@ -39,7 +39,7 @@ export class ErrorHandlerService {
     private login: LoginService,
     private dataForUiHolder: DataForUiHolder,
     private i18n: I18n,
-    private bankingHelper: BankingHelperService
+    private bankingHelper: BankingHelperService,
   ) { }
 
   /**
@@ -180,7 +180,7 @@ export class ErrorHandlerService {
   }
 
   private collectInputErrors(page: BasePageComponent<any>, generalErrors: string[],
-    error: InputError, nestedProperty?: string, nestedIndex?: number) {
+                             error: InputError, nestedProperty?: string, nestedIndex?: number) {
     if (error == null || error.code == null) {
       return;
     }
@@ -194,14 +194,14 @@ export class ErrorHandlerService {
       for (const key of error.properties || []) {
         const errors = error.propertyErrors[key];
         this.applyInputErrors(generalErrors, errors, page,
-          { property: key, nestedProperty: nestedProperty, nestedIndex: nestedIndex });
+          { property: key, nestedProperty, nestedIndex });
       }
 
       // Custom field errors
       for (const key of error.customFields || []) {
         const errors = error.customFieldErrors[key];
         this.applyInputErrors(generalErrors, errors, page,
-          { customField: key, nestedProperty: nestedProperty, nestedIndex: nestedIndex });
+          { customField: key, nestedProperty, nestedIndex });
       }
     } else if (error.code === InputErrorCode.AGGREGATED) {
       // Aggregated errors
@@ -229,7 +229,7 @@ export class ErrorHandlerService {
       if (control) {
         // A formControl is found - set its error
         control.setErrors({
-          message: errors[0]
+          message: errors[0],
         });
       } else {
         // No form control -> show as general errors
@@ -337,7 +337,7 @@ export class ErrorHandlerService {
     if (control) {
       // A formControl is found - set its error
       control.setErrors({
-        message: message
+        message,
       });
     } else {
       // No form control -> show as general errors
@@ -426,7 +426,7 @@ export class ErrorHandlerService {
       if (error.key) {
         return this.i18n.error.notFound.typeKey({
           type: error.entityType,
-          key: error.key
+          key: error.key,
         });
       } else {
         return this.i18n.error.notFound.type(error.entityType);

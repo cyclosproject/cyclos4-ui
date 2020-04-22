@@ -1,18 +1,18 @@
-import { Component, OnInit, Injector, ChangeDetectionStrategy } from '@angular/core';
-import { RecordDataForSearch, RecordResult, RecordQueryFilters, CustomFieldDetailed, RecordLayoutEnum } from 'app/api/models';
-import { RecordsService } from 'app/api/services';
 import { HttpResponse } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { BasePageComponent } from 'app/shared/base-page.component';
-import { HeadingAction } from 'app/shared/action';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { CustomFieldDetailed, RecordDataForSearch, RecordLayoutEnum, RecordQueryFilters, RecordResult } from 'app/api/models';
+import { RecordsService } from 'app/api/services';
 import { RecordHelperService } from 'app/core/records-helper.service';
+import { HeadingAction } from 'app/shared/action';
+import { BasePageComponent } from 'app/shared/base-page.component';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 type RecordSearchParams = RecordQueryFilters & { owner: string, type: string };
 
 @Component({
   selector: 'tiled-records',
   templateUrl: 'tiled-records.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class TiledRecordsComponent
@@ -27,7 +27,7 @@ export class TiledRecordsComponent
   constructor(
     injector: Injector,
     private recordsService: RecordsService,
-    private recordsHelper: RecordHelperService
+    private recordsHelper: RecordHelperService,
   ) {
     super(injector);
   }
@@ -72,7 +72,7 @@ export class TiledRecordsComponent
   remove(record: RecordResult) {
     this.notification.confirm({
       message: this.i18n.general.removeItemConfirm,
-      callback: () => this.doRemove(record)
+      callback: () => this.doRemove(record),
     });
   }
 
@@ -88,7 +88,7 @@ export class TiledRecordsComponent
       // "Unlimited page size" using Java Max Integer Value, otherwise a DataConversionException is thrown by Cyclos
       pageSize: 2147483647,
       owner: this.param,
-      type: this.type
+      type: this.type,
     };
   }
 

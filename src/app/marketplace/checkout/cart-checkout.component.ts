@@ -1,16 +1,16 @@
-import { ChangeDetectionStrategy, OnInit, Component, Injector } from '@angular/core';
-import { ShoppingCartDataForCheckout, DeliveryMethod, Address, DeviceConfirmationTypeEnum, ShoppingCartCheckout } from 'app/api/models';
-import { BasePageComponent } from 'app/shared/base-page.component';
-import { Menu, ActiveMenu } from 'app/shared/menu';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Address, DeliveryMethod, DeviceConfirmationTypeEnum, ShoppingCartCheckout, ShoppingCartDataForCheckout } from 'app/api/models';
 import { ShoppingCartsService } from 'app/api/services';
-import { BehaviorSubject } from 'rxjs';
-import { FormGroup, FormControl } from '@angular/forms';
-import { empty } from 'app/shared/helper';
 import { AddressHelperService } from 'app/core/address-helper.service';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
-import { validateBeforeSubmit } from 'app/shared/helper';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { BasePageComponent } from 'app/shared/base-page.component';
+import { ConfirmationMode } from 'app/shared/confirmation-mode';
+import { empty } from 'app/shared/helper';
+import { validateBeforeSubmit } from 'app/shared/helper';
+import { ActiveMenu, Menu } from 'app/shared/menu';
 import { cloneDeep } from 'lodash';
+import { BehaviorSubject } from 'rxjs';
 
 export type CheckoutStep = 'delivery' | 'address' | 'payment' | 'confirm';
 
@@ -20,7 +20,7 @@ export type CheckoutStep = 'delivery' | 'address' | 'payment' | 'confirm';
 @Component({
   selector: 'cart-checkout',
   templateUrl: 'cart-checkout.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataForCheckout>
   implements OnInit {
@@ -49,7 +49,7 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
 
     const id = this.route.snapshot.params.id;
 
-    this.addSub(this.shoppingCartService.getShoppingCartDataForCheckout({ id: id }).subscribe(data => {
+    this.addSub(this.shoppingCartService.getShoppingCartDataForCheckout({ id }).subscribe(data => {
       this.data = data;
     }));
   }
@@ -74,7 +74,7 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
     // Addresses
     const customAddress: Address = {
       id: 'customAddress',
-      name: this.i18n.ad.customAddress
+      name: this.i18n.ad.customAddress,
     };
     data.addresses.push(customAddress);
     const addressField = this.formBuilder.control(data.addresses);
@@ -171,7 +171,7 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
     this.addSub(this.shoppingCartService.checkoutShoppingCart({
       id: this.data.cart.id,
       body: checkout,
-      confirmationPassword: this.confirmationPassword.value
+      confirmationPassword: this.confirmationPassword.value,
     }).subscribe(items => {
       this.marketplaceHelper.cartItems = items;
       this.notification.snackBar(this.i18n.ad.orderWaitingForSellersApproval);

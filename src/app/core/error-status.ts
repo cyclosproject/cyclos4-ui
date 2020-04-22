@@ -35,5 +35,5 @@ export enum ErrorStatus {
   /**
    * Status Code: 500.
    */
-  INTERNAL_SERVER_ERROR = 500
+  INTERNAL_SERVER_ERROR = 500,
 }

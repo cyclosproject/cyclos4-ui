@@ -1,4 +1,4 @@
-import { Directive, OnDestroy, OnInit, Inject, Input } from '@angular/core';
+import { Directive, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { BaseFormFieldWithOptionsComponent, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { FieldOption } from 'app/shared/field-option';
 
@@ -8,7 +8,7 @@ import { FieldOption } from 'app/shared/field-option';
  */
 @Directive({
   // tslint:disable-next-line:directive-selector
-  selector: 'field-option'
+  selector: 'field-option',
 })
 export class FieldOptionDirective implements OnInit, OnDestroy, FieldOption {
 
@@ -23,7 +23,7 @@ export class FieldOptionDirective implements OnInit, OnDestroy, FieldOption {
   _level: number;
 
   constructor(
-    @Inject(FORM_FIELD_WITH_OPTIONS) private component: BaseFormFieldWithOptionsComponent<any>
+    @Inject(FORM_FIELD_WITH_OPTIONS) private component: BaseFormFieldWithOptionsComponent<any>,
   ) { }
 
   ngOnInit(): void {

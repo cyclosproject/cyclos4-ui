@@ -25,18 +25,18 @@ function setupConfigurationDefaults() {
   Configuration.searchPageSize = 40;
   Configuration.quickSearchPageSize = 10;
   Configuration.adCategories = {
-    'community': { icon: 'people', color: '#2196f3' },
-    'food': { icon: 'restaurant', color: '#f04d4e' },
-    'goods': { icon: 'pages', color: '#ff9700' },
-    'housing': { icon: 'location_city', color: '#029487' },
-    'jobs': { icon: 'work', color: '#8062b3' },
-    'labor': { icon: 'business', color: '#de3eaa' },
-    'leisure': { icon: 'mood', color: '#687ebd' },
-    'services': { icon: 'room_service', color: '#8ec63f' }
+    community: { icon: 'people', color: '#2196f3' },
+    food: { icon: 'restaurant', color: '#f04d4e' },
+    goods: { icon: 'pages', color: '#ff9700' },
+    housing: { icon: 'location_city', color: '#029487' },
+    jobs: { icon: 'work', color: '#8062b3' },
+    labor: { icon: 'business', color: '#de3eaa' },
+    leisure: { icon: 'mood', color: '#687ebd' },
+    services: { icon: 'room_service', color: '#8ec63f' },
   };
   Configuration.menuBar = false;
   Configuration.homePage = {
-    content: ContentGetter.url('content/home.html')
+    content: ContentGetter.url('content/home.html'),
   };
   Configuration.breakpoints = {};
   for (const bp of ALL_BREAKPOINTS) {
@@ -53,8 +53,8 @@ export function initialize(
   apiConfig: ApiConfiguration,
   i18nLoading: I18nLoadingService,
   dataForUiHolder: DataForUiHolder,
-  nextRequestState: NextRequestState
-): Function {
+  nextRequestState: NextRequestState,
+): () => any {
   return async () => {
     // First setup the configuration with the defaults
     setupConfigurationDefaults();
@@ -109,7 +109,7 @@ export const INITIALIZE: Provider = {
     ApiConfiguration,
     I18nLoadingService,
     DataForUiHolder,
-    NextRequestState
+    NextRequestState,
   ],
-  multi: true
+  multi: true,
 };

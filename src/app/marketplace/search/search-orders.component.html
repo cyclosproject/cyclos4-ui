@@ -1,11 +1,12 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
     <page-content class="no-padding"
-      [mode]="(moreFilters$ | async) || !(this.layout.ltsm$ | async) ? 'filters' : 'emptyFilters'"
+      [mode]="(moreFilters$ | async) || (this.layout.ltsm$ | async) === false ? 'filters' : 'emptyFilters'"
       [heading]="sales ? i18n.ad.title.sales : i18n.ad.title.purchases"
       [mobileHeading]="sales ? i18n.ad.mobileTitle.sales : i18n.ad.mobileTitle.purchases"
       [headingActions]="headingActions$ | async">
-      <form *ngIf="(moreFilters$ | async) || !(this.layout.ltsm$ | async)"
+      <form
+        *ngIf="(moreFilters$ | async) || (this.layout.ltsm$ | async) === false"
         [formGroup]="form"
         class="filters-form filters-form-separator border-0">
         <div class="row">

@@ -5,9 +5,9 @@ import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { MenuService } from 'app/core/menu.service';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
+import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu } from 'app/shared/menu';
 import { first } from 'rxjs/operators';
-import { LayoutService } from 'app/shared/layout.service';
 
 const TimeoutMillis = 6000;
 
@@ -18,7 +18,7 @@ const TimeoutMillis = 6000;
   selector: 'push-notification',
   templateUrl: 'push-notification.component.html',
   styleUrls: ['push-notification.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PushNotificationComponent {
 
@@ -50,7 +50,7 @@ export class PushNotificationComponent {
     private notificationsService: NotificationsService,
     private menuService: MenuService,
     private errorHandler: ErrorHandlerService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
   ) {
     this.closed.subscribe(() => {
       if (this.timeoutHandle) {
@@ -66,7 +66,7 @@ export class PushNotificationComponent {
       this.menuService.navigate({
         url: this.path,
         menu: this.menu,
-        event: event
+        event,
       });
     }
 

@@ -10,7 +10,7 @@ import { tap } from 'rxjs/operators';
  * Intercepts requests to set the correct headers and handle errors
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiInterceptor implements HttpInterceptor {
 
@@ -55,8 +55,8 @@ export class ApiInterceptor implements HttpInterceptor {
             this.errorHandler.handleHttpError(err);
           }
         },
-        () => this.nextRequestState.finish(req)
-      )
+        () => this.nextRequestState.finish(req),
+      ),
     );
   }
 }

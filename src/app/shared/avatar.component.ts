@@ -1,11 +1,11 @@
 import {
   AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef,
   Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output,
-  SimpleChanges, ViewChild
+  SimpleChanges, ViewChild,
 } from '@angular/core';
 import { Image } from 'app/api/models';
 import { galleryImage, truthyAttr } from 'app/shared/helper';
-import { NgxGalleryComponent, NgxGalleryImage, NgxGalleryOptions } from 'ngx-gallery';
+import { NgxGalleryComponent, NgxGalleryImage, NgxGalleryOptions } from 'ngx-gallery-9';
 
 /**
  * The size for rendered avatars.
@@ -13,13 +13,13 @@ import { NgxGalleryComponent, NgxGalleryImage, NgxGalleryOptions } from 'ngx-gal
  */
 export type AvatarSize = 'small' | 'small-medium' | 'medium' | 'medium-large' | 'large' | 'xlarge' | 'huge' | 'full';
 export const SIZES: { [key: string]: number } = {
-  'small': 24,
+  small: 24,
   'small-medium': 30,
-  'medium': 36,
+  medium: 36,
   'medium-large': 50,
-  'large': 64,
-  'xlarge': 96,
-  'huge': 128
+  large: 64,
+  xlarge: 96,
+  huge: 128,
 };
 
 /**
@@ -31,7 +31,7 @@ export const SIZES: { [key: string]: number } = {
   selector: 'avatar',
   templateUrl: 'avatar.component.html',
   styleUrls: ['avatar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
 
@@ -63,7 +63,7 @@ export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
   }
 
   fullSize = false;
-  private _size: number = SIZES['medium'];
+  private _size: number = SIZES.medium;
   /**
    * The size of images and icons
    */
@@ -112,7 +112,7 @@ export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
 
   url: string;
   visible = false;
-  @ViewChild(NgxGalleryComponent, { static: false }) gallery: NgxGalleryComponent;
+  @ViewChild(NgxGalleryComponent) gallery: NgxGalleryComponent;
 
   galleryOptions: NgxGalleryOptions[];
 
@@ -149,7 +149,7 @@ export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
           previewKeyboardNavigation: true,
           previewCloseOnClick: true,
           previewCloseOnEsc: true,
-          previewArrows: additional.length > 0
+          previewArrows: additional.length > 0,
         }];
         if (this.gallery) {
           this.gallery.images = this.galleryImages;

@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { SessionResult, SessionDataForSearch, SessionQueryFilters, RoleEnum } from 'app/api/models';
+import { RoleEnum, SessionDataForSearch, SessionQueryFilters, SessionResult } from 'app/api/models';
 import { SessionsService } from 'app/api/services';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { Observable } from 'rxjs';
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'search-connected',
   templateUrl: 'search-connected.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchConnectedComponent
   extends BaseSearchPageComponent<SessionDataForSearch, SessionQueryFilters, SessionResult>
@@ -19,7 +19,7 @@ export class SearchConnectedComponent
 
   constructor(
     injector: Injector,
-    private sessionsService: SessionsService
+    private sessionsService: SessionsService,
   ) {
     super(injector);
   }

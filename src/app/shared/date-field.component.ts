@@ -1,10 +1,10 @@
 import {
   ChangeDetectionStrategy, Component, ElementRef, Host, Injector,
-  Input, OnInit, Optional, QueryList, SkipSelf, ViewChild, ViewChildren
+  Input, OnInit, Optional, QueryList, SkipSelf, ViewChild, ViewChildren,
 } from '@angular/core';
 import {
   AbstractControl, ControlContainer, FormArray, FormBuilder,
-  NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
+  NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator,
 } from '@angular/forms';
 import { CustomFieldSizeEnum } from 'app/api/models';
 import { ISO_DATE } from 'app/core/format.service';
@@ -27,8 +27,8 @@ import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: DateFieldComponent, multi: true },
-    { provide: NG_VALIDATORS, useExisting: DateFieldComponent, multi: true }
-  ]
+    { provide: NG_VALIDATORS, useExisting: DateFieldComponent, multi: true },
+  ],
 })
 export class DateFieldComponent
   extends BaseFormFieldComponent<string> implements Validator, OnInit {
@@ -46,8 +46,8 @@ export class DateFieldComponent
   fieldInitials: string[];
 
   @ViewChildren('part') parts: QueryList<ElementRef>;
-  @ViewChild('toggleButton', { static: false }) toggleRef: ElementRef;
-  @ViewChild('dropdown', { static: false }) dropdown: BsDropdownDirective;
+  @ViewChild('toggleButton') toggleRef: ElementRef;
+  @ViewChild('dropdown') dropdown: BsDropdownDirective;
   @ViewChildren(CalendarComponent) calendar: QueryList<CalendarComponent>;
 
   constructor(
@@ -126,7 +126,7 @@ export class DateFieldComponent
     this.fieldInitials = this.fieldNames.map(n => n.charAt(0));
     const yearOptions = range(
       this.min == null ? now.year() - 100 : this.min.year(),
-      (this.max == null ? now.year() + 5 : this.max.year()) + 1
+      (this.max == null ? now.year() + 5 : this.max.year()) + 1,
     ).map(String).reverse();
     const monthOptions = range(1, 13);
     const dateOptions = range(1, 32).map(String);
@@ -134,7 +134,7 @@ export class DateFieldComponent
     this.optionLabels = this.format.applyDateFields([
       yearOptions,
       monthOptions.map(i => this.format.shortMonthName(i - 1)),
-      dateOptions
+      dateOptions,
     ]);
   }
 
@@ -149,7 +149,7 @@ export class DateFieldComponent
       const mmt = moment(raw);
       if (mmt.isValid()) {
         partValue = this.format.applyDateFields(
-          [String(mmt.year()), String(mmt.month() + 1), String(mmt.date())]
+          [String(mmt.year()), String(mmt.month() + 1), String(mmt.date())],
         );
       }
     }
@@ -181,12 +181,12 @@ export class DateFieldComponent
       }
       if (this.min != null && mmnt.isBefore(this.min)) {
         errors.minDate = {
-          min: this.format.formatAsDate(this.min)
+          min: this.format.formatAsDate(this.min),
         };
       }
       if (this.max != null && mmnt.isAfter(this.max)) {
         errors.maxDate = {
-          max: this.format.formatAsDate(this.max)
+          max: this.format.formatAsDate(this.max),
         };
       }
     }

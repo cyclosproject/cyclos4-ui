@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnIn
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   AccountKind, CreateDeviceConfirmation, DeviceConfirmationTypeEnum,
-  PaymentPreview, PerformPayment, TransferFeePreview, User
+  PaymentPreview, PerformPayment, TransferFeePreview, User,
 } from 'app/api/models';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -11,14 +11,13 @@ import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { empty } from 'app/shared/helper';
 import { Enter } from 'app/shared/shortcut.service';
 
-
 /**
  * Payment step: confirm the payment
  */
 @Component({
   selector: 'payment-step-confirm',
   templateUrl: 'payment-step-confirm.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentStepConfirmComponent extends BaseComponent implements OnInit {
 
@@ -42,7 +41,7 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
   createDeviceConfirmation: () => CreateDeviceConfirmation | PerformPayment;
 
   constructor(injector: Injector,
-    public bankingHelper: BankingHelperService) {
+              public bankingHelper: BankingHelperService) {
     super(injector);
   }
 
@@ -73,7 +72,7 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
         from: ApiHelper.accountOwner(this.preview.fromAccount),
         to: ApiHelper.accountOwner(this.preview.toAccount),
         paymentType: this.preview.paymentType.id,
-        amount: this.preview.payment.amount
+        amount: this.preview.payment.amount,
       };
     };
     // When there's no confirmation password, the Enter key will confirm

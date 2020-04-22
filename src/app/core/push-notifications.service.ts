@@ -1,10 +1,10 @@
 import { Injectable, NgZone } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { DeviceConfirmationView, NewNotificationPush, IdentityProviderCallbackResult, PushNotificationEventKind } from 'app/api/models';
+import { DeviceConfirmationView, IdentityProviderCallbackResult, NewNotificationPush, PushNotificationEventKind } from 'app/api/models';
 import { NextRequestState } from 'app/core/next-request-state';
+import { empty } from 'app/shared/helper';
 import { EventSourcePolyfill } from 'ng-event-source';
 import { Subject } from 'rxjs';
-import { empty } from 'app/shared/helper';
 
 export const Kinds: PushNotificationEventKind[] = [
   PushNotificationEventKind.LOGGED_OUT,
@@ -13,12 +13,11 @@ export const Kinds: PushNotificationEventKind[] = [
   PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK];
 export const ClientId = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
 
-
 /**
  * Handles the registration and notitification of push events
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PushNotificationsService {
 
@@ -32,7 +31,7 @@ export class PushNotificationsService {
   constructor(
     private apiConfiguration: ApiConfiguration,
     private zone: NgZone,
-    private nextRequestState: NextRequestState
+    private nextRequestState: NextRequestState,
   ) {
   }
 
@@ -48,7 +47,7 @@ export class PushNotificationsService {
     let url = this.apiConfiguration.rootUrl + '/push/subscribe?clientId=' + ClientId;
     kinds.forEach(kind => url += '&kinds=' + kind);
     this.eventSource = new EventSourcePolyfill(url, {
-      headers: this.nextRequestState.headers
+      headers: this.nextRequestState.headers,
     });
 
     // Setup the listeners
@@ -70,7 +69,7 @@ export class PushNotificationsService {
       + PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK
       + `&identityProviderRequestId=${requestId}`;
     this.eventSource = new EventSourcePolyfill(url, {
-      headers: this.nextRequestState.headers
+      headers: this.nextRequestState.headers,
     });
     this.setupListener(PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK, this.identityProviderCallback$);
   }

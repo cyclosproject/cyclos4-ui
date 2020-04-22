@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { DashboardItemConfig } from 'app/content/dashboard-item-config';
 import { DashboardItemType } from 'app/content/dashbord-item-type';
 import { BaseComponent } from 'app/shared/base.component';
-import { BehaviorSubject } from 'rxjs';
 import { blank } from 'app/shared/helper';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * An item in the dashboard
@@ -12,7 +12,7 @@ import { blank } from 'app/shared/helper';
   selector: 'dashboard-item',
   templateUrl: 'dashboard-item.component.html',
   styleUrls: ['dashboard-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardItemComponent extends BaseComponent implements OnInit {
   DashboardItemType = DashboardItemType;

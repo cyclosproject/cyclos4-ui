@@ -10,11 +10,11 @@ import { SharedModule } from 'app/shared/shared.module';
 @NgModule({
   declarations: [
     RunOperationComponent,
-    OperationCallbackComponent
+    OperationCallbackComponent,
   ],
   imports: [
     OperationsRoutingModule,
-    SharedModule
-  ]
+    SharedModule,
+  ],
 })
 export class OperationsModule { }

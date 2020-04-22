@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { Transfer, TransferView } from 'app/api/models';
 import { BankingHelperService } from 'app/core/banking-helper.service';
+import { HeadingAction } from 'app/shared/action';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
-import { HeadingAction } from 'app/shared/action';
-
 
 /**
  * Displays fields of a transfer or payment
@@ -12,7 +11,7 @@ import { HeadingAction } from 'app/shared/action';
 @Component({
   selector: 'transfer-details',
   templateUrl: 'transfer-details.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransferDetailsComponent extends BaseComponent implements OnInit {
 

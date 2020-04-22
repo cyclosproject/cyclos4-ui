@@ -33,171 +33,171 @@ const usersRoutes: Routes = [
     children: [
       {
         path: 'search',
-        component: SearchUsersComponent
+        component: SearchUsersComponent,
       },
       {
         path: 'brokerings',
         component: SearchUsersComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: ':user/brokerings',
         component: SearchUsersComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: ':user/brokers',
         component: ListUserBrokersComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: ':user/brokers/history',
         component: ViewBrokerHistoryComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: ':user/brokers/new',
         component: BrokerFormComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: ':user/profile',
         component: ViewProfileComponent,
         resolve: {
-          countries: CountriesResolve
-        }
+          countries: CountriesResolve,
+        },
       },
       {
         path: ':user/profile/edit',
         component: EditProfileComponent,
         canActivate: [LoggedUserGuard],
         resolve: {
-          countries: CountriesResolve
-        }
+          countries: CountriesResolve,
+        },
       },
       {
         path: 'operators',
         component: SearchUserOperatorsComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: ':user/operators',
         component: SearchUserOperatorsComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: ':user/operators/registration',
         component: OperatorRegistrationComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: 'operators/:user',
         component: ViewProfileComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: 'operators/:user/edit',
         component: EditProfileComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: ':user/status',
         component: ViewUserStatusComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: ':user/status/history',
         component: ViewUserStatusHistoryComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: ':user/group',
         component: ViewUserGroupComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: ':user/group/history',
         component: ViewUserGroupHistoryComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: 'operator-groups',
         component: ListOperatorGroupsComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: ':user/operator-groups',
         component: ListOperatorGroupsComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: ':user/operator-groups/new',
         component: OperatorGroupFormComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: 'operator-groups/:id',
         component: ViewOperatorGroupComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: 'operator-groups/:id/edit',
         component: OperatorGroupFormComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: 'contacts',
         component: ContactListComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: 'contacts/:user',
         component: ViewProfileComponent,
         canActivate: [LoggedUserGuard],
         resolve: {
-          countries: CountriesResolve
-        }
+          countries: CountriesResolve,
+        },
       },
       {
         path: ':user/passwords',
         component: ManagePasswordsComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: ':user/identity-providers',
         component: UserIdentityProvidersComponent,
-        canActivate: [LoggedUserGuard]
+        canActivate: [LoggedUserGuard],
       },
       {
         path: 'registration',
         component: UserRegistrationComponent,
         resolve: {
-          countries: CountriesResolve
-        }
+          countries: CountriesResolve,
+        },
       },
       {
         path: 'validate-registration/:key',
-        component: ValidateRegistrationComponent
+        component: ValidateRegistrationComponent,
       },
       {
         path: 'connected',
-        component: SearchConnectedComponent
+        component: SearchConnectedComponent,
       },
       {
         path: 'alerts',
-        component: SearchUserAlertsComponent
+        component: SearchUserAlertsComponent,
       },
       {
         path: 'validate-email-change/:key',
-        component: ValidateEmailChangeComponent
+        component: ValidateEmailChangeComponent,
       },
       {
         path: ':user/notification-settings',
         component: NotificationSettingsFormComponent,
-        canActivate: [LoggedUserGuard]
-      }
-    ]
-  }
+        canActivate: [LoggedUserGuard],
+      },
+    ],
+  },
 ];
 
 /**
@@ -205,11 +205,11 @@ const usersRoutes: Routes = [
  */
 @NgModule({
   imports: [
-    RouterModule.forChild(usersRoutes)
+    RouterModule.forChild(usersRoutes),
   ],
   exports: [
-    RouterModule
-  ]
+    RouterModule,
+  ],
 })
 export class UsersRoutingModule {
 }

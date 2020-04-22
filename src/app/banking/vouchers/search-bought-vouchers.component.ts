@@ -14,7 +14,7 @@ type UserVouchersSearchParams = UserVouchersQueryFilters & { user: string };
 @Component({
   selector: 'search-bought-vouchers',
   templateUrl: 'search-bought-vouchers.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBoughtVouchersComponent
   extends BaseSearchPageComponent<UserVouchersDataForSearch, UserVouchersSearchParams, VoucherResult> implements OnInit {
@@ -34,7 +34,7 @@ export class SearchBoughtVouchersComponent
         .subscribe(data => {
           this.form.patchValue(data.query);
           this.data = data;
-        })
+        }),
     );
   }
 
@@ -42,7 +42,7 @@ export class SearchBoughtVouchersComponent
     const statuses = Object.values(VoucherStatusEnum) as VoucherStatusEnum[];
     return statuses.map(st => ({
       value: st,
-      text: this.voucherStatus(st)
+      text: this.voucherStatus(st),
     }));
   }
 

@@ -3,24 +3,24 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormControl, FormGroup } from '@angular/forms';
 import { Params } from '@angular/router';
 import {
-  CustomFieldDetailed, OperationDataForRun, OperationResultTypeEnum,
-  OperationRowActionEnum, RunOperationResult, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, OperationScopeEnum
+  CreateDeviceConfirmation, CustomFieldDetailed, DeviceConfirmationTypeEnum,
+  OperationDataForRun, OperationResultTypeEnum, OperationRowActionEnum, OperationScopeEnum, RunOperationResult,
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services/operations.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { OperationHelperService } from 'app/core/operation-helper.service';
+import { RecordHelperService } from 'app/core/records-helper.service';
 import { OperationRunScope } from 'app/operations/operation-run-scope';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
+import { ActiveMenu, Menu } from 'app/shared/menu';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
-import { ActiveMenu, Menu } from 'app/shared/menu';
-import { RecordHelperService } from 'app/core/records-helper.service';
 
 /**
  * Runs a custom operation
@@ -28,7 +28,7 @@ import { RecordHelperService } from 'app/core/records-helper.service';
 @Component({
   selector: 'run-operation',
   templateUrl: 'run-operation.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RunOperationComponent
   extends BasePageComponent<OperationDataForRun>
@@ -82,12 +82,12 @@ export class RunOperationComponent
     }
 
     const params: any = {
-      operation: route.params.operation
+      operation: route.params.operation,
     };
 
     this.createDeviceConfirmation = () => ({
       type: DeviceConfirmationTypeEnum.RUN_OPERATION,
-      operation: this.data.id
+      operation: this.data.id,
     });
 
     let request: Observable<OperationDataForRun>;
@@ -164,7 +164,7 @@ export class RunOperationComponent
       this.stateManager.manage(this.form);
       this.pageData = {
         page: 0,
-        pageSize: this.layout.searchPageSize
+        pageSize: this.layout.searchPageSize,
       };
     }
 
@@ -202,7 +202,7 @@ export class RunOperationComponent
         message: data.confirmationText,
         createDeviceConfirmation: this.createDeviceConfirmation,
         passwordInput: data.confirmationPasswordInput,
-        callback: conf => this.doRun(data, conf.confirmationPassword)
+        callback: conf => this.doRun(data, conf.confirmationPassword),
       });
     } else {
       this.doRun(data, null);
@@ -218,10 +218,10 @@ export class RunOperationComponent
     // Get the request from OperationHelperService
     const request = this.operationHelper.runRequest(data, {
       scopeId: this.scopeId,
-      confirmationPassword: confirmationPassword,
+      confirmationPassword,
       formParameters: this.form.value,
       pageData: this.pageData,
-      upload: this.fileControl.value
+      upload: this.fileControl.value,
     });
 
     // Append the query parameters
@@ -288,7 +288,7 @@ export class RunOperationComponent
       case OperationRowActionEnum.OPERATION:
         const operation = data.rowOperation;
         this.router.navigate(['operations', 'action', ApiHelper.internalNameOrId(operation)], {
-          queryParams: params
+          queryParams: params,
         });
         break;
       case OperationRowActionEnum.URL:

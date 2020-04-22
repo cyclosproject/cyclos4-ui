@@ -36,7 +36,7 @@
     position: relative;
     width: 100%;
     margin-bottom: $tiled-results-spacing-xxs;
-    height: calc(100% - $tiled-results-spacing-xxs);
+    height: calc(100% - #{$tiled-results-spacing-xxs});
     box-shadow: $box-shadow-sm;
     color: $tiled-results-color;
     background-color: $tiled-results-bg;
@@ -154,7 +154,7 @@
 
     .card {
       margin-bottom: $tiled-results-spacing-xs;
-      height: calc(100% - $tiled-results-spacing-xs);
+      height: calc(100% - #{$tiled-results-spacing-xs});
     }
   }
   .mobile-results {
@@ -182,7 +182,7 @@
 
     .card {
       margin-bottom: $tiled-results-spacing;
-      height: calc(100% - $tiled-results-spacing);
+      height: calc(100% - #{$tiled-results-spacing});
     }
   }
 }
@@ -216,7 +216,7 @@
 
     .card {
       margin-bottom: $tiled-results-spacing;
-      height: calc(100% - $tiled-results-spacing);
+      height: calc(100% - #{$tiled-results-spacing});
     }
   }
 }
@@ -311,7 +311,7 @@ body.dark {
     .avatar {
       color: $mobile-results-icon-color-dark;
     }
-    a.mobile-result {
+    .mobile-result {
       border-color: $mobile-results-border-color-dark;
       &:focus {
         background-color: $mobile-results-focus-bg-dark;
@@ -324,5 +324,4 @@ body.dark {
       }
     }
   }
-
 }

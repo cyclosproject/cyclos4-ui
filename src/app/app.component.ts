@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, NgZone, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataForUi } from 'app/api/models';
 import { Configuration } from 'app/configuration';
@@ -10,22 +10,22 @@ import { MenuService } from 'app/core/menu.service';
 import { SidenavComponent } from 'app/core/sidenav.component';
 import { StateManager } from 'app/core/state-manager';
 import { I18n } from 'app/i18n/i18n';
-import { setRootSpinnerVisible, handleKeyboardFocus } from 'app/shared/helper';
+import { handleKeyboardFocus, setRootSpinnerVisible } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
-import { BehaviorSubject } from 'rxjs';
-import { ShortcutService, ArrowsVertical } from 'app/shared/shortcut.service';
+import { ArrowsVertical, ShortcutService } from 'app/shared/shortcut.service';
 import 'hammerjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
 
-  @ViewChild(SidenavComponent, { static: false }) sidenav: SidenavComponent;
-  @ViewChild('mainContainer', { static: false }) mainContainer: ElementRef;
+  @ViewChild(SidenavComponent) sidenav: SidenavComponent;
+  @ViewChild('mainContainer') mainContainer: ElementRef;
 
   initialized$ = new BehaviorSubject(false);
   loggingOut$ = new BehaviorSubject(false);
@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
     public i18n: I18n,
     private stateManager: StateManager,
     private breadcrumb: BreadcrumbService,
-    private shortcut: ShortcutService
+    private shortcut: ShortcutService,
   ) {
   }
 
@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
         if (typeof url === 'object') {
           url = url.href;
         }
-        this.menu.navigate({ url: url, event: event });
+        this.menu.navigate({ url, event });
       });
     };
     this.menuBar = Configuration.menuBar;

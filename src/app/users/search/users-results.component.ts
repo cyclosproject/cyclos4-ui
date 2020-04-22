@@ -17,7 +17,7 @@ export const MAX_TILE_FIELDS = 2;
 @Component({
   selector: 'users-results',
   templateUrl: 'users-results.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersResultsComponent extends BaseComponent implements OnInit {
 
@@ -91,7 +91,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
   /**
    * Returns a function that formats the user
    */
-  displayFunction(): Function {
+  displayFunction(): (row: any) => any {
     return (row: any) => {
       const user = this.user(row);
       if (user.display) {

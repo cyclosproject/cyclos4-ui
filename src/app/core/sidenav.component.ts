@@ -3,11 +3,11 @@ import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { I18n } from 'app/i18n/i18n';
-import { LayoutService } from 'app/shared/layout.service';
-import { BaseMenuEntry, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, ActiveMenu } from 'app/shared/menu';
-import { ShortcutService, ActionsLeft, ActionsRight, ArrowsVertical } from 'app/shared/shortcut.service';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { handleKeyboardFocus } from 'app/shared/helper';
+import { LayoutService } from 'app/shared/layout.service';
+import { ActiveMenu, BaseMenuEntry, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
+import { ActionsLeft, ActionsRight, ArrowsVertical, ShortcutService } from 'app/shared/shortcut.service';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 /**
  * The sidenav contains the menu on small devices
@@ -17,7 +17,7 @@ import { handleKeyboardFocus } from 'app/shared/helper';
   selector: 'sidenav',
   templateUrl: 'sidenav.component.html',
   styleUrls: ['sidenav.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidenavComponent implements OnInit {
 
@@ -119,7 +119,7 @@ export class SidenavComponent implements OnInit {
   }
 
   onClick(entry: MenuEntry, event: MouseEvent) {
-    this.menu.navigate({ entry: entry, event: event });
+    this.menu.navigate({ entry, event });
     this.close();
   }
 
@@ -144,7 +144,7 @@ export class SidenavComponent implements OnInit {
   }
 
   navigate(entry: MenuEntry, event: MouseEvent) {
-    this.menu.navigate({ entry: entry, event: event });
+    this.menu.navigate({ entry, event });
   }
 
   loginOrLogout(event?: Event) {

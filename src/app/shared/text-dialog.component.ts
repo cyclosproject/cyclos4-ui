@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Output, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { BaseComponent } from 'app/shared/base.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
@@ -9,7 +9,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'text-dialog',
   templateUrl: 'text-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextDialogComponent extends BaseComponent {
 

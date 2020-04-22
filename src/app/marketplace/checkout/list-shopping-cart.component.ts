@@ -1,8 +1,8 @@
-import { Component, ChangeDetectionStrategy, OnInit, Injector } from '@angular/core';
-import { BasePageComponent } from 'app/shared/base-page.component';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { ShoppingCartResult } from 'app/api/models';
-import { Menu } from 'app/shared/menu';
 import { ShoppingCartsService } from 'app/api/services';
+import { BasePageComponent } from 'app/shared/base-page.component';
+import { Menu } from 'app/shared/menu';
 
 /**
  * A page to start with the shopping cart process, it display possible orders grouped by seller and currency.
@@ -11,7 +11,7 @@ import { ShoppingCartsService } from 'app/api/services';
 @Component({
   selector: 'list-shopping-cart',
   templateUrl: 'list-shopping-cart.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListShoppingCartComponent
   extends BasePageComponent<ShoppingCartResult[]> implements OnInit {
@@ -34,7 +34,7 @@ export class ListShoppingCartComponent
     if (data.length === 1) {
       // Go to details when there is a single cart
       this.router.navigate(this.path(data[0]), {
-        replaceUrl: true
+        replaceUrl: true,
       });
     }
   }

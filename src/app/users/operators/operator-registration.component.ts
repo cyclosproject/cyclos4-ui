@@ -5,8 +5,8 @@ import { OperatorsService } from 'app/api/services';
 import { UserHelperService } from 'app/core/user-helper.service';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { cloneControl, validateBeforeSubmit } from 'app/shared/helper';
-import { BehaviorSubject } from 'rxjs';
 import { Menu } from 'app/shared/menu';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Operator registration. Works by owner, admin and broker
@@ -14,7 +14,7 @@ import { Menu } from 'app/shared/menu';
 @Component({
   selector: 'operator-registration',
   templateUrl: 'operator-registration.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OperatorRegistrationComponent
   extends BasePageComponent<OperatorDataForNew>
@@ -48,7 +48,7 @@ export class OperatorRegistrationComponent
   onDataInitialized(data: OperatorDataForNew) {
     // Setup the forms
     this.form = this.formBuilder.group({
-      group: null
+      group: null,
     });
     [this.mobileForm, this.landLineForm] = this.userHelper.setupRegistrationForm(this.form, data);
     this.passwordForms = this.userHelper.passwordRegistrationForms(data);
@@ -82,7 +82,7 @@ export class OperatorRegistrationComponent
     }
     // Register the operator
     this.addSub(this.operatorsService.registerOperator({
-      user: this.user, body: fullForm.value
+      user: this.user, body: fullForm.value,
     }).subscribe(result => this.result$.next(result)));
   }
 

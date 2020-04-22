@@ -4,18 +4,17 @@ import { PersonalRoutingModule } from 'app/personal/personal-routing.module';
 import { ManageSettingsComponent } from 'app/personal/settings/manage-settings.component';
 import { SharedModule } from 'app/shared/shared.module';
 
-
 /**
  * Module for viewing notifications
  */
 @NgModule({
   declarations: [
     SearchNotificationsComponent,
-    ManageSettingsComponent
+    ManageSettingsComponent,
   ],
   imports: [
     PersonalRoutingModule,
-    SharedModule
+    SharedModule,
   ],
 })
 export class PersonalModule { }

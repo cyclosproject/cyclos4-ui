@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AsyncValidatorFn, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CustomField, CustomFieldDetailed, CustomFieldSizeEnum, CustomFieldTypeEnum, CustomFieldValue, LinkedEntityTypeEnum, CustomFieldBinaryValues } from 'app/api/models';
+import {
+  CustomField, CustomFieldBinaryValues, CustomFieldDetailed, CustomFieldSizeEnum,
+  CustomFieldTypeEnum, CustomFieldValue, LinkedEntityTypeEnum
+} from 'app/api/models';
 import { FormatService } from 'app/core/format.service';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -11,7 +14,7 @@ import { empty } from 'app/shared/helper';
  * Helper service for custom fields
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FieldHelperService {
 
@@ -86,13 +89,12 @@ export class FieldHelperService {
    * - `asyncValProvider`: If provided will be called for each custom field to provide an additional, asynchronous validation
    * @returns The FormGroup
    */
-  customValuesFormGroup(customFields: CustomFieldDetailed[],
-    options?: {
-      currentValues?: any,
-      useDefaults?: boolean,
-      disabledProvider?: (field: CustomFieldDetailed) => boolean,
-      asyncValProvider?: (field: CustomFieldDetailed) => AsyncValidatorFn
-    }): FormGroup {
+  customValuesFormGroup(customFields: CustomFieldDetailed[], options?: {
+    currentValues?: any,
+    useDefaults?: boolean,
+    disabledProvider?: (field: CustomFieldDetailed) => boolean,
+    asyncValProvider?: (field: CustomFieldDetailed) => AsyncValidatorFn
+  }): FormGroup {
     const controls = this.customValuesFormControlMap(customFields, options);
     const group = this.formBuilder.group({});
     for (const [name, control] of controls) {
@@ -102,23 +104,22 @@ export class FieldHelperService {
   }
 
   /**
- * Returns a Map from custom field internal name to a form control for each of the given custom fields
- * @param customFields The custom fields
- * @param options A bag of options with the following:
- *
- * - `currentValues`: If provided will contain the field values by internal name. If not, use the default value
- * - `useDefaults`: When set to false will not use the default values for fields. Defaults to true.
- * - `disabledProvider`: If provided will be called for each custom field to determine whether the field should be disabled
- * - `asyncValProvider`: If provided will be called for each custom field to provide an additional, asynchronous validation
- * @returns The Map
- */
-  customValuesFormControlMap(customFields: CustomFieldDetailed[],
-    options?: {
-      currentValues?: any,
-      useDefaults?: boolean,
-      disabledProvider?: (field: CustomFieldDetailed) => boolean,
-      asyncValProvider?: (field: CustomFieldDetailed) => AsyncValidatorFn
-    }): Map<string, FormControl> {
+   * Returns a Map from custom field internal name to a form control for each of the given custom fields
+   * @param customFields The custom fields
+   * @param options A bag of options with the following:
+   *
+   * - `currentValues`: If provided will contain the field values by internal name. If not, use the default value
+   * - `useDefaults`: When set to false will not use the default values for fields. Defaults to true.
+   * - `disabledProvider`: If provided will be called for each custom field to determine whether the field should be disabled
+   * - `asyncValProvider`: If provided will be called for each custom field to provide an additional, asynchronous validation
+   * @returns The Map
+   */
+  customValuesFormControlMap(customFields: CustomFieldDetailed[], options?: {
+    currentValues?: any,
+    useDefaults?: boolean,
+    disabledProvider?: (field: CustomFieldDetailed) => boolean,
+    asyncValProvider?: (field: CustomFieldDetailed) => AsyncValidatorFn,
+  }): Map<string, FormControl> {
     options = options || {};
     const currentValues = options.currentValues || {};
     const useDefaults = options.useDefaults !== false;
@@ -132,11 +133,11 @@ export class FieldHelperService {
       }
       customValuesControlsMap.set(cf.internalName, this.formBuilder.control(
         {
-          value: value,
-          disabled: disabledProvider(cf)
+          value,
+          disabled: disabledProvider(cf),
         },
         cf.required ? Validators.required : null,
-        asyncValProvider ? asyncValProvider(cf) : null
+        asyncValProvider ? asyncValProvider(cf) : null,
       ));
     }
 
@@ -171,7 +172,7 @@ export class FieldHelperService {
       case CustomFieldTypeEnum.MULTI_SELECTION:
         return (field.possibleValues || []).map(v => ({
           value: ApiHelper.internalNameOrId(v), id: v.id, internalName: v.internalName,
-          text: v.value, category: v.category == null ? null : v.category.name
+          text: v.value, category: v.category == null ? null : v.category.name,
         }));
       case CustomFieldTypeEnum.LINKED_ENTITY:
         switch (field.linkedEntityType) {
@@ -236,7 +237,7 @@ export class FieldHelperService {
           const dynamicParts = value.split(/\|/g);
           fieldValue.dynamicValue = {
             value: dynamicParts[0],
-            label: dynamicParts[1] || dynamicParts[0]
+            label: dynamicParts[1] || dynamicParts[0],
           };
           break;
         case CustomFieldTypeEnum.SINGLE_SELECTION:
@@ -250,19 +251,19 @@ export class FieldHelperService {
           const display = entityParts[1] || entityParts[0];
           switch (cf.linkedEntityType) {
             case LinkedEntityTypeEnum.USER:
-              fieldValue.userValue = { id: id, display: display };
+              fieldValue.userValue = { id, display };
               break;
             case LinkedEntityTypeEnum.ADVERTISEMENT:
-              fieldValue.adValue = { id: id, name: display };
+              fieldValue.adValue = { id, name: display };
               break;
             case LinkedEntityTypeEnum.RECORD:
-              fieldValue.recordValue = { id: id, display: display };
+              fieldValue.recordValue = { id, display };
               break;
             case LinkedEntityTypeEnum.TRANSFER:
-              fieldValue.transferValue = { id: id, display: display };
+              fieldValue.transferValue = { id, display };
               break;
             case LinkedEntityTypeEnum.TRANSACTION:
-              fieldValue.transactionValue = { id: id, display: display };
+              fieldValue.transactionValue = { id, display };
               break;
           }
           break;

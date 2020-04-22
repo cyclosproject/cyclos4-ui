@@ -1,17 +1,17 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injector, Input } from '@angular/core';
-import {
-  VouchersDataForSearch, VoucherStatusEnum, VoucherCreationTypeEnum, VoucherOrderByEnum
-} from 'app/api/models';
-import { FieldOption } from 'app/shared/field-option';
-import { BankingHelperService } from 'app/core/banking-helper.service';
-import { BaseComponent } from 'app/shared/base.component';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import {
+  VoucherCreationTypeEnum, VoucherOrderByEnum, VouchersDataForSearch, VoucherStatusEnum,
+} from 'app/api/models';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 import { HeadingAction } from 'app/shared/action';
+import { BaseComponent } from 'app/shared/base.component';
+import { FieldOption } from 'app/shared/field-option';
 
 @Component({
   selector: 'voucher-filters',
   templateUrl: './voucher-filters.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VoucherFiltersComponent extends BaseComponent implements OnInit {
 
@@ -25,7 +25,7 @@ export class VoucherFiltersComponent extends BaseComponent implements OnInit {
   mask: string;
   constructor(
     injector: Injector,
-    private bankingHelper: BankingHelperService
+    private bankingHelper: BankingHelperService,
   ) {
     super(injector);
   }
@@ -35,7 +35,7 @@ export class VoucherFiltersComponent extends BaseComponent implements OnInit {
     this.mask = this.data.mask ? this.data.mask : '';
     this.form.patchValue({
       creationType: 'all',
-      printed: 'all'
+      printed: 'all',
     });
   }
 

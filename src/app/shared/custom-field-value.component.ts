@@ -10,7 +10,7 @@ import { LayoutService } from 'app/shared/layout.service';
   selector: 'custom-field-value',
   templateUrl: 'custom-field-value.component.html',
   styleUrls: ['custom-field-value.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomFieldValueComponent {
 

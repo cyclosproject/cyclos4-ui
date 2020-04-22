@@ -10,13 +10,13 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'address-details',
   templateUrl: 'address-details.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressDetailsComponent extends BaseComponent implements OnInit {
   constructor(
     injector: Injector,
     public addressHelper: AddressHelperService,
-    public countriesResolve: CountriesResolve
+    public countriesResolve: CountriesResolve,
   ) {
     super(injector);
   }

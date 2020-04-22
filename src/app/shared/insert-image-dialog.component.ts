@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ImagesListData, UserImageKind, RoleEnum, SystemImagesListData, Image, ImageKind } from 'app/api/models';
+import { Image, ImageKind, ImagesListData, RoleEnum, SystemImagesListData, UserImageKind } from 'app/api/models';
 import { ImagesService } from 'app/api/services';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
@@ -18,7 +18,7 @@ import { BehaviorSubject } from 'rxjs';
   selector: 'insert-image-dialog',
   templateUrl: 'insert-image-dialog.component.html',
   styleUrls: ['insert-image-dialog.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InsertImageDialogComponent
   extends BaseComponent implements OnInit {
@@ -42,7 +42,7 @@ export class InsertImageDialogComponent
   constructor(
     injector: Injector,
     private imagesService: ImagesService,
-    public modalRef: BsModalRef
+    public modalRef: BsModalRef,
   ) {
     super(injector);
   }
@@ -77,7 +77,7 @@ export class InsertImageDialogComponent
       this.uploadOwner$.next(this.ApiHelper.SELF);
       this.addSub(this.imagesService.getUserImagesListData({
         user: this.ApiHelper.SELF,
-        kind: UserImageKind.CUSTOM
+        kind: UserImageKind.CUSTOM,
       }).subscribe(data => {
         this.userCustom$.next(data);
         this.canUpload$.next(data.canCreate);

@@ -6,7 +6,6 @@ import { BaseComponent } from 'app/shared/base.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
-
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
   const currVal = control.value;
@@ -15,7 +14,7 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
     const origVal = parent.get('newPassword') == null ? '' : parent.get('newPassword').value;
     if (origVal !== currVal) {
       return {
-        passwordsMatch: true
+        passwordsMatch: true,
       };
     }
   }
@@ -28,7 +27,7 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
 @Component({
   selector: 'change-password-dialog',
   templateUrl: 'change-password-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangePasswordDialogComponent extends BaseComponent implements OnInit {
 
@@ -72,7 +71,7 @@ export class ChangePasswordDialogComponent extends BaseComponent implements OnIn
     this.addSub(this.passwordsService.changePassword({
       user: this.param,
       type: this.type.id,
-      body: params
+      body: params,
     }).subscribe(() => {
       this.done.emit();
       this.modalRef.hide();

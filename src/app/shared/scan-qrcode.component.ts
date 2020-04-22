@@ -10,7 +10,7 @@ import { BehaviorSubject } from 'rxjs';
   selector: 'scan-qrcode',
   templateUrl: 'scan-qrcode.component.html',
   styleUrls: ['scan-qrcode.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScanQrCodeComponent extends BaseComponent {
 
@@ -20,7 +20,7 @@ export class ScanQrCodeComponent extends BaseComponent {
 
   constructor(
     injector: Injector,
-    public modalRef: BsModalRef
+    public modalRef: BsModalRef,
   ) {
     super(injector);
   }

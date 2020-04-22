@@ -9,7 +9,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'registration-agreements',
   templateUrl: 'registration-agreements.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationAgreementsComponent
   extends BaseComponent

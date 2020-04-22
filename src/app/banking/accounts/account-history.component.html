@@ -123,16 +123,16 @@
     </form>
 
     <!-- Account status -->
-    <ng-container *ngIf="!(noStatus$ | async)">
+    <ng-container *ngIf="(noStatus$ | async) === false">
       <account-status-view
         *ngIf="(status$ | async) && ((layout.gtxxs$ | async) || (results?.page === 0))"
         [account]="status$.value"
         [mode]="(moreFilters$ | async) ? 'period' : 'current'"
         [showSeparator]="showForm$ | async"
         [showAccount]="(layout.ltsm$ | async) && multipleAccounts"
-        [showUser]="!self && !(showForm$ | async)">
+        [showUser]="!self && (showForm$ | async) === false">
       </account-status-view>
-      <spinner *ngIf="!(status$ | async)"></spinner>
+      <spinner *ngIf="(status$ | async) === null"></spinner>
     </ng-container>
   </page-content>
 

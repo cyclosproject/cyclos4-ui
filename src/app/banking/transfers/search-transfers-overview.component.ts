@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  TransOrderByEnum, AccountType, Currency, PreselectedPeriod,
-  TransferDataForSearch, TransferFilter, TransferQueryFilters, TransferResult, RoleEnum
+  AccountType, Currency, PreselectedPeriod, RoleEnum,
+  TransferDataForSearch, TransferFilter, TransferQueryFilters, TransferResult, TransOrderByEnum,
 } from 'app/api/models';
 import { TransfersService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
-import { BehaviorSubject } from 'rxjs';
 import { Menu } from 'app/shared/menu';
+import { BehaviorSubject } from 'rxjs';
 
 type TransferSearchParams = TransferQueryFilters & {
   fields?: Array<string>;
@@ -21,7 +21,7 @@ type TransferSearchParams = TransferQueryFilters & {
 @Component({
   selector: 'search-transfers-overview',
   templateUrl: 'search-transfers-overview.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchTransfersOverviewComponent
   extends BaseSearchPageComponent<TransferDataForSearch, TransferSearchParams, TransferResult>
@@ -36,7 +36,7 @@ export class SearchTransfersOverviewComponent
   constructor(
     injector: Injector,
     private transfersService: TransfersService,
-    public bankingHelper: BankingHelperService
+    public bankingHelper: BankingHelperService,
   ) {
     super(injector);
   }
@@ -59,7 +59,7 @@ export class SearchTransfersOverviewComponent
       'transferKinds', 'chargedBack',
       'minAmount', 'maxAmount',
       'transactionNumber',
-      'user', 'by', 'orderBy'
+      'user', 'by', 'orderBy',
     ];
   }
 
@@ -75,7 +75,7 @@ export class SearchTransfersOverviewComponent
 
     // Get the transfers overview data
     this.stateManager.cache('data',
-      this.transfersService.getTransferDataForSearch()
+      this.transfersService.getTransferDataForSearch(),
     ).subscribe(data => {
       this.data = data;
     });
@@ -102,7 +102,7 @@ export class SearchTransfersOverviewComponent
     const print = this.printAction;
     print.label = this.i18n.account.printTransactions;
     this.headingActions = [
-      this.printAction
+      this.printAction,
     ];
   }
 

@@ -12,8 +12,8 @@ import { empty } from 'app/shared/helper';
   templateUrl: 'url-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: UrlFieldComponent, multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: UrlFieldComponent, multi: true },
+  ],
 })
 export class UrlFieldComponent
   extends BaseFormFieldComponent<string> {
@@ -24,7 +24,7 @@ export class UrlFieldComponent
   /** Name of the autocomplete value for the HTML input */
   @Input() autocomplete = 'off';
 
-  @ViewChild('input', { static: false }) inputRef: ElementRef;
+  @ViewChild('input') inputRef: ElementRef;
 
   constructor(
     injector: Injector,
@@ -64,7 +64,7 @@ export class UrlFieldComponent
   }
 
   protected getFocusableControl() {
-    return (<any>(this.inputRef || {})).nativeElement;
+    return ((this.inputRef || {}) as any).nativeElement;
   }
 
   protected getDisabledValue(): string {

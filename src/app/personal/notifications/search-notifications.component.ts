@@ -17,7 +17,7 @@ type NotificationSearchParams = QueryFilters & { onlyUnread: boolean };
 @Component({
   selector: 'search-notifications',
   templateUrl: 'search-notifications.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchNotificationsComponent
   extends BaseSearchPageComponent<any, NotificationSearchParams, Notification>
@@ -25,7 +25,7 @@ export class SearchNotificationsComponent
 
   constructor(
     injector: Injector,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
   ) {
     super(injector);
   }
@@ -93,7 +93,7 @@ export class SearchNotificationsComponent
   removeAll() {
     const observables: Observable<any>[] = [];
     for (const id of this.ids) {
-      observables.push(this.notificationsService.deleteNotification({ id: id }));
+      observables.push(this.notificationsService.deleteNotification({ id }));
     }
     this.addSub(forkJoin(observables).pipe(first()).subscribe(() => this.update()));
   }

@@ -130,7 +130,7 @@ class ShortcutDescriptor {
  * Provides registration to keyboard shortcuts
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ShortcutService {
 

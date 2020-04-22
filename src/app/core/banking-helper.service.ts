@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import {
   Account, AccountHistoryResult, AccountKind, AccountType, AccountWithOwner,
   BaseTransferDataForSearch, PreselectedPeriod, Transaction, TransactionDataForSearch,
-  Transfer, VoucherCreationTypeEnum, VoucherStatusEnum
+  Transfer, VoucherCreationTypeEnum, VoucherStatusEnum,
 } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
@@ -15,7 +15,7 @@ import { blank, empty } from 'app/shared/helper';
  * Helper service for banking functions
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BankingHelperService {
 
@@ -49,10 +49,10 @@ export class BankingHelperService {
   /**
    * Returns a display label for the given account
    * @param account The account
-   * @param number Return the account number if available
+   * @param showNumber If true, returns the account number if available
    */
-  accountDisplay(account: Account, number = true) {
-    if (account.number && number) {
+  accountDisplay(account: Account, showNumber = true) {
+    if (account.number && showNumber) {
       return `${account.type.name} - ${account.number}`;
     } else {
       return account.type.name;
@@ -101,7 +101,7 @@ export class BankingHelperService {
       data.preselectedPeriods[i]['id'] = i;
     }
     const preselectedPeriod = data.preselectedPeriods.find(p => p.defaultOption);
-    form.patchValue({ preselectedPeriod: preselectedPeriod }, { emitEvent: false });
+    form.patchValue({ preselectedPeriod }, { emitEvent: false });
   }
 
   /**
@@ -122,7 +122,6 @@ export class BankingHelperService {
     }
     return ApiHelper.dateRangeFilter(beginDate, endDate);
   }
-
 
   /**
    * Returns the related user / system account display name

@@ -6,5 +6,5 @@ export enum OperationRunScope {
   Ad = 'ad',
   Record = 'record',
   Transfer = 'transfer',
-  Standalone = 'standalone'
+  Standalone = 'standalone',
 }

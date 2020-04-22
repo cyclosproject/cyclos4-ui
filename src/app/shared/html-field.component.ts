@@ -1,6 +1,6 @@
 import {
   AfterViewInit, ChangeDetectionStrategy, Component, ElementRef,
-  Host, Injector, OnInit, Optional, SkipSelf, ViewChild
+  Host, Injector, OnInit, Optional, SkipSelf, ViewChild,
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { RoleEnum } from 'app/api/models';
@@ -29,7 +29,7 @@ abstract class Action {
   constructor(
     public fieldId: string,
     public widget: ActionWidget,
-    public tooltip: string
+    public tooltip: string,
   ) { }
 
   element(): HTMLElement {
@@ -46,7 +46,7 @@ abstract class Command extends Action {
     idPrefix: string,
     public type: ActionWidget,
     public command: string,
-    tooltip: string
+    tooltip: string,
   ) {
     super(`${idPrefix}_${command}`, type, tooltip);
   }
@@ -56,7 +56,7 @@ class CommandSelect extends Command {
     idPrefix: string,
     command: string,
     tooltip: string,
-    public values?: ActionValue[]
+    public values?: ActionValue[],
   ) {
     super(idPrefix, 'select', command, tooltip);
   }
@@ -85,7 +85,7 @@ class CustomButton extends Action {
     fieldId: string,
     public callback: () => any,
     tooltip: string,
-    public icon: string
+    public icon: string,
   ) {
     super(fieldId, 'button', tooltip);
   }
@@ -100,13 +100,13 @@ class CustomButton extends Action {
   styleUrls: ['html-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: HtmlFieldComponent, multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: HtmlFieldComponent, multi: true },
+  ],
 })
 export class HtmlFieldComponent
   extends BaseFormFieldComponent<string> implements OnInit, AfterViewInit {
 
-  @ViewChild('editor', { static: false }) private editor: ElementRef<HTMLElement>;
+  @ViewChild('editor') private editor: ElementRef<HTMLElement>;
 
   actions: Action[][];
 
@@ -138,7 +138,7 @@ export class HtmlFieldComponent
           { value: 'h6', label: this.i18n.field.html.blockH6 },
           { value: 'p', label: this.i18n.field.html.blockP },
           { value: 'pre', label: this.i18n.field.html.blockPre },
-        ])
+        ]),
       ],
       [
         new CommandSelect(this.id, 'fontname', this.i18n.field.html.font, [
@@ -146,7 +146,7 @@ export class HtmlFieldComponent
           { value: 'sans-serif', label: this.i18n.field.html.fontSansSerif },
           { value: 'serif', label: this.i18n.field.html.fontSerif },
           { value: 'monospace', label: this.i18n.field.html.fontMonospace },
-        ]).expand()
+        ]).expand(),
       ],
       [
         new CommandSelect(this.id, 'fontsize', this.i18n.field.html.size, [
@@ -156,8 +156,8 @@ export class HtmlFieldComponent
           { value: '4', label: this.i18n.field.html.size4 },
           { value: '5', label: this.i18n.field.html.size5 },
           { value: '6', label: this.i18n.field.html.size6 },
-          { value: '7', label: this.i18n.field.html.size7 }
-        ]).expand()
+          { value: '7', label: this.i18n.field.html.size7 },
+        ]).expand(),
       ],
       [
         new CommandButton(this.id, 'bold', this.i18n.field.html.bold, 'fa-bold').expand(),
@@ -169,7 +169,7 @@ export class HtmlFieldComponent
         new CommandButton(this.id, 'justifyLeft', this.i18n.field.html.alignLeft, 'fa-align-left'),
         new CommandButton(this.id, 'justifyCenter', this.i18n.field.html.alignCenter, 'fa-align-center'),
         new CommandButton(this.id, 'justifyRight', this.i18n.field.html.alignRight, 'fa-align-right'),
-        new CommandButton(this.id, 'justifyFull', this.i18n.field.html.alignJustify, 'fa-align-justify')
+        new CommandButton(this.id, 'justifyFull', this.i18n.field.html.alignJustify, 'fa-align-justify'),
       ],
       [
         new CommandButton(this.id, 'insertUnorderedList', this.i18n.field.html.listBulleted, 'fa-list-ul'),
@@ -179,7 +179,7 @@ export class HtmlFieldComponent
       ],
       this.actionsWithImage,
       [
-        new CommandButton(this.id, 'removeformat', this.i18n.field.html.removeFormat, 'fa-remove').expand()
+        new CommandButton(this.id, 'removeformat', this.i18n.field.html.removeFormat, 'fa-remove').expand(),
       ],
     ].filter(a => !empty(a));
   }
@@ -341,7 +341,7 @@ export class HtmlFieldComponent
   private insertImage() {
     this.focusEditor('store');
     const ref = this.modal.show(InsertImageDialogComponent, {
-      class: 'modal-form modal-form-medium'
+      class: 'modal-form modal-form-medium',
     });
     const component = ref.content as InsertImageDialogComponent;
     component.select.pipe(first()).subscribe(i => this.doInsertImage(i));
@@ -414,8 +414,8 @@ export class HtmlFieldComponent
     const ref = this.modal.show(ImagePropertiesDialogComponent, {
       class: 'modal-form modal-form-medium',
       initialState: {
-        img: img
-      }
+        img,
+      },
     });
     const component = ref.content as ImagePropertiesDialogComponent;
     component.select.pipe(first()).subscribe(props => this.doSetImageProperties(img, props));
@@ -426,8 +426,8 @@ export class HtmlFieldComponent
     const ref = this.modal.show(LinkPropertiesDialogComponent, {
       class: 'modal-form modal-form-medium',
       initialState: {
-        link: a
-      }
+        link: a,
+      },
     });
     const component = ref.content as LinkPropertiesDialogComponent;
     component.select.pipe(first()).subscribe(props => this.doSetLinkProperties(a, props));

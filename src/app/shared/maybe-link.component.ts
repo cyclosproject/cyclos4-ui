@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { empty } from 'app/shared/helper';
 
 /**
@@ -7,7 +7,7 @@ import { empty } from 'app/shared/helper';
 @Component({
   selector: 'maybe-link',
   templateUrl: 'maybe-link.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MaybeLinkComponent {
   @HostBinding('tabindex') @Input() tabindex = -1;

@@ -1,19 +1,19 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import {
-  OrderView, OrderItem, CreateDeviceConfirmation,
-  DeviceConfirmationTypeEnum, OrderStatusEnum, CustomFieldDetailed,
-  CustomFieldTypeEnum, OrderDataForAcceptByBuyer, CustomFieldControlEnum, SetDeliveryMethod
+  CreateDeviceConfirmation, CustomFieldControlEnum, CustomFieldDetailed,
+  CustomFieldTypeEnum, DeviceConfirmationTypeEnum, OrderDataForAcceptByBuyer,
+  OrderItem, OrderStatusEnum, OrderView, SetDeliveryMethod,
 } from 'app/api/models';
 import { OrdersService } from 'app/api/services';
+import { AddressHelperService } from 'app/core/address-helper.service';
+import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { SetDeliveryMethodComponent } from 'app/marketplace/delivery-methods/set-delivery-method.component';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { Menu } from 'app/shared/menu';
-import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { empty } from 'app/shared/helper';
-import { AddressHelperService } from 'app/core/address-helper.service';
-import { SetDeliveryMethodComponent } from 'app/marketplace/delivery-methods/set-delivery-method.component';
+import { Menu } from 'app/shared/menu';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { FormGroup } from '@angular/forms';
 
 /**
  * Displays an order with it's possible actions
@@ -21,7 +21,7 @@ import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'view-order',
   templateUrl: 'view-order.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewOrderComponent extends BaseViewPageComponent<OrderView> implements OnInit {
 
@@ -108,8 +108,8 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
 
   private orderDeviceConfirmation(type: DeviceConfirmationTypeEnum): () => CreateDeviceConfirmation {
     return () => ({
-      type: type,
-      order: this.id
+      type,
+      order: this.id,
     });
   }
 
@@ -129,16 +129,16 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
         possibleValues: data.paymentTypes.map(type => {
           return {
             id: type.id,
-            value: type.name
+            value: type.name,
           };
         }),
-        required: true
+        required: true,
       });
     }
     fields.push({
       internalName: 'remarks',
       name: this.i18n.ad.remarks,
-      type: CustomFieldTypeEnum.TEXT
+      type: CustomFieldTypeEnum.TEXT,
     });
     return fields;
   }
@@ -163,14 +163,14 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
               body: {
                 remarks: res.customValues.remarks,
                 paymentType: res.customValues.paymentType,
-              }
+              },
             }).subscribe(() => {
               this.notification.snackBar(this.i18n.ad.orderAccepted);
               this.reload();
             }));
-          }
+          },
         });
-      }
+      },
     ));
   }
 
@@ -181,7 +181,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
   protected acceptBySeller() {
     this.addSub(this.orderService.acceptOrderBySeller({
       order: this.id,
-      body: this.form.value
+      body: this.form.value,
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.ad.orderAccepted);
       this.reload();
@@ -201,14 +201,14 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
         chargeAmount: dm.price,
         minTime: dm.minTime,
         maxTime: dm.maxTime,
-        currency: this.data.currency
-      }
+        currency: this.data.currency,
+      },
     });
     const component = ref.content as SetDeliveryMethodComponent;
     this.addSub(component.done.subscribe((deliveryMethod: SetDeliveryMethod) => {
       this.orderService.setDeliveryMethod({
         order: this.id,
-        body: deliveryMethod
+        body: deliveryMethod,
       }).subscribe(() => {
         this.notification.snackBar(this.i18n.ad.orderAccepted);
         this.reload();
@@ -245,13 +245,13 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
         this.addSub(this.orderService.rejectOrder({
           order: this.id,
           body: {
-            remarks: res.customValues.remarks
-          }
+            remarks: res.customValues.remarks,
+          },
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.ad.orderRejected);
           this.reload();
         }));
-      }
+      },
     });
   }
 

@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     HttpClientModule,
@@ -26,11 +26,11 @@ import { AppComponent } from './app.component';
     // Eagerly loaded modules
     LoginModule,
     HomeModule,
-    ContentModule
+    ContentModule,
   ],
   providers: [
-    INITIALIZE
+    INITIALIZE,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

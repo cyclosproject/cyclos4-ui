@@ -1,10 +1,10 @@
-import { Injector, OnDestroy, OnInit, ElementRef, Type } from '@angular/core';
+import { ElementRef, Injector, OnDestroy, OnInit, Type } from '@angular/core';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { Shortcut, ShortcutService } from 'app/shared/shortcut.service';
 import { Subscription } from 'rxjs';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 /**
  * Base class for any component

@@ -15,12 +15,12 @@ const HeadingActionsMenu = 'heading-actions-menu';
   selector: 'heading-actions',
   templateUrl: 'heading-actions.component.html',
   styleUrls: ['heading-actions.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeadingActionsComponent extends BaseComponent implements OnInit {
   blurIfClick = blurIfClick;
 
-  @ViewChild('dropdown', { static: false }) dropdown: BsDropdownDirective;
+  @ViewChild('dropdown') dropdown: BsDropdownDirective;
 
   visibleActions$ = new BehaviorSubject<HeadingAction[]>([]);
 

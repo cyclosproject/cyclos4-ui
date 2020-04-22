@@ -6,19 +6,19 @@ import { Mask, MaskField } from 'app/shared/mask';
 const ALLOWED = [
   'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
   'End', 'Home', 'Delete', 'Backspace', 'Tab',
-  'Shift', 'Control', 'Alt', 'Super', 'Meta'
+  'Shift', 'Control', 'Alt', 'Super', 'Meta',
 ];
 
 /**
  * A directive to apply a mask to inputs
  */
 @Directive({
-  selector: '[mask]'
+  selector: '[mask]',
 })
 export class MaskDirective {
   constructor(
     private el: ElementRef,
-    private control: NgControl
+    private control: NgControl,
   ) { }
 
   private _mask: Mask;

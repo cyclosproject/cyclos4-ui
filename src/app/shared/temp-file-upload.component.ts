@@ -1,7 +1,7 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef,
-  EventEmitter, Input, Output, ViewChild, Injector
+  EventEmitter, Injector, Input, Output, ViewChild,
 } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { CustomFieldDetailed, InputErrorCode, StoredFile } from 'app/api/models';
@@ -9,9 +9,9 @@ import { FilesService } from 'app/api/services';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { LoginService } from 'app/core/login.service';
-import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
-import { empty } from 'app/shared/helper';
 import { AbstractComponent } from 'app/shared/abstract.component';
+import { empty } from 'app/shared/helper';
+import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
 
 /**
  * Represents a file being uploaded
@@ -56,7 +56,7 @@ export class FileToUpload {
 @Component({
   selector: 'temp-file-upload',
   templateUrl: 'temp-file-upload.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TempFileUploadComponent extends AbstractComponent {
 
@@ -136,7 +136,7 @@ export class TempFileUploadComponent extends AbstractComponent {
     if (tooLarge.length > 0) {
       this.errorHandler.handleInputError({
         code: InputErrorCode.FILE_UPLOAD_SIZE,
-        maxFileSize: maxSize
+        maxFileSize: maxSize,
       });
     }
     if (observables.length === 0) {
@@ -169,7 +169,7 @@ export class TempFileUploadComponent extends AbstractComponent {
           guestKey: this.login.guestKey,
           customField: this.customField == null ? null : this.customField.id,
           customFieldKind: this.customField == null ? null : this.customField.kind,
-        }
+        },
       }).subscribe(event => {
         if (event.type === HttpEventType.UploadProgress) {
           file.progress = event.loaded;

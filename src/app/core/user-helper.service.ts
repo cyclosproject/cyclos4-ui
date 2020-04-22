@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { AsyncValidatorFn, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import {
-  AvailabilityEnum, OperatorDataForNew, UserDataForNew, UserStatusEnum,
-  UserBasicData, ProfileFieldActions, OperatorGroupAccountAccessEnum, User, BasicUserDataForNew
+  AvailabilityEnum, BasicUserDataForNew, OperatorDataForNew, OperatorGroupAccountAccessEnum,
+  ProfileFieldActions, User, UserBasicData, UserDataForNew, UserStatusEnum,
 } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
+import { LoginService } from 'app/core/login.service';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
-import { empty } from 'app/shared/helper';
-import { LoginService } from 'app/core/login.service';
 import { FieldOption } from 'app/shared/field-option';
+import { empty } from 'app/shared/helper';
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
@@ -19,7 +19,7 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
     const origVal = parent.get('value') == null ? '' : parent.get('value').value;
     if (origVal !== currVal) {
       return {
-        passwordsMatch: true
+        passwordsMatch: true,
       };
     }
   }
@@ -30,7 +30,7 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
  * Helper for user-related data
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserHelperService {
 
@@ -62,14 +62,14 @@ export class UserHelperService {
     const nameActions = data.profileFieldActions.name;
     if (nameActions && nameActions.edit) {
       form.setControl('name',
-        this.formBuilder.control(user.name, Validators.required, serverSideValidator('name'))
+        this.formBuilder.control(user.name, Validators.required, serverSideValidator('name')),
       );
     }
     // Login name
     const usernameActions = data.profileFieldActions.username;
     if (usernameActions && usernameActions.edit && !data.generatedUsername) {
       form.setControl('username',
-        this.formBuilder.control(user.username, Validators.required, serverSideValidator('username'))
+        this.formBuilder.control(user.username, Validators.required, serverSideValidator('username')),
       );
     }
     // E-mail
@@ -81,7 +81,7 @@ export class UserHelperService {
       }
       val.push(Validators.email);
       form.setControl('email',
-        this.formBuilder.control(user.email, val, serverSideValidator('email'))
+        this.formBuilder.control(user.email, val, serverSideValidator('email')),
       );
       if (data.allowSetSendActivationEmail) {
         form.setControl('skipActivationEmail', this.formBuilder.control(user.skipActivationEmail));
@@ -91,7 +91,7 @@ export class UserHelperService {
     // Custom fields
     form.setControl('customValues',
       this.fieldHelper.customValuesFormGroup(data.customFields, {
-        asyncValProvider: cf => serverSideValidator(cf.internalName)
+        asyncValProvider: cf => serverSideValidator(cf.internalName),
       }));
 
     // Phones
@@ -106,7 +106,7 @@ export class UserHelperService {
       mobileForm = this.formBuilder.group({
         name: phone.name,
         number: [phone.number, val, serverSideValidator('mobilePhone')],
-        hidden: phone.hidden
+        hidden: phone.hidden,
       });
     }
 
@@ -119,7 +119,7 @@ export class UserHelperService {
       landLineForm = this.formBuilder.group({
         name: phone.name,
         number: [phone.number, val, serverSideValidator('landLinePhone')],
-        hidden: phone.hidden
+        hidden: phone.hidden,
       });
       if (phoneConfiguration.extensionEnabled) {
         landLineForm.setControl('extension', this.formBuilder.control(phone.extension));
@@ -143,7 +143,7 @@ export class UserHelperService {
         forceChange: false,
         value: ['', isDefined ? Validators.required : null],
         confirmationValue: ['', isDefined
-          ? Validators.compose([Validators.required, PASSWORDS_MATCH_VAL]) : null]
+          ? Validators.compose([Validators.required, PASSWORDS_MATCH_VAL]) : null],
       });
       group.controls.defined.valueChanges.subscribe(defined => {
         if (defined) {
@@ -228,4 +228,3 @@ export class UserHelperService {
   }
 
 }
-

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input } from '@angular/core';
 import { empty } from 'app/shared/helper';
-import { ICON_NAMES, ICON_CONTENTS } from 'app/shared/icon';
+import { ICON_CONTENTS, ICON_NAMES } from 'app/shared/icon';
 
 /**
  * Shows either an SVG icon or a glyph from the material icon font
@@ -10,7 +10,7 @@ import { ICON_NAMES, ICON_CONTENTS } from 'app/shared/icon';
   selector: 'icon',
   templateUrl: 'icon.component.html',
   styleUrls: ['icon.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconComponent {
   @Input() set icon(icon: string) {

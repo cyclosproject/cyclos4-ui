@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AccountHistoryStatus, AccountWithHistoryStatus, Currency } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
-import { BehaviorSubject } from 'rxjs';
 import { truthyAttr } from 'app/shared/helper';
-
+import { BehaviorSubject } from 'rxjs';
 
 /** Information for an account status element shown on top */
 export interface StatusIndicator {
@@ -19,7 +18,7 @@ export interface StatusIndicator {
   selector: 'account-status-view',
   templateUrl: 'account-status-view.component.html',
   styleUrls: ['account-status-view.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountStatusViewComponent extends BaseComponent implements OnInit, OnChanges {
 
@@ -74,9 +73,9 @@ export class AccountStatusViewComponent extends BaseComponent implements OnInit,
     const add = (amount: string, label: string, alwaysNegative: boolean = false) => {
       if (amount) {
         indicators.push({
-          label: label,
-          amount: amount,
-          alwaysNegative: this.format.isZero(amount) ? false : alwaysNegative
+          label,
+          amount,
+          alwaysNegative: this.format.isZero(amount) ? false : alwaysNegative,
         });
       }
     };

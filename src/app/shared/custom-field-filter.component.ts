@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Host, Input, Optional, SkipSelf, ViewChild, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Host, Injector, Input, Optional, SkipSelf, ViewChild } from '@angular/core';
 import { ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from '@angular/forms';
 import { CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
@@ -25,8 +25,8 @@ const ENUMERATED = [CustomFieldTypeEnum.SINGLE_SELECTION, CustomFieldTypeEnum.MU
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: CustomFieldFilterComponent, multi: true },
-    { provide: NG_VALIDATORS, useExisting: CustomFieldFilterComponent, multi: true }
-  ]
+    { provide: NG_VALIDATORS, useExisting: CustomFieldFilterComponent, multi: true },
+  ],
 })
 export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> implements Validator {
   private _field: CustomFieldDetailed;
@@ -55,10 +55,10 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
   linkedEntityType: LinkedEntityTypeEnum;
   fieldOptions: FieldOption[];
 
-  @ViewChild('inputField', { static: false }) inputField: InputFieldComponent;
-  @ViewChild('multiSelectionField', { static: false }) multiSelectionField: MultiSelectionFieldComponent;
-  @ViewChild('singleSelectionField', { static: false }) singleSelectionField: SingleSelectionFieldComponent;
-  @ViewChild('userField', { static: false }) userField: UserFieldComponent;
+  @ViewChild('inputField') inputField: InputFieldComponent;
+  @ViewChild('multiSelectionField') multiSelectionField: MultiSelectionFieldComponent;
+  @ViewChild('singleSelectionField') singleSelectionField: SingleSelectionFieldComponent;
+  @ViewChild('userField') userField: UserFieldComponent;
 
   _hideLabel: boolean | string = false;
   @Input() get hideLabel(): boolean | string {
@@ -74,7 +74,7 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private fieldHelper: FieldHelperService
+    private fieldHelper: FieldHelperService,
   ) {
     super(injector, controlContainer);
   }
@@ -120,7 +120,7 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
       this.inputField,
       this.multiSelectionField,
       this.singleSelectionField,
-      this.userField
+      this.userField,
     ].find(c => c != null);
   }
 

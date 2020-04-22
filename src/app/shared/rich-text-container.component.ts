@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, HostBinding, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { truthyAttr, htmlCollectionToArray, blurIfClick } from 'app/shared/helper';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, ViewChild } from '@angular/core';
+import { blurIfClick, htmlCollectionToArray, truthyAttr } from 'app/shared/helper';
 
 /**
  * Component used to display arbitrary HTML content in a safe way
@@ -8,7 +8,7 @@ import { truthyAttr, htmlCollectionToArray, blurIfClick } from 'app/shared/helpe
   selector: 'rich-text-container',
   templateUrl: 'rich-text-container.component.html',
   styleUrls: ['rich-text-container.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RichTextContainerComponent implements AfterViewInit {
 

@@ -12,7 +12,7 @@ import { FieldOption } from 'app/shared/field-option';
   selector: 'notification-type-setting',
   templateUrl: 'notification-type-setting.component.html',
   styleUrls: ['notification-type-setting.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotificationTypeSettingComponent extends BaseComponent implements OnInit {
 

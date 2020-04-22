@@ -1,8 +1,8 @@
 import {
   AfterViewInit, ChangeDetectionStrategy, Component, ElementRef,
-  EventEmitter, Injector, Input, OnInit, Output, ViewChild
+  EventEmitter, Injector, Input, OnInit, Output, ViewChild,
 } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
 import { ImageProperties } from 'app/shared/image-properties';
@@ -16,7 +16,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   selector: 'image-properties-dialog',
   styleUrls: ['image-properties-dialog.component.scss'],
   templateUrl: 'image-properties-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImagePropertiesDialogComponent
   extends BaseComponent implements OnInit, AfterViewInit {
@@ -27,11 +27,11 @@ export class ImagePropertiesDialogComponent
   updatingDimensions = false;
   @Input() img: HTMLImageElement;
   @Output() select = new EventEmitter<ImageProperties>();
-  @ViewChild('preview', { static: false }) preview: ElementRef<HTMLImageElement>;
+  @ViewChild('preview') preview: ElementRef<HTMLImageElement>;
 
   constructor(
     injector: Injector,
-    public modalRef: BsModalRef
+    public modalRef: BsModalRef,
   ) {
     super(injector);
   }
@@ -46,7 +46,7 @@ export class ImagePropertiesDialogComponent
       marginTop: null,
       marginBottom: null,
       marginLeft: null,
-      marginRight: null
+      marginRight: null,
     });
     this.addSub(this.form.controls.width.valueChanges.subscribe(w => {
       if (this.updatingDimensions) {
@@ -77,7 +77,6 @@ export class ImagePropertiesDialogComponent
 
     this.ratio = this.img.naturalWidth / this.img.naturalHeight;
   }
-
 
   ngAfterViewInit() {
     const value: ImageProperties = {};

@@ -1,16 +1,16 @@
-import { Component, OnInit, Injector, ChangeDetectionStrategy } from '@angular/core';
-import { RecordView, RecordSection, RecordCustomFieldValue } from 'app/api/models';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { RecordCustomFieldValue, RecordSection, RecordView } from 'app/api/models';
 import { RecordsService } from 'app/api/services';
-import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { HeadingAction } from 'app/shared/action';
-import { empty as isEmpty } from 'app/shared/helper';
-import { RecordHelperService } from 'app/core/records-helper.service';
 import { OperationHelperService } from 'app/core/operation-helper.service';
+import { RecordHelperService } from 'app/core/records-helper.service';
+import { HeadingAction } from 'app/shared/action';
+import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
+import { empty as isEmpty } from 'app/shared/helper';
 
 @Component({
   selector: 'view-record',
   templateUrl: 'view-record.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewRecordComponent extends BaseViewPageComponent<RecordView> implements OnInit {
 
@@ -23,7 +23,7 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
     injector: Injector,
     private recordsService: RecordsService,
     private recordsHelper: RecordHelperService,
-    private operationHelper: OperationHelperService
+    private operationHelper: OperationHelperService,
   ) {
     super(injector);
   }
@@ -31,7 +31,7 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
   ngOnInit() {
     super.ngOnInit();
     const id = this.route.snapshot.paramMap.get('id');
-    this.addSub(this.recordsService.viewRecord({ id: id }).subscribe(data => {
+    this.addSub(this.recordsService.viewRecord({ id }).subscribe(data => {
       this.data = data;
     }));
   }
@@ -52,7 +52,7 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
       this.headingActions.push(
         new HeadingAction('edit', this.i18n.general.edit, () => {
           this.router.navigate(['/records', 'edit', record.id]);
-        }, true)
+        }, true),
       );
     }
     for (const operation of record.operations || []) {

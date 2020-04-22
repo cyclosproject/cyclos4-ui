@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy, Component, Host, HostBinding,
-  Injector, Input, OnInit, Optional, SkipSelf, ViewChild
+  Injector, Input, OnInit, Optional, SkipSelf, ViewChild,
 } from '@angular/core';
 import { ControlContainer, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DistanceUnitEnum, SearchByDistanceData } from 'app/api/models';
@@ -22,8 +22,8 @@ const MaxDistanceOptions = [1, 5, 10, 15, 25, 50, 75, 100];
   templateUrl: 'max-distance-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: MaxDistanceFieldComponent, multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: MaxDistanceFieldComponent, multi: true },
+  ],
 })
 export class MaxDistanceFieldComponent
   extends BaseFormFieldComponent<MaxDistance>
@@ -35,7 +35,7 @@ export class MaxDistanceFieldComponent
 
   @Input() data: SearchByDistanceData;
 
-  @ViewChild('address', { static: false }) address: SingleSelectionFieldComponent;
+  @ViewChild('address') address: SingleSelectionFieldComponent;
 
   form: FormGroup;
   enabledControl: FormControl;
@@ -45,7 +45,7 @@ export class MaxDistanceFieldComponent
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private notification: NotificationService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
   ) {
     super(injector, controlContainer);
   }
@@ -59,7 +59,7 @@ export class MaxDistanceFieldComponent
       maxDistance: '10',
       latitude: null,
       longitude: null,
-      address: (firstAddress || {}).id
+      address: (firstAddress || {}).id,
     });
     this.addSub(this.enabledControl.valueChanges.pipe(distinctUntilChanged()).subscribe(enabled => {
       this.updateValue();
@@ -93,7 +93,7 @@ export class MaxDistanceFieldComponent
           : this.i18n.general.geolocation.current,
         maxDistance: value.maxDistance,
         latitude: address ? address.location.latitude : value.latitude,
-        longitude: address ? address.location.longitude : value.longitude
+        longitude: address ? address.location.longitude : value.longitude,
       };
       this.value = maxDistance.maxDistance != null && maxDistance.latitude != null && maxDistance.latitude != null ? maxDistance : null;
     }
@@ -104,7 +104,7 @@ export class MaxDistanceFieldComponent
       navigator.geolocation.getCurrentPosition(pos => {
         this.form.patchValue({
           latitude: pos.coords.latitude,
-          longitude: pos.coords.longitude
+          longitude: pos.coords.longitude,
         });
       }, error => {
         switch (error.code) {

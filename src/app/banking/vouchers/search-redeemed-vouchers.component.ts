@@ -1,7 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
-import { UserVouchersDataForSearch, VoucherResult, VoucherRelationEnum, UserVouchersQueryFilters } from 'app/api/models';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { UserVouchersDataForSearch, UserVouchersQueryFilters, VoucherRelationEnum, VoucherResult } from 'app/api/models';
 import { VouchersService } from 'app/api/services';
+import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { Menu } from 'app/shared/menu';
 
 type UserVoucherSearchParams = UserVouchersQueryFilters & {
@@ -11,7 +11,7 @@ type UserVoucherSearchParams = UserVouchersQueryFilters & {
 @Component({
   selector: 'app-search-redeemed-vouchers',
   templateUrl: './search-redeemed-vouchers.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchRedeemedVouchersComponent
   extends BaseSearchPageComponent<UserVouchersDataForSearch, UserVoucherSearchParams, VoucherResult>
@@ -21,7 +21,7 @@ export class SearchRedeemedVouchersComponent
 
   constructor(
     injector: Injector,
-    private voucherService: VouchersService
+    private voucherService: VouchersService,
   ) {
     super(injector);
   }
@@ -30,7 +30,7 @@ export class SearchRedeemedVouchersComponent
     super.ngOnInit();
     const user = this.route.snapshot.paramMap.get('user');
     this.addSub(this.voucherService.getUserVouchersDataForSearch({
-      user: user, relation: VoucherRelationEnum.REDEEMED
+      user, relation: VoucherRelationEnum.REDEEMED,
     }).subscribe(dataForSearch => {
       this.data = dataForSearch;
       this.self = this.authHelper.isSelf(dataForSearch.user);

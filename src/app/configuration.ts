@@ -1,12 +1,12 @@
 import { AdCategoryConfiguration } from 'app/content/ad-category-configuration';
 import { BannerCardsResolver } from 'app/content/banner-cards-resolver';
+import { BreakpointConfiguration } from 'app/content/breakpoint-configuration';
 import { ContentPagesResolver } from 'app/content/content-pages-resolver';
 import { ContentWithLayout } from 'app/content/content-with-layout';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { OperationConfiguration } from 'app/content/operation-configuration';
-import { Breakpoint } from 'app/shared/layout.service';
-import { BreakpointConfiguration } from 'app/content/breakpoint-configuration';
 import { ShortcutIconConfiguration } from 'app/content/shortcut-icon-configuration';
+import { Breakpoint } from 'app/shared/layout.service';
 
 /**
  * The global configuration

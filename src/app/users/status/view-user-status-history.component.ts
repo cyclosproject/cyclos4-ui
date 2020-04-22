@@ -10,7 +10,7 @@ import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 @Component({
   selector: 'view-user-status-history',
   templateUrl: 'view-user-status-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewUserStatusHistoryComponent extends BaseViewPageComponent<UserStatusData> implements OnInit {
   constructor(

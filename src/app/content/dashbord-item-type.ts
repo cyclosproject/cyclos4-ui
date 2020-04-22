@@ -26,5 +26,5 @@ export enum DashboardItemType {
   /**
    * Shows a content page
    */
-  CONTENT
+  CONTENT,
 }

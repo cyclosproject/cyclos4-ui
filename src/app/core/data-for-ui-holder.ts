@@ -4,6 +4,7 @@ import { ApiConfiguration } from 'app/api/api-configuration';
 import { Auth, DataForUi, RoleEnum, UiKind, User } from 'app/api/models';
 import { AuthService, UiService } from 'app/api/services';
 import { Configuration } from 'app/configuration';
+import { ContentService } from 'app/core/content.service';
 import { ErrorStatus } from 'app/core/error-status';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { NextRequestState } from 'app/core/next-request-state';
@@ -12,13 +13,12 @@ import { isSameOrigin, setReloadButton, setRootAlert } from 'app/shared/helper';
 import moment from 'moment-mini-ts';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { catchError, first, map, switchMap } from 'rxjs/operators';
-import { ContentService } from 'app/core/content.service';
 
 /**
  * Injectable used to hold the `DataForUi` instance used by the application
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataForUiHolder {
 
@@ -98,12 +98,24 @@ export class DataForUiHolder {
           setReloadButton(reloadPage);
           return;
         }
-      })
+      }),
     );
   }
 
   get dataForUi(): DataForUi {
     return this.dataForUi$.value;
+  }
+
+  set dataForUi(dataForUi: DataForUi) {
+    if (dataForUi != null) {
+      this.dataForUi$.next(dataForUi);
+      // Store the time diff
+      this.timeDiff = new Date().getTime() - moment(dataForUi.currentClientTime).toDate().getTime();
+      // Fetch the translations, if not statically set
+      const language = (dataForUi.language || { code: 'en' }).code;
+      const country = dataForUi.country;
+      this.i18nLoading.load(language, country).pipe(first()).subscribe();
+    }
   }
 
   get auth(): Auth {
@@ -127,18 +139,6 @@ export class DataForUiHolder {
     return moment(date);
   }
 
-  set dataForUi(dataForUi: DataForUi) {
-    if (dataForUi != null) {
-      this.dataForUi$.next(dataForUi);
-      // Store the time diff
-      this.timeDiff = new Date().getTime() - moment(dataForUi.currentClientTime).toDate().getTime();
-      // Fetch the translations, if not statically set
-      const language = (dataForUi.language || { code: 'en' }).code;
-      const country = dataForUi.country;
-      this.i18nLoading.load(language, country).pipe(first()).subscribe();
-    }
-  }
-
   /**
    * Adds a new observer subscription for DataForUi change events
    */
@@ -158,8 +158,8 @@ export class DataForUiHolder {
     nextRequestState.nextAsGuest();
     nextRequestState.ignoreNextError = true;
     return this.authService.replaceSession({
-      sessionToken: sessionToken,
-      cookie: isSameOrigin(this.apiConfiguration.rootUrl)
+      sessionToken,
+      cookie: isSameOrigin(this.apiConfiguration.rootUrl),
     }).pipe(
       map(newSessionToken => {
         // Store the session token
@@ -174,7 +174,7 @@ export class DataForUiHolder {
         }
         nextRequestState.setSessionToken(actualSessionValue);
         return of(null);
-      })
+      }),
     );
   }
 

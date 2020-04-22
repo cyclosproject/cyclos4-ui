@@ -1,11 +1,11 @@
 import {
-  ChangeDetectionStrategy, Component, Host, Injector, Input, Optional, SkipSelf, ViewChild, ElementRef
+  ChangeDetectionStrategy, Component, ElementRef, Host, Injector, Input, Optional, SkipSelf, ViewChild,
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FIELD_OPTIONS_SORTER, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { BaseSelectionFieldComponent } from 'app/shared/base-selection-field.component';
-import { blank, empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
 import { FieldOption } from 'app/shared/field-option';
+import { blank, empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
 
 /**
  * Component used to display a multi selection field (using a `select` tag).
@@ -19,7 +19,7 @@ import { FieldOption } from 'app/shared/field-option';
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: MultiSelectionFieldComponent, multi: true },
     { provide: FORM_FIELD_WITH_OPTIONS, useExisting: MultiSelectionFieldComponent },
-  ]
+  ],
 })
 export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<string | string[]> {
 
@@ -41,11 +41,11 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
    */
   @Input() hierarchyProperty: string = null;
 
-  @ViewChild('container', { static: false }) container: ElementRef;
+  @ViewChild('container') container: ElementRef;
 
   constructor(
     injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer
+    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
   ) {
     super(injector, controlContainer);
   }
@@ -93,7 +93,6 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
   protected getSelectedValues(): string[] {
     return getValueAsArray(this.value, this.separator);
   }
-
 
   onShown() {
     super.onShown();

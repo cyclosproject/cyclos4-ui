@@ -6,8 +6,8 @@ import { ISO_DATE } from 'app/core/format.service';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { ActiveMenu, Menu } from 'app/shared/menu';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 
 /**
  * Displays the status of an account.
@@ -17,7 +17,7 @@ import { ActiveMenu, Menu } from 'app/shared/menu';
   selector: 'account-status',
   templateUrl: 'account-status.component.html',
   styleUrls: ['account-status.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountStatusComponent extends BaseDashboardComponent implements OnInit {
 
@@ -31,8 +31,8 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
   balance: string;
 
   constructor(injector: Injector,
-    private bankingHelper: BankingHelperService,
-    private accountsService: AccountsService) {
+              private bankingHelper: BankingHelperService,
+              private accountsService: AccountsService) {
     super(injector);
   }
 
@@ -54,9 +54,9 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
         event => this.menu.navigate({
           entry: this.menu.accountEntry(this.account.type),
           clear: false,
-          event: event
+          event,
         }),
-        true)
+        true),
     ];
 
     // The balance history is always fetched
@@ -66,8 +66,8 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
         owner: ApiHelper.SELF,
         accountType: this.account.type.id,
         datePeriod: [this.dataForUiHolder.now().subtract(6, 'months').startOf('month').format(ISO_DATE)],
-        intervalUnit: TimeFieldEnum.MONTHS
-      })
+        intervalUnit: TimeFieldEnum.MONTHS,
+      }),
     ];
 
     if (this.maxTransfers > 0) {
@@ -78,7 +78,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
         accountType: this.account.type.id,
         direction: TransferDirectionEnum.CREDIT,
         pageSize: this.maxTransfers,
-        skipTotalCount: true
+        skipTotalCount: true,
       }));
     }
 
@@ -107,7 +107,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
       url: `/banking/transfer/${this.account.id}/${tx}`,
       menu: new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType: this.account.type }),
       clear: false,
-      event: event
+      event,
     });
   }
 }

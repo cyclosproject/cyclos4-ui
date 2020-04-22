@@ -5,7 +5,7 @@
 
 <ng-template #widget>
   <div class="input-group">
-    <single-selection-field *ngIf="(!(useCustom$ | async)) || !useCustom"
+    <single-selection-field *ngIf="(useCustom$ | async) === false"
       [formControl]="fixedValuesControl">
       <field-option *ngFor="let value of fixedValues" [value]="value"
         [id]="value" [text]="value"></field-option>

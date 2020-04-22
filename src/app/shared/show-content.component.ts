@@ -10,7 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'show-content',
   templateUrl: 'show-content.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShowContentComponent extends BaseComponent implements OnInit {
 

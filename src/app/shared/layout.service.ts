@@ -4,18 +4,18 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Configuration } from 'app/configuration';
+import { BreakpointConfiguration } from 'app/content/breakpoint-configuration';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { DarkMapStyles, LightMapStyles } from 'app/shared/google-map-styles';
 import { blank, ElementReference, empty, htmlCollectionToArray } from 'app/shared/helper';
 import { PageLayoutComponent } from 'app/shared/page-layout.component';
+import { Escape, ShortcutService } from 'app/shared/shortcut.service';
 import { isEqual, trim } from 'lodash';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { ShortcutService, Escape } from 'app/shared/shortcut.service';
-import { LightMapStyles, DarkMapStyles } from 'app/shared/google-map-styles';
-import { BreakpointConfiguration } from 'app/content/breakpoint-configuration';
 
 export type Theme = 'light' | 'dark';
 export const Themes: Theme[] = ['light', 'dark'];
@@ -24,7 +24,7 @@ const ThemeKey = 'theme';
 const DarkTheme = 'darkTheme';
 const ColorVariables = [
   'primary', 'theme-color', 'chart-color',
-  'body-color', 'border-color', 'text-muted'
+  'body-color', 'border-color', 'text-muted',
 ];
 
 /*
@@ -57,7 +57,7 @@ const BREAKPOINTS = {
   'gt-xs': `(min-width: ${sm}px)`,
   'gt-sm': `(min-width: ${md}px)`,
   'gt-md': `(min-width: ${lg}px)`,
-  'gt-lg': `(min-width: ${xl}px)`
+  'gt-lg': `(min-width: ${xl}px)`,
 };
 
 /**
@@ -70,7 +70,7 @@ export const ALL_BREAKPOINTS = Object.keys(BREAKPOINTS) as Breakpoint[];
  * Shared definitions for the application layout
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LayoutService {
   _colors = new Map<string, string>();
@@ -162,7 +162,7 @@ export class LayoutService {
       const query = BREAKPOINTS[breakpoint];
       const breakpointObserver = observer.observe(query).pipe(
         map(res => res.matches),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       );
       this.breakpointObservers.set(breakpoint, breakpointObserver);
       if (observer.isMatched(query)) {
@@ -173,7 +173,7 @@ export class LayoutService {
     // Initialize the active breakpoints behavior subject
     this._activeBreakpoints = new BehaviorSubject(initialBreakpoints);
     this.breakpointChanges$ = this._activeBreakpoints.asObservable().pipe(
-      distinctUntilChanged()
+      distinctUntilChanged(),
     );
     this._activeBreakpoints.subscribe(activeBreakpoints => this.updateBodyStyles(activeBreakpoints));
     this.updateBodyStyles(initialBreakpoints);
@@ -514,15 +514,15 @@ export class LayoutService {
     return this.theme$.value;
   }
 
+  set theme(theme: Theme) {
+    this.setTheme(theme);
+  }
+
   get darkTheme(): boolean {
     return this.theme === 'dark';
   }
   set darkTheme(dark: boolean) {
     this.theme = dark ? 'dark' : 'light';
-  }
-
-  set theme(theme: Theme) {
-    this.setTheme(theme);
   }
 
   private setTheme(theme: Theme, updateStorage = true) {

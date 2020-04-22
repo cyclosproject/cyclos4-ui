@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, EventEmitter, Output, AfterContentInit, HostBinding } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Output } from '@angular/core';
 
 /**
  * Emits an event when the content is ready
@@ -6,7 +6,7 @@ import { Component, ChangeDetectionStrategy, EventEmitter, Output, AfterContentI
 @Component({
   selector: 'content-monitor',
   templateUrl: 'content-monitor.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentMonitorComponent implements AfterContentInit {
 

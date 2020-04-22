@@ -3,12 +3,13 @@
 
 import {
   AfterViewInit, ChangeDetectionStrategy, Component, ContentChild,
-  EventEmitter, Injector, Input, OnChanges, Output, QueryList, SimpleChanges, TemplateRef, ViewChildren, ElementRef, ViewChild
+  ElementRef, EventEmitter, Injector, Input, OnChanges, Output, QueryList, SimpleChanges, TemplateRef, ViewChild, ViewChildren,
 } from '@angular/core';
 import { Address } from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { MapsService } from 'app/core/maps.service';
 import { BaseComponent } from 'app/shared/base.component';
+import { empty } from 'app/shared/helper';
 import { MaxDistance } from 'app/shared/max-distance';
 import { MobileResultDirective } from 'app/shared/mobile-result.directive';
 import { PageData } from 'app/shared/page-data';
@@ -19,7 +20,6 @@ import { ResultTableDirective } from 'app/shared/result-table.directive';
 import { ResultTileDirective } from 'app/shared/result-tile.directive';
 import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
-import { empty } from 'app/shared/helper';
 
 /**
  * Template for rendering results of distinct `ResultType`s
@@ -28,7 +28,7 @@ import { empty } from 'app/shared/helper';
   selector: 'results-layout',
   templateUrl: 'results-layout.component.html',
   styleUrls: ['results-layout.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResultsLayoutComponent<C, R> extends BaseComponent implements AfterViewInit, OnChanges {
 
@@ -42,12 +42,12 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
   @Input() referencePoint: MaxDistance;
   @Output() update = new EventEmitter<PageData>();
 
-  @ContentChild(ResultCategoryDirective, { static: false, read: TemplateRef }) categoryTemplate: TemplateRef<any>;
-  @ContentChild(ResultTableDirective, { static: false, read: TemplateRef }) tableTemplate: TemplateRef<any>;
-  @ContentChild(MobileResultDirective, { static: false, read: TemplateRef }) mobileResultTemplate: TemplateRef<any>;
-  @ContentChild(ResultTileDirective, { static: false, read: TemplateRef }) tileTemplate: TemplateRef<any>;
-  @ContentChild(ResultInfoWindowDirective, { static: false, read: TemplateRef }) infoWindowTemplate: TemplateRef<any>;
-  @ViewChild('infoWindowContent', { static: false, read: TemplateRef }) infoWindowContent: TemplateRef<any>;
+  @ContentChild(ResultCategoryDirective, { read: TemplateRef }) categoryTemplate: TemplateRef<any>;
+  @ContentChild(ResultTableDirective, { read: TemplateRef }) tableTemplate: TemplateRef<any>;
+  @ContentChild(MobileResultDirective, { read: TemplateRef }) mobileResultTemplate: TemplateRef<any>;
+  @ContentChild(ResultTileDirective, { read: TemplateRef }) tileTemplate: TemplateRef<any>;
+  @ContentChild(ResultInfoWindowDirective, { read: TemplateRef }) infoWindowTemplate: TemplateRef<any>;
+  @ViewChild('infoWindowContent', { read: TemplateRef }) infoWindowContent: TemplateRef<any>;
   @ViewChildren('mapContainer') mapContainerList: QueryList<ElementRef<HTMLDivElement>>;
   private lastMapContainer: HTMLDivElement;
 
@@ -60,11 +60,11 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
   @Input() onClick: (row: R) => void;
   @Input() toLink: (row: R) => string | string[];
   @Input() toAddress: (row: R) => Address = (x) => x;
-  @Input() toMarkerTitle: (row: R) => string = (x) => x['display'] || x['name'];
+  @Input() toMarkerTitle: (row: R) => string = (x: any) => x.display || x.name;
 
   constructor(
     injector: Injector,
-    public maps: MapsService
+    public maps: MapsService,
   ) {
     super(injector);
   }
@@ -144,7 +144,6 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
     event.preventDefault();
   }
 
-
   private updateMap() {
     if (empty(this.rows) || this.resultType !== ResultType.MAP || !this.mapContainerList || !this.maps.enabled || !this.toAddress) {
       return;
@@ -200,7 +199,7 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
       this.markerClusterer = new MarkerClusterer(this.map, [], {
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
         minimumClusterSize: 5,
-        maxZoom: 16
+        maxZoom: 16,
       });
     }
 
@@ -214,16 +213,16 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
       const title = this.toMarkerTitle ? this.toMarkerTitle(r) : address.name;
       if (location) {
         const marker = new google.maps.Marker({
-          title: title,
+          title,
           icon: Configuration.mainMapMarker,
-          position: new google.maps.LatLng(location.latitude, location.longitude)
+          position: new google.maps.LatLng(location.latitude, location.longitude),
         });
         bounds.extend(marker.getPosition());
         marker.addListener('click', () => {
           this.closeAllInfoWindows();
           const infoWindow = this.infoWindow(marker);
           const view = this.infoWindowContent.createEmbeddedView({
-            $implicit: r, address: address
+            $implicit: r, address,
           });
           view.detectChanges();
           const roots = view.rootNodes;
@@ -241,7 +240,7 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
       this.referenceMarker = new google.maps.Marker({
         position: new google.maps.LatLng(this.referencePoint.latitude, this.referencePoint.longitude),
         title: this.referencePoint.name,
-        icon: Configuration.altMapMarker
+        icon: Configuration.altMapMarker,
       });
       if (this.referencePoint.name) {
         this.referenceMarker.addListener('click', () => {

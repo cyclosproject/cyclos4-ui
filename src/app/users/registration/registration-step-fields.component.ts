@@ -12,7 +12,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 @Component({
   selector: 'registration-step-fields',
   templateUrl: 'registration-step-fields.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationStepFieldsComponent
   extends BaseComponent

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { Image } from 'app/api/models';
 
 /**
@@ -9,7 +9,7 @@ import { Image } from 'app/api/models';
   selector: 'chip',
   templateUrl: 'chip.component.html',
   styleUrls: ['chip.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChipComponent {
   @HostBinding('class.mw-100') classMaxWidth = true;

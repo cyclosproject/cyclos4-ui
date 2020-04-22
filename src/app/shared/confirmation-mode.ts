@@ -3,5 +3,5 @@
  */
 export enum ConfirmationMode {
   Device,
-  Password
+  Password,
 }

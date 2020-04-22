@@ -13,7 +13,7 @@ import { cloneDeep } from 'lodash';
 @Component({
   selector: 'edit-webshop-settings',
   templateUrl: 'edit-webshop-settings.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditWebshopSettingsComponent
   extends BasePageComponent<WebshopSettingsView>
@@ -94,10 +94,10 @@ export class EditWebshopSettingsComponent
 
     const value = cloneDeep(this.form.value);
     value.productNumberGenerated = this.form.controls.productGenerationType.value === 'generated';
-    delete value['productGenerationType'];
+    delete value.productGenerationType;
 
     value.customOrderNumberFormat = this.form.controls.orderGenerationType.value === 'manual';
-    delete value['orderGenerationType'];
+    delete value.orderGenerationType;
 
     this.addSub(this.webshopSettingsService.updateWebshopSettings({ user: this.user, body: value }).subscribe(() => {
       this.notification.snackBar(this.i18n.ad.webshopSettingsSaved);

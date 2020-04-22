@@ -1,8 +1,8 @@
-import { Input, HostBinding, InjectionToken, Injector } from '@angular/core';
+import { Directive, HostBinding, InjectionToken, Injector, Input } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
-import { BaseControlComponent } from 'app/shared/base-control.component';
-import { nextId, blank, focus } from 'app/shared/helper';
 import { CustomFieldSizeEnum } from 'app/api/models';
+import { BaseControlComponent } from 'app/shared/base-control.component';
+import { blank, focus, nextId } from 'app/shared/helper';
 import { ValueFormat } from 'app/shared/value-format';
 
 /** Injection token for the form field itself */
@@ -24,6 +24,7 @@ export type FieldLabelPosition
 /**
  * Base class for custom form controls
  */
+@Directive()
 export abstract class BaseFormFieldComponent<T> extends BaseControlComponent<T> {
 
   @HostBinding('class.form-field') classFormField = true;

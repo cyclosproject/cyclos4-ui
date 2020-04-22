@@ -6,8 +6,8 @@ import { LoginState } from 'app/core/login-state';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
-import { BehaviorSubject } from 'rxjs';
 import { Menu } from 'app/shared/menu';
+import { BehaviorSubject } from 'rxjs';
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
@@ -17,7 +17,7 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
     const origVal = parent.get('newPassword') == null ? '' : parent.get('newPassword').value;
     if (origVal !== currVal) {
       return {
-        passwordsMatch: true
+        passwordsMatch: true,
       };
     }
   }
@@ -30,7 +30,7 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
 @Component({
   selector: 'change-expired-password',
   templateUrl: 'change-expired-password.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangeExpiredPasswordComponent
   extends BasePageComponent<PasswordStatusAndActions>
@@ -46,7 +46,7 @@ export class ChangeExpiredPasswordComponent
   constructor(
     injector: Injector,
     private passwordsService: PasswordsService,
-    private loginState: LoginState
+    private loginState: LoginState,
   ) {
     super(injector);
     this.form = this.formBuilder.group({
@@ -66,7 +66,7 @@ export class ChangeExpiredPasswordComponent
     this.addSub(this.passwordsService.getUserPasswordsData({
       user: ApiHelper.SELF,
       type: this.typeId,
-      fields: ['status', 'permissions']
+      fields: ['status', 'permissions'],
     }).subscribe(data => {
       this.data = data;
       this.typeName = data.type.name;
@@ -93,7 +93,7 @@ export class ChangeExpiredPasswordComponent
       this.addSub(this.passwordsService.changePassword({
         user: ApiHelper.SELF,
         type: this.typeId,
-        body: this.form.value
+        body: this.form.value,
       }).subscribe(() => {
         this.notification.snackBar(this.i18n.password.expired.changed(type.name));
         this.reload();

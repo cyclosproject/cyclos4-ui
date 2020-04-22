@@ -6,7 +6,7 @@ import { FormControlLocator } from 'app/shared/form-control-locator';
 import { LayoutService } from 'app/shared/layout.service';
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, End, Home, PageDown, PageUp } from 'app/shared/shortcut.service';
 import download from 'downloadjs';
-import { NgxGalleryImage } from 'ngx-gallery';
+import { NgxGalleryImage } from 'ngx-gallery-9';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
 
@@ -83,7 +83,7 @@ export function nextId() {
  * @param src The source object
  * @param dest The destination object
  */
-export function copyProperties(src: Object, dest: Object, ignore: string[] = []): void {
+export function copyProperties(src: object, dest: object, ignore: string[] = []): void {
   for (const name in src) {
     if (src.hasOwnProperty(name) && !ignore.includes(name)) {
       dest[name] = src[name];
@@ -97,7 +97,7 @@ export function copyProperties(src: Object, dest: Object, ignore: string[] = [])
  * @param properties The properties to attempt
  * @returns undefined if no property were non-null
  */
-export function firstProperty(object: Object, ...properties: string[]) {
+export function firstProperty(object: object, ...properties: string[]) {
   for (const name of properties) {
     if (object.hasOwnProperty(name) && object[name] != null) {
       return object[name];
@@ -112,7 +112,7 @@ const entityMap = {
   '>': '&gt;',
   '"': '&quot;',
   '\'': '&#39;',
-  '/': '&#x2F;'
+  '/': '&#x2F;',
 };
 
 /**
@@ -411,7 +411,7 @@ export function resizeImage(original: Blob, maxWidth: number, maxHeight: number)
         observer.next({
           width: iw,
           height: ih,
-          content: original
+          content: original,
         });
         observer.complete();
         URL.revokeObjectURL(url);
@@ -426,7 +426,7 @@ export function resizeImage(original: Blob, maxWidth: number, maxHeight: number)
           observer.next({
             width: iwScaled,
             height: ihScaled,
-            content: blob
+            content: blob,
           });
           observer.complete();
           URL.revokeObjectURL(url);
@@ -487,7 +487,7 @@ export function scrollTop(to?: number | ElementReference) {
     const el = resolveElement(to);
     if (el) {
       window.scrollBy({
-        top: el.getBoundingClientRect().top - 54
+        top: el.getBoundingClientRect().top - 54,
       });
       return;
     } else {
@@ -525,7 +525,7 @@ export function resolveElement(el: ElementReference): HTMLElement {
  */
 export function elementPosition(el: ElementReference): {
   top: number, left: number, bottom: number, right: number,
-  client: ClientRect | DOMRect
+  client: ClientRect | DOMRect,
 } {
   el = resolveElement(el);
   if (!el) {
@@ -535,11 +535,11 @@ export function elementPosition(el: ElementReference): {
   const top = bbox.top + (window.pageYOffset || document.documentElement.scrollTop);
   const left = bbox.left + (window.pageXOffset || document.documentElement.scrollLeft);
   return {
-    top: top,
+    top,
     bottom: top + bbox.height,
-    left: left,
+    left,
     right: left + bbox.width,
-    client: bbox
+    client: bbox,
   };
 }
 
@@ -818,6 +818,6 @@ export function galleryImage(image: Image): NgxGalleryImage {
   return new NgxGalleryImage({
     big: image.url,
     medium: `${image.url}?width=${MediumThumbSize[0]}&height=${MediumThumbSize[1]}`,
-    small: `${image.url}?width=${SmallThumbSize[0]}&height=${SmallThumbSize[1]}`
+    small: `${image.url}?width=${SmallThumbSize[0]}&height=${SmallThumbSize[1]}`,
   });
 }

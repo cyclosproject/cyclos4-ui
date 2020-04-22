@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
-  BuyVoucher, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, PasswordInput, VoucherDataForBuy,
-  CustomFieldTypeEnum, CustomField
+  BuyVoucher, CreateDeviceConfirmation, CustomField, CustomFieldTypeEnum, DeviceConfirmationTypeEnum,
+  PasswordInput, VoucherDataForBuy,
 } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
@@ -11,7 +11,7 @@ import { Enter } from 'app/shared/shortcut.service';
 @Component({
   selector: 'buy-vouchers-step-confirm',
   templateUrl: 'buy-vouchers-step-confirm.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BuyVouchersStepConfirmComponent extends BaseComponent implements OnInit {
 
@@ -41,7 +41,7 @@ export class BuyVouchersStepConfirmComponent extends BaseComponent implements On
         type: DeviceConfirmationTypeEnum.BUY_VOUCHERS,
         amount: this.buyVoucher.amount,
         voucherType: this.data.type.id,
-        numberOfVouchers: this.buyVoucher.count
+        numberOfVouchers: this.buyVoucher.count,
       };
     };
     // When there's no confirmation password, the Enter key will confirm

@@ -3,8 +3,8 @@ import { AdInterestView, AdKind } from 'app/api/models';
 import { AdInterestsService } from 'app/api/services';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { Menu } from 'app/shared/menu';
 import { empty } from 'app/shared/helper';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Displays the information about an ad interest
@@ -12,7 +12,7 @@ import { empty } from 'app/shared/helper';
 @Component({
   selector: 'view-ad-interest',
   templateUrl: 'view-ad-interest.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewAdInterestComponent extends BaseViewPageComponent<AdInterestView> implements OnInit {
   constructor(
@@ -41,7 +41,7 @@ export class ViewAdInterestComponent extends BaseViewPageComponent<AdInterestVie
     if (data.canEdit) {
       actions.push(
         new HeadingAction('edit', this.i18n.general.edit, () =>
-          this.router.navigate(['/marketplace', 'ad-interests', 'edit', this.id]), true
+          this.router.navigate(['/marketplace', 'ad-interests', 'edit', this.id]), true,
         ));
     }
     this.headingActions = actions;

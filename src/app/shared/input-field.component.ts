@@ -1,8 +1,8 @@
 import {
-  Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SkipSelf, Host,
-  Optional, ViewChild, ElementRef, Injector
+  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Host, Injector, Input,
+  Optional, Output, SkipSelf, ViewChild,
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
+import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 
 /**
@@ -13,8 +13,8 @@ import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
   templateUrl: 'input-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: InputFieldComponent, multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: InputFieldComponent, multi: true },
+  ],
 })
 export class InputFieldComponent
   extends BaseFormFieldComponent<string> {
@@ -35,7 +35,7 @@ export class InputFieldComponent
   @Output() onblur = new EventEmitter<FocusEvent>();
   @Output() onfocus = new EventEmitter<FocusEvent>();
 
-  @ViewChild('input', { static: false }) inputRef: ElementRef;
+  @ViewChild('input') inputRef: ElementRef;
 
   constructor(
     injector: Injector,
@@ -62,7 +62,7 @@ export class InputFieldComponent
   }
 
   protected getFocusableControl() {
-    return (<any>(this.inputRef || {})).nativeElement;
+    return ((this.inputRef || {}) as any).nativeElement;
   }
 
   protected getDisabledValue(): string {
