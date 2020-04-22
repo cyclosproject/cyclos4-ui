@@ -311,7 +311,7 @@ body.dark {
     .avatar {
       color: $mobile-results-icon-color-dark;
     }
-    a.mobile-result {
+    .mobile-result {
       border-color: $mobile-results-border-color-dark;
       &:focus {
         background-color: $mobile-results-focus-bg-dark;
@@ -324,5 +324,4 @@ body.dark {
       }
     }
   }
-
 }
