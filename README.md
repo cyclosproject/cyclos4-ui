@@ -49,8 +49,8 @@ More functionality will be added in future versions.
 ## Requirements
 
 - [Cyclos](https://www.cyclos.org/) server. See the [required version](#cyclos-compatibility) below;
-- [NodeJS](https://nodejs.org/) version 8+;
-- [NPM](https://www.npmjs.com/) version 5+.
+- [NodeJS](https://nodejs.org/) version 12+;
+- [NPM](https://www.npmjs.com/) version 6.9+.
 
 ## Cyclos compatibility
 
