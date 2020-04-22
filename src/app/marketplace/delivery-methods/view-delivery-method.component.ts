@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { DeliveryMethodView, DeliveryMethodChargeTypeEnum } from 'app/api/models';
+import { DeliveryMethodChargeTypeEnum, DeliveryMethodView } from 'app/api/models';
 import { DeliveryMethodsService } from 'app/api/services';
-import { Menu } from 'app/shared/menu';
 import { HeadingAction } from 'app/shared/action';
+import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Displays the information about a delivery method
@@ -11,7 +11,7 @@ import { HeadingAction } from 'app/shared/action';
 @Component({
   selector: 'view-delivery-method',
   templateUrl: 'view-delivery-method.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewDeliveryMethodComponent extends BaseViewPageComponent<DeliveryMethodView> implements OnInit {
   constructor(
@@ -39,15 +39,15 @@ export class ViewDeliveryMethodComponent extends BaseViewPageComponent<DeliveryM
     if (data.canEdit) {
       actions.push(
         new HeadingAction('edit', this.i18n.general.edit, () =>
-          this.router.navigate(['/marketplace', 'delivery-methods', 'edit', this.id]), true
+          this.router.navigate(['/marketplace', 'delivery-methods', 'edit', this.id]), true,
         ));
     }
     this.headingActions = actions;
   }
 
   /**
-  * Resolves the label for fixed or negotiated delivery method
-  */
+   * Resolves the label for fixed or negotiated delivery method
+   */
   resolveChargeTypeLabel(): string {
     switch (this.data.chargeType) {
       case DeliveryMethodChargeTypeEnum.FIXED:

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Host, Injector, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
 import { ControlContainer, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { TimeFieldEnum, TimeInterval, CustomFieldSizeEnum } from 'app/api/models';
+import { CustomFieldSizeEnum, TimeFieldEnum, TimeInterval } from 'app/api/models';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty } from 'app/shared/helper';
 
@@ -12,19 +12,19 @@ import { empty } from 'app/shared/helper';
   templateUrl: 'time-interval-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: TimeIntervalFieldComponent, multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: TimeIntervalFieldComponent, multi: true },
+  ],
 })
 export class TimeIntervalFieldComponent extends BaseFormFieldComponent<TimeInterval> implements OnInit {
 
-  @ViewChild('inputField', { static: false }) private inputRef: ElementRef;
+  @ViewChild('inputField') private inputRef: ElementRef;
 
   form: FormGroup;
   amountControl: FormControl;
 
   constructor(injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private formBuilder: FormBuilder
+              @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
+              private formBuilder: FormBuilder,
   ) {
     super(injector, controlContainer);
   }
@@ -52,7 +52,7 @@ export class TimeIntervalFieldComponent extends BaseFormFieldComponent<TimeInter
   get defaultValue(): TimeInterval {
     return {
       amount: null,
-      field: TimeFieldEnum.DAYS
+      field: TimeFieldEnum.DAYS,
     };
   }
 

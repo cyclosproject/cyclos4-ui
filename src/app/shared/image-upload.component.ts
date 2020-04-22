@@ -1,17 +1,17 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef,
-  EventEmitter, Input, OnDestroy, Output, ViewChild, Injector
+  EventEmitter, Injector, Input, OnDestroy, Output, ViewChild,
 } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { CustomField, Image, TempImageTargetEnum, ImageKind, UserImageKind } from 'app/api/models';
+import { CustomField, Image, ImageKind, TempImageTargetEnum, UserImageKind } from 'app/api/models';
+import { ImagesService } from 'app/api/services';
 import { LoginService } from 'app/core/login.service';
+import { NextRequestState } from 'app/core/next-request-state';
+import { AbstractComponent } from 'app/shared/abstract.component';
 import { resizeImage, ResizeResult, truthyAttr } from 'app/shared/helper';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
-import { ImagesService } from 'app/api/services';
 import { first } from 'rxjs/operators';
-import { AbstractComponent } from 'app/shared/abstract.component';
-import { NextRequestState } from 'app/core/next-request-state';
 
 /**
  * Represents an image file being uploaded
@@ -48,7 +48,7 @@ export class ImageToUpload {
 @Component({
   selector: 'image-upload',
   templateUrl: 'image-upload.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageUploadComponent extends AbstractComponent implements OnDestroy {
 
@@ -187,7 +187,7 @@ export class ImageUploadComponent extends AbstractComponent implements OnDestroy
           }
           url = `${this.owner}/images`;
           params = {
-            kind: UserImageKind.CUSTOM
+            kind: UserImageKind.CUSTOM,
           };
           break;
         case ImageKind.SYSTEM_CUSTOM:
@@ -204,7 +204,7 @@ export class ImageUploadComponent extends AbstractComponent implements OnDestroy
             guestKey: this.login.guestKey,
             user: this.owner,
             customField: this.customField == null ? null : this.customField.id,
-            customFieldKind: this.customField == null ? null : this.customField.kind
+            customFieldKind: this.customField == null ? null : this.customField.kind,
           };
       }
 
@@ -216,7 +216,7 @@ export class ImageUploadComponent extends AbstractComponent implements OnDestroy
         observe: 'events',
         reportProgress: true,
         responseType: 'text',
-        params: params
+        params,
       }).subscribe(event => {
         if (event.type === HttpEventType.UploadProgress) {
           file.progress = event.loaded;

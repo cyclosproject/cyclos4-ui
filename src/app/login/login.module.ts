@@ -10,7 +10,6 @@ import { LoginComponent } from 'app/login/login.component';
 import { RegistrationAgreementsComponent } from 'app/login/registration-agreements.component';
 import { SharedModule } from 'app/shared/shared.module';
 
-
 /**
  * Module comprising the login functionality
  */
@@ -24,13 +23,13 @@ import { SharedModule } from 'app/shared/shared.module';
     ChangeForgottenPasswordComponent,
     ChangeExpiredPasswordComponent,
     AcceptPendingAgreementsComponent,
-    RegistrationAgreementsComponent
+    RegistrationAgreementsComponent,
   ],
   imports: [
-    SharedModule
+    SharedModule,
   ],
   entryComponents: [
-    RegistrationAgreementsComponent
-  ]
+    RegistrationAgreementsComponent,
+  ],
 })
 export class LoginModule { }

@@ -1,10 +1,10 @@
 import {
   ChangeDetectorRef, Component, ElementRef, Host, Injector, Input, OnChanges,
-  OnInit, Optional, SimpleChanges, SkipSelf, ViewChild
+  OnInit, Optional, SimpleChanges, SkipSelf, ViewChild,
 } from '@angular/core';
 import {
   AbstractControl, ControlContainer, FormControl, NG_VALIDATORS,
-  NG_VALUE_ACCESSOR, ValidationErrors, Validator
+  NG_VALUE_ACCESSOR, ValidationErrors, Validator,
 } from '@angular/forms';
 import { CustomFieldSizeEnum } from 'app/api/models';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
@@ -20,8 +20,8 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: 'decimal-field.component.html',
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: DecimalFieldComponent, multi: true },
-    { provide: NG_VALIDATORS, useExisting: DecimalFieldComponent, multi: true }
-  ]
+    { provide: NG_VALIDATORS, useExisting: DecimalFieldComponent, multi: true },
+  ],
 })
 export class DecimalFieldComponent extends BaseFormFieldComponent<string>
   implements Validator, OnInit, OnChanges {
@@ -61,7 +61,7 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
   /** Text to show when component is disabled and value is empty  */
   @Input() emptyLabel: '';
 
-  @ViewChild('inputField', { static: false }) private inputRef: ElementRef;
+  @ViewChild('inputField') private inputRef: ElementRef;
 
   internalControl: FormControl;
   fixedValuesControl: FormControl;
@@ -213,7 +213,7 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
     // We're validating a value that was already passed to format.numberToFixed
     if (value === undefined) {
       return {
-        number: true
+        number: true,
       };
     }
     return null;

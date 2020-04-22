@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Configuration } from 'app/configuration';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
+import { MenuDensity } from 'app/core/menu-density';
 import { MenuService } from 'app/core/menu.service';
 import { AbstractComponent } from 'app/shared/abstract.component';
 import { blurIfClick } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, BaseMenuEntry, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
-import { MenuDensity } from 'app/core/menu-density';
 
 /**
  * Returns the anchor id for the given menu entry
@@ -29,7 +29,7 @@ export function menuAnchorId(entry: BaseMenuEntry) {
   selector: 'menus',
   templateUrl: 'menus.component.html',
   styleUrls: ['menus.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenusComponent extends AbstractComponent implements OnInit {
 
@@ -59,7 +59,7 @@ export class MenusComponent extends AbstractComponent implements OnInit {
     return this.activeMenu == null ? null : this.activeMenu.menu.root;
   }
 
-  @ViewChild('dropdown', { static: false }) dropdown: BsDropdownDirective;
+  @ViewChild('dropdown') dropdown: BsDropdownDirective;
 
   ngOnInit() {
     super.ngOnInit();
@@ -102,8 +102,8 @@ export class MenusComponent extends AbstractComponent implements OnInit {
       entry = base.entries[0];
     }
     this.menu.navigate({
-      entry: entry,
-      event: event
+      entry,
+      event,
     });
   }
 }

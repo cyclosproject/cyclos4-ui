@@ -12,7 +12,7 @@ import { Menu } from 'app/shared/menu';
 @Component({
   selector: 'user-identity-providers',
   templateUrl: 'user-identity-providers.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserIdentityProvidersComponent
   extends BasePageComponent<UserIdentityProvidersListData>
@@ -71,7 +71,7 @@ export class UserIdentityProvidersComponent
     this.addSub(this.authHelper.identityProviderPopup(uip.identityProvider, 'link').subscribe(callback => {
       this.notification.snackBar(this.i18n.identityProvider.action.connectDone({
         name: callback.name,
-        provider: callback.identityProvider.name
+        provider: callback.identityProvider.name,
       }));
       this.reload();
     }));
@@ -81,7 +81,7 @@ export class UserIdentityProvidersComponent
     this.notification.confirm({
       title: this.i18n.identityProvider.action.disconnect,
       message: this.i18n.identityProvider.action.disconnectConfirm(uip.identityProvider.name),
-      callback: () => this.doDisconnect(uip)
+      callback: () => this.doDisconnect(uip),
     });
   }
 
@@ -90,7 +90,7 @@ export class UserIdentityProvidersComponent
     this.addSub(this.identityProvidersService.deleteUserIdentityProvider({
       user: this.param,
       identityProvider: idp.internalName,
-      disable: true
+      disable: true,
     }).subscribe(() => {
       this.notification.info(this.i18n.identityProvider.action.disconnectDone(idp.name));
       this.reload();

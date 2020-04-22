@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Output, Input, OnInit } from '@angular/core';
-import { Validators, FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import { FormGroup, Validators } from '@angular/forms';
+import { Currency, SetDeliveryMethod, TimeInterval } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { Currency, TimeInterval, SetDeliveryMethod } from 'app/api/models';
 
 /**
  * A component which allows to specify a delivery method (name, charge amount, remarks, min and max delivery time)
@@ -10,7 +10,7 @@ import { Currency, TimeInterval, SetDeliveryMethod } from 'app/api/models';
 @Component({
   selector: 'set-delivery-method',
   templateUrl: 'set-delivery-method.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SetDeliveryMethodComponent extends BaseComponent implements OnInit {
 
@@ -36,7 +36,7 @@ export class SetDeliveryMethodComponent extends BaseComponent implements OnInit 
       chargeAmount: [this.chargeAmount, Validators.required],
       minTime: this.minTime,
       maxTime: [this.maxTime, Validators.required],
-      remarks: ''
+      remarks: '',
     });
   }
 

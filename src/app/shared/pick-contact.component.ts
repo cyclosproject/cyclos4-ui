@@ -13,7 +13,7 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'pick-contact',
   templateUrl: 'pick-contact.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PickContactComponent extends BaseComponent implements OnInit {
 
@@ -28,7 +28,7 @@ export class PickContactComponent extends BaseComponent implements OnInit {
   constructor(
     injector: Injector,
     private contactsService: ContactsService,
-    public modalRef: BsModalRef
+    public modalRef: BsModalRef,
   ) {
     super(injector);
   }
@@ -37,7 +37,7 @@ export class PickContactComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
     this.addSub(this.contactsService.searchContactList({
       user: ApiHelper.SELF,
-      fields: ['contact']
+      fields: ['contact'],
     }).subscribe(result => {
       const contacts = (result || []).filter(c => !(this.exclude || []).includes(c.id));
       this.contacts$.next(contacts);

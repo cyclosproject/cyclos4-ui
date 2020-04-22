@@ -3,7 +3,7 @@ import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationEr
 import {
   AddressNew, AvailabilityEnum, Group, GroupForRegistration, GroupKind,
   IdentityProvider, IdentityProviderCallbackStatusEnum, Image, PhoneNew, RoleEnum, StoredFile,
-  UserDataForNew, UserNew, UserRegistrationResult
+  UserDataForNew, UserNew, UserRegistrationResult,
 } from 'app/api/models';
 import { ImagesService, UsersService } from 'app/api/services';
 import { AddressHelperService } from 'app/core/address-helper.service';
@@ -13,7 +13,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import {
   blank, copyProperties, empty, focusFirstField, focusFirstInvalid,
-  mergeValidity, scrollTop, setRootSpinnerVisible, validateBeforeSubmit
+  mergeValidity, scrollTop, setRootSpinnerVisible, validateBeforeSubmit,
 } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of, Subscription, timer } from 'rxjs';
@@ -29,7 +29,7 @@ const SEGURITY_ANSWER_VAL: ValidatorFn = control => {
     const answer = control.value;
     if (question != null && question !== '' && (answer == null || answer === '')) {
       return {
-        required: true
+        required: true,
       };
     }
   }
@@ -42,7 +42,7 @@ const SEGURITY_ANSWER_VAL: ValidatorFn = control => {
 @Component({
   selector: 'user-registration',
   templateUrl: 'user-registration.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserRegistrationComponent
   extends BasePageComponent<UserDataForNew>
@@ -103,7 +103,7 @@ export class UserRegistrationComponent
       // When admin / broker, fetch the possible registration groups from data, as they are more complete
       this.addSub(this.usersService.getUserDataForSearch({
         broker: role === RoleEnum.BROKER ? ApiHelper.SELF : null,
-        fields: ['groupsForRegistration']
+        fields: ['groupsForRegistration'],
       }).subscribe(data => {
         this.groupSets = data.groupsForRegistration.filter(g => g.kind === GroupKind.GROUP_SET);
         const hasRootGroups = data.groupsForRegistration.find(g => g.kind !== GroupKind.GROUP_SET && g.groupSet == null);
@@ -255,7 +255,7 @@ export class UserRegistrationComponent
 
     this.form = this.formBuilder.group({
       group: this.group.value,
-      hiddenFields: [user.hiddenFields || []]
+      hiddenFields: [user.hiddenFields || []],
     });
 
     // The profile fields and phones are handled by the helper
@@ -311,12 +311,12 @@ export class UserRegistrationComponent
       return timer(ApiHelper.DEBOUNCE_TIME).pipe(
         switchMap(() => {
           return this.usersService.validateUserRegistrationField({
-            group: this.group.value, field: field, value: val
+            group: this.group.value, field, value: val,
           });
         }),
         map(msg => {
           return msg ? { message: msg } : null;
-        })
+        }),
       );
     };
   }
@@ -324,7 +324,7 @@ export class UserRegistrationComponent
   showConfirm() {
     // Build a full form, so it can all be validated once
     const fullForm = new FormGroup({
-      user: this.form
+      user: this.form,
     });
     if (this.mobileForm) {
       fullForm.setControl('mobile', this.mobileForm);

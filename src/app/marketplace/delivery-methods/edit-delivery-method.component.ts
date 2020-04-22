@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { FormGroup, Validators } from '@angular/forms';
 import {
-  DeliveryMethodDataForEdit, DeliveryMethodDataForNew,
-  DeliveryMethodChargeTypeEnum, Currency, DeliveryMethodBasicData, DeliveryMethodEdit
+  Currency, DeliveryMethodBasicData,
+  DeliveryMethodChargeTypeEnum, DeliveryMethodDataForEdit, DeliveryMethodDataForNew, DeliveryMethodEdit,
 } from 'app/api/models';
 import { DeliveryMethodsService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { FormGroup, Validators } from '@angular/forms';
-import { validateBeforeSubmit, empty } from 'app/shared/helper';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 /**
  * Edit a delivery method for webshop ads
@@ -16,7 +16,7 @@ import { Menu } from 'app/shared/menu';
 @Component({
   selector: 'edit-delivery-method',
   templateUrl: 'edit-delivery-method.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditDeliveryMethodComponent
   extends BasePageComponent<DeliveryMethodDataForNew | DeliveryMethodDataForEdit>
@@ -46,7 +46,7 @@ export class EditDeliveryMethodComponent
 
     const request: Observable<DeliveryMethodDataForNew | DeliveryMethodDataForEdit> = this.create
       ? this.deliveryMethodService.getDeliveryMethodDataForNew({
-        user: this.user
+        user: this.user,
       })
       : this.deliveryMethodService.getDeliveryMethodDataForEdit({ id: this.id });
     this.addSub(request.subscribe(data => {
@@ -69,7 +69,7 @@ export class EditDeliveryMethodComponent
       minDeliveryTime: dm.minDeliveryTime,
       maxDeliveryTime: [dm.maxDeliveryTime, Validators.required],
       description: [dm.description, Validators.required],
-      version: (dm as DeliveryMethodEdit).version
+      version: (dm as DeliveryMethodEdit).version,
     });
     this.updateCurrency(data);
 
@@ -106,7 +106,7 @@ export class EditDeliveryMethodComponent
       return;
     }
     const value = this.form.value;
-    const request: Observable<String | void> = this.create ?
+    const request: Observable<string | void> = this.create ?
       this.deliveryMethodService.createDeliveryMethod({ body: value, user: this.user }) :
       this.deliveryMethodService.updateDeliveryMethod({ id: this.id, body: value });
     this.addSub(request.subscribe(() => {

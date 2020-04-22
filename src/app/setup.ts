@@ -9,4 +9,3 @@ export function setup() {
   Configuration.appTitleSmall = 'Cyclos';
   Configuration.appTitleMenu = 'Cyclos menu';
 }
-

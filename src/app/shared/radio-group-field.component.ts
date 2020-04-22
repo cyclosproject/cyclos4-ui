@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Host, HostBinding, Optional, SkipSelf, Injector, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Host, HostBinding, Injector, Input, Optional, SkipSelf } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldWithOptionsComponent, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { empty } from 'app/shared/helper';
@@ -13,7 +13,7 @@ import { empty } from 'app/shared/helper';
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: RadioGroupFieldComponent, multi: true },
     { provide: FORM_FIELD_WITH_OPTIONS, useExisting: RadioGroupFieldComponent },
-  ]
+  ],
 })
 export class RadioGroupFieldComponent extends BaseFormFieldWithOptionsComponent<string> {
 
@@ -23,7 +23,7 @@ export class RadioGroupFieldComponent extends BaseFormFieldWithOptionsComponent<
 
   constructor(
     injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer
+    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
   ) {
     super(injector, controlContainer);
   }

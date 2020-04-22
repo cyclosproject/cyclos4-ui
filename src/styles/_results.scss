@@ -36,7 +36,7 @@
     position: relative;
     width: 100%;
     margin-bottom: $tiled-results-spacing-xxs;
-    height: calc(100% - $tiled-results-spacing-xxs);
+    height: calc(100% - #{$tiled-results-spacing-xxs});
     box-shadow: $box-shadow-sm;
     color: $tiled-results-color;
     background-color: $tiled-results-bg;
@@ -154,7 +154,7 @@
 
     .card {
       margin-bottom: $tiled-results-spacing-xs;
-      height: calc(100% - $tiled-results-spacing-xs);
+      height: calc(100% - #{$tiled-results-spacing-xs});
     }
   }
   .mobile-results {
@@ -182,7 +182,7 @@
 
     .card {
       margin-bottom: $tiled-results-spacing;
-      height: calc(100% - $tiled-results-spacing);
+      height: calc(100% - #{$tiled-results-spacing});
     }
   }
 }
@@ -216,7 +216,7 @@
 
     .card {
       margin-bottom: $tiled-results-spacing;
-      height: calc(100% - $tiled-results-spacing);
+      height: calc(100% - #{$tiled-results-spacing});
     }
   }
 }

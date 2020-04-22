@@ -9,7 +9,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 @Component({
   selector: 'validate-email-change',
   templateUrl: 'validate-email-change.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ValidateEmailChangeComponent
   extends BasePageComponent<string>
@@ -21,7 +21,7 @@ export class ValidateEmailChangeComponent
 
   constructor(
     injector: Injector,
-    private validationService: ValidationService
+    private validationService: ValidationService,
   ) {
     super(injector);
   }

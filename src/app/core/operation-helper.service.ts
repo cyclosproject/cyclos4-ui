@@ -4,7 +4,7 @@ import { Params, Router } from '@angular/router';
 import {
   NotificationLevelEnum, Operation, OperationDataForRun,
   OperationResultTypeEnum, OperationScopeEnum, RunOperation,
-  RunOperationResult
+  RunOperationResult,
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services';
 import { Configuration } from 'app/configuration';
@@ -26,14 +26,14 @@ const TypesRunDirectly: OperationResultTypeEnum[] = [
   OperationResultTypeEnum.NOTIFICATION,
   OperationResultTypeEnum.FILE_DOWNLOAD,
   OperationResultTypeEnum.URL,
-  OperationResultTypeEnum.EXTERNAL_REDIRECT
+  OperationResultTypeEnum.EXTERNAL_REDIRECT,
 ];
 
 /**
  * Helper for registering known operations and running them
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OperationHelperService {
   private registry = new Map<string, Operation>();
@@ -86,8 +86,8 @@ export class OperationHelperService {
     if (this.canRunDirectly(operation)) {
       // Run the operation right now
       this.runRequest(operation, {
-        scopeId: scopeId,
-        formParameters: formParameters
+        scopeId,
+        formParameters,
       }).pipe(first())
         .subscribe(response => this.handleResult(response));
     } else {
@@ -117,7 +117,7 @@ export class OperationHelperService {
       }
       parts.push(ApiHelper.internalNameOrId(operation));
       this.router.navigate(parts, {
-        queryParams: formParameters
+        queryParams: formParameters,
       });
     }
   }
@@ -130,7 +130,7 @@ export class OperationHelperService {
     confirmationPassword?: string,
     formParameters?: { [key: string]: string },
     pageData?: PageData,
-    upload?: Blob
+    upload?: Blob,
   }): Observable<HttpResponse<any>> {
 
     // The request body (RunOperation)
@@ -150,8 +150,8 @@ export class OperationHelperService {
       operation: operation.id,
       body: {
         params: run,
-        file: options.upload
-      }
+        file: options.upload,
+      },
     };
 
     const scopeId = options.scopeId;
@@ -338,7 +338,7 @@ export class OperationHelperService {
     const params: Params = {};
     url.searchParams.forEach((value, name) => params[name] = value);
     this.router.navigate([url.pathname], {
-      queryParams: params
+      queryParams: params,
     });
   }
 }

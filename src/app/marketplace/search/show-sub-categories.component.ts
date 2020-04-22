@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Injector, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, Output } from '@angular/core';
 
 import { AdCategoryWithChildren, Image } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
@@ -10,7 +10,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'show-sub-categories',
   templateUrl: 'show-sub-categories.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShowSubCategoriesComponent extends BaseComponent {
 
@@ -22,7 +22,7 @@ export class ShowSubCategoriesComponent extends BaseComponent {
 
   constructor(
     injector: Injector,
-    public modalRef: BsModalRef
+    public modalRef: BsModalRef,
   ) {
     super(injector);
   }

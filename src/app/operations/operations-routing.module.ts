@@ -14,63 +14,63 @@ const operationRoutes: Routes = [
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          runScope: OperationRunScope.Standalone
-        }
+          runScope: OperationRunScope.Standalone,
+        },
       },
       {
         path: 'self/:operation',
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          runScope: OperationRunScope.User
-        }
+          runScope: OperationRunScope.User,
+        },
       },
       {
         path: 'action/:operation',
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          runScope: OperationRunScope.Standalone
-        }
+          runScope: OperationRunScope.Standalone,
+        },
       },
       {
         path: 'user/:user/:operation',
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          runScope: OperationRunScope.User
-        }
+          runScope: OperationRunScope.User,
+        },
       },
       {
         path: 'marketplace/:ad/:operation',
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          runScope: OperationRunScope.Ad
-        }
+          runScope: OperationRunScope.Ad,
+        },
       },
       {
         path: 'record/:record/:operation',
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          runScope: OperationRunScope.Record
-        }
+          runScope: OperationRunScope.Record,
+        },
       },
       {
         path: 'transfer/:transfer/:operation',
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          runScope: OperationRunScope.Transfer
-        }
+          runScope: OperationRunScope.Transfer,
+        },
       },
       {
         path: 'callback/:id/:token',
-        component: OperationCallbackComponent
-      }
-    ]
-  }
+        component: OperationCallbackComponent,
+      },
+    ],
+  },
 ];
 
 /**
@@ -78,11 +78,11 @@ const operationRoutes: Routes = [
  */
 @NgModule({
   imports: [
-    RouterModule.forChild(operationRoutes)
+    RouterModule.forChild(operationRoutes),
   ],
   exports: [
-    RouterModule
-  ]
+    RouterModule,
+  ],
 })
 export class OperationsRoutingModule {
 }

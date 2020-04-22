@@ -11,7 +11,7 @@
     <menu-bar *ngIf="menuBar" [ngClass]="{'d-none': layout.ltlg$ | async}"
       [activeMenu]="menu.activeMenu$ | async"></menu-bar>
     <div #mainContainer class="main-container d-flex flex-column flex-grow-1">
-      <router-outlet *ngIf="!(loggingOut$ | async)"></router-outlet>
+      <router-outlet *ngIf="(loggingOut$ | async) === false"></router-outlet>
     </div>
   </div>
 </ng-container>

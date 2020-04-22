@@ -9,9 +9,9 @@
     <div class="row category-results">
       <div class="category-result col-12 col-xs-6 col-sm-4"
         *ngFor="let cat of categories" [ngClass]="{
-        'col-md-3': !(layout.leftAreaVisible$ | async),
+        'col-md-3': (layout.leftAreaVisible$ | async) === false,
         'col-xl-3': layout.leftAreaVisible$ | async,
-        'col-xl-2': !(layout.leftAreaVisible$ | async)
+        'col-xl-2': (layout.leftAreaVisible$ | async) === false
       }">
         <ng-container
           *ngTemplateOutlet="categoryTemplate; context: {$implicit: cat}">
@@ -54,9 +54,9 @@
       <div class="row tiled-results">
         <div class="col-12 col-xs-6 col-sm-4" *ngFor="let row of rows"
           [ngClass]="{
-          'col-md-3': !(layout.leftAreaVisible$ | async),
+          'col-md-3': (layout.leftAreaVisible$ | async) === false,
           'col-xl-3': layout.leftAreaVisible$ | async,
-          'col-xl-2': !(layout.leftAreaVisible$ | async)
+          'col-xl-2': (layout.leftAreaVisible$ | async) === false
         }">
           <maybe-link class="tiled-result" [link]="linkUrl(row)"
             (click)="handleClick(row, $event)"

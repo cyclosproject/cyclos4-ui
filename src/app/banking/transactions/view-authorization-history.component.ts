@@ -10,14 +10,14 @@ import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 @Component({
   selector: 'view-authorization-history',
   templateUrl: 'view-authorization-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewAuthorizationHistoryComponent extends BaseViewPageComponent<TransactionView> implements OnInit {
 
   constructor(
     injector: Injector,
     private transactionsService: TransactionsService,
-    private transactionStatusService: TransactionStatusService
+    private transactionStatusService: TransactionStatusService,
   ) {
     super(injector);
   }
@@ -30,10 +30,10 @@ export class ViewAuthorizationHistoryComponent extends BaseViewPageComponent<Tra
     super.ngOnInit();
     const key = this.route.snapshot.paramMap.get('key');
     this.addSub(this.transactionsService.viewTransaction({
-      key: key,
+      key,
       fields: [
         'transactionNumber', 'date', 'amount', 'kind', 'type',
-        'fromKind', 'fromUser', 'toKind', 'toUser', 'authorizations']
+        'fromKind', 'fromUser', 'toKind', 'toUser', 'authorizations'],
     })
       .subscribe(transaction => {
         this.data = transaction;

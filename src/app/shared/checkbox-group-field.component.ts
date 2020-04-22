@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Host, HostBinding, Input, Optional, SkipSelf, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Host, HostBinding, Injector, Input, Optional, SkipSelf } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldWithOptionsComponent, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
@@ -13,7 +13,7 @@ import { getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: CheckboxGroupFieldComponent, multi: true },
     { provide: FORM_FIELD_WITH_OPTIONS, useExisting: CheckboxGroupFieldComponent },
-  ]
+  ],
 })
 export class CheckboxGroupFieldComponent extends BaseFormFieldWithOptionsComponent<string | string[]> {
 
@@ -28,7 +28,7 @@ export class CheckboxGroupFieldComponent extends BaseFormFieldWithOptionsCompone
 
   constructor(
     injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer
+    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
   ) {
     super(injector, controlContainer);
   }

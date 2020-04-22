@@ -1,11 +1,11 @@
 import {
-  ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit,
-  Optional, SkipSelf, ViewChild, Output, EventEmitter
+  ChangeDetectionStrategy, Component, EventEmitter, Host, Injector, Input,
+  OnInit, Optional, Output, SkipSelf, ViewChild,
 } from '@angular/core';
 import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import {
   CustomFieldBinaryValues, CustomFieldControlEnum, CustomFieldDetailed,
-  CustomFieldTypeEnum, LinkedEntityTypeEnum, Image, StoredFile
+  CustomFieldTypeEnum, Image, LinkedEntityTypeEnum, StoredFile,
 } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -16,7 +16,8 @@ import { DateFieldComponent } from 'app/shared/date-field.component';
 import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
 import { FieldOption } from 'app/shared/field-option';
 import { FilesFieldComponent } from 'app/shared/files-field.component';
-import { truthyAttr, empty } from 'app/shared/helper';
+import { empty, truthyAttr } from 'app/shared/helper';
+import { HtmlFieldComponent } from 'app/shared/html-field.component';
 import { ImagesFieldComponent } from 'app/shared/images-field.component';
 import { InputFieldComponent } from 'app/shared/input-field.component';
 import { MultiSelectionFieldComponent } from 'app/shared/multi-selection-field.component';
@@ -24,7 +25,6 @@ import { RadioGroupFieldComponent } from 'app/shared/radio-group-field.component
 import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
 import { TextAreaFieldComponent } from 'app/shared/textarea-field.component';
 import { UserFieldComponent } from 'app/shared/user-field.component';
-import { HtmlFieldComponent } from 'app/shared/html-field.component';
 
 const INPUT_TYPES = [CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.LINKED_ENTITY];
 const ENUMERATED = [CustomFieldTypeEnum.SINGLE_SELECTION, CustomFieldTypeEnum.MULTI_SELECTION];
@@ -39,8 +39,8 @@ const ENUMERATED = [CustomFieldTypeEnum.SINGLE_SELECTION, CustomFieldTypeEnum.MU
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: CustomFieldInputComponent, multi: true },
-    { provide: NG_VALIDATORS, useExisting: CustomFieldInputComponent, multi: true }
-  ]
+    { provide: NG_VALIDATORS, useExisting: CustomFieldInputComponent, multi: true },
+  ],
 })
 export class CustomFieldInputComponent extends BaseFormFieldComponent<string> implements Validator, OnInit {
 
@@ -79,19 +79,19 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
 
   disabledValueObject: any;
 
-  @ViewChild('inputField', { static: false }) inputField: InputFieldComponent;
-  @ViewChild('textareaField', { static: false }) textareaField: TextAreaFieldComponent;
-  @ViewChild('richTextField', { static: false }) richTextField: HtmlFieldComponent;
-  @ViewChild('dateField', { static: false }) dateField: DateFieldComponent;
-  @ViewChild('decimalField', { static: false }) decimalField: DecimalFieldComponent;
-  @ViewChild('booleanField', { static: false }) booleanField: BooleanFieldComponent;
-  @ViewChild('singleSelectionField', { static: false }) singleSelectionField: SingleSelectionFieldComponent;
-  @ViewChild('multiSelectionField', { static: false }) multiSelectionField: MultiSelectionFieldComponent;
-  @ViewChild('checkboxGroupField', { static: false }) checkboxGroupField: CheckboxGroupFieldComponent;
-  @ViewChild('radioGroupField', { static: false }) radioGroupField: RadioGroupFieldComponent;
-  @ViewChild('imagesField', { static: false }) imagesField: ImagesFieldComponent;
-  @ViewChild('filesField', { static: false }) filesField: FilesFieldComponent;
-  @ViewChild('userField', { static: false }) userField: UserFieldComponent;
+  @ViewChild('inputField') inputField: InputFieldComponent;
+  @ViewChild('textareaField') textareaField: TextAreaFieldComponent;
+  @ViewChild('richTextField') richTextField: HtmlFieldComponent;
+  @ViewChild('dateField') dateField: DateFieldComponent;
+  @ViewChild('decimalField') decimalField: DecimalFieldComponent;
+  @ViewChild('booleanField') booleanField: BooleanFieldComponent;
+  @ViewChild('singleSelectionField') singleSelectionField: SingleSelectionFieldComponent;
+  @ViewChild('multiSelectionField') multiSelectionField: MultiSelectionFieldComponent;
+  @ViewChild('checkboxGroupField') checkboxGroupField: CheckboxGroupFieldComponent;
+  @ViewChild('radioGroupField') radioGroupField: RadioGroupFieldComponent;
+  @ViewChild('imagesField') imagesField: ImagesFieldComponent;
+  @ViewChild('filesField') filesField: FilesFieldComponent;
+  @ViewChild('userField') userField: UserFieldComponent;
 
   _hideLabel: boolean | string = false;
   @Input() get hideLabel(): boolean | string {
@@ -109,7 +109,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private fieldHelper: FieldHelperService
+    private fieldHelper: FieldHelperService,
   ) {
     super(injector, controlContainer);
   }
@@ -134,7 +134,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
     // When disabled, set a value suitable for the format-field-value component
     if (this.formControl.disabled) {
       this.disabledValueObject = {
-        customValues: {}
+        customValues: {},
       };
       this.disabledValueObject.customValues[this.field.internalName] = this.formControl.value;
     }
@@ -179,7 +179,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
       this.radioGroupField,
       this.imagesField,
       this.filesField,
-      this.userField
+      this.userField,
     ].find(c => c != null);
   }
 

@@ -24,7 +24,7 @@ namespace ContentGetter {
     const res: ContentGetter = injector => {
       const http = injector.get(HttpClient);
       return http.get(rawUrl, {
-        responseType: 'text'
+        responseType: 'text',
       });
     };
     res.toString = () => rawUrl;
@@ -45,11 +45,11 @@ namespace ContentGetter {
   }
 
   /**
-    * The HTML content with an IFrame that hosts the given URL.
-    * Loads the host page a script to allow the iframe be adjusted according to the content.
-    * The page hosted inside the iFrame must include the following script for the auto resize to work:
-    * https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.contentWindow.min.js
-    */
+   * The HTML content with an IFrame that hosts the given URL.
+   * Loads the host page a script to allow the iframe be adjusted according to the content.
+   * The page hosted inside the iFrame must include the following script for the auto resize to work:
+   * https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.contentWindow.min.js
+   */
   export function iframe(iframeUrl: string): ContentGetter {
     const res: ContentGetter = injector => {
       const layout = injector.get(LayoutService);
@@ -120,4 +120,3 @@ namespace ContentGetter {
 }
 
 export { ContentGetter };
-

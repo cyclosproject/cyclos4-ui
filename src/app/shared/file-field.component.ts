@@ -11,8 +11,8 @@ import { LayoutService } from 'app/shared/layout.service';
   selector: 'file-field',
   templateUrl: 'file-field.component.html',
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: FileFieldComponent, multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: FileFieldComponent, multi: true },
+  ],
 })
 export class FileFieldComponent extends BaseFormFieldComponent<File | File[]> {
 

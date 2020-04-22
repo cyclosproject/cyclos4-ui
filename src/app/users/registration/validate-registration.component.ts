@@ -10,7 +10,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 @Component({
   selector: 'validate-registration',
   templateUrl: 'validate-registration.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ValidateRegistrationComponent
   extends BasePageComponent<UserRegistrationResult>
@@ -22,14 +22,14 @@ export class ValidateRegistrationComponent
 
   constructor(
     injector: Injector,
-    private validationService: ValidationService
+    private validationService: ValidationService,
   ) {
     super(injector);
   }
 
   ngOnInit() {
     const key = this.route.snapshot.params.key;
-    this.addSub(this.validationService.validateUserRegistration({ key: key }).subscribe(result => {
+    this.addSub(this.validationService.validateUserRegistration({ key }).subscribe(result => {
       this.data = result;
     }));
   }

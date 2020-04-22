@@ -23,7 +23,7 @@ export const MAX_SIZE_SHORT_NAME = 25;
   selector: 'view-profile',
   templateUrl: 'view-profile.component.html',
   styleUrls: ['view-profile.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewProfileComponent extends BaseViewPageComponent<UserView> implements OnInit {
   constructor(
@@ -126,7 +126,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
         UserRelationshipEnum.ADMINISTRATOR,
         UserRelationshipEnum.BROKER,
         UserRelationshipEnum.OWNER,
-        UserRelationshipEnum.SAME_OWNER
+        UserRelationshipEnum.SAME_OWNER,
       ].includes(user.relationship);
       for (const accountType of accountTypes) {
         this.bankingActions.push(new HeadingAction('account_balance', this.i18n.user.profile.viewAccount(accountType.name), () => {
@@ -316,8 +316,8 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     this.addSub(this.contactsService.createContact({
       user: ApiHelper.SELF,
       body: {
-        contact: this.user.id
-      }
+        contact: this.user.id,
+      },
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.user.profile.addContactDone(this.shortName));
       this.reload();

@@ -18,7 +18,7 @@ import { first, map, switchMap } from 'rxjs/operators';
  * Service used to manage the login status
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoginService {
   private _loggingOut = new BehaviorSubject(false);
@@ -76,7 +76,7 @@ export class LoginService {
       confirmLabel: this.i18n.general.sessionExpired.loginAgain,
       callback: () => {
         this.goToLoginPage(this.router.url);
-      }
+      },
     });
   }
 
@@ -166,8 +166,8 @@ export class LoginService {
 
     return this.authService.login({
       cookie: useCookie,
-      identityProviderRequestId: identityProviderRequestId,
-      fields: ['sessionToken']
+      identityProviderRequestId,
+      fields: ['sessionToken'],
     }).pipe(
       switchMap(auth => {
         // Store the session token
@@ -180,7 +180,7 @@ export class LoginService {
 
         // Then reload the DataForUi instance (as user)
         return this.dataForUiHolder.reload().pipe(
-          map(dataForUi => dataForUi.auth)
+          map(dataForUi => dataForUi.auth),
         );
       }));
   }
@@ -218,7 +218,7 @@ export class LoginService {
       }
     };
     this.authService.logout({
-      cookie: isSameOrigin(this.apiConfiguration.rootUrl)
+      cookie: isSameOrigin(this.apiConfiguration.rootUrl),
     }).subscribe(handler, handler);
   }
 }

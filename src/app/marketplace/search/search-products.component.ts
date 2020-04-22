@@ -1,13 +1,13 @@
+import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { AdKind, AdResult, AdStatusEnum } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services';
 import { BaseComponent } from 'app/shared/base.component';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { PagedResults } from 'app/shared/paged-results';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { PageData } from 'app/shared/page-data';
-import { HttpResponse } from '@angular/common/http';
-import { FormGroup } from '@angular/forms';
+import { PagedResults } from 'app/shared/paged-results';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 /**
  * A component which allows to search and select webshop products for the current user and a given currency
@@ -15,7 +15,7 @@ import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'search-products',
   templateUrl: 'search-products.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchProductsComponent extends BaseComponent implements OnInit {
 
@@ -32,7 +32,7 @@ export class SearchProductsComponent extends BaseComponent implements OnInit {
   constructor(
     injector: Injector,
     public modalRef: BsModalRef,
-    private marketplaceService: MarketplaceService
+    private marketplaceService: MarketplaceService,
   ) {
     super(injector);
   }
@@ -51,7 +51,7 @@ export class SearchProductsComponent extends BaseComponent implements OnInit {
     this.rendering = true;
     this.results = null;
     this.addSub(this.doSearch(pageData).subscribe(response =>
-      this.results = PagedResults.from(response)
+      this.results = PagedResults.from(response),
     ));
   }
 
@@ -75,7 +75,7 @@ export class SearchProductsComponent extends BaseComponent implements OnInit {
       status: AdStatusEnum.ACTIVE,
       pageSize: data.pageSize || this.pageSize,
       page: data.page || 0,
-      keywords: this.form.controls.keywords.value
+      keywords: this.form.controls.keywords.value,
     };
     return this.marketplaceService.searchUserAds$Response(query);
   }

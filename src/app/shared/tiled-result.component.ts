@@ -8,7 +8,7 @@ import { truthyAttr } from 'app/shared/helper';
 @Component({
   selector: 'tiled-result',
   templateUrl: 'tiled-result.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TiledResultComponent {
 

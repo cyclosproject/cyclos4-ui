@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { UsersService } from 'app/api/services';
-import { User } from 'app/api/models';
-import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { User } from 'app/api/models';
+import { UsersService } from 'app/api/services';
+import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { ErrorStatus } from 'app/core/error-status';
 import { LoginService } from 'app/core/login.service';
+import { Observable, of } from 'rxjs';
 
 /**
  * Contains a cache for `User` models by id / principal
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserCacheService {
 
@@ -58,8 +58,8 @@ export class UserCacheService {
         this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
           this.usersService.viewUser({
             user: key, fields: [
-              'id', 'display', 'shortDisplay', 'image'
-            ]
+              'id', 'display', 'shortDisplay', 'image',
+            ],
           }).subscribe(user => {
             this.cache.set(key, user);
             if (user.id !== key) {

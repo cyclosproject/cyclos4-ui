@@ -1,6 +1,6 @@
 import {
   ChangeDetectorRef, Component, ElementRef, EventEmitter, Host,
-  Injector, Input, OnInit, Optional, Output, SkipSelf, ViewChild
+  Injector, Input, OnInit, Optional, Output, SkipSelf, ViewChild,
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomField, StoredFile } from 'app/api/models';
@@ -22,8 +22,8 @@ import { take } from 'rxjs/operators';
   selector: 'files-field',
   templateUrl: 'files-field.component.html',
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: FilesFieldComponent, multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: FilesFieldComponent, multi: true },
+  ],
 })
 export class FilesFieldComponent extends BaseFormFieldComponent<string | string[]> implements OnInit {
 
@@ -47,7 +47,7 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
   files: StoredFile[];
   private uploadedFiles: StoredFile[];
 
-  @ViewChild('focusHolder', { static: false }) focusHolder: ElementRef;
+  @ViewChild('focusHolder') focusHolder: ElementRef;
 
   /**
    * The custom field for uploaded temporary files
@@ -121,8 +121,8 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
     const ref = this.modal.show(ManageFilesComponent, {
       class: 'modal-form',
       initialState: {
-        files: this.files
-      }
+        files: this.files,
+      },
     });
     const component = ref.content as ManageFilesComponent;
     this.addSub(component.result.pipe(take(1)).subscribe(result => {

@@ -16,7 +16,7 @@
     </div>
     <div
       class="col-12 col-sm-6 mt-3 mt-sm-0 d-flex justify-content-between justify-content-sm-end align-items-end"
-      *ngIf="!(upload.uploading$ | async)">
+      *ngIf="(upload.uploading$ | async) === false">
       <button class="btn btn-outline-primary" (click)="upload.perform()">
         {{ i18n.field.image.upload }}
       </button>
@@ -108,7 +108,8 @@
       *ngIf="addressForm.get('location').value.latitude != null; else viewMap"
       (imageLoaded)="mapShown()" [address]="addressForm.value"></static-map>
     <ng-template #viewMap>
-      <button *ngIf="!(locatingAddress$ | async); else locatingSpinner"
+      <button
+        *ngIf="(locatingAddress$ | async) === false; else locatingSpinner"
         class="btn btn-outline-primary" type="button"
         (click)="locateAddress()">
         {{ i18n.general.mapView }}

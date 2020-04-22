@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { UserBrokersData, Brokering } from 'app/api/models';
+import { Brokering, UserBrokersData } from 'app/api/models';
 import { BrokeringService } from 'app/api/services';
-import { BasePageComponent } from 'app/shared/base-page.component';
 import { HeadingAction } from 'app/shared/action';
+import { BasePageComponent } from 'app/shared/base-page.component';
 
 @Component({
   selector: 'list-user-brokers',
   templateUrl: 'list-user-brokers.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListUserBrokersComponent
   extends BasePageComponent<UserBrokersData>
@@ -56,7 +56,7 @@ export class ListUserBrokersComponent
   setMain(brokering: Brokering) {
     this.addSub(this.brokeringService.setMainBroker({
       broker: brokering.broker.id,
-      user: this.param
+      user: this.param,
     }).subscribe(() => {
       this.reload();
     }));
@@ -65,14 +65,14 @@ export class ListUserBrokersComponent
   remove(brokering: Brokering) {
     this.notification.confirm({
       message: this.i18n.general.removeConfirm(brokering.broker.display),
-      callback: () => this.doRemove(brokering)
+      callback: () => this.doRemove(brokering),
     });
   }
 
   private doRemove(brokering: Brokering) {
     this.addSub(this.brokeringService.removeBroker({
       broker: brokering.broker.id,
-      user: this.param
+      user: this.param,
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.general.removeDone(brokering.broker.display));
       this.reload();

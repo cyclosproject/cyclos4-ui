@@ -1,14 +1,14 @@
 import {
   ChangeDetectionStrategy, Component, EventEmitter, Host, Injector, Input,
-  OnChanges, OnDestroy, OnInit, Optional, Output, SkipSelf, ViewChild
+  OnChanges, OnDestroy, OnInit, Optional, Output, SkipSelf, ViewChild,
 } from '@angular/core';
 import {
   AbstractControl, ControlContainer, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR,
-  ValidationErrors, Validator
+  ValidationErrors, Validator,
 } from '@angular/forms';
 import {
   CreateDeviceConfirmation, DeviceConfirmationStatusEnum, DeviceConfirmationView,
-  ImageSizeEnum, PasswordInput, PasswordModeEnum, PerformPayment
+  ImageSizeEnum, PasswordInput, PasswordModeEnum, PerformPayment,
 } from 'app/api/models';
 import { DeviceConfirmationsService, PosService } from 'app/api/services';
 import { AuthHelperService } from 'app/core/auth-helper.service';
@@ -17,7 +17,7 @@ import { BaseControlComponent } from 'app/shared/base-control.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { empty } from 'app/shared/helper';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 /**
@@ -30,8 +30,8 @@ import { first } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: ConfirmationPasswordComponent, multi: true },
-    { provide: NG_VALIDATORS, useExisting: ConfirmationPasswordComponent, multi: true }
-  ]
+    { provide: NG_VALIDATORS, useExisting: ConfirmationPasswordComponent, multi: true },
+  ],
 })
 export class ConfirmationPasswordComponent extends BaseControlComponent<string> implements OnInit, OnDestroy, OnChanges, Validator {
 
@@ -51,7 +51,7 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
   confirmationModeControl: FormControl;
   deviceConfirmationId: string;
 
-  @ViewChild('passwordComponent', { static: false }) private passwordComponent: PasswordInputComponent;
+  @ViewChild('passwordComponent') private passwordComponent: PasswordInputComponent;
 
   private otpSubscription: Subscription;
 
@@ -64,7 +64,7 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
     private posService: PosService,
     private deviceConfirmationsService: DeviceConfirmationsService,
     private pushNotifications: PushNotificationsService,
-    private authHelper: AuthHelperService
+    private authHelper: AuthHelperService,
   ) {
     super(injector, controlContainer);
   }
@@ -152,11 +152,11 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
     let request: Observable<string>;
     if (this.pos) {
       request = this.posService.receivePaymentCreateDeviceConfirmation({
-        body: this.createDeviceConfirmation() as PerformPayment
+        body: this.createDeviceConfirmation() as PerformPayment,
       });
     } else {
       request = this.deviceConfirmationsService.createDeviceConfirmation({
-        body: this.createDeviceConfirmation() as CreateDeviceConfirmation
+        body: this.createDeviceConfirmation() as CreateDeviceConfirmation,
       });
     }
     request.pipe(first()).subscribe(id => {
@@ -165,11 +165,11 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
       if (this.pos) {
         const perform = this.createDeviceConfirmation() as PerformPayment;
         qrReq = this.posService.receivePaymentDeviceConfirmationQrCode({
-          id: id, payer: perform.subject, size: ImageSizeEnum.MEDIUM
+          id, payer: perform.subject, size: ImageSizeEnum.MEDIUM,
         });
       } else {
         qrReq = this.deviceConfirmationsService.getDeviceConfirmationQrCode({
-          id: id, size: ImageSizeEnum.MEDIUM
+          id, size: ImageSizeEnum.MEDIUM,
         });
       }
       qrReq.pipe(first()).subscribe(blob => {

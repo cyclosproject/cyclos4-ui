@@ -8,13 +8,13 @@ import { take, tap } from 'rxjs/operators';
  * Service used to manage the persistent cache
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CacheService {
 
   constructor() {
     // This method is not in the current @types/lscache
-    lscache['setExpiryMilliseconds'](1000);
+    lscache.setExpiryMilliseconds(1000);
     lscache.flushExpired();
   }
 
@@ -56,7 +56,7 @@ export class CacheService {
     if (producer) {
       return producer(key).pipe(
         take(1),
-        tap(value => lscache.set(key, value, timeoutSeconds))
+        tap(value => lscache.set(key, value, timeoutSeconds)),
       );
     } else {
       return EMPTY;

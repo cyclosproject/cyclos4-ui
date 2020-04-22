@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Host,
-  Input, OnInit, Optional, Output, SkipSelf, Injector
+  Injector, Input, OnInit, Optional, Output, SkipSelf,
 } from '@angular/core';
 import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
 import { ISO_DATE } from 'app/core/format.service';
@@ -28,8 +28,8 @@ const MONTHS_PER_ROW = 2;
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: CalendarComponent, multi: true },
-    { provide: NG_VALIDATORS, useExisting: CalendarComponent, multi: true }
-  ]
+    { provide: NG_VALIDATORS, useExisting: CalendarComponent, multi: true },
+  ],
 })
 export class CalendarComponent extends BaseControlComponent<string> implements OnInit {
   @Input() id: string;
@@ -127,8 +127,8 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
   }
 
   constructor(injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private changeDetector: ChangeDetectorRef
+              @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
+              private changeDetector: ChangeDetectorRef,
   ) {
     super(injector, controlContainer);
   }
@@ -174,7 +174,7 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
 
     const shortcuts = [
       'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
-      'PageUp', 'PageDown', 'Home', 'End'
+      'PageUp', 'PageDown', 'Home', 'End',
     ];
     this.addShortcut(shortcuts, event => {
       this.handleKey(event);
@@ -271,14 +271,14 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
     this.add(1);
   }
   selectDate(date: number) {
-    const mm = moment({ year: this.year, month: this.month, date: date });
+    const mm = moment({ year: this.year, month: this.month, date });
     this.value = mm.format(ISO_DATE);
     this.select.emit(mm);
   }
   selectMonth(month: number) {
     this.month = month;
     this.type = 'month';
-    this.focusDate(moment({ year: this.year, month: month, date: 1 }));
+    this.focusDate(moment({ year: this.year, month, date: 1 }));
   }
   selectYear(year: number) {
     this.year = year;
@@ -334,7 +334,7 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
       days.push(
         Array(7).fill(0).map(() => {
           return date.add(1, 'day').month() === this.month ? date.date() : null;
-        })
+        }),
       );
     }
     this.days = days;
@@ -346,7 +346,7 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
 
   isSelectable(year: number, month?: number, date?: number) {
     if (this.min || this.max) {
-      const ref = moment({ year: year, month: month || 0, date: date || 1 });
+      const ref = moment({ year, month: month || 0, date: date || 1 });
       if (this.min && ref.clone().startOf('day').isBefore(this.min.clone().startOf('day'))) {
         return false;
       }
@@ -425,13 +425,13 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
         const min = this.min;
         if (min != null && mmnt.isBefore(min)) {
           errors.minDate = {
-            min: this.format.formatAsDate(min)
+            min: this.format.formatAsDate(min),
           };
         }
         const max = this.max;
         if (max != null && mmnt.isAfter(max)) {
           errors.maxDate = {
-            max: this.format.formatAsDate(max)
+            max: this.format.formatAsDate(max),
           };
         }
       }

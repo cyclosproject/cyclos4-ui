@@ -6,12 +6,12 @@ import { AdCategoryConfiguration } from 'app/content/ad-category-configuration';
 import { ShowSubCategoriesComponent } from 'app/marketplace/search/show-sub-categories.component';
 import { BaseComponent } from 'app/shared/base.component';
 import { truthyAttr } from 'app/shared/helper';
+import { MaxDistance } from 'app/shared/max-distance';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { ResultType } from 'app/shared/result-type';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
-import { MaxDistance } from 'app/shared/max-distance';
 
 const MAX_CHILDREN = 5;
 
@@ -21,7 +21,7 @@ const MAX_CHILDREN = 5;
 @Component({
   selector: 'ads-results',
   templateUrl: 'ads-results.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdsResultsComponent extends BaseComponent {
 
@@ -46,7 +46,7 @@ export class AdsResultsComponent extends BaseComponent {
 
   constructor(
     injector: Injector,
-    private modal: BsModalService
+    private modal: BsModalService,
   ) {
     super(injector);
   }
@@ -176,8 +176,8 @@ export class AdsResultsComponent extends BaseComponent {
         category: cat,
         image: this.categoryImage(cat),
         icon: this.categoryIcon(cat),
-        color: this.categoryColor(cat)
-      }
+        color: this.categoryColor(cat),
+      },
     });
     const comp = ref.content as ShowSubCategoriesComponent;
     this.addSub(comp.select.subscribe(sub => {

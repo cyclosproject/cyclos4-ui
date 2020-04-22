@@ -1,13 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
-import { ContentGetter } from 'app/content/content-getter';
 import { Content, DEFAULT_CACHE_SECONDS } from 'app/content/content';
-import { CacheService } from 'app/core/cache.service';
-import { Observable, of, EMPTY } from 'rxjs';
-import { blank } from 'app/shared/helper';
+import { ContentGetter } from 'app/content/content-getter';
 import { ContentPage } from 'app/content/content-page';
 import { handleFullWidthLayout } from 'app/content/content-with-layout';
+import { CacheService } from 'app/core/cache.service';
+import { blank } from 'app/shared/helper';
 import { empty as isEmpty } from 'app/shared/helper';
 import { RootMenu } from 'app/shared/menu';
+import { EMPTY, Observable, of } from 'rxjs';
 
 const VALID_CONTENT_PAGES_ROOT_MENUS = [RootMenu.CONTENT, RootMenu.BANKING, RootMenu.MARKETPLACE, RootMenu.PERSONAL];
 
@@ -15,7 +15,7 @@ const VALID_CONTENT_PAGES_ROOT_MENUS = [RootMenu.CONTENT, RootMenu.BANKING, Root
  * Service used to resolve dynamic content
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ContentService {
 

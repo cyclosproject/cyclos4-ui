@@ -12,7 +12,7 @@ import { Menu } from 'app/shared/menu';
 @Component({
   selector: 'answer-form',
   templateUrl: 'answer-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnswerFormComponent
   extends BasePageComponent<AdQuestionView>
@@ -31,7 +31,7 @@ export class AnswerFormComponent
     super.ngOnInit();
     this.id = this.route.snapshot.params.id;
     this.addSub(this.adQuestionService.getAdQuestion({ id: this.id }).subscribe(data =>
-      this.data = data
+      this.data = data,
     ));
   }
 
@@ -42,11 +42,11 @@ export class AnswerFormComponent
     }
     this.addSub(this.adQuestionService.answerAdQuestion({
       id: this.id,
-      body: this.answer.value
+      body: this.answer.value,
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.ad.questionAnswered);
       this.router.navigate(['/marketplace', 'unanswered-questions'], {
-        replaceUrl: true
+        replaceUrl: true,
       });
     }));
   }

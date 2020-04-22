@@ -41,7 +41,7 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
 @NgModule({
   imports: [
     UsersRoutingModule,
-    SharedModule
+    SharedModule,
   ],
   exports: [],
   declarations: [
@@ -91,8 +91,8 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
   entryComponents: [
     VerifyPhoneComponent,
     AddContactDialogComponent,
-    ChangePasswordDialogComponent
-  ]
+    ChangePasswordDialogComponent,
+  ],
 })
 export class UsersModule {
 }

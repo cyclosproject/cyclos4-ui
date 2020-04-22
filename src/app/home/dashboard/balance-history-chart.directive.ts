@@ -1,15 +1,15 @@
-import { Directive, ElementRef, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AccountBalanceHistoryResult } from 'app/api/models';
-import { Chart } from 'chart.js';
-import moment from 'moment-mini-ts';
 import { FormatService } from 'app/core/format.service';
 import { LayoutService } from 'app/shared/layout.service';
+import { Chart } from 'chart.js';
+import moment from 'moment-mini-ts';
 
 /**
  * Renders a chart on a given canvas
  */
 @Directive({
-  selector: 'canvas[balanceHistoryChart]'
+  selector: 'canvas[balanceHistoryChart]',
 })
 export class BalanceHistoryChartDirective implements OnInit, OnChanges {
 
@@ -33,7 +33,7 @@ export class BalanceHistoryChartDirective implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.chart && changes['darkTheme']) {
+    if (this.chart && changes.darkTheme) {
       this.setColors();
       setTimeout(() => this.chart.update(), 400);
     }
@@ -52,15 +52,15 @@ export class BalanceHistoryChartDirective implements OnInit, OnChanges {
           data: this.amounts,
           borderWidth: 3,
           lineTension: 0,
-          backgroundColor: 'transparent'
-        }]
+          backgroundColor: 'transparent',
+        }],
       },
       options: {
         legend: {
-          display: false
+          display: false,
         },
         animation: {
-          duration: 0
+          duration: 0,
         },
         tooltips: {
           callbacks: {
@@ -70,28 +70,28 @@ export class BalanceHistoryChartDirective implements OnInit, OnChanges {
                 return this.format.formatAsDate(balance.date);
               });
             },
-            label: n => this.format.formatAsCurrency(currency, this.amounts[n.index])
+            label: n => this.format.formatAsCurrency(currency, this.amounts[n.index]),
           },
-          displayColors: false
+          displayColors: false,
         },
         scales: {
           xAxes: [{
             gridLines: {
-              display: false
-            }
+              display: false,
+            },
           }],
           yAxes: [{
             gridLines: {
-              display: false
+              display: false,
             },
             ticks: {
               beginAtZero: !hasNegative,
               maxTicksLimit: 4,
-              callback: n => this.format.formatAsCurrency(currency, n)
-            }
-          }]
-        }
-      }
+              callback: n => this.format.formatAsCurrency(currency, n),
+            },
+          }],
+        },
+      },
     });
     this.setColors();
   }

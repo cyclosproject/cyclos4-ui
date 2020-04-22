@@ -5,7 +5,7 @@ import { FormatService } from 'app/core/format.service';
  * Pipe used to format a date / string as date / time using the current configuration
  */
 @Pipe({
-  name: 'dateTime'
+  name: 'dateTime',
 })
 export class DateTimePipe implements PipeTransform {
 

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, ViewChild 
 import { Image } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { galleryImage } from 'app/shared/helper';
-import { NgxGalleryAnimation, NgxGalleryComponent, NgxGalleryImage, NgxGalleryImageSize, NgxGalleryOptions } from 'ngx-gallery';
+import { NgxGalleryAnimation, NgxGalleryComponent, NgxGalleryImage, NgxGalleryImageSize, NgxGalleryOptions } from 'ngx-gallery-9';
 
 const ProfileGalleryOptions: NgxGalleryOptions = {
   imageSize: NgxGalleryImageSize.Contain,
@@ -11,7 +11,7 @@ const ProfileGalleryOptions: NgxGalleryOptions = {
   previewKeyboardNavigation: true,
   previewCloseOnClick: true,
   previewCloseOnEsc: true,
-  thumbnailsAutoHide: true
+  thumbnailsAutoHide: true,
 };
 
 const MultiProfileGalleryOptions: NgxGalleryOptions[] = [ProfileGalleryOptions];
@@ -25,7 +25,7 @@ const SingleProfileGalleryOptions: NgxGalleryOptions[] = [{
   previewArrows: false,
   previewKeyboardNavigation: true,
   previewCloseOnClick: true,
-  previewCloseOnEsc: true
+  previewCloseOnEsc: true,
 }];
 
 /**
@@ -35,7 +35,7 @@ const SingleProfileGalleryOptions: NgxGalleryOptions[] = [{
   selector: 'profile-images',
   templateUrl: 'profile-images.component.html',
   styleUrls: ['profile-images.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileImagesComponent extends BaseComponent implements OnInit {
   constructor(injector: Injector) {
@@ -49,7 +49,7 @@ export class ProfileImagesComponent extends BaseComponent implements OnInit {
   galleryImages: NgxGalleryImage[];
   galleryOptions: NgxGalleryOptions[];
 
-  @ViewChild(NgxGalleryComponent, { static: false }) gallery: NgxGalleryComponent;
+  @ViewChild(NgxGalleryComponent) gallery: NgxGalleryComponent;
 
   ngOnInit() {
     super.ngOnInit();

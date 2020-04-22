@@ -104,7 +104,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { NgxGalleryModule } from 'ngx-gallery';
+import { NgxGalleryModule } from 'ngx-gallery-9';
 
 export function initTooltipConfig(): TooltipConfig {
   const config = new TooltipConfig();
@@ -211,7 +211,7 @@ export function initTooltipConfig(): TooltipConfig {
     NumberPipe,
     CurrencyPipe,
     BooleanPipe,
-    AccountPipe
+    AccountPipe,
   ],
   imports: [
     CommonModule,
@@ -228,7 +228,7 @@ export function initTooltipConfig(): TooltipConfig {
     NgxGalleryModule,
     ZXingScannerModule,
 
-    LayoutModule
+    LayoutModule,
   ],
   exports: [
     CommonModule,
@@ -340,7 +340,7 @@ export function initTooltipConfig(): TooltipConfig {
     NumberPipe,
     CurrencyPipe,
     BooleanPipe,
-    AccountPipe
+    AccountPipe,
   ],
   providers: [
     { provide: TooltipConfig, useFactory: initTooltipConfig },
@@ -355,8 +355,8 @@ export function initTooltipConfig(): TooltipConfig {
     ImagePropertiesDialogComponent,
     LinkPropertiesDialogComponent,
     TextDialogComponent,
-    ScanQrCodeComponent
-  ]
+    ScanQrCodeComponent,
+  ],
 })
 export class SharedModule {
 }

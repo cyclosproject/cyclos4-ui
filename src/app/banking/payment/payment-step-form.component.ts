@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnIn
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   AccountWithStatus, Currency, CustomFieldDetailed, DataForTransaction,
-  NotFoundError, TransactionTypeData, TransferType, User
+  NotFoundError, TransactionTypeData, TransferType, User,
 } from 'app/api/models';
 import { PaymentsService, PosService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -16,7 +16,6 @@ import { UserFieldComponent } from 'app/shared/user-field.component';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
 
-
 const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, ErrorStatus.NOT_FOUND];
 
 /**
@@ -25,7 +24,7 @@ const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, Error
 @Component({
   selector: 'payment-step-form',
   templateUrl: 'payment-step-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
@@ -37,7 +36,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
   @Output() availablePaymentTypes = new EventEmitter<TransferType[]>();
 
-  @ViewChild('toUser', { static: false }) userField: UserFieldComponent;
+  @ViewChild('toUser') userField: UserFieldComponent;
   @ViewChild('amount', { static: true }) amountField: DecimalFieldComponent;
 
   accountBalanceLabel$ = new BehaviorSubject<string>(null);
@@ -81,14 +80,14 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
       // Whenever the subject changes, fetch the payment types, if needed
       this.addSub(this.form.get('subject').valueChanges
         .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
-        .subscribe(() => this.fetchPaymentTypes())
+        .subscribe(() => this.fetchPaymentTypes()),
       );
     }
 
     // Whenever the account changes, filter out the available types
     this.addSub(this.form.get('account').valueChanges
       .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
-      .subscribe(() => this.adjustPaymentTypes())
+      .subscribe(() => this.adjustPaymentTypes()),
     );
     // Whenever the payment type changes, fetch the payment type data for it
     this.addSub(this.form.get('type').valueChanges
@@ -125,13 +124,13 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
       if (this.pos) {
         request = this.posService.dataForReceivePayment({
           from: subject,
-          fields: ['fromUser', 'paymentTypes', 'paymentTypeData']
+          fields: ['fromUser', 'paymentTypes', 'paymentTypeData'],
         });
       } else {
         request = this.paymentsService.dataForPerformPayment({
           owner: this.fromParam,
           to: subject,
-          fields: ['toUser', 'paymentTypes', 'paymentTypeData']
+          fields: ['toUser', 'paymentTypes', 'paymentTypeData'],
         });
       }
       request.pipe(first()).subscribe(data => {
@@ -187,7 +186,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
       }
       this.form.get('account').setErrors(null);
     }
-    this.form.patchValue({ type: type });
+    this.form.patchValue({ type });
     this.form.get('account').setErrors(error);
     this.form.get('account').markAsTouched();
     // Immediately fetch the payment type data
@@ -231,15 +230,15 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
       if (this.pos) {
         request = this.posService.dataForReceivePayment({
           from: value.subject,
-          type: type,
-          fields: ['paymentTypeData']
+          type,
+          fields: ['paymentTypeData'],
         });
       } else {
         request = this.paymentsService.dataForPerformPayment({
           owner: this.fromParam,
           to: value.subject,
-          type: type,
-          fields: ['paymentTypeData']
+          type,
+          fields: ['paymentTypeData'],
         });
       }
       request.pipe(first()).subscribe(data => {

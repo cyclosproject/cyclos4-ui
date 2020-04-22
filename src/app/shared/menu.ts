@@ -14,7 +14,7 @@ export enum MenuType {
   BAR,
 
   /** The second-level side menu shown on medium+ devices */
-  SIDE
+  SIDE,
 }
 
 /** Contains the top-level (root) menus */
@@ -22,7 +22,7 @@ export type RootMenu =
   'dashboard' | 'banking' | 'operators' | 'brokering' | 'marketplace' |
   'home' | 'publicDirectory' | 'publicMarketplace' | 'content' |
   'personal' | 'registration' | 'login' | 'logout';
-export module RootMenu {
+export namespace RootMenu {
   export const DASHBOARD: RootMenu = 'dashboard';
   export const BANKING: RootMenu = 'banking';
   export const OPERATORS: RootMenu = 'operators';
@@ -40,7 +40,7 @@ export module RootMenu {
     return [
       DASHBOARD, BANKING, OPERATORS, BROKERING, MARKETPLACE,
       HOME, PUBLIC_DIRECTORY, PUBLIC_MARKETPLACE,
-      CONTENT, PERSONAL, REGISTRATION, LOGIN, LOGOUT
+      CONTENT, PERSONAL, REGISTRATION, LOGIN, LOGOUT,
     ];
   }
 }
@@ -60,7 +60,7 @@ export class Menu {
     return this.root === o.root && this.name === o.name;
   }
 }
-export module Menu {
+export namespace Menu {
 
   // Standalone
   export const HOME = new Menu(RootMenu.HOME, 'HOME');
@@ -155,7 +155,6 @@ export module Menu {
   }
 }
 
-
 /**
  * Additional identifier for a dynamic active menu
  */
@@ -172,7 +171,7 @@ export interface ActiveMenuData {
 export class ActiveMenu {
   constructor(
     public menu: Menu,
-    public data?: ActiveMenuData
+    public data?: ActiveMenuData,
   ) {
     if (!menu) {
       throw new Error('null menu');
@@ -216,7 +215,7 @@ export class SideMenuEntries {
   constructor(
     public title: string,
     public icon: string,
-    public entries: MenuEntry[]
+    public entries: MenuEntry[],
   ) {
   }
 }
@@ -226,7 +225,7 @@ export abstract class BaseMenuEntry {
   constructor(
     public icon: string,
     public label: string,
-    public showIn: MenuType[]
+    public showIn: MenuType[],
   ) { }
 }
 /** Resolved root menu entry */
@@ -237,7 +236,7 @@ export class RootMenuEntry extends BaseMenuEntry {
     label: string,
     public title: string = null,
     showIn: MenuType[] = null,
-    public dropdown = false
+    public dropdown = false,
   ) {
     super(icon, label, showIn);
     if (this.title == null) {
@@ -263,7 +262,7 @@ export class MenuEntry extends BaseMenuEntry {
     label: string,
     showIn: MenuType[] = null,
     private urlHandler: () => string,
-    public menuData?: ActiveMenuData
+    public menuData?: ActiveMenuData,
   ) {
     super(icon, label, showIn);
     this.menu = menu instanceof ActiveMenu ? menu.menu : menu;
@@ -274,4 +273,3 @@ export class MenuEntry extends BaseMenuEntry {
     return this.urlHandler == null ? this._url : this.urlHandler();
   }
 }
-

@@ -7,14 +7,13 @@ import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { empty } from 'app/shared/helper';
 
-
 /**
  * Displays a transfer details
  */
 @Component({
   selector: 'view-transfer',
   templateUrl: 'view-transfer.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewTransferComponent extends BaseViewPageComponent<TransferView> implements OnInit {
 
@@ -43,7 +42,6 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
       }));
   }
 
-
   private initActions(transfer: TransferView): HeadingAction[] {
     const actions: HeadingAction[] = [this.printAction];
     const transaction = transfer.transaction || {};
@@ -63,11 +61,10 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
     return actions;
   }
 
-
   private chargebackDeviceConfirmation(): () => CreateDeviceConfirmation {
     return () => ({
       type: DeviceConfirmationTypeEnum.CHARGEBACK,
-      transfer: this.transfer.id
+      transfer: this.transfer.id,
     });
   }
 
@@ -80,12 +77,12 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
       callback: res => {
         this.addSub(this.transfersService.chargebackTransfer({
           key: this.transfer.id,
-          confirmationPassword: res.confirmationPassword
+          confirmationPassword: res.confirmationPassword,
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.transaction.chargebackTransferDone);
           this.reload();
         }));
-      }
+      },
     });
   }
 

@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy, Component, ElementRef,
-  EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild
+  EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild,
 } from '@angular/core';
 import { Address } from 'app/api/models';
 import { AddressHelperService } from 'app/core/address-helper.service';
@@ -14,7 +14,7 @@ import { htmlCollectionToArray } from 'app/shared/helper';
   selector: 'static-map',
   templateUrl: 'static-map.component.html',
   styleUrls: ['static-map.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StaticMapComponent implements OnInit, OnChanges {
 

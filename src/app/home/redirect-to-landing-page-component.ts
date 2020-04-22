@@ -9,7 +9,7 @@ import { LayoutService } from 'app/shared/layout.service';
 @Component({
   selector: 'redirect-to-landing',
   template: ' ',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RedirectToLandingPageComponent implements OnInit {
 

@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   selector: 'icon-with-counter',
   templateUrl: 'icon-with-counter.component.html',
   styleUrls: ['icon-with-counter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconWithCounterComponent {
 

@@ -8,7 +8,7 @@ import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { blank, empty } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { from, Observable, of, timer } from 'rxjs';
-import { filter, switchMap, take, first } from 'rxjs/operators';
+import { filter, first, switchMap, take } from 'rxjs/operators';
 
 const StaticUrl = 'https://maps.googleapis.com/maps/api/staticmap';
 const ExternalUrl = 'https://www.google.com/maps/search/?api=1';
@@ -18,7 +18,7 @@ const MarkerClustererPlusUrl = 'https://unpkg.com/@google/markerclustererplus@5.
  * Helper classes to work with Google Maps
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MapsService {
 
@@ -62,7 +62,7 @@ export class MapsService {
     }
     return this.ensureScriptLoaded().pipe(
       first(),
-      switchMap(() => this.doGeocode(fields))
+      switchMap(() => this.doGeocode(fields)),
     );
   }
 
@@ -148,7 +148,7 @@ export class MapsService {
         a.city,
         a.zip,
         a.region,
-        a.country
+        a.country,
       ];
     }
     fields = (fields || []).filter(f => !empty(f));
@@ -167,7 +167,7 @@ export class MapsService {
 
     const req: google.maps.GeocoderRequest = {
       region: this.dataForUiHolder.dataForUi.country,
-      address: query
+      address: query,
     };
     return new Observable(observer => {
       this.geocoder.geocode(req, (results, status) => {
@@ -202,7 +202,7 @@ export class MapsService {
       gestureHandling: this.layout.ltsm ? 'cooperative' : 'greedy',
       minZoom: 2,
       maxZoom: 17,
-      styles: this.layout.googleMapStyles
+      styles: this.layout.googleMapStyles,
     });
   }
 
@@ -212,7 +212,7 @@ export class MapsService {
   ensureScriptLoaded(): Observable<void> {
     if (this.loader == null) {
       this.loader = new Loader({
-        apiKey: this.data.googleMapsApiKey
+        apiKey: this.data.googleMapsApiKey,
       });
     }
     return from(this.loader.loadPromise()).pipe(
@@ -241,13 +241,13 @@ export class MapsService {
             // In the process of loading. Wait unti it is available
             return timer(100).pipe(
               filter(() => !!window['MarkerClusterer']),
-              take(1)
+              take(1),
             );
           case 'loaded':
             // Already loaded
             return of(null);
         }
-      })
+      }),
     );
   }
 }

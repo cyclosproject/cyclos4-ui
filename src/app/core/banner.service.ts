@@ -16,7 +16,7 @@ const DEFAULT_TIMEOUT_SECONDS = 10;
  * Service used to manage the visible banners
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BannerService {
 
@@ -86,7 +86,6 @@ export class BannerService {
     }
 
     const visible = this.visibleCards(menu);
-
 
     // Function that schedules the timers for each visible card and sets the currentCards
     const done = () => {

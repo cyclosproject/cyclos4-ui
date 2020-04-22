@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { GroupForRegistration, Group } from 'app/api/models';
+import { Group, GroupForRegistration } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 
 /**
@@ -9,7 +9,7 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'registration-step-group',
   templateUrl: 'registration-step-group.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationStepGroupComponent extends BaseComponent implements OnInit {
   @Input() groupSets: Group[];

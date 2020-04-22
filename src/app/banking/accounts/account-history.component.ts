@@ -1,18 +1,17 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AccountHistoryQueryFilters, AccountHistoryResult,
-  AccountWithHistoryStatus, Currency, DataForAccountHistory, EntityReference,
-  Image, PreselectedPeriod, TransferFilter, AccountKind
+  AccountKind, AccountWithHistoryStatus, Currency, DataForAccountHistory,
+  EntityReference, Image, PreselectedPeriod, TransferFilter,
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
+import { ActiveMenu, Menu } from 'app/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ActiveMenu, Menu } from 'app/shared/menu';
-
 
 type AccountHistorySearchParams = AccountHistoryQueryFilters & {
   owner: string;
@@ -26,7 +25,7 @@ type AccountHistorySearchParams = AccountHistoryQueryFilters & {
 @Component({
   selector: 'account-history',
   templateUrl: 'account-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountHistoryComponent
   extends BaseSearchPageComponent<DataForAccountHistory, AccountHistorySearchParams, AccountHistoryResult>
@@ -43,7 +42,7 @@ export class AccountHistoryComponent
   constructor(
     injector: Injector,
     private accountsService: AccountsService,
-    private bankingHelper: BankingHelperService
+    private bankingHelper: BankingHelperService,
   ) {
     super(injector);
   }
@@ -73,8 +72,8 @@ export class AccountHistoryComponent
     if (type == null) {
       return null;
     }
-    const number = this.layout.ltsm ? null : this.number;
-    return number == null ? type.name : type.name + ' - ' + number;
+    const accountNumber = this.layout.ltsm ? null : this.number;
+    return accountNumber == null ? type.name : type.name + ' - ' + accountNumber;
   }
 
   getFormControlNames() {
@@ -83,7 +82,7 @@ export class AccountHistoryComponent
       'periodBegin', 'periodEnd',
       'minAmount', 'maxAmount',
       'transactionNumber', 'direction',
-      'user', 'by', 'orderBy'
+      'user', 'by', 'orderBy',
     ];
   }
 
@@ -102,8 +101,8 @@ export class AccountHistoryComponent
     // Get the account history data
     this.stateManager.cache('data',
       this.accountsService.getAccountHistoryDataByOwnerAndType({
-        owner: this.ownerParam, accountType: this.typeParam
-      })
+        owner: this.ownerParam, accountType: this.typeParam,
+      }),
     ).subscribe(data => {
       this.data = data;
     });
@@ -125,7 +124,7 @@ export class AccountHistoryComponent
 
   private updateShowForm(data: DataForAccountHistory) {
     this.showForm$.next(
-      this.layout.xxs && !empty(data.preselectedPeriods) || this.moreFilters
+      this.layout.xxs && !empty(data.preselectedPeriods) || this.moreFilters,
     );
   }
 
@@ -152,12 +151,12 @@ export class AccountHistoryComponent
           this.noStatus$.next(true);
           this.moreFilters = true;
           this.headingActions = [
-            this.printAction
+            this.printAction,
           ];
         } else {
           this.headingActions = [
             this.moreFiltersAction,
-            this.printAction
+            this.printAction,
           ];
         }
         this.status$.next(accountWithStatus);

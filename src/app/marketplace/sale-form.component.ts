@@ -16,7 +16,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Component({
   selector: 'sale-form',
   templateUrl: 'sale-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SaleFormComponent
   extends BasePageComponent<OrderDataForNew | OrderDataForEdit>
@@ -54,12 +54,12 @@ export class SaleFormComponent
 
     const request: Observable<OrderDataForNew | OrderDataForEdit> = this.create
       ? this.orderService.getOrderDataForNew({
-        buyer: buyer,
+        buyer,
         user: this.user,
-        currency: currency
+        currency,
       })
       : this.orderService.getOrderDataForEdit({
-        order: this.id
+        order: this.id,
       });
 
     this.addSub(request.subscribe(data => {
@@ -69,10 +69,9 @@ export class SaleFormComponent
 
   onDataInitialized(data: OrderDataForNew | OrderDataForEdit) {
 
-
     // Remarks
     this.form = this.formBuilder.group({
-      remarks: data.order.remarks
+      remarks: data.order.remarks,
     });
 
     // Delivery methods
@@ -103,7 +102,7 @@ export class SaleFormComponent
     // Match current address by fields
     addressField.setValue(
       data.addresses.find(a => currentAddressId === this.resolveAddressId(a)) ?
-        currentAddressId : null
+        currentAddressId : null,
     );
     this.addSub(addressField.valueChanges.subscribe(a => this.updateAddress(a, data)));
 
@@ -116,7 +115,7 @@ export class SaleFormComponent
         price: orderItem.price,
         totalPrice: +orderItem.price * +orderItem.quantity,
         quantity: orderItem.quantity,
-        product: product
+        product,
       });
     });
     this.products = orderItems;
@@ -141,8 +140,8 @@ export class SaleFormComponent
   addProducts() {
     const ref = this.modal.show(SearchProductsComponent, {
       class: 'modal-form', initialState: {
-        currency: this.currency.id
-      }
+        currency: this.currency.id,
+      },
     });
     const component = ref.content as SearchProductsComponent;
     this.addSub(component.select.subscribe((ad: AdResult) => {
@@ -163,7 +162,7 @@ export class SaleFormComponent
         price: ad.price,
         totalPrice: ad.price,
         quantity: '1',
-        product: ad
+        product: ad,
       };
       result.push(product);
     }
@@ -241,7 +240,7 @@ export class SaleFormComponent
       order.items.push({
         price: item.price,
         product: item.product.id || item.product.productNumber,
-        quantity: item.quantity
+        quantity: item.quantity,
       });
     });
     order.deliveryMethod = this.deliveryForm.value;

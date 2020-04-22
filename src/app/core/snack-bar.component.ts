@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, HostListener } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { NotificationService } from 'app/core/notification.service';
-import { SnackBarProvider, SnackBarOptions } from 'app/core/snack-bar-provider';
+import { SnackBarOptions, SnackBarProvider } from 'app/core/snack-bar-provider';
 import { BehaviorSubject } from 'rxjs';
 
 /**
@@ -10,12 +10,12 @@ import { BehaviorSubject } from 'rxjs';
   selector: 'snack-bar',
   templateUrl: 'snack-bar.component.html',
   styleUrls: ['snack-bar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SnackBarComponent implements OnInit, SnackBarProvider {
   constructor(
     private notification: NotificationService,
-    private _element: ElementRef
+    private _element: ElementRef,
   ) {
   }
 

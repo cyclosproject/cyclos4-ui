@@ -1,14 +1,15 @@
 <div class="page-layout" [ngClass]="{
       'has-left-area': leftAreaVisible$ | async,
-      'justify-content-center': !(leftAreaVisible$ | async)
+      'justify-content-center': (leftAreaVisible$ | async) === false
     }">
   <div *ngIf="leftAreaVisible$ | async" class="side-area">
-    <ng-container *ngIf="!(loggingOut$ | async)">
+    <ng-container *ngIf="(loggingOut$ | async) === false">
       <side-menu *ngIf="(login.user$ | async) && (menu.activeMenu$ | async)">
       </side-menu>
       <banner-card
         *ngFor="let card of bannerCards$ | async; let first = first"
-        [card]="card" [firstInLayout]="first && !(leftMenuVisible$ | async)"
+        [card]="card"
+        [firstInLayout]="first && (leftMenuVisible$ | async) === false"
         [ngClass]="card.ngClass" [ngStyle]="card.ngStyle"></banner-card>
     </ng-container>
   </div>

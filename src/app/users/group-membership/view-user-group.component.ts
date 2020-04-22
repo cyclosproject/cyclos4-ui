@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormGroup, Validators } from '@angular/forms';
 import { GroupMembershipData } from 'app/api/models/group-membership-data';
 import { GroupMembershipService } from 'app/api/services/group-membership.service';
+import { UserHelperService } from 'app/core/user-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
-import { UserHelperService } from 'app/core/user-helper.service';
 
 /**
  * Displays the user group membership and allows changing the group
@@ -13,7 +13,7 @@ import { UserHelperService } from 'app/core/user-helper.service';
 @Component({
   selector: 'view-user-group',
   templateUrl: 'view-user-group.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewUserGroupComponent extends BaseViewPageComponent<GroupMembershipData> implements OnInit {
   constructor(
@@ -49,11 +49,11 @@ export class ViewUserGroupComponent extends BaseViewPageComponent<GroupMembershi
     this.allowEmptyGroup = this.userHelper.isOperator(data.user) && !!data.group;
     this.form = this.formBuilder.group({
       group: this.allowEmptyGroup ? null : [null, Validators.required],
-      comment: null
+      comment: null,
     });
     this.headingActions = [
       new HeadingAction('history', this.i18n.general.viewHistory, () =>
-        this.router.navigate(['users', this.param, 'group', 'history']), true)
+        this.router.navigate(['users', this.param, 'group', 'history']), true),
     ];
   }
 
@@ -78,22 +78,22 @@ export class ViewUserGroupComponent extends BaseViewPageComponent<GroupMembershi
     if (group) {
       message = this.i18n.groupMembership.confirm({
         user: this.data.user.display,
-        group: group ? group.name : this.i18n.user.operatorNoGroup
+        group: group ? group.name : this.i18n.user.operatorNoGroup,
       });
     } else {
       message = this.i18n.groupMembership.confirmAliasOperator(this.data.user.display);
     }
     this.notification.confirm({
-      title: title,
-      message: message,
-      callback: () => this.submit()
+      title,
+      message,
+      callback: () => this.submit(),
     });
   }
 
   private submit() {
     this.addSub(this.groupMembershipService.changeGroupMembership({
       user: this.param,
-      body: this.form.value
+      body: this.form.value,
     }).subscribe(() => {
       const message = this.operator
         ? this.i18n.groupMembership.doneOperator

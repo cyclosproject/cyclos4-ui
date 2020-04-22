@@ -20,7 +20,7 @@
         <image-upload #singleUpload containerClass="mt-3" target="userProfile"
           [owner]="param" (uploadDone)="onUploadDone($event)"></image-upload>
         <actions class="mt-3" forceRow
-          *ngIf="canEdit('image') && !(singleUpload.uploading$ | async)">
+          *ngIf="canEdit('image') && (singleUpload.uploading$ | async) === false">
           <button class="btn btn-outline-primary"
             (click)="singleUpload.perform()">
             {{ i18n.field.image.upload }}
@@ -37,7 +37,8 @@
           <div class="mb-2 mb-xs-0">
             {{ i18n.user.title.images }}
           </div>
-          <button *ngIf="canUploadImages && !(multiUpload.uploading$ | async)"
+          <button
+            *ngIf="canUploadImages && (multiUpload.uploading$ | async) === false"
             class="btn btn-outline-primary" (click)="multiUpload.perform()">
             {{ i18n.field.image.upload }}
           </button>
@@ -210,7 +211,7 @@
             [address]="singleAddress.value"></static-map>
           <ng-template #viewMap>
             <button
-              *ngIf="!(singleAddress['locating$'] | async); else locatingSpinner"
+              *ngIf="(singleAddress['locating$'] | async) === false; else locatingSpinner"
               class="btn btn-outline-primary" type="button"
               (click)="locateAddress(singleAddress)">
               {{ i18n.general.mapView }}
@@ -395,8 +396,8 @@
                 (click)="removeAddress(address)">
                 {{ i18n.user.addressRemove }}
               </button>
-              <ng-container
-                *ngIf="(address['form'].get('location').value.latitude == null) && !(address['form']['locating$'] | async)">
+              <ng-container *ngIf="(address['form'].get('location').value.latitude == null)
+                  && (address['form']['locating$'] | async) === false">
                 <div class="flex-grow-1"></div>
                 <button class="btn btn-outline-primary" type="button"
                   (click)="locateAddress(address['form'])">

@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { User } from 'app/api/models';
 import { ContactsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { User } from 'app/api/models';
 import { UserFieldComponent } from 'app/shared/user-field.component';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 /**
  * A component to be shown in a dialog, allowing the user to add a contact
@@ -14,7 +14,7 @@ import { UserFieldComponent } from 'app/shared/user-field.component';
 @Component({
   selector: 'add-contact-dialog',
   templateUrl: 'add-contact-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddContactDialogComponent extends BaseComponent {
 
@@ -26,7 +26,7 @@ export class AddContactDialogComponent extends BaseComponent {
   constructor(
     injector: Injector,
     public modalRef: BsModalRef,
-    private contactsService: ContactsService
+    private contactsService: ContactsService,
   ) {
     super(injector);
   }
@@ -40,8 +40,8 @@ export class AddContactDialogComponent extends BaseComponent {
     this.addSub(this.contactsService.createContact({
       user: ApiHelper.SELF,
       body: {
-        contact: this.control.value
-      }
+        contact: this.control.value,
+      },
     }).subscribe(() => {
       this.done.emit(user);
       this.modalRef.hide();

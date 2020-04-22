@@ -1,9 +1,9 @@
 
 import { Account } from 'app/api/models';
+import { Content } from 'app/content/content';
 import { DashboardItemType } from 'app/content/dashbord-item-type';
 import { QuickAccessDescriptor } from 'app/content/quick-access-descriptor';
 import { Breakpoint } from 'app/shared/layout.service';
-import { Content } from 'app/content/content';
 
 export type DashboardColumn = 'left' | 'right' | 'full';
 
@@ -88,11 +88,11 @@ namespace DashboardItemConfig {
    */
   export function config(type: DashboardItemType, params: DashboardItemParams, data: any): DashboardItemConfig {
     return {
-      type: type,
-      data: data,
+      type,
+      data,
       breakpoints: params.breakpoints,
       minHeight: params.minHeight,
-      column: params.column
+      column: params.column,
     };
   }
 
@@ -101,7 +101,7 @@ namespace DashboardItemConfig {
    */
   export function quickAccess(params: QuickAccessParams): DashboardItemConfig {
     return config(DashboardItemType.QUICK_ACCESS, params, {
-      descriptors: params.descriptors
+      descriptors: params.descriptors,
     });
   }
 
@@ -127,7 +127,7 @@ namespace DashboardItemConfig {
   export function accountStatus(params: AccountStatusParams): DashboardItemConfig {
     return config(DashboardItemType.ACCOUNT_STATUS, params, {
       account: params.account,
-      maxTransfers: params.maxTransfers
+      maxTransfers: params.maxTransfers,
     });
   }
 
@@ -158,10 +158,9 @@ namespace DashboardItemConfig {
     return config(DashboardItemType.LATEST_ADS, params, {
       groups: params.groups,
       max: params.max == null ? 6 : params.max,
-      showOwner: !!params.showOwner
+      showOwner: !!params.showOwner,
     });
   }
-
 
   /**
    * Parameters for showing the latest users
@@ -184,7 +183,7 @@ namespace DashboardItemConfig {
   export function latestUsers(params: LatestUsersParams): DashboardItemConfig {
     return config(DashboardItemType.LATEST_USERS, params, {
       groups: params.groups,
-      max: params.max == null ? 6 : params.max
+      max: params.max == null ? 6 : params.max,
     });
   }
 
@@ -218,10 +217,9 @@ namespace DashboardItemConfig {
     return config(DashboardItemType.CONTENT, params, {
       content: params,
       title: params.title,
-      tight: params.tight
+      tight: params.tight,
     });
   }
 }
 
 export { DashboardItemConfig };
-

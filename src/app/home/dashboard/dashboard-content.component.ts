@@ -10,7 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'dashboard-content',
   templateUrl: 'dashboard-content.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardContentComponent extends BaseDashboardComponent implements OnInit {
 
@@ -22,7 +22,7 @@ export class DashboardContentComponent extends BaseDashboardComponent implements
   content$ = new BehaviorSubject<string>(null);
 
   constructor(injector: Injector,
-    public contentService: ContentService) {
+              public contentService: ContentService) {
     super(injector);
   }
 

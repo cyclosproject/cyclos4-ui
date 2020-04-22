@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { LoginService } from 'app/core/login.service';
+import { MenuDensity } from 'app/core/menu-density';
 import { MenuService } from 'app/core/menu.service';
 import { I18n } from 'app/i18n/i18n';
 import { AbstractComponent } from 'app/shared/abstract.component';
-import { LayoutService, Breakpoint } from 'app/shared/layout.service';
+import { Breakpoint, LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, MenuType, RootMenuEntry } from 'app/shared/menu';
 import { Observable } from 'rxjs';
-import { MenuDensity } from 'app/core/menu-density';
 
 const MenuThesholdLarge = 5;
 const MenuThesholdExtraLarge = 6;
@@ -18,7 +18,7 @@ const MenuThesholdExtraLarge = 6;
   selector: 'menu-bar',
   templateUrl: 'menu-bar.component.html',
   styleUrls: ['menu-bar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuBarComponent extends AbstractComponent implements OnInit {
 

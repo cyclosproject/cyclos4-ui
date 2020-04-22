@@ -54,13 +54,13 @@
 </ng-template>
 
 <ng-template #regular>
-  <page-content *ngIf="data && !runDirectly && !(result$ | async)"
+  <page-content *ngIf="data && !runDirectly && (result$ | async) === null"
     [heading]="data.name" [mobileHeading]="data.label" last>
     <alert type="info" *ngIf="data.informationText">
       <div [innerHTML]="data.informationText | trust"></div>
     </alert>
     <ng-container *ngTemplateOutlet="theForm"></ng-container>
-    <actions *ngIf="!(redirecting$ | async)">
+    <actions *ngIf="(redirecting$ | async) === false">
       <button class="btn btn-primary" [disabled]="(requesting$ | async)"
         (click)="run()">
         {{ data.customSubmitLabel || i18n.general.submit }}

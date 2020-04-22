@@ -1,5 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
-import { Injector, OnInit } from '@angular/core';
+import { Directive, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { QueryFilters } from 'app/api/models';
 import { NextRequestState } from 'app/core/next-request-state';
@@ -19,6 +19,7 @@ import { debounceTime } from 'rxjs/operators';
  * @param P The search parameters which extends the QueryFiters type with path variables
  * @param R The result type
  */
+@Directive()
 export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> extends BasePageComponent<D> implements OnInit {
   // Export ResultType to the template
   ResultType = ResultType;
@@ -136,12 +137,11 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
     this.moreFilters$.next(moreFilters);
   }
 
-
   get pageData(): PageData {
     const val = this.form.value;
     return {
       page: val.page,
-      pageSize: val.pageSize
+      pageSize: val.pageSize,
     };
   }
   set pageData(pageData: PageData) {
@@ -245,8 +245,8 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
   protected abstract doSearch(filter: P): Observable<HttpResponse<R[]>>;
 
   /**
-  * Must be implemented to convert from the object obtained from the FormGroup to the query filters
-  */
+   * Must be implemented to convert from the object obtained from the FormGroup to the query filters
+   */
   protected abstract toSearchParams(value: any): P;
 
   /**
@@ -280,7 +280,7 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
    * Resets the current page and page size of the current form, optionally emitting the change event (which will trigger a new search)
    */
   resetPage(emitEvent = false) {
-    this.form.patchValue({ page: 0 }, { emitEvent: emitEvent });
+    this.form.patchValue({ page: 0 }, { emitEvent });
   }
 
   /**

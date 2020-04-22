@@ -1,20 +1,20 @@
-import { BasePageComponent } from 'app/shared/base-page.component';
-import { OnInit, Component, Injector, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import {
-  NotificationSettingsDataForEdit, RoleEnum, NotificationKindMediums,
-  NotificationKind, InternalNamedEntity, SystemAlertTypeEnum, UserAlertTypeEnum
+  InternalNamedEntity, NotificationKind, NotificationKindMediums,
+  NotificationSettingsDataForEdit, RoleEnum, SystemAlertTypeEnum, UserAlertTypeEnum,
 } from 'app/api/models';
-import { empty } from 'app/shared/helper';
 import { NotificationSettingsService } from 'app/api/services';
-import { Menu } from 'app/shared/menu';
-import { FormGroup, FormControl, FormArray } from '@angular/forms';
+import { BasePageComponent } from 'app/shared/base-page.component';
 import { FieldOption } from 'app/shared/field-option';
+import { empty } from 'app/shared/helper';
+import { Menu } from 'app/shared/menu';
 import { Observable } from 'rxjs';
 
 @Component({
   selector: 'notification-settings-form',
   templateUrl: 'notification-settings-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotificationSettingsFormComponent
   extends BasePageComponent<NotificationSettingsDataForEdit>
@@ -46,7 +46,7 @@ export class NotificationSettingsFormComponent
   onDataInitialized(data: NotificationSettingsDataForEdit) {
     this.adminSettings = data.role === RoleEnum.ADMINISTRATOR;
     this.form = this.formBuilder.group({
-      version: data.settings.version
+      version: data.settings.version,
     });
 
     if (this.adminSettings) {
@@ -76,7 +76,7 @@ export class NotificationSettingsFormComponent
         kind: value.kind,
         // Handle null (or undefined) to indicate which fields wont be added in the HTML component
         sms: value.sms === undefined ? null : value.sms,
-        email: value.email === undefined ? null : value.email
+        email: value.email === undefined ? null : value.email,
       });
       // Enable/disable email and sms controls based on internal field
       this.addSub(typeForm.controls.internal.valueChanges.subscribe(() => {
@@ -120,8 +120,8 @@ export class NotificationSettingsFormComponent
         accountControls.setControl(at.id, this.formBuilder.group({
           paymentAmount: this.formBuilder.group({
             min: notificationAmount.min,
-            max: notificationAmount.max
-          })
+            max: notificationAmount.max,
+          }),
         }));
       }
       this.form.setControl('userAccounts', accountControls);
@@ -490,12 +490,12 @@ export class NotificationSettingsFormComponent
         id: st.id,
         internalName: st.internalName,
         value: this.ApiHelper.internalNameOrId(st),
-        text: st.name
+        text: st.name,
       }));
     } else if (alerts) {
       options = (alerts as []).map(st => ({
         value: st,
-        text: this.resolveAlertLabel(st)
+        text: this.resolveAlertLabel(st),
       }));
     }
     return [options, values, property];

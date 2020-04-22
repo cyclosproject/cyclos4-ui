@@ -12,8 +12,8 @@ import { BuyVouchersComponent } from 'app/banking/vouchers/buy-vouchers.componen
 import { RedeemVoucherComponent } from 'app/banking/vouchers/redeem-voucher.component';
 import { SearchBoughtVouchersComponent } from 'app/banking/vouchers/search-bought-vouchers.component';
 import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-redeemed-vouchers.component';
-import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
 import { SearchVouchersComponent } from 'app/banking/vouchers/search-vouchers.component';
+import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 
 const bankingRoutes: Routes = [
@@ -23,74 +23,74 @@ const bankingRoutes: Routes = [
     children: [
       {
         path: ':owner/account/:type',
-        component: AccountHistoryComponent
+        component: AccountHistoryComponent,
       },
       {
         path: 'transfer/:key',
-        component: ViewTransferComponent
+        component: ViewTransferComponent,
       },
       {
         path: 'transfer/:account/:key',
-        component: ViewTransferComponent
+        component: ViewTransferComponent,
       },
       {
         path: 'transaction/:key',
-        component: ViewTransactionComponent
+        component: ViewTransactionComponent,
       },
       {
         path: 'transfers-overview',
-        component: SearchTransfersOverviewComponent
+        component: SearchTransfersOverviewComponent,
       },
       {
         path: 'transaction/:key/authorization-history',
-        component: ViewAuthorizationHistoryComponent
+        component: ViewAuthorizationHistoryComponent,
       },
       {
         path: ':from/payment',
-        component: PaymentComponent
+        component: PaymentComponent,
       },
       {
         path: ':from/payment/:to',
-        component: PaymentComponent
+        component: PaymentComponent,
       },
       {
         path: 'pos',
-        component: PaymentComponent
+        component: PaymentComponent,
       },
       {
         path: ':owner/scheduled-payments',
-        component: SearchScheduledPaymentsComponent
+        component: SearchScheduledPaymentsComponent,
       },
       {
         path: ':owner/authorized-payments',
-        component: SearchAuthorizedPaymentsComponent
+        component: SearchAuthorizedPaymentsComponent,
       },
       {
         path: ':user/vouchers/redeem',
-        component: RedeemVoucherComponent
+        component: RedeemVoucherComponent,
       },
       {
         path: ':user/vouchers/redeemed',
-        component: SearchRedeemedVouchersComponent
+        component: SearchRedeemedVouchersComponent,
       },
       {
         path: ':user/vouchers/buy',
-        component: BuyVouchersComponent
+        component: BuyVouchersComponent,
       },
       {
         path: ':user/vouchers/bought',
-        component: SearchBoughtVouchersComponent
+        component: SearchBoughtVouchersComponent,
       },
       {
         path: 'vouchers/:key',
-        component: ViewVoucherComponent
+        component: ViewVoucherComponent,
       },
       {
         path: 'vouchers',
-        component: SearchVouchersComponent
-      }
-    ]
-  }
+        component: SearchVouchersComponent,
+      },
+    ],
+  },
 ];
 
 /**
@@ -98,10 +98,10 @@ const bankingRoutes: Routes = [
  */
 @NgModule({
   imports: [
-    RouterModule.forChild(bankingRoutes)
+    RouterModule.forChild(bankingRoutes),
   ],
   exports: [
-    RouterModule
-  ]
+    RouterModule,
+  ],
 })
 export class BankingRoutingModule { }

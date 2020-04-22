@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
-  ExternalPaymentStatusEnum, PaymentRequestStatusEnum,
-  InstallmentStatusEnum, RecurringPaymentStatusEnum,
+  ExternalPaymentStatusEnum, InstallmentStatusEnum,
+  PaymentRequestStatusEnum, RecurringPaymentStatusEnum,
   ScheduledPaymentStatusEnum,
   TicketStatusEnum, TransactionAuthorizationActionEnum,
   TransactionAuthorizationStatusEnum, TransactionKind, TransactionResult,
-  TransactionView
+  TransactionView,
 } from 'app/api/models';
 import { I18n } from 'app/i18n/i18n';
 
@@ -13,7 +13,7 @@ import { I18n } from 'app/i18n/i18n';
  * Service used to retrieve translations for transaction statuses, which are used in several places
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TransactionStatusService {
 
@@ -180,4 +180,3 @@ export class TransactionStatusService {
   }
 
 }
-

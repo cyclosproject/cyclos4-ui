@@ -1,9 +1,9 @@
+import { Directive, InjectionToken, Injector, Input } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { FieldOption, fieldOptionMatches } from 'app/shared/field-option';
-import { BehaviorSubject } from 'rxjs';
 import { empty } from 'app/shared/helper';
-import { InjectionToken, Input, Injector } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 export const FIELD_OPTIONS_SORTER = (a: FieldOption, b: FieldOption) => {
   if (a.category == null && b.category != null) {
@@ -60,6 +60,7 @@ export class CategoryWithOptions {
 /**
  * Base class for custom form controls that have options
  */
+@Directive()
 export abstract class BaseFormFieldWithOptionsComponent<T> extends BaseFormFieldComponent<T> {
 
   categories = new BehaviorSubject<CategoryWithOptions[]>([]);
@@ -198,8 +199,8 @@ export abstract class BaseFormFieldWithOptionsComponent<T> extends BaseFormField
 
   protected getDisabledValue(): string {
     return this.selectedOptions.map(option =>
-      option.category ? `${option.category} - ${option.text}` : option.text
-    ).join(', ');
+      option.category ? `${option.category} - ${option.text}` : option.text)
+      .join(', ');
   }
 
 }

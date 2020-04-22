@@ -1,14 +1,14 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AdQuestion, QueryFilters, AdKind, AdQuestionResult } from 'app/api/models';
+import { AdKind, AdQuestion, AdQuestionResult, QueryFilters } from 'app/api/models';
 import { AdQuestionsService } from 'app/api/services';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
-import { Observable } from 'rxjs';
 import { Menu } from 'app/shared/menu';
+import { Observable } from 'rxjs';
 
 type AdQuestionQueryFilters = QueryFilters & {
   user: string,
-  adKind?: AdKind
+  adKind?: AdKind,
 };
 
 /**
@@ -17,7 +17,7 @@ type AdQuestionQueryFilters = QueryFilters & {
 @Component({
   selector: 'search-unanswered-questions',
   templateUrl: 'search-unanswered-questions.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchUnansweredQuestionsComponent
   extends BaseSearchPageComponent<any, AdQuestionQueryFilters, AdQuestionResult>
@@ -42,7 +42,6 @@ export class SearchUnansweredQuestionsComponent
     const webshop = marketplace.myWebshop || {};
     this.simpleQuestions = marketplace.questions;
     this.webshopQuestions = webshop.manage;
-
 
     // Update the data with any non-null value, so the search page is properly initialized
     this.data = {};
@@ -69,8 +68,8 @@ export class SearchUnansweredQuestionsComponent
   }
 
   /**
-  * Removes the given question and reload results
-  */
+   * Removes the given question and reload results
+   */
   remove(question: AdQuestion) {
     this.notification.confirm({
       message: this.i18n.general.removeItemConfirm,
@@ -80,7 +79,7 @@ export class SearchUnansweredQuestionsComponent
             this.notification.snackBar(this.i18n.general.removeItemDone);
             this.reload();
           }));
-      }
+      },
     });
   }
 

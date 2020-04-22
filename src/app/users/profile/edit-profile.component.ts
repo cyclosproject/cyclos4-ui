@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnDest
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   AddressManage, AvailabilityEnum, ContactInfoManage, CreateDeviceConfirmation,
-  CustomField, CustomFieldDetailed, DataForEditFullProfile, DeviceConfirmationTypeEnum,
-  FullProfileEdit, Image, PhoneEditWithId, PhoneKind, PhoneManage, CustomFieldValue
+  CustomField, CustomFieldDetailed, CustomFieldValue, DataForEditFullProfile,
+  DeviceConfirmationTypeEnum, FullProfileEdit, Image, PhoneEditWithId, PhoneKind, PhoneManage,
 } from 'app/api/models';
 import { ImagesService, PhonesService, UsersService } from 'app/api/services';
 import { AddressHelperService } from 'app/core/address-helper.service';
@@ -14,12 +14,12 @@ import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { empty, isTouched, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
+import { Menu } from 'app/shared/menu';
 import { VerifyPhoneComponent } from 'app/users/profile/verify-phone.component';
 import { cloneDeep } from 'lodash';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { Menu } from 'app/shared/menu';
 
 const IMAGE_MANAGED_TIMEOUT = 6_000;
 
@@ -34,7 +34,7 @@ let modelIndex = 0;
 @Component({
   selector: 'edit-profile',
   templateUrl: 'edit-profile.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditProfileComponent
   extends BasePageComponent<DataForEditFullProfile>
@@ -110,13 +110,13 @@ export class EditProfileComponent
     this.param = this.route.snapshot.params.user || ApiHelper.SELF;
 
     this.createDeviceConfirmation = () => ({
-      type: DeviceConfirmationTypeEnum.EDIT_PROFILE
+      type: DeviceConfirmationTypeEnum.EDIT_PROFILE,
     });
 
     this.headingActions = [
       new HeadingAction('search', this.i18n.general.view, () =>
         this.router.navigate(['users', this.param, 'profile']),
-        true)
+        true),
     ];
 
     this.addSub(this.usersService.getDataForEditFullProfile({ user: this.param }).subscribe(data => {
@@ -134,7 +134,7 @@ export class EditProfileComponent
         this.login.user$.next({
           id: this.login.user.id,
           display: data.userConfiguration.details.display,
-          image: empty(data.images) ? null : data.images[0]
+          image: empty(data.images) ? null : data.images[0],
         });
       }
 
@@ -255,7 +255,7 @@ export class EditProfileComponent
         createDeviceConfirmation: this.createDeviceConfirmation,
         callback: params => {
           this.save(params.confirmationPassword);
-        }
+        },
       });
     } else {
       // Save directly
@@ -273,7 +273,7 @@ export class EditProfileComponent
       createAddresses: new FormArray(this.createAddresses),
       modifyAddresses: new FormArray(this.modifyAddresses),
       createContactInfos: new FormArray(this.createContactInfos),
-      modifyContactInfos: new FormArray(this.modifyContactInfos)
+      modifyContactInfos: new FormArray(this.modifyContactInfos),
     });
     if (!confirmationPassword && this.confirmationPassword) {
       fullForm.setControl('confirmationPassword', this.confirmationPassword);
@@ -285,8 +285,8 @@ export class EditProfileComponent
 
     this.addSub(this.usersService.saveUserFullProfile({
       user: this.param,
-      confirmationPassword: confirmationPassword,
-      body: this.editForSubmit()
+      confirmationPassword,
+      body: this.editForSubmit(),
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.user.profileSaved);
       this.uploadedImages = null;
@@ -311,7 +311,7 @@ export class EditProfileComponent
       removeContactInfos: this.removedContactInfos,
       addImages: this.uploadedImages.map(i => i.id),
       removeImages: this.removedImages,
-      reorderImages: this.reorderImages
+      reorderImages: this.reorderImages,
     };
 
     // We just have to handle single phones / addresses, which can dynamically create / modify / remove models
@@ -492,7 +492,7 @@ export class EditProfileComponent
 
     const form = this.formBuilder.group({
       version: user.version,
-      hiddenFields: [user.hiddenFields || []]
+      hiddenFields: [user.hiddenFields || []],
     });
 
     // Process the basic fields
@@ -500,7 +500,7 @@ export class EditProfileComponent
       if (this.hasField(field)) {
         form.setControl(field, this.formBuilder.control({
           value: user[field],
-          disabled: !this.canEdit(field)
+          disabled: !this.canEdit(field),
         }, this.isRequired(field) ? Validators.required : null));
       } else {
         form.removeControl(field);
@@ -509,7 +509,7 @@ export class EditProfileComponent
     // Set the custom fields control
     form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
       currentValues: user.customValues,
-      disabledProvider: cf => !this.canEdit(cf.internalName)
+      disabledProvider: cf => !this.canEdit(cf.internalName),
     }));
 
     return form;
@@ -559,7 +559,7 @@ export class EditProfileComponent
       version: null,
       hidden: null,
       name: [null, Validators.required],
-      number: [null, numberRequired ? Validators.required : null]
+      number: [null, numberRequired ? Validators.required : null],
     });
     if (!this.editableFields.has('phone')) {
       form.disable();
@@ -598,7 +598,7 @@ export class EditProfileComponent
       mobilePhone: null,
       landLinePhone: null,
       landLineExtension: null,
-      address: null
+      address: null,
     });
     form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields));
     this.stampDataAndInitForm(contactInfo, form);
@@ -792,8 +792,8 @@ export class EditProfileComponent
     const ref = this.modal.show(VerifyPhoneComponent, {
       class: 'modal-form',
       initialState: {
-        phone: phone
-      }
+        phone,
+      },
     });
     const comp = ref.content as VerifyPhoneComponent;
     this.addSub(comp.verified.pipe(take(1)).subscribe(flag => {
@@ -877,8 +877,8 @@ export class EditProfileComponent
     const ref = this.modal.show(ManageImagesComponent, {
       class: 'modal-form',
       initialState: {
-        images: this.images
-      }
+        images: this.images,
+      },
     });
     const component = ref.content as ManageImagesComponent;
     this.addSub(component.result.pipe(take(1)).subscribe(result => {

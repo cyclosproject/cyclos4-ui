@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { FormGroup, Validators } from '@angular/forms';
 import { BrokerDataForAdd, RoleEnum } from 'app/api/models';
 import { BrokeringService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { FormGroup, Validators } from '@angular/forms';
 import { validateBeforeSubmit } from 'app/shared/helper';
 
 /**
@@ -11,7 +11,7 @@ import { validateBeforeSubmit } from 'app/shared/helper';
 @Component({
   selector: 'broker-form',
   templateUrl: 'broker-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BrokerFormComponent
   extends BasePageComponent<BrokerDataForAdd>
@@ -41,7 +41,7 @@ export class BrokerFormComponent
     this.userQuery = {
       roles: [RoleEnum.BROKER],
       usersToExclude: data.brokers.map(b => b.id),
-      groups: data.brokerGroups.map(g => g.id)
+      groups: data.brokerGroups.map(g => g.id),
     };
     if (data.brokers) {
       this.form.setControl('mainBroker', this.formBuilder.control(false));
@@ -58,7 +58,7 @@ export class BrokerFormComponent
     this.addSub(this.brokeringService.addBroker({
       broker: value.broker,
       user: this.user,
-      main: value.mainBroker
+      main: value.mainBroker,
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.brokers.brokerAdded);
       this.router.navigate(['/users', this.user, 'brokers']);

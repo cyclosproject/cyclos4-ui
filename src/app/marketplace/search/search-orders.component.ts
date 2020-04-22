@@ -2,7 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   CustomFieldControlEnum, CustomFieldDetailed, CustomFieldTypeEnum,
-  LinkedEntityTypeEnum, OrderDataForSearch, OrderResult, OrderStatusEnum, QueryFilters
+  LinkedEntityTypeEnum, OrderDataForSearch, OrderResult, OrderStatusEnum, QueryFilters,
 } from 'app/api/models';
 import { UserOrderResult } from 'app/api/models/user-order-result';
 import { OrdersService } from 'app/api/services';
@@ -23,14 +23,13 @@ type SearchUserOrdersParams = QueryFilters & {
   statuses: OrderStatusEnum[],
 };
 
-
 /**
  * Lists the orders (purchases, sales) of a given user
  */
 @Component({
   selector: 'search-orders',
   templateUrl: 'search-orders.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchOrdersComponent
   extends BaseSearchPageComponent<OrderDataForSearch, SearchUserOrdersParams, UserOrderResult>
@@ -45,7 +44,7 @@ export class SearchOrdersComponent
   constructor(
     injector: Injector,
     private marketplaceHelper: MarketplaceHelperService,
-    private orderService: OrdersService
+    private orderService: OrdersService,
   ) {
     super(injector);
   }
@@ -104,16 +103,16 @@ export class SearchOrdersComponent
         this.addSub(this.orderService.getOrderDataForNew({
           buyer: res.customValues.buyer,
           user: this.param,
-          currency: res.customValues.currency
+          currency: res.customValues.currency,
         }).subscribe(() => {
           this.router.navigate(['marketplace', this.param, 'sale', 'new'], {
             queryParams: {
               buyer: res.customValues.buyer,
-              currency: res.customValues.currency
-            }
+              currency: res.customValues.currency,
+            },
           });
         }));
-      }
+      },
     });
   }
 
@@ -126,8 +125,8 @@ export class SearchOrdersComponent
         control: CustomFieldControlEnum.ENTITY_SELECTION,
         linkedEntityType: LinkedEntityTypeEnum.USER,
         hasValuesList: false,
-        required: true
-      }
+        required: true,
+      },
     ];
     if (!empty(this.data.currencies) && this.data.currencies.length > 1) {
       fields.push({
@@ -140,10 +139,10 @@ export class SearchOrdersComponent
         possibleValues: this.data.currencies.map(c => {
           return {
             id: c.id,
-            value: c.name
+            value: c.name,
           };
         }),
-        required: true
+        required: true,
       });
     }
     return fields;

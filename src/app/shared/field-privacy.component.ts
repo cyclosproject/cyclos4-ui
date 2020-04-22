@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { I18n } from 'app/i18n/i18n';
 import { truthyAttr } from 'app/shared/helper';
 import { TooltipDirective } from 'ngx-bootstrap/tooltip';
 import { BehaviorSubject } from 'rxjs';
-import { I18n } from 'app/i18n/i18n';
 
 /**
  * A widget that switches between field visibilities.
@@ -15,7 +15,7 @@ import { I18n } from 'app/i18n/i18n';
   selector: 'field-privacy',
   templateUrl: 'field-privacy.component.html',
   styleUrls: ['field-privacy.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FieldPrivacyComponent implements OnInit {
   private _justifyStart: boolean | string = false;
@@ -47,7 +47,7 @@ export class FieldPrivacyComponent implements OnInit {
 
   get hidden(): boolean {
     if (this.field) {
-      const hiddenFields = <string[]>this.control.value || [];
+      const hiddenFields = this.control.value as string[] || [];
       return hiddenFields.includes(this.field);
     } else {
       return this.control.value === true;
@@ -60,7 +60,7 @@ export class FieldPrivacyComponent implements OnInit {
 
   toggle() {
     if (this.field) {
-      let hiddenFields = <string[]>this.control.value || [];
+      let hiddenFields = this.control.value as string[] || [];
       if (hiddenFields.includes(this.field)) {
         hiddenFields = hiddenFields.filter(el => el !== this.field);
       } else {

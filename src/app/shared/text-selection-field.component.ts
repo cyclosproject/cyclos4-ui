@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit, Injector, Optional, Host, SkipSelf, ViewChild } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlContainer, FormControl } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Host, Injector, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import { ControlContainer, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { InputFieldComponent } from 'app/shared/input-field.component';
 
@@ -11,13 +11,13 @@ import { InputFieldComponent } from 'app/shared/input-field.component';
   templateUrl: 'text-selection-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: TextSelectionFieldComponent, multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: TextSelectionFieldComponent, multi: true },
+  ],
 })
 export class TextSelectionFieldComponent
   extends BaseFormFieldComponent<string[]> implements OnInit {
 
-  @ViewChild('inputField', { static: false }) inputField: InputFieldComponent;
+  @ViewChild('inputField') inputField: InputFieldComponent;
 
   inputFieldControl = new FormControl(null);
 
@@ -51,7 +51,7 @@ export class TextSelectionFieldComponent
     nativeInput.value = null;
   }
 
-  remove(str: String) {
+  remove(str: string) {
     if (str) {
       this.value = this.value.filter(s => s !== str);
     }

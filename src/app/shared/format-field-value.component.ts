@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Injector, Input, OnInit } from '@angular/core';
 import {
   CustomField, CustomFieldDetailed, CustomFieldTypeEnum, CustomFieldValue,
-  Image, LinkedEntityTypeEnum, StoredFile
+  Image, LinkedEntityTypeEnum, StoredFile,
 } from 'app/api/models';
 import { FilesService, ImagesService } from 'app/api/services';
 import { NextRequestState } from 'app/core/next-request-state';
@@ -20,7 +20,7 @@ const DIRECT_TYPES = [
   CustomFieldTypeEnum.DECIMAL,
   CustomFieldTypeEnum.DATE,
   CustomFieldTypeEnum.URL,
-  CustomFieldTypeEnum.LINKED_ENTITY
+  CustomFieldTypeEnum.LINKED_ENTITY,
 ];
 
 /**
@@ -33,7 +33,7 @@ const DIRECT_TYPES = [
   selector: 'format-field-value',
   templateUrl: 'format-field-value.component.html',
   styleUrls: ['format-field-value.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormatFieldValueComponent extends AbstractComponent implements OnInit {
   constructor(
@@ -152,37 +152,37 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
           return {
             value: this.fieldValue.booleanValue
               ? this.i18n.general.yes
-              : this.i18n.general.no
+              : this.i18n.general.no,
           };
         }
         break;
       case CustomFieldTypeEnum.DATE:
         return {
-          value: this.format.formatAsDate(this.fieldValue.dateValue)
+          value: this.format.formatAsDate(this.fieldValue.dateValue),
         };
       case CustomFieldTypeEnum.DECIMAL:
         return {
-          value: this.format.formatAsNumber(this.fieldValue.decimalValue, this.field.decimalDigits)
+          value: this.format.formatAsNumber(this.fieldValue.decimalValue, this.field.decimalDigits),
         };
       case CustomFieldTypeEnum.DYNAMIC_SELECTION:
         const dyn = this.fieldValue.dynamicValue;
         if (dyn) {
           return {
-            value: dyn.label || dyn.value
+            value: dyn.label || dyn.value,
           };
         }
         break;
       case CustomFieldTypeEnum.FILE:
         return {
-          value: this.fieldValue.fileValues
+          value: this.fieldValue.fileValues,
         };
       case CustomFieldTypeEnum.IMAGE:
         return {
-          value: this.fieldValue.imageValues
+          value: this.fieldValue.imageValues,
         };
       case CustomFieldTypeEnum.INTEGER:
         return {
-          value: this.format.formatAsNumber(this.fieldValue.integerValue, 0)
+          value: this.format.formatAsNumber(this.fieldValue.integerValue, 0),
         };
       case CustomFieldTypeEnum.LINKED_ENTITY:
         let entity = null;
@@ -215,14 +215,14 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
             '/' + path.map(part => part === ':id' ? entity.id : part).join('/');
           return {
             value: entity.display || entity.name || entity.transactionNumber || entity.id,
-            link: link
+            link,
           };
         }
         break;
       case CustomFieldTypeEnum.SINGLE_SELECTION:
       case CustomFieldTypeEnum.MULTI_SELECTION:
         return {
-          value: this.fieldValue.enumeratedValues || []
+          value: this.fieldValue.enumeratedValues || [],
         };
       case CustomFieldTypeEnum.RICH_TEXT:
         let rich = this.fieldValue.stringValue;
@@ -234,16 +234,16 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
           }
         }
         return {
-          value: rich
+          value: rich,
         };
       case CustomFieldTypeEnum.URL:
         return {
           value: this.fieldValue.stringValue,
-          link: this.fieldValue.stringValue
+          link: this.fieldValue.stringValue,
         };
       default:
         return {
-          value: this.fieldValue.stringValue
+          value: this.fieldValue.stringValue,
         };
     }
     return null;
@@ -263,14 +263,14 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
 
     // Then create a new CustomFieldValue
     const fieldValue: CustomFieldValue = {
-      field: this.fields.find(cf => cf.internalName === this.fieldName)
+      field: this.fields.find(cf => cf.internalName === this.fieldName),
     };
     if (fieldValue.field == null) {
       // When no custom field is found, assume one of type string
       fieldValue.field = {
         name: this.fieldName,
         internalName: this.fieldName,
-        type: CustomFieldTypeEnum.STRING
+        type: CustomFieldTypeEnum.STRING,
       };
     }
     switch (fieldValue.field.type) {
@@ -286,7 +286,7 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
       case CustomFieldTypeEnum.DYNAMIC_SELECTION:
         fieldValue.dynamicValue = {
           value: parts[0],
-          label: parts.length > 1 ? parts[1] : parts[0]
+          label: parts.length > 1 ? parts[1] : parts[0],
         };
         break;
       case CustomFieldTypeEnum.INTEGER:
@@ -312,32 +312,32 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
           switch (fieldValue.field.linkedEntityType) {
             case LinkedEntityTypeEnum.USER:
               fieldValue.userValue = {
-                id: id,
-                display: display
+                id,
+                display,
               };
               break;
             case LinkedEntityTypeEnum.ADVERTISEMENT:
               fieldValue.adValue = {
-                id: id,
-                name: display
+                id,
+                name: display,
               };
               break;
             case LinkedEntityTypeEnum.TRANSACTION:
               fieldValue.transactionValue = {
-                id: id,
-                display: display
+                id,
+                display,
               };
               break;
             case LinkedEntityTypeEnum.TRANSFER:
               fieldValue.transferValue = {
-                id: id,
-                display: display
+                id,
+                display,
               };
               break;
             case LinkedEntityTypeEnum.RECORD:
               fieldValue.recordValue = {
-                id: id,
-                display: display
+                id,
+                display,
               };
               break;
           }

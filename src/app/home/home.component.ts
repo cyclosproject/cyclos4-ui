@@ -13,7 +13,7 @@ import { BehaviorSubject } from 'rxjs';
 
 export const PasswordStatusNeedingAttention = [
   PasswordStatusEnum.EXPIRED, PasswordStatusEnum.RESET,
-  PasswordStatusEnum.PENDING, PasswordStatusEnum.NEVER_CREATED
+  PasswordStatusEnum.PENDING, PasswordStatusEnum.NEVER_CREATED,
 ];
 
 /**
@@ -24,7 +24,7 @@ export const PasswordStatusNeedingAttention = [
   selector: 'home',
   templateUrl: 'home.component.html',
   styleUrls: ['home.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent extends BasePageComponent<void> implements OnInit {
 
@@ -92,8 +92,8 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
       this.addSub(this.errorHandler.requestWithCustomErrorHandler(() =>
         this.passwordsService.getUserPasswordsListData({
           user: ApiHelper.SELF,
-          fields: ['dataForSetSecurityAnswer', 'passwords.status', 'passwords.type.name', 'passwords.type.mode']
-        })
+          fields: ['dataForSetSecurityAnswer', 'passwords.status', 'passwords.type.name', 'passwords.type.mode'],
+        }),
       ).subscribe(initPasswords,
         // On error, initialize with no passwords needing attention
         () => initPasswords({})));
@@ -142,8 +142,8 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
   goToPasswords(event: MouseEvent) {
     this.menu.navigate({
       menu: new ActiveMenu(Menu.PASSWORDS),
-      event: event,
-      clear: false
+      event,
+      clear: false,
     });
   }
 

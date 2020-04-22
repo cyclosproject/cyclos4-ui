@@ -1,6 +1,6 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Host, Input,
-  OnInit, Optional, Output, SkipSelf, ViewChild, Injector
+  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Host, Injector,
+  Input, OnInit, Optional, Output, SkipSelf, ViewChild,
 } from '@angular/core';
 import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import { PasswordInput, PasswordInputMethodEnum, PasswordModeEnum, SendMediumEnum } from 'app/api/models';
@@ -9,8 +9,8 @@ import { NotificationService } from 'app/core/notification.service';
 import { ActionWithIcon } from 'app/shared/action';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { truthyAttr } from 'app/shared/helper';
-import { chunk } from 'lodash';
 import { LayoutService } from 'app/shared/layout.service';
+import { chunk } from 'lodash';
 
 /**
  * Component used to display a password input
@@ -22,8 +22,8 @@ import { LayoutService } from 'app/shared/layout.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: PasswordInputComponent, multi: true },
-    { provide: NG_VALIDATORS, useExisting: PasswordInputComponent, multi: true }
-  ]
+    { provide: NG_VALIDATORS, useExisting: PasswordInputComponent, multi: true },
+  ],
 })
 export class PasswordInputComponent
   extends BaseControlComponent<string>
@@ -47,8 +47,8 @@ export class PasswordInputComponent
 
   @Output() otpSent = new EventEmitter<void>();
 
-  @ViewChild('passwordField', { static: false }) passwordField: ElementRef;
-  @ViewChild('vkDisplay', { static: false }) vkDisplay: ElementRef;
+  @ViewChild('passwordField') passwordField: ElementRef;
+  @ViewChild('vkDisplay') vkDisplay: ElementRef;
 
   virtualKeyboard: boolean;
   currentVKCombinations: string[][];
@@ -111,7 +111,7 @@ export class PasswordInputComponent
         return null;
     }
     return new ActionWithIcon(icon, label, () => {
-      this.addSub(this.authService.newOtp({ medium: medium }).subscribe(res => {
+      this.addSub(this.authService.newOtp({ medium }).subscribe(res => {
         this.notificationService.snackBar(this.i18n.password.otpSent((res || []).join(', ')));
         this.otpSent.emit(null);
       }));
@@ -160,7 +160,7 @@ export class PasswordInputComponent
     const value = c.value;
     if (value == null || value === '') {
       return {
-        required: true
+        required: true,
       };
     }
     return null;

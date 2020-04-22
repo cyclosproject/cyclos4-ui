@@ -2,15 +2,15 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   AccountType, OperatorGroupAccountAccessEnum, OperatorGroupDataForEdit,
-  OperatorGroupDataForNew, TransferTypeWithCurrency, User
+  OperatorGroupDataForNew, TransferTypeWithCurrency, User,
 } from 'app/api/models';
 import { OperatorGroupsService } from 'app/api/services';
 import { UserHelperService } from 'app/core/user-helper.service';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { FieldOption } from 'app/shared/field-option';
 import { empty, enumValues, validateBeforeSubmit } from 'app/shared/helper';
-import { Observable } from 'rxjs';
 import { Menu } from 'app/shared/menu';
+import { Observable } from 'rxjs';
 
 /**
  * Operator group form - either to create or edit
@@ -18,7 +18,7 @@ import { Menu } from 'app/shared/menu';
 @Component({
   selector: 'operator-group-form',
   templateUrl: 'operator-group-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OperatorGroupFormComponent
   extends BasePageComponent<OperatorGroupDataForEdit | OperatorGroupDataForNew>
@@ -52,8 +52,8 @@ export class OperatorGroupFormComponent
     }));
     const values = enumValues<OperatorGroupAccountAccessEnum>(OperatorGroupAccountAccessEnum);
     this.accountAccessOptions = values.map(value => ({
-      value: value,
-      text: this.userHelper.operatorGroupAccountAccess(value)
+      value,
+      text: this.userHelper.operatorGroupAccountAccess(value),
     }));
   }
 
@@ -62,7 +62,7 @@ export class OperatorGroupFormComponent
     const group = data.operatorGroup;
     this.form = this.formBuilder.group({
       name: [group.name, Validators.required],
-      description: group.description
+      description: group.description,
     });
     if (!empty(data.accountTypes)) {
       this.singleAccount = data.accountTypes.length === 1;
@@ -74,8 +74,8 @@ export class OperatorGroupFormComponent
           access: [accountValue.access || OperatorGroupAccountAccessEnum.NONE, Validators.required],
           notificationAmount: this.formBuilder.group({
             min: notificationAmount.min,
-            max: notificationAmount.max
-          })
+            max: notificationAmount.max,
+          }),
         }));
       }
       this.form.setControl('accounts', accountControls);
@@ -88,7 +88,7 @@ export class OperatorGroupFormComponent
           perform: paymentValue.perform,
           maxAmountPerDay: paymentValue.maxAmountPerDay,
           requiresAuthorization: paymentValue.requiresAuthorization,
-          authorize: paymentValue.authorize
+          authorize: paymentValue.authorize,
         }));
       }
       this.form.setControl('payments', paymentControls);

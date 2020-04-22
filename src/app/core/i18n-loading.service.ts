@@ -1,16 +1,16 @@
-import { Injectable, isDevMode } from '@angular/core';
-import { I18n } from 'app/i18n/i18n';
-import { CacheService } from 'app/core/cache.service';
 import { HttpClient } from '@angular/common/http';
+import { Injectable, isDevMode } from '@angular/core';
+import { Configuration } from 'app/configuration';
+import { CacheService } from 'app/core/cache.service';
+import { I18n } from 'app/i18n/i18n';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Configuration } from 'app/configuration';
 
 /**
  * Handles loading of translation keys
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class I18nLoadingService {
 
@@ -81,7 +81,7 @@ export class I18nLoadingService {
           this.cache.set(valuesKey, values);
           this.setLocale(locale, values);
           return this.i18n;
-        })
+        }),
       );
     }
   }
@@ -106,4 +106,3 @@ export class I18nLoadingService {
     document.documentElement.lang = locale.toLowerCase();
   }
 }
-

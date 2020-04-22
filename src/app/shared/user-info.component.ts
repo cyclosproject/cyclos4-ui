@@ -14,7 +14,7 @@ import { LabelValueKind } from 'app/shared/label-value.component';
 @Component({
   selector: 'user-info',
   templateUrl: 'user-info.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserInfoComponent extends BaseComponent {
 

@@ -11,7 +11,7 @@ import { Menu } from 'app/shared/menu';
 @Component({
   selector: 'list-ad-interests',
   templateUrl: 'list-ad-interests.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListAdInterestsComponent
   extends BasePageComponent<UserAdInterestsListData>
@@ -43,7 +43,7 @@ export class ListAdInterestsComponent
       this.headingActions = [
         new HeadingAction('add', this.i18n.general.addNew, () => {
           this.router.navigate(['/marketplace', this.param, 'ad-interests', 'new']);
-        }, true)
+        }, true),
       ];
     }
   }
@@ -59,7 +59,7 @@ export class ListAdInterestsComponent
   remove(adInterest: AdInterest) {
     this.notification.confirm({
       message: this.i18n.general.removeConfirm(adInterest.name),
-      callback: () => this.doRemove(adInterest)
+      callback: () => this.doRemove(adInterest),
     });
   }
 

@@ -12,7 +12,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 @Component({
   selector: 'order-products',
   templateUrl: 'order-products.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderProductsComponent extends BaseComponent implements OnInit {
 
@@ -24,7 +24,7 @@ export class OrderProductsComponent extends BaseComponent implements OnInit {
   form: FormGroup;
 
   constructor(
-    injector: Injector
+    injector: Injector,
   ) {
     super(injector);
   }

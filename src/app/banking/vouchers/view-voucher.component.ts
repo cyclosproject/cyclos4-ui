@@ -1,21 +1,21 @@
-import { Component, OnInit, Injector, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import {
-  VoucherView, ImageSizeEnum, Transaction, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, VoucherCancelActionEnum,
-  CustomFieldTypeEnum, CustomFieldDetailed, VoucherActionEnum, TransactionAuthorizationStatusEnum
+  CreateDeviceConfirmation, CustomFieldDetailed, CustomFieldTypeEnum, DeviceConfirmationTypeEnum, ImageSizeEnum, Transaction,
+  TransactionAuthorizationStatusEnum, VoucherActionEnum, VoucherCancelActionEnum, VoucherView,
 } from 'app/api/models';
 import { VouchersService } from 'app/api/services';
-import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { HeadingAction } from 'app/shared/action';
-import { BehaviorSubject } from 'rxjs';
 import { BankingHelperService } from 'app/core/banking-helper.service';
-import { FormControl, Validators } from '@angular/forms';
+import { HeadingAction } from 'app/shared/action';
+import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-view-voucher',
   templateUrl: './view-voucher.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> implements OnInit {
 
@@ -28,13 +28,13 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
   constructor(
     injector: Injector,
     private voucherService: VouchersService,
-    public bankingHelper: BankingHelperService
+    public bankingHelper: BankingHelperService,
   ) { super(injector); }
 
   ngOnInit() {
     super.ngOnInit();
     const key = this.route.snapshot.paramMap.get('key');
-    this.addSub(this.voucherService.viewVoucher({ key: key }).subscribe(voucher => this.data = voucher));
+    this.addSub(this.voucherService.viewVoucher({ key }).subscribe(voucher => this.data = voucher));
   }
 
   onDataInitialized(_data) {
@@ -43,12 +43,12 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
     this.createCancelDeviceConfirmation = () => ({
       type: DeviceConfirmationTypeEnum.MANAGE_VOUCHER,
       voucher: _data.id,
-      voucherAction: VoucherActionEnum.CANCEL
+      voucherAction: VoucherActionEnum.CANCEL,
     });
     this.createChangeExpirationDeviceConfirmation = () => ({
       type: DeviceConfirmationTypeEnum.MANAGE_VOUCHER,
       voucher: _data.id,
-      voucherAction: VoucherActionEnum.CHANGE_EXPIRATION
+      voucherAction: VoucherActionEnum.CHANGE_EXPIRATION,
     });
     this.canConfirm = this.authHelper.canConfirm(_data.confirmationPasswordInput);
     if (_data.confirmationPasswordInput) {
@@ -72,7 +72,7 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
           title: this.cancelConfirmationTitle(data.cancelAction),
           passwordInput: data.confirmationPasswordInput,
           createDeviceConfirmation: this.createCancelDeviceConfirmation,
-          callback: params => this.cancel(params.confirmationPassword)
+          callback: params => this.cancel(params.confirmationPassword),
         });
       }));
     }
@@ -93,13 +93,13 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
               confirmationPassword: res.confirmationPassword,
               body: {
                 comments: res.customValues.comments,
-                newExpirationDate: res.customValues.newExpirationDate
-              }
+                newExpirationDate: res.customValues.newExpirationDate,
+              },
             }).subscribe(() => {
               this.notification.snackBar(this.i18n.voucher.expirationDateChanged);
               this.reload();
             }));
-          }
+          },
         });
       }));
     }
@@ -113,7 +113,7 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
     if (!validateBeforeSubmit(this.confirmationPassword)) {
       return;
     }
-    this.addSub(this.voucherService.cancelVoucher({ key: this.data.id, confirmationPassword: confirmationPassword })
+    this.addSub(this.voucherService.cancelVoucher({ key: this.data.id, confirmationPassword })
       .subscribe(() => {
         this.reload();
         this.notification.snackBar(this.i18n.voucher.cancel.done);
@@ -138,12 +138,12 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
       internalName: 'newExpirationDate',
       name: this.i18n.general.newExpirationDate,
       type: CustomFieldTypeEnum.DATE,
-      required: true
+      required: true,
     },
     {
       internalName: 'comments',
       name: this.i18n.general.comments,
-      type: CustomFieldTypeEnum.TEXT
+      type: CustomFieldTypeEnum.TEXT,
     }];
   }
 

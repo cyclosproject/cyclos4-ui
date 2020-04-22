@@ -3,13 +3,13 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { ContentPageGuard } from 'app/content-page-guard';
 import { ContentPageComponent } from 'app/content/content-page.component';
 import { HomeComponent } from 'app/home/home.component';
+import { RedirectToLandingPageComponent } from 'app/home/redirect-to-landing-page-component';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { AcceptPendingAgreementsComponent } from 'app/login/accept-pending-agreements.component';
 import { ChangeExpiredPasswordComponent } from 'app/login/change-expired-password.component';
 import { ChangeForgottenPasswordComponent } from 'app/login/change-forgotten-password.component';
 import { ForgotPasswordComponent } from 'app/login/forgot-password.component';
 import { LoginComponent } from 'app/login/login.component';
-import { RedirectToLandingPageComponent } from 'app/home/redirect-to-landing-page-component';
 import { NotFoundComponent } from 'app/shared/not-found.component';
 import { SharedModule } from 'app/shared/shared.module';
 
@@ -17,67 +17,67 @@ const rootRoutes: Routes = [
   {
     path: '',
     component: RedirectToLandingPageComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'home',
-    component: HomeComponent
+    component: HomeComponent,
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'forgot-password',
-    component: ForgotPasswordComponent
+    component: ForgotPasswordComponent,
   },
   {
     path: 'forgot-password/:key',
-    component: ChangeForgottenPasswordComponent
+    component: ChangeForgottenPasswordComponent,
   },
   {
     path: 'pending-agreements',
     canActivate: [LoggedUserGuard],
-    component: AcceptPendingAgreementsComponent
+    component: AcceptPendingAgreementsComponent,
   },
   {
     path: 'expired-password',
     canActivate: [LoggedUserGuard],
-    component: ChangeExpiredPasswordComponent
+    component: ChangeExpiredPasswordComponent,
   },
   {
     path: 'page/:slug',
     component: ContentPageComponent,
-    canActivate: [ContentPageGuard]
+    canActivate: [ContentPageGuard],
   },
   {
     path: 'banking',
-    loadChildren: () => import('app/banking/banking.module').then(m => m.BankingModule)
+    loadChildren: () => import('app/banking/banking.module').then(m => m.BankingModule),
   },
   {
     path: 'users',
-    loadChildren: () => import('app/users/users.module').then(m => m.UsersModule)
+    loadChildren: () => import('app/users/users.module').then(m => m.UsersModule),
   },
   {
     path: 'records',
-    loadChildren: () => import('app/records/records.module').then(m => m.RecordsModule)
+    loadChildren: () => import('app/records/records.module').then(m => m.RecordsModule),
   },
   {
     path: 'marketplace',
-    loadChildren: () => import('app/marketplace/marketplace.module').then(m => m.MarketplaceModule)
+    loadChildren: () => import('app/marketplace/marketplace.module').then(m => m.MarketplaceModule),
   },
   {
     path: 'personal',
-    loadChildren: () => import('app/personal/personal.module').then(m => m.PersonalModule)
+    loadChildren: () => import('app/personal/personal.module').then(m => m.PersonalModule),
   },
   {
     path: 'operations',
-    loadChildren: () => import('app/operations/operations.module').then(m => m.OperationsModule)
+    loadChildren: () => import('app/operations/operations.module').then(m => m.OperationsModule),
   },
   {
     path: '**',
-    component: NotFoundComponent
-  }
+    component: NotFoundComponent,
+  },
 ];
 
 /**
@@ -87,16 +87,16 @@ const rootRoutes: Routes = [
   imports: [
     RouterModule.forRoot(rootRoutes, {
       onSameUrlNavigation: 'reload',
-      preloadingStrategy: PreloadAllModules
+      preloadingStrategy: PreloadAllModules,
     }),
-    SharedModule
+    SharedModule,
   ],
   exports: [
-    RouterModule
+    RouterModule,
   ],
   providers: [
     LoggedUserGuard,
-    ContentPageGuard
-  ]
+    ContentPageGuard,
+  ],
 })
 export class AppRoutingModule { }

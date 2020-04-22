@@ -11,7 +11,7 @@
               {{ i18n.general.images }}
             </div>
             <button
-              *ngIf="canUploadImages && !(multiUpload.uploading$ | async)"
+              *ngIf="canUploadImages && (multiUpload.uploading$ | async) === false"
               class="btn btn-outline-primary" (click)="multiUpload.perform()">
               {{ i18n.field.image.upload }}
             </button>

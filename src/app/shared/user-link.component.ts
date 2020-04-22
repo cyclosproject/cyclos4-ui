@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { AccountWithOwner, User } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
-import { User, AccountWithOwner } from 'app/api/models';
 import { truthyAttr } from 'app/shared/helper';
 
 /**
@@ -12,7 +12,7 @@ import { truthyAttr } from 'app/shared/helper';
   selector: 'user-link',
   templateUrl: 'user-link.component.html',
   styleUrls: ['user-link.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserLinkComponent extends BaseComponent implements OnInit {
   constructor(injector: Injector) {

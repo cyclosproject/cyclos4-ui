@@ -1,12 +1,12 @@
 import {
-  ChangeDetectionStrategy, Component, Injector, Input, Optional, Host, SkipSelf, ViewChild, ElementRef
+  ChangeDetectionStrategy, Component, ElementRef, Host, Injector, Input, Optional, SkipSelf, ViewChild,
 } from '@angular/core';
-import { BaseControlComponent } from 'app/shared/base-control.component';
-import { BehaviorSubject } from 'rxjs';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BaseControlComponent } from 'app/shared/base-control.component';
+import { IconComponent } from 'app/shared/icon.component';
 import { LayoutService } from 'app/shared/layout.service';
 import { TooltipDirective } from 'ngx-bootstrap/tooltip';
-import { IconComponent } from 'app/shared/icon.component';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * A button that switches between two icons.
@@ -16,8 +16,8 @@ import { IconComponent } from 'app/shared/icon.component';
   templateUrl: 'button-toggle.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: ButtonToggleComponent, multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: ButtonToggleComponent, multi: true },
+  ],
 })
 export class ButtonToggleComponent extends BaseControlComponent<boolean> {
 
@@ -35,8 +35,8 @@ export class ButtonToggleComponent extends BaseControlComponent<boolean> {
   state: boolean;
 
   constructor(injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private layout: LayoutService) {
+              @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
+              private layout: LayoutService) {
     super(injector, controlContainer);
   }
 

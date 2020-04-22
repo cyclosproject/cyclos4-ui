@@ -11,7 +11,7 @@ import { Menu } from 'app/shared/menu';
 @Component({
   selector: 'view-webshop-settings',
   templateUrl: 'view-webshop-settings.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewWebshopSettingsComponent extends BaseViewPageComponent<WebshopSettingsView> implements OnInit {
   constructor(
@@ -38,7 +38,7 @@ export class ViewWebshopSettingsComponent extends BaseViewPageComponent<WebshopS
     if (data.canEdit) {
       actions.push(
         new HeadingAction('edit', this.i18n.general.edit, () =>
-          this.router.navigate(['/marketplace', this.user, 'webshop-settings', 'edit']), true
+          this.router.navigate(['/marketplace', this.user, 'webshop-settings', 'edit']), true,
         ));
 
       this.headingActions = actions;

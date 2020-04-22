@@ -1,7 +1,7 @@
-import { ContentWithLayout } from 'app/content/content-with-layout';
-import { RootMenu } from 'app/shared/menu';
 import { Injector } from '@angular/core';
 import { Auth } from 'app/api/models';
+import { ContentWithLayout } from 'app/content/content-with-layout';
+import { RootMenu } from 'app/shared/menu';
 
 /** A content page to be displayed */
 export interface ContentPage extends ContentWithLayout {

@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
   selector: 'page-content',
   templateUrl: 'page-content.component.html',
   styleUrls: ['page-content.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageContentComponent implements OnInit, OnChanges {
 
@@ -46,7 +46,7 @@ export class PageContentComponent implements OnInit, OnChanges {
     public layoutService: LayoutService,
     public breadcrumb: BreadcrumbService,
     public i18n: I18n,
-    public element: ElementRef
+    public element: ElementRef,
   ) { }
 
   get groupActions(): boolean {
@@ -59,10 +59,10 @@ export class PageContentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['heading']) {
+    if (changes.heading) {
       this.maybeUpdateTitle();
     }
-    if (changes['headingActions']) {
+    if (changes.headingActions) {
       this.layoutService.headingActions = (this.headingActions || []);
     }
   }

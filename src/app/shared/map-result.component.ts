@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, ElementRef, AfterViewInit, AfterViewChecked } from '@angular/core';
-import { Image, Address } from 'app/api/models';
+import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input } from '@angular/core';
+import { Address, Image } from 'app/api/models';
 
 /**
  * A result when result type is map.
@@ -7,7 +7,7 @@ import { Image, Address } from 'app/api/models';
 @Component({
   selector: 'map-result',
   templateUrl: 'map-result.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapResultComponent implements AfterViewInit, AfterViewChecked {
 

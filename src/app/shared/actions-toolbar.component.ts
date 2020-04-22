@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs';
   selector: 'actions-toolbar',
   templateUrl: 'actions-toolbar.component.html',
   styleUrls: ['actions-toolbar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActionsToolbarComponent extends BaseComponent implements OnInit {
   blurIfClick = blurIfClick;
@@ -29,7 +29,7 @@ export class ActionsToolbarComponent extends BaseComponent implements OnInit {
   }
 
   constructor(
-    injector: Injector
+    injector: Injector,
   ) {
     super(injector);
   }

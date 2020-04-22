@@ -1,6 +1,6 @@
 import {
   AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component,
-  ElementRef, Injector, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren
+  ElementRef, Injector, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren,
 } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { AddressNew, CustomFieldDetailed, GroupForRegistration, Image, StoredFile, UserDataForNew, UserNew } from 'app/api/models';
@@ -16,7 +16,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'registration-step-confirm',
   templateUrl: 'registration-step-confirm.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationStepConfirmComponent
   extends BaseComponent
@@ -34,7 +34,7 @@ export class RegistrationStepConfirmComponent
   @Input() customFiles: StoredFile[];
 
   @ViewChildren('securityAnswer') securityAnswer: QueryList<InputFieldComponent>;
-  @ViewChild('agreementsContent', { static: false }) agreementsContent: ElementRef;
+  @ViewChild('agreementsContent') agreementsContent: ElementRef;
 
   constructor(
     injector: Injector,
@@ -57,14 +57,14 @@ export class RegistrationStepConfirmComponent
       el.innerHTML = this.i18n.pendingAgreements.agree(
         `<a href="#" onclick="event.preventDefault();event.stopPropagation();showAgreements()">
         ${this.data.agreements.map(a => a.name).join(', ')}
-        </a>`
+        </a>`,
       );
       window['showAgreements'] = () => {
         this.modal.show(RegistrationAgreementsComponent, {
           class: 'modal-form',
           initialState: {
-            agreements: this.data.agreements
-          }
+            agreements: this.data.agreements,
+          },
         });
       };
     }
@@ -116,17 +116,17 @@ export class RegistrationStepConfirmComponent
 
   get landLine(): string {
     const phones = this.user.landLinePhones || [];
-    const number = empty(phones) ? null : (phones[0].number || '').trim();
-    if (empty(number)) {
+    const phoneNumber = empty(phones) ? null : (phones[0].number || '').trim();
+    if (empty(phoneNumber)) {
       return '';
     }
     const extension = empty(phones) ? null : (phones[0].extension || '').trim();
     if (extension === '') {
-      return number;
+      return phoneNumber;
     } else {
       return this.i18n.phone.numberExtensionValue({
-        number: number,
-        extension: extension
+        number: phoneNumber,
+        extension,
       });
     }
   }

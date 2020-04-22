@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import { CustomFieldDetailed, PasswordInput, NotificationsStatus, CreateDeviceConfirmation } from 'app/api/models';
-import { SnackBarProvider, SnackBarOptions } from 'app/core/snack-bar-provider';
+import { CreateDeviceConfirmation, CustomFieldDetailed, NotificationsStatus, PasswordInput } from 'app/api/models';
+import { NotificationsService } from 'app/api/services';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { NextRequestState } from 'app/core/next-request-state';
+import { PushNotificationProvider } from 'app/core/push-notification-provider';
+import { PushNotificationsService } from 'app/core/push-notifications.service';
+import { SnackBarOptions, SnackBarProvider } from 'app/core/snack-bar-provider';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { ConfirmationComponent } from 'app/shared/confirmation.component';
 import { NotificationType } from 'app/shared/notification-type';
 import { NotificationComponent } from 'app/shared/notification.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Observable, Subject, Subscription, BehaviorSubject } from 'rxjs';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { NotificationsService } from 'app/api/services';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { NextRequestState } from 'app/core/next-request-state';
-import { PushNotificationProvider } from 'app/core/push-notification-provider';
-import { PushNotificationsService } from 'app/core/push-notifications.service';
 
 /**
  * Reference to a notification
@@ -58,7 +58,7 @@ export interface ConfirmCallbackParams {
  * Service used to manage notifications being displayed for users
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationService {
 
@@ -84,7 +84,7 @@ export class NotificationService {
     nextRequestState: NextRequestState,
     pushNotifications: PushNotificationsService,
     notificationsService: NotificationsService,
-    dataForUiHolder: DataForUiHolder
+    dataForUiHolder: DataForUiHolder,
   ) {
     this.modal.onHidden.subscribe(() => {
       if (this.currentNotification) {
@@ -144,14 +144,14 @@ export class NotificationService {
     customFields?: CustomFieldDetailed[],
     createDeviceConfirmation?: () => CreateDeviceConfirmation,
     passwordInput?: PasswordInput,
-    callback: (params: ConfirmCallbackParams) => void
+    callback: (params: ConfirmCallbackParams) => void,
   }): void {
     if (options.passwordInput && !options.createDeviceConfirmation) {
       throw new Error('When there\'s a passwordInput it is also required to set the createDeviceConfirmation callback');
     }
     this.modal.show(ConfirmationComponent, {
       class: 'modal-form',
-      initialState: options
+      initialState: options,
     });
   }
 
@@ -195,10 +195,10 @@ export class NotificationService {
     const modalRef = this.modal.show(NotificationComponent, {
       class: 'notification',
       initialState: {
-        type: type,
-        message: message,
-        allowClose: allowClose
-      }
+        type,
+        message,
+        allowClose,
+      },
     });
     if (!backdrop) {
       this.modal.removeBackdrop();

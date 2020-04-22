@@ -1,22 +1,23 @@
+import { Directive, ElementRef, Injector, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
 import { BaseFormFieldWithOptionsComponent } from 'app/shared/base-form-field-with-options.component';
-import { ViewChild, ElementRef, OnDestroy, OnInit, Input, Injector } from '@angular/core';
-import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { empty } from 'app/shared/helper';
 import { FieldOption, fieldOptionMatches } from 'app/shared/field-option';
+import { empty } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { Escape } from 'app/shared/shortcut.service';
+import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 /**
  * Base class for single / multi selection fields
  */
+@Directive()
 export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOptionsComponent<T> implements OnInit, OnDestroy {
   /** When set, the displayed text */
   @Input() display: string;
 
-  @ViewChild('toggleButton', { static: false }) toggleRef: ElementRef;
-  @ViewChild('dropdown', { static: false }) dropdown: BsDropdownDirective;
+  @ViewChild('toggleButton') toggleRef: ElementRef;
+  @ViewChild('dropdown') dropdown: BsDropdownDirective;
 
   display$ = new BehaviorSubject('');
   valueSub: Subscription;
@@ -46,7 +47,7 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
 
   constructor(
     injector: Injector,
-    controlContainer: ControlContainer
+    controlContainer: ControlContainer,
   ) {
     super(injector, controlContainer);
     this.layout = injector.get(LayoutService);
@@ -73,7 +74,7 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
   protected abstract getDisplay(): string;
 
   protected getFocusableControl() {
-    return (<any>(this.toggleRef || {})).nativeElement;
+    return ((this.toggleRef || {}) as any).nativeElement;
   }
 
   addOption(option: FieldOption) {
@@ -88,7 +89,7 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
     this.layout.setFocusTrap(this.dropdownMenuId);
     this.addShortcut(Escape, () => this.close());
 
-    const toggle = <HTMLElement>this.toggleRef.nativeElement;
+    const toggle = this.toggleRef.nativeElement as HTMLElement;
     const rect = toggle.getBoundingClientRect();
     const docHeight = (window.innerHeight || document.documentElement.clientHeight);
     this.dropdown.dropup = rect.bottom > docHeight - 100;

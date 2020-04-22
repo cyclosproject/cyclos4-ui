@@ -5,11 +5,10 @@ import { BaseComponent } from 'app/shared/base.component';
 import { isEqual } from 'lodash';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
-
 export class ManageImagesResult {
   constructor(
     public order: string[],
-    public removedImages: string[]
+    public removedImages: string[],
   ) { }
 }
 
@@ -19,7 +18,7 @@ export class ManageImagesResult {
 @Component({
   selector: 'manage-images',
   templateUrl: 'manage-images.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageImagesComponent extends BaseComponent implements OnInit {
 

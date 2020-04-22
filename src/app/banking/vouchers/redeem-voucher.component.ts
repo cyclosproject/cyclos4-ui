@@ -1,22 +1,22 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injector, ViewChild, ElementRef } from '@angular/core';
-import { VoucherInitialDataForRedeem, VoucherDataForRedeem } from 'app/api/models';
-import { BasePageComponent } from 'app/shared/base-page.component';
-import { Validators, FormControl, FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { VoucherDataForRedeem, VoucherInitialDataForRedeem } from 'app/api/models';
 import { VouchersService } from 'app/api/services';
-import { validateBeforeSubmit, focus } from 'app/shared/helper';
-import { BehaviorSubject } from 'rxjs';
-import { Menu } from 'app/shared/menu';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
-import { first } from 'rxjs/operators';
+import { BasePageComponent } from 'app/shared/base-page.component';
+import { focus, validateBeforeSubmit } from 'app/shared/helper';
 import { InputFieldComponent } from 'app/shared/input-field.component';
+import { Menu } from 'app/shared/menu';
+import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BehaviorSubject } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 export type RedeemStep = 'form' | 'confirm';
 
 @Component({
   selector: 'app-redeem-voucher',
   templateUrl: './redeem-voucher.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialDataForRedeem> implements OnInit {
 
@@ -28,7 +28,7 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
   userId: string;
   self: boolean;
 
-  @ViewChild('inputField', { static: false }) inputField: ElementRef<InputFieldComponent>;
+  @ViewChild('inputField') inputField: ElementRef<InputFieldComponent>;
 
   get dataForRedeem(): VoucherDataForRedeem {
     return this.dataForRedeem$.value;
@@ -41,7 +41,7 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
   constructor(
     injector: Injector,
     private voucherService: VouchersService,
-    private modal: BsModalService
+    private modal: BsModalService,
   ) {
     super(injector);
   }
@@ -102,7 +102,7 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
 
   showScanQrCode() {
     const ref = this.modal.show(ScanQrCodeComponent, {
-      class: 'modal-form'
+      class: 'modal-form',
     });
     const component = ref.content as ScanQrCodeComponent;
     component.select.pipe(first()).subscribe(value => {
