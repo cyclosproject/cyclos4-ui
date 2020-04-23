@@ -10,8 +10,9 @@
       'flex-column': asColumn,
       'align-items-left': asColumn
     }" style="margin-top: -0.25rem">
-      <div *ngIf="category.name" class="font-weight-bold"
-        [ngClass]="{'mt-3': !firstCat}">{{ category.name }}</div>
+      <div *ngIf="category.name" class="mt-1 mr-3 font-weight-bold"
+        style="line-height: 1rem">{{ category.name }}
+      </div>
       <div #check
         *ngFor="let option of category.options | async; let firstOpt = first"
         class="custom-control custom-radio d-inline-flex mt-1 mr-3 align-items-center"
