@@ -3,8 +3,8 @@
 </label-value>
 
 <ng-template #widget>
-  <div class="w-100" dropdown #dropdown="bs-dropdown" container="body"
-    (onShown)="onShown();" (onHidden)="onHidden(); toggleButton.focus()">
+  <div class="w-100" dropdown #dropdown="bs-dropdown" (onShown)="onShown();"
+    (onHidden)="onHidden(); toggleButton.focus()">
     <button #toggleButton dropdownToggle [id]="id" type="button"
       class="form-control text-left custom-select w-100"
       [title]="display$ | async" [attr.aria-controls]="dropdownMenuId"
