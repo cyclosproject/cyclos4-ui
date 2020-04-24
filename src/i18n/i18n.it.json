@@ -29,6 +29,8 @@
     "to": "a",
     "description": "Descrizione",
     "details": "Dettagli",
+    "download": "Download",
+    "downloadAs": "Download as {format}",
     "image": "Immagine",
     "keywords": "Parole Chiave",
     "distanceFilter": "Distanza",
@@ -468,7 +470,6 @@
     "totalOutflow": "Totale uscite",
     "netInflow": "Saldo entrate/uscite",
     "noAccounts": "Non hai alcun conto",
-    "printTransactions": "Stampa transazioni",
     "system": "Conto di sistema",
     "mobileTitle": "Conto",
     "orderBy": {
