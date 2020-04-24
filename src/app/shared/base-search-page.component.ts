@@ -36,6 +36,10 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
   readonly form: FormGroup;
   previousValue: any;
 
+  // Sometimes, such as when replacing form fields, we have to manually avoid a search from being executed.
+  // See https://github.com/angular/angular/issues/20439
+  private ignoreNextUpdate = false;
+
   protected printable = false;
   private _moreFiltersAction: HeadingAction;
 
@@ -53,12 +57,12 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
     this.previousResultType = this.resultType;
     this.resultType$.next(this.previousResultType);
     this.addSub(this.resultTypeControl.valueChanges.subscribe(rt => {
-      if (this.shouldUpdateOnChange(this.form.value)) {
-        this.update();
-      }
       const previous = this.previousResultType;
       this.previousResultType = rt;
       this.resultType$.next(rt);
+      if (this.shouldUpdateOnResultTypeChange(rt, previous)) {
+        this.update();
+      }
       if (previous == null || previous !== rt) {
         this.rendering = true;
         this.stateManager.set('resultType', rt);
@@ -82,21 +86,25 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
   }
 
   /**
+   * Indicates whether results should be updated when a result type changes
+   */
+  protected shouldUpdateOnResultTypeChange(resultType: ResultType, previous?: ResultType): boolean {
+    if (resultType === ResultType.CATEGORIES) {
+      // Never update when switching to categories
+      return false;
+    }
+    const wasResult = [ResultType.LIST, ResultType.TILES].includes(previous);
+    const isResult = [ResultType.LIST, ResultType.TILES].includes(resultType);
+    const wasMap = previous === ResultType.MAP;
+    const isMap = resultType === ResultType.MAP;
+    return wasResult !== isResult || wasMap !== isMap;
+  }
+
+  /**
    * By default will just skip the update if only the result type has changed
    * @param value The current form value
    */
   protected shouldUpdateOnChange(value: any): boolean {
-    const previousResultType = this.previousResultType;
-    const resultType = this.resultType;
-    const wasCategoriesOrNull = previousResultType == null || previousResultType === ResultType.CATEGORIES;
-    const isCategories = resultType === ResultType.CATEGORIES;
-    if (isCategories && !wasCategoriesOrNull) {
-      // Switching to categories - don't update results
-      return false;
-    } else if (wasCategoriesOrNull) {
-      // Either first time or switching from categories. Update.
-      return true;
-    }
     return !isEqual(this.previousValue, value);
   }
 
@@ -244,6 +252,9 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
    * Updates the search results
    */
   update(pageData?: PageData) {
+    if (this.ignoreNextUpdate) {
+      return;
+    }
     if (pageData) {
       // We can't emit the event, as StateManager listents to it, and it would generate a loop.
       // However, we can't loose the page we're using, so, we have to manually update the state manager
@@ -269,6 +280,19 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
    */
   resetPage(emitEvent = false) {
     this.form.patchValue({ page: 0 }, { emitEvent: emitEvent });
+  }
+
+  /**
+   * Performs a given action ignoring updates.
+   * The given callback can modify the form state at will, and no server request will be done.
+   */
+  protected doIgnoringUpdate(fn: () => any) {
+    this.ignoreNextUpdate = true;
+    try {
+      fn();
+    } finally {
+      this.ignoreNextUpdate = false;
+    }
   }
 
 }

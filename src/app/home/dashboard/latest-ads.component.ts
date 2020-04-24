@@ -51,51 +51,11 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
       profileFields: ['image:true'],
       orderBy: AdOrderByEnum.DATE,
       fields: ['id', 'owner', 'image', 'name'],
-      pageSize: this.max * 3,
+      pageSize: this.max,
       skipTotalCount: true
     }).subscribe(ads => {
-      this.ads$.next(this.preprocess(ads));
+      this.ads$.next(ads);
     }));
-  }
-
-  /**
-   * Attempt to leave a single ad per user. If not possible, then repeat ads
-   */
-  private preprocess(ads: AdResult[]): AdResult[] {
-    if (ads.length < this.max) {
-      return ads;
-    }
-    const result = this.onePerOwner(ads).slice(0, this.max);
-    while (result.length < this.max) {
-      // We still need more results, yet, from different owners
-      const remaining = ads.filter(ad => !result.includes(ad));
-      const onePerOwner = this.onePerOwner(remaining);
-      for (const ad of onePerOwner) {
-        if (result.length < this.max) {
-          result.push(ad);
-        }
-      }
-    }
-    return result;
-  }
-
-  /**
-   * Returns a single ad per owner
-   */
-  private onePerOwner(ads: AdResult[]): AdResult[] {
-    const owners = new Set<string>();
-    const result: AdResult[] = [];
-    // First pass: collect a single ad from each owner
-    for (const ad of ads) {
-      if (ad.owner && ad.owner.id) {
-        if (owners.has(ad.owner.id)) {
-          continue;
-        }
-        owners.add(ad.owner.id);
-        result.push(ad);
-      }
-    }
-    return result;
   }
 
   path(ad: AdResult): string {

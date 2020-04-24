@@ -93,8 +93,8 @@
               [longitude]="addr.location.longitude"
               (markerClick)="closeAllInfoWindows()">
               <agm-info-window>
-                <maybe-link class="map-info-window" [link]="linkUrl(row)"
-                  (click)="handleClick(row, $event)"
+                <maybe-link class="undecorated map-info-window"
+                  [link]="linkUrl(row)" (click)="handleClick(row, $event)"
                   (keydown.enter)="handleClick(row, $event)">
                   <ng-container
                     *ngTemplateOutlet="infoWindowTemplate; context: {$implicit: row, address: addr}">

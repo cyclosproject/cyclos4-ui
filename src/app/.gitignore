@@ -1,4 +1,5 @@
 api
+api$
 i18n
 mock-*.ts
 test-*.ts

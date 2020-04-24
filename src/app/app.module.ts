@@ -2,7 +2,7 @@ import { LazyMapsAPILoader, LAZY_MAPS_API_CONFIG, MapsAPILoader } from '@agm/cor
 import { BROWSER_GLOBALS_PROVIDERS } from '@agm/core/utils/browser-globals';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ApiModule } from 'app/api/api.module';
 import { DataForUi } from 'app/api/models';
 import { AppRoutingModule } from 'app/app-routing.module';
@@ -34,7 +34,7 @@ export function lazyMapsApiConfig(dataForUiHolder: DataForUiHolder) {
     ApiModule,
     CoreModule,
     SharedModule,
-    BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
 
     // Eagerly loaded modules

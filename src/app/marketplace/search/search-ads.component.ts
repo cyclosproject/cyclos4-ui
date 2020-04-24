@@ -78,13 +78,17 @@ export class SearchAdsComponent
 
   protected toSearchParams(value: any): AdQueryFilters {
     const params: AdQueryFilters = value;
+    const isMap = this.resultType === ResultType.MAP;
     params.customFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
-    params.addressResult = this.resultType === ResultType.MAP ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
+    params.addressResult = isMap ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
     const distanceFilter: MaxDistance = value.distanceFilter;
     if (distanceFilter) {
       params.maxDistance = distanceFilter.maxDistance;
       params.latitude = distanceFilter.latitude;
       params.longitude = distanceFilter.longitude;
+    }
+    if (isMap) {
+      params.pageSize = 99999;
     }
     return params;
   }
@@ -95,17 +99,11 @@ export class SearchAdsComponent
       this.form.patchValue({ category: null }, { emitEvent: false });
       this.categoryTrail$.next([]);
     } else {
-      if (previousResultType === ResultType.CATEGORIES) {
-        // Force a new query when changing from categories
-        this.results = null;
-      } else {
-        const isMap = resultType === ResultType.MAP;
-        const wasMap = previousResultType === ResultType.MAP;
-        if (isMap !== wasMap) {
-          // Should update again, as the `addressResult` will change
-          this.results = null;
-          this.update({ page: 0 });
-        }
+      // Changing from / to map will implicitly update - just reset the page to 0
+      const isMap = resultType === ResultType.MAP;
+      const wasMap = previousResultType === ResultType.MAP;
+      if (isMap !== wasMap) {
+        this.form.patchValue({ page: 0 }, { emitEvent: false });
       }
     }
   }

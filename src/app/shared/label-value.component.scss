@@ -21,10 +21,9 @@
 }
 
 :host.label-on-side .label-value-label {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
   display: flex;
-  align-items: center;
 }
 
 :host:not(.label-on-side) .label-value-label {
@@ -33,6 +32,11 @@
 
 :host.field-view, :host.field {
   min-height: $input-height;
+}
+
+:host.field-view ::ng-deep .label-value-value user-link {
+  position: relative;
+  top: -2px;
 }
 
 @include media-breakpoint-up(xs) {

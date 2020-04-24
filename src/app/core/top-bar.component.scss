@@ -109,8 +109,8 @@
       background-color: $top-bar-color;
       transition: opacity ease-in-out 0.4s;
       opacity: 0;
-      left: calc(#{$top-bar-item-spacing-spacious} - 0.1rem);
-      width: calc(100% - #{2 * $top-bar-item-spacing-spacious} + 0.2rem);
+      left: calc(#{$top-bar-item-spacing-spacious} + 0.1rem);
+      width: calc(100% - #{2 * $top-bar-item-spacing-spacious} - 0.15rem);
     }
 
     &.density-medium::before {

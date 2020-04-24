@@ -16,7 +16,7 @@ import { DateFieldComponent } from 'app/shared/date-field.component';
 import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
 import { FieldOption } from 'app/shared/field-option';
 import { FilesFieldComponent } from 'app/shared/files-field.component';
-import { truthyAttr } from 'app/shared/helper';
+import { truthyAttr, empty } from 'app/shared/helper';
 import { ImagesFieldComponent } from 'app/shared/images-field.component';
 import { InputFieldComponent } from 'app/shared/input-field.component';
 import { MultiSelectionFieldComponent } from 'app/shared/multi-selection-field.component';
@@ -25,7 +25,7 @@ import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field
 import { TextAreaFieldComponent } from 'app/shared/textarea-field.component';
 import { UserFieldComponent } from 'app/shared/user-field.component';
 
-const INPUT_TYPES = [CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.URL, CustomFieldTypeEnum.LINKED_ENTITY];
+const INPUT_TYPES = [CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.LINKED_ENTITY];
 const TEXTAREA_TYPES = [CustomFieldTypeEnum.TEXT, CustomFieldTypeEnum.RICH_TEXT];
 const ENUMERATED = [CustomFieldTypeEnum.SINGLE_SELECTION, CustomFieldTypeEnum.MULTI_SELECTION];
 
@@ -114,7 +114,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
   }
 
   preprocessValue(value: any): string {
-    if (value == null) {
+    if (empty(value)) {
       return '';
     }
     if ([CustomFieldTypeEnum.DYNAMIC_SELECTION, CustomFieldTypeEnum.LINKED_ENTITY].includes(this.type)) {

@@ -68,30 +68,32 @@
   }
 }
 
-@include media-breakpoint-up(xl) {
+@include media-breakpoint-up(sm) {
   .calendar-toggle {
     margin-left: 0.5rem;
   }
   .custom-select {
-    padding: 0 0.7rem;
-    background-position: right 0.75rem center !important;
+    padding: 0 0.4rem;
+    background-position: right 0.45rem center !important;
   }
   .field-year {
-    width: 4.3rem;
-  }
-  .field-month {
     width: 3.6rem;
   }
+  .field-month {
+    width: 3.4rem;
+  }
   .field-date {
-    width: 3.2rem;
+    width: 2.8rem;
   }
 }
 
-.lt-sm :host ::ng-deep .dropdown-menu {
+.date-field-wrapper.show .calendar-dropdown {
   position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  min-width: auto !important;
+  top: 5% !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 90% !important;
+  display: flex !important;
   z-index: $zindex-tooltip;
+  flex-direction: column;
 }
