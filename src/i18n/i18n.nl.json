@@ -29,6 +29,8 @@
     "to": "to",
     "description": "Omschrijving",
     "details": "Details",
+    "download": "Download",
+    "downloadAs": "Download as {format}",
     "image": "Afbeelding",
     "keywords": "Trefwoorden",
     "distanceFilter": "Distance",
@@ -468,7 +470,6 @@
     "totalOutflow": "Total paid",
     "netInflow": "Net income",
     "noAccounts": "Je hebt geen accounts",
-    "printTransactions": "Print transacties",
     "system": "Systeemrekening",
     "mobileTitle": "Account",
     "orderBy": {
