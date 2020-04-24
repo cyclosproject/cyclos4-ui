@@ -162,7 +162,8 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
               confirmationPassword: res.confirmationPassword,
               body: {
                 remarks: res.customValues.remarks,
-                paymentType: res.customValues.paymentType,
+                paymentType: res.customValues.paymentType ||
+                  (!empty(data.paymentTypes) ? data.paymentTypes[0].id : null),
               },
             }).subscribe(() => {
               this.notification.snackBar(this.i18n.ad.orderAccepted);

@@ -6,6 +6,7 @@ import { AddressHelperService } from 'app/core/address-helper.service';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { SearchProductsComponent } from 'app/marketplace/search/search-products.component';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { empty } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -92,6 +93,12 @@ export class SaleFormComponent
     this.addSub(deliveryField.valueChanges.subscribe(a => this.updateDelivery(a, data)));
 
     // Addresses
+    if (this.create && !empty(data.addresses) && data.addresses.length === 1) {
+      // Preselect first address in case there is a single
+      // one and the order is being created
+      data.order.deliveryAddress = data.addresses[0];
+    }
+
     this.addressForm = this.addressHelper.addressFormGroup(data.addressConfiguration);
     this.addressForm.patchValue(data.order.deliveryAddress);
 
