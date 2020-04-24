@@ -57,39 +57,43 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
     this.headingActions = this.initActions(_data);
   }
 
-  initActions(data: VoucherView): HeadingAction[] {
-    const actions: HeadingAction[] = [this.printAction];
-    if (data.cancelAction) {
-      const label = data.cancelAction === VoucherCancelActionEnum.CANCEL_AND_REFUND ?
+  initActions(voucher: VoucherView): HeadingAction[] {
+    const actions: HeadingAction[] = this.exportHelper.headingActions(voucher.exportFormats,
+      f => this.voucherService.exportVoucher$Response({
+        format: f.internalName,
+        key: voucher.id
+      }));
+    if (voucher.cancelAction) {
+      const label = voucher.cancelAction === VoucherCancelActionEnum.CANCEL_AND_REFUND ?
         this.i18n.voucher.cancelAndRefund : this.i18n.general.cancel;
       actions.push(new HeadingAction('cancel', label, () => {
         // Handle the case that the confirmation password cannot be used
         if (!this.canConfirm) {
-          this.notification.warning(this.authHelper.getConfirmationMessage(data.confirmationPasswordInput));
+          this.notification.warning(this.authHelper.getConfirmationMessage(voucher.confirmationPasswordInput));
         }
         // A confirmation is required
         this.notification.confirm({
-          title: this.cancelConfirmationTitle(data.cancelAction),
-          passwordInput: data.confirmationPasswordInput,
+          title: this.cancelConfirmationTitle(voucher.cancelAction),
+          passwordInput: voucher.confirmationPasswordInput,
           createDeviceConfirmation: this.createCancelDeviceConfirmation,
           callback: params => this.cancel(params.confirmationPassword),
         });
       }));
     }
-    if (data.canChangeExpirationDate) {
+    if (voucher.canChangeExpirationDate) {
       actions.push(new HeadingAction('update', this.i18n.voucher.changeExpirationDate, () => {
         // Handle the case that the confirmation password cannot be used
         if (!this.canConfirm) {
-          this.notification.warning(this.authHelper.getConfirmationMessage(data.confirmationPasswordInput));
+          this.notification.warning(this.authHelper.getConfirmationMessage(voucher.confirmationPasswordInput));
         }
         // A confirmation is required
         this.notification.confirm({
-          passwordInput: data.confirmationPasswordInput,
+          passwordInput: voucher.confirmationPasswordInput,
           createDeviceConfirmation: this.createChangeExpirationDeviceConfirmation,
           customFields: this.changeExpirationFields,
           callback: res => {
             this.addSub(this.voucherService.changeVoucherExpirationDate({
-              key: data.id,
+              key: voucher.id,
               confirmationPassword: res.confirmationPassword,
               body: {
                 comments: res.customValues.comments,

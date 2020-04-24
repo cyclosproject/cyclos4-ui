@@ -50,7 +50,6 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   ngOnInit() {
     super.ngOnInit();
     this.guest = this.loginService.user == null;
-    this.headingActions = [this.printAction];
     this.id = this.route.snapshot.paramMap.get('id');
     this.addSub(this.marketplaceService.viewAd({ ad: this.id })
       .subscribe(ad => {
@@ -174,7 +173,10 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
           });
         }));
     }
-    headingActions.push(this.printAction);
+    this.exportHelper.headingActions(ad.exportFormats, f => this.marketplaceService.exportAd$Response({
+      format: f.internalName,
+      ad: ad.id
+    })).forEach(a => headingActions.push(a));
     for (const operation of ad.operations || []) {
       headingActions.push(this.operationHelper.headingAction(operation, ad.id));
     }

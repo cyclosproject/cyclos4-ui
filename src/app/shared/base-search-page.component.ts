@@ -41,7 +41,6 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
   // See https://github.com/angular/angular/issues/20439
   private ignoreNextUpdate = false;
 
-  protected printable = false;
   private _moreFiltersAction: HeadingAction;
 
   protected getInitialFormValue(data: D): { [key: string]: any } {
@@ -195,14 +194,14 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
    * Returns the label for showing more filters action
    */
   protected showMoreFiltersLabel(): string {
-    return this.printable ? this.i18n.general.showMoreFilters : this.i18n.general.moreFilters;
+    return this.i18n.general.showMoreFilters;
   }
 
   /**
    * Returns the label for showing less filters action
    */
   protected showLessFiltersLabel(): string {
-    return this.printable ? this.i18n.general.showLessFilters : this.i18n.general.lessFilters;
+    return this.i18n.general.showLessFilters;
   }
 
   /**

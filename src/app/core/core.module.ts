@@ -38,6 +38,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { ShortcutService } from 'app/shared/shortcut.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { NextRequestState } from './next-request-state';
+import { ExportHelperService } from 'app/core/export-helper.service';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -98,6 +99,7 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     UserHelperService,
     BankingHelperService,
     AddressHelperService,
+    ExportHelperService,
     TransactionStatusService,
     OperationHelperService,
     API_INTERCEPTOR_PROVIDER,

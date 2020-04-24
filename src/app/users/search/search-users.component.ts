@@ -173,7 +173,13 @@ export class SearchUsersComponent
           this.broker = data.broker;
         }
         this.data = data;
-        this.headingActions = empty(this.advancedFields$.value) ? [] : [this.moreFiltersAction];
+        this.headingActions = [
+          ...empty(this.advancedFields$.value) ? [] : [this.moreFiltersAction],
+          ...this.exportHelper.headingActions(this.data.exportFormats, f => this.usersService.exportUsers$Response({
+            format: f.internalName,
+            ...this.toSearchParams(this.form.value)
+          }))
+        ];
       });
     };
 

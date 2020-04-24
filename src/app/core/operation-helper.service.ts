@@ -2,9 +2,8 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Params, Router } from '@angular/router';
 import {
-  NotificationLevelEnum, Operation, OperationDataForRun,
-  OperationResultTypeEnum, OperationScopeEnum, RunOperation,
-  RunOperationResult,
+  ExportFormat, NotificationLevelEnum, Operation, OperationDataForRun,
+  OperationResultTypeEnum, OperationScopeEnum, RunOperation, RunOperationResult
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services';
 import { Configuration } from 'app/configuration';
@@ -131,6 +130,7 @@ export class OperationHelperService {
     formParameters?: { [key: string]: string },
     pageData?: PageData,
     upload?: Blob,
+    exportFormat?: ExportFormat
   }): Observable<HttpResponse<any>> {
 
     // The request body (RunOperation)
@@ -141,9 +141,12 @@ export class OperationHelperService {
       run.page = options.pageData.page;
       run.pageSize = options.pageData.pageSize;
     }
+    if (options.exportFormat) {
+      run.exportFormat = options.exportFormat.internalName;
+    }
 
     // If asDownload, request the blob version
-    const asDownload = operation.resultType === OperationResultTypeEnum.FILE_DOWNLOAD;
+    const asDownload = operation.resultType === OperationResultTypeEnum.FILE_DOWNLOAD || options.exportFormat;
 
     // The parameters (still needs the owner parameter)
     const params: any = {

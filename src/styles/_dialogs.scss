@@ -5,11 +5,14 @@
   max-height: 16rem;
   overflow-x: hidden;
   overflow-y: auto;
-  transform: none !important;
+  visibility: hidden;
 
   .custom-checkbox {
     margin-left: 0.6rem;
   }
+}
+.dropdown-menu.show {
+  visibility: unset;
 }
 
 bs-dropdown-container {
@@ -107,6 +110,17 @@ notification data {
 // Force navigation on lightbox to be always visible
 .lb-prev, .lb-next {
   opacity: 0.7 !important;
+}
+
+body.lt-sm .calendar-dropdown.show {
+  position: fixed !important;
+  top: 5% !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 90% !important;
+  display: flex !important;
+  z-index: $zindex-tooltip;
+  flex-direction: column;
 }
 
 body.dark {

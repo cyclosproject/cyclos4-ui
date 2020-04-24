@@ -76,9 +76,15 @@ export abstract class BaseTransactionsSearch
       const filters = this.data.transferFilters.filter(tf => tf.accountType.id === at);
       this.transferFilters$.next(filters);
     }));
+  }
 
-    this.printable = true;
-    this.headingActions = [this.printAction];
+  onDataInitialized(data: TransactionDataForSearch) {
+    super.onDataInitialized(data);
+    this.headingActions = this.exportHelper.headingActions(data.exportFormats,
+      f => this.transactionsService.exportTransactions$Response({
+        format: f.internalName,
+        ...this.toSearchParams(this.form.value)
+      }));
   }
 
   /**

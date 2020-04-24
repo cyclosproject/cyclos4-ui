@@ -73,7 +73,11 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
       headingActions.push(new HeadingAction('history', this.i18n.general.viewHistory, () =>
         this.router.navigate(['/marketplace', 'order', this.id, 'history']), true));
     }
-    headingActions.push(this.printAction);
+
+    this.exportHelper.headingActions(data.exportFormats, f => this.orderService.exportOrder$Response({
+      format: f.internalName,
+      order: data.id
+    })).forEach(a => headingActions.push(a));
 
     this.headingActions = headingActions;
   }

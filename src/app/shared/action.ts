@@ -43,6 +43,8 @@ export class HeadingAction extends ActionWithIcon {
    */
   position: 'default' | 'right' = 'default';
   breakpoint: Breakpoint;
+  subActions: Action[];
+
   constructor(
     icon: string,
     label: string,

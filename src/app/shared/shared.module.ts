@@ -37,6 +37,7 @@ import { FileFieldComponent } from 'app/shared/file-field.component';
 import { FilesFieldComponent } from 'app/shared/files-field.component';
 import { FocusedDirective } from 'app/shared/focused.directive';
 import { FormatFieldValueComponent } from 'app/shared/format-field-value.component';
+import { HeadingActionButtonComponent } from 'app/shared/heading-action-button.component';
 import { HeadingActionsComponent } from 'app/shared/heading-actions.component';
 import { HtmlFieldComponent } from 'app/shared/html-field.component';
 import { IconWithCounterComponent } from 'app/shared/icon-with-counter.component';
@@ -133,6 +134,7 @@ export function initTooltipConfig(): TooltipConfig {
     PageLayoutComponent,
     PageContentComponent,
     HeadingActionsComponent,
+    HeadingActionButtonComponent,
     ActionsToolbarComponent,
     BannerCardComponent,
     ShowContentComponent,
@@ -220,11 +222,11 @@ export function initTooltipConfig(): TooltipConfig {
     AlertModule.forRoot(),
     ModalModule.forRoot(),
     ButtonsModule.forRoot(),
-    BsDropdownModule.forRoot(),
     PaginationModule.forRoot(),
     ProgressbarModule.forRoot(),
     SortableModule.forRoot(),
     TooltipModule.forRoot(),
+    BsDropdownModule.forRoot(),
     NgxGalleryModule,
     ZXingScannerModule,
 
@@ -238,11 +240,11 @@ export function initTooltipConfig(): TooltipConfig {
     AlertModule,
     ModalModule,
     ButtonsModule,
-    BsDropdownModule,
     PaginationModule,
     ProgressbarModule,
     SortableModule,
     TooltipModule,
+    BsDropdownModule,
     NgxGalleryModule,
     ZXingScannerModule,
 
@@ -259,6 +261,7 @@ export function initTooltipConfig(): TooltipConfig {
     PageLayoutComponent,
     PageContentComponent,
     HeadingActionsComponent,
+    HeadingActionButtonComponent,
     ActionsToolbarComponent,
     BannerCardComponent,
     ShowContentComponent,

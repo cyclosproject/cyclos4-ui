@@ -4,7 +4,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Params } from '@angular/router';
 import {
   CreateDeviceConfirmation, CustomFieldDetailed, DeviceConfirmationTypeEnum,
-  OperationDataForRun, OperationResultTypeEnum, OperationRowActionEnum, OperationScopeEnum, RunOperationResult,
+  ExportFormat, OperationDataForRun, OperationResultTypeEnum,
+  OperationRowActionEnum, OperationScopeEnum, RunOperationResult
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services/operations.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
@@ -214,7 +215,7 @@ export class RunOperationComponent
     this.run();
   }
 
-  private doRun(data: OperationDataForRun, confirmationPassword: string) {
+  private doRun(data: OperationDataForRun, confirmationPassword: string, exportFormat?: ExportFormat) {
     // Get the request from OperationHelperService
     const request = this.operationHelper.runRequest(data, {
       scopeId: this.scopeId,
@@ -222,6 +223,7 @@ export class RunOperationComponent
       formParameters: this.form.value,
       pageData: this.pageData,
       upload: this.fileControl.value,
+      exportFormat
     });
 
     // Append the query parameters
@@ -251,8 +253,17 @@ export class RunOperationComponent
 
     // Heading actions
     const headingActions: HeadingAction[] = [];
-    if (this.data.allowPrint && (this.isSearch || this.isContent)) {
-      headingActions.push(this.printAction);
+    if (this.data.allowPrint && this.isContent) {
+      headingActions.push(this.exportHelper.printAction());
+    } else if (!empty(this.data.exportFormats)) {
+      this.exportHelper.headingActions(this.data.exportFormats, f =>
+        this.operationHelper.runRequest(this.data, {
+          scopeId: this.scopeId,
+          formParameters: this.form.value,
+          pageData: this.pageData,
+          upload: this.fileControl.value,
+          exportFormat: f
+        })).forEach(a => headingActions.push(a));
     }
     for (const action of result.actions || []) {
       // Register each custom operation action

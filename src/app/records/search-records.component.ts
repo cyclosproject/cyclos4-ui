@@ -78,6 +78,18 @@ export class SearchRecordsComponent
       headingActions.push(new HeadingAction('add', this.i18n.general.addNew, () =>
         this.router.navigate(['/records', this.param, this.type, 'new']), true));
     }
+    this.exportHelper.headingActions(data.exportFormats,
+      f => {
+        const params = {
+          format: f.internalName,
+          ...this.toSearchParams(this.form.value)
+        };
+        if (this.generalSearch) {
+          return this.recordsService.exportGeneralRecords$Response(params);
+        } else {
+          return this.recordsService.exportOwnerRecords$Response(params);
+        }
+      });
     this.headingActions = headingActions;
     this.groups = (data as GeneralRecordsDataForSearch).groups || [];
     super.onDataInitialized(data);

@@ -53,18 +53,6 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
     this.headingActions$.next(headingActions);
   }
 
-  private _printAction: HeadingAction;
-  protected get printAction(): HeadingAction {
-    if (this._printAction) {
-      return this._printAction;
-    }
-    this._printAction = new HeadingAction('print', this.i18n.general.print, () => {
-      self.print();
-    }, true);
-    this._printAction.breakpoint = 'gt-xs';
-    return this._printAction;
-  }
-
   private initializeMenu(menu: Menu | ActiveMenu) {
     if (menu == null) {
       // Leave the current menu if nothing is set

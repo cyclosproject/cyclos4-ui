@@ -97,13 +97,11 @@ export class SearchTransfersOverviewComponent
 
     this.updateFilters(data);
 
-    // Set the heading action
-    this.printable = true;
-    const print = this.printAction;
-    print.label = this.i18n.account.printTransactions;
-    this.headingActions = [
-      this.printAction,
-    ];
+    this.headingActions = this.exportHelper.headingActions(data.exportFormats,
+      f => this.transfersService.exportTransfers$Response({
+        format: f.internalName,
+        ...this.toSearchParams(this.form.value)
+      }));
   }
 
   toSearchParams(value: any): TransferSearchParams {

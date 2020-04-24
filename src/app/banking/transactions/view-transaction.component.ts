@@ -77,7 +77,11 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
   }
 
   private initActions(transaction: TransactionView): HeadingAction[] {
-    const actions: HeadingAction[] = [this.printAction];
+    const actions: HeadingAction[] = this.exportHelper.headingActions(transaction.exportFormats,
+      f => this.transactionsService.exportTransaction$Response({
+        format: f.internalName,
+        key: transaction.id
+      }));
     const auth = transaction.authorizationPermissions || {};
     if (!empty(transaction.authorizations)) {
       actions.push(new HeadingAction('check_circle_outline', this.i18n.transaction.viewAuthorizations, () => {

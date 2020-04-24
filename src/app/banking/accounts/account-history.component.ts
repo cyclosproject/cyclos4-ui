@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AccountHistoryQueryFilters, AccountHistoryResult,
-  AccountKind, AccountWithHistoryStatus, Currency, DataForAccountHistory,
-  EntityReference, Image, PreselectedPeriod, TransferFilter,
+  AccountHistoryQueryFilters, AccountHistoryResult, AccountKind,
+  AccountWithHistoryStatus, Currency, DataForAccountHistory,
+  EntityReference, Image, PreselectedPeriod, TransferFilter
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
+import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
@@ -38,6 +39,7 @@ export class AccountHistoryComponent
   noStatus$ = new BehaviorSubject(false);
   multipleAccounts: boolean;
   showForm$ = new BehaviorSubject(false);
+  exportActions: HeadingAction[];
 
   constructor(
     injector: Injector,
@@ -111,12 +113,12 @@ export class AccountHistoryComponent
   onDataInitialized(data: DataForAccountHistory) {
     super.onDataInitialized(data);
 
+    this.exportActions = this.exportHelper.headingActions(data.exportFormats, f =>
+      this.accountsService.exportAccountHistory$Response({
+        format: f.internalName,
+        ...this.toSearchParams(this.form.value)
+      }));
     this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
-
-    // Adjust the print action, which will be used later
-    this.printable = true;
-    this.printAction.label = this.i18n.account.printTransactions;
-
     this.addSub(this.layout.xxs$.subscribe(() => this.updateShowForm(data)));
     this.addSub(this.moreFilters$.subscribe(() => this.updateShowForm(data)));
     this.updateShowForm(data);
@@ -150,13 +152,11 @@ export class AccountHistoryComponent
           // When there's no status (is not visible), show the filters directly
           this.noStatus$.next(true);
           this.moreFilters = true;
-          this.headingActions = [
-            this.printAction,
-          ];
+          this.headingActions = this.exportActions;
         } else {
           this.headingActions = [
             this.moreFiltersAction,
-            this.printAction,
+            ...this.exportActions
           ];
         }
         this.status$.next(accountWithStatus);

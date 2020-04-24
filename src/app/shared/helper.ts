@@ -74,8 +74,8 @@ export function setReloadButton(text: string): void {
  * Returns an unique id
  */
 let idCounter = 0;
-export function nextId() {
-  return `id_${++idCounter}`;
+export function nextId(prefix = 'id') {
+  return `${prefix}_${++idCounter}`;
 }
 
 /**
