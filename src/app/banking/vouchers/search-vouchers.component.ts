@@ -1,9 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
-import { VoucherResult, VouchersDataForSearch, VouchersQueryFilters, VoucherStatusEnum, VoucherCreationTypeEnum } from 'app/api/models';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { VoucherCreationTypeEnum, VoucherResult, VouchersDataForSearch, VouchersQueryFilters, VoucherStatusEnum } from 'app/api/models';
 import { VouchersService } from 'app/api/services';
-import { FieldOption } from 'app/shared/field-option';
 import { BankingHelperService } from 'app/core/banking-helper.service';
+import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
+import { FieldOption } from 'app/shared/field-option';
 import { Menu } from 'app/shared/menu';
 
 type VoucherSearchParams = VouchersQueryFilters & {
@@ -12,7 +12,7 @@ type VoucherSearchParams = VouchersQueryFilters & {
 @Component({
   selector: 'search-vouchers',
   templateUrl: './search-vouchers.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchVouchersComponent
   extends BaseSearchPageComponent<VouchersDataForSearch, VoucherSearchParams, VoucherResult>
@@ -21,7 +21,7 @@ export class SearchVouchersComponent
   constructor(
     injector: Injector,
     private voucherService: VouchersService,
-    public bankingHelper: BankingHelperService
+    public bankingHelper: BankingHelperService,
   ) {
     super(injector);
   }

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { ExportHelperService } from 'app/core/export-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { LoginService } from 'app/core/login.service';
 import { MapsService } from 'app/core/maps.service';
@@ -36,6 +37,7 @@ export abstract class BaseComponent
   breadcrumb: BreadcrumbService;
   authHelper: AuthHelperService;
   fieldHelper: FieldHelperService;
+  exportHelper: ExportHelperService;
   router: Router;
   route: ActivatedRoute;
   formBuilder: FormBuilder;
@@ -54,6 +56,7 @@ export abstract class BaseComponent
     this.breadcrumb = injector.get(BreadcrumbService);
     this.authHelper = injector.get(AuthHelperService);
     this.fieldHelper = injector.get(FieldHelperService);
+    this.exportHelper = injector.get(ExportHelperService);
     this.router = injector.get(Router);
     this.route = injector.get(ActivatedRoute);
     this.formBuilder = new FormBuilder();

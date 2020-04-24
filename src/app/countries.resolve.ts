@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Country } from 'app/api/models/country';
 import { AddressesService } from 'app/api/services';
 import { SingletonResolve } from 'app/singleton.resolve';
+import { Observable } from 'rxjs';
 
 /**
  * Loads the possible groups for registration
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CountriesResolve extends SingletonResolve<Country[]> {
   countries: { [code: string]: string };
 
   constructor(
-    private addressesService: AddressesService
+    private addressesService: AddressesService,
   ) {
     super();
   }

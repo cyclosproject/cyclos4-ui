@@ -1,15 +1,17 @@
 import { Injectable, Injector } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import {
-  AccountType, Auth, DataForUi, Operation, RoleEnum, VouchersPermissions, RecordLayoutEnum, RecordPermissions
+  AccountType, Auth, DataForUi, Operation, RecordLayoutEnum, RecordPermissions, RoleEnum, VouchersPermissions,
 } from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { LoginService } from 'app/core/login.service';
 import { OperationHelperService } from 'app/core/operation-helper.service';
+import { RecordHelperService } from 'app/core/records-helper.service';
 import { StateManager } from 'app/core/state-manager';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -17,12 +19,10 @@ import { toFullUrl } from 'app/shared/helper';
 import { ActiveMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { RecordHelperService } from 'app/core/records-helper.service';
-import { I18nLoadingService } from 'app/core/i18n-loading.service';
 
 enum NavigateAction {
   Url,
-  Logout
+  Logout,
 }
 
 /**
@@ -61,7 +61,7 @@ interface ResolvedVouchersPermissions {
  * Holds shared data for the menu, plus logic regarding the currently visible menu
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MenuService {
 
@@ -84,7 +84,7 @@ export class MenuService {
     private bankingHelper: BankingHelperService,
     private content: ContentService,
     private operationHelper: OperationHelperService,
-    private recordHelper: RecordHelperService
+    private recordHelper: RecordHelperService,
   ) {
     const initialDataForUi = this.dataForUiHolder.dataForUi;
     const initialAuth = (initialDataForUi || {}).auth;
@@ -109,7 +109,7 @@ export class MenuService {
     router.events.pipe(
       filter(e => e instanceof NavigationEnd),
       map(e => e as NavigationEnd),
-      filter(e => e.url === '/' || e.url === '/home')
+      filter(e => e.url === '/' || e.url === '/home'),
     ).subscribe(e => {
       const entry = this.menuEntry(e.url);
       if (entry) {
@@ -325,7 +325,6 @@ export class MenuService {
     return null;
   }
 
-
   /**
    * Returns the available `MenuEntry` for the custom operation with the given id or internal name
    * @param op The operation id or internal name
@@ -388,7 +387,7 @@ export class MenuService {
           roots.push(copy);
         }
         return roots;
-      })
+      }),
     );
   }
 
@@ -403,7 +402,7 @@ export class MenuService {
           return new SideMenuEntries(null, null, []);
         }
         return new SideMenuEntries(root.title, root.icon, root.entries);
-      })
+      }),
     );
   }
 
@@ -449,7 +448,7 @@ export class MenuService {
 
     // Lambda that adds a submenu to a root menu
     const add = (menu: Menu | ActiveMenu, url: string, icon: string, label: string, showIn: MenuType[] = null,
-      urlHandler: () => string = null): MenuEntry => {
+                 urlHandler: () => string = null): MenuEntry => {
       const entry = new MenuEntry(menu, url, icon, label, showIn, urlHandler);
       const root = roots.get(entry.menu.root);
       root.entries.push(entry);
@@ -466,13 +465,12 @@ export class MenuService {
       });
       for (const page of pages) {
         const activeMenu = new ActiveMenu(menu, {
-          contentPage: page.slug
+          contentPage: page.slug,
         });
         add(activeMenu, `/page/${page.slug}`, page.icon, page.label);
       }
       return pages;
     };
-
 
     // Lambda that adds all custom operations the given root menu entry
     const addOperations = (root: RootMenu) => {

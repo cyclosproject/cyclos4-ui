@@ -1,9 +1,9 @@
 import {
   ChangeDetectionStrategy, Component, ElementRef, Host, Injector,
-  Input, OnDestroy, OnInit, Optional, SkipSelf, ViewChild
+  Input, OnDestroy, OnInit, Optional, SkipSelf, ViewChild,
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { User, UserQueryFilters, RoleEnum, PrincipalType } from 'app/api/models';
+import { PrincipalType, RoleEnum, User, UserQueryFilters } from 'app/api/models';
 import { UsersService } from 'app/api/services';
 import { Configuration } from 'app/configuration';
 import { LoginService } from 'app/core/login.service';
@@ -11,8 +11,9 @@ import { NextRequestState } from 'app/core/next-request-state';
 import { UserCacheService } from 'app/core/user-cache.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseAutocompleteFieldComponent } from 'app/shared/base-autocomplete-field.component';
-import { focus, empty } from 'app/shared/helper';
+import { empty, focus } from 'app/shared/helper';
 import { PickContactComponent } from 'app/shared/pick-contact.component';
+import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, of, Subscription } from 'rxjs';
 import { distinctUntilChanged, first } from 'rxjs/operators';
@@ -25,8 +26,8 @@ import { distinctUntilChanged, first } from 'rxjs/operators';
   templateUrl: 'user-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: UserFieldComponent, multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: UserFieldComponent, multi: true },
+  ],
 })
 export class UserFieldComponent
   extends BaseAutocompleteFieldComponent<string, User>
@@ -43,9 +44,10 @@ export class UserFieldComponent
   @Input() principalTypes: PrincipalType[];
   @Input() allowSearch = true;
   @Input() allowContacts = true;
+  @Input() allowQrCode = false;
   @Input() filters: UserQueryFilters;
 
-  @ViewChild('contactListButton', { static: false }) contactListButton: ElementRef;
+  @ViewChild('contactListButton') contactListButton: ElementRef;
   private fieldSub: Subscription;
 
   placeholder: string;
@@ -65,16 +67,7 @@ export class UserFieldComponent
     super.ngOnInit();
     this.fieldSub = this.inputFieldControl.valueChanges
       .pipe(distinctUntilChanged())
-      .subscribe(value => {
-        if (value != null && this.allowPrincipal) {
-          value = ApiHelper.escapeNumeric(value);
-          if (!/^\w+\:/.test(value)) {
-            // When not already using a specific principal (such as id: when searching), use a wildcard
-            value = '*:' + value;
-          }
-          this.value = value;
-        }
-      });
+      .subscribe(value => this.setAsPrincipal(value));
     if (this.allowSearch) {
       this.placeholder = this.i18n.field.user.placeholderAllowSearch;
     } else if (this.allowPrincipal) {
@@ -154,12 +147,33 @@ export class UserFieldComponent
     const ref = this.modal.show(PickContactComponent, {
       class: 'modal-form',
       initialState: {
-        exclude: (this.filters || {}).usersToExclude || []
-      }
+        exclude: (this.filters || {}).usersToExclude || [],
+      },
     });
     const component = ref.content as PickContactComponent;
     component.select.pipe(first()).subscribe(u => this.select(u));
     this.modal.onHide.pipe(first()).subscribe(() => focus(this.inputField, true));
+  }
+
+  showScanQrCode() {
+    const ref = this.modal.show(ScanQrCodeComponent, {
+      class: 'modal-form',
+    });
+    const component = ref.content as ScanQrCodeComponent;
+    component.select.pipe(first()).subscribe(value => this.setAsPrincipal(value));
+    this.modal.onHide.pipe(first()).subscribe(() => focus(this.inputField, true));
+  }
+
+  setAsPrincipal(value: string) {
+    if (value != null && this.allowPrincipal) {
+      let locator = ApiHelper.escapeNumeric(value);
+      if (!/^[\w\*]+\:/.test(locator)) {
+        // When not already using a specific principal (such as id: when searching), use a wildcard
+        locator = '*:' + locator;
+      }
+      this.value = locator;
+      this.inputField.nativeElement.value = value;
+    }
   }
 
   onInputFocus() {

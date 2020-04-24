@@ -10,7 +10,7 @@ import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 @Component({
   selector: 'view-user-group-history',
   templateUrl: 'view-user-group-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewUserGroupHistoryComponent extends BaseViewPageComponent<GroupMembershipData> implements OnInit {
   constructor(

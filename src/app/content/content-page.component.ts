@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { ContentPage } from 'app/content/content-page';
 import { ContentService } from 'app/core/content.service';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { ActiveMenu, RootMenu, Menu } from 'app/shared/menu';
+import { ActiveMenu, Menu, RootMenu } from 'app/shared/menu';
 
 /**
  * Displays a content page with layout
@@ -10,7 +10,7 @@ import { ActiveMenu, RootMenu, Menu } from 'app/shared/menu';
 @Component({
   selector: 'content-page',
   templateUrl: 'content-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentPageComponent extends BaseViewPageComponent<ContentPage> implements OnInit {
 
@@ -22,7 +22,7 @@ export class ContentPageComponent extends BaseViewPageComponent<ContentPage> imp
 
   constructor(
     injector: Injector,
-    private content: ContentService
+    private content: ContentService,
   ) {
     super(injector);
   }

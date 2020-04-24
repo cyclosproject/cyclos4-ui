@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { ContactListDataForSearch, ContactResult, ContactListQueryFilters } from 'app/api/models';
+import { ContactListDataForSearch, ContactListQueryFilters, ContactResult } from 'app/api/models';
 import { ContactsService } from 'app/api/services';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
+import { Menu } from 'app/shared/menu';
 import { ResultType } from 'app/shared/result-type';
+import { AddContactDialogComponent } from 'app/users/search/add-contact-dialog.component';
 import { UsersResultsComponent } from 'app/users/search/users-results.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { AddContactDialogComponent } from 'app/users/search/add-contact-dialog.component';
-import { Menu } from 'app/shared/menu';
 
 type ContactListSearchParams = ContactListQueryFilters & { user: string };
 
@@ -18,7 +18,7 @@ type ContactListSearchParams = ContactListQueryFilters & { user: string };
 @Component({
   selector: 'contact-list',
   templateUrl: 'contact-list.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContactListComponent
   extends BaseSearchPageComponent<ContactListDataForSearch, ContactListSearchParams, ContactResult>
@@ -27,12 +27,12 @@ export class ContactListComponent
   // Export enum to the template
   ResultType = ResultType;
 
-  @ViewChild('usersResults', { static: false }) usersResults: UsersResultsComponent;
+  @ViewChild('usersResults') usersResults: UsersResultsComponent;
 
   constructor(
     injector: Injector,
     private modal: BsModalService,
-    private contactsService: ContactsService
+    private contactsService: ContactsService,
   ) {
     super(injector);
   }
@@ -45,13 +45,11 @@ export class ContactListComponent
     return this.layout.xxs ? ResultType.LIST : ResultType.TILES;
   }
 
-
-
   ngOnInit() {
     super.ngOnInit();
     this.allowedResultTypes = [ResultType.TILES, ResultType.LIST];
     this.stateManager.cache('data', this.contactsService.getContactListDataForSearch({
-      user: ApiHelper.SELF
+      user: ApiHelper.SELF,
     })).subscribe(data => {
       this.data = data;
     });
@@ -80,14 +78,14 @@ export class ContactListComponent
     // If can search other users, allow the add contacts dialog
     if (users.search) {
       this.headingActions = [
-        new HeadingAction('add', this.i18n.general.addNew, () => this.addNew(), true)
+        new HeadingAction('add', this.i18n.general.addNew, () => this.addNew(), true),
       ];
     }
   }
 
   private addNew() {
     const ref = this.modal.show(AddContactDialogComponent, {
-      class: 'modal-form'
+      class: 'modal-form',
     });
     const component = ref.content as AddContactDialogComponent;
     this.addSub(component.done.subscribe(user => {

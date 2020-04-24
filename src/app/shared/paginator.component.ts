@@ -15,7 +15,7 @@ import { ArrowsHorizontal } from 'app/shared/shortcut.service';
   selector: 'paginator',
   templateUrl: 'paginator.component.html',
   styleUrls: ['paginator.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginatorComponent<T> extends BaseComponent implements OnInit {
 
@@ -32,9 +32,9 @@ export class PaginatorComponent<T> extends BaseComponent implements OnInit {
       if (this.form) {
         this.form.setValue({
           pageNumber: results.page + 1,
-          pageSize: results.pageSize
+          pageSize: results.pageSize,
         }, {
-            emitEvent: false
+            emitEvent: false,
           });
       }
     }
@@ -56,13 +56,13 @@ export class PaginatorComponent<T> extends BaseComponent implements OnInit {
     this.form = this.formBuilder.group({
       // PageNumber is always page + 1, as NgxBootstrap is 1-based, and we're 0-based
       pageNumber: (results.page || 0) + 1,
-      pageSize: null
+      pageSize: null,
     });
     this.addSub(this.form.valueChanges.subscribe(
       val => {
         const data: PageData = {
           page: val.pageNumber - 1,
-          pageSize: val.pageSize
+          pageSize: val.pageSize,
         };
         this.doUpdate(data);
       }));
@@ -110,7 +110,7 @@ export class PaginatorComponent<T> extends BaseComponent implements OnInit {
     }
     this.doUpdate({
       page: this.results.page + (next ? 1 : -1),
-      pageSize: this.results.pageSize
+      pageSize: this.results.pageSize,
     });
   }
 }

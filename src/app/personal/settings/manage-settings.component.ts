@@ -9,7 +9,7 @@ import { Menu } from 'app/shared/menu';
 @Component({
   selector: 'manage-settings',
   templateUrl: 'manage-settings.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageSettingsComponent
   extends BasePageComponent<void>

@@ -26,7 +26,7 @@ export class DefaultDashboardResolver implements DashboardResolver {
       this.quickAccess(injector),
       ...this.accountStatuses(injector),
       this.latestAds(injector),
-      this.contentPage()
+      this.contentPage(),
     ];
   }
 
@@ -55,10 +55,10 @@ export class DefaultDashboardResolver implements DashboardResolver {
         { type: QuickAccessType.SearchUsers },
         { type: QuickAccessType.SearchAds, breakpoints: pos ? ['lt-md'] : null },
         { type: QuickAccessType.EditProfile },
-        { type: QuickAccessType.SwitchTheme }
+        { type: QuickAccessType.SwitchTheme },
       ],
       column: 'left',
-      minHeight: this.minHeight
+      minHeight: this.minHeight,
     });
   }
 
@@ -92,11 +92,11 @@ export class DefaultDashboardResolver implements DashboardResolver {
     }
 
     return DashboardItemConfig.accountStatus({
-      account: account,
+      account,
       maxTransfers: 3,
       breakpoints: ['gt-sm'],
-      column: column,
-      minHeight: this.minHeight
+      column,
+      minHeight: this.minHeight,
     });
   }
 
@@ -116,7 +116,7 @@ export class DefaultDashboardResolver implements DashboardResolver {
       showOwner: false,
       column: 'left',
       breakpoints: ['gt-sm'],
-      minHeight: this.minHeight
+      minHeight: this.minHeight,
     });
   }
 
@@ -133,7 +133,7 @@ export class DefaultDashboardResolver implements DashboardResolver {
       max: 6,
       column: 'left',
       breakpoints: ['gt-sm'],
-      minHeight: this.minHeight
+      minHeight: this.minHeight,
     });
   }
 
@@ -147,7 +147,7 @@ export class DefaultDashboardResolver implements DashboardResolver {
       tight: true,
       content: ContentGetter.url('content/events.html'),
       minHeight: this.minHeight,
-      breakpoints: ['gt-xxs']
+      breakpoints: ['gt-xxs'],
     });
   }
 

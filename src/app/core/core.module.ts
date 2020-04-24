@@ -38,11 +38,12 @@ import { SharedModule } from 'app/shared/shared.module';
 import { ShortcutService } from 'app/shared/shortcut.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { NextRequestState } from './next-request-state';
+import { ExportHelperService } from 'app/core/export-helper.service';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
   useExisting: forwardRef(() => ApiInterceptor),
-  multi: true
+  multi: true,
 };
 
 /**
@@ -56,7 +57,7 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     SidenavComponent,
     SnackBarComponent,
     PushNotificationsComponent,
-    PushNotificationComponent
+    PushNotificationComponent,
   ],
   imports: [
     SharedModule,
@@ -68,7 +69,7 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     SidenavComponent,
     SnackBarComponent,
     PushNotificationsComponent,
-    PushNotificationComponent
+    PushNotificationComponent,
   ],
   providers: [
     NextRequestState,
@@ -98,18 +99,19 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     UserHelperService,
     BankingHelperService,
     AddressHelperService,
+    ExportHelperService,
     TransactionStatusService,
     OperationHelperService,
     API_INTERCEPTOR_PROVIDER,
-    BsModalService
+    BsModalService,
   ],
   entryComponents: [
-    PushNotificationComponent
-  ]
+    PushNotificationComponent,
+  ],
 })
 export class CoreModule {
   constructor(
-    @Optional() @SkipSelf() parentModule: SharedModule
+    @Optional() @SkipSelf() parentModule: SharedModule,
   ) {
     if (parentModule) {
       throw new Error('CoreModule is already loaded. '

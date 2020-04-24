@@ -56,5 +56,5 @@ export enum QuickAccessType {
   /**
    * Switch between light and dark themes
    */
-  SwitchTheme = 'switchTheme'
+  SwitchTheme = 'switchTheme',
 }

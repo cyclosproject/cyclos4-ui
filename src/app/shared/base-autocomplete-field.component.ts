@@ -1,4 +1,4 @@
-import { AfterViewInit, ElementRef, EventEmitter, Injector, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, EventEmitter, Injector, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ControlContainer, FormControl } from '@angular/forms';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
@@ -13,13 +13,13 @@ import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/oper
  * @param T The field data type
  * @param A The autocomplete results data type
  */
+@Directive()
 export abstract class BaseAutocompleteFieldComponent<T, A>
   extends BaseFormFieldComponent<T> implements OnInit, OnDestroy, AfterViewInit {
   inputFieldControl: FormControl;
-  @ViewChild('inputField', { static: false }) inputField: ElementRef;
-  @ViewChild('dropdown', { static: false }) dropdown: BsDropdownDirective;
+  @ViewChild('inputField') inputField: ElementRef<HTMLInputElement>;
+  @ViewChild('dropdown') dropdown: BsDropdownDirective;
 
-  @Input() container = 'body';
   @Input() autoSearch = true;
 
   @Output() selected = new EventEmitter<A>();
@@ -49,7 +49,7 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   ngOnInit() {
     super.ngOnInit();
     this.addSub(this.inputFieldControl.valueChanges.pipe(
-      filter(text => blank(text))
+      filter(text => blank(text)),
     ).subscribe(() => {
       this.close();
     }));
@@ -58,7 +58,7 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
         filter(text => !blank(text)),
         debounceTime(ApiHelper.DEBOUNCE_TIME),
         distinctUntilChanged(),
-        switchMap(text => this.query(text))
+        switchMap(text => this.query(text)),
       ).subscribe(rows => {
         if (!this.allowOptions || blank(this.inputFieldControl.value)) {
           this.options$.next([]);
@@ -118,7 +118,7 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     } else {
       this.fetch(this.value).subscribe(res => {
         this.select(res, this.value, {
-          emitEvent: false
+          emitEvent: false,
         });
       });
     }
@@ -223,7 +223,7 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   ngClassFor(option: A, index: number): any {
     const result = {
       'mt-1': index > 0,
-      selected: this.value === this.toValue(option)
+      selected: this.value === this.toValue(option),
     };
     result[`autocomplete-option-${index}`] = true;
     return result;

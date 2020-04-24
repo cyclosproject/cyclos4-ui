@@ -10,9 +10,9 @@ import { FieldOption } from 'app/shared/field-option';
 @Component({
   selector: 'transaction-filters',
   templateUrl: 'transaction-filters.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TransactionFitersComponentComponent
+export class TransactionFitersComponent
   extends BaseComponent implements OnInit {
 
   @Input() data: TransactionDataForSearch;

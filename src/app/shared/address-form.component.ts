@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { FormGroup } from '@angular/forms';
 import {
   AddressConfiguration, AddressConfigurationForUserProfile,
-  AddressFieldEnum, Country, CustomFieldBinaryValues
+  AddressFieldEnum, Country, CustomFieldBinaryValues,
 } from 'app/api/models';
 import { AddressHelperService } from 'app/core/address-helper.service';
 import { CountriesResolve } from 'app/countries.resolve';
@@ -15,13 +15,13 @@ import { truthyAttr } from 'app/shared/helper';
 @Component({
   selector: 'address-form',
   templateUrl: 'address-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressFormComponent extends BaseComponent implements OnInit {
   constructor(
     injector: Injector,
     private addressHelper: AddressHelperService,
-    public countriesResolve: CountriesResolve
+    public countriesResolve: CountriesResolve,
   ) {
     super(injector);
   }
@@ -32,6 +32,14 @@ export class AddressFormComponent extends BaseComponent implements OnInit {
   @Input() idPrefix = '';
   @Input() idSuffix = '';
   @Input() binaryValues: CustomFieldBinaryValues;
+
+  _ignoreContactFields: boolean | string = false;
+  @Input() get ignoreContactFields(): boolean | string {
+    return this._ignoreContactFields;
+  }
+  set ignoreContactFields(flag: boolean | string) {
+    this._ignoreContactFields = truthyAttr(flag);
+  }
 
   profileConfiguration: AddressConfigurationForUserProfile;
 

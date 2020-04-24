@@ -1,21 +1,21 @@
 import { Injectable, Injector } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { ContentService } from 'app/core/content.service';
-import { LoginService } from 'app/core/login.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { LoginService } from 'app/core/login.service';
 
 /**
  * Guard that checks a content page whether it's allowed only for logged users
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ContentPageGuard implements CanActivate {
   constructor(
     private content: ContentService,
     private injector: Injector,
     private login: LoginService,
-    private dataForUiHolder: DataForUiHolder
+    private dataForUiHolder: DataForUiHolder,
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {

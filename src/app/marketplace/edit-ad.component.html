@@ -11,7 +11,7 @@
               {{ i18n.general.images }}
             </div>
             <button
-              *ngIf="canUploadImages && !(multiUpload.uploading$ | async)"
+              *ngIf="canUploadImages && (multiUpload.uploading$ | async) === false"
               class="btn btn-outline-primary" (click)="multiUpload.perform()">
               {{ i18n.field.image.upload }}
             </button>
@@ -35,7 +35,7 @@
               {{ i18n.field.image.manage }}
             </button>
           </div>
-          <image-upload #multiUpload target="advertisement"
+          <image-upload #multiUpload target="marketplace"
             [max]="data.maxImages" (uploadDone)="onUploadDone($event)"
             [owner]="id" [user]="data.owner.id">
           </image-upload>
@@ -138,8 +138,8 @@
             [suffix]="currency.suffix">
           </decimal-field>
         </ng-container>
-        <textarea-field formControlName="description"
-          [label]="i18n.general.description" required></textarea-field>
+        <html-field formControlName="description"
+          [label]="i18n.general.description" required></html-field>
         <custom-field-input *ngFor="let cf of data.customFields" [field]="cf"
           [formControl]="form.get('customValues').get(cf.internalName)"
           [binaryValues]="binaryValues">

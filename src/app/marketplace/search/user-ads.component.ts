@@ -1,14 +1,14 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AdResult, UserAdsDataForSearch, UserAdsQueryFilters, AdKind, RoleEnum } from 'app/api/models';
+import { AdKind, AdResult, RoleEnum, UserAdsDataForSearch, UserAdsQueryFilters } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services';
+import { HeadingAction } from 'app/shared/action';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { words } from 'app/shared/helper';
+import { Menu } from 'app/shared/menu';
 import { ResultType } from 'app/shared/result-type';
 import { MAX_SIZE_SHORT_NAME } from 'app/users/profile/view-profile.component';
 import { Observable } from 'rxjs';
-import { Menu } from 'app/shared/menu';
-import { HeadingAction } from 'app/shared/action';
 
 type UserAdsSearchParams = UserAdsQueryFilters & { user: string };
 
@@ -18,7 +18,7 @@ type UserAdsSearchParams = UserAdsQueryFilters & { user: string };
 @Component({
   selector: 'user-ads',
   templateUrl: 'user-ads.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserAdsComponent
   extends BaseSearchPageComponent<UserAdsDataForSearch, UserAdsQueryFilters, AdResult>
@@ -30,7 +30,7 @@ export class UserAdsComponent
 
   constructor(
     injector: Injector,
-    private marketplaceService: MarketplaceService
+    private marketplaceService: MarketplaceService,
   ) {
     super(injector);
   }
@@ -57,7 +57,7 @@ export class UserAdsComponent
     if (data.createNew) {
       this.headingActions = [
         new HeadingAction('add', this.i18n.general.addNew, () =>
-          this.router.navigate(['/marketplace', this.param, this.kind, 'ad', 'new']), true)
+          this.router.navigate(['/marketplace', this.param, this.kind, 'ad', 'new']), true),
       ];
     }
   }

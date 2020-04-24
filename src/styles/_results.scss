@@ -36,7 +36,7 @@
     position: relative;
     width: 100%;
     margin-bottom: $tiled-results-spacing-xxs;
-    height: calc(100% - $tiled-results-spacing-xxs);
+    height: calc(100% - #{$tiled-results-spacing-xxs});
     box-shadow: $box-shadow-sm;
     color: $tiled-results-color;
     background-color: $tiled-results-bg;
@@ -65,24 +65,6 @@
       -webkit-transition: all ease-out 0.4s;
       transition: all ease-out 0.4s;
     }
-  }
-}
-
-.map-info-window {
-  // Map info window always use the light style
-  display: block;
-  color: $card-color !important;
-  background-color: $card-bg !important;
-
-  &:hover, &:focus, &:visited {
-    text-decoration: none;
-    color: $card-color !important;
-    outline: none;
-    box-shadow: none;
-  }
-
-  avatar {
-    margin: 0.25rem 0 1rem 0;
   }
 }
 
@@ -172,7 +154,7 @@
 
     .card {
       margin-bottom: $tiled-results-spacing-xs;
-      height: calc(100% - $tiled-results-spacing-xs);
+      height: calc(100% - #{$tiled-results-spacing-xs});
     }
   }
   .mobile-results {
@@ -200,7 +182,7 @@
 
     .card {
       margin-bottom: $tiled-results-spacing;
-      height: calc(100% - $tiled-results-spacing);
+      height: calc(100% - #{$tiled-results-spacing});
     }
   }
 }
@@ -234,7 +216,7 @@
 
     .card {
       margin-bottom: $tiled-results-spacing;
-      height: calc(100% - $tiled-results-spacing);
+      height: calc(100% - #{$tiled-results-spacing});
     }
   }
 }
@@ -329,7 +311,7 @@ body.dark {
     .avatar {
       color: $mobile-results-icon-color-dark;
     }
-    a.mobile-result {
+    .mobile-result {
       border-color: $mobile-results-border-color-dark;
       &:focus {
         background-color: $mobile-results-focus-bg-dark;
@@ -342,5 +324,4 @@ body.dark {
       }
     }
   }
-
 }

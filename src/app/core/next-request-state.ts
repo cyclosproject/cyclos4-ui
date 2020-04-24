@@ -1,11 +1,11 @@
 import { HttpRequest } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
 import { Params } from '@angular/router';
+import { ApiConfiguration } from 'app/api/api-configuration';
+import { AuthService } from 'app/api/services';
 import { empty, isSameOrigin } from 'app/shared/helper';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
-import { ApiConfiguration } from 'app/api/api-configuration';
-import { AuthService } from 'app/api/services';
 
 const Channel = 'Channel';
 const Authorization = 'Authorization';
@@ -16,7 +16,7 @@ const SessionPrefix = 'Session-Prefix';
  * Stores data which will be set in the next API request
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NextRequestState {
 
@@ -48,7 +48,7 @@ export class NextRequestState {
     private authService: AuthService) {
     this.requesting$ = this.pending$.asObservable().pipe(
       map(reqs => reqs.length > 0),
-      distinctUntilChanged()
+      distinctUntilChanged(),
     );
   }
 
@@ -83,7 +83,7 @@ export class NextRequestState {
 
     // Apply the headers to the request
     let result = req.clone({
-      setHeaders: headers
+      setHeaders: headers,
     });
 
     // When there are additional parameters to append, do it
@@ -93,7 +93,7 @@ export class NextRequestState {
         httpParams = httpParams.append(key, this.queryParams[key]);
       }
       result = result.clone({
-        params: httpParams
+        params: httpParams,
       });
       this.queryParams = null;
     }
@@ -155,8 +155,8 @@ export class NextRequestState {
     this.nextAsGuest();
     const useCookie = isSameOrigin(this.apiConfiguration.rootUrl) && !isDevMode();
     return this.authService.replaceSession({
-      sessionToken: sessionToken,
-      cookie: useCookie
+      sessionToken,
+      cookie: useCookie,
     }).pipe(switchMap(newToken => {
       this.setSessionToken(newToken, useCookie);
       return of(null);

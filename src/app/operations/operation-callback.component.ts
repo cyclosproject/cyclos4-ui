@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { RunOperationResult, NotificationLevelEnum } from 'app/api/models';
+import { NotificationLevelEnum, RunOperationResult } from 'app/api/models';
 import { OperationsService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { first } from 'rxjs/operators';
 import { Menu } from 'app/shared/menu';
+import { first } from 'rxjs/operators';
 
 /**
  * Callback invoked after running an external redirect custom operation
@@ -12,7 +12,7 @@ import { Menu } from 'app/shared/menu';
   selector: 'operation-callback',
   templateUrl: 'operation-callback.component.html',
   styleUrls: ['operation-callback.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OperationCallbackComponent
   extends BasePageComponent<RunOperationResult>
@@ -34,8 +34,8 @@ export class OperationCallbackComponent
       token: route.params.token,
       body: {
         method: 'GET',
-        parameters: route.queryParams
-      }
+        parameters: route.queryParams,
+      },
     }).pipe(first()).subscribe(result => {
       if (result.notificationLevel === NotificationLevelEnum.WARNING) {
         this.alertType = 'warning';
@@ -50,4 +50,3 @@ export class OperationCallbackComponent
     return this.login.user ? Menu.DASHBOARD : Menu.HOME;
   }
 }
-

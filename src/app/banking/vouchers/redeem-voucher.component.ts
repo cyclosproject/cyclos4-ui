@@ -1,18 +1,22 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { VoucherInitialDataForRedeem, VoucherDataForRedeem } from 'app/api/models';
-import { BasePageComponent } from 'app/shared/base-page.component';
-import { Validators, FormControl, FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { VoucherDataForRedeem, VoucherInitialDataForRedeem } from 'app/api/models';
 import { VouchersService } from 'app/api/services';
-import { validateBeforeSubmit } from 'app/shared/helper';
-import { BehaviorSubject } from 'rxjs';
+import { BasePageComponent } from 'app/shared/base-page.component';
+import { focus, validateBeforeSubmit } from 'app/shared/helper';
+import { InputFieldComponent } from 'app/shared/input-field.component';
 import { Menu } from 'app/shared/menu';
+import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BehaviorSubject } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 export type RedeemStep = 'form' | 'confirm';
 
 @Component({
   selector: 'app-redeem-voucher',
   templateUrl: './redeem-voucher.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialDataForRedeem> implements OnInit {
 
@@ -24,6 +28,8 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
   userId: string;
   self: boolean;
 
+  @ViewChild('inputField') inputField: ElementRef<InputFieldComponent>;
+
   get dataForRedeem(): VoucherDataForRedeem {
     return this.dataForRedeem$.value;
   }
@@ -34,7 +40,8 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
 
   constructor(
     injector: Injector,
-    private voucherService: VouchersService
+    private voucherService: VouchersService,
+    private modal: BsModalService,
   ) {
     super(injector);
   }
@@ -91,5 +98,17 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
 
   resolveMenu(data: VoucherInitialDataForRedeem) {
     return this.authHelper.userMenu(data.user, Menu.REDEEM_VOUCHER);
+  }
+
+  showScanQrCode() {
+    const ref = this.modal.show(ScanQrCodeComponent, {
+      class: 'modal-form',
+    });
+    const component = ref.content as ScanQrCodeComponent;
+    component.select.pipe(first()).subscribe(value => {
+      this.token.setValue(value);
+      this.submit();
+    });
+    this.modal.onHide.pipe(first()).subscribe(() => focus(this.inputField, true));
   }
 }

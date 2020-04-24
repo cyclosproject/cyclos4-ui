@@ -1,6 +1,6 @@
+import { CardMode } from 'app/content/card-mode';
 import { Content } from 'app/content/content';
 import { empty } from 'app/shared/helper';
-import { CardMode } from 'app/content/card-mode';
 
 /**
  * How a content is laid out.

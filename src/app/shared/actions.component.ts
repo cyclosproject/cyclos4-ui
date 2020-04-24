@@ -6,7 +6,7 @@ import { truthyAttr } from 'app/shared/helper';
   selector: 'actions',
   templateUrl: 'actions.component.html',
   styleUrls: ['actions.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActionsComponent implements OnInit {
 

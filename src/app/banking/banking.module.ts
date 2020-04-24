@@ -8,23 +8,23 @@ import { PaymentStepFormComponent } from 'app/banking/payment/payment-step-form.
 import { PaymentComponent } from 'app/banking/payment/payment.component';
 import { SearchAuthorizedPaymentsComponent } from 'app/banking/transactions/search-authorized-payments.component';
 import { SearchScheduledPaymentsComponent } from 'app/banking/transactions/search-scheduled-payments.component';
-import { TransactionFitersComponentComponent } from 'app/banking/transactions/transaction-filters.component';
+import { TransactionFitersComponent } from 'app/banking/transactions/transaction-filters.component';
 import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view-authorization-history.component';
 import { ViewTransactionComponent } from 'app/banking/transactions/view-transaction.component';
 import { SearchTransfersOverviewComponent } from 'app/banking/transfers/search-transfers-overview.component';
 import { TransferDetailsComponent } from 'app/banking/transfers/transfer-details.component';
 import { ViewTransferComponent } from 'app/banking/transfers/view-transfer.component';
-import { BuyVouchersComponent } from 'app/banking/vouchers/buy-vouchers.component';
-import { SearchBoughtVouchersComponent } from 'app/banking/vouchers/search-bought-vouchers.component';
-import { BuyVouchersStepListTypesComponent } from 'app/banking/vouchers/buy-vouchers-step-list-types.component';
-import { SharedModule } from 'app/shared/shared.module';
-import { RedeemVoucherComponent } from './vouchers/redeem-voucher.component';
-import { ViewVoucherComponent } from './vouchers/view-voucher.component';
-import { SearchRedeemedVouchersComponent } from './vouchers/search-redeemed-vouchers.component';
-import { SearchVouchersComponent } from 'app/banking/vouchers/search-vouchers.component';
-import { VoucherFiltersComponent } from 'app/banking/vouchers/voucher-filters.component';
 import { BuyVouchersStepConfirmComponent } from 'app/banking/vouchers/buy-vouchers-step-confirm.component';
 import { BuyVouchersStepFormComponent } from 'app/banking/vouchers/buy-vouchers-step-form.component';
+import { BuyVouchersStepListTypesComponent } from 'app/banking/vouchers/buy-vouchers-step-list-types.component';
+import { BuyVouchersComponent } from 'app/banking/vouchers/buy-vouchers.component';
+import { SearchBoughtVouchersComponent } from 'app/banking/vouchers/search-bought-vouchers.component';
+import { SearchVouchersComponent } from 'app/banking/vouchers/search-vouchers.component';
+import { VoucherFiltersComponent } from 'app/banking/vouchers/voucher-filters.component';
+import { SharedModule } from 'app/shared/shared.module';
+import { RedeemVoucherComponent } from './vouchers/redeem-voucher.component';
+import { SearchRedeemedVouchersComponent } from './vouchers/search-redeemed-vouchers.component';
+import { ViewVoucherComponent } from './vouchers/view-voucher.component';
 
 /**
  * Banking module
@@ -32,7 +32,7 @@ import { BuyVouchersStepFormComponent } from 'app/banking/vouchers/buy-vouchers-
 @NgModule({
   imports: [
     BankingRoutingModule,
-    SharedModule
+    SharedModule,
   ],
   exports: [],
   declarations: [
@@ -45,7 +45,7 @@ import { BuyVouchersStepFormComponent } from 'app/banking/vouchers/buy-vouchers-
 
     SearchScheduledPaymentsComponent,
     SearchAuthorizedPaymentsComponent,
-    TransactionFitersComponentComponent,
+    TransactionFitersComponent,
     ViewTransactionComponent,
 
     PaymentComponent,
@@ -62,8 +62,8 @@ import { BuyVouchersStepFormComponent } from 'app/banking/vouchers/buy-vouchers-
     ViewVoucherComponent,
     SearchRedeemedVouchersComponent,
     SearchVouchersComponent,
-    VoucherFiltersComponent
-  ]
+    VoucherFiltersComponent,
+  ],
 })
 export class BankingModule {
 }

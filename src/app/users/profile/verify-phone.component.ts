@@ -8,14 +8,13 @@ import { InputFieldComponent } from 'app/shared/input-field.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 
-
 /**
  * Form used to verify a phone
  */
 @Component({
   selector: 'verify-phone',
   templateUrl: 'verify-phone.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VerifyPhoneComponent extends BaseComponent implements OnInit {
 
@@ -42,13 +41,16 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
     this.message = this.i18n.phone.verify.message;
   }
 
-  /** Sends the verification code */
+  /**
+   * Sends the verification code
+   */
   sendCode() {
-    this.addSub(this.phonesService.sendPhoneVerificationCode({ id: this.phone.id }).subscribe(number => {
-      this.message = this.i18n.phone.verify.done(number);
-      this.code.setValue(null);
-      this.codeField.focus();
-    }));
+    this.addSub(this.phonesService.sendPhoneVerificationCode({ id: this.phone.id })
+      .subscribe(phoneNumber => {
+        this.message = this.i18n.phone.verify.done(phoneNumber);
+        this.code.setValue(null);
+        this.codeField.focus();
+      }));
   }
 
   private set message(message: string) {
@@ -64,7 +66,7 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
     }
     this.addSub(this.phonesService.verifyPhone({
       id: this.phone.id,
-      code: this.code.value
+      code: this.code.value,
     }).subscribe(status => {
       switch (status) {
         case CodeVerificationStatusEnum.CODE_NOT_SENT:

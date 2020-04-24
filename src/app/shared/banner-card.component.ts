@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   selector: 'banner-card',
   templateUrl: 'banner-card.component.html',
   styleUrls: ['banner-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BannerCardComponent implements OnInit, OnDestroy {
 

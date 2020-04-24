@@ -1,4 +1,4 @@
-import { EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import { Directive, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { ControlContainer, ControlValueAccessor, FormControl } from '@angular/forms';
 import { AbstractComponent } from 'app/shared/abstract.component';
 import { empty } from 'app/shared/helper';
@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 /**
  * Base class for custom form controls
  */
+@Directive()
 export abstract class BaseControlComponent<T>
   extends AbstractComponent
   implements OnInit, ControlValueAccessor {
@@ -24,7 +25,7 @@ export abstract class BaseControlComponent<T>
   protected validatorChange = () => { };
 
   constructor(injector: Injector,
-    protected controlContainer: ControlContainer) {
+              protected controlContainer: ControlContainer) {
     super(injector);
   }
 

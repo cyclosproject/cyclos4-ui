@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Image, Currency } from 'app/api/models';
+import { Currency, Image } from 'app/api/models';
 import { FormatService } from 'app/core/format.service';
-import { LayoutService } from 'app/shared/layout.service';
 import { truthyAttr } from 'app/shared/helper';
+import { LayoutService } from 'app/shared/layout.service';
 
 /**
  * Has some optional and predefined data: avatar, date and amount. Additional data comes from the tag content.
@@ -10,7 +10,7 @@ import { truthyAttr } from 'app/shared/helper';
 @Component({
   selector: 'mobile-result',
   templateUrl: 'mobile-result.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MobileResultComponent implements OnInit {
 
@@ -55,7 +55,7 @@ export class MobileResultComponent implements OnInit {
         amount: true,
         'p-0': true,
         positive: this.amountColor && this.format.isPositive(this.amount),
-        negative: this.amountColor && this.format.isNegative(this.amount)
+        negative: this.amountColor && this.format.isNegative(this.amount),
       };
     }
   }

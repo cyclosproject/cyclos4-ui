@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit, Input, Injector, Output, EventEmitter } from '@angular/core';
-import { BaseComponent } from 'app/shared/base.component';
-import { ShoppingCartItemDetailed, Currency, ShoppingCartItemAvailabilityEnum } from 'app/api/models';
-import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Currency, ShoppingCartItemAvailabilityEnum, ShoppingCartItemDetailed } from 'app/api/models';
+import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { BaseComponent } from 'app/shared/base.component';
 import { debounceTime } from 'rxjs/operators';
 
 /**
@@ -11,7 +11,7 @@ import { debounceTime } from 'rxjs/operators';
 @Component({
   selector: 'shopping-cart-items',
   templateUrl: 'shopping-cart-items.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShoppingCartItemsComponent extends BaseComponent implements OnInit {
 
@@ -23,7 +23,6 @@ export class ShoppingCartItemsComponent extends BaseComponent implements OnInit 
 
   @Output() changeQuantity = new EventEmitter<[string, ShoppingCartItemDetailed, boolean]>();
   @Output() remove = new EventEmitter<ShoppingCartItemDetailed>();
-
 
   constructor(
     injector: Injector,
@@ -74,6 +73,35 @@ export class ShoppingCartItemsComponent extends BaseComponent implements OnInit 
     if (this.detailed) {
       this.router.navigate(this.path(item));
     }
+  }
+
+  /**
+   * Returns the minimum allowed to buy (or 1 as default)
+   * Range is not used for decimal quantities
+   */
+  minItemsRange(row: ShoppingCartItemDetailed): number {
+    if (row.product.allowDecimalQuantity) {
+      return null;
+    }
+    return row.product.minAllowedInCart ?
+      +row.product.minAllowedInCart : 1;
+  }
+
+  /**
+   * Returns the maximum predefined range or maximum allowed to buy
+   * Range is not used for decimal quantities
+   */
+  maxItemsRange(row: ShoppingCartItemDetailed): number {
+    if (row.product.allowDecimalQuantity) {
+      return null;
+    }
+    if (row.product.maxAllowedInCart) {
+      return +row.product.maxAllowedInCart;
+    }
+    if (row.product.minAllowedInCart) {
+      return +row.product.minAllowedInCart + 10;
+    }
+    return 10;
   }
 
   /**

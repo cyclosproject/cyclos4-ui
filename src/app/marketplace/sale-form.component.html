@@ -1,0 +1,85 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content
+      [heading]="create ? i18n.ad.title.newOrder : i18n.ad.title.order"
+      [mobileHeading]="create ? i18n.ad.mobileTitle.newOrder : i18n.ad.mobileTitle.order">
+      <ng-container *ngIf="!create">
+        <label-value [label]="i18n.ad.number">
+          {{ number }}
+        </label-value>
+        <label-value [label]="i18n.general.date">
+          {{ creationDate | dateTime }}
+        </label-value>
+        <label-value [label]="i18n.general.status">
+          {{ resolveStatusLabel() }}
+        </label-value>
+      </ng-container>
+      <label-value [label]="i18n.ad.buyer">
+        <user-link [user]="data.buyer"></user-link>
+      </label-value>
+      <div [formGroup]="form">
+        <h2
+          class="mt-2 mb-2 d-flex flex-column flex-xs-row justify-content-between">
+          <div class="mb-2 mb-xs-0">
+            {{ i18n.ad.products  }}
+          </div>
+          <div [ngClass]="{'section-title-action': layout.gtsm$ | async}">
+            <button class="btn btn-outline-primary" (click)="addProducts()">
+              {{ i18n.ad.addProducts }}
+            </button>
+          </div>
+        </h2>
+        <order-products [products$]="products$"
+          [deliveryMethod$]="deliveryMethod$" [currency]="currency">
+        </order-products>
+        <h2 class="mt-2">{{ i18n.ad.deliveryMethod }}</h2>
+        <single-selection-field [emptyOption]="i18n.ad.customDeliveryMethod"
+          [label]="i18n.ad.chooseDeliveryMethod"
+          formControlName="deliveryMethod">
+          <field-option *ngFor="let dm of data.deliveryMethods"
+            [value]="dm.name" [text]="dm.name"></field-option>
+        </single-selection-field>
+        <div class="any-label-value"></div>
+        <div [formGroup]="deliveryForm">
+          <input-field formControlName="name" [label]="i18n.general.name"
+            required>
+          </input-field>
+          <decimal-field formControlName="price"
+            [label]="i18n.ad.deliveryPrice" [scale]="currency.decimalDigits"
+            [prefix]="currency.prefix" [suffix]="currency.suffix"
+            fieldSize="full" required>
+          </decimal-field>
+          <time-interval-field formControlName="minTime"
+            [label]="i18n.ad.minDeliveryTime">
+          </time-interval-field>
+          <time-interval-field formControlName="maxTime"
+            [label]="i18n.ad.maxDeliveryTime" required>
+          </time-interval-field>
+        </div>
+        <h2 class="mt-2">{{ i18n.ad.deliveryAddress }}</h2>
+        <single-selection-field [emptyOption]="i18n.ad.customAddress"
+          [label]="i18n.ad.chooseDeliveryAddress" formControlName="address">
+          <field-option *ngFor="let a of data.addresses"
+            [value]="resolveAddressId(a)" [text]="a.name"></field-option>
+        </single-selection-field>
+        <div class="any-label-value"></div>
+        <address-form [addressForm]="addressForm"
+          [configuration]="data.addressConfiguration">
+        </address-form>
+        <h2>{{ i18n.ad.remarks }}</h2>
+        <textarea-field formControlName="remarks">
+        </textarea-field>
+      </div>
+      <actions>
+        <button class="btn btn-primary" [disabled]="requesting$ | async"
+          (click)="save()">
+          {{ i18n.ad.submitToBuyer }}
+        </button>
+        <button class="btn btn-outline-primary"
+          [disabled]="requesting$ | async" (click)="save(true)">
+          {{ i18n.ad.saveDraft }}
+        </button>
+      </actions>
+    </page-content>
+  </ng-container>
+</page-layout>

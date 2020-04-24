@@ -1,4 +1,4 @@
-import { HostBinding, Injector, OnDestroy, OnInit } from '@angular/core';
+import { Directive, HostBinding, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { CacheService } from 'app/core/cache.service';
 import { MenuService } from 'app/core/menu.service';
@@ -18,6 +18,7 @@ export type UpdateTitleFrom = 'menu' | 'content';
  * Pages generally fetch some data from the server in order to display its content.
  * @param D The data type
  */
+@Directive()
 export abstract class BasePageComponent<D> extends BaseComponent implements OnInit, OnDestroy {
 
   cache: CacheService;
@@ -50,18 +51,6 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
   }
   set headingActions(headingActions: HeadingAction[]) {
     this.headingActions$.next(headingActions);
-  }
-
-  private _printAction: HeadingAction;
-  protected get printAction(): HeadingAction {
-    if (this._printAction) {
-      return this._printAction;
-    }
-    this._printAction = new HeadingAction('print', this.i18n.general.print, () => {
-      self.print();
-    }, true);
-    this._printAction.breakpoint = 'gt-xs';
-    return this._printAction;
   }
 
   private initializeMenu(menu: Menu | ActiveMenu) {

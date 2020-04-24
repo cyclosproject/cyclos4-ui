@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormGroup, Validators } from '@angular/forms';
 import { AdInterestBasicData, AdInterestDataForEdit, AdInterestDataForNew, AdInterestEdit, Currency } from 'app/api/models';
 import { AdInterestsService } from 'app/api/services';
-import { BasePageComponent } from 'app/shared/base-page.component';
-import { validateBeforeSubmit, empty } from 'app/shared/helper';
-import { Menu } from 'app/shared/menu';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { HierarchyItem } from 'app/marketplace/hierarchy-item.component';
+import { BasePageComponent } from 'app/shared/base-page.component';
+import { empty, validateBeforeSubmit } from 'app/shared/helper';
+import { Menu } from 'app/shared/menu';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 /**
  * Edit an advertisement interest
@@ -15,7 +15,7 @@ import { HierarchyItem } from 'app/marketplace/hierarchy-item.component';
 @Component({
   selector: 'edit-ad-interest',
   templateUrl: 'edit-ad-interest.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditAdInterestComponent
   extends BasePageComponent<AdInterestDataForNew | AdInterestDataForEdit>
@@ -45,7 +45,7 @@ export class EditAdInterestComponent
 
     const request: Observable<AdInterestDataForNew | AdInterestDataForEdit> = this.create
       ? this.adInterestService.getAdInterestDataForNew({
-        user: this.user
+        user: this.user,
       })
       : this.adInterestService.getAdInterestDataForEdit({ id: this.id });
     this.addSub(request.subscribe(data => {
@@ -71,8 +71,8 @@ export class EditAdInterestComponent
       user: ai.user,
       minPrice: ai.minPrice,
       maxPrice: ai.maxPrice,
-      currency: currency,
-      version: (ai as AdInterestEdit).version
+      currency,
+      version: (ai as AdInterestEdit).version,
     });
     this.updateCurrency(data);
     this.addSub(this.form.controls.currency.valueChanges.subscribe(() => this.updateCurrency(data)));
@@ -92,7 +92,7 @@ export class EditAdInterestComponent
       return;
     }
     const value = this.form.value;
-    const request: Observable<String | void> = this.create ?
+    const request: Observable<string | void> = this.create ?
       this.adInterestService.createAdInterest({ body: value, user: this.user }) :
       this.adInterestService.updateAdInterest({ id: this.id, body: value });
     this.addSub(request.subscribe(() => {

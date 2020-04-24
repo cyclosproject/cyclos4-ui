@@ -8,7 +8,7 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'buy-vouchers-step-list-types',
   templateUrl: 'buy-vouchers-step-list-types.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BuyVouchersStepListTypesComponent extends BaseComponent {
 

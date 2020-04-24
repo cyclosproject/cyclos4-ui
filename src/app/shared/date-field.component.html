@@ -13,7 +13,7 @@
         <div *ngIf="index > 0 && (layout.gtxs$ | async)" class="mx-1">
           {{ format.dateSeparator }}
         </div>
-        <select #part class="custom-select" [attr.id]="id + '_0'"
+        <select #part class="custom-select" [attr.id]="id + '_' + index"
           [formControl]="control" (click)="dropdown.hide()"
           (input)="onPartChanged($event)" [ngClass]="{
             'mx-1': index === 1 && (layout.ltsm$ | async),
@@ -33,12 +33,19 @@
         class="calendar-toggle btn btn-icon">
         <icon icon="calendar_today"></icon>
       </button>
-      <div class="dropdown-menu" *dropdownMenu role="dialog"
+      <div class="dropdown-menu calendar-dropdown" *dropdownMenu role="dialog"
         attr.id="'calendar-' + id" attr.aria-labelledby="id"
         (click)="$event.preventDefault(); $event.stopPropagation();">
-        <calendar [id]="id" [formControl]="formControl" [minDate]="minDate"
-          [maxDate]="maxDate" (select)="selectFromCalendar($event)">
+        <calendar class="flex-grow-1" [id]="id" [formControl]="formControl"
+          [minDate]="minDate" [maxDate]="maxDate"
+          (select)="selectFromCalendar($event)">
         </calendar>
+        <actions *ngIf="(layout.ltsm$ | async)">
+          <button type="button" class="btn btn-primary"
+            (click)="dropdown.hide()">
+            {{ i18n.general.close }}
+          </button>
+        </actions>
       </div>
     </div>
   </div>

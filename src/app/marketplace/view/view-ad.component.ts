@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AdCategoryWithParent, AdKind, AdQuestionView, AdView,
-  DeliveryMethod, DeliveryMethodChargeTypeEnum, RoleEnum
+  DeliveryMethod, DeliveryMethodChargeTypeEnum, RoleEnum,
 } from 'app/api/models';
 import { AdQuestionsService, MarketplaceService, ShoppingCartsService } from 'app/api/services';
 import { LoginService } from 'app/core/login.service';
@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'view-ad',
   templateUrl: 'view-ad.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewAdComponent extends BaseViewPageComponent<AdView> implements OnInit {
 
@@ -50,7 +50,6 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   ngOnInit() {
     super.ngOnInit();
     this.guest = this.loginService.user == null;
-    this.headingActions = [this.printAction];
     this.id = this.route.snapshot.paramMap.get('id');
     this.addSub(this.marketplaceService.viewAd({ ad: this.id })
       .subscribe(ad => {
@@ -129,21 +128,21 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
       headingActions.push(
         new HeadingAction('lock', this.i18n.ad.hide, () => this.updateStatus(
           this.marketplaceService.hideAd({ ad: this.id }),
-          this.i18n.ad.adHidden
+          this.i18n.ad.adHidden,
         )));
     }
     if (ad.canUnhide) {
       headingActions.push(
         new HeadingAction('public', this.i18n.ad.unhide, () => this.updateStatus(
           this.marketplaceService.unhideAd({ ad: this.id }),
-          this.i18n.ad.adUnhidden
+          this.i18n.ad.adUnhidden,
         )));
     }
     if (ad.canRequestAuthorization) {
       headingActions.push(
         new HeadingAction('gavel', this.i18n.ad.submitForAuthorization, () => this.updateStatus(
           this.marketplaceService.submitAdForAuthorization({ ad: this.id }),
-          this.i18n.ad.pendingForAuth
+          this.i18n.ad.pendingForAuth,
         )));
     }
     if (ad.canSetAsDraft) {
@@ -151,14 +150,14 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
         new HeadingAction('edit', this.i18n.ad.setAsDraft, () => this.updateStatus(
           this.marketplaceService.setAdAsDraft({ ad: this.id }),
           this.i18n.ad.backToDraft,
-          true
+          true,
         )));
     }
     if (ad.canApprove) {
       headingActions.push(
         new HeadingAction('thumb_up_alt', this.i18n.ad.authorize, () => this.updateStatus(
           this.marketplaceService.approveAd({ ad: this.id }),
-          this.i18n.ad.authorized
+          this.i18n.ad.authorized,
         )));
     }
     if (ad.canReject) {
@@ -170,11 +169,14 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
         new HeadingAction('clear', this.i18n.general.remove, () => {
           this.notification.confirm({
             message: this.i18n.general.removeConfirm(this.ad.name),
-            callback: () => this.doRemove()
+            callback: () => this.doRemove(),
           });
         }));
     }
-    headingActions.push(this.printAction);
+    this.exportHelper.headingActions(ad.exportFormats, f => this.marketplaceService.exportAd$Response({
+      format: f.internalName,
+      ad: ad.id
+    })).forEach(a => headingActions.push(a));
     for (const operation of ad.operations || []) {
       headingActions.push(this.operationHelper.headingAction(operation, ad.id));
     }
@@ -188,15 +190,15 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   protected reject() {
     const ref = this.modal.show(TextDialogComponent, {
       class: 'modal-form', initialState: {
-        title: this.i18n.ad.reject
-      }
+        title: this.i18n.ad.reject,
+      },
     });
     const component = ref.content as TextDialogComponent;
     this.addSub(component.done.subscribe((comments: string) => {
       this.updateStatus(
         this.marketplaceService.rejectAd({ ad: this.id, body: comments }),
         this.i18n.ad.rejected,
-        true
+        true,
       );
     }));
   }
@@ -282,21 +284,21 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   ask() {
     const ref = this.modal.show(TextDialogComponent, {
       class: 'modal-form', initialState: {
-        title: this.i18n.ad.askQuestion
-      }
+        title: this.i18n.ad.askQuestion,
+      },
     });
     const component = ref.content as TextDialogComponent;
     this.addSub(component.done.subscribe((question: string) => {
       if (!empty(question)) {
         this.addSub(this.adQuestionService.createAdQuestion({
           ad: this.id,
-          body: question
+          body: question,
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.ad.questionAsked);
           this.reload();
         }));
       }
-    }
+    },
     ));
   }
 
@@ -308,7 +310,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
    * Removes a question with the given id
    */
   removeQuestion(id: string) {
-    this.addSub(this.adQuestionService.deleteAdQuestion({ id: id }).subscribe(() => {
+    this.addSub(this.adQuestionService.deleteAdQuestion({ id }).subscribe(() => {
       this.notification.snackBar(this.i18n.ad.questionRemoved);
       this.reload();
     }));

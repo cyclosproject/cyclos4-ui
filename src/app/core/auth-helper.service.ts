@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import {
   AccountKind, AccountWithOwner, AvailabilityEnum, IdentityProvider,
   IdentityProviderCallbackResult, IdentityProviderRequestResult,
-  PasswordInput, PasswordModeEnum, RoleEnum, Transfer, User, UserRelationshipEnum
+  PasswordInput, PasswordModeEnum, RoleEnum, Transfer, User, UserRelationshipEnum,
 } from 'app/api/models';
 import { IdentityProvidersService, UsersService } from 'app/api/services';
 import { CacheService } from 'app/core/cache.service';
@@ -21,7 +21,7 @@ import { first, map } from 'rxjs/operators';
  * Helper service for authentication / password common functions
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthHelperService {
 
@@ -107,7 +107,6 @@ export class AuthHelperService {
     }
     return this.isSelf(key) && this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR;
   }
-
 
   /**
    * Returns the string `self` when the given id / user is the same as the logged user
@@ -279,7 +278,7 @@ export class AuthHelperService {
   captchaFormGroup() {
     return this.formBuilder.group({
       challenge: ['', Validators.required],
-      response: ['', Validators.required]
+      response: ['', Validators.required],
     });
   }
 
@@ -328,7 +327,6 @@ export class AuthHelperService {
       }
     }
 
-
     // Determine the relationship between the user and the logged user
     const role = this.dataForUiHolder.role;
     if (role == null) {
@@ -345,12 +343,12 @@ export class AuthHelperService {
           .pipe(
             map(v => {
               return v.relationship === UserRelationshipEnum.BROKER;
-            })
+            }),
           );
       }).pipe(
         map(isBroker =>
-          truthyAttr(isBroker) ? Menu.MY_BROKERED_USERS : Menu.SEARCH_USERS
-        )
+          truthyAttr(isBroker) ? Menu.MY_BROKERED_USERS : Menu.SEARCH_USERS,
+        ),
       );
     } else {
       // All other cases of non-self users are via search users
@@ -384,7 +382,7 @@ export class AuthHelperService {
     if (fromSelf || toSelf) {
       // We have to assume we're viewing a self acount
       return new ActiveMenu(Menu.ACCOUNT_HISTORY, {
-        accountType: fromSelf ? from.type : to.type
+        accountType: fromSelf ? from.type : to.type,
       });
     } else {
       // Either an admin or broker viewing other member's accounts
@@ -413,7 +411,7 @@ export class AuthHelperService {
         this.nextRequestState.nextAsGuest();
         request = this.identityProvidersService.prepareIdentityProviderRegistration({
           identityProvider: idp.internalName,
-          group: group as string
+          group: group as string,
         });
         break;
       case 'link':

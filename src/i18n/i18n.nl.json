@@ -1394,7 +1394,8 @@
       "answerQuestion": "Answer question",
       "adInterests": "Advertisement interests",
       "adInterestNew": "New advertisement interest",
-      "adInterest": "Advertisement interest"
+      "adInterest": "Advertisement interest",
+      "newOrder": "Create web shop order"
     },
     "mobileTitle": {
       "search": "Advertisements",
@@ -1420,8 +1421,20 @@
       "answerQuestion": "Answer question",
       "adInterests": "Advertisement interests",
       "adInterestNew": "New advertisement interest",
-      "adInterest": "Advertisement interest"
-    }
+      "adInterest": "Advertisement interest",
+      "newOrder": "Create web shop order"
+    },
+    "addedProductOrder": "The product was added to the order",
+    "addProducts": "Add products",
+    "basePrice": "Base price",
+    "customDeliveryMethod": "Custom delivery method",
+    "customQuantity": "Custom quantity...",
+    "discount": "Discount %",
+    "itemsNone": "There are currently no products",
+    "orderSavedAsDraft": "The order was saved as draft",
+    "orderSubmittedToBuyer": "The order was submitted to buyer",
+    "saveDraft": "Save draft",
+    "submitToBuyer": "Submit to buyer"
   },
   "notification": {
     "message": "Message",

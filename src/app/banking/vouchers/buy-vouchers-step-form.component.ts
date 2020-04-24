@@ -1,12 +1,12 @@
-import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Currency, VoucherDataForBuy } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
-import { VoucherDataForBuy, Currency } from 'app/api/models';
-import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'buy-vouchers-step-form',
   templateUrl: 'buy-vouchers-step-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BuyVouchersStepFormComponent extends BaseComponent {
 

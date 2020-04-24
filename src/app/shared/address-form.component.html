@@ -1,38 +1,62 @@
 <ng-container *ngFor="let field of configuration.enabledFields"
   [formGroup]="addressForm">
-  <single-selection-field [id]="idPrefix + field + idSuffix"
-    *ngIf="field === 'country'; else inputTemplate" formControlName="country"
-    [label]="getLabel(field)" [required]="isRequired(field)">
-    <field-option *ngFor="let country of countriesResolve.data | async"
-      [value]="country.code" [text]="country.name">
-    </field-option>
-  </single-selection-field>
+  <ng-container *ngIf="field === 'country'; else inputTemplate">
+    <single-selection-field [id]="idPrefix + field + idSuffix"
+      *ngIf="!addressForm.controls[field].disabled || addressForm.controls[field].value"
+      formControlName="country" [label]="getLabel(field)"
+      [required]="isRequired(field)">
+      <field-option *ngFor="let country of countriesResolve.data | async"
+        [value]="country.code" [text]="country.name">
+      </field-option>
+    </single-selection-field>
+  </ng-container>
   <ng-template #inputTemplate>
-    <input-field [id]="idPrefix + field + idSuffix" [formControlName]="field"
-      [label]="getLabel(field)" [required]="isRequired(field)"></input-field>
+    <input-field [id]="idPrefix + field + idSuffix"
+      *ngIf="!addressForm.controls[field].disabled || addressForm.controls[field].value"
+      [formControlName]="field" [label]="getLabel(field)"
+      [required]="isRequired(field)"></input-field>
   </ng-template>
 </ng-container>
-<ng-container *ngIf="profileConfiguration.contactInfoEnabled"
+<ng-container
+  *ngIf="!ignoreContactFields && profileConfiguration.contactInfoEnabled"
   [formGroup]="addressForm.get('contactInfo')">
-  <input-field [id]="idPrefix + 'email' + idSuffix" formControlName="email"
-    [label]="i18n.user.email">
-  </input-field>
-  <input-field [id]="idPrefix + 'mobilePhone' + idSuffix"
-    formControlName="mobilePhone" [label]="i18n.phone.mobile">
-  </input-field>
-  <input-field [id]="idPrefix + 'landLinePhone' + idSuffix"
-    formControlName="landLinePhone" [label]="i18n.phone.landLine">
-  </input-field>
-  <input-field
-    *ngIf="profileConfiguration.phoneConfiguration?.extensionEnabled"
-    [id]="idPrefix + 'landLineExtension' + idSuffix"
-    formControlName="landLineExtension" [label]="i18n.phone.extension">
-  </input-field>
+  <ng-container
+    *ngIf="addressForm.get('contactInfo').get('email') as emailControl">
+    <input-field [id]="idPrefix + 'email' + idSuffix"
+      *ngIf="!emailControl.disabled || emailControl.value"
+      formControlName="email" [label]="i18n.user.email">
+    </input-field>
+  </ng-container>
+  <ng-container
+    *ngIf="addressForm.get('contactInfo').get('mobilePhone') as mobilePhoneControl">
+    <input-field [id]="idPrefix + 'mobilePhone' + idSuffix"
+      *ngIf="!mobilePhoneControl.disabled || mobilePhoneControl.value"
+      formControlName="mobilePhone" [label]="i18n.phone.mobile">
+    </input-field>
+  </ng-container>
+  <ng-container
+    *ngIf="addressForm.get('contactInfo').get('landLinePhone') as landLinePhoneControl">
+    <input-field [id]="idPrefix + 'landLinePhone' + idSuffix"
+      *ngIf="!landLinePhoneControl.disabled || landLinePhoneControl.value"
+      formControlName="landLinePhone" [label]="i18n.phone.landLine">
+    </input-field>
+  </ng-container>
+  <ng-container
+    *ngIf="profileConfiguration.phoneConfiguration?.extensionEnabled && addressForm.get('contactInfo').get('landLineExtension') as landLineExtensionsControl">
+    <input-field
+      *ngIf="!landLineExtensionsControl.disabled || landLineExtensionsControl.value"
+      [id]="idPrefix + 'landLineExtension' + idSuffix"
+      formControlName="landLineExtension" [label]="i18n.phone.extension">
+    </input-field>
+  </ng-container>
   <ng-container *ngFor="let cf of profileConfiguration.contactInfoFields">
-    <custom-field-input [field]="cf"
-      [formControl]="addressForm.get('contactInfo').get('customValues').get(cf.internalName)"
-      [binaryValues]="binaryValues">
-    </custom-field-input>
+    <ng-container
+      *ngIf="addressForm.get('contactInfo').get('customValues').get(cf.internalName) as fieldControl">
+      <custom-field-input [field]="cf"
+        *ngIf="!fieldControl.disabled || fieldControl.value"
+        [formControl]="fieldControl" [binaryValues]="binaryValues">
+      </custom-field-input>
+    </ng-container>
   </ng-container>
 </ng-container>
 <label-value *ngIf="managePrivacy" [label]="i18n.field.privacy.name"

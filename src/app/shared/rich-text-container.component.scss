@@ -25,8 +25,19 @@
   }
 }
 
-:host ::ng-deep .rich-text-content * {
-  max-width: 100% !important;
+:host ::ng-deep .rich-text-content {
+  * {
+    max-width: 100% !important;
+  }
+  hr {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-left: 0;
+  }
+  b, strong {
+    font-weight: bold;
+  }
 }
 
 @include media-breakpoint-up(md) {

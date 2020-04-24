@@ -6,7 +6,7 @@ export type NotificationType =
   'warning' |
   'error';
 
-export module NotificationType {
+export namespace NotificationType {
   export const INFO: NotificationType = 'info';
   export const WARNING: NotificationType = 'warning';
   export const ERROR: NotificationType = 'error';

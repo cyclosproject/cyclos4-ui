@@ -1,19 +1,19 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import {
-  OrderView, OrderItem, CreateDeviceConfirmation,
-  DeviceConfirmationTypeEnum, OrderStatusEnum, CustomFieldDetailed,
-  CustomFieldTypeEnum, OrderDataForAcceptByBuyer, CustomFieldControlEnum, SetDeliveryMethod
+  CreateDeviceConfirmation, CustomFieldControlEnum, CustomFieldDetailed,
+  CustomFieldTypeEnum, DeviceConfirmationTypeEnum, OrderDataForAcceptByBuyer,
+  OrderItem, OrderStatusEnum, OrderView, SetDeliveryMethod,
 } from 'app/api/models';
 import { OrdersService } from 'app/api/services';
+import { AddressHelperService } from 'app/core/address-helper.service';
+import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { SetDeliveryMethodComponent } from 'app/marketplace/delivery-methods/set-delivery-method.component';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { Menu } from 'app/shared/menu';
-import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { empty } from 'app/shared/helper';
-import { AddressHelperService } from 'app/core/address-helper.service';
-import { SetDeliveryMethodComponent } from 'app/marketplace/delivery-methods/set-delivery-method.component';
+import { Menu } from 'app/shared/menu';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { FormGroup } from '@angular/forms';
 
 /**
  * Displays an order with it's possible actions
@@ -21,7 +21,7 @@ import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'view-order',
   templateUrl: 'view-order.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewOrderComponent extends BaseViewPageComponent<OrderView> implements OnInit {
 
@@ -56,11 +56,28 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
     this.form = this.formBuilder.group({ remarks: null });
     const headingActions: HeadingAction[] = [];
 
+    if (data.canAccept || data.canSetDeliveryInformation) {
+      headingActions.push(new HeadingAction('done',
+        data.canSetDeliveryInformation ?
+          this.i18n.ad.setDeliveryMethod : this.i18n.ad.accept, () =>
+        this.accept(), true));
+    }
+
+    if (data.canReject) {
+      headingActions.push(new HeadingAction('clear',
+        this.i18n.ad.reject, () =>
+        this.reject(), true));
+    }
+
     if (data.history) {
       headingActions.push(new HeadingAction('history', this.i18n.general.viewHistory, () =>
         this.router.navigate(['/marketplace', 'order', this.id, 'history']), true));
     }
-    headingActions.push(this.printAction);
+
+    this.exportHelper.headingActions(data.exportFormats, f => this.orderService.exportOrder$Response({
+      format: f.internalName,
+      order: data.id
+    })).forEach(a => headingActions.push(a));
 
     this.headingActions = headingActions;
   }
@@ -95,8 +112,8 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
 
   private orderDeviceConfirmation(type: DeviceConfirmationTypeEnum): () => CreateDeviceConfirmation {
     return () => ({
-      type: type,
-      order: this.id
+      type,
+      order: this.id,
     });
   }
 
@@ -116,16 +133,16 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
         possibleValues: data.paymentTypes.map(type => {
           return {
             id: type.id,
-            value: type.name
+            value: type.name,
           };
         }),
-        required: true
+        required: true,
       });
     }
     fields.push({
       internalName: 'remarks',
       name: this.i18n.ad.remarks,
-      type: CustomFieldTypeEnum.TEXT
+      type: CustomFieldTypeEnum.TEXT,
     });
     return fields;
   }
@@ -149,15 +166,16 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
               confirmationPassword: res.confirmationPassword,
               body: {
                 remarks: res.customValues.remarks,
-                paymentType: res.customValues.paymentType,
-              }
+                paymentType: res.customValues.paymentType ||
+                  (!empty(data.paymentTypes) ? data.paymentTypes[0].id : null),
+              },
             }).subscribe(() => {
               this.notification.snackBar(this.i18n.ad.orderAccepted);
               this.reload();
             }));
-          }
+          },
         });
-      }
+      },
     ));
   }
 
@@ -168,7 +186,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
   protected acceptBySeller() {
     this.addSub(this.orderService.acceptOrderBySeller({
       order: this.id,
-      body: this.form.value
+      body: this.form.value,
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.ad.orderAccepted);
       this.reload();
@@ -188,14 +206,14 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
         chargeAmount: dm.price,
         minTime: dm.minTime,
         maxTime: dm.maxTime,
-        currency: this.data.currency
-      }
+        currency: this.data.currency,
+      },
     });
     const component = ref.content as SetDeliveryMethodComponent;
     this.addSub(component.done.subscribe((deliveryMethod: SetDeliveryMethod) => {
       this.orderService.setDeliveryMethod({
         order: this.id,
-        body: deliveryMethod
+        body: deliveryMethod,
       }).subscribe(() => {
         this.notification.snackBar(this.i18n.ad.orderAccepted);
         this.reload();
@@ -232,13 +250,13 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
         this.addSub(this.orderService.rejectOrder({
           order: this.id,
           body: {
-            remarks: res.customValues.remarks
-          }
+            remarks: res.customValues.remarks,
+          },
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.ad.orderRejected);
           this.reload();
         }));
-      }
+      },
     });
   }
 
@@ -262,10 +280,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
    * Returns the remarks for the given order or a generic label if not set
    */
   get remarks(): string {
-    if (this.canSetRemarks) {
-      return this.data.remarks;
-    }
-    return this.data.remarks ? this.data.remarks : this.i18n.ad.noRemarksGiven;
+    return this.data.remarks ? this.data.remarks : null;
   }
 
   /**

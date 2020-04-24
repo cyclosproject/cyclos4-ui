@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { BrokeringActionEnum } from 'app/api/models/brokering-action-enum';
-import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { BrokeringService } from 'app/api/services/brokering.service';
-import { UserBrokersData } from 'app/api/models/user-brokers-data';
 import { BrokeringLog } from 'app/api/models';
+import { BrokeringActionEnum } from 'app/api/models/brokering-action-enum';
+import { UserBrokersData } from 'app/api/models/user-brokers-data';
+import { BrokeringService } from 'app/api/services/brokering.service';
+import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 
 @Component({
   selector: 'view-broker-history',
   templateUrl: 'view-broker-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewBrokerHistoryComponent extends BaseViewPageComponent<UserBrokersData> implements OnInit {
 

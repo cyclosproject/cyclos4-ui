@@ -2,15 +2,15 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormGroup, Validators } from '@angular/forms';
 import {
   CreateDeviceConfirmation, DataForUserPasswords, DeviceConfirmationTypeEnum,
-  PasswordStatusAndActions, PasswordStatusEnum
+  PasswordStatusAndActions, PasswordStatusEnum,
 } from 'app/api/models';
 import { PasswordsService } from 'app/api/services';
-import { ChangePasswordDialogComponent } from 'app/users/passwords/change-password-dialog.component';
 import { Action } from 'app/shared/action';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { Menu } from 'app/shared/menu';
+import { ChangePasswordDialogComponent } from 'app/users/passwords/change-password-dialog.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 /**
  * Manages the user passwords
@@ -19,7 +19,7 @@ import { Menu } from 'app/shared/menu';
   selector: 'manage-passwords',
   templateUrl: 'manage-passwords.component.html',
   styleUrls: ['manage-passwords.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManagePasswordsComponent
   extends BasePageComponent<DataForUserPasswords>
@@ -72,7 +72,7 @@ export class ManagePasswordsComponent
     if (data.dataForSetSecurityAnswer) {
       this.securityAnswer = this.formBuilder.group({
         securityQuestion: [null, Validators.required],
-        securityAnswer: [null, Validators.required]
+        securityAnswer: [null, Validators.required],
       });
     }
   }
@@ -152,8 +152,8 @@ export class ManagePasswordsComponent
         param: this.param,
         type: password.type,
         user: this.data.user,
-        requireOld: password.requireOldPasswordForChange
-      }
+        requireOld: password.requireOldPasswordForChange,
+      },
     });
     const component = ref.content as ChangePasswordDialogComponent;
     this.addSub(component.done.subscribe(() => {
@@ -166,7 +166,7 @@ export class ManagePasswordsComponent
     this.notification.confirm({
       title: this.i18n.password.action.activate,
       message: this.i18n.password.action.activateConfirm(password.type.name),
-      callback: () => this.doGenerate(password)
+      callback: () => this.doGenerate(password),
     });
   }
 
@@ -174,7 +174,7 @@ export class ManagePasswordsComponent
     this.addSub(this.passwordsService.generatePassword({ type: password.type.id }).subscribe(newValue => {
       this.notification.info(this.i18n.password.action.changeGeneratedDone({
         type: password.type.name,
-        value: newValue
+        value: newValue,
       }));
       this.reload();
     }));
@@ -183,7 +183,7 @@ export class ManagePasswordsComponent
   private createDeviceConfirmation(password: PasswordStatusAndActions): () => CreateDeviceConfirmation {
     return () => ({
       type: DeviceConfirmationTypeEnum.GENERATE_PASSWORD,
-      passwordType: password.type.id
+      passwordType: password.type.id,
     });
   }
 
@@ -193,19 +193,19 @@ export class ManagePasswordsComponent
       message: this.i18n.password.action.changeGeneratedConfirm(password.type.name),
       createDeviceConfirmation: this.createDeviceConfirmation(password),
       passwordInput: this.data.confirmationPasswordInput,
-      callback: res => this.doChangeGenerated(password, res.confirmationPassword)
+      callback: res => this.doChangeGenerated(password, res.confirmationPassword),
     });
   }
 
   private doChangeGenerated(password: PasswordStatusAndActions, confirmationPassword: string) {
     this.addSub(this.passwordsService.changeGenerated({
       type: password.type.id,
-      confirmationPassword: confirmationPassword
+      confirmationPassword,
     }).subscribe(newValue => {
       this.notification.info(
         this.i18n.password.action.changeGeneratedDone({
           type: password.type.name,
-          value: newValue
+          value: newValue,
         }));
       this.reload();
     }));
@@ -215,14 +215,14 @@ export class ManagePasswordsComponent
     this.notification.confirm({
       title: this.i18n.password.action.unblock,
       message: this.i18n.password.action.unblockConfirm(password.type.name),
-      callback: () => this.doUnblock(password)
+      callback: () => this.doUnblock(password),
     });
   }
 
   private doUnblock(password: PasswordStatusAndActions) {
     this.addSub(this.passwordsService.unblockPassword({
       user: this.param,
-      type: password.type.id
+      type: password.type.id,
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.password.action.unblockDone(password.type.name));
       this.reload();
@@ -233,14 +233,14 @@ export class ManagePasswordsComponent
     this.notification.confirm({
       title: this.i18n.password.action.enable,
       message: this.i18n.password.action.enableConfirm(password.type.name),
-      callback: () => this.doEnable(password)
+      callback: () => this.doEnable(password),
     });
   }
 
   private doEnable(password: PasswordStatusAndActions) {
     this.addSub(this.passwordsService.enablePassword({
       user: this.param,
-      type: password.type.id
+      type: password.type.id,
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.password.action.enableDone(password.type.name));
       this.reload();
@@ -251,14 +251,14 @@ export class ManagePasswordsComponent
     this.notification.confirm({
       title: this.i18n.password.action.disable,
       message: this.i18n.password.action.disableConfirm(password.type.name),
-      callback: () => this.doDisable(password)
+      callback: () => this.doDisable(password),
     });
   }
 
   private doDisable(password: PasswordStatusAndActions) {
     this.addSub(this.passwordsService.disablePassword({
       user: this.param,
-      type: password.type.id
+      type: password.type.id,
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.password.action.disableDone(password.type.name));
       this.reload();

@@ -7,8 +7,7 @@
     <div class="d-flex flex-grow-1 mw-100">
       <div style="position:relative" class="w-100 d-flex align-items-center"
         dropdown #dropdown="bs-dropdown" [autoClose]="false"
-        [container]="container" [insideClick]="false" (onShown)="onShown()"
-        (onHidden)="onHidden()">
+        [insideClick]="false" (onShown)="onShown()" (onHidden)="onHidden()">
 
         <chip *ngIf="selection$ | async" [image]="user.image" icon="user"
           (close)="select(null)">
@@ -33,11 +32,17 @@
         </div>
       </div>
     </div>
-    <div *ngIf="user == null && allowContacts" class="d-flex ml-2">
-      <button class="btn btn-icon" *ngIf="allowContacts" #contactListButton
-        [tooltip]="i18n.field.user.contactTooltip"
+    <div *ngIf="user == null && (allowContacts || allowQrCode)"
+      class="d-flex">
+      <button class="btn btn-icon ml-2" *ngIf="allowContacts"
+        #contactListButton [tooltip]="i18n.field.user.contactTooltip"
         (click)="showContactList()">
         <icon icon="import_contacts"></icon>
+      </button>
+      <button class="btn btn-icon ml-2" *ngIf="allowQrCode" #scanQrCodeButton
+        [tooltip]="i18n.field.user.scanQrCodeTooltip"
+        (click)="showScanQrCode()">
+        <icon icon="scan_qr_code"></icon>
       </button>
     </div>
   </div>

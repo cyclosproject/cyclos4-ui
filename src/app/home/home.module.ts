@@ -7,9 +7,8 @@ import { LatestAdsComponent } from 'app/home/dashboard/latest-ads.component';
 import { LatestUsersComponent } from 'app/home/dashboard/latest-users.component';
 import { QuickAccessComponent } from 'app/home/dashboard/quick-access.component';
 import { HomeComponent } from 'app/home/home.component';
-import { SharedModule } from 'app/shared/shared.module';
 import { RedirectToLandingPageComponent } from 'app/home/redirect-to-landing-page-component';
-
+import { SharedModule } from 'app/shared/shared.module';
 
 /**
  * Module comprising the home page functionality
@@ -24,10 +23,10 @@ import { RedirectToLandingPageComponent } from 'app/home/redirect-to-landing-pag
     BalanceHistoryChartDirective,
     LatestAdsComponent,
     LatestUsersComponent,
-    DashboardContentComponent
+    DashboardContentComponent,
   ],
   imports: [
-    SharedModule
-  ]
+    SharedModule,
+  ],
 })
 export class HomeModule { }

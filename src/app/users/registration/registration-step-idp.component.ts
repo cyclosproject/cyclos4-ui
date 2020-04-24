@@ -9,7 +9,7 @@ import { BaseComponent } from 'app/shared/base.component';
   selector: 'registration-step-idp',
   templateUrl: 'registration-step-idp.component.html',
   styleUrls: ['registration-step-idp.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationStepIdPComponent extends BaseComponent implements OnInit {
   @Input() identityProviders: IdentityProvider[];

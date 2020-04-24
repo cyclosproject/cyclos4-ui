@@ -1,25 +1,25 @@
+import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  RecordQueryFilters, RecordResult, CustomFieldDetailed, RecordLayoutEnum,
-  BaseRecordDataForSearch, RecordDataForSearch, GeneralRecordsDataForSearch, Group, RecordWithOwnerResult
+  BaseRecordDataForSearch, CustomFieldDetailed, GeneralRecordsDataForSearch, Group,
+  RecordDataForSearch, RecordLayoutEnum, RecordQueryFilters, RecordResult, RecordWithOwnerResult,
 } from 'app/api/models';
 import { RecordsService } from 'app/api/services';
-import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
-import { Observable } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
+import { RecordHelperService } from 'app/core/records-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
-import { RecordHelperService } from 'app/core/records-helper.service';
+import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
+import { Observable } from 'rxjs';
 
 type RecordSearchParams = RecordQueryFilters & {
   owner: string,
-  type: string
+  type: string,
 };
 
 @Component({
   selector: 'search-records',
   templateUrl: 'search-records.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchRecordsComponent
   extends BaseSearchPageComponent<GeneralRecordsDataForSearch | RecordDataForSearch, RecordSearchParams, RecordResult>
@@ -35,7 +35,7 @@ export class SearchRecordsComponent
   constructor(
     injector: Injector,
     private recordsService: RecordsService,
-    private recordsHelper: RecordHelperService
+    private recordsHelper: RecordHelperService,
   ) {
     super(injector);
   }
@@ -66,18 +66,30 @@ export class SearchRecordsComponent
     this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
     this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
     this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(this.fieldsInSearch, {
-      useDefaults: false
+      useDefaults: false,
     }));
     this.form.setControl('profileFields', this.fieldHelper.customValuesFormGroup(this.profileFields, {
-      useDefaults: false
+      useDefaults: false,
     }));
     this.form.patchValue(data.query);
 
     const headingActions: HeadingAction[] = [];
     if (!this.generalSearch && data.create) {
-      headingActions.push(new HeadingAction('add_circle_outline', this.i18n.general.addNew, () =>
+      headingActions.push(new HeadingAction('add', this.i18n.general.addNew, () =>
         this.router.navigate(['/records', this.param, this.type, 'new']), true));
     }
+    this.exportHelper.headingActions(data.exportFormats,
+      f => {
+        const params = {
+          format: f.internalName,
+          ...this.toSearchParams(this.form.value)
+        };
+        if (this.generalSearch) {
+          return this.recordsService.exportGeneralRecords$Response(params);
+        } else {
+          return this.recordsService.exportOwnerRecords$Response(params);
+        }
+      });
     this.headingActions = headingActions;
     this.groups = (data as GeneralRecordsDataForSearch).groups || [];
     super.onDataInitialized(data);
@@ -92,7 +104,7 @@ export class SearchRecordsComponent
   remove(record: RecordResult) {
     this.notification.confirm({
       message: this.i18n.general.removeItemConfirm,
-      callback: () => this.doRemove(record)
+      callback: () => this.doRemove(record),
     });
   }
 
@@ -131,14 +143,14 @@ export class SearchRecordsComponent
     params.customFields = this.fieldHelper.toCustomValuesFilter(params.customValues);
     params.profileFields = this.fieldHelper.toCustomValuesFilter(params.profileFields);
     params.creationPeriod = ApiHelper.dateRangeFilter(params.beginDate, params.endDate);
-    delete params['beginDate'];
-    delete params['endDate'];
+    delete params.beginDate;
+    delete params.endDate;
 
     if (!this.generalSearch) {
       params.owner = this.param;
     }
     params.type = this.type;
-    delete params['customValues'];
+    delete params.customValues;
     return params;
   }
 

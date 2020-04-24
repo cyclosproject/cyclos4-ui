@@ -1,14 +1,14 @@
-import { ChangeDetectionStrategy, Component, Injector, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, ValidationErrors } from '@angular/forms';
-import { DataForLogin, DataForUi, IdentityProvider, IdentityProviderCallbackStatusEnum, Auth } from 'app/api/models';
+import { Auth, DataForLogin, DataForUi, IdentityProvider, IdentityProviderCallbackStatusEnum } from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { LoginReason, LoginState } from 'app/core/login-state';
 import { NextRequestState } from 'app/core/next-request-state';
+import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty, setRootSpinnerVisible } from 'app/shared/helper';
-import { PasswordInputComponent } from 'app/shared/password-input.component';
-import { ApiHelper } from 'app/shared/api-helper';
 import { Menu } from 'app/shared/menu';
+import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { first } from 'rxjs/operators';
 
 /**
@@ -20,7 +20,7 @@ import { first } from 'rxjs/operators';
   selector: 'login',
   templateUrl: 'login.component.html',
   styleUrls: ['login.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent
   extends BasePageComponent<DataForLogin>
@@ -30,8 +30,8 @@ export class LoginComponent
 
   private identityProviderRequestId: string;
 
-  @ViewChild('principal', { static: false }) principalRef: ElementRef;
-  @ViewChild('password', { static: false }) passwordInput: PasswordInputComponent;
+  @ViewChild('principal') principalRef: ElementRef;
+  @ViewChild('password') passwordInput: PasswordInputComponent;
 
   get forgotPasswordEnabled(): boolean {
     return !empty(this.data.forgotPasswordMediums);
@@ -45,7 +45,7 @@ export class LoginComponent
   constructor(
     injector: Injector,
     private loginState: LoginState,
-    private nextRequestState: NextRequestState
+    private nextRequestState: NextRequestState,
   ) {
     super(injector);
   }
@@ -54,12 +54,12 @@ export class LoginComponent
     super.ngOnInit();
     this.form = this.formBuilder.group({
       principal: '',
-      password: ''
+      password: '',
     });
     if (this.dataForUiHolder.user) {
       // Already logged in
       this.addSub(this.dataForUiHolder.reload().subscribe(() =>
-        this.router.navigateByUrl(this.loginState.redirectUrl || '')
+        this.router.navigateByUrl(this.loginState.redirectUrl || ''),
       ));
       return;
     } else if (Configuration.externalLoginUrl) {
@@ -132,13 +132,14 @@ export class LoginComponent
           this.notification.info(this.i18n.identityProvider.loginNoMatch({
             app: this.format.appTitleSmall,
             email: callback.email,
-            provider: idp.name
+            provider: idp.name,
           }));
           break;
         case IdentityProviderCallbackStatusEnum.LOGIN_NO_EMAIL:
+          this.identityProviderRequestId = callback.requestId;
           this.notification.info(this.i18n.identityProvider.loginNoEmail({
             app: this.format.appTitleSmall,
-            provider: idp.name
+            provider: idp.name,
           }));
           break;
         default:

@@ -1,8 +1,4 @@
-<a [href]="externalUrl" target="_blank"
+<a #anchor [href]="externalUrl" target="_blank"
   [ngStyle]="{ display: 'block', minHeight: anchorHeight }">
-  <img *ngIf="(url$ | async) as url" [src]="url" [alt]="title" [title]="title"
-    [ngStyle]="{
-    maxWidth: imageWidth + 'px',
-    maxHeight: imageHeight + 'px'
-  }">
+  <!-- map image will be appended here -->
 </a>

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationStart } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { empty } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { empty } from 'app/shared/helper';
 
 const IGNORE_BREADCRUMB = ['', '/home', '/login', '/forgot-password'];
 
@@ -12,7 +12,7 @@ const IGNORE_BREADCRUMB = ['', '/home', '/login', '/forgot-password'];
  * Service used to navigate between pages and managing the component state
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BreadcrumbService {
 
@@ -30,7 +30,7 @@ export class BreadcrumbService {
     this.router.events
       .pipe(
         filter(e => e instanceof NavigationStart),
-        map(e => e as NavigationStart)
+        map(e => e as NavigationStart),
       )
       .subscribe(event => {
         this.onRouterEvent(event);

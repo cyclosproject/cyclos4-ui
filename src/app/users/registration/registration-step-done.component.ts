@@ -9,7 +9,7 @@ import { empty } from 'app/shared/helper';
 @Component({
   selector: 'registration-step-done',
   templateUrl: 'registration-step-done.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationStepDoneComponent
   extends BaseComponent {
@@ -47,7 +47,7 @@ export class RegistrationStepDoneComponent
       return this.i18n.user.registration.principalSingle({
         principal: principal.type.name,
         value: principal.value,
-        channels: principal.channels.map(c => c.name).join(', ')
+        channels: principal.channels.map(c => c.name).join(', '),
       });
     }
     const buf: string[] = [];
@@ -58,7 +58,7 @@ export class RegistrationStepDoneComponent
       buf.push(this.i18n.user.registration.principalMultipleItem({
         principal: principal.type.name,
         value: principal.value,
-        channels: principal.channels.map(c => c.name).join(', ')
+        channels: principal.channels.map(c => c.name).join(', '),
       }));
       buf.push('</li>');
     }

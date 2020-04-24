@@ -1,0 +1,50 @@
+<h1>{{ i18n.field.html.image.titleProperties }}</h1>
+
+<div class="container">
+  <div class="row">
+    <div class="col" [formGroup]="form">
+      <input-field formControlName="width" numbersOnly
+        [label]="i18n.field.html.image.width">
+      </input-field>
+      <input-field formControlName="height" numbersOnly
+        [label]="i18n.field.html.image.height">
+      </input-field>
+      <boolean-field [formControl]="constrain"
+        [label]="i18n.field.html.image.contrain"></boolean-field>
+      <input-field formControlName="borderWidth" numbersOnly
+        [label]="i18n.field.html.image.border"></input-field>
+      <input-field formControlName="marginTop" numbersOnly
+        [label]="i18n.field.html.image.marginTop"></input-field>
+      <input-field formControlName="marginBottom" numbersOnly
+        [label]="i18n.field.html.image.marginBottom"></input-field>
+      <input-field formControlName="marginLeft" numbersOnly
+        [label]="i18n.field.html.image.marginLeft"></input-field>
+      <input-field formControlName="marginRight" numbersOnly
+        [label]="i18n.field.html.image.marginRight"></input-field>
+      <single-selection-field formControlName="float"
+        [label]="i18n.field.html.image.float"
+        [emptyOption]="i18n.field.html.image.floatNone">
+        <field-option value='left' [text]="i18n.field.html.image.floatLeft">
+        </field-option>
+        <field-option value='right' [text]="i18n.field.html.image.floatRight">
+        </field-option>
+      </single-selection-field>
+    </div>
+    <div *ngIf="layout.gtxxs$ | async" class="col">
+      <div class="preview">
+        <img #preview [src]="img.src">
+        {{ i18n.field.html.image.textExample }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<actions>
+  <button class="btn btn-primary" (click)="save()">
+    {{ i18n.general.save }}
+  </button>
+
+  <button class="btn btn-outline-primary" (click)="modalRef.hide()">
+    {{ i18n.general.cancel }}
+  </button>
+</actions>

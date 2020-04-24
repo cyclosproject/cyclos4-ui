@@ -1,17 +1,17 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef,
-  EventEmitter, Input, OnDestroy, Output, ViewChild, Injector
+  EventEmitter, Injector, Input, OnDestroy, Output, ViewChild,
 } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { CustomField, Image, TempImageTargetEnum } from 'app/api/models';
+import { CustomField, Image, ImageKind, TempImageTargetEnum, UserImageKind } from 'app/api/models';
+import { ImagesService } from 'app/api/services';
 import { LoginService } from 'app/core/login.service';
+import { NextRequestState } from 'app/core/next-request-state';
+import { AbstractComponent } from 'app/shared/abstract.component';
 import { resizeImage, ResizeResult, truthyAttr } from 'app/shared/helper';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
-import { ImagesService } from 'app/api/services';
 import { first } from 'rxjs/operators';
-import { AbstractComponent } from 'app/shared/abstract.component';
-import { NextRequestState } from 'app/core/next-request-state';
 
 /**
  * Represents an image file being uploaded
@@ -43,12 +43,12 @@ export class ImageToUpload {
 }
 
 /**
- * Component used to upload temporary images
+ * Component used to upload images
  */
 @Component({
   selector: 'image-upload',
   templateUrl: 'image-upload.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageUploadComponent extends AbstractComponent implements OnDestroy {
 
@@ -56,7 +56,7 @@ export class ImageUploadComponent extends AbstractComponent implements OnDestroy
 
   @Input() containerClass = '';
   @Input() max = 1;
-  @Input() target: TempImageTargetEnum;
+  @Input() target: ImageKind | TempImageTargetEnum;
   @Input() owner = '';
   @Input() user = '';
   @Input() customField: CustomField;
@@ -170,37 +170,53 @@ export class ImageUploadComponent extends AbstractComponent implements OnDestroy
 
   private doUpload(file: ImageToUpload): Observable<Image> {
     return new Observable(observer => {
-      let params = null;
+      let params: any;
       let url = 'images/temp';
-      if (this.target === 'advertisement') {
-        if (this.owner) {
-          // Upload image to the ad itself
+      switch (this.target) {
+        case ImageKind.MARKETPLACE:
+          // Upload image to the ad directly
+          if (!this.owner) {
+            throw new Error('Missing owner');
+          }
           url = `marketplace/${this.owner}/images`;
-        } else {
+          break;
+        case ImageKind.USER_CUSTOM:
+          // Upload a user custom image
+          if (!this.owner) {
+            throw new Error('Missing owner');
+          }
+          url = `${this.owner}/images`;
+          params = {
+            kind: UserImageKind.CUSTOM,
+          };
+          break;
+        case ImageKind.SYSTEM_CUSTOM:
+          // Upload a system custom image. In this case owner is actually the category.
+          if (!this.owner) {
+            throw new Error('Missing category');
+          }
+          url = `/system-images/${this.owner}`;
+          break;
+        default:
+          // A temp image
           params = {
             target: this.target,
-            user: this.user
+            guestKey: this.login.guestKey,
+            user: this.owner,
+            customField: this.customField == null ? null : this.customField.id,
+            customFieldKind: this.customField == null ? null : this.customField.kind,
           };
-        }
-        url = this.nextRequestState.appendAuth(url);
-      } else {
-        params = {
-          target: this.target,
-          guestKey: this.login.guestKey,
-          user: this.owner,
-          customField: this.customField == null ? null : this.customField.id,
-          customFieldKind: this.customField == null ? null : this.customField.kind
-        };
       }
 
       const data = new FormData();
       data.append('image', file.content, file.name);
 
+      url = this.nextRequestState.appendAuth(url);
       file.subscription = this.http.post(`${this.apiConfiguration.rootUrl}/${url}`, data, {
         observe: 'events',
         reportProgress: true,
         responseType: 'text',
-        params: params
+        params,
       }).subscribe(event => {
         if (event.type === HttpEventType.UploadProgress) {
           file.progress = event.loaded;

@@ -1,12 +1,14 @@
 import {
   ChangeDetectionStrategy, Component, EventEmitter, HostBinding,
-  Injector, Input, OnChanges, OnInit, Output, SimpleChanges
+  Injector, Input, OnChanges, OnInit, Output, SimpleChanges,
 } from '@angular/core';
 import { Event, Router } from '@angular/router';
 import { User } from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { LoginService } from 'app/core/login.service';
+import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { MenuDensity } from 'app/core/menu-density';
 import { MenuService } from 'app/core/menu.service';
 import { menuAnchorId } from 'app/core/menus.component';
 import { NotificationService } from 'app/core/notification.service';
@@ -17,8 +19,6 @@ import { blurIfClick, empty, words } from 'app/shared/helper';
 import { Breakpoint, LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, Menu, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
 import { BehaviorSubject } from 'rxjs';
-import { MenuDensity } from 'app/core/menu-density';
-import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 
 const MaxUserDisplaySize = 30;
 const MaxUserDisplaySizeMenu = 15;
@@ -33,7 +33,7 @@ const ProfileMenus = [Menu.MY_PROFILE, Menu.EDIT_MY_PROFILE];
   selector: 'top-bar',
   templateUrl: 'top-bar.component.html',
   styleUrls: ['top-bar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopBarComponent extends AbstractComponent implements OnInit, OnChanges {
   // Export to template
@@ -95,7 +95,7 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
   }
 
   navigate(menu: Menu, event: MouseEvent) {
-    this.menu.navigate({ menu: new ActiveMenu(menu), event: event });
+    this.menu.navigate({ menu: new ActiveMenu(menu), event });
   }
 
   get activeRoot(): RootMenu {
@@ -103,21 +103,13 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
   }
 
   logoUrl(breakpoints: Set<Breakpoint>): string {
-    const configs = Configuration.breakpoints;
-    for (const bp of breakpoints) {
-      const config = configs[bp];
-      if (config && config.logoUrl) {
-        // empty means no logo
-        return config.logoUrl === '' ? null : config.logoUrl;
-      }
+    const forBreakpoint = this.layout.getBreakpointConfiguration('logoUrl', breakpoints);
+    if (forBreakpoint != null) {
+      // empty means no logo
+      return forBreakpoint === '' ? null : forBreakpoint;
     }
-    // Return the default logo url
-    if (breakpoints.has('lt-md')) {
-      // No logo on mobile
-      return null;
-    } else {
-      return Configuration.logoUrl;
-    }
+    // No specific breakpoint configuration. Return the default (no logo on mobile / small), default logo otherwise.
+    return breakpoints.has('lt-md') ? null : Configuration.logoUrl;
   }
 
   appTitle(breakpoints: Set<Breakpoint>, pageTitle: string): string {
@@ -127,18 +119,19 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
     }
 
     // Look for a customized title
-    const configs = Configuration.breakpoints;
-    for (const bp of breakpoints) {
-      const config = configs[bp];
-      if (config && config.title) {
-        switch (config.title) {
-          case 'large':
-            return this.density === MenuDensity.Dense ? Configuration.appTitleSmall : Configuration.appTitle;
-          case 'small':
-            return Configuration.appTitleSmall;
-          case 'none':
-            return null;
-        }
+    const forBreakpoint = this.layout.getBreakpointConfiguration('title', breakpoints);
+    if (forBreakpoint != null) {
+      // Something is customized
+      switch (forBreakpoint) {
+        case 'large':
+          return this.density === MenuDensity.Dense ? Configuration.appTitleSmall : Configuration.appTitle;
+        case 'small':
+          return Configuration.appTitleSmall;
+        case 'none':
+        case '':
+          return null;
+        default:
+          return forBreakpoint;
       }
     }
 
@@ -158,7 +151,7 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
         const activeMenu = onClick instanceof Menu ? new ActiveMenu(onClick) : onClick;
         onClick = () => {
           this.menu.navigate({
-            menu: activeMenu
+            menu: activeMenu,
           });
         };
       }
@@ -184,7 +177,7 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
         addAction('arrow_back', this.i18n.general.back, () => {
           if (!this.breadcrumb.back()) {
             this.menu.navigate({
-              menu: new ActiveMenu(home)
+              menu: new ActiveMenu(home),
             });
           }
         });

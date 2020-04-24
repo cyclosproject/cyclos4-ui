@@ -362,6 +362,9 @@ tags:
   - name: PrivacySettings
     description: >-
       Provides a way to define how the personal data can be accessed.
+  - name: Firebase
+    description: >-
+      Provides integration with Firebase products, e.g. FCM.
 
 
 security:
@@ -441,11 +444,27 @@ paths:
             password will be used only for that session.
           schema:
             type: string
+
+
         - name: pinId
           in: query
           required: false
+          deprecated: true
+          x-remove-version: 4.15
           description: >-
+            Use `pinPrincipal` instead.
+
+
+
             Device PIN identification. If given then the information about whether it is active or not will be given in
+            the returned `dataForLogin`.
+          schema:
+            type: string
+        - name: pinPrincipal
+          in: query
+          required: false
+          description: >-
+            Device PIN principal. If given then the information about whether it is active or not will be given in
             the returned `dataForLogin`.
           schema:
             type: string
@@ -491,15 +510,117 @@ paths:
                 $ref: '#/components/schemas/Error'
 
   /auth/session:
-    post:
+    get:
+      operationId: getSessionProperties
+      summary: >-
+        Returns properties of the current session
+      description: >-
+        Only when there's an authenticated user via session
+        (`Session-Token` header). Otherwise, nothing is returned.
+      tags:
+        - Auth
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            Properties of the current session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionPropertiesView'
+        '204':
+          description: >-
+            If not authenticated with a session
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      operationId: setSessionProperties
+      summary: >-
+        Sets properties of the current session
+      description: >-
+        Currently the only property that can be set is `source`.
+        However, in order to do it, the current session must be trusted.
+      tags:
+        - Auth
       security:
-        - basic: []
-        - accessClient: []
+        - session: []
+      requestBody:
+        description: >-
+          The new properties
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionPropertiesEdit'
+      responses:
+        '204':
+          description: >-
+            The session properties are updated and nothing is returned.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
       operationId: login
       summary: >-
-        Logs-in the currently authenticated user
+        Logs-in the currently authenticated user or perform a login through a trusted device.
       description: >-
-        Logs-in the currently authenticated user, returning the session token.
+        Logs-in the currently authenticated user (if any) or the user owner of the given deviceId only if the device
+        confirmation (returned in /auth/data-for-login) can be approved. If the login was successful then the session
+        token is returned.
         This token can then be used on subsequent requests. After finishing the
         session, the user can then logout by sending an HTTP DELETE to /auth.
       tags:
@@ -551,8 +672,11 @@ paths:
           required: false
           description: >-
             When using an [external identity provider](https://wiki4.cyclos.org/index.php/External_identity_providers),
-            this is the request id used to automatically link the user to the provider. Is only needed when no user
-            was matched, either by being previously linked to the provider or by having the same e-mail.
+            this is the request id used to automatically link the user to the
+            provider. Is only needed when no user was matched, that is, no user
+            in Cyclos was linked to the identifier returned by the provider,
+            and no user was found in Cyclos with the same e-mail address as
+            returned by the provider.
           schema:
             type: string
       responses:
@@ -563,7 +687,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Auth'
+                $ref: '#/components/schemas/LoginAuth'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -1055,7 +1179,8 @@ paths:
           x-remove-version: 4.15
           required: false
           description: >-
-            Use both `user` and `code`.
+            Use both `user` and `code` instead.
+
 
 
             The validation key which was sent by e-mail to the user
@@ -3387,7 +3512,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       summary: >-
         Validates an user registration via a key sent by e-mail
       description: >-
-        Use `POST /validate/registration/{key}`
+        Use `POST /validate/registration/{key}` instead.
 
 
 
@@ -8480,22 +8605,29 @@ A note for dynamic custom fields: If a script is used to generate possible value
         Adds a new temporary image for the currently authenticated user or guest.
       description: >-
         Uploads a new temporary image. A temporary image should be given a target,
-        which can be: - `userRegistration`: The
-        image will be used as a profile image for a newly registered user; -
-        `userProfile`: The image will be used as a
-        profile image for an existing user; -
-        `advertisement`: The image will be used for
-        an advertisement of a specific user; -
-        `customValue`: The image will be used for a
-        value of a specific custom field. Temporary images won't be immediately
+        which can be:
+
+
+
+        - `userRegistration`: The image will be used as
+          a profile image for a newly registered user;
+
+        - `userProfile`: The image will be used as a
+          profile image for an existing user;
+
+        - `advertisement`: The image will be used for
+        an advertisement of a specific user;
+
+        - `customValue`: The image will be used for a
+        value of a specific custom field.
+
+
+        Temporary images won't be immediately
         associated to the next registered model, but its `id`, which is returned
         by this operation, must be explicitly passed in, either as the `images`
         field (for profile or advertisement images) or in the `customValues` field
         of the model that has custom values (multiple ids can be passed-in as
-        pipe-separated). Images as guest can only be uploaded if on the
-        destination group products the image profile field is allowed at
-        registrations. Users may upload images if they can register new users or
-        create advertisements.
+        pipe-separated).
       tags:
         - Images
       parameters:
@@ -8554,6 +8686,154 @@ A note for dynamic custom fields: If a script is used to generate possible value
             find it.
           schema:
             $ref: '#/components/schemas/CustomFieldKind'
+      responses:
+        '201':
+          description: >-
+            The image is saved, its id is returned in the body and the URL to get
+            the content is returned in the `Location` header
+          headers:
+            Location:
+              description: >-
+                URL for obtaining the image content
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: >-
+                    The image being uploaded
+
+  /system-images/list-data:
+    get:
+      operationId: getSystemCustomImagesListData
+      summary: >-
+        Returns data containing the system custom images, as well as categories.
+      description: >-
+        Contains each image category, as well as permissions over
+        system custom images.
+      tags:
+        - Images
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The data with images
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemImagesListData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /system-images/{category}:
+    parameters:
+      - name: category
+        in: path
+        required: true
+        description: >-
+          The system image category id or internal name
+        schema:
+          type: string
+    post:
+      operationId: uploadSystemCustomImage
+      summary: >-
+        Adds a new system custom image under a given category
+      description: >-
+        Uploads a new temporary image. A temporary image should be given a target,
+        which can be: - `userRegistration`: The
+        image will be used as a profile image for a newly registered user; -
+        `userProfile`: The image will be used as a
+        profile image for an existing user; -
+        `advertisement`: The image will be used for
+        an advertisement of a specific user; -
+        `customValue`: The image will be used for a
+        value of a specific custom field. Temporary images won't be immediately
+        associated to the next registered model, but its `id`, which is returned
+        by this operation, must be explicitly passed in, either as the `images`
+        field (for profile or advertisement images) or in the `customValues` field
+        of the model that has custom values (multiple ids can be passed-in as
+        pipe-separated). Images as guest can only be uploaded if on the
+        destination group products the image profile field is allowed at
+        registrations. Users may upload images if they can register new users or
+        create advertisements.
+      tags:
+        - Images
+      parameters:
+        - name: name
+          description: >-
+            The name for the new image. If not informed will fall back to the
+            original file name in the form data
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         '201':
           description: >-
@@ -13071,10 +13351,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
     get:
       operationId: getDevicePinDataForEdit
       summary: >-
-        Returns data for edit an existing device PIN.
+        Returns data for editing the PIN name.
       description: >-
-        Returns configuration data for editing a device PIN, plus the current
-        `DevicePinEdit` object that can be altered and sent back.
+        Returns configuration data for editing the PIN name, plus the current
+        `DevicePinEdit` object that can be altered and sent back to change the name.
       tags:
         - DevicePins
       security:
@@ -13128,13 +13408,70 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /device-pins/password-for-create:
+    get:
+      operationId: getPasswordInputForCreatePin
+      summary: >-
+        Returns a `PasswordInput` for create a device pin.
+      description: >-
+        Returns a `PasswordInput` for create a device pin for the authenticated user.
+        In case of updating its value please use `GET /device-pins/{key}` that already include a `PasswordInput`.
+        If the pin is created in the next 6 minutes after a successful login then the action can be confirmed with the
+        `pinCreationToken` included in the login's result (`LoginAuth`, `POST /auth/session`) or the login password.
+      tags:
+        - DevicePins
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The `PasswordInput` used to create the pin.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordInput'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /device-pins/{key}:
     get:
       operationId: viewDevicePin
       summary: >-
         Returns details of a specific device PIN
       description: >-
-        Returns information about a device PIN by key
+        Returns information about a device PIN by key. The result also includes a `PasswordInput` that can be used to
+        remove or update the pin's value (only for the authenticated user).
       tags:
         - DevicePins
       security:
@@ -13191,9 +13528,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
     put:
       operationId: updateDevicePin
       summary: >-
-        Updates a device PIN.
+        Updates the device PIN name.
       description: >-
-        Updates a device PIN. The device's owner and administrators / brokers with
+        Updates the device PIN name. The device's owner and administrators / brokers with
         permissions can update a device PIN. In case the device was already activated as trusted then it's name will be
         updated too.
       tags:
@@ -13327,6 +13664,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The parameters for removing a device PIN.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevicePinRemoveParams'
 
 
   /{owner}/accounts:
@@ -15884,7 +16229,7 @@ Either the ids or identification methods of users' broker"
         This path will be removed in Cyclos 4.15.
         Returns data regarding the limits of all accounts of a given user.
       description: >-
-        Please use `GET /{user}/accounts/data-for-balance-limits`.
+        Use `GET /{user}/accounts/data-for-balance-limits` instead.
 
 
 
@@ -15948,7 +16293,7 @@ Either the ids or identification methods of users' broker"
         This path will be removed in Cyclos 4.15.
         Returns data for the limits of a given account
       description: >-
-        Please use `GET /{user}/accounts/{accountType}/balance-limits`.
+        Use `GET /{user}/accounts/{accountType}/balance-limits` instead.
 
 
 
@@ -16008,7 +16353,7 @@ Either the ids or identification methods of users' broker"
         This path will be removed in Cyclos 4.15.
         Sets the limits for a given user account.
       description: >-
-        Please use `POST /{user}/accounts/{accountType}/balance-limits`.
+        Use `POST /{user}/accounts/{accountType}/balance-limits` instead.
 
 
 
@@ -16080,7 +16425,7 @@ Either the ids or identification methods of users' broker"
         This path will be removed in Cyclos 4.15.
         Returns data for a general search of account balance limits.
       description: >-
-        Please use `GET /accounts/data-for-balance-limits`.
+        Use `GET /accounts/data-for-balance-limits` instead.
 
 
 
@@ -16141,7 +16486,7 @@ Either the ids or identification methods of users' broker"
         This path will be removed in Cyclos 4.15.
         Searches for account balance limits.
       description: >-
-        Please use `GET /accounts/balance-limits`.
+        Use `GET /accounts/balance-limits` instead.
 
 
 
@@ -16336,7 +16681,7 @@ Either the ids or identification methods of users' broker"
         This path will be removed in Cyclos 4.15.
         Exports the account balance limits results as file.
       description: >-
-        Please use `GET /accounts/balance-limits/export/{format}`.
+        Use `GET /accounts/balance-limits/export/{format}` instead.
 
 
 
@@ -21739,6 +22084,10 @@ Reference to the broker of users involved in transfers. Is only taken into accou
 
         Processes a single scheduled payment installment.
       description: >-
+        Use `POST /installments/{key}/process` instead.
+
+
+
         Processes a single installment. The installment status must be either
         `scheduled`,  `failed`
         or `blocked`. This action is
@@ -21807,6 +22156,10 @@ Reference to the broker of users involved in transfers. Is only taken into accou
 
         Settles a single scheduled payment installment.
       description: >-
+        Use `POST /installments/{key}/process` instead.
+
+
+
         Settles a single installment. The installment status must be either
         `scheduled`,  `failed`
         or `blocked`. This action is
@@ -21920,6 +22273,10 @@ Reference to the broker of users involved in transfers. Is only taken into accou
 
         Processes a failed recurring payment occurrence.
       description: >-
+        Use `POST /installments/{key}/process` instead.
+
+
+
         Processes a failed recurring payment occurrence. The occurrence status
         must be `failed`.
       tags:
@@ -23648,8 +24005,22 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: pinId
           in: query
           required: false
+          deprecated: true
+          x-remove-version: 4.15
           description: >-
+            Use `pinPrincipal` instead.
+
+
+
             Device PIN identification. If given then the information about whether it is active or not will be given in
+            the returned `dataForLogin`.
+          schema:
+            type: string
+        - name: pinPrincipal
+          in: query
+          required: false
+          description: >-
+            Device PIN principal. If given then the information about whether it is active or not will be given in
             the returned `dataForLogin`.
           schema:
             type: string
@@ -25306,7 +25677,7 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         Returns the voucher types the authenticated user can buy vouchers to the
         given user
       description: >-
-        Instead use "/{user}/vouchers/data-for-buy" without passing a type.
+        Use `GET /{user}/vouchers/data-for-buy` without passing a type instead.
 
 
 
@@ -32504,8 +32875,22 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: pinId
           in: query
           required: false
+          deprecated: true
+          x-remove-version: 4.15
           description: >-
+            Use `pinPrincipal` instead.
+
+
+
             Device PIN identification. If given then the information about whether it is active or not will be given in
+            the returned `dataForLogin`.
+          schema:
+            type: string
+        - name: pinPrincipal
+          in: query
+          required: false
+          description: >-
+            Device PIN principal. If given then the information about whether it is active or not will be given in
             the returned `dataForLogin`.
           schema:
             type: string
@@ -33755,8 +34140,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - basic: []
         - session: []
         - accessClient: []
-      parameters:
-        - $ref: '#/components/parameters/id'
       responses:
         '204':
           description: >-
@@ -38164,6 +38547,184 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/PrivacySettingsParams'
+  /firebase/fcm-tokens:
+    post:
+      operationId: assignFcmToken
+      summary: >-
+        Assign a new FCM registration token to the authenticated user
+      description: >-
+        Assign a new FCM registration token to the authenticated user only if the token is not already assigned.
+        Otherwise it does nothing (no-op).
+      tags:
+        - Firebase
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      requestBody:
+        description: >-
+          The registration token
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        '204':
+          description: >-
+            The token was assigned, nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      operationId: updateFcmToken
+      summary: >-
+        Updates an existing FCM token
+      description: >-
+        Updates an existing FCM token. This operation allows guest users.
+      tags:
+        - Firebase
+      responses:
+        '204':
+          description: >-
+            The token was updated
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The old and new token values
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFcmTokenParams'
+
+    delete:
+      operationId: deleteFcmToken
+      summary: >-
+        Removes a FCM token from a set of users
+      description: >-
+        Removes a FCM token from a set of users. This operation allows guest users.
+      tags:
+        - Firebase
+      requestBody:
+        description: >-
+          The token and the users to whom the token will be removed from.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveFcmTokenParams'
+      responses:
+        '204':
+          description: >-
+            The token was deleted
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 
 
 components:
@@ -39597,6 +40158,20 @@ components:
         - loginNoMatch
         - registrationData
         - registrationDone
+
+    IdentityProviderNotLinkReason:
+      description: >
+        Possible reasons why the link between user and identity provider could not be created
+
+        Possible values are:
+
+        - `globalUserNetworkIdpIgnored`: A login from a global administrator together with an identity provider request for an identity provider defined in a network.
+
+        - `unsupportedPrincipalType`: The user identification method used in the login is not supported for linking. E.g trusted devices are not supported, it's quite strange situation because it means the user choose to login with an identity provider, then the user doesn't match and at the moment of perform the login to Cyclos he/her choose to login with a trusted device. The login with trusted device and with an identity provider both offer the same kind of ease for a quick login the probably the user will choose to login with a trusted device from the beginning.
+      type: string
+      enum:
+        - globalUserNetworkIdpIgnored
+        - unsupportedPrincipalType
 
     ImageKind:
       description: >
@@ -41173,6 +41748,8 @@ components:
 
         - `token`: A token identifies the user
 
+        - `trustedDevice`: A trusted device identifies the user
+
         - `username`: The username identifies the user
       type: string
       enum:
@@ -41182,6 +41759,7 @@ components:
         - email
         - mobilePhone
         - token
+        - trustedDevice
         - username
 
     ProductAssignmentActionEnum:
@@ -41472,6 +42050,20 @@ components:
         - email
         - sms
 
+    SessionSourceEnum:
+      description: >
+        Indicates how a session was created. Can be modified in runtime.
+
+        Possible values are:
+
+        - `device`: The session was created from a trusted device without a password input.
+
+        - `login`: A regular user / password login was performed to create the session.
+      type: string
+      enum:
+        - device
+        - login
+
     ShoppingCartCheckoutErrorCode:
       description: >
         Possible errors when checking out a shopping cart.
@@ -41554,20 +42146,26 @@ components:
 
         - `custom`: Custom alerts thrown by scripts
 
+        - `emailSendingFailed`: An E-mail couldn't be sent
+
         - `maxBlockedUsersReached`: The max number of users blocked from the same IP has been reached
 
         - `maxGlobalSmsReached`: The groups under a certain configuration have run out of SMS messages
 
         - `maxIncorrectLoginAttempts`: Someone tried for a given number of tries to login with an invalid username
+
+        - `smsSendingFailed`: An SMS couldn't be sent
       type: string
       enum:
         - accountFeeChargedNoFailures
         - accountFeeChargedWithFailures
         - applicationRestarted
         - custom
+        - emailSendingFailed
         - maxBlockedUsersReached
         - maxGlobalSmsReached
         - maxIncorrectLoginAttempts
+        - smsSendingFailed
 
     TempImageTargetEnum:
       description: >
@@ -43150,8 +43748,8 @@ components:
             $ref: '#/components/schemas/AdCategoryWithChildren'
         addresses:
           description: >-
-            The addresses of the advertisement owner, so specific ones can be linked
-            to the advertisement.
+            The public addresses of the advertisement owner, so specific ones can be
+            linked to the advertisement.
           type: array
           items:
             $ref: '#/components/schemas/Address'
@@ -43693,7 +44291,7 @@ components:
             type: string
         addresses:
           description: >-
-            Ids of addresses (belonging to the advertisement owner) this
+            Ids of the public addresses (belonging to the advertisement owner) this
             advertisement is available at.
           type: array
           items:
@@ -47692,7 +48290,7 @@ components:
 
     CreateDevicePin:
        description: >-
-         Contains data for create a new PIN for the authenticated user.
+         Contains data for create a new PIN or modify an existing one for the authenticated user.
        type: object
        properties:
          name:
@@ -47715,6 +48313,29 @@ components:
              Otherwise, if a confirm field is not shown then this flag can be left empty (or set to `false`), and the
              `pinConfirmation` will be ignored.
            type: boolean
+         currentPin:
+           description: >-
+             The current PIN value.
+             The action must be confirmed with at least the current pin or the current login password but not both.
+           type: string
+         currentPassword:
+           description: >-
+             The current login password.
+             The action must be confirmed with at least the current login password or the current pin but not both.
+           type: string
+         pinLocator:
+           description: >-
+             The principal or id of the device PIN. Only required if the pin is not being created.
+             In case the login was performed using a pin or the session is already associated to a pin this locator will be
+             ignored and the associated pin will be modified.
+           type: string
+         pinCreationToken:
+           description: >-
+             In case of pin creation the action must be confirmed with at least the current login password or this token.
+             This token was obtained from `GET /auth/session` after a succesfull login (only returned if the login was not
+             performed using a pin). In case the login was performed using a pin or the session is already associated to a
+             pin this token will be ignored and the `currentPin` or `currentPassword` must be given to validate the action.
+           type: string
          deviceId:
            description: >-
              Trusted device identification. If given then the `name` will be ignored and the pin's name will be copied from
@@ -48242,12 +48863,6 @@ components:
           $ref: '#/components/schemas/UserDataForEdit'
         user:
           $ref: '#/components/schemas/UserEdit'
-        enablePrivacy:
-          type: boolean
-          description: >-
-            Whether privacy control is enabled for profile fields, phones
-            and addresses.
-
         display:
           type: string
           description: >-
@@ -48636,6 +49251,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TransferTypeWithCurrency'
+        allowScanQrCode:
+          description: >-
+            Only returned when no subject is selected.Indicates if the QR-code
+            scanning is allowed.
+          type: boolean
         allowAutocomplete:
           description: >-
             Only returned when no subject is selected. Indicates whether the payee
@@ -49406,7 +50026,7 @@ components:
       properties:
         pin:
           description: >-
-            The device PIN that is being edited. This value can be modified and sent
+            The device PIN that which name is being edited. The name can be modified and sent
             back on `PUT /device-pins/{key}`.
           allOf:
             - $ref: '#/components/schemas/DevicePinEdit'
@@ -49445,6 +50065,25 @@ components:
           description: >-
             The new device PIN name. It must be unique per user.
 
+    DevicePinRemoveParams:
+      description: >-
+        Parameters for remove an existing device PIN.
+      type: object
+      properties:
+         currentPin:
+           description: >-
+             The current PIN value.
+             If a password is required according to `GET /device-pins/{key}` (i.e the `passwordInput` is not null) then
+             the remove action must be confirmed with at least the current pin or the current login password but not both.
+           type: string
+         currentPassword:
+           description: >-
+             The current login password.
+             If a password is required according to `GET /device-pins/{key}` (i.e the `passwordInput` is not null) then
+             the remove action must be confirmed with at least the current login password or the current pin but not both.
+           type: string
+
+
     DevicePinView:
       description: >-
         Contains details about a device PIN
@@ -49452,8 +50091,21 @@ components:
         - $ref: '#/components/schemas/DevicePin'
         - type: object
           properties:
+            user:
+              description: >-
+                The user associated to the PIN.
+              allOf:
+                - $ref: '#/components/schemas/User'
             principalType:
               $ref: '#/components/schemas/PrincipalType'
+            passwordInput:
+              description: >-
+                Only used for changing the value of an existing PIN or for remove it.
+                If not null then it must be used to ask for the current login password / pin.
+                In case of only name edition though the operation `PUT /device-pins/{key}` it can be ignored.
+              allOf:
+                - $ref: '#/components/schemas/PasswordInput'
+
 
 
 
@@ -50790,6 +51442,22 @@ components:
         availability:
           $ref: '#/components/schemas/AvailabilityEnum'
 
+    ImagesPermissions:
+      description: >-
+        Permissions over images
+      type: object
+      properties:
+        myCustom:
+          description: >-
+            Whether custom images are enabled for the logged user
+          type: boolean
+        systemCategories:
+          description: >-
+            Visible system image categories.
+          type: array
+          items:
+            $ref: '#/components/schemas/SystemImageCategoryPermissions'
+
     IncomingMessage:
       description: >-
         An incoming message (in the user's inbox)
@@ -51176,6 +51844,23 @@ components:
             The locale selected by user to work with the according language and
             settings.
           type: string
+
+    LoginAuth:
+      description: >-
+        Contains information for the recently logged in user
+      allOf:
+        - $ref: '#/components/schemas/Auth'
+        - type: object
+          properties:
+            identityProviderNotLinkReason:
+              $ref: '#/components/schemas/IdentityProviderNotLinkReason'
+            pinCreationToken:
+              description: >-
+                A token (challenge) generated only if the login was not performed using a device pin.
+                It can be used to confirm the pin creation operation. Is has a validity of 6 minutes after the session was
+                created. After that time the pin creation can be confirmed only using the current login password.
+              type: string
+
 
     LoginUser:
       description: >-
@@ -54538,6 +55223,12 @@ components:
             Permissions over own privacy settings
           allOf:
             - $ref: '#/components/schemas/PrivacySettingsPermissions'
+        images:
+          description: >-
+            Permissions over images (others than the profile image)
+          allOf:
+            - $ref: '#/components/schemas/ImagesPermissions'
+
 
     PersonalizeNfcError:
       description: >-
@@ -56025,6 +56716,23 @@ components:
               allOf:
                 - $ref: '#/components/schemas/EntityReference'
 
+    RemoveFcmTokenParams:
+      description: >-
+        Parameters for removing a FCM token.
+      type: object
+      properties:
+        token:
+          description: >-
+            The FCM registration token
+          type: string
+        users:
+          description: >-
+            The user identifiers which the token will be removed from.
+          type: array
+          items:
+            type: string
+
+
     ResendActivationCodeRequest:
       description: >-
         Parameters for sending a device activation code.
@@ -56398,6 +57106,60 @@ components:
                 Default query filters for searching sessions
               allOf:
                 - $ref: '#/components/schemas/SessionQueryFilters'
+
+    SessionPropertiesEdit:
+      description: >-
+        Session properties to be modified.
+      type: object
+      properties:
+        source:
+          description: >-
+            Changes the session source. Can only be changed
+            when the current session is trusted.
+          allOf:
+            - $ref: '#/components/schemas/SessionSourceEnum'
+
+    SessionPropertiesView:
+      description: >-
+        Contains properties of a user session
+      type: object
+      properties:
+        createdAt:
+          description: >-
+            The timestamp of the session creation
+          type: string
+          format: date-time
+        expirationInterval:
+          description: >-
+            The inactivity interval for this session to expire
+          allOf:
+            - $ref: '#/components/schemas/TimeInterval'
+        expiresAt:
+          description: >-
+            The current session expiration timestamp.
+            After each usage of this session, the timeout is renewed,
+            and the additional timeout will be the operation timestamp added
+            to `expirationInterval`.
+          type: string
+          format: date-time
+        source:
+          description: >-
+            Indicates how the session was created. Can be modified in runtime.
+          allOf:
+            - $ref: '#/components/schemas/SessionSourceEnum'
+        device:
+          description: >-
+            Reference to the trusted device that wither created or confirmed this
+            session. When null, the session is not trusted.
+          allOf:
+            - $ref: '#/components/schemas/EntityReference'
+        devicePin:
+          description: >-
+            Reference to the device PIN that was used to login.
+            Otherwise, when the session was created with a trusted device,
+            and the device has a PIN attached, will reflect it.
+          allOf:
+            - $ref: '#/components/schemas/DevicePin'
 
     SessionQueryFilters:
       description: >-
@@ -56857,6 +57619,55 @@ components:
               type: string
               description: >-
                 The URL for getting the content of this file
+
+    SystemImageCategoryListData:
+      description: >-
+        Contains information for a given system image category, with its images.
+      type: object
+      properties:
+        category:
+          $ref: '#/components/schemas/EntityReference'
+        canCreate:
+          description: >-
+            Does the authenticated admin has permission to create a new image
+            in this category?
+          type: boolean
+        canEdit:
+          description: >-
+            Does the authenticated user has permission to edit images
+            in this category?
+          type: boolean
+        images:
+          description: >-
+            The list of images in this category
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+
+    SystemImageCategoryPermissions:
+      description: >-
+        Permissions over categories of system custom images
+      type: object
+      properties:
+        category:
+          $ref: '#/components/schemas/EntityReference'
+        canEdit:
+          description: >-
+            Whether the logged user can edit images in this category
+          type: boolean
+
+    SystemImagesListData:
+      description: >-
+        Contains for each system image category
+      type: object
+      properties:
+        categories:
+          description: >-
+            Contains each of the system image categories, together with
+            their permissions and images.
+          type: array
+          items:
+            $ref: '#/components/schemas/SystemImageCategoryListData'
 
     ThemeUIElement:
       description: >-
@@ -58195,6 +59006,12 @@ components:
                 identification value for this external payment (for example, the
                 e-mail or mobile phone values).
               type: string
+            payee:
+              description: >-
+                Only returned if the `kind` is `ticket` and the ticket status is
+                `open`. Is user that created the ticket.
+              allOf:
+                - $ref: '#/components/schemas/User'
             payerPrincipal:
               description: >-
                 Only returned if the `kind` is `ticket`, the ticket status is `open`
@@ -58202,6 +59019,12 @@ components:
                 name or e-mail) which can be used to login the user, so he can
                 accept the ticket.
               type: string
+            payer:
+              description: >-
+                Only returned if the `kind` is `ticket` and the ticket status is
+                `open`. Is the fixed payer user, if any.
+              allOf:
+                - $ref: '#/components/schemas/User'
             cancelUrl:
               description: >-
                 Only returned if the `kind` is `ticket`. The URL to redirect when
@@ -58622,6 +59445,21 @@ components:
           description: >-
             Is the OAuth2 / OpenID Connect required error message.
             Is only returned when `code` is `invalidAccessToken`.
+          type: string
+
+
+    UpdateFcmTokenParams:
+      description: >-
+        Parameters for updating a FCM token.
+      type: object
+      properties:
+        oldToken:
+          description: >-
+            The FCM registration token to be updated
+          type: string
+        newToken:
+          description: >-
+            The new FCM registration token
           type: string
 
 

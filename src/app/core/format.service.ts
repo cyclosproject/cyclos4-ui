@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { Currency, DataForUi, TimeInterval, TimeFieldEnum, WeekDayEnum } from 'app/api/models';
+import { Currency, DataForUi, TimeFieldEnum, TimeInterval, WeekDayEnum } from 'app/api/models';
+import { Configuration } from 'app/configuration';
+import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { I18n } from 'app/i18n/i18n';
+import { empty } from 'app/shared/helper';
 import Big from 'big.js';
 import moment from 'moment-mini-ts';
 import { DataForUiHolder } from './data-for-ui-holder';
-import { Configuration } from 'app/configuration';
-import { I18nLoadingService } from 'app/core/i18n-loading.service';
 
 export const ISO_DATE = 'YYYY-MM-DD';
 
@@ -14,7 +15,7 @@ export const ISO_DATE = 'YYYY-MM-DD';
  * Holds a shared instance of DataForUi and knows how to format dates and numbers
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FormatService {
   constructor(
@@ -125,7 +126,7 @@ export class FormatService {
       this.i18n.general.month.long.sep,
       this.i18n.general.month.long.oct,
       this.i18n.general.month.long.nov,
-      this.i18n.general.month.long.dec
+      this.i18n.general.month.long.dec,
     ];
 
     this.shortMonthNames = [
@@ -140,7 +141,7 @@ export class FormatService {
       this.i18n.general.month.short.sep,
       this.i18n.general.month.short.oct,
       this.i18n.general.month.short.nov,
-      this.i18n.general.month.short.dec
+      this.i18n.general.month.short.dec,
     ];
 
     this.minWeekdayNames = [
@@ -150,7 +151,7 @@ export class FormatService {
       this.i18n.general.weekday.min.wed,
       this.i18n.general.weekday.min.thu,
       this.i18n.general.weekday.min.fri,
-      this.i18n.general.weekday.min.sat
+      this.i18n.general.weekday.min.sat,
     ];
 
     this.singularTimeFieldNames = new Map();
@@ -162,7 +163,6 @@ export class FormatService {
     this.singularTimeFieldNames.set(TimeFieldEnum.MONTHS, this.i18n.general.timeField.singular.month);
     this.singularTimeFieldNames.set(TimeFieldEnum.WEEKS, this.i18n.general.timeField.singular.week);
     this.singularTimeFieldNames.set(TimeFieldEnum.YEARS, this.i18n.general.timeField.singular.year);
-
 
     this.pluralTimeFieldNames = new Map();
     this.pluralTimeFieldNames.set(TimeFieldEnum.DAYS, this.i18n.general.timeField.plural.days);
@@ -266,7 +266,7 @@ export class FormatService {
     }
     if (date['format']) {
       // Already a moment
-      return date['format'](format);
+      return (date as moment.Moment).format(format);
     }
     return moment(date).parseZone().format(format);
   }
@@ -438,7 +438,7 @@ export class FormatService {
     if (range.min != null && range.max != null) {
       return this.i18n.general.range.fromTo({
         min: currency ? this.formatAsCurrency(currency, range.min) : range.min,
-        max: currency ? this.formatAsCurrency(currency, range.max) : range.max
+        max: currency ? this.formatAsCurrency(currency, range.max) : range.max,
       });
     } else if (range.min != null) {
       return this.i18n.general.range.from(currency ? this.formatAsCurrency(currency, range.min) : range.min);
@@ -457,13 +457,17 @@ export class FormatService {
     const field = names.get(fieldValue).toLowerCase();
     return this.i18n.general.timeField.pattern({ amount, field });
   }
+
   /**
    * Formats a boolean value, returning a key for yes / no
    * @param value The boolean value
    */
-  formatBoolean(value: boolean): string {
-    if (value == null) {
+  formatBoolean(value: boolean | string): string {
+    if (empty(value)) {
       return '';
+    }
+    if (typeof value === 'string') {
+      value = value === 'true';
     }
     return value ? this.i18n.general.yes : this.i18n.general.no;
   }

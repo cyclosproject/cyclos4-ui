@@ -1,0 +1,32 @@
+<div style="position: relative;"
+  *ngIf="action.subActions?.length > 0; else plainAction">
+  <div dropdown #dropdown="bs-dropdown" class="w-100"
+    (onHidden)="toggleButton.focus()">
+
+    <button #toggleButton dropdownToggle [id]="id" type="button"
+      class="btn custom-select w-100 pr-4"
+      [attr.aria-controls]="dropdownMenuId">
+      <icon size="1.5rem" [icon]="action.icon"></icon>
+      <div class="pr-1">{{ action.label }}</div>
+    </button>
+
+    <div #dropDownMenu *dropdownMenu class="dropdown-menu" role="listbox"
+      [attr.id]="dropdownMenuId"
+      (click)="$event.preventDefault(); $event.stopPropagation();">
+
+      <button #subActionButton *ngFor="let subAction of action.subActions"
+        type="button" class="btn"
+        (click)="subAction.onClick(); blurIfClick(subActionButton, $event);">
+        <div>{{ subAction.label }}</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #plainAction>
+  <button #actionButton type="button" class="btn"
+    (click)="action.onClick(); blurIfClick(actionButton, $event);">
+    <icon size="1.5rem" [icon]="action.icon"></icon>
+    <div>{{ action.label }}</div>
+  </button>
+</ng-template>

@@ -3,9 +3,10 @@ import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from
 import {
   AccountWithCurrency, AvailabilityEnum, Currency, CustomFieldDetailed,
   DataForTransaction, PaymentPreview, PaymentSchedulingEnum, PerformPayment,
-  Transaction, TransactionAuthorizationStatusEnum, TransactionTypeData, TransferType
+  Transaction, TransactionAuthorizationStatusEnum, TransactionTypeData, TransferType,
 } from 'app/api/models';
 import { PaymentsService } from 'app/api/services';
+import { PosService } from 'app/api/services/pos.service';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
@@ -14,7 +15,6 @@ import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBefo
 import { Menu } from 'app/shared/menu';
 import { isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { PosService } from 'app/api/services/pos.service';
 import { first } from 'rxjs/operators';
 
 export type PaymentStep = 'form' | 'confirm' | 'done';
@@ -28,7 +28,7 @@ const FIRST_INSTALLMENT_DATE_VAL: ValidatorFn = control => {
     if (empty(control.value) && (scheduling === 'futureDate'
       || scheduling === PaymentSchedulingEnum.SCHEDULED && !firstInstallmentIsNow)) {
       return {
-        required: true
+        required: true,
       };
     }
   }
@@ -42,11 +42,11 @@ const OCCURRENCES_COUNT_VAL: ValidatorFn = control => {
     const scheduling = parent.get('scheduling').value;
     const repeatUntilCanceled = parent.get('repeatUntilCanceled').value;
     if (scheduling === PaymentSchedulingEnum.RECURRING && !repeatUntilCanceled) {
-      const number = parseInt(control.value, 10);
-      if (isNaN(number)) {
+      const value = parseInt(control.value, 10);
+      if (isNaN(value)) {
         // The occurrences count is required
         return {
-          required: true
+          required: true,
         };
       } else {
         // Needs at least 2 occurrences
@@ -65,7 +65,7 @@ const FIRST_OCCURRENCE_DATE_VAL: ValidatorFn = control => {
     const firstOccurrenceIsNow = parent.get('firstOccurrenceIsNow').value;
     if (empty(control.value) && scheduling === PaymentSchedulingEnum.RECURRING && !firstOccurrenceIsNow) {
       return {
-        required: true
+        required: true,
       };
     }
   }
@@ -79,7 +79,7 @@ const FIRST_OCCURRENCE_DATE_VAL: ValidatorFn = control => {
   // tslint:disable-next-line: component-selector
   selector: 'payment',
   templateUrl: 'payment.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentComponent extends BasePageComponent<DataForTransaction> implements OnInit {
 
@@ -195,7 +195,7 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
     } else {
       this.addSub(this.paymentsService.dataForPerformPayment({
         owner: this.fromParam,
-        to: this.toParam
+        to: this.toParam,
       }).subscribe(data => this.data = data));
     }
 
@@ -229,7 +229,7 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
       repeatUntilCanceled: true,
       occurrencesCount: [null, OCCURRENCES_COUNT_VAL],
       firstOccurrenceIsNow: true,
-      firstOccurrenceDate: [null, FIRST_OCCURRENCE_DATE_VAL]
+      firstOccurrenceDate: [null, FIRST_OCCURRENCE_DATE_VAL],
     });
   }
 
@@ -355,13 +355,13 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
     if (this.pos) {
       request = this.posService.receivePayment({
         body: this.preview.payment,
-        confirmationPassword: this.confirmationPassword.value
+        confirmationPassword: this.confirmationPassword.value,
       });
     } else {
       request = this.paymentsService.performPayment({
         owner: this.fromParam,
         body: this.preview.payment,
-        confirmationPassword: this.confirmationPassword.value
+        confirmationPassword: this.confirmationPassword.value,
       });
     }
     request.pipe(first()).subscribe(performed => {
@@ -404,12 +404,12 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
     // Preview
     if (this.pos) {
       return this.posService.previewReceivePayment({
-        body: payment
+        body: payment,
       });
     } else {
       return this.paymentsService.previewPayment({
         owner: this.fromParam,
-        body: payment
+        body: payment,
       });
     }
   }
@@ -445,7 +445,7 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
     return locateControl(this.form, locator);
   }
 
-  get customValuesControlGetter(): Function {
+  get customValuesControlGetter() {
     return (cf: CustomFieldDetailed) => {
       const name = cf.internalName;
       let control = this.customValuesControls.get(name);

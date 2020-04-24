@@ -12,7 +12,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 @Component({
   selector: 'registration-step-fields',
   templateUrl: 'registration-step-fields.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationStepFieldsComponent
   extends BaseComponent
@@ -48,11 +48,13 @@ export class RegistrationStepFieldsComponent
     this.location$.next(location);
   }
 
+  locatingAddress$ = new BehaviorSubject(false);
+
   constructor(
     injector: Injector,
     private userHelper: UserHelperService,
     private imagesService: ImagesService,
-    private changeDetector: ChangeDetectorRef) {
+    public changeDetector: ChangeDetectorRef) {
     super(injector);
   }
 
@@ -121,10 +123,16 @@ export class RegistrationStepFieldsComponent
 
   locateAddress() {
     const value = this.addressForm.value;
+    this.locatingAddress$.next(true);
     this.addSub(this.maps.geocode(value).subscribe(coords => {
       this.addressForm.patchValue({ location: coords });
       this.changeDetector.detectChanges();
-    }));
+    }, () => this.mapShown()));
+  }
+
+  mapShown() {
+    this.locatingAddress$.next(false);
+    this.changeDetector.detectChanges();
   }
 
 }

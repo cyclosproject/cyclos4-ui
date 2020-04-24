@@ -1,8 +1,8 @@
 import {
-  Component, Input, ChangeDetectionStrategy, SkipSelf, Host, Optional,
-  ViewChild, ElementRef, AfterViewInit, Injector
+  AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Host, Injector,
+  Input, Optional, SkipSelf, ViewChild,
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
+import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import autosize from 'autosize';
 
@@ -15,8 +15,8 @@ import autosize from 'autosize';
   styleUrls: ['textarea-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: TextAreaFieldComponent, multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: TextAreaFieldComponent, multi: true },
+  ],
 })
 export class TextAreaFieldComponent
   extends BaseFormFieldComponent<string> implements AfterViewInit {
@@ -27,7 +27,7 @@ export class TextAreaFieldComponent
   /** HTML autocomplete attribute */
   @Input() autocomplete = 'off';
 
-  @ViewChild('textarea', { static: false }) textareaRef: ElementRef;
+  @ViewChild('textarea') textareaRef: ElementRef;
 
   constructor(
     injector: Injector,
@@ -51,7 +51,7 @@ export class TextAreaFieldComponent
   }
 
   protected getFocusableControl() {
-    return (<any>(this.textareaRef || {})).nativeElement;
+    return ((this.textareaRef || {}) as any).nativeElement;
   }
 
   protected getDisabledValue(): string {

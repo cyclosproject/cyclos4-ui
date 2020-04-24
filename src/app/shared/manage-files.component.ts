@@ -1,17 +1,17 @@
 import {
-  Component, ChangeDetectionStrategy, Injector, Input, Output, EventEmitter, OnInit
+  ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output,
 } from '@angular/core';
 
-import { BaseComponent } from 'app/shared/base.component';
-import { StoredFile } from 'app/api/models';
-import { BsModalRef } from 'ngx-bootstrap/modal';
 import { FormControl } from '@angular/forms';
+import { StoredFile } from 'app/api/models';
+import { BaseComponent } from 'app/shared/base.component';
 import { isEqual } from 'lodash';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 export class ManageFilesResult {
   constructor(
     public order: string[],
-    public removedFiles: string[]
+    public removedFiles: string[],
   ) { }
 }
 
@@ -21,7 +21,7 @@ export class ManageFilesResult {
 @Component({
   selector: 'manage-files',
   templateUrl: 'manage-files.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageFilesComponent extends BaseComponent implements OnInit {
 

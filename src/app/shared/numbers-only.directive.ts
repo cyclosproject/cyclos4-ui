@@ -1,19 +1,19 @@
 import { Directive, HostListener, Input } from '@angular/core';
-import { truthyAttr } from 'app/shared/helper';
 import { FormatService } from 'app/core/format.service';
+import { truthyAttr } from 'app/shared/helper';
 
 const ALLOWED = [
   'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
   'End', 'Home', 'Delete', 'Backspace', 'Tab',
   'Shift', 'Control', 'Alt', 'Super', 'Meta',
-  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 ];
 
 /**
  * A directive to only allow digits to be entered by users
  */
 @Directive({
-  selector: '[numbersOnly]'
+  selector: '[numbersOnly]',
 })
 export class NumbersOnlyDirective {
   private enabled: boolean;

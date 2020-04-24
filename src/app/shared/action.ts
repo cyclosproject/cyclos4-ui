@@ -6,7 +6,7 @@ import { Breakpoint } from 'app/shared/layout.service';
 export class Action {
   constructor(
     public label: string,
-    public onClick: (param?: any) => void
+    public onClick: (param?: any) => void,
   ) {
   }
 }
@@ -18,12 +18,11 @@ export class ActionWithIcon extends Action {
   constructor(
     public icon: string,
     label: string,
-    onClick: (param?: any) => void
+    onClick: (param?: any) => void,
   ) {
     super(label, onClick);
   }
 }
-
 
 /**
  * An action shown in the page heading.
@@ -44,11 +43,13 @@ export class HeadingAction extends ActionWithIcon {
    */
   position: 'default' | 'right' = 'default';
   breakpoint: Breakpoint;
+  subActions: Action[];
+
   constructor(
     icon: string,
     label: string,
     onClick: (param?: any) => void,
-    public maybeRoot = false
+    public maybeRoot = false,
   ) {
     super(icon, label, onClick);
   }

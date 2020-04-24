@@ -1,11 +1,11 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, Component,
-  ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges
+  ChangeDetectionStrategy, Component, ElementRef,
+  EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild,
 } from '@angular/core';
 import { Address } from 'app/api/models';
 import { AddressHelperService } from 'app/core/address-helper.service';
 import { MapsService } from 'app/core/maps.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { htmlCollectionToArray } from 'app/shared/helper';
 
 /**
  * Shows a static image for an address location
@@ -14,21 +14,24 @@ import { BehaviorSubject, Subscription } from 'rxjs';
   selector: 'static-map',
   templateUrl: 'static-map.component.html',
   styleUrls: ['static-map.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StaticMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+export class StaticMapComponent implements OnInit, OnChanges {
 
   @Input() address: Address;
   @Input() width: number | 'auto' = 'auto';
   @Input() height: number | 'auto' = 260;
 
-  url$ = new BehaviorSubject<string>(null);
+  @ViewChild('anchor', { static: true }) anchor: ElementRef<HTMLAnchorElement>;
+
+  @Output() imageLoaded = new EventEmitter();
+
   externalUrl: string;
   title: string;
   imageWidth: number;
   imageHeight: number;
   anchorHeight: string;
-  private sub: Subscription;
+  private imageLoadedNotified = false;
 
   constructor(
     private maps: MapsService,
@@ -39,22 +42,13 @@ export class StaticMapComponent implements OnInit, OnDestroy, OnChanges, AfterVi
   ngOnInit() {
     this.title = this.address.addressLine1 || this.addressHelper.addressStreet(this.address);
     this.externalUrl = this.maps.externalUrl(this.address);
-  }
-
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.update();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.width || changes.height) {
       this.update();
     }
-  }
-
-  ngAfterViewInit() {
-    this.update();
   }
 
   private update() {
@@ -98,11 +92,30 @@ export class StaticMapComponent implements OnInit, OnDestroy, OnChanges, AfterVi
 
   private doInitUrl() {
     if (this.imageWidth && this.imageHeight) {
-      this.url$.next(this.maps.staticUrl(this.address, this.imageWidth, this.imageHeight));
+      const url = this.maps.staticUrl(this.address, this.imageWidth, this.imageHeight);
+      const anchor = this.anchor.nativeElement;
+      const img = document.createElement('img');
+      img.src = url;
+      img.title = this.title;
+      img.alt = this.title;
+      if (!this.imageLoadedNotified) {
+        img.addEventListener('load', () => this.triggerImageLoaded(), false);
+        this.imageLoadedNotified = true;
+      }
+      img.style.maxWidth = `${this.imageWidth}px`;
+      img.style.maxHeight = `${this.imageHeight}px`;
+      for (const child of htmlCollectionToArray(anchor.childNodes)) {
+        anchor.removeChild(child);
+      }
+      anchor.appendChild(img);
     }
   }
 
   private get element(): HTMLElement {
     return this.el.nativeElement;
+  }
+
+  triggerImageLoaded() {
+    this.imageLoaded.emit();
   }
 }

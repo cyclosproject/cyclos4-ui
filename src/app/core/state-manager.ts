@@ -10,7 +10,7 @@ import { tap } from 'rxjs/operators';
  * Service used to navigate between pages and managing the component state
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StateManager {
 
@@ -44,7 +44,7 @@ export class StateManager {
     }
     // Save the value whenever the operator is subscribed
     return fetch.pipe(
-      tap(value => this.state.set(k, value))
+      tap(value => this.state.set(k, value)),
     );
   }
 

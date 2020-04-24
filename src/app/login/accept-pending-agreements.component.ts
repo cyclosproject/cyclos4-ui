@@ -6,8 +6,8 @@ import { LoginState } from 'app/core/login-state';
 import { RegistrationAgreementsComponent } from 'app/login/registration-agreements.component';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { Menu } from 'app/shared/menu';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 /**
  * Component shown after the user logs-in with pending agreements
@@ -15,7 +15,7 @@ import { Menu } from 'app/shared/menu';
 @Component({
   selector: 'accept-pending-agreements',
   templateUrl: 'accept-pending-agreements.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AcceptPendingAgreementsComponent
   extends BasePageComponent<Agreement[]>
@@ -27,13 +27,13 @@ export class AcceptPendingAgreementsComponent
 
   accept = new FormControl(false, Validators.requiredTrue);
   initialized = false;
-  @ViewChild('agreementsContent', { static: false }) agreementsContent: ElementRef;
+  @ViewChild('agreementsContent') agreementsContent: ElementRef;
 
   constructor(
     injector: Injector,
     private agreementsService: AgreementsService,
     private loginState: LoginState,
-    private modal: BsModalService
+    private modal: BsModalService,
   ) {
     super(injector);
   }
@@ -76,14 +76,14 @@ export class AcceptPendingAgreementsComponent
       el.innerHTML = this.i18n.pendingAgreements.agree(
         `<a href="#" onclick="event.preventDefault();event.stopPropagation();showAgreements()">
         ${this.agreements.map(a => a.name).join(', ')}
-        </a>`
+        </a>`,
       );
       window['showAgreements'] = () => {
         this.modal.show(RegistrationAgreementsComponent, {
           class: 'modal-form',
           initialState: {
-            agreements: this.agreements
-          }
+            agreements: this.agreements,
+          },
         });
       };
       this.initialized = true;

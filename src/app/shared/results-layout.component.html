@@ -9,9 +9,9 @@
     <div class="row category-results">
       <div class="category-result col-12 col-xs-6 col-sm-4"
         *ngFor="let cat of categories" [ngClass]="{
-        'col-md-3': !(layout.leftAreaVisible$ | async),
+        'col-md-3': (layout.leftAreaVisible$ | async) === false,
         'col-xl-3': layout.leftAreaVisible$ | async,
-        'col-xl-2': !(layout.leftAreaVisible$ | async)
+        'col-xl-2': (layout.leftAreaVisible$ | async) === false
       }">
         <ng-container
           *ngTemplateOutlet="categoryTemplate; context: {$implicit: cat}">
@@ -54,9 +54,9 @@
       <div class="row tiled-results">
         <div class="col-12 col-xs-6 col-sm-4" *ngFor="let row of rows"
           [ngClass]="{
-          'col-md-3': !(layout.leftAreaVisible$ | async),
+          'col-md-3': (layout.leftAreaVisible$ | async) === false,
           'col-xl-3': layout.leftAreaVisible$ | async,
-          'col-xl-2': !(layout.leftAreaVisible$ | async)
+          'col-xl-2': (layout.leftAreaVisible$ | async) === false
         }">
           <maybe-link class="tiled-result" [link]="linkUrl(row)"
             (click)="handleClick(row, $event)"
@@ -75,44 +75,11 @@
     </page-content>
   </content-monitor>
 
-  <content-monitor *ngIf="resultType === 'map'"
-    (ready)="mapLoaded ? notifyReady() : null" class="d-flex flex-grow-1"
-    [ngClass]="{'d-none': rendering$ | async}">
-    <page-content mode="fullHeightTight" last>
-      <agm-map [styles]="layout.googleMapStyles"
-        [fitBounds]="mapBounds$ | async"
-        [latitude]="maps.data?.defaultLocation?.latitude"
-        [longitude]="maps.data?.defaultLocation?.longitude"
-        [fullscreenControl]="true" [streetViewControl]="false" maxZoom="17"
-        minZoom="2" (mapClick)="closeAllInfoWindows()"
-        (mapReady)="adjustMap();">
-        <ng-container *ngFor="let row of rows">
-          <ng-container *ngIf="toAddress(row) as addr">
-            <agm-marker [title]="toMarkerTitle(row)" [iconUrl]="mainMarker"
-              [latitude]="addr.location.latitude"
-              [longitude]="addr.location.longitude"
-              (markerClick)="closeAllInfoWindows()">
-              <agm-info-window>
-                <maybe-link class="map-info-window" [link]="linkUrl(row)"
-                  (click)="handleClick(row, $event)"
-                  (keydown.enter)="handleClick(row, $event)">
-                  <ng-container
-                    *ngTemplateOutlet="infoWindowTemplate; context: {$implicit: row, address: addr}">
-                  </ng-container>
-                </maybe-link>
-              </agm-info-window>
-            </agm-marker>
-          </ng-container>
-        </ng-container>
-        <agm-marker
-          *ngIf="referencePoint?.latitude != null && referencePoint?.longitude != null"
-          [title]="referencePoint.name" [latitude]="referencePoint.latitude"
-          [longitude]="referencePoint.longitude" [iconUrl]="altMarker">
-          <agm-info-window>
-            {{ referencePoint.name }}
-          </agm-info-window>
-        </agm-marker>
-      </agm-map>
+  <content-monitor *ngIf="resultType === 'map'" (ready)="notifyReady()">
+    <page-content mode="fullHeightTight"
+      [ngClass]="{'d-none': rendering$ | async}" last>
+      <div #mapContainer class="map-container">
+      </div>
     </page-content>
   </content-monitor>
 </ng-container>
@@ -125,4 +92,14 @@
       {{ notifyReady() }}
     </page-content>
   </content-monitor>
+</ng-template>
+
+<ng-template #infoWindowContent let-row let-address="address">
+  <maybe-link class="undecorated map-info-window" [link]="linkUrl(row)"
+    (click)="handleClick(row, $event)"
+    (keydown.enter)="handleClick(row, $event)">
+    <ng-container
+      *ngTemplateOutlet="infoWindowTemplate; context: {$implicit: row, address: address}">
+    </ng-container>
+  </maybe-link>
 </ng-template>

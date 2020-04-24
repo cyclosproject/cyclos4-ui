@@ -13,8 +13,6 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-
-
 export type StockType = 'available' | 'notAvailable' | 'quantity';
 
 const IMAGE_MANAGED_TIMEOUT = 6_000;
@@ -25,7 +23,7 @@ const IMAGE_MANAGED_TIMEOUT = 6_000;
 @Component({
   selector: 'edit-ad',
   templateUrl: 'edit-ad.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditAdComponent
   extends BasePageComponent<AdDataForNew | AdDataForEdit>
@@ -72,7 +70,7 @@ export class EditAdComponent
       ? this.marketplaceService.getAdDataForNew({
         basedOnId: this.basedOnId,
         user: this.route.snapshot.params.user,
-        kind: this.kind
+        kind: this.kind,
       })
       : this.marketplaceService.getAdDataForEdit({ ad: this.id });
     this.addSub(request.subscribe(data => {
@@ -134,12 +132,12 @@ export class EditAdComponent
       version: adEdit.version,
       stockType: this.webshop ? this.resolveStockType(adManage) : null,
       id: this.id,
-      kind: this.kind
+      kind: this.kind,
     });
     this.form.addControl('addresses', this.formBuilder.control(adManage.addresses));
     this.form.addControl('deliveryMethods', this.formBuilder.control(adManage.deliveryMethods));
     this.form.addControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
-      currentValues: adManage.customValues
+      currentValues: adManage.customValues,
     }));
     this.addSub(this.form.get('currency').valueChanges.subscribe(id => {
       this.updateCurrency(id, data);
@@ -195,7 +193,7 @@ export class EditAdComponent
    */
   protected updateDeliveryMethods(data: AdBasicData) {
     this.deliveryMethods$.next(
-      data.deliveryMethods.filter(dm => dm.chargeCurrency == null || dm.chargeCurrency.id === (this.currency || {}).id)
+      data.deliveryMethods.filter(dm => dm.chargeCurrency == null || dm.chargeCurrency.id === (this.currency || {}).id),
     );
   }
 
@@ -210,8 +208,6 @@ export class EditAdComponent
     }
     return 'notAvailable';
   }
-
-
 
   /**
    * Resolves the current ad status label
@@ -233,17 +229,17 @@ export class EditAdComponent
     const value = cloneDeep(this.form.value);
 
     value.publicationPeriod = this.ApiHelper.datePeriod(value.publicationBeginDate, value.publicationEndDate);
-    delete value['publicationBeginDate'];
-    delete value['publicationEndDate'];
+    delete value.publicationBeginDate;
+    delete value.publicationEndDate;
 
     value.promotionalPeriod = value.setPromotionalPeriod ?
       this.ApiHelper.datePeriod(value.promotionalBeginDate, value.promotionalEndDate) :
       null;
-    delete value['setPromotionalPeriod'];
-    delete value['promotionalBeginDate'];
-    delete value['promotionalEndDate'];
+    delete value.setPromotionalPeriod;
+    delete value.promotionalBeginDate;
+    delete value.promotionalEndDate;
     if (value.promotionalPeriod == null) {
-      delete value['promotionalPrice'];
+      delete value.promotionalPrice;
     }
 
     if (this.webshop) {
@@ -251,7 +247,7 @@ export class EditAdComponent
       if (value.stockType !== 'quantity') {
         value.stockQuantity = null;
       }
-      delete value['stockType'];
+      delete value.stockType;
     }
 
     const onFinish: any = (id: string) => {
@@ -259,7 +255,7 @@ export class EditAdComponent
       if (insertNew) {
         this.router.navigate(['/marketplace', this.owner, this.data.kind, 'new'], {
           replaceUrl: true,
-          queryParams: { basedOnId: id || this.id }
+          queryParams: { basedOnId: id || this.id },
         });
       } else if (this.basedOnId) {
         this.router.navigate(['/marketplace', 'edit', id], { replaceUrl: true });
@@ -268,8 +264,8 @@ export class EditAdComponent
       }
     };
 
-    if (this.data.requiresAuthorization) {
-      value.submitForAuthorization = !this.self;
+    if (this.data.requiresAuthorization && this.self) {
+      value.submitForAuthorization = false;
     }
 
     if (this.create) {
@@ -278,14 +274,14 @@ export class EditAdComponent
 
       this.addSub(this.marketplaceService.createAd({
         user: this.owner,
-        body: value
+        body: value,
       }).subscribe(onFinish));
 
     } else {
 
       const updateAdReq = this.marketplaceService.updateAd({
         ad: this.id,
-        body: value
+        body: value,
       });
 
       // If the main image has changed reload the ad version
@@ -319,8 +315,8 @@ export class EditAdComponent
       class: 'modal-form',
       initialState: {
         images: this.images,
-        manageAfterConfirm: this.create
-      }
+        manageAfterConfirm: this.create,
+      },
     });
     const component = ref.content as ManageImagesComponent;
     component.result.pipe(first()).subscribe(result => {

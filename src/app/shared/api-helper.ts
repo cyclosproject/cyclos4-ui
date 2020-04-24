@@ -1,10 +1,9 @@
 import {
-  AccountWithOwner, AdminMenuEnum, Auth, Entity, Notification,
-  NotificationEntityTypeEnum, Operation, OperationScopeEnum, UserMenuEnum, DatePeriod, NotificationTypeEnum
+  AccountWithOwner, AdminMenuEnum, Auth, DatePeriod, Entity,
+  Notification, NotificationEntityTypeEnum, NotificationTypeEnum, Operation, OperationScopeEnum, UserMenuEnum, InternalNamedEntity, NamedEntity,
 } from 'app/api/models';
 import { empty } from 'app/shared/helper';
 import { ActiveMenu, Menu, RootMenu } from 'app/shared/menu';
-
 
 /**
  * Helper methods for working with API model
@@ -30,11 +29,25 @@ export class ApiHelper {
    * If the input entity is null, returns null.
    * @param entity The entity
    */
-  static internalNameOrId(entity: Entity): string {
+  static internalNameOrId(entity: Entity | InternalNamedEntity): string {
     if (entity) {
-      return entity['internalName'] || entity.id;
+      return this.isInternalNamed(entity) ? entity.internalName : entity.id;
     }
     return null;
+  }
+
+  /**
+   * Asserts that an entity has internal name
+   */
+  static isInternalNamed(entity: Entity): entity is InternalNamedEntity {
+    return (entity as InternalNamedEntity).internalName !== undefined;
+  }
+
+  /**
+   * Asserts that an entity has name
+   */
+  static is(entity: Entity): entity is NamedEntity {
+    return (entity as NamedEntity).name !== undefined;
   }
 
   /**
@@ -50,10 +63,12 @@ export class ApiHelper {
 
   /**
    * If the given value is fully numeric, escape it by prepending a single quote.
-   * This is the Cyclos' way to distinguish between ids and other keys
+   * This is the Cyclos' way to distinguish between ids and other keys.
+   * The result is never null, and is always trimmed.
    * @param value The value
    */
   static escapeNumeric(value: string): string {
+    value = (value || '').trim();
     if (/^[\-\+]?\d+$/.test(value)) {
       // The transaction number is fully numeric. Escape it to avoid clashing with id
       return `'${value}`;
@@ -120,22 +135,22 @@ export class ApiHelper {
       case NotificationEntityTypeEnum.USER:
         return {
           path: `/users/${notification.entityId}/profile`,
-          menu: new ActiveMenu(Menu.SEARCH_USERS)
+          menu: new ActiveMenu(Menu.SEARCH_USERS),
         };
       case NotificationEntityTypeEnum.TRANSACTION:
         return {
           path: `/banking/transaction/${notification.entityId}`,
-          menu: new ActiveMenu(Menu.ACCOUNT_HISTORY)
+          menu: new ActiveMenu(Menu.ACCOUNT_HISTORY),
         };
       case NotificationEntityTypeEnum.TRANSFER:
         return {
           path: `/banking/transfer/${notification.entityId}`,
-          menu: new ActiveMenu(Menu.ACCOUNT_HISTORY)
+          menu: new ActiveMenu(Menu.ACCOUNT_HISTORY),
         };
       case NotificationEntityTypeEnum.MARKETPLACE:
         return {
           path: `/marketplace/view/${notification.entityId}`,
-          menu: new ActiveMenu(Menu.SEARCH_ADS)
+          menu: new ActiveMenu(Menu.SEARCH_ADS),
         };
       case NotificationEntityTypeEnum.AD_QUESTION:
         const answer = notification.type === NotificationTypeEnum.AD_QUESTION_ANSWERED;
@@ -143,13 +158,13 @@ export class ApiHelper {
           path: answer ?
             `/marketplace/view/${notification.entityId}` :
             `/marketplace/unanswered-questions/view/${notification.entityId}`,
-          menu: new ActiveMenu(answer ? Menu.SEARCH_ADS : Menu.UNANSWERED_QUESTIONS)
+          menu: new ActiveMenu(answer ? Menu.SEARCH_ADS : Menu.UNANSWERED_QUESTIONS),
         };
       case NotificationEntityTypeEnum.ORDER:
         return {
           path: `/marketplace/order/${notification.entityId}`,
           menu: new ActiveMenu(ApiHelper.isBuyerOrderNotification(notification.type) ?
-            Menu.PURCHASES : Menu.SALES)
+            Menu.PURCHASES : Menu.SALES),
         };
     }
   }
@@ -210,7 +225,7 @@ export class ApiHelper {
    */
   static menuForOwnerOperation(operation: Operation): Menu {
     const possibleMenus = [
-      Menu.RUN_OPERATION_BANKING, Menu.RUN_OPERATION_MARKETPLACE, Menu.RUN_OPERATION_PERSONAL
+      Menu.RUN_OPERATION_BANKING, Menu.RUN_OPERATION_MARKETPLACE, Menu.RUN_OPERATION_PERSONAL,
     ];
     let menu: Menu = Menu.RUN_OPERATION_BANKING; // Default to the most probable menu
     if (operation.scope === OperationScopeEnum.SYSTEM) {

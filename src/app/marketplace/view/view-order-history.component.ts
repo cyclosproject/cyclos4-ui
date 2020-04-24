@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { OrderView, OrderStatusEnum } from 'app/api/models';
+import { OrderStatusEnum, OrderView } from 'app/api/models';
 import { OrdersService } from 'app/api/services';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { Menu } from 'app/shared/menu';
 
 @Component({
   selector: 'view-order-history',
   templateUrl: 'view-order-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewOrderHistoryComponent extends BaseViewPageComponent<OrderView> implements OnInit {
 

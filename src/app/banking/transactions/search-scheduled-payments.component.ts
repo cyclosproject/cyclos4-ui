@@ -9,7 +9,7 @@ import { Menu } from 'app/shared/menu';
 @Component({
   selector: 'search-scheduled-payments',
   templateUrl: 'search-scheduled-payments.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchScheduledPaymentsComponent
   extends BaseTransactionsSearch implements OnInit {
@@ -32,7 +32,7 @@ export class SearchScheduledPaymentsComponent
     const statuses = Object.values(ScheduledPaymentStatusEnum) as ScheduledPaymentStatusEnum[];
     return statuses.map(st => ({
       value: st,
-      text: this.transactionStatusService.scheduledPaymentStatus(st)
+      text: this.transactionStatusService.scheduledPaymentStatus(st),
     }));
   }
 

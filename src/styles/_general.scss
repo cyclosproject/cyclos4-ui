@@ -79,6 +79,18 @@ hr {
   transition: opacity 0.3s;
 }
 
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ellipsis-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 body.dark {
   hr {
     border-color: $border-color-dark;
@@ -180,5 +192,15 @@ body.dark {
   }
   hr {
     border-color: black !important;
+  }
+  ngx-gallery {
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+  .ngx-gallery-icon {
+    display: none !important;
+  }
+  .ngx-gallery-thumbnail {
+    border: none !important;
   }
 }

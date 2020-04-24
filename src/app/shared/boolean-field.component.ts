@@ -1,6 +1,6 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Host, Input,
-  Optional, Output, SkipSelf, ViewChild, Injector
+  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Host, Injector,
+  Input, Optional, Output, SkipSelf, ViewChild,
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
@@ -15,8 +15,8 @@ import { LayoutService } from 'app/shared/layout.service';
   styleUrls: ['boolean-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: BooleanFieldComponent, multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: BooleanFieldComponent, multi: true },
+  ],
 })
 export class BooleanFieldComponent
   extends BaseFormFieldComponent<boolean | string> {
@@ -24,7 +24,7 @@ export class BooleanFieldComponent
   /** Whether the value type is boolean or string */
   @Input() type: 'boolean' | 'string' = 'boolean';
   @Output() click = new EventEmitter<Event>();
-  @ViewChild('checkbox', { static: false }) checkbox: ElementRef;
+  @ViewChild('checkbox') checkbox: ElementRef;
 
   constructor(
     injector: Injector,

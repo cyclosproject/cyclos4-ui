@@ -18,7 +18,7 @@ export type BuyVouchersStep = 'select-type' | 'form' | 'confirm';
 @Component({
   selector: 'buy-vouchers',
   templateUrl: 'buy-vouchers.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
   implements OnInit {
@@ -60,7 +60,7 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
 
     this.addSub(
       this.voucherService.getVoucherDataForBuy({ user: this.user })
-        .subscribe(data => this.data = data)
+        .subscribe(data => this.data = data),
     );
   }
 
@@ -95,7 +95,7 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
     const params = {
       user: this.user,
       confirmationPassword: this.confirmationPasswordInput ? this.confirmationPassword.value : null,
-      body: body
+      body,
     };
     this.addSub(
       this.voucherService.buyVouchers(params)
@@ -106,7 +106,7 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
             this.router.navigate(['banking', this.user, 'vouchers', 'bought']);
           }
           this.notification.snackBar(this.i18n.voucher.buy.done);
-        })
+        }),
     );
   }
 
@@ -127,7 +127,7 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
         this.dataTypeForBuy = data;
         this.buildForm();
         this.step = 'form';
-      })
+      }),
     );
   }
 

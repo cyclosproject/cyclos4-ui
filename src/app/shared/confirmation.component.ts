@@ -20,7 +20,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
   // tslint:disable-next-line:component-selector
   selector: 'confirmation',
   templateUrl: 'confirmation.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmationComponent implements OnInit, OnDestroy {
 
@@ -51,7 +51,7 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
     private fieldHelper: FieldHelperService,
     private authHelper: AuthHelperService,
     private shortcut: ShortcutService,
-    nextRequestState: NextRequestState
+    nextRequestState: NextRequestState,
   ) {
     this.requesting$ = nextRequestState.requesting$;
   }
@@ -89,7 +89,7 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
     let value: ConfirmCallbackParams;
     if (this.hasForm) {
       if (confirmationPassword) {
-        this.form.patchValue({ confirmationPassword: confirmationPassword });
+        this.form.patchValue({ confirmationPassword });
       }
       if (!validateBeforeSubmit(this.form)) {
         return;

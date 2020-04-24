@@ -23,7 +23,7 @@ export const MAX_SIZE_SHORT_NAME = 25;
   selector: 'view-profile',
   templateUrl: 'view-profile.component.html',
   styleUrls: ['view-profile.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewProfileComponent extends BaseViewPageComponent<UserView> implements OnInit {
   constructor(
@@ -103,6 +103,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const scheduledPayments = permissions.scheduledPayments || {};
     const authorizedPayments = permissions.authorizedPayments || {};
     const marketplace = permissions.marketplace || {};
+    const simpleAds = marketplace.simple || {};
     const webshop = marketplace.webshop || {};
     const notificationSettings = permissions.notificationSettings || {};
     const status = permissions.status || {};
@@ -125,7 +126,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
         UserRelationshipEnum.ADMINISTRATOR,
         UserRelationshipEnum.BROKER,
         UserRelationshipEnum.OWNER,
-        UserRelationshipEnum.SAME_OWNER
+        UserRelationshipEnum.SAME_OWNER,
       ].includes(user.relationship);
       for (const accountType of accountTypes) {
         this.bankingActions.push(new HeadingAction('account_balance', this.i18n.user.profile.viewAccount(accountType.name), () => {
@@ -243,22 +244,22 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/banking', ApiHelper.SELF, 'payment', this.param]);
         }));
       }
-      if (marketplace.simple.view) {
+      if (simpleAds.view) {
         actions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewAds, () => {
           this.router.navigate(['/marketplace', this.param, AdKind.SIMPLE, 'list']);
         }));
       }
-      if (marketplace.webshop.view) {
+      if (webshop.view) {
         actions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewWebshop, () => {
           this.router.navigate(['/marketplace', this.param, AdKind.WEBSHOP, 'list']);
         }));
       }
-      if (marketplace.webshop.viewPurchases) {
+      if (webshop.viewPurchases) {
         this.managementActions.push(new HeadingAction('shop_two', this.i18n.user.profile.purchases, () => {
           this.router.navigate(['/marketplace', this.param, 'purchases']);
         }));
       }
-      if (marketplace.webshop.viewSales) {
+      if (webshop.viewSales) {
         this.managementActions.push(new HeadingAction('local_offer', this.i18n.user.profile.sales, () => {
           this.router.navigate(['/marketplace', this.param, 'sales']);
         }));
@@ -315,8 +316,8 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     this.addSub(this.contactsService.createContact({
       user: ApiHelper.SELF,
       body: {
-        contact: this.user.id
-      }
+        contact: this.user.id,
+      },
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.user.profile.addContactDone(this.shortName));
       this.reload();

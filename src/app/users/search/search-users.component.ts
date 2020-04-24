@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  Country, CustomFieldDetailed, RoleEnum, UserAddressResultEnum, UserDataForMap,
-  UserDataForSearch, User, UserQueryFilters
+  Country, CustomFieldDetailed, RoleEnum, User, UserAddressResultEnum,
+  UserDataForMap, UserDataForSearch, UserQueryFilters,
 } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { UsersService } from 'app/api/services';
@@ -10,15 +10,15 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { MaxDistance } from 'app/shared/max-distance';
+import { Menu } from 'app/shared/menu';
 import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Menu } from 'app/shared/menu';
 
 export enum UserSearchKind {
   Public,
   Member,
   Admin,
-  Broker
+  Broker,
 }
 
 /**
@@ -27,7 +27,7 @@ export enum UserSearchKind {
 @Component({
   selector: 'search-users',
   templateUrl: 'search-users.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchUsersComponent
   extends BaseSearchPageComponent<UserDataForSearch | UserDataForMap, UserQueryFilters, UserResult> implements OnInit {
@@ -51,25 +51,12 @@ export class SearchUsersComponent
   basicField$ = new BehaviorSubject<CustomFieldDetailed>(null);
   advancedFields$ = new BehaviorSubject<CustomFieldDetailed[]>([]);
 
-  // As the custom fields are dynamically fetched, and form.setControl doesn't have a way to avoid emitting the value.
-  // Hence, we need to avoid the extra page update manually.
-  // See https://github.com/angular/angular/issues/20439
-  private ignoreNextUpdate = false;
-
   constructor(
     injector: Injector,
     private usersService: UsersService,
-    private countriesResolve: CountriesResolve
+    private countriesResolve: CountriesResolve,
   ) {
     super(injector);
-  }
-
-  shouldUpdateOnChange(value: any): boolean {
-    if (this.ignoreNextUpdate) {
-      this.ignoreNextUpdate = false;
-      return false;
-    }
-    return super.shouldUpdateOnChange(value);
   }
 
   protected getFormControlNames() {
@@ -77,6 +64,10 @@ export class SearchUsersComponent
   }
 
   getInitialResultType() {
+    const fromConfig = this.layout.getBreakpointConfiguration('defaultUsersResultType') as ResultType;
+    if (fromConfig && this.allowedResultTypes.includes(fromConfig)) {
+      return fromConfig;
+    }
     return this.layout.xxs ? ResultType.LIST : ResultType.TILES;
   }
 
@@ -143,7 +134,15 @@ export class SearchUsersComponent
 
     this.countries$ = this.countriesResolve.data;
 
+    this.resultType = this.getInitialResultType();
     this.onResultTypeChanged(this.resultType, null);
+  }
+
+  /**
+   * Never update automatically on result type change - we'll do it manually
+   */
+  shouldUpdateOnResultTypeChange() {
+    return false;
   }
 
   protected onResultTypeChanged(resultType: ResultType, previousResultType: ResultType) {
@@ -164,19 +163,24 @@ export class SearchUsersComponent
         data.fieldsInList = ['display'];
       }
       const fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
-      // See the comment on ignoreNextUpdate
-      this.ignoreNextUpdate = true;
-      this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(fieldsInSearch, {
-        useDefaults: false
-      }));
-      this.ignoreNextUpdate = false;
-      this.basicField$.next(fieldsInSearch.length === 0 ? null : fieldsInSearch[0]);
-      this.advancedFields$.next(fieldsInSearch.length > 1 ? fieldsInSearch.slice(1) : []);
-      if (!this.broker && data.broker) {
-        this.broker = data.broker;
-      }
-      this.data = data;
-      this.headingActions = empty(this.advancedFields$.value) ? [] : [this.moreFiltersAction];
+      this.doIgnoringUpdate(() => {
+        this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(fieldsInSearch, {
+          useDefaults: false,
+        }));
+        this.basicField$.next(fieldsInSearch.length === 0 ? null : fieldsInSearch[0]);
+        this.advancedFields$.next(fieldsInSearch.length > 1 ? fieldsInSearch.slice(1) : []);
+        if (!this.broker && data.broker) {
+          this.broker = data.broker;
+        }
+        this.data = data;
+        this.headingActions = [
+          ...empty(this.advancedFields$.value) ? [] : [this.moreFiltersAction],
+          ...this.exportHelper.headingActions(this.data.exportFormats, f => this.usersService.exportUsers$Response({
+            format: f.internalName,
+            ...this.toSearchParams(this.form.value)
+          }))
+        ];
+      });
     };
 
     if (this.data == null) {
@@ -189,7 +193,8 @@ export class SearchUsersComponent
       } else {
         // Get the data for regular user search
         this.stateManager.cache('dataForSearch', this.usersService.getUserDataForSearch({
-          broker: this.kind === UserSearchKind.Broker ? this.param : null
+          fromMenu: true,
+          broker: this.kind === UserSearchKind.Broker ? this.param : null,
         })).subscribe(setData);
       }
     }
@@ -209,6 +214,7 @@ export class SearchUsersComponent
     }
     // When searching as manager (admin / broker) the map is a simple map view, not the "map directory"
     const isMap = this.resultType === ResultType.MAP;
+    filters.fromMenu = true;
     if (isMap) {
       filters.pageSize = 99999;
       filters.addressResult = UserAddressResultEnum.ALL;

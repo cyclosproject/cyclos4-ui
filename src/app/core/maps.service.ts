@@ -1,34 +1,40 @@
 /// <reference types="@types/googlemaps" />
 
 import { Injectable } from '@angular/core';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { MapData, GeographicalCoordinate, AddressManage } from 'app/api/models';
-import { Observable, of, from } from 'rxjs';
-import { MapsAPILoader, MapTypeStyle } from '@agm/core';
-import { empty, blank } from 'app/shared/helper';
-import { mergeMap } from 'rxjs/operators';
-import { Address } from 'app/api/models';
-import { LayoutService } from 'app/shared/layout.service';
+import { Loader } from '@googlemaps/loader';
+import { Address, AddressManage, GeographicalCoordinate, MapData } from 'app/api/models';
 import { Configuration } from 'app/configuration';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { blank, empty } from 'app/shared/helper';
+import { LayoutService } from 'app/shared/layout.service';
+import { from, Observable, of, timer } from 'rxjs';
+import { filter, first, switchMap, take } from 'rxjs/operators';
 
-const STATIC_URL = 'https://maps.googleapis.com/maps/api/staticmap';
-const EXTERNAL_URL = 'https://www.google.com/maps/search/?api=1';
-
+const StaticUrl = 'https://maps.googleapis.com/maps/api/staticmap';
+const ExternalUrl = 'https://www.google.com/maps/search/?api=1';
+const MarkerClustererPlusUrl = 'https://unpkg.com/@google/markerclustererplus@5.0.3/dist/markerclustererplus.min.js';
 
 /**
  * Helper classes to work with Google Maps
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MapsService {
+
   private geocoder: google.maps.Geocoder;
   private geocoderCache = new Map<string, GeographicalCoordinate>();
+  private _data: MapData;
+  private loader: Loader;
+  private markerClustererPlusStatus: 'none' | 'loading' | 'loaded' = 'none';
 
   constructor(
     private dataForUiHolder: DataForUiHolder,
-    private mapsAPILoader: MapsAPILoader,
     private layout: LayoutService) {
+    this.dataForUiHolder.subscribe(dataForUi => this._data = dataForUi.mapData);
+    if (dataForUiHolder.dataForUi) {
+      this._data = dataForUiHolder.dataForUi.mapData;
+    }
   }
 
   /**
@@ -43,8 +49,7 @@ export class MapsService {
    * Returns the map data
    */
   get data(): MapData {
-    const dataForUi = this.dataForUiHolder.dataForUi;
-    return dataForUi == null ? null : dataForUi.mapData;
+    return this._data;
   }
 
   /**
@@ -55,11 +60,9 @@ export class MapsService {
     if (!this.enabled || fields == null) {
       return of(null);
     }
-    if (this.geocoder != null) {
-      return this.doGeocode(fields);
-    }
-    return from(this.mapsAPILoader.load()).pipe(
-      mergeMap(() => this.doGeocode(fields))
+    return this.ensureScriptLoaded().pipe(
+      first(),
+      switchMap(() => this.doGeocode(fields)),
     );
   }
 
@@ -76,7 +79,7 @@ export class MapsService {
     }
     const key = this.data.googleMapsApiKey;
     const scale = (window.devicePixelRatio || 0) >= 2 ? 2 : 1;
-    return `${STATIC_URL}?size=${width}x${height}&scale=${scale}&zoom=15`
+    return `${StaticUrl}?size=${width}x${height}&scale=${scale}&zoom=15`
       + `&markers=icon:${Configuration.mainMapMarker}|${coords.latitude},${coords.longitude}&key=${key}`
       + this.styles();
   }
@@ -86,7 +89,7 @@ export class MapsService {
     if (empty(mapStyles)) {
       return '';
     }
-    const toStyle = (s: MapTypeStyle) => {
+    const toStyle = (s: google.maps.MapTypeStyle) => {
       const parts: string[] = [];
       if (s.featureType) {
         parts.push(`feature:${s.featureType}`);
@@ -121,7 +124,7 @@ export class MapsService {
     if (coords == null) {
       return null;
     }
-    return `${EXTERNAL_URL}&query=${coords.latitude},${coords.longitude}`;
+    return `${ExternalUrl}&query=${coords.latitude},${coords.longitude}`;
   }
 
   private coords(location: Address | GeographicalCoordinate): GeographicalCoordinate {
@@ -145,7 +148,7 @@ export class MapsService {
         a.city,
         a.zip,
         a.region,
-        a.country
+        a.country,
       ];
     }
     fields = (fields || []).filter(f => !empty(f));
@@ -164,7 +167,7 @@ export class MapsService {
 
     const req: google.maps.GeocoderRequest = {
       region: this.dataForUiHolder.dataForUi.country,
-      address: query
+      address: query,
     };
     return new Observable(observer => {
       this.geocoder.geocode(req, (results, status) => {
@@ -189,4 +192,62 @@ export class MapsService {
     });
   }
 
+  /**
+   * Instantiates a new google map in the given container element
+   */
+  newGoogleMap(container: HTMLElement) {
+    return new google.maps.Map(container, {
+      mapTypeControl: false,
+      streetViewControl: false,
+      gestureHandling: this.layout.ltsm ? 'cooperative' : 'greedy',
+      minZoom: 2,
+      maxZoom: 17,
+      styles: this.layout.googleMapStyles,
+    });
+  }
+
+  /**
+   * Returns an `Observable` that emits when the google maps script is fully loaded
+   */
+  ensureScriptLoaded(): Observable<void> {
+    if (this.loader == null) {
+      this.loader = new Loader({
+        apiKey: this.data.googleMapsApiKey,
+      });
+    }
+    return from(this.loader.loadPromise()).pipe(
+      switchMap(() => {
+        switch (this.markerClustererPlusStatus) {
+          case 'none':
+            this.markerClustererPlusStatus = 'loading';
+            return new Observable(obs => {
+              const script = document.createElement('script');
+              script.type = 'text/javascript';
+              script.src = MarkerClustererPlusUrl;
+              script.async = true;
+              script.onload = () => {
+                this.markerClustererPlusStatus = 'loaded';
+                obs.next(null);
+                obs.complete();
+              };
+              script.onerror = e => {
+                obs.error(e);
+                obs.complete();
+                this.markerClustererPlusStatus = 'none';
+              };
+              document.head.appendChild(script);
+            });
+          case 'loading':
+            // In the process of loading. Wait unti it is available
+            return timer(100).pipe(
+              filter(() => !!window['MarkerClusterer']),
+              take(1),
+            );
+          case 'loaded':
+            // Already loaded
+            return of(null);
+        }
+      }),
+    );
+  }
 }

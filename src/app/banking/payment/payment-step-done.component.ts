@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { Transaction, TransactionAuthorizationStatusEnum } from 'app/api/models';
+import { PaymentComponent } from 'app/banking/payment/payment.component';
 import { BaseComponent } from 'app/shared/base.component';
 import { Enter } from 'app/shared/shortcut.service';
-import { PaymentComponent } from 'app/banking/payment/payment.component';
-
 
 /**
  * Payment final step
@@ -11,7 +10,7 @@ import { PaymentComponent } from 'app/banking/payment/payment.component';
 @Component({
   selector: 'payment-step-done',
   templateUrl: 'payment-step-done.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentStepDoneComponent extends BaseComponent implements OnInit {
 
@@ -20,7 +19,7 @@ export class PaymentStepDoneComponent extends BaseComponent implements OnInit {
   message: string;
 
   constructor(injector: Injector,
-    private performPayment: PaymentComponent) {
+              private performPayment: PaymentComponent) {
     super(injector);
   }
 

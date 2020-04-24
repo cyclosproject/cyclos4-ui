@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, ElementRef, AfterViewInit } from '@angular/core';
-import { Image, Address } from 'app/api/models';
+import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input } from '@angular/core';
+import { Address, Image } from 'app/api/models';
 
 /**
  * A result when result type is map.
@@ -7,18 +7,33 @@ import { Image, Address } from 'app/api/models';
 @Component({
   selector: 'map-result',
   templateUrl: 'map-result.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MapResultComponent implements AfterViewInit {
+export class MapResultComponent implements AfterViewInit, AfterViewChecked {
 
   @Input() image: Image;
   @Input() address: Address;
+  classAdded = false;
 
   constructor(private element: ElementRef) {
   }
 
   ngAfterViewInit() {
+    this.maybeAssignParentClass();
+  }
+
+  ngAfterViewChecked() {
+    this.maybeAssignParentClass();
+  }
+
+  private maybeAssignParentClass() {
+    if (this.classAdded) {
+      return;
+    }
     const element = this.element.nativeElement as HTMLElement;
-    element.parentElement.classList.add('map-info-window');
+    if (element.parentElement) {
+      element.parentElement.classList.add('map-info-window');
+    }
+    this.classAdded = true;
   }
 }

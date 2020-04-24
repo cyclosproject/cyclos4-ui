@@ -2,17 +2,27 @@
   <page-content *ngSwitchCase="'form'" [heading]="i18n.voucher.title.redeem"
     [mobileHeading]="i18n.voucher.mobileTitle.redeem"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
-    <ng-container *ngIf="(data$ | async); else loading">
+    <div *ngIf="(data$ | async); else loading">
       <ng-container [ngTemplateOutlet]="active_user"></ng-container>
-      <div class="d-flex flex-grow-1 flex-column">
-        <input-field type="text" [label]="i18n.voucher.token" [mask]="mask"
-          [formControl]="token" [placeholder]="mask" required></input-field>
+      <div class="d-flex flex-grow-1">
+        <div class="flex-grow-1">
+          <label-value kind="field" [label]="i18n.voucher.token">
+            <input-field #inputField type="text" focused [mask]="mask"
+              [formControl]="token" [placeholder]="mask" required>
+            </input-field>
+            <button *extraCell class="btn btn-icon" #scanQrCodeButton
+              [tooltip]="i18n.field.user.scanQrCodeTooltip"
+              (click)="showScanQrCode()">
+              <icon icon="scan_qr_code"></icon>
+            </button>
+          </label-value>
+        </div>
       </div>
       <actions>
         <button class="btn btn-primary" [disabled]="requesting$ | async"
           (click)="submit()">{{ i18n.general.submit }}</button>
       </actions>
-    </ng-container>
+    </div>
   </page-content>
   <page-content *ngSwitchCase="'confirm'"
     [heading]="i18n.voucher.title.redeem"

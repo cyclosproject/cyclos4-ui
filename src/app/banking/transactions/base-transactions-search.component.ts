@@ -1,7 +1,7 @@
-import { Injector, OnInit } from '@angular/core';
+import { Directive, Injector, OnInit } from '@angular/core';
 import {
   Currency, Image, RecurringPaymentStatusEnum, TransactionDataForSearch,
-  TransactionKind, TransactionQueryFilters, TransactionResult, TransferFilter
+  TransactionKind, TransactionQueryFilters, TransactionResult, TransferFilter,
 } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -17,6 +17,7 @@ export type TransactionSearchParams = TransactionQueryFilters & {
 /**
  * Base implementation for pages that search for transaction
  */
+@Directive()
 export abstract class BaseTransactionsSearch
   extends BaseSearchPageComponent<TransactionDataForSearch, TransactionSearchParams, TransactionResult>
   implements OnInit {
@@ -51,8 +52,8 @@ export abstract class BaseTransactionsSearch
     this.stateManager.cache('data',
       this.transactionsService.getTransactionsDataForSearch({
         owner: this.param,
-        fields: ['user', 'accountTypes', 'visibleKinds', 'transferFilters', 'preselectedPeriods', 'query']
-      })
+        fields: ['user', 'accountTypes', 'visibleKinds', 'transferFilters', 'preselectedPeriods', 'query'],
+      }),
     ).subscribe(data => {
       this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
 
@@ -75,9 +76,15 @@ export abstract class BaseTransactionsSearch
       const filters = this.data.transferFilters.filter(tf => tf.accountType.id === at);
       this.transferFilters$.next(filters);
     }));
+  }
 
-    this.printable = true;
-    this.headingActions = [this.printAction];
+  onDataInitialized(data: TransactionDataForSearch) {
+    super.onDataInitialized(data);
+    this.headingActions = this.exportHelper.headingActions(data.exportFormats,
+      f => this.transactionsService.exportTransactions$Response({
+        format: f.internalName,
+        ...this.toSearchParams(this.form.value)
+      }));
   }
 
   /**
@@ -162,7 +169,7 @@ export abstract class BaseTransactionsSearch
           if (firstOpen) {
             return this.i18n.transaction.schedulingStatus.openInstallments({
               count: String(count),
-              dueDate: this.format.formatAsDate(firstOpen.dueDate)
+              dueDate: this.format.formatAsDate(firstOpen.dueDate),
             });
           } else {
             return this.i18n.transaction.schedulingStatus.closedInstallments(String(count));

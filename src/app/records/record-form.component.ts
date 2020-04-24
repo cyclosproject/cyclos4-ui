@@ -1,20 +1,20 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { BasePageComponent } from 'app/shared/base-page.component';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import {
-  RecordDataForEdit, RecordDataForNew, RecordCustomField, RecordCustomFieldDetailed,
-  RecordSection, RecordLayoutEnum
+  RecordCustomField, RecordCustomFieldDetailed, RecordDataForEdit, RecordDataForNew,
+  RecordLayoutEnum, RecordSection,
 } from 'app/api/models';
 import { RecordsService } from 'app/api/services';
-import { Observable } from 'rxjs';
-import { FormGroup } from '@angular/forms';
 import { RecordHelperService } from 'app/core/records-helper.service';
-import { validateBeforeSubmit, empty } from 'app/shared/helper';
+import { BasePageComponent } from 'app/shared/base-page.component';
+import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { cloneDeep } from 'lodash';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'record-form',
   templateUrl: 'record-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | RecordDataForNew> implements OnInit {
 
@@ -26,7 +26,6 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
   form: FormGroup;
   fieldsWithoutSection: Array<RecordCustomFieldDetailed>;
   fieldsWithSection = new Map<RecordSection, RecordCustomFieldDetailed[]>();
-
 
   constructor(
     injector: Injector,
@@ -65,11 +64,11 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
     // Set the custom fields control
     this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.fields, {
       currentValues: data.record.customValues,
-      disabledProvider: cf => !this.create && ((data as RecordDataForEdit).editableFields || []).indexOf(cf.internalName) === -1
+      disabledProvider: cf => !this.create && ((data as RecordDataForEdit).editableFields || []).indexOf(cf.internalName) === -1,
     }));
   }
 
-  resolveColumnClass(field: RecordCustomField): String {
+  resolveColumnClass(field: RecordCustomField): string {
     return this.recordsHelper.resolveColumnClass(field, this.data.type);
   }
 

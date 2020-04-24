@@ -15,7 +15,7 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
     const origVal = parent.get('newPassword') == null ? '' : parent.get('newPassword').value;
     if (origVal !== currVal) {
       return {
-        passwordsMatch: true
+        passwordsMatch: true,
       };
     }
   }
@@ -30,7 +30,7 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
 @Component({
   selector: 'change-forgotten-password',
   templateUrl: 'change-forgotten-password.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangeForgottenPasswordComponent
   extends BasePageComponent<DataForChangeForgottenPassword>
@@ -41,11 +41,11 @@ export class ChangeForgottenPasswordComponent
   constructor(
     injector: Injector,
     private authService: AuthService,
-    private loginState: LoginState
+    private loginState: LoginState,
   ) {
     super(injector);
     this.form = this.formBuilder.group({
-      key: ['', Validators.required]
+      key: ['', Validators.required],
     });
   }
 
@@ -57,8 +57,8 @@ export class ChangeForgottenPasswordComponent
       return;
     }
     const key = this.route.snapshot.params.key;
-    this.form.patchValue({ key: key });
-    this.addSub(this.authService.getDataForChangeForgottenPassword({ key: key }).subscribe(data => {
+    this.form.patchValue({ key });
+    this.addSub(this.authService.getDataForChangeForgottenPassword({ key }).subscribe(data => {
       this.data = data;
       if (data.securityQuestion) {
         this.form.setControl('securityAnswer', this.formBuilder.control('', Validators.required));

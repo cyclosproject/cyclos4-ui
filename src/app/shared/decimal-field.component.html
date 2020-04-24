@@ -5,20 +5,32 @@
 
 <ng-template #widget>
   <div class="input-group">
-    <div class="input-group-prepend" *ngIf="prefix">
-      <span class="input-group-text">{{ prefix }}</span>
-    </div>
-    <!-- Using type="tel" instead of "number" because maxLength doesn't work with type="number" -->
-    <input #inputField [id]="id" type="tel" numbersOnly allowDecimalSeparator
-      autocomplete="off" [formControl]="internalControl" class="form-control"
-      [placeholder]="format.formatAsNumber('0', scale)" (blur)="onBlur()"
-      [ngClass]="{
+    <single-selection-field *ngIf="(useCustom$ | async) === false"
+      [formControl]="fixedValuesControl">
+      <field-option *ngFor="let value of fixedValues" [value]="value"
+        [id]="value" [text]="value"></field-option>
+      <field-option value="custom" id="custom" [text]="customValueLabel">
+      </field-option>
+    </single-selection-field>
+    <ng-container *ngIf="((useCustom$ | async)) || useCustom">
+      <div class="input-group-prepend" *ngIf="prefix">
+        <span class="input-group-text">{{ prefix }}</span>
+      </div>
+      <!-- Using type="tel" instead of "number" because maxLength doesn't work with type="number" -->
+      <input #inputField [id]="id" type="tel" numbersOnly
+        allowDecimalSeparator autocomplete="off"
+        [formControl]="internalControl" class="form-control"
+        [placeholder]="format.formatAsNumber('0', scale)" (blur)="onBlur()"
+        [ngClass]="{
         'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched,
         'text-right': textRight
       }">
-    <div class="input-group-append" *ngIf="suffix">
-      <span class="input-group-text">{{ suffix }}</span>
-    </div>
+      <div class="input-group-append" *ngIf="suffix">
+        <span class="input-group-text">{{ suffix }}</span>
+      </div>
+    </ng-container>
   </div>
-  <field-errors [control]="formControl"></field-errors>
+  <field-errors
+    [control]="((useCustom$ | async) || fixedValuesControl == null) ? formControl : fixedValuesControl">
+  </field-errors>
 </ng-template>

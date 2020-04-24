@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { AdAddressResultEnum, AdOrderByEnum, AdResult } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
-import { BehaviorSubject } from 'rxjs';
-import { Menu, ActiveMenu } from 'app/shared/menu';
 import { HeadingAction } from 'app/shared/action';
+import { ActiveMenu, Menu } from 'app/shared/menu';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Displays the latest advertisements
@@ -13,7 +13,7 @@ import { HeadingAction } from 'app/shared/action';
   selector: 'latest-ads',
   templateUrl: 'latest-ads.component.html',
   styleUrls: ['latest-ads.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LatestAdsComponent extends BaseDashboardComponent implements OnInit {
 
@@ -24,7 +24,7 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
   ads$ = new BehaviorSubject<AdResult[]>(null);
 
   constructor(injector: Injector,
-    private marketplaceService: MarketplaceService) {
+              private marketplaceService: MarketplaceService) {
     super(injector);
   }
 
@@ -40,9 +40,9 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
         event => this.menu.navigate({
           menu: new ActiveMenu(Menu.SEARCH_ADS),
           clear: false,
-          event: event
+          event,
         }),
-        true)
+        true),
     ];
 
     this.addSub(this.marketplaceService.searchAds({
@@ -52,7 +52,7 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
       orderBy: AdOrderByEnum.DATE,
       fields: ['id', 'owner', 'image', 'name'],
       pageSize: this.max,
-      skipTotalCount: true
+      skipTotalCount: true,
     }).subscribe(ads => {
       this.ads$.next(ads);
     }));
@@ -67,7 +67,7 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
       url: this.path(ad),
       menu: new ActiveMenu(Menu.SEARCH_ADS),
       clear: false,
-      event: event
+      event,
     });
   }
 
@@ -76,7 +76,7 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
       url: `/users/${ad.user.id}/profile`,
       menu: new ActiveMenu(Menu.SEARCH_USERS),
       clear: false,
-      event: event
+      event,
     });
   }
 }

@@ -10,7 +10,7 @@ import { Menu } from 'app/shared/menu';
 @Component({
   selector: 'search-authorized-payments',
   templateUrl: 'search-authorized-payments.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchAuthorizedPaymentsComponent
   extends BaseTransactionsSearch implements OnInit {
@@ -22,7 +22,7 @@ export class SearchAuthorizedPaymentsComponent
   getKinds() {
     return [
       TransactionKind.PAYMENT, TransactionKind.ORDER,
-      TransactionKind.SCHEDULED_PAYMENT, TransactionKind.RECURRING_PAYMENT
+      TransactionKind.SCHEDULED_PAYMENT, TransactionKind.RECURRING_PAYMENT,
     ];
   }
 
@@ -36,7 +36,7 @@ export class SearchAuthorizedPaymentsComponent
     const statuses = Object.values(TransactionAuthorizationStatusEnum) as TransactionAuthorizationStatusEnum[];
     return statuses.map(st => ({
       value: st,
-      text: this.transactionStatusService.authorizationStatus(st)
+      text: this.transactionStatusService.authorizationStatus(st),
     }));
   }
 

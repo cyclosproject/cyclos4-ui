@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { UserOperatorGroupsListData, EntityReference } from 'app/api/models';
+import { EntityReference, UserOperatorGroupsListData } from 'app/api/models';
 import { OperatorGroupsService } from 'app/api/services';
-import { BasePageComponent } from 'app/shared/base-page.component';
 import { HeadingAction } from 'app/shared/action';
+import { BasePageComponent } from 'app/shared/base-page.component';
 import { Menu } from 'app/shared/menu';
 
 /**
@@ -11,7 +11,7 @@ import { Menu } from 'app/shared/menu';
 @Component({
   selector: 'list-operator-groups',
   templateUrl: 'list-operator-groups.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListOperatorGroupsComponent
   extends BasePageComponent<UserOperatorGroupsListData>
@@ -43,7 +43,7 @@ export class ListOperatorGroupsComponent
       this.headingActions = [
         new HeadingAction('add', this.i18n.general.addNew, () => {
           this.router.navigate(['/users', this.param, 'operator-groups', 'new']);
-        }, true)
+        }, true),
       ];
     }
   }
@@ -59,7 +59,7 @@ export class ListOperatorGroupsComponent
   remove(group: EntityReference) {
     this.notification.confirm({
       message: this.i18n.general.removeConfirm(group.name),
-      callback: () => this.doRemove(group)
+      callback: () => this.doRemove(group),
     });
   }
 

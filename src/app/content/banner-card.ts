@@ -1,5 +1,5 @@
 import { Banner } from 'app/content/banner';
-import { RootMenu, Menu } from 'app/shared/menu';
+import { Menu, RootMenu } from 'app/shared/menu';
 import { Observable } from 'rxjs';
 
 /**

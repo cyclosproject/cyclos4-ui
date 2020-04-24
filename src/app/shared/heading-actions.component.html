@@ -32,7 +32,7 @@
   </div>
 </ng-container>
 <ng-template #rootActions>
-  <!-- When we group actions or we're no mobile, show the gray buttons -->
+  <!-- When we group actions or we're on mobile, show the gray buttons -->
   <div
     *ngIf="(groupActions$ | async) || (layout.ltsm$ | async); else plainButtons"
     class="d-flex heading-actions">
@@ -47,11 +47,7 @@
 <ng-template #plainButtons>
   <!-- Show separated buttons -->
   <div class="d-flex heading-actions-plain-buttons">
-    <button #actionButton *ngFor="let action of visibleActions$.value"
-      class="btn btn-action-toolbar"
-      (click)="action.onClick($event, actionButton); blurIfClick(actionButton, $event);">
-      <icon [icon]="action.icon"></icon>
-      <div>{{ action.label }}</div>
-    </button>
+    <heading-action-button *ngFor="let action of visibleActions$.value"
+      [action]="action"></heading-action-button>
   </div>
 </ng-template>

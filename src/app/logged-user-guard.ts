@@ -6,11 +6,11 @@ import { LoginService } from 'app/core/login.service';
  * Guard that ensures there is a logged user to allow activation
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoggedUserGuard implements CanActivate, CanActivateChild, CanLoad {
   constructor(
-    private login: LoginService
+    private login: LoginService,
   ) { }
 
   canLoad(_route: Route): boolean {

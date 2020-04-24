@@ -11,7 +11,6 @@ import { empty } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
 import { ResultType } from 'app/shared/result-type';
 
-
 type UserOperatorsSearchParams = UserOperatorsQueryFilters & { user: string };
 /**
  * Searches for operators of a given user
@@ -19,7 +18,7 @@ type UserOperatorsSearchParams = UserOperatorsQueryFilters & { user: string };
 @Component({
   selector: 'search-user-operators',
   templateUrl: 'search-user-operators.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchUserOperatorsComponent
   extends BaseSearchPageComponent<UserOperatorsDataForSearch, UserOperatorsSearchParams, UserResult> implements OnInit {
@@ -36,7 +35,7 @@ export class SearchUserOperatorsComponent
   constructor(
     injector: Injector,
     private operatorsService: OperatorsService,
-    private userHelper: UserHelperService
+    private userHelper: UserHelperService,
   ) {
     super(injector);
   }
@@ -56,7 +55,7 @@ export class SearchUserOperatorsComponent
         this.headingActions = [
           new HeadingAction('registration', this.i18n.general.addNew, () => {
             this.router.navigate(['/users', this.param, 'operators', 'registration']);
-          }, true)
+          }, true),
         ];
       }
       this.data = data;

@@ -1,18 +1,18 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AccountHistoryQueryFilters, AccountHistoryResult,
-  AccountWithHistoryStatus, Currency, DataForAccountHistory, EntityReference,
-  Image, PreselectedPeriod, TransferFilter, AccountKind
+  AccountHistoryQueryFilters, AccountHistoryResult, AccountKind,
+  AccountWithHistoryStatus, Currency, DataForAccountHistory,
+  EntityReference, Image, PreselectedPeriod, TransferFilter
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
+import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
+import { ActiveMenu, Menu } from 'app/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ActiveMenu, Menu } from 'app/shared/menu';
-
 
 type AccountHistorySearchParams = AccountHistoryQueryFilters & {
   owner: string;
@@ -26,7 +26,7 @@ type AccountHistorySearchParams = AccountHistoryQueryFilters & {
 @Component({
   selector: 'account-history',
   templateUrl: 'account-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountHistoryComponent
   extends BaseSearchPageComponent<DataForAccountHistory, AccountHistorySearchParams, AccountHistoryResult>
@@ -39,11 +39,12 @@ export class AccountHistoryComponent
   noStatus$ = new BehaviorSubject(false);
   multipleAccounts: boolean;
   showForm$ = new BehaviorSubject(false);
+  exportActions: HeadingAction[];
 
   constructor(
     injector: Injector,
     private accountsService: AccountsService,
-    private bankingHelper: BankingHelperService
+    private bankingHelper: BankingHelperService,
   ) {
     super(injector);
   }
@@ -73,8 +74,8 @@ export class AccountHistoryComponent
     if (type == null) {
       return null;
     }
-    const number = this.layout.ltsm ? null : this.number;
-    return number == null ? type.name : type.name + ' - ' + number;
+    const accountNumber = this.layout.ltsm ? null : this.number;
+    return accountNumber == null ? type.name : type.name + ' - ' + accountNumber;
   }
 
   getFormControlNames() {
@@ -83,7 +84,7 @@ export class AccountHistoryComponent
       'periodBegin', 'periodEnd',
       'minAmount', 'maxAmount',
       'transactionNumber', 'direction',
-      'user', 'by', 'orderBy'
+      'user', 'by', 'orderBy',
     ];
   }
 
@@ -102,8 +103,8 @@ export class AccountHistoryComponent
     // Get the account history data
     this.stateManager.cache('data',
       this.accountsService.getAccountHistoryDataByOwnerAndType({
-        owner: this.ownerParam, accountType: this.typeParam
-      })
+        owner: this.ownerParam, accountType: this.typeParam,
+      }),
     ).subscribe(data => {
       this.data = data;
     });
@@ -112,12 +113,12 @@ export class AccountHistoryComponent
   onDataInitialized(data: DataForAccountHistory) {
     super.onDataInitialized(data);
 
+    this.exportActions = this.exportHelper.headingActions(data.exportFormats, f =>
+      this.accountsService.exportAccountHistory$Response({
+        format: f.internalName,
+        ...this.toSearchParams(this.form.value)
+      }));
     this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
-
-    // Adjust the print action, which will be used later
-    this.printable = true;
-    this.printAction.label = this.i18n.account.printTransactions;
-
     this.addSub(this.layout.xxs$.subscribe(() => this.updateShowForm(data)));
     this.addSub(this.moreFilters$.subscribe(() => this.updateShowForm(data)));
     this.updateShowForm(data);
@@ -125,7 +126,7 @@ export class AccountHistoryComponent
 
   private updateShowForm(data: DataForAccountHistory) {
     this.showForm$.next(
-      this.layout.xxs && !empty(data.preselectedPeriods) || this.moreFilters
+      this.layout.xxs && !empty(data.preselectedPeriods) || this.moreFilters,
     );
   }
 
@@ -151,13 +152,11 @@ export class AccountHistoryComponent
           // When there's no status (is not visible), show the filters directly
           this.noStatus$.next(true);
           this.moreFilters = true;
-          this.headingActions = [
-            this.printAction
-          ];
+          this.headingActions = this.exportActions;
         } else {
           this.headingActions = [
             this.moreFiltersAction,
-            this.printAction
+            ...this.exportActions
           ];
         }
         this.status$.next(accountWithStatus);

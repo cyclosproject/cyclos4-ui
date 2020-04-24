@@ -37,6 +37,7 @@
   background-color: $card-bg;
   .card-body {
     color: $card-color;
+    min-height: 0;
   }
 }
 

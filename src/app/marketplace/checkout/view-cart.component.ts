@@ -1,16 +1,16 @@
-import { ChangeDetectionStrategy, Component, OnInit, Injector } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  ShoppingCartView, ShoppingCartItemDetailed, ShoppingCartItemAvailabilityEnum,
-  CustomFieldTypeEnum, ShoppingCartItemQuantityAdjustmentEnum
+  CustomFieldTypeEnum, ShoppingCartItemAvailabilityEnum, ShoppingCartItemDetailed,
+  ShoppingCartItemQuantityAdjustmentEnum, ShoppingCartView,
 } from 'app/api/models';
+import { ShoppingCartsService } from 'app/api/services';
+import { ErrorStatus } from 'app/core/error-status';
+import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { Menu } from 'app/shared/menu';
-import { ShoppingCartsService } from 'app/api/services';
-import { HeadingAction } from 'app/shared/action';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ErrorStatus } from 'app/core/error-status';
 import { BehaviorSubject } from 'rxjs';
-import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 
 /**
  * Edits a shopping cart by changing quantity or removing items
@@ -18,7 +18,7 @@ import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 @Component({
   selector: 'view-cart',
   templateUrl: 'view-cart.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewCartComponent
   extends BasePageComponent<ShoppingCartView>
@@ -34,7 +34,7 @@ export class ViewCartComponent
   constructor(
     injector: Injector,
     private shoppingCartService: ShoppingCartsService,
-    private marketplaceHelper: MarketplaceHelperService
+    private marketplaceHelper: MarketplaceHelperService,
   ) {
     super(injector);
   }
@@ -67,7 +67,7 @@ export class ViewCartComponent
 
   onDataInitialized(data: ShoppingCartView) {
     this.headingActions = [
-      new HeadingAction('local_mall', this.i18n.ad.checkout, () => this.checkout(), true)
+      new HeadingAction('local_mall', this.i18n.ad.checkout, () => this.checkout(), true),
     ];
 
     this.checkMessages(data);
@@ -152,12 +152,18 @@ export class ViewCartComponent
   changeQuantity(item: [string, ShoppingCartItemDetailed, boolean]) {
 
     const req: any = (quantity: string) => {
+      if (+quantity === 0) {
+        // Avoid deleting cart items by mistake,
+        // user should remove items with the remove button
+        return;
+      }
       this.addSub(this.shoppingCartService.modifyItemQuantityOnShoppingCart({
         ad: item[1].product.id,
         quantity: +quantity,
-      }).subscribe(() => {
+      }).subscribe(items => {
         ViewCartComponent.details = true;
         this.reload();
+        this.marketplaceHelper.cartItems = items;
       }));
     };
 
@@ -173,9 +179,9 @@ export class ViewCartComponent
           internalName: 'quantity',
           name: this.i18n.ad.quantity,
           type: item[1].product.allowDecimalQuantity ? CustomFieldTypeEnum.DECIMAL : CustomFieldTypeEnum.INTEGER,
-          defaultValue: this.marketplaceHelper.getFormattedQuantity(item[1])
+          defaultValue: this.marketplaceHelper.getFormattedQuantity(item[1]),
         }],
-        callback: res => req(+res.customValues.quantity)
+        callback: res => req(+res.customValues.quantity),
       });
     }
   }

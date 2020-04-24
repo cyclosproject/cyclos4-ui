@@ -1,13 +1,13 @@
 import {
   ChangeDetectionStrategy, Component, ComponentFactoryResolver,
-  ComponentRef, OnInit, ViewChild, ViewContainerRef
+  ComponentRef, OnInit, ViewChild, ViewContainerRef,
 } from '@angular/core';
 import { Notification } from 'app/api/models';
 import { NotificationService } from 'app/core/notification.service';
 import { PushNotificationProvider } from 'app/core/push-notification-provider';
 import { PushNotificationComponent } from 'app/core/push-notification.component';
-import { first } from 'rxjs/operators';
 import { LayoutService } from 'app/shared/layout.service';
+import { first } from 'rxjs/operators';
 
 /**
  * Shows dismissable push notifications
@@ -16,7 +16,7 @@ import { LayoutService } from 'app/shared/layout.service';
   selector: 'push-notifications',
   templateUrl: 'push-notifications.component.html',
   styleUrls: ['push-notifications.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PushNotificationsComponent implements OnInit, PushNotificationProvider {
 
@@ -27,7 +27,7 @@ export class PushNotificationsComponent implements OnInit, PushNotificationProvi
   constructor(
     private notification: NotificationService,
     private componentFactoryResolver: ComponentFactoryResolver,
-    private layout: LayoutService
+    private layout: LayoutService,
   ) {
   }
 

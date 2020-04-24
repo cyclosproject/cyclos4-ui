@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { DeliveryMethod, UserDeliveryMethodsListData, DeliveryMethodChargeTypeEnum } from 'app/api/models';
+import { DeliveryMethod, DeliveryMethodChargeTypeEnum, UserDeliveryMethodsListData } from 'app/api/models';
 import { DeliveryMethodsService } from 'app/api/services';
-import { BasePageComponent } from 'app/shared/base-page.component';
 import { HeadingAction } from 'app/shared/action';
+import { BasePageComponent } from 'app/shared/base-page.component';
 import { Menu } from 'app/shared/menu';
 
 /**
@@ -11,7 +11,7 @@ import { Menu } from 'app/shared/menu';
 @Component({
   selector: 'list-delivery-methods',
   templateUrl: 'list-delivery-methods.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListDeliveryMethodsComponent
   extends BasePageComponent<UserDeliveryMethodsListData>
@@ -43,7 +43,7 @@ export class ListDeliveryMethodsComponent
       this.headingActions = [
         new HeadingAction('add', this.i18n.general.addNew, () => {
           this.router.navigate(['/marketplace', this.param, 'delivery-methods', 'new']);
-        }, true)
+        }, true),
       ];
     }
   }
@@ -59,7 +59,7 @@ export class ListDeliveryMethodsComponent
   remove(deliveryMethod: DeliveryMethod) {
     this.notification.confirm({
       message: this.i18n.general.removeConfirm(deliveryMethod.name),
-      callback: () => this.doRemove(deliveryMethod)
+      callback: () => this.doRemove(deliveryMethod),
     });
   }
 

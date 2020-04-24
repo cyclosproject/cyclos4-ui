@@ -1,18 +1,18 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AdAddressResultEnum, AdCategoryWithChildren, AdQueryFilters,
-  AdResult, CustomFieldDetailed, RoleEnum, MarketplacePermissions, Currency
+  AdResult, Currency, CustomFieldDetailed, MarketplacePermissions, RoleEnum,
 } from 'app/api/models';
 import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
 import { MarketplaceService } from 'app/api/services';
+import { LoginService } from 'app/core/login.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { MaxDistance } from 'app/shared/max-distance';
+import { Menu } from 'app/shared/menu';
 import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
-import { Menu } from 'app/shared/menu';
-import { LoginService } from 'app/core/login.service';
 
 /**
  * Search for advertisements
@@ -20,7 +20,7 @@ import { LoginService } from 'app/core/login.service';
 @Component({
   selector: 'search-ads',
   templateUrl: 'search-ads.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchAdsComponent
   extends BaseSearchPageComponent<AdDataForSearch, AdQueryFilters, AdResult>
@@ -35,7 +35,7 @@ export class SearchAdsComponent
   constructor(
     injector: Injector,
     private marketplaceService: MarketplaceService,
-    private loginService: LoginService
+    private loginService: LoginService,
   ) {
     super(injector);
   }
@@ -46,7 +46,11 @@ export class SearchAdsComponent
   }
 
   getInitialResultType() {
-    return ResultType.CATEGORIES;
+    const fromConfig = this.layout.getBreakpointConfiguration('defaultAdsResultType') as ResultType;
+    if (fromConfig && this.allowedResultTypes.includes(fromConfig)) {
+      return fromConfig;
+    }
+    return (this.layout.xxs ? ResultType.LIST : ResultType.CATEGORIES);
   }
 
   getInitialFormValue(data: AdDataForSearch) {
@@ -63,6 +67,7 @@ export class SearchAdsComponent
     this.allowedResultTypes = this.layout.xxs
       ? [ResultType.CATEGORIES, ResultType.LIST]
       : [ResultType.CATEGORIES, ResultType.TILES, ResultType.LIST, ResultType.MAP];
+    this.resultType = this.getInitialResultType();
     this.stateManager.cache('data', this.marketplaceService.getAdDataForSearch({}))
       .subscribe(data => {
         this.data = data;
@@ -78,7 +83,7 @@ export class SearchAdsComponent
     this.basicFields = data.fieldsInBasicSearch.map(customField);
     this.advancedFields = data.fieldsInAdvancedSearch.map(customField);
     this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
-      useDefaults: false
+      useDefaults: false,
     }));
     this.headingActions = [this.moreFiltersAction];
 
@@ -108,12 +113,7 @@ export class SearchAdsComponent
       params.addressResult = AdAddressResultEnum.NEAREST;
     }
     params.publicationPeriod = ApiHelper.dateRangeFilter(value.beginDate, value.endDate);
-    delete params['beginDate'];
-    delete params['endDate'];
-
     params.priceRange = ApiHelper.rangeFilter(value.minAmount, value.maxAmount);
-    delete params['minAmount'];
-    delete params['maxAmount'];
     if (isMap) {
       params.pageSize = 99999;
     }
@@ -126,17 +126,11 @@ export class SearchAdsComponent
       this.form.patchValue({ category: null }, { emitEvent: false });
       this.categoryTrail$.next([]);
     } else {
-      if (previousResultType === ResultType.CATEGORIES) {
-        // Force a new query when changing from categories
-        this.results = null;
-      } else {
-        const isMap = resultType === ResultType.MAP;
-        const wasMap = previousResultType === ResultType.MAP;
-        if (isMap !== wasMap) {
-          // Should update again, as the `addressResult` will change
-          this.results = null;
-          this.update({ page: 0 });
-        }
+      // Changing from / to map will implicitly update - just reset the page to 0
+      const isMap = resultType === ResultType.MAP;
+      const wasMap = previousResultType === ResultType.MAP;
+      if (isMap !== wasMap) {
+        this.form.patchValue({ page: 0 }, { emitEvent: false });
       }
     }
   }
@@ -146,19 +140,19 @@ export class SearchAdsComponent
     const trail: AdCategoryWithChildren[] = [];
     if (key) {
       // A valid category is selected
-      this.form.patchValue({ 'category': key });
+      this.form.patchValue({ category: key });
       trail.unshift(category);
       const parent = this.findParent(category);
       if (parent) {
         trail.unshift(parent);
       }
       const root: AdCategoryWithChildren = {
-        name: this.i18n.ad.rootCategory
+        name: this.i18n.ad.rootCategory,
       };
       trail.unshift(root);
     } else {
       // Going back to the main category
-      this.form.patchValue({ 'category': key }, { emitEvent: false });
+      this.form.patchValue({ category: key }, { emitEvent: false });
       this.resultType = ResultType.CATEGORIES;
     }
     this.categoryTrail$.next(trail);
@@ -178,8 +172,8 @@ export class SearchAdsComponent
   }
 
   /**
- * Changes the current currency to update related filters
- */
+   * Changes the current currency to update related filters
+   */
   protected updateCurrency(id: string, data: AdDataForSearch) {
     this.currency = data.currencies.find(c => c.id === id || c.internalName === id);
   }

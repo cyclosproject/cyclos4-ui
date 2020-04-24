@@ -1,6 +1,6 @@
 import {
   ChangeDetectorRef, Component, ElementRef, EventEmitter, Host, Injector,
-  Input, OnInit, Optional, Output, SkipSelf, ViewChild
+  Input, OnInit, Optional, Output, SkipSelf, ViewChild,
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomField, Image, TempImageTargetEnum } from 'app/api/models';
@@ -21,8 +21,8 @@ import { take } from 'rxjs/operators';
   selector: 'images-field',
   templateUrl: 'images-field.component.html',
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: ImagesFieldComponent, multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: ImagesFieldComponent, multi: true },
+  ],
 })
 export class ImagesFieldComponent extends BaseFormFieldComponent<string | string[]> implements OnInit {
 
@@ -68,7 +68,7 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
 
   @Output() upload = new EventEmitter<Image[]>();
 
-  @ViewChild('focusHolder', { static: false }) focusHolder: ElementRef;
+  @ViewChild('focusHolder') focusHolder: ElementRef;
 
   constructor(
     injector: Injector,
@@ -129,8 +129,8 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
     const ref = this.modal.show(ManageImagesComponent, {
       class: 'modal-form',
       initialState: {
-        images: this.images
-      }
+        images: this.images,
+      },
     });
     const component = ref.content as ManageImagesComponent;
     this.addSub(component.result.pipe(take(1)).subscribe(result => {

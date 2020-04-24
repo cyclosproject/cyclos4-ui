@@ -10,7 +10,7 @@ import { cloneDeep } from 'lodash';
  * Helper service for handling address fields
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AddressHelperService {
 
@@ -32,8 +32,8 @@ export class AddressHelperService {
       name: [null, Validators.required],
       location: this.formBuilder.group({
         latitude: null,
-        longitude: null
-      })
+        longitude: null,
+      }),
     });
     for (const field of config.enabledFields) {
       const val = config.requiredFields.includes(field) ? Validators.required : null;
@@ -45,7 +45,7 @@ export class AddressHelperService {
         email: null,
         mobilePhone: null,
         landLinePhone: null,
-        landLineExtension: null
+        landLineExtension: null,
       });
       if (!empty(forProfile.contactInfoFields)) {
         contactInfo.addControl('customValues', this.fieldsHelper.customValuesFormGroup(forProfile.contactInfoFields));
@@ -112,7 +112,7 @@ export class AddressHelperService {
     if (address) {
       // Remove id first as it's never displayed
       const withoutId = cloneDeep(address);
-      delete withoutId['id'];
+      delete withoutId.id;
       return Object.values(withoutId).filter(value => !empty(value)).length > 0;
     }
     return false;

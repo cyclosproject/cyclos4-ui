@@ -7,14 +7,14 @@ export enum LoginReason {
   NORMAL,
   LOGGED_OUT,
   FORGOT_PASSWORD_GENERATED,
-  FORGOT_PASSWORD_MANUAL
+  FORGOT_PASSWORD_MANUAL,
 }
 
 /**
  * Stores data for the login page
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoginState {
 

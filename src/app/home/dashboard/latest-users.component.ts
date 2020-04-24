@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { UserAddressResultEnum, UserOrderByEnum, UserResult } from 'app/api/models';
 import { UsersService } from 'app/api/services';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
+import { ActiveMenu, Menu } from 'app/shared/menu';
 import { BehaviorSubject } from 'rxjs';
-import { Menu, ActiveMenu } from 'app/shared/menu';
 
 /**
  * Displays the latest users
@@ -13,7 +13,7 @@ import { Menu, ActiveMenu } from 'app/shared/menu';
   templateUrl: 'latest-users.component.html',
   // As this component looks A LOT to latest ads, use its same stylesheet
   styleUrls: ['latest-ads.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LatestUsersComponent extends BaseDashboardComponent implements OnInit {
 
@@ -23,7 +23,7 @@ export class LatestUsersComponent extends BaseDashboardComponent implements OnIn
   users$ = new BehaviorSubject<UserResult[]>(null);
 
   constructor(injector: Injector,
-    private usersService: UsersService) {
+              private usersService: UsersService) {
     super(injector);
   }
 
@@ -31,13 +31,14 @@ export class LatestUsersComponent extends BaseDashboardComponent implements OnIn
     super.ngOnInit();
     this.addSub(this.usersService.searchUsers({
       addressResult: UserAddressResultEnum.NONE,
+      fromMenu: true,
       groups: this.groups,
       ignoreProfileFieldsInList: true,
       orderBy: UserOrderByEnum.CREATION_DATE,
       profileFields: ['image:true'],
       fields: ['id', 'display', 'image'],
       skipTotalCount: true,
-      pageSize: this.max
+      pageSize: this.max,
     }).subscribe(ads => {
       this.users$.next(ads);
     }));
@@ -52,7 +53,7 @@ export class LatestUsersComponent extends BaseDashboardComponent implements OnIn
       url: this.path(user),
       menu: new ActiveMenu(Menu.SEARCH_USERS),
       clear: false,
-      event: event
+      event,
     });
   }
 }

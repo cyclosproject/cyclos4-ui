@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { AbstractControl, FormGroup, Validators } from '@angular/forms';
 import {
   ChangeForgottenPassword, DataForChangeForgottenPassword, DataForLogin,
-  ForgottenPasswordRequest, PasswordModeEnum, SendMediumEnum
+  ForgottenPasswordRequest, PasswordModeEnum, SendMediumEnum,
 } from 'app/api/models';
 import { AuthService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -20,7 +20,7 @@ export type ForgotPasswordStep = 'request' | 'code' | 'change';
 @Component({
   selector: 'forgot-password',
   templateUrl: 'forgot-password.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> implements OnInit {
 
@@ -40,7 +40,7 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
 
   constructor(
     injector: Injector,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
     super(injector);
   }
@@ -58,7 +58,7 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
   onDataInitialized(data: DataForLogin) {
     this.requestForm = this.formBuilder.group({
       user: [null, Validators.required],
-      sendMedium: data.forgotPasswordMediums[0]
+      sendMedium: data.forgotPasswordMediums[0],
     });
     if (data.forgotPasswordCaptchaProvider) {
       this.requestForm.addControl('captcha', this.authHelper.captchaFormGroup());
@@ -76,7 +76,7 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
       this.notification.snackBar(this.i18n.password.forgotten.codeSent(resp.sentTo.join(', ')));
       this.codeForm = this.formBuilder.group({
         user: [this.requestForm.value.user, Validators.required],
-        code: [null, Validators.required]
+        code: [null, Validators.required],
       });
       this.step = 'code';
     });
@@ -92,7 +92,7 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
       this.changeData = changeData;
       this.changeForm = this.formBuilder.group({
         user: [this.codeForm.value.user, Validators.required],
-        code: [this.codeForm.value.code, Validators.required]
+        code: [this.codeForm.value.code, Validators.required],
       });
       if (changeData.securityQuestion) {
         this.changeForm.addControl('securityAnswer', this.formBuilder.control(null, Validators.required));

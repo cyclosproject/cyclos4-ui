@@ -1,14 +1,14 @@
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild,
-  HostBinding, Input, OnDestroy, OnInit, TemplateRef, OnChanges, SimpleChanges
+  HostBinding, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef,
 } from '@angular/core';
 import { CustomFieldSizeEnum } from 'app/api/models';
 import { BaseFormFieldComponent, FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { ExtraCellDirective } from 'app/shared/extra-cell.directive';
 import { truthyAttr } from 'app/shared/helper';
+import { Breakpoint as LayoutBreakpoint, LayoutService } from 'app/shared/layout.service';
 import { ValueFormat } from 'app/shared/value-format';
 import { Subscription } from 'rxjs';
-import { LayoutService, Breakpoint as LayoutBreakpoint } from 'app/shared/layout.service';
 
 export const COLS = 12;
 
@@ -30,7 +30,7 @@ export type LabelValueKind = 'view' | 'field' | 'fieldView';
   selector: 'label-value',
   templateUrl: 'label-value.component.html',
   styleUrls: ['label-value.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
 
@@ -42,7 +42,7 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private changeDetector: ChangeDetectorRef,
-    private layout: LayoutService
+    private layout: LayoutService,
   ) { }
 
   private subs: Subscription[] = [];

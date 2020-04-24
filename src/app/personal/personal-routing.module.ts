@@ -14,19 +14,19 @@ const personalRoutes: Routes = [
         component: SearchNotificationsComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          menu: Menu.NOTIFICATIONS
-        }
+          menu: Menu.NOTIFICATIONS,
+        },
       },
       {
         path: 'settings',
         component: ManageSettingsComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          menu: Menu.SETTINGS
-        }
-      }
-    ]
-  }
+          menu: Menu.SETTINGS,
+        },
+      },
+    ],
+  },
 ];
 
 /**
@@ -34,11 +34,11 @@ const personalRoutes: Routes = [
  */
 @NgModule({
   imports: [
-    RouterModule.forChild(personalRoutes)
+    RouterModule.forChild(personalRoutes),
   ],
   exports: [
-    RouterModule
-  ]
+    RouterModule,
+  ],
 })
 export class PersonalRoutingModule {
 }
