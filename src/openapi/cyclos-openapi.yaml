@@ -8806,23 +8806,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
       summary: >-
         Adds a new system custom image under a given category
       description: >-
-        Uploads a new temporary image. A temporary image should be given a target,
-        which can be: - `userRegistration`: The
-        image will be used as a profile image for a newly registered user; -
-        `userProfile`: The image will be used as a
-        profile image for an existing user; -
-        `advertisement`: The image will be used for
-        an advertisement of a specific user; -
-        `customValue`: The image will be used for a
-        value of a specific custom field. Temporary images won't be immediately
-        associated to the next registered model, but its `id`, which is returned
-        by this operation, must be explicitly passed in, either as the `images`
-        field (for profile or advertisement images) or in the `customValues` field
-        of the model that has custom values (multiple ids can be passed-in as
-        pipe-separated). Images as guest can only be uploaded if on the
-        destination group products the image profile field is allowed at
-        registrations. Users may upload images if they can register new users or
-        create advertisements.
+        In order to upload, administrators need management permission over this
+        specific category. These images can be used, for example, in rich text
+        content edited by administrators.
       tags:
         - Images
       parameters:
@@ -26265,7 +26251,7 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Transaction'
+                $ref: '#/components/schemas/TransactionView'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -36867,7 +36853,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: >-
-            Whether we are getting data for searching purchases or sales
+            Whether we are getting data for searching purchases or sales.
+            If not specified it's assumed purchases (i.e false)
           schema:
             type: boolean
       responses:
@@ -38968,7 +38955,8 @@ components:
         Can be either the advertisement internal identifier or, in case of webshop
         advertisements, can be the product number (if the owner is the logged
         user) or a string in the form `productNumber@user`, with the user
-        identifier as well.
+        identifier as well. If the number is solely comprised of numbers, it must
+        be prefixed by a single quote.
 
     confirmationPassword:
       name: confirmationPassword
@@ -40159,7 +40147,7 @@ components:
         - registrationData
         - registrationDone
 
-    IdentityProviderNotLinkReason:
+    IdentityProviderNotLinkReasonEnum:
       description: >
         Possible reasons why the link between user and identity provider could not be created
 
@@ -40168,10 +40156,13 @@ components:
         - `globalUserNetworkIdpIgnored`: A login from a global administrator together with an identity provider request for an identity provider defined in a network.
 
         - `unsupportedPrincipalType`: The user identification method used in the login is not supported for linking. E.g trusted devices are not supported, it's quite strange situation because it means the user choose to login with an identity provider, then the user doesn't match and at the moment of perform the login to Cyclos he/her choose to login with a trusted device. The login with trusted device and with an identity provider both offer the same kind of ease for a quick login the probably the user will choose to login with a trusted device from the beginning.
+
+        - `userDisabled`: The user has explicitly disabled the identity provider in their settings.
       type: string
       enum:
         - globalUserNetworkIdpIgnored
         - unsupportedPrincipalType
+        - userDisabled
 
     ImageKind:
       description: >
@@ -51853,7 +51844,7 @@ components:
         - type: object
           properties:
             identityProviderNotLinkReason:
-              $ref: '#/components/schemas/IdentityProviderNotLinkReason'
+              $ref: '#/components/schemas/IdentityProviderNotLinkReasonEnum'
             pinCreationToken:
               description: >-
                 A token (challenge) generated only if the login was not performed using a device pin.
@@ -54094,6 +54085,8 @@ components:
         product:
           description: >-
             Can be either the ad webshop internal identifier or the product number.
+            If the number is solely comprised of numbers, it must be prefixed by a
+            single quote.
           type: string
 
     OrderLog:
@@ -56772,6 +56765,13 @@ components:
             results per page. Whether this is implemented depends on the script code
             itself.
           type: integer
+        skipTotalCount:
+          description: >-
+            When running a custom operation with `resultType` =
+            `resultPage`, when set to true will ignre
+            the total count when searching. Of course, it should be honored by the
+            script implementing the query in order to make effect.
+          type: boolean
         exportFormat:
           description: >-
             Only when running a custom operation with `resultType` =
@@ -59025,6 +59025,11 @@ components:
                 `open`. Is the fixed payer user, if any.
               allOf:
                 - $ref: '#/components/schemas/User'
+            approveUrl:
+              description: >-
+                Only returned if the `kind` is `ticket` and `status` is `open`.
+                The URL used by clients to approve the ticket.
+              type: string
             cancelUrl:
               description: >-
                 Only returned if the `kind` is `ticket`. The URL to redirect when
@@ -59425,10 +59430,17 @@ components:
             - $ref: '#/components/schemas/PasswordType'
         secondaryDeviceAllowed:
           description: >-
-            Whether confirmations with device are allowed or not.   May only
+            Whether confirmations with device are allowed or not. May only
             returned when `code` is `login` and there is
             a login confirmation defined for the channel.
           type: boolean
+        invalidDeviceConfirmation:
+          description: >-
+            The result associated to an invalid device confrmation. May only
+            returned when `code` is `login` and the login was performed
+            with a trusted device.
+          allOf:
+            - $ref: '#/components/schemas/InvalidDeviceConfirmationEnum'
         code:
           $ref: '#/components/schemas/UnauthorizedErrorCode'
         userStatus:

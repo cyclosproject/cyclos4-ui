@@ -1,6 +1,9 @@
 import { Injectable, NgZone } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { DeviceConfirmationView, IdentityProviderCallbackResult, NewNotificationPush, PushNotificationEventKind } from 'app/api/models';
+import {
+  DeviceConfirmationView, IdentityProviderCallbackResult, NewNotificationPush,
+  PushNotificationEventKind, TransactionView
+} from 'app/api/models';
 import { NextRequestState } from 'app/core/next-request-state';
 import { empty } from 'app/shared/helper';
 import { EventSourcePolyfill } from 'ng-event-source';
@@ -10,7 +13,9 @@ export const Kinds: PushNotificationEventKind[] = [
   PushNotificationEventKind.LOGGED_OUT,
   PushNotificationEventKind.NEW_NOTIFICATION,
   PushNotificationEventKind.DEVICE_CONFIRMATION,
-  PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK];
+  PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK,
+  PushNotificationEventKind.TICKET
+];
 export const ClientId = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
 
 /**
@@ -27,6 +32,7 @@ export class PushNotificationsService {
   public newNotifications$ = new Subject<NewNotificationPush>();
   public deviceConfirmations$ = new Subject<DeviceConfirmationView>();
   public identityProviderCallback$ = new Subject<IdentityProviderCallbackResult>();
+  public ticket$ = new Subject<TransactionView>();
 
   constructor(
     private apiConfiguration: ApiConfiguration,
@@ -55,6 +61,7 @@ export class PushNotificationsService {
     this.setupListener(PushNotificationEventKind.NEW_NOTIFICATION, this.newNotifications$);
     this.setupListener(PushNotificationEventKind.DEVICE_CONFIRMATION, this.deviceConfirmations$);
     this.setupListener(PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK, this.identityProviderCallback$);
+    this.setupListener(PushNotificationEventKind.TICKET, this.ticket$);
   }
 
   /**

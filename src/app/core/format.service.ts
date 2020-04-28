@@ -289,7 +289,7 @@ export class FormatService {
       return undefined;
     }
 
-    return bignum.toFixed(scale);
+    return bignum.toFixed(scale == null ? 0 : scale);
   }
 
   /**

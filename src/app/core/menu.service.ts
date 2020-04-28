@@ -580,6 +580,10 @@ export class MenuService {
       if (payments.pos) {
         add(Menu.POS, `/banking/pos`, 'payment', this.i18n.menu.bankingPos);
       }
+      const tickets = banking.tickets || {};
+      if (tickets.create) {
+        add(Menu.RECEIVE_QR_PAYMENT, `/banking/qr`, 'scan_qr_code', this.i18n.menu.bankingReceiveQrPayment);
+      }
       if ((banking.scheduledPayments || {}).view) {
         add(Menu.SCHEDULED_PAYMENTS, `/banking/${owner}/scheduled-payments`,
           'schedule', this.i18n.menu.bankingScheduledPayments);

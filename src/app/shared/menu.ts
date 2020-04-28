@@ -78,6 +78,7 @@ export namespace Menu {
   export const PAYMENT_TO_SELF = new Menu(RootMenu.BANKING, 'PAYMENT_TO_SELF');
   export const PAYMENT_TO_SYSTEM = new Menu(RootMenu.BANKING, 'PAYMENT_TO_SYSTEM');
   export const POS = new Menu(RootMenu.BANKING, 'POS');
+  export const RECEIVE_QR_PAYMENT = new Menu(RootMenu.BANKING, 'RECEIVE_QR_PAYMENT');
   export const SCHEDULED_PAYMENTS = new Menu(RootMenu.BANKING, 'SCHEDULED_PAYMENTS');
   export const AUTHORIZED_PAYMENTS = new Menu(RootMenu.BANKING, 'AUTHORIZED_PAYMENTS');
   export const REDEEM_VOUCHER = new Menu(RootMenu.BANKING, 'REDEEM_VOUCHER');

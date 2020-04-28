@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AccountHistoryComponent } from 'app/banking/accounts/account-history.component';
 import { PaymentComponent } from 'app/banking/payment/payment.component';
+import { ReceiveQrPaymentComponent } from 'app/banking/ticket/receive-qr-payment.component';
 import { SearchAuthorizedPaymentsComponent } from 'app/banking/transactions/search-authorized-payments.component';
 import { SearchScheduledPaymentsComponent } from 'app/banking/transactions/search-scheduled-payments.component';
 import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view-authorization-history.component';
@@ -56,6 +57,10 @@ const bankingRoutes: Routes = [
       {
         path: 'pos',
         component: PaymentComponent,
+      },
+      {
+        path: 'qr',
+        component: ReceiveQrPaymentComponent,
       },
       {
         path: ':owner/scheduled-payments',

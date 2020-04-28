@@ -27,6 +27,7 @@
     "PendingPayments",
     "Transfers",
     "Payments",
+    "Tickets",
     "POS",
     "Accounts",
     "Marketplace",
