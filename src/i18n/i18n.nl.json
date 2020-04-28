@@ -39,6 +39,8 @@
     "print": "Afdrukken",
     "printed": "Printed",
     "all": "All",
+    "copyToClipboard": "Copy to clipboard",
+    "copyToClipboard.done": "Copied!",
     "showFilters": "Filters weergeven",
     "hideFilters": "Filters verbergen",
     "moreFilters": "Meer filters",
@@ -66,6 +68,7 @@
     "yes": "Ja",
     "no": "Nee",
     "notSet": "Not set",
+    "share": "Share",
     "map": "Kaart",
     "map.view": "Bekijk de kaart",
     "noOptionsSelected": "Geen opties geselecteerd",
@@ -246,11 +249,12 @@
     "banking.paySystem": "Betaling aan systeem",
     "banking.paySelf": "De betaling zelf",
     "banking.pos": "Receive payment",
+    "banking.receiveQrPayment": "Receive QR-code",
     "banking.scheduledPayments": "Geautoriseerde betalingen",
     "banking.authorizations": "Betalingsautorisaties",
     "banking.searchVouchers": "Search vouchers",
     "banking.buyVouchers": "Buy vouchers",
-    "banking.boughtVouchers": "View buys",
+    "banking.boughtVouchers": "View bought vouchers",
     "banking.redeemVoucher": "Redeem voucher",
     "banking.redeemedVouchers": "View redeemed",
     "banking.transfersOverview": "Transfers overview",
@@ -582,7 +586,8 @@
       "details.transfer": "Betalingsoverzicht",
       "parentTransfer": "Transfer die deze",
       "childTransfers": "Transfers gegenereerd door deze",
-      "transfersOverview": "Transfers overview"
+      "transfersOverview": "Transfers overview",
+      "receiveQrPayment": "Receive QR-code payment"
     },
     "mobileTitle": {
       "pos": "Receive payment",
@@ -607,8 +612,12 @@
       "details.transfer": "Transfer",
       "parentTransfer": "Originating transfer",
       "childTransfers": "Originated transfers",
-      "transfersOverview": "Transfers overview"
+      "transfersOverview": "Transfers overview",
+      "receiveQrPayment": "QR-code payment"
     },
+    "ticketShareTitle": "Invitation to perform a payment",
+    "ticketShareText": "{user} has invited you to pay {amount}",
+    "ticketShareUrl": "URL to share",
     "viewAuthorizations": "Bekijk autorisaties",
     "viewThisTransfer": "Bekijk deze overdracht",
     "authorizePending": "Machtigen in afwachting van betaling",
@@ -1394,8 +1403,7 @@
       "answerQuestion": "Answer question",
       "adInterests": "Advertisement interests",
       "adInterestNew": "New advertisement interest",
-      "adInterest": "Advertisement interest",
-      "newOrder": "Create web shop order"
+      "adInterest": "Advertisement interest"
     },
     "mobileTitle": {
       "search": "Advertisements",
@@ -1421,20 +1429,8 @@
       "answerQuestion": "Answer question",
       "adInterests": "Advertisement interests",
       "adInterestNew": "New advertisement interest",
-      "adInterest": "Advertisement interest",
-      "newOrder": "Create web shop order"
-    },
-    "addedProductOrder": "The product was added to the order",
-    "addProducts": "Add products",
-    "basePrice": "Base price",
-    "customDeliveryMethod": "Custom delivery method",
-    "customQuantity": "Custom quantity...",
-    "discount": "Discount %",
-    "itemsNone": "There are currently no products",
-    "orderSavedAsDraft": "The order was saved as draft",
-    "orderSubmittedToBuyer": "The order was submitted to buyer",
-    "saveDraft": "Save draft",
-    "submitToBuyer": "Submit to buyer"
+      "adInterest": "Advertisement interest"
+    }
   },
   "notification": {
     "message": "Message",
