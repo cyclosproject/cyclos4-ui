@@ -39,6 +39,8 @@
     "print": "Imprimir",
     "printed": "Impreso",
     "all": "Todo",
+    "copyToClipboard": "Copy to clipboard",
+    "copyToClipboard.done": "Copied!",
     "showFilters": "Mostrar filtros",
     "hideFilters": "Ocultar filtros",
     "moreFilters": "Más filtros",
@@ -66,6 +68,7 @@
     "yes": "Si",
     "no": "No",
     "notSet": "Sin definir",
+    "share": "Share",
     "map": "Mapa",
     "map.view": "Ver mapa",
     "noOptionsSelected": "Sin opciones seleccionadas",
@@ -246,11 +249,12 @@
     "banking.paySystem": "Pago al sistema",
     "banking.paySelf": "Auto pago",
     "banking.pos": "Recibir pago",
+    "banking.receiveQrPayment": "Receive QR-code",
     "banking.scheduledPayments": "Pagos agendados",
     "banking.authorizations": "Pagos con autorización",
     "banking.searchVouchers": "Buscar cupones",
     "banking.buyVouchers": "Comprar cupones",
-    "banking.boughtVouchers": "Ver comprados",
+    "banking.boughtVouchers": "View bought vouchers",
     "banking.redeemVoucher": "Canjear cupón",
     "banking.redeemedVouchers": "Cupones canjeados",
     "banking.transfersOverview": "Visión general de Transferencias",
@@ -582,7 +586,8 @@
       "details.transfer": "Detalle de la transferencia",
       "parentTransfer": "Transferencia principal",
       "childTransfers": "Transferencias generadas",
-      "transfersOverview": "Visión general de Transferencias"
+      "transfersOverview": "Visión general de Transferencias",
+      "receiveQrPayment": "Receive QR-code payment"
     },
     "mobileTitle": {
       "pos": "Recibir pago",
@@ -607,8 +612,12 @@
       "details.transfer": "Transferencia",
       "parentTransfer": "Transferencia original",
       "childTransfers": "Transferencias generadas",
-      "transfersOverview": "Visión general de Transferencias"
+      "transfersOverview": "Visión general de Transferencias",
+      "receiveQrPayment": "QR-code payment"
     },
+    "ticketShareTitle": "Invitation to perform a payment",
+    "ticketShareText": "{user} has invited you to pay {amount}",
+    "ticketShareUrl": "URL to share",
     "viewAuthorizations": "Ver autorizaciones",
     "viewThisTransfer": "Ver transferencia",
     "authorizePending": "Autorizar pago pendiente",
@@ -1394,8 +1403,7 @@
       "answerQuestion": "Responder a la pregunta",
       "adInterests": "Anuncios de interés",
       "adInterestNew": "Nuevo anuncio de interés",
-      "adInterest": "Anuncios de interés",
-      "newOrder": "Create web shop order"
+      "adInterest": "Anuncios de interés"
     },
     "mobileTitle": {
       "search": "Anuncios",
@@ -1421,20 +1429,8 @@
       "answerQuestion": "Responder a la pregunta",
       "adInterests": "Nuevo anuncio de interés",
       "adInterestNew": "Nuevo anuncio de interés",
-      "adInterest": "Anuncios de interés",
-      "newOrder": "Create web shop order"
-    },
-    "addedProductOrder": "The product was added to the order",
-    "addProducts": "Add products",
-    "basePrice": "Base price",
-    "customDeliveryMethod": "Custom delivery method",
-    "customQuantity": "Custom quantity...",
-    "discount": "Discount %",
-    "itemsNone": "There are currently no products",
-    "orderSavedAsDraft": "The order was saved as draft",
-    "orderSubmittedToBuyer": "The order was submitted to buyer",
-    "saveDraft": "Save draft",
-    "submitToBuyer": "Submit to buyer"
+      "adInterest": "Anuncios de interés"
+    }
   },
   "notification": {
     "message": "Mensaje",
