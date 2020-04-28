@@ -32,7 +32,7 @@
     [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
     [required]="required" [formControl]="formControl"
     [autocomplete]="autocomplete" [type]="type === 'integer' ? 'tel' : 'text'"
-    [mask]="field.pattern"></input-field>
+    [mask]="field.pattern" [placeholder]="field.pattern || ''"></input-field>
 
   <!-- url -->
   <url-field #urlField *ngIf="type === 'url'" [id]="id" [label]="label"
