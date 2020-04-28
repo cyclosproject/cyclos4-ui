@@ -448,7 +448,7 @@ export class MenuService {
 
     // Lambda that adds a submenu to a root menu
     const add = (menu: Menu | ActiveMenu, url: string, icon: string, label: string, showIn: MenuType[] = null,
-                 urlHandler: () => string = null): MenuEntry => {
+      urlHandler: () => string = null): MenuEntry => {
       const entry = new MenuEntry(menu, url, icon, label, showIn, urlHandler);
       const root = roots.get(entry.menu.root);
       root.entries.push(entry);
@@ -677,10 +677,10 @@ export class MenuService {
       }
 
       if (vouchers.buy && role !== RoleEnum.ADMINISTRATOR) {
-        add(Menu.BUY_VOUCHER, '/banking/self/vouchers/buy', 'shopping_cart', this.i18n.menu.bankingBuyVouchers);
+        add(Menu.BUY_VOUCHER, '/banking/self/vouchers/buy', 'confirmation_number', this.i18n.menu.bankingBuyVouchers);
       }
       if (vouchers.viewBought) {
-        add(Menu.SEARCH_BOUGHT_VOUCHERS, '/banking/self/vouchers/bought', 'shopping_cart',
+        add(Menu.SEARCH_BOUGHT_VOUCHERS, '/banking/self/vouchers/bought', 'local_play',
           this.i18n.menu.bankingBoughtVouchers);
       }
       addOperations(RootMenu.MARKETPLACE);

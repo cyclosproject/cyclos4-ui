@@ -164,12 +164,12 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
         }));
       }
       if (vouchers.viewBought) {
-        this.bankingActions.push(new HeadingAction('shopping_cart', this.i18n.user.profile.viewBoughtVouchers, () => {
+        this.bankingActions.push(new HeadingAction('local_play', this.i18n.user.profile.viewBoughtVouchers, () => {
           this.router.navigate(['/banking', this.param, 'vouchers', 'bought']);
         }));
       }
       if (vouchers.buy) {
-        this.bankingActions.push(new HeadingAction('shopping_cart', this.i18n.user.profile.buyVouchers, () => {
+        this.bankingActions.push(new HeadingAction('confirmation_number', this.i18n.user.profile.buyVouchers, () => {
           this.router.navigate(['/banking', this.param, 'vouchers', 'buy']);
         }));
       }

@@ -250,7 +250,7 @@
     "banking.authorizations": "Payment authorizations",
     "banking.searchVouchers": "Search vouchers",
     "banking.buyVouchers": "Buy vouchers",
-    "banking.boughtVouchers": "View buys",
+    "banking.boughtVouchers": "View bought vouchers",
     "banking.redeemVoucher": "Redeem voucher",
     "banking.redeemedVouchers": "View redeemed",
     "banking.transfersOverview": "Transfers overview",
