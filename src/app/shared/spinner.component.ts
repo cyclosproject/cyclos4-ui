@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 
 /**
  * Shows a spinner to indicate that some processing is taking place
@@ -12,5 +12,7 @@ import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 export class SpinnerComponent {
 
   @HostBinding('class.spinner') classSpinner = true;
+
+  @Input() size: string;
 
 }

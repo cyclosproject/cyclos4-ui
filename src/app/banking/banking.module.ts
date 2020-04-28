@@ -6,6 +6,10 @@ import { PaymentStepConfirmComponent } from 'app/banking/payment/payment-step-co
 import { PaymentStepDoneComponent } from 'app/banking/payment/payment-step-done.component';
 import { PaymentStepFormComponent } from 'app/banking/payment/payment-step-form.component';
 import { PaymentComponent } from 'app/banking/payment/payment.component';
+import { ReceiveQrPaymentStepDoneComponent } from 'app/banking/ticket/receive-qr-payment-step-done.component';
+import { ReceiveQrPaymentStepFormComponent } from 'app/banking/ticket/receive-qr-payment-step-form.component';
+import { ReceiveQrPaymentStepPendingComponent } from 'app/banking/ticket/receive-qr-payment-step-pending.component';
+import { ReceiveQrPaymentComponent } from 'app/banking/ticket/receive-qr-payment.component';
 import { SearchAuthorizedPaymentsComponent } from 'app/banking/transactions/search-authorized-payments.component';
 import { SearchScheduledPaymentsComponent } from 'app/banking/transactions/search-scheduled-payments.component';
 import { TransactionFitersComponent } from 'app/banking/transactions/transaction-filters.component';
@@ -52,6 +56,11 @@ import { ViewVoucherComponent } from './vouchers/view-voucher.component';
     PaymentStepFormComponent,
     PaymentStepConfirmComponent,
     PaymentStepDoneComponent,
+
+    ReceiveQrPaymentComponent,
+    ReceiveQrPaymentStepFormComponent,
+    ReceiveQrPaymentStepPendingComponent,
+    ReceiveQrPaymentStepDoneComponent,
 
     BuyVouchersComponent,
     SearchBoughtVouchersComponent,

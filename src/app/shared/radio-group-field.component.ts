@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Host, HostBinding, Injector, Input, Optional, SkipSelf } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldWithOptionsComponent, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
-import { empty } from 'app/shared/helper';
+import { empty, truthyAttr } from 'app/shared/helper';
 
 /**
  * Component used to display a group of radios to use as a single-selection field
@@ -19,7 +19,14 @@ export class RadioGroupFieldComponent extends BaseFormFieldWithOptionsComponent<
 
   @HostBinding('class.d-block') classBlock = true;
   @HostBinding('class.w-100') classW100 = true;
-  @Input() asColumn = false;
+
+  _asColumn: boolean | string = false;
+  @Input() get asColumn(): boolean | string {
+    return this._asColumn;
+  }
+  set asColumn(flag: boolean | string) {
+    this._asColumn = truthyAttr(flag);
+  }
 
   constructor(
     injector: Injector,

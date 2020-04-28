@@ -821,3 +821,34 @@ export function galleryImage(image: Image): NgxGalleryImage {
     small: `${image.url}?width=${SmallThumbSize[0]}&height=${SmallThumbSize[1]}`,
   });
 }
+
+/**
+ * Returns whether the share functionality is supported by the browser
+ */
+export function shareSupported() {
+  return !!navigator['share'];
+}
+
+/**
+ * Copies the given text to clipboard.
+ * Based on https://hackernoon.com/copying-text-to-clipboard-with-javascript-df4d4988697f
+ */
+export function copyToClipboard(text: string) {
+  const el = document.createElement('textarea');
+  el.value = text;
+  el.setAttribute('readonly', '');
+  el.style.position = 'absolute';
+  el.style.left = '-9999px';
+  document.body.appendChild(el);
+  const selected =
+    document.getSelection().rangeCount > 0
+      ? document.getSelection().getRangeAt(0)
+      : false;
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+  if (selected) {
+    document.getSelection().removeAllRanges();
+    document.getSelection().addRange(selected);
+  }
+}

@@ -1,0 +1,55 @@
+<page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
+  <page-content *ngSwitchCase="'form'"
+    [heading]="this.i18n.transaction.title.receiveQrPayment"
+    [mobileHeading]="this.i18n.transaction.mobileTitle.receiveQrPayment"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+
+    <receive-qr-payment-step-form class="flex-grow-1 d-flex flex-column"
+      [data]="data" [form]="form" [transferTypes]="paymentTypes$ | async"
+      [type]="paymentType$ | async" [typeData]="paymentTypeData$ | async">
+    </receive-qr-payment-step-form>
+    <actions forceRow>
+      <button class="btn btn-primary" [disabled]="requesting$ | async"
+        (click)="toPending()">{{ i18n.general.next }}</button>
+    </actions>
+  </page-content>
+
+  <page-content *ngSwitchCase="'pending'" hideBack
+    [heading]="i18n.transaction.title.receiveQrPayment"
+    [mobileHeading]="i18n.transaction.mobileTitle.receiveQrPayment"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+    <receive-qr-payment-step-pending [ticket]="ticket$ | async"
+      [qrCodeUrl]="qrCodeUrl$ | async"></receive-qr-payment-step-pending>
+    <actions forceRow>
+      <button *ngIf="supportsShare; else empty" class="btn btn-primary"
+        [disabled]="requesting$ | async"
+        (click)="share()">{{ i18n.general.share }}</button>
+
+      <ng-template #empty><span></span></ng-template>
+
+      <button class="btn btn-outline-primary" (click)="reload()">
+        {{ i18n.general.previous }}
+      </button>
+    </actions>
+  </page-content>
+
+  <page-content *ngSwitchCase="'done'" hideBack
+    [heading]="i18n.transaction.title.receiveQrPayment"
+    [mobileHeading]="i18n.transaction.mobileTitle.receiveQrPayment"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+    <receive-qr-payment-step-done [payment]="payment$ | async">
+    </receive-qr-payment-step-done>
+    <actions forceRow>
+      <button class="btn btn-primary" (click)="viewPerformed()">
+        {{ i18n.transaction.doneView }}
+      </button>
+      <button class="btn btn-outline-primary" (click)="reload()">
+        {{ i18n.transaction.doneNew }}
+      </button>
+    </actions>
+  </page-content>
+
+  <page-content *ngSwitchDefault>
+    <spinner></spinner>
+  </page-content>
+</page-layout>

@@ -448,7 +448,7 @@ export class MenuService {
 
     // Lambda that adds a submenu to a root menu
     const add = (menu: Menu | ActiveMenu, url: string, icon: string, label: string, showIn: MenuType[] = null,
-                 urlHandler: () => string = null): MenuEntry => {
+      urlHandler: () => string = null): MenuEntry => {
       const entry = new MenuEntry(menu, url, icon, label, showIn, urlHandler);
       const root = roots.get(entry.menu.root);
       root.entries.push(entry);
@@ -579,6 +579,10 @@ export class MenuService {
       }
       if (payments.pos) {
         add(Menu.POS, `/banking/pos`, 'payment', this.i18n.menu.bankingPos);
+      }
+      const tickets = banking.tickets || {};
+      if (tickets.create) {
+        add(Menu.RECEIVE_QR_PAYMENT, `/banking/qr`, 'scan_qr_code', this.i18n.menu.bankingReceiveQrPayment);
       }
       if ((banking.scheduledPayments || {}).view) {
         add(Menu.SCHEDULED_PAYMENTS, `/banking/${owner}/scheduled-payments`,

@@ -1,0 +1,29 @@
+<ng-container [formGroup]="form">
+  <radio-group-field *ngIf="!singleAccount" formControlName="account"
+    [label]="i18n.transaction.toAccount" required asColumn>
+    <field-option *ngFor="let acc of data.accounts" [value]="acc.id"
+      [text]="acc.type.name"></field-option>
+  </radio-group-field>
+
+  <single-selection-field *ngIf="transferTypes?.length > 1"
+    formControlName="type" [label]="i18n.transaction.type">
+    <field-option *ngFor="let tt of transferTypes" [value]="tt.id"
+      [text]="tt.name"></field-option>
+  </single-selection-field>
+
+  <decimal-field formControlName="amount" focused
+    [label]="i18n.transaction.amount" required [prefix]="currency?.prefix"
+    [suffix]="currency?.suffix" [scale]="currency?.decimalDigits">
+  </decimal-field>
+
+  <ng-container *ngIf="typeData?.customFields?.length > 0"
+    [formGroup]="form.controls.customValues">
+    <custom-field-input *ngFor="let cf of typeData.customFields"
+      [formControlName]="cf.internalName" [field]="cf"></custom-field-input>
+  </ng-container>
+
+  <textarea-field *ngIf="typeData?.descriptionAvailability !== 'disabled'"
+    formControlName="description" [label]="i18n.general.description"
+    [required]="typeData?.descriptionAvailability === 'required'">
+  </textarea-field>
+</ng-container>
