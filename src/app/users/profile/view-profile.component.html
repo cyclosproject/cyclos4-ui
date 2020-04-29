@@ -135,10 +135,6 @@
 
 <ng-template #actionTpl let-action>
   <div class="profile-action">
-    <button href="#" class="btn btn-action-toolbar"
-      (click)="action.onClick(); $event.preventDefault()">
-      <icon [icon]="action.icon"></icon>
-      <div>{{ action.label }}</div>
-    </button>
+    <heading-action-button [action]="action"></heading-action-button>
   </div>
 </ng-template>
