@@ -113,7 +113,7 @@
           <th class="text-right">{{ i18n.ad.total }}</th>
         </thead>
         <tbody>
-          <ng-container *ngFor="let row of (results$ | async).results">
+          <ng-container *ngFor="let row of (results$ | async)?.results">
             <tr (click)="router.navigate(path(row))">
               <td>{{ row.number }}</td>
               <td>{{ resolveStatusLabel(row) }}</td>

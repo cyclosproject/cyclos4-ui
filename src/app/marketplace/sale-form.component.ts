@@ -147,7 +147,7 @@ export class SaleFormComponent
   addProducts() {
     const ref = this.modal.show(SearchProductsComponent, {
       class: 'modal-form', initialState: {
-        currency: this.currency.id,
+        currency: this.currency,
       },
     });
     const component = ref.content as SearchProductsComponent;

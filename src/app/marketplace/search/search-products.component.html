@@ -8,25 +8,39 @@
   [ngStyle]="{'min-height': '44vh'}">
   <mobile-result *mobileResult="let row" [avatarImage]="row.image"
     avatarIcon="shopping_basket">
-    <div class="cell-main"
-      [ngStyle]="{'text-decoration': resolveStockLabel(row) ? 'line-through' : ''}">
-      {{ row.name }}</div>
-    <div *ngIf="resolveStockLabel(row)" class="cell-text text-muted">
-      {{ i18n.ad.outOfStock }}</div>
+    <div class="cell-date-amount">
+      <div class="cell-amount">
+        {{ (row.promotionalPrice || row.price) | currency:currency }}
+      </div>
+      <div class="cell-date cell-main" [ngStyle]="{'text-decoration': isOutOfStock(row) ? 'line-through' : '',
+      'max-width': '75%'}">
+        {{ row.name }}
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="cell-text">
+      {{ i18n.ad.stock }}: {{ resolveStockLabel(row) }}</div>
   </mobile-result>
   <table *resultTable class="table table-hover cursor-pointer">
+    <thead>
+      <th class="avatar"></th>
+      <th width="35%">{{ i18n.ad.product }}</th>
+      <th>{{ i18n.ad.stockQuantity }}</th>
+      <th class="text-right">{{ i18n.ad.price }}</th>
+    </thead>
     <tbody>
-      <ng-container *ngFor="let row of (results$ | async).results">
+      <ng-container *ngFor="let row of (results$ | async)?.results">
         <tr (click)="addProduct(row)">
           <td class=" avatar">
             <avatar [image]="row.image" icon="shopping_basket"></avatar>
           </td>
-          <td>
-            <div
-              [ngStyle]="{'text-decoration': resolveStockLabel(row) ? 'line-through' : ''}">
-              {{ row.name }}</div>
-            <div *ngIf="resolveStockLabel(row)" class="text-muted">
-              {{ i18n.ad.outOfStock }}</div>
+          <td
+            [ngStyle]="{'text-decoration': isOutOfStock(row) ? 'line-through' : ''}">
+            <span class="ellipsis-clamp-2">{{ row.name }}</span></td>
+          <td [ngClass]="{'text-muted': isOutOfStock(row)}">
+            {{ resolveStockLabel(row) }}</td>
+          <td class="text-right">
+            {{  (row.promotionalPrice || row.price) | currency: currency }}
           </td>
         </tr>
       </ng-container>

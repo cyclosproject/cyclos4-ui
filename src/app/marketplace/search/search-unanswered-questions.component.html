@@ -50,7 +50,7 @@
         <th class="actions"></th>
       </thead>
       <tbody>
-        <tr *ngFor="let row of (results$ | async).results"
+        <tr *ngFor="let row of (results$ | async)?.results"
           (click)="router.navigate(path(row))">
           <td class=" avatar" [ngClass]="{
               'pb-0': layout.xxs$ | async,

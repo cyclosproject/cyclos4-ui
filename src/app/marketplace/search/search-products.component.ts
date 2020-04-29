@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AdKind, AdResult, AdStatusEnum } from 'app/api/models';
+import { AdKind, AdResult, AdStatusEnum, Currency } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services';
 import { BaseComponent } from 'app/shared/base.component';
 import { PageData } from 'app/shared/page-data';
@@ -19,9 +19,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class SearchProductsComponent extends BaseComponent implements OnInit {
 
-  private pageSize = 3;
+  private pageSize = 8;
 
-  @Input() currency: string;
+  @Input() currency: Currency;
   @Output() select = new EventEmitter<AdResult>();
 
   form: FormGroup;
@@ -60,7 +60,7 @@ export class SearchProductsComponent extends BaseComponent implements OnInit {
   }
 
   addProduct(row: AdResult) {
-    if (this.resolveStockLabel(row) == null) {
+    if (!this.isOutOfStock(row)) {
       this.notification.snackBar(this.i18n.ad.addedProductOrder);
       this.select.emit(row);
     }
@@ -71,7 +71,7 @@ export class SearchProductsComponent extends BaseComponent implements OnInit {
     const query = {
       user: this.ApiHelper.SELF,
       kind: AdKind.WEBSHOP,
-      currency: this.currency,
+      currency: this.currency.id,
       status: AdStatusEnum.ACTIVE,
       pageSize: data.pageSize || this.pageSize,
       page: data.page || 0,
@@ -105,8 +105,18 @@ export class SearchProductsComponent extends BaseComponent implements OnInit {
       const quantity = +ad.stockQuantity || 0;
       if (quantity === 0) {
         return this.i18n.ad.outOfStock;
+      } else {
+        return this.format.formatAsNumber(ad.stockQuantity, quantity % 1 === 0 ? 0 : 2);
       }
     }
-    return null;
+    return this.i18n.ad.unlimited;
   }
+
+  /**
+   * Returns if the given ad is out of stock
+   */
+  isOutOfStock(ad: AdResult): boolean {
+    return this.resolveStockLabel(ad) === this.i18n.ad.outOfStock;
+  }
+
 }

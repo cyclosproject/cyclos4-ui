@@ -67,7 +67,7 @@
           <th class="actions"></th>
         </thead>
         <tbody>
-          <ng-container *ngFor="let row of (results$ | async).results">
+          <ng-container *ngFor="let row of (results$ | async)?.results">
             <tr>
               <td class="avatar" [ngClass]="{
               'pb-0': layout.xxs$ | async,

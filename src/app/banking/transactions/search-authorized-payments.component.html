@@ -28,7 +28,7 @@
         <th class="amount">{{ i18n.transaction.amount }}</th>
       </thead>
       <tbody>
-        <ng-container *ngFor="let row of (results$ | async).results">
+        <ng-container *ngFor="let row of (results$ | async)?.results">
           <tr (click)="router.navigate(path(row))">
             <td class="avatar">
               <avatar [image]="avatarImage(row)" [icon]="avatarIcon(row)">

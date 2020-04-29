@@ -35,7 +35,7 @@
         <th class="actions"></th>
       </thead>
       <tbody>
-        <ng-container *ngFor="let row of (results$ | async).results">
+        <ng-container *ngFor="let row of (results$ | async)?.results">
           <tr (click)="rowClick(row)"
             [ngClass]="{'font-weight-bold': !row.read}">
             <td class="avatar" [ngClass]="{
