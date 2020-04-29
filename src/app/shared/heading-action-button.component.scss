@@ -42,8 +42,8 @@
   flex-direction: column;
 }
 
-body.dark {
-  .btn-action-toolbar {
+body.dark :host ::ng-deep {
+  .btn {
     color: $toolbar-button-color-dark;
     background-color: $toolbar-button-bg-dark;
     border-color: $toolbar-button-border-color-dark;
