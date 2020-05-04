@@ -283,6 +283,7 @@
     "marketplace.connectedUsers": "Connected users",
     "marketplace.userAlerts": "User alerts",
     "personal": "Personal",
+    "personal.documents": "Documents",
     "personal.viewProfile": "My profile",
     "personal.editProfile": "Edit profile",
     "personal.contacts": "Contacts",
@@ -1695,5 +1696,9 @@
       "maxGlobalSmsReached": "The global maximum of SMS messages per month has been reached",
       "maxIncorrectLoginAttempts": "Max incorrect login attempts for invalid user"
     }
+  },
+  "document": {
+    "title": "Documents",
+    "mobileTitle": "Documents"
   }
 }

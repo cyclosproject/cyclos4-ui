@@ -42,6 +42,14 @@ export class PageContentComponent implements OnInit, OnChanges {
     this._hideBack = truthyAttr(hideBack);
   }
 
+  private _printContentOnly: boolean | string = false;
+  @Input() get printContentOnly(): boolean | string {
+    return this._printContentOnly;
+  }
+  set printContentOnly(printContentOnly: boolean | string) {
+    this._printContentOnly = truthyAttr(printContentOnly);
+  }
+
   constructor(
     public layoutService: LayoutService,
     public breadcrumb: BreadcrumbService,

@@ -1,0 +1,24 @@
+<page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
+
+  <page-content *ngSwitchCase="'form'" [heading]="data.document.name"
+    [mobileHeading]="data.document.name">
+    <ng-container *ngFor="let cf of formFields; let first = first">
+      <custom-field-input [field]="cf"
+        [formControl]="formControl(cf.internalName)" [focused]="first"
+        [labelPosition]="'auto'">
+      </custom-field-input>
+    </ng-container>
+    <actions>
+      <button class="btn btn-primary" (click)="process()">
+        {{ i18n.general.submit }}
+      </button>
+    </actions>
+  </page-content>
+
+  <page-content *ngSwitchCase="'preview'" [heading]="data.document.name"
+    [mobileHeading]="data.document.name" printContentOnly
+    [headingActions]="headingActions$ | async" last>
+    <div [innerHTML]="result | trust"></div>
+  </page-content>
+
+</page-layout>

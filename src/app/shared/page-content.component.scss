@@ -242,7 +242,7 @@
     padding: 0 !important;
   }
 
-  .page-content {
+  .page-content:not(.print-content-only){
     border-top: 1px solid black !important;
     border-bottom: 1px solid black !important;
   }
@@ -250,7 +250,7 @@
     border-bottom-width: 0 !important;
     margin-bottom: 1rem;
   }
-  .content-title {
+  :not(.print-content-only).content-title {
     border-bottom: 1px solid black !important;
   }
   .content-title .title-text {

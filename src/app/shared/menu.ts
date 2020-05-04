@@ -148,6 +148,9 @@ export namespace Menu {
   export const CONTENT_PAGE_PERSONAL = new Menu(RootMenu.PERSONAL, 'CONTENT_PAGE_PERSONAL');
   export const CONTENT_PAGE_CONTENT = new Menu(RootMenu.CONTENT, 'CONTENT_PAGE_CONTENT');
 
+  // Documents
+  export const MY_DOCUMENTS = new Menu(RootMenu.PERSONAL, 'MY_DOCUMENTS');
+
   /**
    * Returns the various `Menu` that represents content pages in distinct root menus
    */

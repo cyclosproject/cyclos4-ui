@@ -1,0 +1,37 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [mode]="'empty'" [heading]="i18n.document.title"
+      [mobileHeading]="i18n.document.mobileTitle"
+      [headingActions]="headingActions$ | async">
+    </page-content>
+
+    <results-layout [results]="data" [toLink]="toLink">
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead>
+          <th>{{ i18n.general.name }}</th>
+          <th>{{ i18n.general.description }}</th>
+          <th class="actions"></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of data"
+            (click)="showPrintButton(row.kind) ? print(row) : router.navigate(path(row)); $event.stopPropagation() ">
+            <td>{{ row.name }}</td>
+            <td>{{ row.description }}</td>
+            <td class="actions actions-multiple">
+              <button *ngIf="showPrintButton(row.kind)"
+                [tooltip]="i18n.general.download" class="btn btn-icon"
+                (click)="print(row); $event.stopPropagation()">
+                <icon icon="print"></icon>
+              </button>
+              <button *ngIf="!showPrintButton(row.kind)"
+                [tooltip]="i18n.general.edit" class="btn btn-icon"
+                (click)="router.navigate(path(row)); $event.stopPropagation()">
+                <icon icon="edit"></icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>

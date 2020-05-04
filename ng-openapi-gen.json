@@ -47,7 +47,8 @@
     "DeliveryMethods",
     "WebshopSettings",
     "ShoppingCarts",
-    "Validation"
+    "Validation",
+    "Documents"
   ],
   "enumStyle": "upper"
 }
