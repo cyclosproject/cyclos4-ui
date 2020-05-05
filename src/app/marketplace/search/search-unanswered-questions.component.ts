@@ -40,8 +40,9 @@ export class SearchUnansweredQuestionsComponent
     const permissions = auth.permissions || {};
     const marketplace = permissions.marketplace || {};
     const webshop = marketplace.myWebshop || {};
-    this.simpleQuestions = marketplace.questions;
-    this.webshopQuestions = webshop.manage;
+    const simple = marketplace.mySimple || {};
+    this.simpleQuestions = simple.questions;
+    this.webshopQuestions = webshop.questions;
 
     // Update the data with any non-null value, so the search page is properly initialized
     this.data = {};

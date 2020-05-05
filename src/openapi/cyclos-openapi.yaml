@@ -13265,6 +13265,85 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /device-pins/validate:
+    get:
+      operationId: validateDevicePinValue
+      summary: >-
+        Validates a value to be used as a pin.
+      description: >-
+        Validates if a value can be used as a pin for the authenticated user.
+        It checks for obvious values, value's length, etc. using the configuration for the current channel.
+        If the value is a valid one then a `204 No Content` status code is returned.
+        Otherwise, if the value is invalid, a `200 OK` will be returned with an `InputError` with code
+        `validation` as the payload. This error will contains only `generalErrors` (if any),
+        `properties` (containing only the `pin` property) and `propertyErrors` (containing all errors for the `pin`
+        property).
+        Please note that a `422 Unprocessable Entity` status will be returned if the given value is empty or the pin
+        is not enabled for the current channel. To know if the pin is enabled or not you could check for the
+        `DataForLogin.passwordInput.pinAvailability` enum.
+      tags:
+        - DevicePins
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - name: value
+          required: true
+          in: query
+          description: >-
+            The value to be validated
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The validation error if the value is invalid. The returned data contains the validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '204':
+          description: >-
+            The value is valid to be used as a pin. No content is returned.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /device-pins:
     post:
       operationId: setDevicePin
@@ -13404,6 +13483,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         In case of updating its value please use `GET /device-pins/{key}` that already include a `PasswordInput`.
         If the pin is created in the next 6 minutes after a successful login then the action can be confirmed with the
         `pinCreationToken` included in the login's result (`LoginAuth`, `POST /auth/session`) or the login password.
+        This operation can be invoked only if the pin is enabled (check for `DataForLogin.passwordInput.pinAvailability`)
       tags:
         - DevicePins
       security:
@@ -24595,6 +24675,13 @@ Reference to the broker of users involved in transfers. Is only taken into accou
             application/json:
               schema:
                 $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /{user}/notification-settings/data-for-edit:
     parameters:
@@ -35851,10 +35938,11 @@ A note for dynamic custom fields: If a script is used to generate possible value
       summary: >-
         Searches for unanswered questions for a specific user
       description: >-
-        Searches for unanswered questions for a specific user (currently `self` only is supported), if a type is not given then `simple` will be
-        used.
-        Only if the user has the ad questions enabled or can manage webshops and the authenticated user can manage
-        ads / webshops of the given user.
+        Searches for unanswered questions for a specific user (currently `self`
+        only is supported), if a type is not given then `simple` will
+        be used.
+        Only if the user has the ad / webshop questions enabled and the
+        authenticated user can manage ads / webshops of the given user.
       tags:
         - AdQuestions
       security:
@@ -36831,6 +36919,13 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /{user}/orders/data-for-search:
     get:
@@ -37183,6 +37278,13 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /orders/{order}/seller/data-for-set-delivery:
     get:
@@ -50367,6 +50469,23 @@ components:
                 Only used if the document `kind` is `user`.
               type: boolean
 
+    DocumentsPermissions:
+      description: >-
+            Permissions over documents
+      type: object
+      properties:
+        viewShared:
+          description: >-
+            Permissions over each visible document category (shared docs)
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityReference'
+        viewIndividual:
+          description: >-
+            Whether the authenticated uses can view individual documents
+          type: boolean
+
+
     Entity:
       description: >-
         Basic definition of a persistent entity
@@ -51521,7 +51640,7 @@ components:
         customFields:
           description: >-
             An array of custom field internal names which contains errors, in the
-            order they were processed. As `propertyErrors` is an object (without a
+            order they were processed. As `customFieldErrors` is an object (without a
             guaranteed order for its keys) the original order would be lost
             otherwise. Only returned if `code` is `validation`.
           type: array
@@ -51938,8 +52057,15 @@ components:
             Are ad interests enabled? Only returned if there is an authenticated user.
           type: boolean
         questions:
+          deprecated: true
+          x-remove-version: 4.15
           description: >-
-            Are questions enabled? Only returned if there is an authenticated user.
+            Use `mySimple.questions` instead.
+
+
+
+            Are simple advertisements questions enabled? Only returned if there is
+            an authenticated user.
           type: boolean
         search:
           description: >-
@@ -52135,6 +52261,10 @@ components:
         manage:
           description: >-
             Can manage own advertisements? Only returned if there is an authenticated user.
+          type: boolean
+        questions:
+          description: >-
+            Are questions enabled? Only returned if there is an authenticated user.
           type: boolean
 
 
@@ -55221,6 +55351,12 @@ components:
             Permissions over images (others than the profile image)
           allOf:
             - $ref: '#/components/schemas/ImagesPermissions'
+        documents:
+          description: >-
+            Permissions over documents
+          allOf:
+            - $ref: '#/components/schemas/DocumentsPermissions'
+
 
 
     PersonalizeNfcError:
