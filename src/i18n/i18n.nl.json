@@ -404,7 +404,6 @@
       "disable.done": "Uw {type} was uitgeschakeld"
     }
   },
-  "registrationAgreement": "Registratie akkoord",
   "pendingAgreements": {
     "title": {
       "previouslyAccepted": "Bijgewerkt overeenkomst",
@@ -416,7 +415,8 @@
     },
     "message.previouslyAccepted": "De registratie overeenkomst is bijgewerkt.<br><br>om verder te kunnen gaan, moet je akkoord gaan met de nieuwe voorwaarden.",
     "message.firstTime": "In order to complete your registration, you must agree with these terms.",
-    "agree": "Ik ben het eens met de volgende registratie overeenkomsten: {agreements}"
+    "agree": "Ik ben het eens met de volgende registratie overeenkomsten: {agreements}",
+    "preface": "I hereby declare that I have read and agree with the following:"
   },
   "securityQuestion": {
     "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
