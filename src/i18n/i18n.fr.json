@@ -404,7 +404,6 @@
       "disable.done": "Votre {type} a été désactivé"
     }
   },
-  "registrationAgreement": "Contrat d'inscription",
   "pendingAgreements": {
     "title": {
       "previouslyAccepted": "Accord mis à jour",
@@ -416,7 +415,8 @@
     },
     "message.previouslyAccepted": "Le contrat d’enregistrement a été mis à jour. Pour continuer, vous devez accepter les nouveaux termes.",
     "message.firstTime": "In order to complete your registration, you must agree with these terms.",
-    "agree": "Je suis d'accord avec les accords d'enregistrement suivants: {agreements}"
+    "agree": "Je suis d'accord avec les accords d'enregistrement suivants: {agreements}",
+    "preface": "I hereby declare that I have read and agree with the following:"
   },
   "securityQuestion": {
     "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
