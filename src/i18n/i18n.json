@@ -404,7 +404,6 @@
       "disable.done": "Your {type} was disabled"
     }
   },
-  "registrationAgreement": "Registration agreement",
   "pendingAgreements": {
     "title": {
       "previouslyAccepted": "Updated agreement",
@@ -416,7 +415,8 @@
     },
     "message.previouslyAccepted": "The registration agreement has been updated.<br><br>In order to continue, you must agree with the new terms.",
     "message.firstTime": "In order to complete your registration, you must agree with these terms.",
-    "agree": "I agree with the following registration agreements: {agreements}"
+    "agree": "I agree with the following registration agreements: {agreements}",
+    "preface": "I hereby declare that I have read and agree with the following:"
   },
   "securityQuestion": {
     "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",

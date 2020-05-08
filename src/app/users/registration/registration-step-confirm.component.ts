@@ -1,9 +1,12 @@
 import {
-  AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component,
-  ElementRef, Injector, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren,
+  AfterViewChecked, ChangeDetectionStrategy, Component, Injector, Input,
+  OnDestroy, OnInit, QueryList, ViewChildren
 } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { AddressNew, CustomFieldDetailed, GroupForRegistration, Image, StoredFile, UserDataForNew, UserNew } from 'app/api/models';
+import {
+  AddressNew, Agreement, CustomFieldDetailed, GroupForRegistration, Image,
+  StoredFile, UserDataForNew, UserNew
+} from 'app/api/models';
 import { RegistrationAgreementsComponent } from 'app/login/registration-agreements.component';
 import { BaseComponent } from 'app/shared/base.component';
 import { blank, empty, focus } from 'app/shared/helper';
@@ -20,7 +23,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 })
 export class RegistrationStepConfirmComponent
   extends BaseComponent
-  implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
+  implements OnInit, OnDestroy, AfterViewChecked {
 
   empty = empty;
 
@@ -34,7 +37,8 @@ export class RegistrationStepConfirmComponent
   @Input() customFiles: StoredFile[];
 
   @ViewChildren('securityAnswer') securityAnswer: QueryList<InputFieldComponent>;
-  @ViewChild('agreementsContent') agreementsContent: ElementRef;
+
+  agreementsControl: FormArray;
 
   constructor(
     injector: Injector,
@@ -49,24 +53,14 @@ export class RegistrationStepConfirmComponent
         this.focusSecurityAnswer = !blank(question);
       }));
     }
-  }
 
-  ngAfterViewInit() {
-    if (this.agreementsContent && this.agreementsContent.nativeElement) {
-      const el: HTMLElement = this.agreementsContent.nativeElement;
-      el.innerHTML = this.i18n.pendingAgreements.agree(
-        `<a href="#" onclick="event.preventDefault();event.stopPropagation();showAgreements()">
-        ${this.data.agreements.map(a => a.name).join(', ')}
-        </a>`,
-      );
-      window['showAgreements'] = () => {
-        this.modal.show(RegistrationAgreementsComponent, {
-          class: 'modal-form',
-          initialState: {
-            agreements: this.data.agreements,
-          },
-        });
-      };
+    if (!empty(this.data.agreements)) {
+      const agreements = this.data.agreements.map(() => false);
+      this.agreementsControl = this.formBuilder.array(agreements);
+      this.addSub(this.agreementsControl.valueChanges.subscribe((flags: boolean[]) => {
+        const all = flags.length === flags.filter(f => f).length;
+        this.form.patchValue({ acceptAgreement: all });
+      }));
     }
   }
 
@@ -148,5 +142,16 @@ export class RegistrationStepConfirmComponent
     const role = auth.role;
     // Will autocomplete passwords only in public registration
     return role ? 'off' : 'on';
+  }
+
+  showAgreement(agreement: Agreement, event: MouseEvent) {
+    this.modal.show(RegistrationAgreementsComponent, {
+      class: 'modal-form',
+      initialState: {
+        agreements: [agreement],
+      },
+    });
+    event.stopPropagation();
+    event.preventDefault();
   }
 }

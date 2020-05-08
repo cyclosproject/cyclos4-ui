@@ -80,16 +80,34 @@
     <h2 *ngIf="data.agreements?.length > 0 || data.captchaType != null">
       {{ i18n.user.title.registrationConfirmation }}
     </h2>
-    <boolean-field *ngIf="data.agreements?.length > 0"
-      formControlName="acceptAgreement" [label]="i18n.registrationAgreement">
-      <div #agreementsContent class="pl-2"></div>
-    </boolean-field>
 
-    <ng-container *ngIf="data.captchaType != null">
-      <label-value kind="field" [label]="i18n.user.captcha">
-        <captcha [form]="form.get('captcha')"></captcha>
-      </label-value>
-    </ng-container>
+    <div class="row no-gutters">
+      <div class="col-12 col-sm-6 col-md-5" *ngIf="data.captchaType != null">
+        <div class="mb-3">{{ i18n.user.captcha }}</div>
+        <div class="mb-3">
+          <captcha [form]="form.get('captcha')"></captcha>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-7"
+        *ngIf="data.agreements?.length > 0">
+        <div class="mb-3">{{ i18n.pendingAgreements.preface }}</div>
+        <ng-container
+          *ngFor="let agreement of data.agreements; let i = index">
+          <div class="d-flex mb-2">
+            <div>
+              <boolean-field [formControl]="agreementsControl.at(i)">
+              </boolean-field>
+            </div>
+            <a class="ml-3 flex-grow-1" href="#"
+              (click)="showAgreement(agreement, $event)">
+              {{ agreement.name }}
+            </a>
+          </div>
+        </ng-container>
+        <field-errors [control]="form.get('acceptAgreement')"></field-errors>
+      </div>
+    </div>
   </ng-container>
 
 </form>
