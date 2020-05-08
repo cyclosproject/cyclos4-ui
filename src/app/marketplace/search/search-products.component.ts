@@ -72,7 +72,7 @@ export class SearchProductsComponent extends BaseComponent implements OnInit {
       user: this.ApiHelper.SELF,
       kind: AdKind.WEBSHOP,
       currency: this.currency.id,
-      status: AdStatusEnum.ACTIVE,
+      statuses: [AdStatusEnum.ACTIVE],
       pageSize: data.pageSize || this.pageSize,
       page: data.page || 0,
       keywords: this.form.controls.keywords.value,

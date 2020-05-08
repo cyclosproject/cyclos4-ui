@@ -76,6 +76,12 @@ export class SaleFormComponent
     });
 
     // Delivery methods
+    if (this.create && !empty(data.deliveryMethods) && data.deliveryMethods.length === 1) {
+      // Preselect first delivery method in case there is a single
+      // one and the order is being created
+      data.order.deliveryMethod = data.deliveryMethods[0];
+    }
+
     this.deliveryForm = this.formBuilder.group({
       name: [null, Validators.required],
       price: [null, Validators.required],

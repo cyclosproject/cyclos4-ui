@@ -39,6 +39,9 @@
           </td>
           <td class="text-right">
             <decimal-field [formControl]="form.controls[quantity(row)]"
+              [minRange]="row.product.allowDecimalQuantity ? null : 1"
+              [maxRange]="row.product.allowDecimalQuantity ? null : 10"
+              [customValueLabel]="i18n.ad.customQuantity"
               [scale]="row.product.allowDecimalQuantity ? 2 : 0">
             </decimal-field>
           </td>

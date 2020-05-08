@@ -49,8 +49,12 @@ export class OrderProductsComponent extends BaseComponent implements OnInit {
             .pipe(distinctUntilChanged(), debounceTime(550))
             .subscribe(val => this.applyPrice(row, val)));
 
-          this.form.addControl(this.quantity(row),
-            this.formBuilder.control(row.quantity));
+          const quantity = this.formBuilder.control(row.quantity);
+          this.form.addControl(this.quantity(row), quantity);
+
+          this.addSub(quantity.valueChanges
+            .pipe(distinctUntilChanged(), debounceTime(550))
+            .subscribe(val => row.quantity = val));
         });
       }
       this.data = data;
@@ -67,12 +71,15 @@ export class OrderProductsComponent extends BaseComponent implements OnInit {
       price = +row.product.price - (+row.product.price * (val / 100));
     }
     this.form.controls[this.price(row)].setValue(price, { emitEvent: false });
+    row.price = price.toString();
   }
 
   protected applyPrice(row: OrderItem, val: number) {
     const discount = this.calculateDiscount(row, val);
     if (val > +row.price) {
       this.form.controls[this.price(row)].setValue(+row.price, { emitEvent: false, onlySelf: true });
+    } else {
+      row.price = val ? val.toString() : '0';
     }
     this.form.controls[this.discount(row)].setValue(discount, { emitEvent: false });
   }
