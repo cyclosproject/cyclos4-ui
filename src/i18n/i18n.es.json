@@ -404,7 +404,6 @@
       "disable.done": "Su \"{type}\" ha sido deshabilitada"
     }
   },
-  "registrationAgreement": "Términos de acuerdo",
   "pendingAgreements": {
     "title": {
       "previouslyAccepted": "Términos de acuerdo actualizados",
@@ -416,7 +415,8 @@
     },
     "message.previouslyAccepted": "Los términos de acuerdo ha sido actualizados.\n\nUsted debe aceptar los nuevos términos de acuerdo para poder continuar.",
     "message.firstTime": "Para completar su registro, debe aceptar estos términos.",
-    "agree": "He aceptado los siguientes términos de acuerdo: {agreements}"
+    "agree": "He aceptado los siguientes términos de acuerdo: {agreements}",
+    "preface": "I hereby declare that I have read and agree with the following:"
   },
   "securityQuestion": {
     "message": "La pregunta de seguridad es necesaria en caso de que usted necesite restablecer su contraseña. Si desea cambiarla, una vez definida, por favor contacte a la administración.",
