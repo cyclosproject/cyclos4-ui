@@ -404,7 +404,6 @@
       "disable.done": "Il {type} è stato disattivato"
     }
   },
-  "registrationAgreement": "Termini e condizioni",
   "pendingAgreements": {
     "title": {
       "previouslyAccepted": "Termini e condizioni aggiornati",
@@ -416,7 +415,8 @@
     },
     "message.previouslyAccepted": "I termini e condizioni sono stati aggiornati.<br><br>Per continuare, devi accettare i nuovi termini e condizioni.",
     "message.firstTime": "Per completare la registrazione, è necessario accettare termini e condizioni.",
-    "agree": "Accetto i seguenti termini e condizioni: {agreements}"
+    "agree": "Accetto i seguenti termini e condizioni: {agreements}",
+    "preface": "I hereby declare that I have read and agree with the following:"
   },
   "securityQuestion": {
     "message": "La domanda di sicurezza è richiesta nel caso in cui sia necessario reimpostare la password. Una volta impostata, se si vuole modificare, contattare l'amministrazione.",
