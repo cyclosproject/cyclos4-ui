@@ -1,13 +1,11 @@
-import { AfterViewChecked, ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Agreement } from 'app/api/models';
 import { AgreementsService } from 'app/api/services';
 import { LoginState } from 'app/core/login-state';
-import { RegistrationAgreementsComponent } from 'app/login/registration-agreements.component';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
-import { BsModalService } from 'ngx-bootstrap/modal';
 
 /**
  * Component shown after the user logs-in with pending agreements
@@ -19,21 +17,18 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 })
 export class AcceptPendingAgreementsComponent
   extends BasePageComponent<Agreement[]>
-  implements OnInit, AfterViewChecked {
+  implements OnInit {
 
   title: string;
   mobileTitle: string;
   message: string;
 
   accept = new FormControl(false, Validators.requiredTrue);
-  initialized = false;
-  @ViewChild('agreementsContent') agreementsContent: ElementRef;
 
   constructor(
     injector: Injector,
     private agreementsService: AgreementsService,
-    private loginState: LoginState,
-    private modal: BsModalService,
+    private loginState: LoginState
   ) {
     super(injector);
   }
@@ -68,26 +63,6 @@ export class AcceptPendingAgreementsComponent
       }
       this.data = data;
     }));
-  }
-
-  ngAfterViewChecked() {
-    if (!this.initialized && this.agreementsContent) {
-      const el: HTMLElement = this.agreementsContent.nativeElement;
-      el.innerHTML = this.i18n.pendingAgreements.agree(
-        `<a href="#" onclick="event.preventDefault();event.stopPropagation();showAgreements()">
-        ${this.agreements.map(a => a.name).join(', ')}
-        </a>`,
-      );
-      window['showAgreements'] = () => {
-        this.modal.show(RegistrationAgreementsComponent, {
-          class: 'modal-form',
-          initialState: {
-            agreements: this.agreements,
-          },
-        });
-      };
-      this.initialized = true;
-    }
   }
 
   submit() {

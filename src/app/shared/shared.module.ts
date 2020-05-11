@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { AcceptAgreementsComponent } from 'app/shared/accept-agreements.component';
 import { AccountPipe } from 'app/shared/account.pipe';
 import { ActionsToolbarComponent } from 'app/shared/actions-toolbar.component';
 import { ActionsComponent } from 'app/shared/actions.component';
 import { AddressDetailsComponent } from 'app/shared/address-details.component';
 import { AddressFormComponent } from 'app/shared/address-form.component';
+import { AgreementsContentDialogComponent } from 'app/shared/agreement-content-dialog.component';
 import { AvatarComponent } from 'app/shared/avatar.component';
 import { BannerCardComponent } from 'app/shared/banner-card.component';
 import { BooleanFieldComponent } from 'app/shared/boolean-field.component';
@@ -205,6 +207,8 @@ export function initTooltipConfig(): TooltipConfig {
     IconWithCounterComponent,
     ButtonToggleComponent,
     NotificationTypeSettingComponent,
+    AcceptAgreementsComponent,
+    AgreementsContentDialogComponent,
 
     TrustPipe,
     DatePipe,
@@ -331,6 +335,8 @@ export function initTooltipConfig(): TooltipConfig {
     IconWithCounterComponent,
     ButtonToggleComponent,
     NotificationTypeSettingComponent,
+    AcceptAgreementsComponent,
+    AgreementsContentDialogComponent,
 
     FocusedDirective,
     NumbersOnlyDirective,
@@ -359,6 +365,7 @@ export function initTooltipConfig(): TooltipConfig {
     LinkPropertiesDialogComponent,
     TextDialogComponent,
     ScanQrCodeComponent,
+    AgreementsContentDialogComponent,
   ],
 })
 export class SharedModule {

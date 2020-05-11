@@ -1,0 +1,15 @@
+<div #content>
+  <h1>
+    {{ agreement.name }}
+  </h1>
+  <div class="mb-3" [innerHTML]="agreement.content | trust"></div>
+</div>
+<actions forceRow>
+  <button class="btn btn-primary" (click)="print(content, printOutput)">
+    {{ i18n.general.print }}
+  </button>
+  <button class="btn btn-outline-primary" (click)="modalRef.hide()">
+    {{ i18n.general.close }}
+  </button>
+</actions>
+<iframe class="d-none" #printOutput></iframe>

@@ -5,9 +5,8 @@
       <div [innerHTML]="message | trust"></div>
     </notification>
     <div class="mt-3 text-left">
-      <boolean-field [formControl]="accept">
-        <div #agreementsContent class="pl-2"></div>
-      </boolean-field>
+      <accept-agreements [agreements]="agreements" [control]="accept">
+      </accept-agreements>
     </div>
     <actions>
       <button class="btn btn-primary" [disabled]="requesting$ | async"

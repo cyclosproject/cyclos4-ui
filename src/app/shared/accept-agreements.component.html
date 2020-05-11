@@ -1,0 +1,13 @@
+<ng-container *ngFor="let agreement of agreements; let i = index">
+  <div class="d-flex mb-2">
+    <div>
+      <boolean-field [formControl]="agreementsControl.at(i)">
+      </boolean-field>
+    </div>
+    <a class="ml-3 flex-grow-1" href="#"
+      (click)="showAgreement(agreement, $event)">
+      {{ agreement.name }}
+    </a>
+  </div>
+</ng-container>
+<field-errors [control]="control"></field-errors>

@@ -7,7 +7,6 @@ import { ForgotPasswordStepCodeComponent } from 'app/login/forgot-password-step-
 import { ForgotPasswordStepRequestComponent } from 'app/login/forgot-password-step-request.component';
 import { ForgotPasswordComponent } from 'app/login/forgot-password.component';
 import { LoginComponent } from 'app/login/login.component';
-import { RegistrationAgreementsComponent } from 'app/login/registration-agreements.component';
 import { SharedModule } from 'app/shared/shared.module';
 
 /**
@@ -23,13 +22,9 @@ import { SharedModule } from 'app/shared/shared.module';
     ChangeForgottenPasswordComponent,
     ChangeExpiredPasswordComponent,
     AcceptPendingAgreementsComponent,
-    RegistrationAgreementsComponent,
   ],
   imports: [
     SharedModule,
-  ],
-  entryComponents: [
-    RegistrationAgreementsComponent,
   ],
 })
 export class LoginModule { }

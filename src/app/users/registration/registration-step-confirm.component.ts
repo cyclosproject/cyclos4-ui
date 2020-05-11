@@ -1,17 +1,9 @@
-import {
-  AfterViewChecked, ChangeDetectionStrategy, Component, Injector, Input,
-  OnDestroy, OnInit, QueryList, ViewChildren
-} from '@angular/core';
+import { AfterViewChecked, ChangeDetectionStrategy, Component, Injector, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import {
-  AddressNew, Agreement, CustomFieldDetailed, GroupForRegistration, Image,
-  StoredFile, UserDataForNew, UserNew
-} from 'app/api/models';
-import { RegistrationAgreementsComponent } from 'app/login/registration-agreements.component';
+import { AddressNew, CustomFieldDetailed, GroupForRegistration, Image, StoredFile, UserDataForNew, UserNew } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { blank, empty, focus } from 'app/shared/helper';
 import { InputFieldComponent } from 'app/shared/input-field.component';
-import { BsModalService } from 'ngx-bootstrap/modal';
 
 /**
  * Public registration step: confirmation
@@ -23,7 +15,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 })
 export class RegistrationStepConfirmComponent
   extends BaseComponent
-  implements OnInit, OnDestroy, AfterViewChecked {
+  implements OnInit, AfterViewChecked {
 
   empty = empty;
 
@@ -41,8 +33,7 @@ export class RegistrationStepConfirmComponent
   agreementsControl: FormArray;
 
   constructor(
-    injector: Injector,
-    private modal: BsModalService) {
+    injector: Injector) {
     super(injector);
   }
 
@@ -68,13 +59,6 @@ export class RegistrationStepConfirmComponent
     if (this.focusSecurityAnswer) {
       this.securityAnswer.forEach(f => focus(f));
       this.focusSecurityAnswer = false;
-    }
-  }
-
-  ngOnDestroy() {
-    super.ngOnDestroy();
-    if (window['showAgreements']) {
-      delete window['showAgreements'];
     }
   }
 
@@ -144,14 +128,4 @@ export class RegistrationStepConfirmComponent
     return role ? 'off' : 'on';
   }
 
-  showAgreement(agreement: Agreement, event: MouseEvent) {
-    this.modal.show(RegistrationAgreementsComponent, {
-      class: 'modal-form',
-      initialState: {
-        agreements: [agreement],
-      },
-    });
-    event.stopPropagation();
-    event.preventDefault();
-  }
 }

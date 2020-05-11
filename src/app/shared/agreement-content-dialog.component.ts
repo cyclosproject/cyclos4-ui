@@ -1,21 +1,23 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { Agreement } from 'app/api/models';
+import { Agreement, AgreementContent } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
+type AgreementOrContent = Agreement | AgreementContent;
+
 /**
- * Shows the registration agreement(s) in a modal
+ * Shows the content of a registration agreement in a modal dialog
  */
 @Component({
-  selector: 'registration-agreements',
-  templateUrl: 'registration-agreements.component.html',
+  selector: 'agreement-content-dialog',
+  templateUrl: 'agreement-content-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegistrationAgreementsComponent
+export class AgreementsContentDialogComponent
   extends BaseComponent
   implements OnInit {
 
-  @Input() agreements: Agreement[];
+  @Input() agreement: AgreementOrContent;
 
   constructor(
     injector: Injector,
