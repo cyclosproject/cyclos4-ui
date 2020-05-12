@@ -12,10 +12,12 @@
           </div>
           <div *ngIf="groups.length > 1" class="col-12 col-md-6">
             <multi-selection-field labelPosition="side"
-              formControlName="groups" [label]="i18n.general.groups">
-              <field-option *ngFor="let group of groups" [value]="group.id"
+              hierarchyProperty="groupSet" formControlName="groups"
+              [label]="i18n.general.groups">
+              <field-option *ngFor="let group of groups"
+                [value]="ApiHelper.internalNameOrId(group)"
                 [internalName]="group.internalName" [id]="group.id"
-                [text]="group.name">
+                [text]="group.name" [parent]="group.groupSet">
               </field-option>
             </multi-selection-field>
           </div>
@@ -105,7 +107,7 @@
           <th class="actions"></th>
         </thead>
         <tbody>
-          <tr *ngFor="let row of results.results"
+          <tr *ngFor="let row of results?.results"
             (click)="router.navigate(viewPath(row))">
             <td>{{ row.creationDate | dateTime }}</td>
             <td *ngIf="generalSearch">{{ recordOwner(row) }}</td>
