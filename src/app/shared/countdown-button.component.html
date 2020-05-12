@@ -1,0 +1,8 @@
+<button #button type="button"
+  class="btn btn-outline-primary link-with-icon d-flex justify-content-center justify-content-sm-start"
+  [ngClass]="{'mr-3': layout.gtxs$ | async, 'mt-2': !first, 'mt-sm-0': true}"
+  (click)="onClick($event); $event.stopPropagation()"
+  [disabled]="disabled$ | async">
+  <icon *ngIf="icon" [icon]="icon"></icon>
+  <span *ngIf="text$">{{ text$ | async }}</span>
+</button>

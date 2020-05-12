@@ -23,6 +23,7 @@ import { ChipComponent } from 'app/shared/chip.component';
 import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.component';
 import { ConfirmationComponent } from 'app/shared/confirmation.component';
 import { ContentMonitorComponent } from 'app/shared/content-monitor.component';
+import { CountdownButtonComponent } from 'app/shared/countdown-button.component';
 import { CurrencyPipe } from 'app/shared/currency.pipe';
 import { CustomFieldFilterComponent } from 'app/shared/custom-field-filter.component';
 import { CustomFieldInputComponent } from 'app/shared/custom-field-input.component';
@@ -209,6 +210,7 @@ export function initTooltipConfig(): TooltipConfig {
     NotificationTypeSettingComponent,
     AcceptAgreementsComponent,
     AgreementsContentDialogComponent,
+    CountdownButtonComponent,
 
     TrustPipe,
     DatePipe,
@@ -337,6 +339,7 @@ export function initTooltipConfig(): TooltipConfig {
     NotificationTypeSettingComponent,
     AcceptAgreementsComponent,
     AgreementsContentDialogComponent,
+    CountdownButtonComponent,
 
     FocusedDirective,
     NumbersOnlyDirective,
