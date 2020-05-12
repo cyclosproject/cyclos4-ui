@@ -416,7 +416,7 @@
     "message.previouslyAccepted": "O termo de adesão foi atualizado.<br><br>Para continuar você deve concordar com os novos termos.",
     "message.firstTime": "Para completar seu registro, você deve concordar com estes termos.",
     "agree": "Concordo com os seguintes termos de adesão: {agreements}",
-    "preface": "I hereby declare that I have read and agree with the following:"
+    "preface": "Declaro que li e concordo com o seguinte:"
   },
   "securityQuestion": {
     "message": "A pergunta de segurança é necessária caso você precise redefinir sua senha. Uma vez definida, se você precisa alterá-la, entre em contato com a administração.",
