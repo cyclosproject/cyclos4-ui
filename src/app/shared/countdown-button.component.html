@@ -1,6 +1,7 @@
-<button #button type="button"
-  class="btn btn-outline-primary link-with-icon d-flex justify-content-center justify-content-sm-start"
-  [ngClass]="{'mr-3': layout.gtxs$ | async, 'mt-2': !first, 'mt-sm-0': true}"
+<button #button type="button" class="btn d-flex justify-content-center"
+  [ngClass]="{ 'link-with-icon': icon,
+  'btn-primary': !outline,
+  'btn-outline-primary': outline }"
   (click)="onClick($event); $event.stopPropagation()"
   [disabled]="disabled$ | async">
   <icon *ngIf="icon" [icon]="icon"></icon>

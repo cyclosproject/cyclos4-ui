@@ -1,8 +1,7 @@
 import {
-  ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output
+  ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output
 } from '@angular/core';
-import { AbstractComponent } from 'app/shared/abstract.component';
-import { LayoutService } from 'app/shared/layout.service';
+import { truthyAttr } from 'app/shared/helper';
 import { BehaviorSubject, Observable, Subscription, timer } from 'rxjs';
 
 /**
@@ -14,15 +13,23 @@ import { BehaviorSubject, Observable, Subscription, timer } from 'rxjs';
   styleUrls: ['countdown-button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CountdownButtonComponent extends AbstractComponent implements OnInit {
+export class CountdownButtonComponent implements OnInit {
+
+  @HostBinding('class.d-inline-block') classInlineBlock = true;
 
   text$ = new BehaviorSubject<string>(null);
   disabled$ = new BehaviorSubject<boolean>(false);
 
-  @Input() first: boolean;
-  @Input() buttonText: string;
+  private _outline: boolean | string = false;
+  @Input() get outline(): boolean | string {
+    return this._outline;
+  }
+  set outline(show: boolean | string) {
+    this._outline = truthyAttr(show);
+  }
+
+  @Input() label: string;
   @Input() icon: string;
-  @Input() elementClass: string;
   @Input() disabledSeconds: number;
   @Input() disabledKey: (remainingSeconds: number) => string;
   @Output() action = new EventEmitter<any>();
@@ -31,16 +38,11 @@ export class CountdownButtonComponent extends AbstractComponent implements OnIni
   countdown: Observable<number>;
   subscription: Subscription;
 
-  constructor(
-    injector: Injector,
-    public layout: LayoutService) {
-    super(injector);
-  }
+  constructor() { }
 
   ngOnInit() {
-    super.ngOnInit();
     this.countdown = timer(1000, 1000);
-    this.text$.next(this.buttonText);
+    this.text$.next(this.label);
   }
 
   onClick(event: any) {
@@ -56,7 +58,7 @@ export class CountdownButtonComponent extends AbstractComponent implements OnIni
   tick() {
     if (this.remaining <= 0) {
       this.disabled$.next(false);
-      this.text$.next(this.buttonText);
+      this.text$.next(this.label);
       this.subscription.unsubscribe();
     } else {
       this.text$.next(this.disabledKey(this.remaining));
