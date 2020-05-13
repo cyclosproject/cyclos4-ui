@@ -1,0 +1,9 @@
+<button #button type="button" class="btn d-flex justify-content-center"
+  [ngClass]="{ 'link-with-icon': icon,
+  'btn-primary': !outline,
+  'btn-outline-primary': outline }"
+  (click)="onClick($event); $event.stopPropagation()"
+  [disabled]="disabled$ | async">
+  <icon *ngIf="icon" [icon]="icon"></icon>
+  <span *ngIf="text$">{{ text$ | async }}</span>
+</button>
