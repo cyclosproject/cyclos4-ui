@@ -321,6 +321,7 @@
     "confirm.otp.request": "Gelieve te vragen om een bevestiging wachtwoord hieronder in om te bevestigen",
     "otp.sent": "Het wachtwoord is verstuurd naar {dest}",
     "otp.receiveBy": "Get by {medium}",
+    "otp.receiveBy.countdown": "{medium} sent({remaining} sec)",
     "oldPassword": "Oud wachtwoord",
     "newPassword": "Nieuw wachtwoord",
     "passwordConfirmation": "Bevestiging van het wachtwoord",
