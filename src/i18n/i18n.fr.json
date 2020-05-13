@@ -321,6 +321,7 @@
     "confirm.otp.request": "Veuillez demander un mot de passe de confirmation ci-dessous afin de confirmer",
     "otp.sent": "Le mot de passe a été envoyé à {dest}",
     "otp.receiveBy": "Get by {medium}",
+    "otp.receiveBy.countdown": "{medium} sent({remaining} sec)",
     "oldPassword": "Ancien mot de passe",
     "newPassword": "Nouveau mot de passe",
     "passwordConfirmation": "Confirmer le mot de passe",
