@@ -17,8 +17,9 @@
     </buy-vouchers-step-form>
 
     <actions forceRow>
-      <button class="btn btn-primary" [disabled]="requesting$ | async"
-        (click)="toConfirm()">{{ i18n.general.next }}</button>
+      <action-button [disabled]="requesting$ | async" (action)="toConfirm()"
+        [label]="i18n.general.next">
+      </action-button>
 
       <button *ngIf="!singleType" class="btn btn-outline-primary"
         (click)="backToSelectType()">
@@ -41,12 +42,11 @@
     </buy-vouchers-step-confirm>
 
     <actions forceRow>
-      <button
+      <action-button
         *ngIf="(confirmationMode$ | async) != ConfirmationMode.Device; else spacer"
-        class="btn btn-primary"
-        [disabled]="!canConfirm || (requesting$ | async)" (click)="buy()">
-        {{ i18n.general.confirm }}
-      </button>
+        [disabled]="!canConfirm || (requesting$ | async)" (action)="buy()"
+        [label]="i18n.general.confirm">
+      </action-button>
       <ng-template #spacer>&nbsp;</ng-template>
       <button class="btn btn-outline-primary" (click)="backToForm()">
         {{ i18n.general.previous }}

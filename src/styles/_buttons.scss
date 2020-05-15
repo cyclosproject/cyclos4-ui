@@ -1,5 +1,9 @@
 @import 'src/definitions';
 
+button[disabled], button[disabled]:hover {
+  cursor: default !important;
+}
+
 button, input[type=button] {
   height: $input-height;
   width: 100%;

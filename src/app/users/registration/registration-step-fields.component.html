@@ -17,13 +17,13 @@
     <div
       class="col-12 col-sm-6 mt-3 mt-sm-0 d-flex justify-content-between justify-content-sm-end align-items-end"
       *ngIf="(upload.uploading$ | async) === false">
-      <button class="btn btn-outline-primary" (click)="upload.perform()">
-        {{ i18n.field.image.upload }}
-      </button>
-      <button *ngIf="image" class="ml-3 btn btn-outline-primary"
-        (click)="removeImage()">
-        {{ i18n.field.image.remove }}
-      </button>
+      <action-button [disabled]="requesting$ | async"
+        (action)="upload.perform()" [label]="i18n.field.image.upload" outline>
+      </action-button>
+      <action-button *ngIf="image" class="ml-3" outline
+        [disabled]="requesting$ | async" (action)="removeImage()"
+        [label]="i18n.field.image.remove">
+      </action-button>
     </div>
   </div>
   <h2 class="mt-4">{{ i18n.user.title.fields }}</h2>
@@ -108,15 +108,10 @@
       *ngIf="addressForm.get('location').value.latitude != null; else viewMap"
       (imageLoaded)="mapShown()" [address]="addressForm.value"></static-map>
     <ng-template #viewMap>
-      <button
-        *ngIf="(locatingAddress$ | async) === false; else locatingSpinner"
-        class="btn btn-outline-primary" type="button"
-        (click)="locateAddress()">
-        {{ i18n.general.mapView }}
-      </button>
-    </ng-template>
-    <ng-template #locatingSpinner>
-      <spinner></spinner>
+      <action-button *ngIf="image" class="ml-3" outline
+        [disabled]="locatingAddress$ | async" (action)="locateAddress()"
+        [label]="i18n.general.mapView">
+      </action-button>
     </ng-template>
   </label-value>
 </ng-container>

@@ -19,11 +19,11 @@
   </confirmation-password>
 
   <actions forceRow>
-    <button class="btn btn-primary"
+    <action-button
       *ngIf="(confirmationMode$ | async) !== ConfirmationMode.Device; else blank"
-      [disabled]="!canConfirm || (requesting$ | async)" (click)="confirm()">
-      {{ confirmLabel }}
-    </button>
+      [disabled]="!canConfirm || (requesting$ | async)" (action)="confirm()"
+      [label]="confirmLabel">
+    </action-button>
     <ng-template #blank>&nbsp;</ng-template>
     <button class="btn btn-outline-primary" (click)="modalRef.hide()">
       {{ cancelLabel }}

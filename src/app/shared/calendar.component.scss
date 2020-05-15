@@ -43,7 +43,6 @@ button[disabled] {
     color: $calendar-header-color;
   }
   button[disabled], button[disabled]:hover {
-    cursor: default !important;
     background-color: transparent !important;
     color: transparent !important;
   }

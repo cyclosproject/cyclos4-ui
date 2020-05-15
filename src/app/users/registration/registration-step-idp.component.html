@@ -12,9 +12,10 @@
 
 <div class="text-center my-3">{{ i18n.identityProvider.registrationOr}}</div>
 
-<button class="btn btn-primary mx-auto" (click)="registerWith(null)">
-  {{ i18n.identityProvider.registrationFillForm }}
-</button>
+<action-button class="mx-auto" [disabled]="requesting$ | async"
+  (action)="registerWith(null)"
+  [label]="i18n.identityProvider.registrationFillForm">
+</action-button>
 
 <div class="text-muted text-justify my-3"
   [innerHTML]="i18n.identityProvider.registrationDisclaimer(format.appTitleSmall) | trust">

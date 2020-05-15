@@ -35,14 +35,14 @@
       <password-input #password class="d-block login-margin-bottom"
         formControlName="password" autocomplete="password" showIcon
         [passwordInput]="data.loginPasswordInput"
-        (keyup.enter)="doLogin($event)"
+        (keyup.enter)="submit.click()"
         [placeholder]="data.accessPasswordType.name"></password-input>
 
-      <button #submit type="button"
-        class="btn btn-primary login-margin-top login-margin-bottom px-5 mt-3"
-        [disabled]="requesting$ | async" (click)="doLogin($event)">
-        {{ i18n.general.submit }}
-      </button>
+      <action-button #submit
+        class="login-margin-top login-margin-bottom mt-3 "
+        [disabled]="requesting$ | async" (action)="doLogin($event)"
+        [label]="i18n.general.submit">
+      </action-button>
 
       <div *ngIf="data.identityProviders?.length > 0" class="mb-4">
         <button type="button" *ngFor="let idp of data.identityProviders"

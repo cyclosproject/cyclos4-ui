@@ -5,18 +5,18 @@
 }
 
 :host ::ng-deep {
-  button + button {
+  button + button, button + .button, .button + button, .button + .button {
     margin-top: 1rem;
   }
 }
 
 @include media-breakpoint-up(xs) {
   :host.force-row ::ng-deep {
-    button, a, input[type=button], input[type=submit] {
+    button, .button, a, input[type=button], input[type=submit] {
       min-width: 7rem;
     }
 
-    button + button {
+    button + button, button + .button, .button + button, .button + .button {
       margin-top: 0;
     }
   }
@@ -24,11 +24,11 @@
 
 @include media-breakpoint-up(sm) {
   :host ::ng-deep {
-      button, a, input[type=button], input[type=submit] {
+      button, .button, a, input[type=button], input[type=submit] {
         min-width: 10rem;
       }
 
-      button + button {
+      button + button, button + .button, .button + button, .button + .button {
         margin-top: 0;
       }
   }

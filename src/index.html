@@ -31,13 +31,9 @@
       z-index: 9999;
     }
 
-    #rootSpinner img {
+    #rootSpinner div {
       width: 64px;
       height: 64px;
-    }
-
-    body.dark #rootSpinner img {
-      filter: invert(1);
     }
 
     noscript {
@@ -66,7 +62,8 @@
 <body
   onload="self.cyclosLoaded === true ? null : document.getElementById('rootSpinner').style.display = ''">
   <div id="rootSpinner">
-    <img src="images/spinner.svg" alt="loading">
+    <div class="spinner-border" role="status">
+    </div>
   </div>
   <script>
     var theme = localStorage ? localStorage.getItem('theme') : null;

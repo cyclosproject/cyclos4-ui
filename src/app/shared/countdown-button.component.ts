@@ -10,7 +10,6 @@ import { BehaviorSubject, Observable, Subscription, timer } from 'rxjs';
 @Component({
   selector: 'countdown-button',
   templateUrl: 'countdown-button.component.html',
-  styleUrls: ['countdown-button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CountdownButtonComponent implements OnInit {

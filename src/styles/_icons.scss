@@ -55,7 +55,7 @@
   align-items: center;
   margin: auto;
 
-  img {
+  div {
     width: 64px;
     height: 64px;
   }
@@ -68,10 +68,6 @@
 }
 
 body.dark {
-  spinner, .spinner {
-    filter: invert(1);
-  }
-
   .solid-icon {
     background-color: $card-bg-dark;
     color: $tiled-results-icon-color-dark;

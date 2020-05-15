@@ -1,14 +1,14 @@
 @import 'src/definitions';
 
-button {
-  display: block;
+button, .button {
+  display: block !important;
   width: 100%;
 }
 
 @include media-breakpoint-up(sm) {
-  button {
+  button, .button {
     width: 18rem;
     margin-left: auto;
     margin-right: auto;
-  }  
+  }
 }

@@ -1,0 +1,12 @@
+<button #button type="button"
+  class="btn d-flex justify-content-center align-items-center w-100"
+  [ngClass]="{ 'link-with-icon': icon,
+  'btn-primary': !outline,
+  'btn-outline-primary': outline }"
+  (click)="onClick($event); $event.stopPropagation()" [disabled]="disabled">
+  <span *ngIf="disabled && (showSpinner$ | async)"
+    class="spinner-border spinner-border-sm" role="status"
+    [ngClass]="{ 'mr-2' : icon || label }" aria-hidden="true"></span>
+  <icon *ngIf="icon" [icon]="icon"></icon>
+  <span *ngIf="label">{{ label }}</span>
+</button>

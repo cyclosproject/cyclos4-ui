@@ -70,9 +70,7 @@ namespace ContentGetter {
       return of(`
           <div id="${wrapperId}" class="iframe-content-wrapper">
             <div id="${spinnerId}" class="iframe-loading-spinner">
-              <div class="spinner">
-                <img src="images/spinner.svg">
-              </div>
+              <div class="spinner spinner-border" role="status"></div>
             </div>
             <iframe id="${iframeId}"
               src="${actualUrl}"

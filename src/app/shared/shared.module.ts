@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { AcceptAgreementsComponent } from 'app/shared/accept-agreements.component';
 import { AccountPipe } from 'app/shared/account.pipe';
+import { ActionButtonComponent } from 'app/shared/action-button.component';
 import { ActionsToolbarComponent } from 'app/shared/actions-toolbar.component';
 import { ActionsComponent } from 'app/shared/actions.component';
 import { AddressDetailsComponent } from 'app/shared/address-details.component';
@@ -211,6 +212,7 @@ export function initTooltipConfig(): TooltipConfig {
     AcceptAgreementsComponent,
     AgreementsContentDialogComponent,
     CountdownButtonComponent,
+    ActionButtonComponent,
 
     TrustPipe,
     DatePipe,
@@ -340,6 +342,7 @@ export function initTooltipConfig(): TooltipConfig {
     AcceptAgreementsComponent,
     AgreementsContentDialogComponent,
     CountdownButtonComponent,
+    ActionButtonComponent,
 
     FocusedDirective,
     NumbersOnlyDirective,
