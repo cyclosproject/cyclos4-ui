@@ -321,7 +321,7 @@
     "confirm.otp.request": "Por favor, solicite uma senha de confirmação para poder confirmar",
     "otp.sent": "A senha foi enviada para {dest}",
     "otp.receiveBy": "Obter via {medium}",
-    "otp.receiveBy.countdown": "{medium} sent({remaining} sec)",
+    "otp.receiveBy.countdown": "{medium} enviado({remaining} seg)",
     "oldPassword": "Senha antiga",
     "newPassword": "Nova senha",
     "passwordConfirmation": "Confirmação da senha",
