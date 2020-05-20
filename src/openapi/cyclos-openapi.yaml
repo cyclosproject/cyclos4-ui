@@ -5,8 +5,7 @@ info:
     The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the
     api can be downloaded in both [YAML](http://localhost:8888/api/cyclos-openapi.yaml) or
     [JSON](http://localhost:8888/api/cyclos-openapi.json) formats. These files can be used in tools
-    that support the OpenAPI specification, such as the [Swagger
-    Generator](https://generator.swagger.io/).
+    that support the OpenAPI specification, such as the [OpenAPI Generator](https://openapi-generator.tech).
 
 
     In the API, whenever some data is referenced, for example, a group, or
@@ -2679,6 +2678,15 @@ paths:
         returned, preventing duplicated data to be returned.
       parameters:
         - $ref: '#/components/parameters/fields'
+        - name: acceptedAgreements
+          in: query
+          required: false
+          description: "Either id or internal names of agreements the user must have accepted. Ignored if the logged user isn't an admin or broker with permission to view the user agreement log."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: activationPeriod
           in: query
           required: false
@@ -2801,6 +2809,15 @@ paths:
           schema:
             type: number
             format: double
+        - name: notAcceptedAgreements
+          in: query
+          required: false
+          description: "Either id or internal names of agreements the user must not have accepted. Ignored if the logged user isn't an admin or broker with permission to view the user agreement log."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: orderBy
           in: query
           required: false
@@ -3072,6 +3089,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
         Generates a file containing the search results. The available export
         formats are returned in `GET /users/data-for-search`.
       parameters:
+        - name: acceptedAgreements
+          in: query
+          required: false
+          description: "Either id or internal names of agreements the user must have accepted. Ignored if the logged user isn't an admin or broker with permission to view the user agreement log."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: activationPeriod
           in: query
           required: false
@@ -3194,6 +3220,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: number
             format: double
+        - name: notAcceptedAgreements
+          in: query
+          required: false
+          description: "Either id or internal names of agreements the user must not have accepted. Ignored if the logged user isn't an admin or broker with permission to view the user agreement log."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: orderBy
           in: query
           required: false
@@ -4116,6 +4151,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - Users
       parameters:
         - $ref: '#/components/parameters/fields'
+        - name: acceptedAgreements
+          in: query
+          required: false
+          description: "Either id or internal names of agreements the user must have accepted. Ignored if the logged user isn't an admin or broker with permission to view the user agreement log."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: activationPeriod
           in: query
           required: false
@@ -4238,6 +4282,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: number
             format: double
+        - name: notAcceptedAgreements
+          in: query
+          required: false
+          description: "Either id or internal names of agreements the user must not have accepted. Ignored if the logged user isn't an admin or broker with permission to view the user agreement log."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: orderBy
           in: query
           required: false
@@ -11275,7 +11328,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Agreement'
+                  $ref: '#/components/schemas/AgreementWithContent'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -11332,6 +11385,186 @@ A note for dynamic custom fields: If a script is used to generate possible value
         '204':
           description: >-
             The agreements were accepted
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /agreements/optional:
+    post:
+      operationId: acceptOptionalAgreements
+      summary: >-
+        Saves the optional agreements for the authenticated user.
+      description: >-
+        The optional agreements that are passed in are marked as accepted, and
+        those ommitted are marked as no longer accepted (if they weren't
+        previously accepted).
+      tags:
+        - Agreements
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - name: agreements
+          in: query
+          description: >-
+            The identifiers or internal names of the optional agreements which
+            will be accepted.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '204':
+          description: >-
+            The agreements were accepted / no longer accepted.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /agreements/{key}/content:
+    parameters:
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+        description: >-
+          Either the agreement identifier or internal name
+    get:
+      operationId: getAgreementContent
+      summary: >-
+        Returns the content of an agreement
+      description: >-
+        A specific version may be requested.
+        If not, will return the current content
+      tags:
+        - Agreements
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: version
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: >-
+            The specific content version to retrieve.
+            When not specified, returns the current version.
+      responses:
+        '200':
+          description: >-
+            The agreement content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgreementContent'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/agreements:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: getUserAgreements
+      summary: >-
+        Returns agreements information for the given user
+      description: >-
+        Can be used by the own user or by managers.
+      tags:
+        - Agreements
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '200':
+          description: >-
+            The agreements data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAgreementsData'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -14807,6 +15040,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - accessClient: []
       parameters:
         - $ref: '#/components/parameters/fields'
+        - name: acceptedAgreements
+          in: query
+          required: false
+          description: "Either id or internal names of agreements the user must have accepted. Ignored if the logged user isn't an admin or broker with permission to view the user agreement log."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: accountType
           in: path
           required: true
@@ -14961,6 +15203,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
               description: ''
               type: string
               format: date-time
+        - name: notAcceptedAgreements
+          in: query
+          required: false
+          description: "Either id or internal names of agreements the user must not have accepted. Ignored if the logged user isn't an admin or broker with permission to view the user agreement log."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: page
           in: query
           required: false
@@ -15094,6 +15345,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
       parameters:
         # The account type is already defined in UsersWithBalanceQueryFilters
         - $ref: '#/components/parameters/fields'
+        - name: acceptedAgreements
+          in: query
+          required: false
+          description: "Either id or internal names of agreements the user must have accepted. Ignored if the logged user isn't an admin or broker with permission to view the user agreement log."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: accountType
           in: path
           required: true
@@ -15248,6 +15508,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
               description: ''
               type: string
               format: date-time
+        - name: notAcceptedAgreements
+          in: query
+          required: false
+          description: "Either id or internal names of agreements the user must not have accepted. Ignored if the logged user isn't an admin or broker with permission to view the user agreement log."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: orderBy
           in: query
           required: false
@@ -15418,6 +15687,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - session: []
         - accessClient: []
       parameters:
+        - name: acceptedAgreements
+          in: query
+          required: false
+          description: "Either id or internal names of agreements the user must have accepted. Ignored if the logged user isn't an admin or broker with permission to view the user agreement log."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: accountType
           in: path
           required: true
@@ -15572,6 +15850,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
               description: ''
               type: string
               format: date-time
+        - name: notAcceptedAgreements
+          in: query
+          required: false
+          description: "Either id or internal names of agreements the user must not have accepted. Ignored if the logged user isn't an admin or broker with permission to view the user agreement log."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: orderBy
           in: query
           required: false
@@ -17840,7 +18127,7 @@ Either ids or internal names of the destination account type"
       responses:
         '200':
           description: >-
-            The users together with their balances
+            The visible transfers matching the search filters
           headers:
             X-Total-Count:
               schema:
@@ -17874,6 +18161,294 @@ Either ids or internal names of the destination account type"
                 type: array
                 items:
                   $ref: '#/components/schemas/TransferResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /transfers/summary:
+    get:
+      operationId: searchTransfersSummary
+      summary: >-
+        Returns totals per currency for the transfers search.
+      description: >-
+        For each returned currency, according to the visibility and filters,
+        a summary is returned for the total visible transactions.
+      tags:
+        - Transfers
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: accessClients
+          in: query
+          required: false
+          description: "References to access clients (id or token) used to perform / receive the transfer."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: amountRange
+          in: query
+          required: false
+          description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: broker
+          in: query
+          required: false
+          description: "Use `brokers` instead.
+
+
+Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
+          schema:
+            type: string
+        - name: brokers
+          in: query
+          required: false
+          description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: by
+          in: query
+          required: false
+          description: "Reference to the user that was authenticated when the transfer was performed. Is only taken into account if authenticated as administrator."
+          schema:
+            type: string
+        - name: channels
+          in: query
+          required: false
+          description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: chargedBack
+          in: query
+          required: false
+          description: "When set to either `true` will only return transfers that were charged-back. When set to `false`, will only return transfers that were not charged-back. When left blank will not filter by this creterion."
+          schema:
+            type: boolean
+        - name: currencies
+          in: query
+          required: false
+          description: "Either ids or internal names of the currency"
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: currency
+          in: query
+          required: false
+          description: "Use `currencies` instead.
+
+
+Either id or internal name of the currency"
+          schema:
+            type: string
+        - name: datePeriod
+          in: query
+          required: false
+          description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: date-time
+        - name: excludedIds
+          in: query
+          required: false
+          description: "List of transfers ids to be excluded from the result."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: fromAccountType
+          in: query
+          required: false
+          description: "Use `fromAccountTypes` instead.
+
+
+Either ids or internal names of the origin account type"
+          schema:
+            type: string
+        - name: fromAccountTypes
+          in: query
+          required: false
+          description: "Either ids or internal names of the origin account type"
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: fromCurrentAccessClient
+          in: query
+          required: false
+          description: "Flag indicating whether to include only transfers by the current access client."
+          schema:
+            type: boolean
+        - name: groups
+          in: query
+          required: false
+          description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: includeGeneratedByAccessClient
+          in: query
+          required: false
+          description: "Flag indicating whether to include or not the generated transfer. Only valid if there is at least one access client specified. For example if a `ticket` or `paymentRequest` was processed then a new transfer will be generated."
+          schema:
+            type: boolean
+        - name: kinds
+          in: query
+          required: false
+          description: "The kind of transfers to return"
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TransferKind'
+        - name: orderBy
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/TransOrderByEnum'
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
+        - name: statuses
+          in: query
+          required: false
+          description: "Transfer statuses used as search criteria. Each array element should be either the identifier or the status qualified internal name, composed by flow internal name, a dot, and the status internal name. For example, `loan.open` would be a valid internal name."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: toAccountType
+          in: query
+          required: false
+          description: "Use `toAccountTypes` instead.
+
+
+Either ids or internal names of the destination account type"
+          schema:
+            type: string
+        - name: toAccountTypes
+          in: query
+          required: false
+          description: "Either ids or internal names of the destination account type"
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: transactionNumber
+          in: query
+          required: false
+          description: "The transaction number of the matching transfer"
+          schema:
+            type: string
+        - name: transferFilters
+          in: query
+          required: false
+          description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: transferKinds
+          in: query
+          required: false
+          description: "Use `kinds` instead."
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TransferKind'
+        - name: transferTypes
+          in: query
+          required: false
+          description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: user
+          in: query
+          required: false
+          description: "Reference a user that should have either received / performed the transfer."
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The summaries for each account
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CurrencyAmountSummary'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -43054,6 +43629,21 @@ components:
         - $ref: '#/components/schemas/BaseOrderAction'
         - type: object
 
+    AcceptedAgreement:
+      description: >-
+        Holds information about an accepted agreement
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+          description: >-
+            The date the agreement was accepted
+        acceptedVersion:
+          type: integer
+          description: >-
+            The version of the agreement that was accepted
+
     Account:
       description: >-
         Contains basic data for an account
@@ -45278,26 +45868,93 @@ components:
         - $ref: '#/components/schemas/InternalNamedEntity'
         - type: object
           properties:
-            content:
-              type: string
+            required:
+              type: boolean
               description: >-
-                The HTML formatted content of the agreement
-            contentVersion:
-              type: integer
-              description: >-
-                The content version (when updated, the version changes)
+                Indicates whether accepting this agreement is required
+                for using the system.
 
     AgreementContent:
       description: >-
-        Contains the content of a user agreement
+        Contains the full content of an agreement
+      type: object
+      properties:
+        agreement:
+          $ref: '#/components/schemas/Agreement'
+        content:
+          type: string
+          description: >-
+            The HTML formatted content of the agreement
+        contentVersion:
+          type: integer
+          description: >-
+            The version of the text for this agreement.
+            When the text changes, the version is incremented.
+        lastVersion:
+          type: integer
+          description: >-
+            The current (last) version of the text for this agreement.
+
+    AgreementLog:
+      description: >-
+        Contains an entry for an agreement that was either accepted or rejected
       allOf:
-        - $ref: '#/components/schemas/InternalNamedEntity'
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+          properties:
+            agreementId:
+              type: string
+              description: >-
+                The agreement identifier. The full agreement should be
+                looked up by id in the `agreements` list.
+            date:
+              type: string
+              format: date-time
+              description: >-
+                The date the agreement was accepted
+            acceptedVersion:
+              type: integer
+              description: >-
+                The version of the agreement that was accepted
+            accepted:
+              type: boolean
+              description: >-
+                For required agreements this will always be `true`.
+                For optional agreements, a log is generated both when the agreement
+                was accepted or changed to no longer accepted.
+            remoteAddress:
+              type: string
+              description: >-
+                The IP address of the request that accepted the agreement.
+                Not returned for the user himself, only for managers.
+
+    AgreementWithContent:
+      description: >-
+        An agreement the user must accept in order to use the system
+      allOf:
+        - $ref: '#/components/schemas/Agreement'
         - type: object
           properties:
             content:
-              description: >-
-                The agreement content, formatted as HTML text
               type: string
+              deprecated: true
+              x-remove-version: 4.15
+              description: >-
+                This shouldn't be used. Instead, do an additional request to
+                `GET /agreements/{key}/content` to fetch the content.
+
+
+                The agreement content.
+
+    AgreementsPermissions:
+      description: >-
+        Permissions regarding the user agreements
+      type: object
+      properties:
+        view:
+          description: >-
+            Can the authenticated user view the agreement log?
+          type: boolean
 
     Alert:
       description: >-
@@ -46009,46 +46666,48 @@ components:
     BaseInstallmentResult:
       description: >-
         Base fields for an installment result
-      type: object
-      properties:
-        status:
-          description: >-
-            The installment status.
-          allOf:
-            - $ref: '#/components/schemas/InstallmentStatusEnum'
-        number:
-          description: >-
-            The installment number
-          type: integer
-        totalInstallments:
-          description: >-
-            The total number of installments in the transaction.
-            Only not returned if the installment belongs to a recurring payment
-            with an unbound number of occurrences (until cancel).
-          type: integer
-        dueDate:
-          description: >-
-            The installment due date
-          type: string
-          format: date-time
-        amount:
-          description: >-
-            The installment amount.
-          type: string
-          format: number
-        transactionNumber:
-          description: >-
-            When processed, is the transaction number of the generated transfer.
-          type: string
-        transferDate:
-          description: >-
-            When processed, is the date of the generated transfer.
-          type: string
-          format: date-time
-        transferId:
-          description: >-
-            When processed, is the id of the generated transfer.
-          type: string
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+          properties:
+            status:
+              description: >-
+                The installment status.
+              allOf:
+                - $ref: '#/components/schemas/InstallmentStatusEnum'
+            number:
+              description: >-
+                The installment number
+              type: integer
+            totalInstallments:
+              description: >-
+                The total number of installments in the transaction.
+                Only not returned if the installment belongs to a recurring payment
+                with an unbound number of occurrences (until cancel).
+              type: integer
+            dueDate:
+              description: >-
+                The installment due date
+              type: string
+              format: date-time
+            amount:
+              description: >-
+                The installment amount.
+              type: string
+              format: number
+            transferTransactionNumber:
+              description: >-
+                When processed, is the transaction number of the generated transfer.
+              type: string
+            transferDate:
+              description: >-
+                When processed, is the date of the generated transfer.
+              type: string
+              format: date-time
+            transferId:
+              description: >-
+                When processed, is the id of the generated transfer.
+              type: string
 
     BaseNfcError:
       description: >-
@@ -46782,6 +47441,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CustomFieldDetailed'
+        agreements:
+          description: >-
+            The list of agreements that can be used to filter users that have
+            either accepted or not accepted specific agreements.
+            Only returned for admins / brokers that can see the user agreement log.
+          type: array
+          items:
+            $ref: '#/components/schemas/Agreement'
         groups:
           description: >-
             The groups the authenticated user can use to filter users. Admins can
@@ -47096,6 +47763,22 @@ components:
               description: >-
                 When set to `true`, will match only users that have the brokers as
                 set in the `brokers` parameter as main broker.
+            acceptedAgreements:
+              type: array
+              items:
+                type: string
+              description: >-
+                Either id or internal names of agreements the user must have
+                accepted. Ignored if the logged user isn't an admin or broker
+                with permission to view the user agreement log.
+            notAcceptedAgreements:
+              type: array
+              items:
+                type: string
+              description: >-
+                Either id or internal names of agreements the user must not have
+                accepted. Ignored if the logged user isn't an admin or broker
+                with permission to view the user agreement log.
             includeGroup:
               type: boolean
               description: >-
@@ -48484,6 +49167,16 @@ components:
               description: >-
                 The number of decimal digits used by this currency
               type: integer
+
+    CurrencyAmountSummary:
+      description: >-
+        Contains summarized statistics over amounts of a currency
+      allOf:
+        - $ref: '#/components/schemas/AmountSummary'
+        - type: object
+          properties:
+            currency:
+              $ref: '#/components/schemas/Currency'
 
     CustomField:
       description: >-
@@ -51868,7 +52561,7 @@ components:
                 Only if the installment was processed, contains the internal
                 identifier of the generated transfer.
               type: string
-            transactionNumber:
+            transferTransactionNumber:
               description: >-
                 Only if the installment was processed, contains the transaction
                 number of the generated transfer.
@@ -55346,6 +56039,11 @@ components:
             Permissions over own privacy settings
           allOf:
             - $ref: '#/components/schemas/PrivacySettingsPermissions'
+        agreements:
+          description: >-
+            Permissions over own agreements
+          allOf:
+            - $ref: '#/components/schemas/AgreementsPermissions'
         images:
           description: >-
             Permissions over images (others than the profile image)
@@ -59219,6 +59917,8 @@ components:
         - $ref: '#/components/schemas/Trans'
         - type: object
           properties:
+            kind:
+              $ref: '#/components/schemas/TransferKind'
             statuses:
               description: >-
                 Contains the current status for each status flow this transfer has
@@ -59479,10 +60179,16 @@ components:
                 - $ref: '#/components/schemas/Transfer'
             chargebackOf:
               description: >-
-                Reference to the transfer that this transfer has charged back. Only
-                returned if this transfer is a chargeback.
+                Reference to the transfer that this transfer has charged back.
+                Only returned if `kind` is `chargeback`.
               allOf:
                 - $ref: '#/components/schemas/Transfer'
+            installment:
+              description: >-
+                Reference to the installment which triggered this transfer.
+                Only returned if `kind` is `installment`.
+              allOf:
+                - $ref: '#/components/schemas/Installment'
             transaction:
               description: >-
                 If this balance transfer was originated from a transaction (like a
@@ -59797,6 +60503,39 @@ components:
       allOf:
         - $ref: '#/components/schemas/BasicAdQueryFilters'
         - type: object
+
+    UserAgreementsData:
+      description: >-
+        Information of agreements related to a user
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        agreements:
+          description: >-
+            All agreements enabled for the user, both required and optional
+          type: array
+          items:
+            $ref: '#/components/schemas/Agreement'
+        accepted:
+          description: >-
+            Keyed by agreement id, contains details of each accepted agreement.
+            Agreements whose id isn't a key in this field weren't accepted.
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AcceptedAgreement'
+        canEdit:
+          description: >-
+            Indicates whether the authenticated user can manage the optional
+            agreements for this user
+          type: boolean
+        log:
+          description: >-
+            The history log for the agreements that were accepted,
+            or optional agreements that were no longer accepted.
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementLog'
 
     UserAlert:
       description: >-
@@ -60231,7 +60970,7 @@ components:
                 register. Only returned for public registrations.
               type: array
               items:
-                $ref: '#/components/schemas/AgreementContent'
+                $ref: '#/components/schemas/AgreementWithContent'
             securityQuestions:
               description: >-
                 If enabled in the server, are the possible security questions the
@@ -60645,7 +61384,20 @@ components:
               type: boolean
               description: >-
                 When there are agreements that need to be accepted for registration,
-                this property must be passed with the value true
+                either this property should be set to `true`, indicating that all
+                agreements are accepted, or the `accepteAgreements` array must be
+                set indicating which ones are agreed.
+            acceptAgreements:
+              type: array
+              items:
+                type: string
+              description: >-
+                Either ids or internal names of agreements to accept.
+                When there are agreements, either the `accepteAgreement` flag
+                should be sent, indicating that all agreements are accepted,
+                or this array should be sent indicating which agreements are
+                accepted. All required agreements must be sent, or a validation
+                error is returned. Optional agreements can be sent or not.
             asMember:
               type: boolean
               description: >-
@@ -60987,6 +61739,8 @@ components:
           $ref: '#/components/schemas/UserNotificationSettingsPermissions'
         privacySettings:
           $ref: '#/components/schemas/UserPrivacySettingsPermissions'
+        agreements:
+          $ref: '#/components/schemas/AgreementsPermissions'
 
     UserPhonesListData:
       description: >-

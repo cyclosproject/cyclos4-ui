@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Agreement } from 'app/api/models';
 import { AgreementsService } from 'app/api/services';
 import { LoginState } from 'app/core/login-state';
@@ -23,7 +23,7 @@ export class AcceptPendingAgreementsComponent
   mobileTitle: string;
   message: string;
 
-  accept = new FormControl(false, Validators.requiredTrue);
+  accepted = new FormControl([]);
 
   constructor(
     injector: Injector,
@@ -56,7 +56,9 @@ export class AcceptPendingAgreementsComponent
       this.message = this.i18n.pendingAgreements.messageFirstTime;
     }
 
-    this.addSub(this.agreementsService.listPendingAgreements().subscribe(data => {
+    this.addSub(this.agreementsService.listPendingAgreements({
+      fields: ['-content']
+    }).subscribe(data => {
       if (empty(data)) {
         this.router.navigateByUrl(this.loginState.redirectUrl || '');
         return;
@@ -66,10 +68,10 @@ export class AcceptPendingAgreementsComponent
   }
 
   submit() {
-    if (!validateBeforeSubmit(this.accept)) {
+    if (!validateBeforeSubmit(this.accepted)) {
       return;
     }
-    const ids = this.agreements.map(a => a.id);
+    const ids = this.accepted.value as string[];
     this.addSub(this.agreementsService.acceptPendingAgreement({ agreements: ids }).subscribe(() => this.reload()));
   }
 

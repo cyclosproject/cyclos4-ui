@@ -1,50 +1,59 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { FormArray, FormControl } from '@angular/forms';
-import { Agreement, AgreementContent } from 'app/api/models';
+import { ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit, Optional, SkipSelf } from '@angular/core';
+import {
+  AbstractControl, ControlContainer, FormArray, FormBuilder,
+  NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
+} from '@angular/forms';
+import { Agreement } from 'app/api/models';
 import { AgreementsContentDialogComponent } from 'app/shared/agreement-content-dialog.component';
-import { BaseComponent } from 'app/shared/base.component';
-import { empty } from 'app/shared/helper';
+import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
-type AgreementOrContent = Agreement | AgreementContent;
-
 /**
- * Public registration step: confirmation
+ * Component used to accept agreements
  */
 @Component({
   selector: 'accept-agreements',
   templateUrl: 'accept-agreements.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    { provide: NG_VALUE_ACCESSOR, useExisting: AcceptAgreementsComponent, multi: true },
+    { provide: NG_VALIDATORS, useExisting: AcceptAgreementsComponent, multi: true },
+  ],
 })
 export class AcceptAgreementsComponent
-  extends BaseComponent
-  implements OnInit {
+  extends BaseFormFieldComponent<string[]>
+  implements Validator, OnInit {
 
-  @Input() control: FormControl;
-  @Input() agreements: AgreementOrContent[];
-
+  @Input() agreements: Agreement[];
   agreementsControl: FormArray;
 
   constructor(
     injector: Injector,
+    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
+    private formBuilder: FormBuilder,
     private modal: BsModalService) {
-    super(injector);
+    super(injector, controlContainer);
   }
 
   ngOnInit() {
     super.ngOnInit();
 
-    if (!empty(this.agreements)) {
-      const agreements = this.agreements.map(() => false);
-      this.agreementsControl = this.formBuilder.array(agreements);
-      this.addSub(this.agreementsControl.valueChanges.subscribe((flags: boolean[]) => {
-        const allChecked = flags.length === flags.filter(f => f).length;
-        this.control.patchValue(allChecked);
-      }));
-    }
+    const agreements = this.agreements || [];
+    const initialValue = agreements.map(() => false);
+    this.agreementsControl = this.formBuilder.array(initialValue);
+
+    this.addSub(this.agreementsControl.valueChanges.subscribe((flags: boolean[]) => {
+      const accepted = agreements.filter((_, i) => flags[i]);
+      this.setValue(accepted.map(a => a.id));
+    }));
   }
 
-  showAgreement(agreement: AgreementOrContent, event: MouseEvent) {
+  get acceptedAgreements(): Agreement[] {
+    const acceptedIds = this.value || [];
+    return this.agreements.filter(a => acceptedIds.includes(a.id));
+  }
+
+  showAgreement(agreement: Agreement, event: MouseEvent) {
     this.modal.show(AgreementsContentDialogComponent, {
       ignoreBackdropClick: true,
       class: 'modal-form modal-form-large',
@@ -53,4 +62,31 @@ export class AcceptAgreementsComponent
     event.stopPropagation();
     event.preventDefault();
   }
+
+  protected getFocusableControl() {
+    throw new Error('Method not implemented.');
+  }
+
+  protected getDisabledValue(): string {
+    return this.acceptedAgreements.map(a => a.name).sort().join(', ');
+  }
+
+  /**
+   * Make sure that al required agreements are accepted
+   */
+  validate(control: AbstractControl): ValidationErrors {
+    const required = (this.agreements || []).filter(a => a.required);
+    if (required.length > 0) {
+      const ids = (control.value || []) as string[];
+      for (const agreement of required) {
+        if (!ids.includes(agreement.id)) {
+          return {
+            required: true
+          };
+        }
+      }
+    }
+    return null;
+  }
+
 }

@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { Agreement, AgreementContent } from 'app/api/models';
+import { Agreement } from 'app/api/models';
+import { AgreementsService } from 'app/api/services';
 import { BaseComponent } from 'app/shared/base.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-
-type AgreementOrContent = Agreement | AgreementContent;
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Shows the content of a registration agreement in a modal dialog
@@ -17,12 +17,21 @@ export class AgreementsContentDialogComponent
   extends BaseComponent
   implements OnInit {
 
-  @Input() agreement: AgreementOrContent;
+  @Input() agreement: Agreement;
+
+  content$ = new BehaviorSubject<string>(null);
 
   constructor(
     injector: Injector,
+    private agreementsService: AgreementsService,
     public modalRef: BsModalRef) {
     super(injector);
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.addSub(this.agreementsService.getAgreementContent({ key: this.agreement.id })
+      .subscribe(content => this.content$.next(content.content)));
   }
 
   print(element: HTMLElement, iframe: HTMLIFrameElement) {

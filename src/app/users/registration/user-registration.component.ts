@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from 
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
   AddressNew, AvailabilityEnum, Group, GroupForRegistration, GroupKind,
-  IdentityProvider, IdentityProviderCallbackStatusEnum, Image, PhoneNew, RoleEnum, StoredFile,
-  UserDataForNew, UserNew, UserRegistrationResult,
+  IdentityProvider, IdentityProviderCallbackStatusEnum, Image, PhoneNew, RoleEnum,
+  StoredFile, UserDataForNew, UserNew, UserRegistrationResult
 } from 'app/api/models';
 import { ImagesService, UsersService } from 'app/api/services';
 import { AddressHelperService } from 'app/core/address-helper.service';
@@ -13,7 +13,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import {
   blank, copyProperties, empty, focusFirstField, focusFirstInvalid,
-  mergeValidity, scrollTop, setRootSpinnerVisible, validateBeforeSubmit,
+  mergeValidity, scrollTop, setRootSpinnerVisible, validateBeforeSubmit
 } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of, Subscription, timer } from 'rxjs';
@@ -152,15 +152,17 @@ export class UserRegistrationComponent
   }
 
   showIdentityProviders() {
-    this.addSub(this.usersService.getUserDataForNew({ group: this.group.value })
-      .subscribe(data => {
-        this.data = data;
-        if (empty(data.identityProviders)) {
-          this.showFields();
-        } else {
-          this.step = 'idp';
-        }
-      }));
+    this.addSub(this.usersService.getUserDataForNew({
+      group: this.group.value,
+      fields: ['-agreements.content']
+    }).subscribe(data => {
+      this.data = data;
+      if (empty(data.identityProviders)) {
+        this.showFields();
+      } else {
+        this.step = 'idp';
+      }
+    }));
   }
 
   continueWithProvider(idp: IdentityProvider) {
@@ -363,8 +365,8 @@ export class UserRegistrationComponent
     }
 
     // Agreements
-    if (data.agreements != null && data.agreements.length > 0) {
-      this.confirmForm.setControl('acceptAgreement', this.formBuilder.control(false, Validators.requiredTrue));
+    if (!empty(data.agreements)) {
+      this.confirmForm.setControl('acceptAgreements', this.formBuilder.control([]));
     }
 
     // Captcha
@@ -448,5 +450,4 @@ export class UserRegistrationComponent
         return Menu.PUBLIC_REGISTRATION;
     }
   }
-
 }

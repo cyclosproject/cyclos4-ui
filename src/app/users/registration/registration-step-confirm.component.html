@@ -93,7 +93,7 @@
         *ngIf="data.agreements?.length > 0">
         <div class="mb-3">{{ i18n.pendingAgreements.preface }}</div>
         <accept-agreements [agreements]="data.agreements"
-          [control]="form.get('acceptAgreement')"></accept-agreements>
+          formControlName="acceptAgreements"></accept-agreements>
       </div>
     </div>
   </ng-container>

@@ -1,13 +1,22 @@
-<ng-container *ngFor="let agreement of agreements; let i = index">
-  <div class="d-flex mb-2">
-    <div>
-      <boolean-field [formControl]="agreementsControl.at(i)">
-      </boolean-field>
+<label-value *ngIf="label; else widget" [formField]="self">
+  <ng-container *ngTemplateOutlet="widget"></ng-container>
+</label-value>
+
+<ng-template #widget>
+  <ng-container *ngFor="let agreement of agreements; let i = index">
+    <div class="d-flex mb-2">
+      <div>
+        <boolean-field [formControl]="agreementsControl.at(i)">
+        </boolean-field>
+      </div>
+      <a class="ml-3 flex-grow-1" href="#"
+        (click)="showAgreement(agreement, $event)">
+        {{ agreement.name }}
+        <span class="required-marker"
+          *ngIf="agreement.required">&nbsp;*</span>
+      </a>
     </div>
-    <a class="ml-3 flex-grow-1" href="#"
-      (click)="showAgreement(agreement, $event)">
-      {{ agreement.name }}
-    </a>
-  </div>
-</ng-container>
-<field-errors [control]="control"></field-errors>
+  </ng-container>
+
+  <field-errors [control]="formControl"></field-errors>
+</ng-template>

@@ -408,7 +408,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
   }
 
   path(row: InstallmentView) {
-    const key = row.transactionNumber || row.transferId;
+    const key = row.transferTransactionNumber || row.transferId;
     if (key) {
       return ['/banking', 'transfer', key];
     }

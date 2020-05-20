@@ -5,7 +5,7 @@
       <div [innerHTML]="message | trust"></div>
     </notification>
     <div class="mt-3 text-left">
-      <accept-agreements [agreements]="agreements" [control]="accept">
+      <accept-agreements [agreements]="agreements" [formControl]="accepted">
       </accept-agreements>
     </div>
     <actions>
