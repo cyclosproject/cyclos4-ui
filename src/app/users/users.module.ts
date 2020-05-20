@@ -5,6 +5,11 @@ import { BrokerFormComponent } from 'app/users/brokering/broker-form.component';
 import { ListUserBrokersComponent } from 'app/users/brokering/list-user-brokers.component';
 import { ViewBrokerHistoryComponent } from 'app/users/brokering/view-broker-history.component';
 import { SearchConnectedComponent } from 'app/users/connected/search-connected.component';
+import { EditDocumentComponent } from 'app/users/documents/edit-document.component';
+import { ListDocumentsComponent } from 'app/users/documents/list-documents.component';
+import { ProcessDynamicDocumentComponent } from 'app/users/documents/process-dynamic-document.component';
+import { SearchDocumentsComponent } from 'app/users/documents/search-documents.component';
+import { ViewDocumentComponent } from 'app/users/documents/view-document.component';
 import { ViewUserGroupHistoryComponent } from 'app/users/group-membership/view-user-group-history.component';
 import { ViewUserGroupComponent } from 'app/users/group-membership/view-user-group.component';
 import { UserIdentityProvidersComponent } from 'app/users/identity-providers/user-identity-providers.component';
@@ -87,6 +92,12 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
     UserIdentityProvidersComponent,
 
     NotificationSettingsFormComponent,
+
+    ViewDocumentComponent,
+    EditDocumentComponent,
+    ProcessDynamicDocumentComponent,
+    ListDocumentsComponent,
+    SearchDocumentsComponent,
   ],
   entryComponents: [
     VerifyPhoneComponent,

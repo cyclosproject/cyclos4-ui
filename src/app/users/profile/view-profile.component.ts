@@ -289,6 +289,13 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
             this.router.navigateByUrl(this.recordsHelper.resolvePath(record, this.param));
           }));
       }
+      // Documents
+      if (permissions.documents.view) {
+        this.managementActions.push(new HeadingAction('library_books', this.i18n.document.title.list, () => {
+          this.router.navigate(['/users', this.param, 'documents', 'search']);
+        }));
+      }
+
       // Custom operations
       for (const operation of permissions.operations || []) {
         actions.push(this.operationsHelper.headingAction(operation, user.id));

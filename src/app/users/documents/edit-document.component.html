@@ -1,0 +1,49 @@
+<page-layout [ready]="data$ | async">
+  <page-content
+    [heading]="create ? i18n.document.title.new : i18n.document.title.edit"
+    [mobileHeading]="create ? i18n.document.mobileTitle.new : i18n.document.mobileTitle.edit">
+    <ng-container *ngIf="data" [formGroup]="form">
+      <label-value [label]="i18n.general.user" kind="fieldView"
+        labelPosition="side">
+        <user-link [user]="data.user"></user-link>
+      </label-value>
+      <input-field fieldSize="full" required formControlName="name"
+        [label]="i18n.general.name">
+      </input-field>
+      <textarea-field formControlName="description"
+        [label]="i18n.general.description">
+      </textarea-field>
+      <boolean-field formControlName="enabled" [label]="i18n.document.enable">
+      </boolean-field>
+      <boolean-field formControlName="userVisible"
+        [label]="i18n.document.userVisible">
+      </boolean-field>
+      <boolean-field #brokerVisible formControlName="brokerVisible"
+        [label]="i18n.document.brokerVisible">
+      </boolean-field>
+      <boolean-field *ngIf="brokerVisible.value"
+        formControlName="brokerManageable"
+        [label]="i18n.document.brokerManageable">
+      </boolean-field>
+      <label-value *ngIf="!create && (fileName$ | async)"
+        [label]="i18n.document.document">
+        <div>
+          <span> {{ fileName$ | async }} </span>
+          <button [tooltip]="i18n.general.download" class="btn btn-icon ml-2"
+            (click)="download(); $event.stopPropagation()">
+            <icon icon="save_alt"></icon>
+          </button>
+        </div>
+      </label-value>
+      <file-field [required]="create"
+        [label]="create || !(fileName$ | async) ? i18n.document.newDocument : i18n.document.replaceDocument"
+        [formControl]="fileControl">
+      </file-field>
+    </ng-container>
+    <actions>
+      <button class="btn btn-primary" (click)="save()"
+        [disabled]="requesting$ | async"> {{i18n.general.save}}
+      </button>
+    </actions>
+  </page-content>
+</page-layout>

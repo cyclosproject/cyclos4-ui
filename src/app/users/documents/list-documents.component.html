@@ -1,0 +1,63 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [mode]="'empty'" [heading]="i18n.document.title.list"
+      [mobileHeading]="i18n.document.mobileTitle.list"
+      [headingActions]="headingActions$ | async">
+    </page-content>
+
+    <results-layout [results]="data">
+      <mobile-result *mobileResult="let row">
+        <div class="d-flex">
+          <div>
+            <label-value [label]="i18n.general.name" labelPosition="above">
+              {{ row.name }}
+            </label-value>
+            <label-value [label]="i18n.general.description"
+              labelPosition="above">
+              {{ row.description }}
+            </label-value>
+          </div>
+          <div class="ml-auto text-right d-flex flex-column">
+            <button *ngIf="isStatic(row.kind)"
+              [tooltip]="i18n.general.download" class="btn btn-icon"
+              (click)="download(row); $event.stopPropagation(); $event.preventDefault()">
+              <icon icon="save_alt"></icon>
+            </button>
+            <button *ngIf="!isStatic(row.kind)"
+              [tooltip]="i18n.document.process" class="btn btn-icon"
+              (click)="router.navigate(path(row)); $event.stopPropagation(); $event.preventDefault()">
+              <icon icon="edit"></icon>
+            </button>
+          </div>
+        </div>
+      </mobile-result>
+
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead>
+          <th>{{ i18n.general.name }}</th>
+          <th>{{ i18n.general.description }}</th>
+          <th class="actions"></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of data"
+            (click)="isStatic(row.kind) ? download(row) : router.navigate(path(row)); $event.stopPropagation() ">
+            <td width="20%">{{ row.name }}</td>
+            <td>{{ row.description }}</td>
+            <td class="actions actions-multiple">
+              <button *ngIf="isStatic(row.kind)"
+                [tooltip]="i18n.general.download" class="btn btn-icon"
+                (click)="download(row); $event.stopPropagation()">
+                <icon icon="save_alt"></icon>
+              </button>
+              <button *ngIf="!isStatic(row.kind)"
+                [tooltip]="i18n.document.process" class="btn btn-icon"
+                (click)="router.navigate(path(row)); $event.stopPropagation()">
+                <icon icon="edit"></icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>

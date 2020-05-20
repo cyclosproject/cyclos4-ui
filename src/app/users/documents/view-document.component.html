@@ -1,0 +1,44 @@
+<page-layout [ready]="data$ | async">
+  <page-content [heading]="i18n.document.title.view"
+    [mobileHeading]="i18n.document.mobileTitle.view"
+    [headingActions]="headingActions$ | async">
+    <ng-container *ngIf="data">
+      <label-value *ngIf="data.user" [label]="i18n.general.user"
+        kind="fieldView" labelPosition="side">
+        <user-link [user]="data.user"></user-link>
+      </label-value>
+      <label-value [label]="i18n.general.name">
+        {{ data.name }}
+      </label-value>
+      <label-value [label]="i18n.general.description">
+        {{ data.description }}
+      </label-value>
+      <label-value ng *ngIf="data.category" [label]="i18n.document.category">
+        {{ data.category.name }}
+      </label-value>
+      <label-value [label]="i18n.document.enable">
+        {{ format.formatBoolean(data.enabled) }}
+      </label-value>
+      <label-value *ngIf="data.userVisible"
+        [label]="i18n.document.userVisible">
+        {{ format.formatBoolean(data.userVisible) }}
+      </label-value>
+      <label-value *ngIf="data.brokerVisible"
+        [label]="i18n.document.brokerVisible">
+        {{ format.formatBoolean(data.brokerVisible) }}
+      </label-value>
+      <label-value *ngIf="data.brokerVisible"
+        [label]="i18n.document.brokerManageable">
+        {{ format.formatBoolean(data.brokerManageable) }}
+      </label-value>
+      <label-value [label]="i18n.document.document">
+        {{ data.file.name }}
+      </label-value>
+    </ng-container>
+    <actions>
+      <button class="btn btn-primary" (click)="download()"
+        [disabled]="requesting$ | async"> {{i18n.general.download}}
+      </button>
+    </actions>
+  </page-content>
+</page-layout>

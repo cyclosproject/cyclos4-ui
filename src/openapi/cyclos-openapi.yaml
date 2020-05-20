@@ -3,8 +3,8 @@ info:
   title: 'Cyclos 4.13 API'
   description: >-
     The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the
-    api can be downloaded in both [YAML](http://localhost:8888/api/cyclos-openapi.yaml) or
-    [JSON](http://localhost:8888/api/cyclos-openapi.json) formats. These files can be used in tools
+    api can be downloaded in both [YAML](http://localhost:8888/england/api/cyclos-openapi.yaml) or
+    [JSON](http://localhost:8888/england/api/cyclos-openapi.json) formats. These files can be used in tools
     that support the OpenAPI specification, such as the [OpenAPI Generator](https://openapi-generator.tech).
 
 
@@ -36,7 +36,7 @@ info:
     for this version.
   version: '4.13'
 servers:
-  - url: 'http://localhost:8888/api'
+  - url: 'http://localhost:8888/england/api'
 
 tags:
   - name: Auth
@@ -1356,7 +1356,7 @@ paths:
 
 
             Other scopes are defined in Cyclos which represent permissions.
-            These scopes are listed in http://localhost:8888/.well-known/openid-configuration.
+            These scopes are listed in http://localhost:8888/england/.well-known/openid-configuration.
           schema:
             type: string
         - name: response_type
@@ -9604,6 +9604,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - accessClient: []
       parameters:
         - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/userInQuery'
       responses:
         '200':
           description: >-
@@ -9865,6 +9866,93 @@ A note for dynamic custom fields: If a script is used to generate possible value
             schema:
               $ref: '#/components/schemas/DocumentNew'
 
+  /documents/upload:
+    post:
+      operationId: createSharedDocumentWithUpload
+      summary: >-
+        Creates a new static shared document with a file
+      description: >-
+        Creates a new static shared document and saves the content of the file.
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '201':
+          description: >-
+            Returns the identifier of the new document
+          headers:
+            Location:
+              description: >-
+                URL for viewing the document details
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                document:
+                  description: >-
+                    The document to be created
+                  allOf:
+                    - $ref: '#/components/schemas/DocumentNew'
+                file:
+                  type: string
+                  format: binary
+                  description: >-
+                    The file being uploaded
+                fileName:
+                  type: string
+                  description: >-
+                    The file's name
+              required:
+                - file
+
   /documents/data-for-new:
     get:
       operationId: getSharedDocumentDataForNew
@@ -10094,6 +10182,94 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /documents/{id}/upload:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    post:
+      operationId: updateDocumentWithUpload
+      summary: >-
+        Updates the details of a document and the file content.
+      description: >-
+        Updates the details of a document and the file content if given.
+        Due to implementation issues was used post for edit a document and upload
+        the file at the same time.
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The document was updated
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                document:
+                  description: >-
+                    The document to be edited
+                  allOf:
+                    - $ref: '#/components/schemas/DocumentEdit'
+                file:
+                  type: string
+                  format: binary
+                  description: >-
+                    The file being uploaded
+                fileName:
+                  type: string
+                  description: >-
+                    The file's name
+              required:
+                - file
+
   /documents/{id}/data-for-edit:
     parameters:
       - $ref: '#/components/parameters/id'
@@ -10277,6 +10453,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
                   format: binary
                   description: >-
                     The file being uploaded
+              required:
+                - file
 
   /documents/{id}/dynamic/{user}:
     parameters:
@@ -10518,6 +10696,96 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/DocumentNew'
+
+  /{user}/documents/upload:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    post:
+      operationId: createUserDocumentWithUpload
+      summary: >-
+        Creates a new individual document for the given user with a file.
+      description: >-
+        Creates a new individual document for the given user and saves the content
+        of the file.
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '201':
+          description: >-
+            Returns the identifier of the new document
+          headers:
+            Location:
+              description: >-
+                URL for viewing the document details
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                document:
+                  description: >-
+                    The document to be created
+                  allOf:
+                    - $ref: '#/components/schemas/DocumentNew'
+                file:
+                  type: string
+                  format: binary
+                  description: >-
+                    The file being uploaded
+                fileName:
+                  type: string
+                  description: >-
+                    The file's name
+              required:
+                - file
 
   /{user}/documents/data-for-new:
     parameters:
@@ -39459,12 +39727,12 @@ components:
 
     oidc:
       type: openIdConnect
-      openIdConnectUrl: 'http://localhost:8888/.well-known/openid-configuration'
+      openIdConnectUrl: 'http://localhost:8888/england/.well-known/openid-configuration'
       description: >-
         OAuth2 / OpenID Connect authentication. Clients must be previously
         registered in Cyclos. Then they request an authorization using the
         standard OAuth2 / OpenID Connect authorization endpoint at
-        `http://localhost:8888/api/oidc/authorize`.
+        `http://localhost:8888/england/api/oidc/authorize`.
         When the OpenID Connect standard scope `openid` is requested, the flow
         will follow the OpenID Connect specification, allowing `id_token`s to
         be issued. Otherwise, plain OAuth2 authorization will be granted.
@@ -39543,6 +39811,24 @@ components:
       required: true
       in: path
       x-dotInPath: true
+      schema:
+        type: string
+      description: >-
+        Can be one of:
+
+
+        - a user identification value, such as id, username, e-mail, phone, etc.
+          Id is always allowed, others depend on Cyclos configuration. Note that
+          a valid numeric value is always considered as id. For example, when
+          using another identification method that can be numeric only, prefix\
+          the value with a single quote (like in Excel spreadsheets);
+
+        -  `self` for the currently authenticated user.
+
+    userInQuery:
+      name: user
+      required: false
+      in: query
       schema:
         type: string
       description: >-
@@ -50999,6 +51285,12 @@ components:
             Indicates whether the logged user can manage individual documents
             of managed users
           type: boolean
+        user:
+          description: >-
+            The document's owner. Only returned if searching documents of a
+            specfific user.
+          allOf:
+            - $ref: '#/components/schemas/User'
         query:
           $ref: '#/components/schemas/DocumentQueryFilters'
 
@@ -51122,6 +51414,11 @@ components:
                 The document owner. Only if `kind` is `user`.
               allOf:
                 - $ref: '#/components/schemas/User'
+            brokerManageable:
+              description: >-
+                Indicates whether the document owner brokers can manage this document.
+                Only if `kind` is `user`.
+              type: boolean
 
 
     DocumentView:

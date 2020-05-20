@@ -724,6 +724,10 @@ export class MenuService {
         add(Menu.IDENTITY_PROVIDERS, '/users/self/identity-providers', 'perm_identity', this.i18n.menu.personalIdentityProviders);
       }
 
+      if (permissions.documents.viewIndividual || permissions.documents.viewShared?.length > 0) {
+        add(Menu.MY_DOCUMENTS, `/users/documents`, 'library_books', this.i18n.menu.personalDocuments);
+      }
+
       // Records
       addRecords( // My
         Menu.SEARCH_USER_RECORDS,
