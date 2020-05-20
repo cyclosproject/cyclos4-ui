@@ -283,6 +283,7 @@
     "marketplace.connectedUsers": "Connected users",
     "marketplace.userAlerts": "User alerts",
     "personal": "Personnel",
+    "personal.documents": "Documents",
     "personal.viewProfile": "Mon profil",
     "personal.editProfile": "Editer le profil",
     "personal.contacts": "Contacts",
@@ -1698,5 +1699,31 @@
       "maxGlobalSmsReached": "The global maximum of SMS messages per month has been reached",
       "maxIncorrectLoginAttempts": "Max incorrect login attempts for invalid user"
     }
+  },
+  "document": {
+    "title": {
+      "new": "Create new document",
+      "view": "Document details",
+      "edit": "Document details",
+      "list": "Documents",
+      "search": "Documents"
+    },
+    "mobileTitle": {
+      "new": "Create new document",
+      "view": "Document details",
+      "edit": "Document details",
+      "list": "Documents",
+      "search": "Documents"
+    },
+    "enable": "Activer",
+    "userVisible": "Visible for members",
+    "brokerVisible": "Visible for brokers",
+    "brokerManageable": "Manageable by broker",
+    "replaceDocument": "Replace document",
+    "newDocument": "New document",
+    "document": "Document",
+    "savedSuccessfully": "Saved successfully",
+    "process": "Process dynamic document",
+    "category": "Category"
   }
 }
