@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { truthyAttr } from 'app/shared/helper';
 
 /**
  * Shows a spinner to indicate that some processing is taking place
@@ -15,4 +16,11 @@ export class SpinnerComponent {
 
   @Input() size: string;
 
+  private _bootstrap: boolean | string = false;
+  @Input() get bootstrap(): boolean | string {
+    return this._bootstrap;
+  }
+  set bootstrap(show: boolean | string) {
+    this._bootstrap = truthyAttr(show);
+  }
 }

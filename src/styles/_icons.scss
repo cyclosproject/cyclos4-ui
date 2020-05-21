@@ -60,6 +60,11 @@
     width: 45px;
     height: 45px;
   }
+
+  img {
+    width: 64px;
+    height: 64px;
+  }
 }
 
 .solid-icon {
@@ -69,6 +74,9 @@
 }
 
 body.dark {
+  spinner img, .spinner img {
+    filter: invert(1);
+  }
   .solid-icon {
     background-color: $card-bg-dark;
     color: $tiled-results-icon-color-dark;
