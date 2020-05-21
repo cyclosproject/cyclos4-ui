@@ -1,0 +1,49 @@
+<page-layout [ready]="data$ | async">
+  <page-content *ngIf="data" [heading]="i18n.agreements.title.accepted"
+    [mobileHeading]="i18n.agreements.mobileTitle.accepted"
+    [headingActions]="headingActions$ | async">
+
+    <user-info *ngIf="!self" [user]="data.user"></user-info>
+
+    <!-- Show the field if the optional agreements are editable -->
+    <accept-agreements *ngIf="optionalControl; else optionalNotEditable"
+      [label]="i18n.agreements.optional" [formControl]="optionalControl"
+      [agreements]="allOptional"></accept-agreements>
+
+    <ng-template #optionalNotEditable>
+      <!-- Optional agreemnts are not editable. Show links to the accepted ones -->
+      <label-value *ngIf="acceptedOptional?.length > 0"
+        [label]="i18n.agreements.optional">
+        <ng-container
+          *ngTemplateOutlet="agreementLinks; context: {$implicit: acceptedOptional}">
+        </ng-container>
+      </label-value>
+    </ng-template>
+
+    <label-value *ngIf="acceptedRequired?.length > 0"
+      [label]="i18n.agreements.required">
+      <ng-container
+        *ngTemplateOutlet="agreementLinks; context: {$implicit: acceptedRequired}">
+      </ng-container>
+    </label-value>
+
+    <ng-container *ngIf="noAgreements">
+      <hr>
+      {{ i18n.agreements.noAccepted }}
+    </ng-container>
+
+    <actions *ngIf="optionalControl">
+      <action-button [disabled]="requesting$ | async" (action)="save()"
+        [label]="i18n.general.save"></action-button>
+    </actions>
+  </page-content>
+</page-layout>
+
+<ng-template #agreementLinks let-agreements>
+  <div *ngFor="let agreement of agreements; let first = first"
+    [ngClass]="{'mt-2': !first}">
+    <agreement-link [agreement]="agreement"
+      [version]="data.accepted[agreement.id]?.acceptedVersion" ignoreRequired>
+    </agreement-link>
+  </div>
+</ng-template>

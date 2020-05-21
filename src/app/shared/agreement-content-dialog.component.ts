@@ -18,6 +18,7 @@ export class AgreementsContentDialogComponent
   implements OnInit {
 
   @Input() agreement: Agreement;
+  @Input() version: number;
 
   content$ = new BehaviorSubject<string>(null);
 
@@ -30,8 +31,9 @@ export class AgreementsContentDialogComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.agreementsService.getAgreementContent({ key: this.agreement.id })
-      .subscribe(content => this.content$.next(content.content)));
+    this.addSub(this.agreementsService.getAgreementContent({
+      key: this.agreement.id, version: this.version
+    }).subscribe(content => this.content$.next(content.content)));
   }
 
   print(element: HTMLElement, iframe: HTMLIFrameElement) {

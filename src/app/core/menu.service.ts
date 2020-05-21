@@ -447,8 +447,9 @@ export class MenuService {
     const logout = addRoot(RootMenu.LOGOUT, 'logout', this.i18n.menu.logout, null, []);
 
     // Lambda that adds a submenu to a root menu
-    const add = (menu: Menu | ActiveMenu, url: string, icon: string, label: string, showIn: MenuType[] = null,
-      urlHandler: () => string = null): MenuEntry => {
+    const add = (
+      menu: Menu | ActiveMenu, url: string, icon: string, label: string,
+      showIn: MenuType[] = null, urlHandler: () => string = null): MenuEntry => {
       const entry = new MenuEntry(menu, url, icon, label, showIn, urlHandler);
       const root = roots.get(entry.menu.root);
       root.entries.push(entry);
@@ -723,7 +724,9 @@ export class MenuService {
       if ((permissions.identityProviders || {}).enabled) {
         add(Menu.IDENTITY_PROVIDERS, '/users/self/identity-providers', 'perm_identity', this.i18n.menu.personalIdentityProviders);
       }
-
+      if ((permissions.agreements || {}).view) {
+        add(Menu.AGREEMENTS, '/users/self/agreements', 'ballot', this.i18n.menu.personalAgreements);
+      }
       if (permissions.documents.viewIndividual || permissions.documents.viewShared?.length > 0) {
         add(Menu.MY_DOCUMENTS, `/users/documents`, 'library_books', this.i18n.menu.personalDocuments);
       }

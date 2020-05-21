@@ -108,6 +108,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const notificationSettings = permissions.notificationSettings || {};
     const status = permissions.status || {};
     const group = permissions.group || {};
+    const agreements = permissions.agreements || {};
     const operators = permissions.operators || {};
     const brokering = permissions.brokering || {};
     const vouchers = permissions.vouchers || {};
@@ -211,6 +212,12 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           operator ? this.i18n.user.profile.groupOperator : this.i18n.user.profile.groupUser,
           () => {
             this.router.navigate(['/users', this.param, 'group']);
+          }));
+      }
+      if (agreements.view) {
+        this.managementActions.push(new HeadingAction('ballot', this.i18n.user.profile.agreements,
+          () => {
+            this.router.navigate(['/users', this.param, 'agreements']);
           }));
       }
       if (brokering.viewMembers) {

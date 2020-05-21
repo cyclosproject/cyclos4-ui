@@ -1,0 +1,54 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content [heading]="i18n.agreements.title.history"
+    [mobileHeading]="i18n.agreements.mobileTitle.history"
+    [mode]="self ? 'emptyFilters' : 'filters'">
+    <user-info *ngIf="!self" [user]="data.user"></user-info>
+  </page-content>
+  <results-layout [results]="data.history" [onClick]="showAgreement">
+    <mobile-result *mobileResult="let row">
+      <div>
+        <div class="cell-text float-left">
+          {{ row.date | date }}
+        </div>
+        <div class="cell-main float-right">
+          <del *ngIf="!row.accepted; else accepted">
+            {{ row.agreement.name }}
+          </del>
+          <ng-template #accepted>
+            {{ row.agreement.name }}
+          </ng-template>
+        </div>
+      </div>
+    </mobile-result>
+    <table *resultTable class="table table-hover">
+      <thead>
+        <th>{{ i18n.general.date }}</th>
+        <th>{{ i18n.agreements.agreement }}</th>
+        <th *ngIf="hasAccepted">{{ i18n.agreements.accepted }}</th>
+        <th *ngIf="hasRemoteAddress" class="align-center">
+          {{ i18n.general.remoteAddress }}</th>
+        <th class="actions"></th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data.history"
+          [ngClass]="{ 'cursor-pointer': row.accepted }">
+          <td>{{ row.date | dateTime }}</td>
+          <td>{{ row.agreement.name }}</td>
+          <td *ngIf="hasAccepted">{{ row.accepted | boolean }}</td>
+          <td *ngIf="hasRemoteAddress" class="align-center">
+            {{ row.remoteAddress }}</td>
+          <td class="actions">
+            <button [tooltip]="i18n.general.view" class="btn btn-icon"
+              (click)="showAgreement(row)">
+              <icon icon="search"></icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </results-layout>
+</ng-template>

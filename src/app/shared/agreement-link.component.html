@@ -1,0 +1,5 @@
+<a class="inline-block w-100" href="#" (click)="showAgreement($event)">
+  {{ agreement.name }}
+  <span class="required-marker"
+    *ngIf="!ignoreRequired && agreement.required">&nbsp;*</span>
+</a>

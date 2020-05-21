@@ -9,12 +9,8 @@
         <boolean-field [formControl]="agreementsControl.at(i)">
         </boolean-field>
       </div>
-      <a class="ml-3 flex-grow-1" href="#"
-        (click)="showAgreement(agreement, $event)">
-        {{ agreement.name }}
-        <span class="required-marker"
-          *ngIf="agreement.required">&nbsp;*</span>
-      </a>
+      <agreement-link class="ml-3 flex-grow-1" [agreement]="agreement">
+      </agreement-link>
     </div>
   </ng-container>
 

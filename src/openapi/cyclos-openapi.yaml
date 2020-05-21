@@ -3,8 +3,8 @@ info:
   title: 'Cyclos 4.13 API'
   description: >-
     The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the
-    api can be downloaded in both [YAML](http://localhost:8888/england/api/cyclos-openapi.yaml) or
-    [JSON](http://localhost:8888/england/api/cyclos-openapi.json) formats. These files can be used in tools
+    api can be downloaded in both [YAML](http://localhost:8888/api/cyclos-openapi.yaml) or
+    [JSON](http://localhost:8888/api/cyclos-openapi.json) formats. These files can be used in tools
     that support the OpenAPI specification, such as the [OpenAPI Generator](https://openapi-generator.tech).
 
 
@@ -36,7 +36,7 @@ info:
     for this version.
   version: '4.13'
 servers:
-  - url: 'http://localhost:8888/england/api'
+  - url: 'http://localhost:8888/api'
 
 tags:
   - name: Auth
@@ -1356,7 +1356,7 @@ paths:
 
 
             Other scopes are defined in Cyclos which represent permissions.
-            These scopes are listed in http://localhost:8888/england/.well-known/openid-configuration.
+            These scopes are listed in http://localhost:8888/.well-known/openid-configuration.
           schema:
             type: string
         - name: response_type
@@ -39727,12 +39727,12 @@ components:
 
     oidc:
       type: openIdConnect
-      openIdConnectUrl: 'http://localhost:8888/england/.well-known/openid-configuration'
+      openIdConnectUrl: 'http://localhost:8888/.well-known/openid-configuration'
       description: >-
         OAuth2 / OpenID Connect authentication. Clients must be previously
         registered in Cyclos. Then they request an authorization using the
         standard OAuth2 / OpenID Connect authorization endpoint at
-        `http://localhost:8888/england/api/oidc/authorize`.
+        `http://localhost:8888/api/oidc/authorize`.
         When the OpenID Connect standard scope `openid` is requested, the flow
         will follow the OpenID Connect specification, allowing `id_token`s to
         be issued. Otherwise, plain OAuth2 authorization will be granted.
@@ -46188,11 +46188,8 @@ components:
         - $ref: '#/components/schemas/Entity'
         - type: object
           properties:
-            agreementId:
-              type: string
-              description: >-
-                The agreement identifier. The full agreement should be
-                looked up by id in the `agreements` list.
+            agreement:
+              $ref: '#/components/schemas/Agreement'
             date:
               type: string
               format: date-time
@@ -60826,7 +60823,7 @@ components:
             Indicates whether the authenticated user can manage the optional
             agreements for this user
           type: boolean
-        log:
+        history:
           description: >-
             The history log for the agreements that were accepted,
             or optional agreements that were no longer accepted.

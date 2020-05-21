@@ -122,6 +122,7 @@ export namespace Menu {
   export const CONTACTS = new Menu(RootMenu.PERSONAL, 'CONTACTS');
   export const PASSWORDS = new Menu(RootMenu.PERSONAL, 'PASSWORDS');
   export const IDENTITY_PROVIDERS = new Menu(RootMenu.PERSONAL, 'IDENTITY_PROVIDERS');
+  export const AGREEMENTS = new Menu(RootMenu.PERSONAL, 'AGREEMENTS');
   export const NOTIFICATIONS = new Menu(RootMenu.PERSONAL, 'NOTIFICATIONS');
   export const NOTIFICATIONS_SETTINGS = new Menu(RootMenu.PERSONAL, 'NOTIFICATIONS_SETTINGS');
   export const SETTINGS = new Menu(RootMenu.PERSONAL, 'SETTINGS');

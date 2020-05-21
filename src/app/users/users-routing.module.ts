@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CountriesResolve } from 'app/countries.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
+import { ViewAgreementsHistoryComponent } from 'app/users/agreements/view-agreements-history.component';
+import { ViewUserAgreementsComponent } from 'app/users/agreements/view-user-agreements.component';
 import { SearchUserAlertsComponent } from 'app/users/alerts/search-user-alerts.component';
 import { BrokerFormComponent } from 'app/users/brokering/broker-form.component';
 import { ListUserBrokersComponent } from 'app/users/brokering/list-user-brokers.component';
@@ -123,6 +125,16 @@ const usersRoutes: Routes = [
       {
         path: ':user/group/history',
         component: ViewUserGroupHistoryComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: ':user/agreements',
+        component: ViewUserAgreementsComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: ':user/agreements/history',
+        component: ViewAgreementsHistoryComponent,
         canActivate: [LoggedUserGuard],
       },
       {

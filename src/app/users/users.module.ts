@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
+import { ViewAgreementsHistoryComponent } from 'app/users/agreements/view-agreements-history.component';
+import { ViewUserAgreementsComponent } from 'app/users/agreements/view-user-agreements.component';
 import { SearchUserAlertsComponent } from 'app/users/alerts/search-user-alerts.component';
 import { BrokerFormComponent } from 'app/users/brokering/broker-form.component';
 import { ListUserBrokersComponent } from 'app/users/brokering/list-user-brokers.component';
@@ -79,8 +81,12 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
     ViewUserStatusHistoryComponent,
 
     SearchUserAlertsComponent,
+
     ViewUserGroupComponent,
     ViewUserGroupHistoryComponent,
+
+    ViewUserAgreementsComponent,
+    ViewAgreementsHistoryComponent,
 
     ListUserBrokersComponent,
     BrokerFormComponent,

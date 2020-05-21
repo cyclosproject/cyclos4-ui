@@ -59,6 +59,10 @@
       padding-top: 0.1rem;
     }
   }
+  .page-content.mode-empty .content-title,
+  .page-content.mode-empty-filters .content-title {
+    border-bottom: 1px solid $border-color;
+  }  
 }
 .layout-centered {
   text-align: center;
@@ -363,7 +367,7 @@ body.dark :host ::ng-deep {
   }
 
   .content-title {
-    border-color: $border-color-dark;
+    border-color: $border-color-dark !important;
     background-color: $title-bg-dark;
     .title-text {
       color: $title-color-dark;

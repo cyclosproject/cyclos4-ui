@@ -4,9 +4,7 @@ import {
   NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
 } from '@angular/forms';
 import { Agreement } from 'app/api/models';
-import { AgreementsContentDialogComponent } from 'app/shared/agreement-content-dialog.component';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
-import { BsModalService } from 'ngx-bootstrap/modal';
 
 /**
  * Component used to accept agreements
@@ -30,16 +28,16 @@ export class AcceptAgreementsComponent
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private formBuilder: FormBuilder,
-    private modal: BsModalService) {
+    private formBuilder: FormBuilder) {
     super(injector, controlContainer);
   }
 
   ngOnInit() {
     super.ngOnInit();
 
+    const initialIds: string[] = this.formControl.value || [];
     const agreements = this.agreements || [];
-    const initialValue = agreements.map(() => false);
+    const initialValue = agreements.map(a => initialIds.includes(a.id));
     this.agreementsControl = this.formBuilder.array(initialValue);
 
     this.addSub(this.agreementsControl.valueChanges.subscribe((flags: boolean[]) => {
@@ -51,16 +49,6 @@ export class AcceptAgreementsComponent
   get acceptedAgreements(): Agreement[] {
     const acceptedIds = this.value || [];
     return this.agreements.filter(a => acceptedIds.includes(a.id));
-  }
-
-  showAgreement(agreement: Agreement, event: MouseEvent) {
-    this.modal.show(AgreementsContentDialogComponent, {
-      ignoreBackdropClick: true,
-      class: 'modal-form modal-form-large',
-      initialState: { agreement },
-    });
-    event.stopPropagation();
-    event.preventDefault();
   }
 
   protected getFocusableControl() {

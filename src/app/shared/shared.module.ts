@@ -110,6 +110,7 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NgxGalleryModule } from 'ngx-gallery-9';
+import { AgreementLinkComponent } from 'app/shared/agreement-link.component';
 
 export function initTooltipConfig(): TooltipConfig {
   const config = new TooltipConfig();
@@ -210,6 +211,7 @@ export function initTooltipConfig(): TooltipConfig {
     ButtonToggleComponent,
     NotificationTypeSettingComponent,
     AcceptAgreementsComponent,
+    AgreementLinkComponent,
     AgreementsContentDialogComponent,
     CountdownButtonComponent,
     ActionButtonComponent,
@@ -340,6 +342,7 @@ export function initTooltipConfig(): TooltipConfig {
     ButtonToggleComponent,
     NotificationTypeSettingComponent,
     AcceptAgreementsComponent,
+    AgreementLinkComponent,
     AgreementsContentDialogComponent,
     CountdownButtonComponent,
     ActionButtonComponent,
