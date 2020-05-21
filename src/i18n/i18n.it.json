@@ -63,6 +63,7 @@
     "remove.confirm": "Sei sicuro di voler rimuovere l'elemento {item}?",
     "remove.done": "L'elemento {item} è stato rimosso",
     "remove.tooltip": "Rimuovi {item}",
+    "remoteAddress": "IP address",
     "save": "Salva",
     "addNew": "Aggiungi nuovo",
     "yes": "Sì",
@@ -290,6 +291,7 @@
     "personal.password": "Password",
     "personal.passwords": "Password",
     "personal.identityProviders": "I provider di identità",
+    "personal.agreements": "Agreements",
     "personal.notifications": "Notifiche",
     "personal.notificationSettings": "Impostazioni di notifica",
     "personal.settings": "Impostazioni",
@@ -999,6 +1001,7 @@
       "status.operator": "Stato operatore",
       "group.user": "Gruppo utente",
       "group.operator": "Gruppo Operatore",
+      "agreements": "Agreements",
       "viewRedeemedVouchers": "Mostra voucher riscattati",
       "redeemVoucher": "Riscatta voucher",
       "viewBoughtVouchers": "Vedi voucher acquistati",
@@ -1114,6 +1117,22 @@
     "pending": "In attesa di attivazione",
     "purged": "Rimozione totale (tutti i dati privati sono cancellati)",
     "removed": "Rimozione parziale (nessun dato privato è stato eliminato)"
+  },
+  "agreements": {
+    "agreement": "Agreement",
+    "required": "Required agreements",
+    "optional": "Optional agreements",
+    "optional.saved": "The selected agreements have been saved",
+    "accepted": "Accepted",
+    "noAccepted": "No accepted agreements",
+    "title": {
+      "accepted": "Accepted agreements",
+      "history": "Agreements history"
+    },
+    "mobileTitle": {
+      "accepted": "Agreements",
+      "history": "Agreements history"
+    }
   },
   "groupMembership": {
     "current": "Gruppo attuale",
