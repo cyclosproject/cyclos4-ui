@@ -39,6 +39,8 @@
     "print": "Stampa",
     "printed": "Stampato",
     "all": "Tutti",
+    "copyToClipboard": "Copy to clipboard",
+    "copyToClipboard.done": "Copied!",
     "showFilters": "Mostra filtri",
     "hideFilters": "Nascondi filtri",
     "moreFilters": "Più filtri",
@@ -61,11 +63,13 @@
     "remove.confirm": "Sei sicuro di voler rimuovere l'elemento {item}?",
     "remove.done": "L'elemento {item} è stato rimosso",
     "remove.tooltip": "Rimuovi {item}",
+    "remoteAddress": "IP address",
     "save": "Salva",
     "addNew": "Aggiungi nuovo",
     "yes": "Sì",
     "no": "No",
     "notSet": "Non impostato",
+    "share": "Share",
     "map": "Mappa",
     "map.view": "Mostra mappa",
     "noOptionsSelected": "Nessuna opzione selezionata",
@@ -246,6 +250,7 @@
     "banking.paySystem": "Pagamento sistema",
     "banking.paySelf": "Auto-pagamento",
     "banking.pos": "Addebita carta",
+    "banking.receiveQrPayment": "Receive QR-code",
     "banking.scheduledPayments": "Pagamenti pianificati",
     "banking.authorizations": "Autorizzazioni di pagamento",
     "banking.searchVouchers": "Cerca voucher",
@@ -279,12 +284,14 @@
     "marketplace.connectedUsers": "Utenti connessi",
     "marketplace.userAlerts": "Avvisi utente",
     "personal": "Personale",
+    "personal.documents": "Documents",
     "personal.viewProfile": "Profilo",
     "personal.editProfile": "Modifica profilo",
     "personal.contacts": "Contatti",
     "personal.password": "Password",
     "personal.passwords": "Password",
     "personal.identityProviders": "I provider di identità",
+    "personal.agreements": "Agreements",
     "personal.notifications": "Notifiche",
     "personal.notificationSettings": "Impostazioni di notifica",
     "personal.settings": "Impostazioni",
@@ -317,6 +324,7 @@
     "confirm.otp.request": "Per favore, richiedi una password di conferma qui sotto per confermare",
     "otp.sent": "La password è stata inviata a {dest}",
     "otp.receiveBy": "Ricevi via {medium}",
+    "otp.receiveBy.countdown": "{medium} sent({remaining} sec)",
     "oldPassword": "Vecchia password",
     "newPassword": "Nuova password",
     "passwordConfirmation": "Conferma password",
@@ -400,7 +408,6 @@
       "disable.done": "Il {type} è stato disattivato"
     }
   },
-  "registrationAgreement": "Termini e condizioni",
   "pendingAgreements": {
     "title": {
       "previouslyAccepted": "Termini e condizioni aggiornati",
@@ -412,7 +419,8 @@
     },
     "message.previouslyAccepted": "I termini e condizioni sono stati aggiornati.<br><br>Per continuare, devi accettare i nuovi termini e condizioni.",
     "message.firstTime": "Per completare la registrazione, è necessario accettare termini e condizioni.",
-    "agree": "Accetto i seguenti termini e condizioni: {agreements}"
+    "agree": "Accetto i seguenti termini e condizioni: {agreements}",
+    "preface": "I hereby declare that I have read and agree with the following:"
   },
   "securityQuestion": {
     "message": "La domanda di sicurezza è richiesta nel caso in cui sia necessario reimpostare la password. Una volta impostata, se si vuole modificare, contattare l'amministrazione.",
@@ -582,7 +590,8 @@
       "details.transfer": "Dettagli trasferimento",
       "parentTransfer": "Trasferimento che ha generato questo",
       "childTransfers": "Trasferimenti generati da questo",
-      "transfersOverview": "Panoramica operazioni"
+      "transfersOverview": "Panoramica operazioni",
+      "receiveQrPayment": "Receive QR-code payment"
     },
     "mobileTitle": {
       "pos": "Addebita carta",
@@ -607,8 +616,12 @@
       "details.transfer": "Trasferimento",
       "parentTransfer": "Trasferimento originale",
       "childTransfers": "Trasferimenti originali",
-      "transfersOverview": "Panoramica operazioni"
+      "transfersOverview": "Panoramica operazioni",
+      "receiveQrPayment": "QR-code payment"
     },
+    "ticketShareTitle": "Invitation to perform a payment",
+    "ticketShareText": "{user} has invited you to pay {amount}",
+    "ticketShareUrl": "URL to share",
     "viewAuthorizations": "Mostra autorizzazioni",
     "viewThisTransfer": "Mostra operazione",
     "authorizePending": "Autorizza il pagamento in sospeso",
@@ -988,6 +1001,7 @@
       "status.operator": "Stato operatore",
       "group.user": "Gruppo utente",
       "group.operator": "Gruppo Operatore",
+      "agreements": "Agreements",
       "viewRedeemedVouchers": "Mostra voucher riscattati",
       "redeemVoucher": "Riscatta voucher",
       "viewBoughtVouchers": "Vedi voucher acquistati",
@@ -1103,6 +1117,22 @@
     "pending": "In attesa di attivazione",
     "purged": "Rimozione totale (tutti i dati privati sono cancellati)",
     "removed": "Rimozione parziale (nessun dato privato è stato eliminato)"
+  },
+  "agreements": {
+    "agreement": "Agreement",
+    "required": "Required agreements",
+    "optional": "Optional agreements",
+    "optional.saved": "The selected agreements have been saved",
+    "accepted": "Accepted",
+    "noAccepted": "No accepted agreements",
+    "title": {
+      "accepted": "Accepted agreements",
+      "history": "Agreements history"
+    },
+    "mobileTitle": {
+      "accepted": "Agreements",
+      "history": "Agreements history"
+    }
   },
   "groupMembership": {
     "current": "Gruppo attuale",
@@ -1318,6 +1348,7 @@
     "lowStockNotification": "Notifiche quando lo stock è scarso",
     "stockQuantity": "Quantità in magazzino",
     "unlimitedStock": "Stock illimitato",
+    "unlimited": "Unlimited",
     "unitPrice": "Prezzo unitario",
     "minAllowedInCart": "Minimo consentito nel carrello",
     "maxAllowedInCart": "Massimo consentito nel carrello",
@@ -1368,6 +1399,7 @@
     "requiringMyConfirmation": "Richiede la mia conferma",
     "buyer": "Acquirente",
     "seller": "Venditore",
+    "stock": "Stock",
     "waitingForBuyersApproval": "In attesa di approvazione - acquirente",
     "waitingForSellersApproval": "In attesa di approvazione - venditore",
     "remarks": "Note",
@@ -1686,5 +1718,31 @@
       "maxGlobalSmsReached": "È stato raggiunto il massimo globale di SMS al mese",
       "maxIncorrectLoginAttempts": "Numero massimo di tentativi di accesso non corretti per l'utente non valido"
     }
+  },
+  "document": {
+    "title": {
+      "new": "Create new document",
+      "view": "Document details",
+      "edit": "Document details",
+      "list": "Documents",
+      "search": "Documents"
+    },
+    "mobileTitle": {
+      "new": "Create new document",
+      "view": "Document details",
+      "edit": "Document details",
+      "list": "Documents",
+      "search": "Documents"
+    },
+    "enable": "Abilita",
+    "userVisible": "Visible for members",
+    "brokerVisible": "Visible for brokers",
+    "brokerManageable": "Manageable by broker",
+    "replaceDocument": "Replace document",
+    "newDocument": "New document",
+    "document": "Document",
+    "savedSuccessfully": "Saved successfully",
+    "process": "Process dynamic document",
+    "category": "Category"
   }
 }
