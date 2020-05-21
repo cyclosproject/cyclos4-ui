@@ -283,7 +283,7 @@
     "marketplace.connectedUsers": "Usuários conectados",
     "marketplace.userAlerts": "Alertas de usuário",
     "personal": "Pessoal",
-    "personal.documents": "Documents",
+    "personal.documents": "Documentos",
     "personal.viewProfile": "Meu perfil",
     "personal.editProfile": "Editar perfil",
     "personal.contacts": "Contatos",
@@ -1702,18 +1702,18 @@
   },
   "document": {
     "title": {
-      "new": "Create new document",
-      "view": "Document details",
-      "edit": "Document details",
-      "list": "Documents",
-      "search": "Documents"
+      "new": "Criar novo documento",
+      "view": "Detalhes do documento",
+      "edit": "Detalhes do documento",
+      "list": "Documentos",
+      "search": "Documentos"
     },
     "mobileTitle": {
-      "new": "Create new document",
-      "view": "Document details",
-      "edit": "Document details",
-      "list": "Documents",
-      "search": "Documents"
+      "new": "Criar novo documento",
+      "view": "Detalhes do documento",
+      "edit": "Detalhes do documento",
+      "list": "Documentos",
+      "search": "Documentos"
     },
     "enable": "Habilitar",
     "userVisible": "Visible for members",
