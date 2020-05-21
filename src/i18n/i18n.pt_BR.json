@@ -29,8 +29,8 @@
     "to": "para",
     "description": "Descrição",
     "details": "Detalhes",
-    "download": "Download",
-    "downloadAs": "Download as {format}",
+    "download": "Baixar",
+    "downloadAs": "Baixar como {format}",
     "image": "Imagem",
     "keywords": "Palavras-chaves",
     "distanceFilter": "Distância",
@@ -39,6 +39,8 @@
     "print": "Imprimir",
     "printed": "Impresso",
     "all": "Tudo",
+    "copyToClipboard": "Copiar para área de transferência",
+    "copyToClipboard.done": "Copiado!",
     "showFilters": "Mostrar filtros",
     "hideFilters": "Ocultar filtros",
     "moreFilters": "Mais filtros",
@@ -61,11 +63,13 @@
     "remove.confirm": "Tem certeza que deseja remover o item {item}?",
     "remove.done": "O item {item} foi removido",
     "remove.tooltip": "Remover {item}",
+    "remoteAddress": "IP address",
     "save": "Salvar",
     "addNew": "Adicionar novo",
     "yes": "Sim",
     "no": "Não",
     "notSet": "Não definido",
+    "share": "Compartilhar",
     "map": "Mapa",
     "map.view": "Ver Mapa",
     "noOptionsSelected": "Nenhuma opção selecionada",
@@ -246,6 +250,7 @@
     "banking.paySystem": "Pagamento para sistema",
     "banking.paySelf": "Pagamento entre contas",
     "banking.pos": "Receber pagamento",
+    "banking.receiveQrPayment": "Receber código QR",
     "banking.scheduledPayments": "Pagamentos agendados",
     "banking.authorizations": "Autorizações de pagamento",
     "banking.searchVouchers": "Busca de cupons",
@@ -279,12 +284,14 @@
     "marketplace.connectedUsers": "Usuários conectados",
     "marketplace.userAlerts": "Alertas de usuário",
     "personal": "Pessoal",
+    "personal.documents": "Documentos",
     "personal.viewProfile": "Meu perfil",
     "personal.editProfile": "Editar perfil",
     "personal.contacts": "Contatos",
     "personal.password": "Senha",
     "personal.passwords": "Senhas",
     "personal.identityProviders": "Provedores de identidade",
+    "personal.agreements": "Agreements",
     "personal.notifications": "Notificações",
     "personal.notificationSettings": "Configurações de notificações",
     "personal.settings": "Definições",
@@ -317,6 +324,7 @@
     "confirm.otp.request": "Por favor, solicite uma senha de confirmação para poder confirmar",
     "otp.sent": "A senha foi enviada para {dest}",
     "otp.receiveBy": "Obter via {medium}",
+    "otp.receiveBy.countdown": "{medium} enviado({remaining} seg)",
     "oldPassword": "Senha antiga",
     "newPassword": "Nova senha",
     "passwordConfirmation": "Confirmação da senha",
@@ -400,7 +408,6 @@
       "disable.done": "Seu {type} foi desativado"
     }
   },
-  "registrationAgreement": "Termo de adesão",
   "pendingAgreements": {
     "title": {
       "previouslyAccepted": "Termo de adesão atualizado",
@@ -412,7 +419,8 @@
     },
     "message.previouslyAccepted": "O termo de adesão foi atualizado.<br><br>Para continuar você deve concordar com os novos termos.",
     "message.firstTime": "Para completar seu registro, você deve concordar com estes termos.",
-    "agree": "Concordo com os seguintes termos de adesão: {agreements}"
+    "agree": "Concordo com os seguintes termos de adesão: {agreements}",
+    "preface": "Declaro que li e concordo com o seguinte:"
   },
   "securityQuestion": {
     "message": "A pergunta de segurança é necessária caso você precise redefinir sua senha. Uma vez definida, se você precisa alterá-la, entre em contato com a administração.",
@@ -582,7 +590,8 @@
       "details.transfer": "Detalhes da transferência",
       "parentTransfer": "Transferência que gerou esta",
       "childTransfers": "Transferências geradas por esta",
-      "transfersOverview": "Visão geral de transações"
+      "transfersOverview": "Visão geral de transações",
+      "receiveQrPayment": "Receber pagamento QR-code"
     },
     "mobileTitle": {
       "pos": "Receber pagamento",
@@ -607,8 +616,12 @@
       "details.transfer": "Transação",
       "parentTransfer": "Transação de origem",
       "childTransfers": "Transações geradas",
-      "transfersOverview": "Visão geral de transações"
+      "transfersOverview": "Visão geral de transações",
+      "receiveQrPayment": "Pagamento QR-code"
     },
+    "ticketShareTitle": "Convite para realizar um pagamento",
+    "ticketShareText": "{user} convidou você para pagar {amount}",
+    "ticketShareUrl": "URL para compartilhar",
     "viewAuthorizations": "Ver autorizações",
     "viewThisTransfer": "Ver esta transferência",
     "authorizePending": "Autorizar pagamento pendente",
@@ -988,6 +1001,7 @@
       "status.operator": "Estado do operador",
       "group.user": "Grupo do usuário",
       "group.operator": "Grupo do operador",
+      "agreements": "Agreements",
       "viewRedeemedVouchers": "Ver cupons resgatados",
       "redeemVoucher": "Resgatar cupons",
       "viewBoughtVouchers": "Ver cupoms comprados",
@@ -1103,6 +1117,22 @@
     "pending": "Pendente de ativação",
     "purged": "Removido (todos os dados privados são apagados)",
     "removed": "Removido (nenhum dado privado é apagado)"
+  },
+  "agreements": {
+    "agreement": "Agreement",
+    "required": "Required agreements",
+    "optional": "Optional agreements",
+    "optional.saved": "The selected agreements have been saved",
+    "accepted": "Accepted",
+    "noAccepted": "No accepted agreements",
+    "title": {
+      "accepted": "Accepted agreements",
+      "history": "Agreements history"
+    },
+    "mobileTitle": {
+      "accepted": "Agreements",
+      "history": "Agreements history"
+    }
   },
   "groupMembership": {
     "current": "Grupo atual",
@@ -1318,6 +1348,7 @@
     "lowStockNotification": "Notificação de estoque baixo",
     "stockQuantity": "Quantidade em estoque",
     "unlimitedStock": "Estoque ilimitado",
+    "unlimited": "Ilimitado",
     "unitPrice": "Preço unitário",
     "minAllowedInCart": "Mínimo permitido no carrinho",
     "maxAllowedInCart": "Máximo permitido no carrinho",
@@ -1368,6 +1399,7 @@
     "requiringMyConfirmation": "Requisitando minha confirmação",
     "buyer": "Comprador",
     "seller": "Vendedor",
+    "stock": "Estoque",
     "waitingForBuyersApproval": "Aguardando a aprovação do comprador",
     "waitingForSellersApproval": "Aguardando a aprovação do vendedor",
     "remarks": "Observações",
@@ -1394,8 +1426,7 @@
       "answerQuestion": "Responder pergunta",
       "adInterests": "Interesses em anúncios",
       "adInterestNew": "Novo interesse em anúncio",
-      "adInterest": "Interesse em anúncio",
-      "newOrder": "Create web shop order"
+      "adInterest": "Interesse em anúncio"
     },
     "mobileTitle": {
       "search": "Anúncios",
@@ -1421,20 +1452,8 @@
       "answerQuestion": "Responder pergunta",
       "adInterests": "Interesses em anúncio",
       "adInterestNew": "Novo interesse em anúncio",
-      "adInterest": "Interesse em anúncio",
-      "newOrder": "Create web shop order"
-    },
-    "addedProductOrder": "The product was added to the order",
-    "addProducts": "Add products",
-    "basePrice": "Base price",
-    "customDeliveryMethod": "Custom delivery method",
-    "customQuantity": "Custom quantity...",
-    "discount": "Discount %",
-    "itemsNone": "There are currently no products",
-    "orderSavedAsDraft": "The order was saved as draft",
-    "orderSubmittedToBuyer": "The order was submitted to buyer",
-    "saveDraft": "Save draft",
-    "submitToBuyer": "Submit to buyer"
+      "adInterest": "Interesse em anúncio"
+    }
   },
   "notification": {
     "message": "Mensagem",
@@ -1699,5 +1718,31 @@
       "maxGlobalSmsReached": "O limite máximo global de mensagens SMS por mês foi alcançado",
       "maxIncorrectLoginAttempts": "Máximo de tentativas de acesso com nome de utilizador inválido"
     }
+  },
+  "document": {
+    "title": {
+      "new": "Criar novo documento",
+      "view": "Detalhes do documento",
+      "edit": "Detalhes do documento",
+      "list": "Documentos",
+      "search": "Documentos"
+    },
+    "mobileTitle": {
+      "new": "Criar novo documento",
+      "view": "Detalhes do documento",
+      "edit": "Detalhes do documento",
+      "list": "Documentos",
+      "search": "Documentos"
+    },
+    "enable": "Habilitar",
+    "userVisible": "Visível para membros",
+    "brokerVisible": "Visível para corretores",
+    "brokerManageable": "Gerenciável pelo corretor",
+    "replaceDocument": "Substituir documento",
+    "newDocument": "Novo documento",
+    "document": "Documento",
+    "savedSuccessfully": "Salvo com sucesso",
+    "process": "Processar documento dinâmico",
+    "category": "Categoria"
   }
 }

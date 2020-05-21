@@ -29,8 +29,8 @@
     "to": "hasta",
     "description": "Descripción",
     "details": "Detalles",
-    "download": "Download",
-    "downloadAs": "Download as {format}",
+    "download": "Descargar",
+    "downloadAs": "Descargar como {format}",
     "image": "Imágen",
     "keywords": "Palabras clave",
     "distanceFilter": "Distancia",
@@ -39,6 +39,8 @@
     "print": "Imprimir",
     "printed": "Impreso",
     "all": "Todo",
+    "copyToClipboard": "Copiar al porta papeles",
+    "copyToClipboard.done": "Copiado!",
     "showFilters": "Mostrar filtros",
     "hideFilters": "Ocultar filtros",
     "moreFilters": "Más filtros",
@@ -61,11 +63,13 @@
     "remove.confirm": "¿Está seguro de eliminar el elemento {item}?",
     "remove.done": "El elemento {item} fue eliminado",
     "remove.tooltip": "Eliminar {item}",
+    "remoteAddress": "IP address",
     "save": "Guardar",
     "addNew": "Agregar",
     "yes": "Si",
     "no": "No",
     "notSet": "Sin definir",
+    "share": "Compartir",
     "map": "Mapa",
     "map.view": "Ver mapa",
     "noOptionsSelected": "Sin opciones seleccionadas",
@@ -246,6 +250,7 @@
     "banking.paySystem": "Pago al sistema",
     "banking.paySelf": "Auto pago",
     "banking.pos": "Recibir pago",
+    "banking.receiveQrPayment": "Recibir código QR",
     "banking.scheduledPayments": "Pagos agendados",
     "banking.authorizations": "Pagos con autorización",
     "banking.searchVouchers": "Buscar cupones",
@@ -279,12 +284,14 @@
     "marketplace.connectedUsers": "Usuarios conectados",
     "marketplace.userAlerts": "Alertas de usuario",
     "personal": "Personal",
+    "personal.documents": "Documents",
     "personal.viewProfile": "Mi perfil",
     "personal.editProfile": "Editar perfil",
     "personal.contacts": "Contactos",
     "personal.password": "Contraseñas",
     "personal.passwords": "Contraseñas",
     "personal.identityProviders": "Proveedores de identidad",
+    "personal.agreements": "Agreements",
     "personal.notifications": "Notificaciones",
     "personal.notificationSettings": "Ajustes de notificaciones",
     "personal.settings": "Ajustes",
@@ -317,6 +324,7 @@
     "confirm.otp.request": "Por favor, solicite una contraseña de confirmación a continuación, para confirmar",
     "otp.sent": "La contraseña fue enviada a su {dest}",
     "otp.receiveBy": "Obtener mediante {medium}",
+    "otp.receiveBy.countdown": "{medium} sent({remaining} sec)",
     "oldPassword": "Contraseña actual",
     "newPassword": "Nueva contraseña",
     "passwordConfirmation": "Confirmación de contraseña",
@@ -400,7 +408,6 @@
       "disable.done": "Su \"{type}\" ha sido deshabilitada"
     }
   },
-  "registrationAgreement": "Términos de acuerdo",
   "pendingAgreements": {
     "title": {
       "previouslyAccepted": "Términos de acuerdo actualizados",
@@ -412,7 +419,8 @@
     },
     "message.previouslyAccepted": "Los términos de acuerdo ha sido actualizados.\n\nUsted debe aceptar los nuevos términos de acuerdo para poder continuar.",
     "message.firstTime": "Para completar su registro, debe aceptar estos términos.",
-    "agree": "He aceptado los siguientes términos de acuerdo: {agreements}"
+    "agree": "He aceptado los siguientes términos de acuerdo: {agreements}",
+    "preface": "I hereby declare that I have read and agree with the following:"
   },
   "securityQuestion": {
     "message": "La pregunta de seguridad es necesaria en caso de que usted necesite restablecer su contraseña. Si desea cambiarla, una vez definida, por favor contacte a la administración.",
@@ -582,7 +590,8 @@
       "details.transfer": "Detalle de la transferencia",
       "parentTransfer": "Transferencia principal",
       "childTransfers": "Transferencias generadas",
-      "transfersOverview": "Visión general de Transferencias"
+      "transfersOverview": "Visión general de Transferencias",
+      "receiveQrPayment": "Recibir pago de código QR"
     },
     "mobileTitle": {
       "pos": "Recibir pago",
@@ -607,8 +616,12 @@
       "details.transfer": "Transferencia",
       "parentTransfer": "Transferencia original",
       "childTransfers": "Transferencias generadas",
-      "transfersOverview": "Visión general de Transferencias"
+      "transfersOverview": "Visión general de Transferencias",
+      "receiveQrPayment": "Pago de código QR"
     },
+    "ticketShareTitle": "Invitación a realizar un pago",
+    "ticketShareText": "{user} le ha invitado a realizar un pago de {amount}",
+    "ticketShareUrl": "URL para compartir",
     "viewAuthorizations": "Ver autorizaciones",
     "viewThisTransfer": "Ver transferencia",
     "authorizePending": "Autorizar pago pendiente",
@@ -988,6 +1001,7 @@
       "status.operator": "Estado del operador",
       "group.user": "Grupo de usuario",
       "group.operator": "Grupo de operador",
+      "agreements": "Agreements",
       "viewRedeemedVouchers": "Ver cupones canjeados",
       "redeemVoucher": "Canjear cupón",
       "viewBoughtVouchers": "Ver cupones comprados",
@@ -1103,6 +1117,22 @@
     "pending": "Activación pendiente",
     "purged": "Purgado (todos los datos privados fueron borrados)",
     "removed": "Eliminado (los datos privados no fueron borrados)"
+  },
+  "agreements": {
+    "agreement": "Agreement",
+    "required": "Required agreements",
+    "optional": "Optional agreements",
+    "optional.saved": "The selected agreements have been saved",
+    "accepted": "Accepted",
+    "noAccepted": "No accepted agreements",
+    "title": {
+      "accepted": "Accepted agreements",
+      "history": "Agreements history"
+    },
+    "mobileTitle": {
+      "accepted": "Agreements",
+      "history": "Agreements history"
+    }
   },
   "groupMembership": {
     "current": "Grupo actual",
@@ -1308,7 +1338,7 @@
     "setPromotionalPeriod": "En promoción",
     "submitForAuthorization": "Enviar para autorización",
     "submitToBuyer": "Enviar al comprador",
-    "submitToBuyerConfirmation": "Are you sure to submit this order to the buyer? After this step, no further changes will be allowed in this order, and it will be awaiting for buyer's approval.",
+    "submitToBuyerConfirmation": "Está seguro de que desea enviar esta orden para al comprador? Luego esto,, no se podrá realizar cambios en la orden, y la misma quedará a la espera de la aprobación del comprador.",
     "subtotal": "Subtotal",
     "stockType": "Tipo de Stock",
     "pendingForAuth": "El anuncio se ha enviado para su autorización",
@@ -1318,6 +1348,7 @@
     "lowStockNotification": "Notificación de stock bajo",
     "stockQuantity": "Cantidad en stock",
     "unlimitedStock": "Stock ilimitado",
+    "unlimited": "Sin límites",
     "unitPrice": "Precio unitario",
     "minAllowedInCart": "Mínimo permitido en el carrito",
     "maxAllowedInCart": "Máximo permitido en el carrito",
@@ -1368,6 +1399,7 @@
     "requiringMyConfirmation": "Requieren mi confirmación",
     "buyer": "Comprador",
     "seller": "Vendedor",
+    "stock": "Stock",
     "waitingForBuyersApproval": "Esperando aprobación del comprador",
     "waitingForSellersApproval": "Esperando aprobación del vendedor",
     "remarks": "Comentarios",
@@ -1394,8 +1426,7 @@
       "answerQuestion": "Responder a la pregunta",
       "adInterests": "Anuncios de interés",
       "adInterestNew": "Nuevo anuncio de interés",
-      "adInterest": "Anuncios de interés",
-      "newOrder": "Create web shop order"
+      "adInterest": "Anuncios de interés"
     },
     "mobileTitle": {
       "search": "Anuncios",
@@ -1421,20 +1452,8 @@
       "answerQuestion": "Responder a la pregunta",
       "adInterests": "Nuevo anuncio de interés",
       "adInterestNew": "Nuevo anuncio de interés",
-      "adInterest": "Anuncios de interés",
-      "newOrder": "Create web shop order"
-    },
-    "addedProductOrder": "The product was added to the order",
-    "addProducts": "Add products",
-    "basePrice": "Base price",
-    "customDeliveryMethod": "Custom delivery method",
-    "customQuantity": "Custom quantity...",
-    "discount": "Discount %",
-    "itemsNone": "There are currently no products",
-    "orderSavedAsDraft": "The order was saved as draft",
-    "orderSubmittedToBuyer": "The order was submitted to buyer",
-    "saveDraft": "Save draft",
-    "submitToBuyer": "Submit to buyer"
+      "adInterest": "Anuncios de interés"
+    }
   },
   "notification": {
     "message": "Mensaje",
@@ -1699,5 +1718,31 @@
       "maxGlobalSmsReached": "Se ha alcanzado el máximo de mensajes SMS global mensual",
       "maxIncorrectLoginAttempts": "Máxima cantidad de intentos de acceso para usuario no válido"
     }
+  },
+  "document": {
+    "title": {
+      "new": "Create new document",
+      "view": "Document details",
+      "edit": "Document details",
+      "list": "Documents",
+      "search": "Documents"
+    },
+    "mobileTitle": {
+      "new": "Create new document",
+      "view": "Document details",
+      "edit": "Document details",
+      "list": "Documents",
+      "search": "Documents"
+    },
+    "enable": "Habilitar",
+    "userVisible": "Visible for members",
+    "brokerVisible": "Visible for brokers",
+    "brokerManageable": "Manageable by broker",
+    "replaceDocument": "Replace document",
+    "newDocument": "New document",
+    "document": "Document",
+    "savedSuccessfully": "Saved successfully",
+    "process": "Process dynamic document",
+    "category": "Category"
   }
 }

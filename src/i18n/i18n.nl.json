@@ -39,6 +39,8 @@
     "print": "Afdrukken",
     "printed": "Printed",
     "all": "All",
+    "copyToClipboard": "Copy to clipboard",
+    "copyToClipboard.done": "Copied!",
     "showFilters": "Filters weergeven",
     "hideFilters": "Filters verbergen",
     "moreFilters": "Meer filters",
@@ -61,11 +63,13 @@
     "remove.confirm": "Are you sure to remove the item {item}?",
     "remove.done": "The item {item} was removed",
     "remove.tooltip": "Remove {item}",
+    "remoteAddress": "IP address",
     "save": "Opslaan",
     "addNew": "Nieuw",
     "yes": "Ja",
     "no": "Nee",
     "notSet": "Not set",
+    "share": "Share",
     "map": "Kaart",
     "map.view": "Bekijk de kaart",
     "noOptionsSelected": "Geen opties geselecteerd",
@@ -246,6 +250,7 @@
     "banking.paySystem": "Betaling aan systeem",
     "banking.paySelf": "De betaling zelf",
     "banking.pos": "Receive payment",
+    "banking.receiveQrPayment": "Receive QR-code",
     "banking.scheduledPayments": "Geautoriseerde betalingen",
     "banking.authorizations": "Betalingsautorisaties",
     "banking.searchVouchers": "Search vouchers",
@@ -279,12 +284,14 @@
     "marketplace.connectedUsers": "Connected users",
     "marketplace.userAlerts": "User alerts",
     "personal": "Persoonlijk",
+    "personal.documents": "Documents",
     "personal.viewProfile": "Mijn profiel",
     "personal.editProfile": "Profiel bewerken",
     "personal.contacts": "Contacten",
     "personal.password": "Wachtwoord",
     "personal.passwords": "Wachtwoorden",
     "personal.identityProviders": "Identity providers",
+    "personal.agreements": "Agreements",
     "personal.notifications": "Notifications",
     "personal.notificationSettings": "Notification settings",
     "personal.settings": "Settings",
@@ -317,6 +324,7 @@
     "confirm.otp.request": "Gelieve te vragen om een bevestiging wachtwoord hieronder in om te bevestigen",
     "otp.sent": "Het wachtwoord is verstuurd naar {dest}",
     "otp.receiveBy": "Get by {medium}",
+    "otp.receiveBy.countdown": "{medium} sent({remaining} sec)",
     "oldPassword": "Oud wachtwoord",
     "newPassword": "Nieuw wachtwoord",
     "passwordConfirmation": "Bevestiging van het wachtwoord",
@@ -400,7 +408,6 @@
       "disable.done": "Uw {type} was uitgeschakeld"
     }
   },
-  "registrationAgreement": "Registratie akkoord",
   "pendingAgreements": {
     "title": {
       "previouslyAccepted": "Bijgewerkt overeenkomst",
@@ -412,7 +419,8 @@
     },
     "message.previouslyAccepted": "De registratie overeenkomst is bijgewerkt.<br><br>om verder te kunnen gaan, moet je akkoord gaan met de nieuwe voorwaarden.",
     "message.firstTime": "In order to complete your registration, you must agree with these terms.",
-    "agree": "Ik ben het eens met de volgende registratie overeenkomsten: {agreements}"
+    "agree": "Ik ben het eens met de volgende registratie overeenkomsten: {agreements}",
+    "preface": "I hereby declare that I have read and agree with the following:"
   },
   "securityQuestion": {
     "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
@@ -582,7 +590,8 @@
       "details.transfer": "Betalingsoverzicht",
       "parentTransfer": "Transfer die deze",
       "childTransfers": "Transfers gegenereerd door deze",
-      "transfersOverview": "Transfers overview"
+      "transfersOverview": "Transfers overview",
+      "receiveQrPayment": "Receive QR-code payment"
     },
     "mobileTitle": {
       "pos": "Receive payment",
@@ -607,8 +616,12 @@
       "details.transfer": "Transfer",
       "parentTransfer": "Originating transfer",
       "childTransfers": "Originated transfers",
-      "transfersOverview": "Transfers overview"
+      "transfersOverview": "Transfers overview",
+      "receiveQrPayment": "QR-code payment"
     },
+    "ticketShareTitle": "Invitation to perform a payment",
+    "ticketShareText": "{user} has invited you to pay {amount}",
+    "ticketShareUrl": "URL to share",
     "viewAuthorizations": "Bekijk autorisaties",
     "viewThisTransfer": "Bekijk deze overdracht",
     "authorizePending": "Machtigen in afwachting van betaling",
@@ -988,6 +1001,7 @@
       "status.operator": "Operator status",
       "group.user": "User group",
       "group.operator": "Operator group",
+      "agreements": "Agreements",
       "viewRedeemedVouchers": "View redeemed vouchers",
       "redeemVoucher": "Redeem voucher",
       "viewBoughtVouchers": "View bought vouchers",
@@ -1103,6 +1117,22 @@
     "pending": "Pending activation",
     "purged": "Purged (all private data is erased)",
     "removed": "Removed (no private data is erased)"
+  },
+  "agreements": {
+    "agreement": "Agreement",
+    "required": "Required agreements",
+    "optional": "Optional agreements",
+    "optional.saved": "The selected agreements have been saved",
+    "accepted": "Accepted",
+    "noAccepted": "No accepted agreements",
+    "title": {
+      "accepted": "Accepted agreements",
+      "history": "Agreements history"
+    },
+    "mobileTitle": {
+      "accepted": "Agreements",
+      "history": "Agreements history"
+    }
   },
   "groupMembership": {
     "current": "Current group",
@@ -1318,6 +1348,7 @@
     "lowStockNotification": "Low stock notification",
     "stockQuantity": "In stock quantity",
     "unlimitedStock": "Unlimited stock",
+    "unlimited": "Unlimited",
     "unitPrice": "Unit price",
     "minAllowedInCart": "Minimum allowed in cart",
     "maxAllowedInCart": "Maximum allowed in cart",
@@ -1368,6 +1399,7 @@
     "requiringMyConfirmation": "Requiring my confirmation",
     "buyer": "Buyer",
     "seller": "Seller",
+    "stock": "Stock",
     "waitingForBuyersApproval": "Waiting for buyers approval",
     "waitingForSellersApproval": "Waiting for sellers approval",
     "remarks": "Remarks",
@@ -1394,8 +1426,7 @@
       "answerQuestion": "Answer question",
       "adInterests": "Advertisement interests",
       "adInterestNew": "New advertisement interest",
-      "adInterest": "Advertisement interest",
-      "newOrder": "Create web shop order"
+      "adInterest": "Advertisement interest"
     },
     "mobileTitle": {
       "search": "Advertisements",
@@ -1421,20 +1452,8 @@
       "answerQuestion": "Answer question",
       "adInterests": "Advertisement interests",
       "adInterestNew": "New advertisement interest",
-      "adInterest": "Advertisement interest",
-      "newOrder": "Create web shop order"
-    },
-    "addedProductOrder": "The product was added to the order",
-    "addProducts": "Add products",
-    "basePrice": "Base price",
-    "customDeliveryMethod": "Custom delivery method",
-    "customQuantity": "Custom quantity...",
-    "discount": "Discount %",
-    "itemsNone": "There are currently no products",
-    "orderSavedAsDraft": "The order was saved as draft",
-    "orderSubmittedToBuyer": "The order was submitted to buyer",
-    "saveDraft": "Save draft",
-    "submitToBuyer": "Submit to buyer"
+      "adInterest": "Advertisement interest"
+    }
   },
   "notification": {
     "message": "Message",
@@ -1699,5 +1718,31 @@
       "maxGlobalSmsReached": "The global maximum of SMS messages per month has been reached",
       "maxIncorrectLoginAttempts": "Max incorrect login attempts for invalid user"
     }
+  },
+  "document": {
+    "title": {
+      "new": "Create new document",
+      "view": "Document details",
+      "edit": "Document details",
+      "list": "Documents",
+      "search": "Documents"
+    },
+    "mobileTitle": {
+      "new": "Create new document",
+      "view": "Document details",
+      "edit": "Document details",
+      "list": "Documents",
+      "search": "Documents"
+    },
+    "enable": "Inschakelen",
+    "userVisible": "Visible for members",
+    "brokerVisible": "Visible for brokers",
+    "brokerManageable": "Manageable by broker",
+    "replaceDocument": "Replace document",
+    "newDocument": "New document",
+    "document": "Document",
+    "savedSuccessfully": "Saved successfully",
+    "process": "Process dynamic document",
+    "category": "Category"
   }
 }

@@ -39,6 +39,8 @@
     "print": "Imprimer",
     "printed": "Printed",
     "all": "All",
+    "copyToClipboard": "Copy to clipboard",
+    "copyToClipboard.done": "Copied!",
     "showFilters": "Affiche les filtres",
     "hideFilters": "Masquer les filtres",
     "moreFilters": "Plus de filtres",
@@ -61,11 +63,13 @@
     "remove.confirm": "Are you sure to remove the item {item}?",
     "remove.done": "The item {item} was removed",
     "remove.tooltip": "Remove {item}",
+    "remoteAddress": "IP address",
     "save": "Sauver",
     "addNew": "Ajouter",
     "yes": "Oui",
     "no": "Non",
     "notSet": "Not set",
+    "share": "Share",
     "map": "Carte",
     "map.view": "Voir la carte",
     "noOptionsSelected": "Aucune option sélectionnée",
@@ -246,6 +250,7 @@
     "banking.paySystem": "Paiement au système",
     "banking.paySelf": "Paiement à soi-même",
     "banking.pos": "Receive payment",
+    "banking.receiveQrPayment": "Receive QR-code",
     "banking.scheduledPayments": "Paiements planifiés",
     "banking.authorizations": "Autorisations de paiement",
     "banking.searchVouchers": "Search vouchers",
@@ -279,12 +284,14 @@
     "marketplace.connectedUsers": "Connected users",
     "marketplace.userAlerts": "User alerts",
     "personal": "Personnel",
+    "personal.documents": "Documents",
     "personal.viewProfile": "Mon profil",
     "personal.editProfile": "Editer le profil",
     "personal.contacts": "Contacts",
     "personal.password": "Mot de passe",
     "personal.passwords": "Mots de passe",
     "personal.identityProviders": "Identity providers",
+    "personal.agreements": "Agreements",
     "personal.notifications": "Notifications",
     "personal.notificationSettings": "Notification settings",
     "personal.settings": "Settings",
@@ -317,6 +324,7 @@
     "confirm.otp.request": "Veuillez demander un mot de passe de confirmation ci-dessous afin de confirmer",
     "otp.sent": "Le mot de passe a été envoyé à {dest}",
     "otp.receiveBy": "Get by {medium}",
+    "otp.receiveBy.countdown": "{medium} sent({remaining} sec)",
     "oldPassword": "Ancien mot de passe",
     "newPassword": "Nouveau mot de passe",
     "passwordConfirmation": "Confirmer le mot de passe",
@@ -400,7 +408,6 @@
       "disable.done": "Votre {type} a été désactivé"
     }
   },
-  "registrationAgreement": "Contrat d'inscription",
   "pendingAgreements": {
     "title": {
       "previouslyAccepted": "Accord mis à jour",
@@ -412,7 +419,8 @@
     },
     "message.previouslyAccepted": "Le contrat d’enregistrement a été mis à jour. Pour continuer, vous devez accepter les nouveaux termes.",
     "message.firstTime": "In order to complete your registration, you must agree with these terms.",
-    "agree": "Je suis d'accord avec les accords d'enregistrement suivants: {agreements}"
+    "agree": "Je suis d'accord avec les accords d'enregistrement suivants: {agreements}",
+    "preface": "I hereby declare that I have read and agree with the following:"
   },
   "securityQuestion": {
     "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
@@ -582,7 +590,8 @@
       "details.transfer": "Détails du transfert",
       "parentTransfer": "Transfert qui a généré celui-ci",
       "childTransfers": "Transferts générés par celui-ci",
-      "transfersOverview": "Transfers overview"
+      "transfersOverview": "Transfers overview",
+      "receiveQrPayment": "Receive QR-code payment"
     },
     "mobileTitle": {
       "pos": "Receive payment",
@@ -607,8 +616,12 @@
       "details.transfer": "Transfer",
       "parentTransfer": "Originating transfer",
       "childTransfers": "Originated transfers",
-      "transfersOverview": "Transfers overview"
+      "transfersOverview": "Transfers overview",
+      "receiveQrPayment": "QR-code payment"
     },
+    "ticketShareTitle": "Invitation to perform a payment",
+    "ticketShareText": "{user} has invited you to pay {amount}",
+    "ticketShareUrl": "URL to share",
     "viewAuthorizations": "Voir les autorisations",
     "viewThisTransfer": "Voir ce transfert",
     "authorizePending": "Autoriser le paiement en attente",
@@ -988,6 +1001,7 @@
       "status.operator": "Operator status",
       "group.user": "User group",
       "group.operator": "Operator group",
+      "agreements": "Agreements",
       "viewRedeemedVouchers": "View redeemed vouchers",
       "redeemVoucher": "Redeem voucher",
       "viewBoughtVouchers": "View bought vouchers",
@@ -1103,6 +1117,22 @@
     "pending": "Pending activation",
     "purged": "Purged (all private data is erased)",
     "removed": "Removed (no private data is erased)"
+  },
+  "agreements": {
+    "agreement": "Agreement",
+    "required": "Required agreements",
+    "optional": "Optional agreements",
+    "optional.saved": "The selected agreements have been saved",
+    "accepted": "Accepted",
+    "noAccepted": "No accepted agreements",
+    "title": {
+      "accepted": "Accepted agreements",
+      "history": "Agreements history"
+    },
+    "mobileTitle": {
+      "accepted": "Agreements",
+      "history": "Agreements history"
+    }
   },
   "groupMembership": {
     "current": "Current group",
@@ -1318,6 +1348,7 @@
     "lowStockNotification": "Low stock notification",
     "stockQuantity": "In stock quantity",
     "unlimitedStock": "Unlimited stock",
+    "unlimited": "Unlimited",
     "unitPrice": "Unit price",
     "minAllowedInCart": "Minimum allowed in cart",
     "maxAllowedInCart": "Maximum allowed in cart",
@@ -1368,6 +1399,7 @@
     "requiringMyConfirmation": "Requiring my confirmation",
     "buyer": "Buyer",
     "seller": "Seller",
+    "stock": "Stock",
     "waitingForBuyersApproval": "Waiting for buyers approval",
     "waitingForSellersApproval": "Waiting for sellers approval",
     "remarks": "Remarks",
@@ -1394,8 +1426,7 @@
       "answerQuestion": "Answer question",
       "adInterests": "Advertisement interests",
       "adInterestNew": "New advertisement interest",
-      "adInterest": "Advertisement interest",
-      "newOrder": "Create web shop order"
+      "adInterest": "Advertisement interest"
     },
     "mobileTitle": {
       "search": "Advertisements",
@@ -1421,20 +1452,8 @@
       "answerQuestion": "Answer question",
       "adInterests": "Advertisement interests",
       "adInterestNew": "New advertisement interest",
-      "adInterest": "Advertisement interest",
-      "newOrder": "Create web shop order"
-    },
-    "addedProductOrder": "The product was added to the order",
-    "addProducts": "Add products",
-    "basePrice": "Base price",
-    "customDeliveryMethod": "Custom delivery method",
-    "customQuantity": "Custom quantity...",
-    "discount": "Discount %",
-    "itemsNone": "There are currently no products",
-    "orderSavedAsDraft": "The order was saved as draft",
-    "orderSubmittedToBuyer": "The order was submitted to buyer",
-    "saveDraft": "Save draft",
-    "submitToBuyer": "Submit to buyer"
+      "adInterest": "Advertisement interest"
+    }
   },
   "notification": {
     "message": "Message",
@@ -1699,5 +1718,31 @@
       "maxGlobalSmsReached": "The global maximum of SMS messages per month has been reached",
       "maxIncorrectLoginAttempts": "Max incorrect login attempts for invalid user"
     }
+  },
+  "document": {
+    "title": {
+      "new": "Create new document",
+      "view": "Document details",
+      "edit": "Document details",
+      "list": "Documents",
+      "search": "Documents"
+    },
+    "mobileTitle": {
+      "new": "Create new document",
+      "view": "Document details",
+      "edit": "Document details",
+      "list": "Documents",
+      "search": "Documents"
+    },
+    "enable": "Activer",
+    "userVisible": "Visible for members",
+    "brokerVisible": "Visible for brokers",
+    "brokerManageable": "Manageable by broker",
+    "replaceDocument": "Replace document",
+    "newDocument": "New document",
+    "document": "Document",
+    "savedSuccessfully": "Saved successfully",
+    "process": "Process dynamic document",
+    "category": "Category"
   }
 }
