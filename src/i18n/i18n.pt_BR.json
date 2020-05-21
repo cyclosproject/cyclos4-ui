@@ -1716,14 +1716,14 @@
       "search": "Documentos"
     },
     "enable": "Habilitar",
-    "userVisible": "Visible for members",
-    "brokerVisible": "Visible for brokers",
-    "brokerManageable": "Manageable by broker",
-    "replaceDocument": "Replace document",
-    "newDocument": "New document",
-    "document": "Document",
-    "savedSuccessfully": "Saved successfully",
-    "process": "Process dynamic document",
-    "category": "Category"
+    "userVisible": "Visível para membros",
+    "brokerVisible": "Visível para corretores",
+    "brokerManageable": "Gerenciável pelo corretor",
+    "replaceDocument": "Substituir documento",
+    "newDocument": "Novo documento",
+    "document": "Documento",
+    "savedSuccessfully": "Salvo com sucesso",
+    "process": "Processar documento dinâmico",
+    "category": "Categoria"
   }
 }
