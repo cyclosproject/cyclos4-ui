@@ -63,6 +63,7 @@
     "remove.confirm": "Are you sure to remove the item {item}?",
     "remove.done": "The item {item} was removed",
     "remove.tooltip": "Remove {item}",
+    "remoteAddress": "IP address",
     "save": "Opslaan",
     "addNew": "Nieuw",
     "yes": "Ja",
@@ -290,6 +291,7 @@
     "personal.password": "Wachtwoord",
     "personal.passwords": "Wachtwoorden",
     "personal.identityProviders": "Identity providers",
+    "personal.agreements": "Agreements",
     "personal.notifications": "Notifications",
     "personal.notificationSettings": "Notification settings",
     "personal.settings": "Settings",
@@ -999,6 +1001,7 @@
       "status.operator": "Operator status",
       "group.user": "User group",
       "group.operator": "Operator group",
+      "agreements": "Agreements",
       "viewRedeemedVouchers": "View redeemed vouchers",
       "redeemVoucher": "Redeem voucher",
       "viewBoughtVouchers": "View bought vouchers",
@@ -1114,6 +1117,22 @@
     "pending": "Pending activation",
     "purged": "Purged (all private data is erased)",
     "removed": "Removed (no private data is erased)"
+  },
+  "agreements": {
+    "agreement": "Agreement",
+    "required": "Required agreements",
+    "optional": "Optional agreements",
+    "optional.saved": "The selected agreements have been saved",
+    "accepted": "Accepted",
+    "noAccepted": "No accepted agreements",
+    "title": {
+      "accepted": "Accepted agreements",
+      "history": "Agreements history"
+    },
+    "mobileTitle": {
+      "accepted": "Agreements",
+      "history": "Agreements history"
+    }
   },
   "groupMembership": {
     "current": "Current group",
