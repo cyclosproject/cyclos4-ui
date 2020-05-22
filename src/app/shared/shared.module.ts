@@ -12,6 +12,7 @@ import { ActionsComponent } from 'app/shared/actions.component';
 import { AddressDetailsComponent } from 'app/shared/address-details.component';
 import { AddressFormComponent } from 'app/shared/address-form.component';
 import { AgreementsContentDialogComponent } from 'app/shared/agreement-content-dialog.component';
+import { AgreementLinkComponent } from 'app/shared/agreement-link.component';
 import { AvatarComponent } from 'app/shared/avatar.component';
 import { BannerCardComponent } from 'app/shared/banner-card.component';
 import { BooleanFieldComponent } from 'app/shared/boolean-field.component';
@@ -110,7 +111,6 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NgxGalleryModule } from 'ngx-gallery-9';
-import { AgreementLinkComponent } from 'app/shared/agreement-link.component';
 
 export function initTooltipConfig(): TooltipConfig {
   const config = new TooltipConfig();
