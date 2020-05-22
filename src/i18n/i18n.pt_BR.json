@@ -63,7 +63,7 @@
     "remove.confirm": "Tem certeza que deseja remover o item {item}?",
     "remove.done": "O item {item} foi removido",
     "remove.tooltip": "Remover {item}",
-    "remoteAddress": "IP address",
+    "remoteAddress": "Endereço IP",
     "save": "Salvar",
     "addNew": "Adicionar novo",
     "yes": "Sim",
@@ -291,7 +291,7 @@
     "personal.password": "Senha",
     "personal.passwords": "Senhas",
     "personal.identityProviders": "Provedores de identidade",
-    "personal.agreements": "Agreements",
+    "personal.agreements": "Termos de adesão",
     "personal.notifications": "Notificações",
     "personal.notificationSettings": "Configurações de notificações",
     "personal.settings": "Definições",
@@ -1001,7 +1001,7 @@
       "status.operator": "Estado do operador",
       "group.user": "Grupo do usuário",
       "group.operator": "Grupo do operador",
-      "agreements": "Agreements",
+      "agreements": "Termos de adesão",
       "viewRedeemedVouchers": "Ver cupons resgatados",
       "redeemVoucher": "Resgatar cupons",
       "viewBoughtVouchers": "Ver cupoms comprados",
@@ -1119,19 +1119,19 @@
     "removed": "Removido (nenhum dado privado é apagado)"
   },
   "agreements": {
-    "agreement": "Agreement",
-    "required": "Required agreements",
-    "optional": "Optional agreements",
-    "optional.saved": "The selected agreements have been saved",
-    "accepted": "Accepted",
-    "noAccepted": "No accepted agreements",
+    "agreement": "Termo de adesão",
+    "required": "Termos de adesão obrigatórios",
+    "optional": "Termos de adesão opcionais  ",
+    "optional.saved": "Os termos selecionados foram salvos",
+    "accepted": "Aceito",
+    "noAccepted": "Nenhum termo de adesão aceito",
     "title": {
-      "accepted": "Accepted agreements",
-      "history": "Agreements history"
+      "accepted": "Termos de adesão aceitos",
+      "history": "Histórico de termos de adesão"
     },
     "mobileTitle": {
-      "accepted": "Agreements",
-      "history": "Agreements history"
+      "accepted": "Termos de adesão",
+      "history": "Histórico de termos de adesão"
     }
   },
   "groupMembership": {
