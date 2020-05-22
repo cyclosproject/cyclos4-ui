@@ -3,7 +3,7 @@
     <img #image alt="captcha">
   </div>
   <div class="d-flex">
-    <input class="form-control" formControlName="response" [ngClass]="{
+    <input class="form-control mr-1" formControlName="response" [ngClass]="{
       'is-invalid': (form.get('response').statusChanges | async) === 'INVALID' && form.get('response').touched
     }">
     <button class="btn btn-icon" (click)="newCaptcha()">
