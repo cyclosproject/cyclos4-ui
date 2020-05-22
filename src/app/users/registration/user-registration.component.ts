@@ -63,6 +63,7 @@ export class UserRegistrationComponent
   customImages: Image[] = [];
   customFiles: StoredFile[] = [];
   private identityProviderRequestId: string;
+  asyncValidatorsEnabled = false;
 
   step$ = new BehaviorSubject<RegistrationStep>(null);
   get step(): RegistrationStep {
@@ -299,6 +300,11 @@ export class UserRegistrationComponent
       return null;
     }
     return (c: AbstractControl): Observable<ValidationErrors | null> => {
+      // Only validate when enabled
+      if (!this.asyncValidatorsEnabled) {
+        return of(null);
+      }
+
       let val = c.value;
       if (empty(val) || !c.dirty) {
         // Don't validate empty value (will fail validation required), nor fields that haven't been modified yet
@@ -337,8 +343,10 @@ export class UserRegistrationComponent
     if (this.addressForm && this.defineAddress.value) {
       fullForm.setControl('address', this.addressForm);
     }
+    this.asyncValidatorsEnabled = true;
     const nonValid = validateBeforeSubmit(fullForm, true) as FormControl[];
     this.addSub(mergeValidity(nonValid).subscribe(isValid => {
+      this.asyncValidatorsEnabled = false;
       if (isValid) {
         this.doShowConfirm();
       } else {
