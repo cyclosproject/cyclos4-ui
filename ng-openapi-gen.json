@@ -50,5 +50,6 @@
     "Validation",
     "Documents"
   ],
-  "enumStyle": "upper"
+  "enumStyle": "upper",
+  "skipJsonSuffix": true
 }

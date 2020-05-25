@@ -165,14 +165,14 @@ export class OperationHelperService {
         params.owner = scopeId || ApiHelper.SELF;
         return asDownload
           ? this.operationsService.runOwnerOperationWithUpload$Any$Response(params)
-          : this.operationsService.runOwnerOperationWithUpload$Json$Response(params);
+          : this.operationsService.runOwnerOperationWithUpload$Response(params);
 
       case OperationScopeEnum.ADVERTISEMENT:
         // Over an advertisement
         params.ad = scopeId;
         return asDownload
           ? this.operationsService.runAdOperationWithUpload$Any$Response(params)
-          : this.operationsService.runAdOperationWithUpload$Json$Response(params);
+          : this.operationsService.runAdOperationWithUpload$Response(params);
         break;
 
       case OperationScopeEnum.RECORD:
@@ -180,7 +180,7 @@ export class OperationHelperService {
         params.id = scopeId;
         return asDownload
           ? this.operationsService.runRecordOperationWithUpload$Any$Response(params)
-          : this.operationsService.runRecordOperationWithUpload$Json$Response(params);
+          : this.operationsService.runRecordOperationWithUpload$Response(params);
         break;
 
       case OperationScopeEnum.TRANSFER:
@@ -188,13 +188,13 @@ export class OperationHelperService {
         params.key = scopeId;
         return asDownload
           ? this.operationsService.runTransferOperationWithUpload$Any$Response(params)
-          : this.operationsService.runTransferOperationWithUpload$Json$Response(params);
+          : this.operationsService.runTransferOperationWithUpload$Response(params);
 
       default:
         // No additional context (system, internal action, ...)
         return asDownload
           ? this.operationsService.runOperationWithUpload$Any$Response(params)
-          : this.operationsService.runOperationWithUpload$Json$Response(params);
+          : this.operationsService.runOperationWithUpload$Response(params);
     }
   }
 
