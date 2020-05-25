@@ -2837,6 +2837,21 @@ paths:
           schema:
             type: integer
             format: int32
+        - name: products
+          in: query
+          required: false
+          description: "Either id or internal names of products the users should have assigned. Ignored if the authenticated user isn't an administrator."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: productsIndividuallyAssigned
+          in: query
+          required: false
+          description: "When set to `true`, the list specifid in `products` will only match users with those products assigned individually, not via group or group set. When set to `false` (default), the products will match any level (individual, group or group set)."
+          schema:
+            type: boolean
         - name: profileFields
           in: query
           required: false
@@ -3248,6 +3263,21 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: products
+          in: query
+          required: false
+          description: "Either id or internal names of products the users should have assigned. Ignored if the authenticated user isn't an administrator."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: productsIndividuallyAssigned
+          in: query
+          required: false
+          description: "When set to `true`, the list specifid in `products` will only match users with those products assigned individually, not via group or group set. When set to `false` (default), the products will match any level (individual, group or group set)."
+          schema:
+            type: boolean
         - name: profileFields
           in: query
           required: false
@@ -4310,6 +4340,21 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: products
+          in: query
+          required: false
+          description: "Either id or internal names of products the users should have assigned. Ignored if the authenticated user isn't an administrator."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: productsIndividuallyAssigned
+          in: query
+          required: false
+          description: "When set to `true`, the list specifid in `products` will only match users with those products assigned individually, not via group or group set. When set to `false` (default), the products will match any level (individual, group or group set)."
+          schema:
+            type: boolean
         - name: profileFields
           in: query
           required: false
@@ -15494,6 +15539,21 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: products
+          in: query
+          required: false
+          description: "Either id or internal names of products the users should have assigned. Ignored if the authenticated user isn't an administrator."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: productsIndividuallyAssigned
+          in: query
+          required: false
+          description: "When set to `true`, the list specifid in `products` will only match users with those products assigned individually, not via group or group set. When set to `false` (default), the products will match any level (individual, group or group set)."
+          schema:
+            type: boolean
         - name: profileFields
           in: query
           required: false
@@ -15804,6 +15864,21 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: products
+          in: query
+          required: false
+          description: "Either id or internal names of products the users should have assigned. Ignored if the authenticated user isn't an administrator."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: productsIndividuallyAssigned
+          in: query
+          required: false
+          description: "When set to `true`, the list specifid in `products` will only match users with those products assigned individually, not via group or group set. When set to `false` (default), the products will match any level (individual, group or group set)."
+          schema:
+            type: boolean
         - name: profileFields
           in: query
           required: false
@@ -16146,6 +16221,21 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: products
+          in: query
+          required: false
+          description: "Either id or internal names of products the users should have assigned. Ignored if the authenticated user isn't an administrator."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: productsIndividuallyAssigned
+          in: query
+          required: false
+          description: "When set to `true`, the list specifid in `products` will only match users with those products assigned individually, not via group or group set. When set to `false` (default), the products will match any level (individual, group or group set)."
+          schema:
+            type: boolean
         - name: profileFields
           in: query
           required: false
@@ -42769,6 +42859,8 @@ components:
 
         - `paymentAuthorization`: A payment authorization status has changed
 
+        - `permissionsChanged`: The current session had its permissions changed by modifying the user products
+
         - `ticket`: A ticket status has changed
       type: string
       enum:
@@ -42780,6 +42872,7 @@ components:
         - newMessage
         - newNotification
         - paymentAuthorization
+        - permissionsChanged
         - ticket
 
     RecordKind:
@@ -47724,6 +47817,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CustomFieldDetailed'
+        products:
+          description: >-
+            The list of products which admins can use to filter users.
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityReference'
         agreements:
           description: >-
             The list of agreements that can be used to filter users that have
@@ -48035,6 +48134,20 @@ components:
                 type: string
               description: >-
                 Either id or internal names of groups / group sets
+            products:
+              type: array
+              items:
+                type: string
+              description: >-
+                Either id or internal names of products the users should have
+                assigned. Ignored if the authenticated user isn't an administrator.
+            productsIndividuallyAssigned:
+              type: boolean
+              description: >-
+                When set to `true`, the list specifid in `products` will only match
+                users with those products assigned individually, not via group or
+                group set. When set to `false` (default), the products will match
+                any level (individual, group or group set).
             brokers:
               type: array
               items:

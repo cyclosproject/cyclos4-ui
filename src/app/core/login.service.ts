@@ -67,6 +67,12 @@ export class LoginService {
         this.i18n.initialized$.pipe(first()).subscribe(() => this.loggedOutConfirmation);
       }
     });
+
+    // Reload the data for UI whenever the permissions change
+    pushNotifications.permissionsChanged$.subscribe(() => {
+      this.dataForUiHolder.reload().pipe(first()).subscribe(() =>
+        this.router.navigateByUrl(this.router.url));
+    });
   }
 
   private loggedOutConfirmation() {

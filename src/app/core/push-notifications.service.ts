@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 
 export const Kinds: PushNotificationEventKind[] = [
   PushNotificationEventKind.LOGGED_OUT,
+  PushNotificationEventKind.PERMISSIONS_CHANGED,
   PushNotificationEventKind.NEW_NOTIFICATION,
   PushNotificationEventKind.DEVICE_CONFIRMATION,
   PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK,
@@ -29,6 +30,7 @@ export class PushNotificationsService {
   private eventSource: EventSourcePolyfill;
 
   public loggedOut$ = new Subject<void>();
+  public permissionsChanged$ = new Subject<void>();
   public newNotifications$ = new Subject<NewNotificationPush>();
   public deviceConfirmations$ = new Subject<DeviceConfirmationView>();
   public identityProviderCallback$ = new Subject<IdentityProviderCallbackResult>();
@@ -58,6 +60,7 @@ export class PushNotificationsService {
 
     // Setup the listeners
     this.setupListener(PushNotificationEventKind.LOGGED_OUT, this.loggedOut$);
+    this.setupListener(PushNotificationEventKind.PERMISSIONS_CHANGED, this.permissionsChanged$);
     this.setupListener(PushNotificationEventKind.NEW_NOTIFICATION, this.newNotifications$);
     this.setupListener(PushNotificationEventKind.DEVICE_CONFIRMATION, this.deviceConfirmations$);
     this.setupListener(PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK, this.identityProviderCallback$);
