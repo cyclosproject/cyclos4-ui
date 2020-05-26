@@ -516,6 +516,7 @@
     "accountBalance": "Solde du compte",
     "installments": "Versements",
     "installmentNumber": "Numéro",
+    "installmentNumberOfTotal": "{number} of {total}",
     "occurrences": "Occurrences",
     "noAccounts": "Vous n'avez pas de compte pour effectuer le paiement",
     "noTypes": "Il n'y a pas de types de paiement possibles",
