@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RecordCustomField, RecordLayoutEnum, RecordPermissions, RecordType, RecordTypeDetailed, RoleEnum, User } from 'app/api/models';
+import { Configuration } from 'app/configuration';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -72,6 +73,15 @@ export class RecordHelperService {
     } else {
       return pathFunction(permission.singleRecordId);
     }
+  }
+
+  /**
+   * Returns the icon name that should be used for the given record type
+   */
+  icon(type: RecordType): string {
+    const config = (Configuration.records || {})[type.internalName || '#'];
+    const customIcon = (config || {}).icon;
+    return customIcon || 'library_books';
   }
 
   /**

@@ -512,18 +512,20 @@ export class MenuService {
       if ((!my || !auth.global) && recordPermissions.length > 0) {
         for (const permission of recordPermissions) {
           // If it's a general search exclude records not listed in menu
-          if (owner === RecordHelperService.GENERAL_SEARCH && !permission.type.showInMenu) {
+          const type = permission.type;
+          if (owner === RecordHelperService.GENERAL_SEARCH && !type.showInMenu) {
             continue;
           }
-          const activeMenu = new ActiveMenu(menu, { recordType: permission.type });
+          const activeMenu = new ActiveMenu(menu, { recordType: type });
           const pathFunction = () => this.recordHelper.resolvePath(
             permission, owner, owner === ApiHelper.SYSTEM);
           const path = pathFunction();
           if (path != null) {
+            const icon = this.recordHelper.icon(type);
             add(
               activeMenu,
               path,
-              'library_books',
+              icon,
               permission.type.pluralName,
               null,
               // Calculate the path dinamically while the single form has not been saved for first time

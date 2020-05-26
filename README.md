@@ -402,7 +402,7 @@ export function setup() {
 }
 ```
 
-### Customize the advertisement categories
+### Customize advertisement categories
 
 It is possible to customize the advertisements category icons and colors, which are shown when selecting the marketplace menu item. It is recommended that all the root advertisement categories in Cyclos have an internal name. The default settings in the frontend matches the categories created by default when creating a network in Cyclos via the wizard. Here is an example of the `src/app/setup.ts` file with the default settings:
 
@@ -422,9 +422,9 @@ export function setup() {
 }
 ```
 
-### Customize the custom operations
+### Customize custom operations and records
 
-Similarly to advertisement categories, it is also possible to set a custom icon for custom operations, by internal name. Here is an example of the `src/app/setup.ts`:
+Similarly to advertisement categories, it is also possible to set a custom icon for custom operations and record types, by internal name. Here is an example of the `src/app/setup.ts`:
 
 ```typescript
 export function setup() {
@@ -433,6 +433,8 @@ export function setup() {
     operation1: { icon: 'format_paint' },
     operation2: { icon: 'get_app' }
   };
+  // It is also possible to assign directly
+  Configuration.records.recordType1 = { icon: 'account_balance_wallet' };
 }
 ```
 

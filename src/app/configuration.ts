@@ -5,6 +5,7 @@ import { ContentPagesResolver } from 'app/content/content-pages-resolver';
 import { ContentWithLayout } from 'app/content/content-with-layout';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { OperationConfiguration } from 'app/content/operation-configuration';
+import { RecordConfiguration } from 'app/content/record-configuration';
 import { ShortcutIconConfiguration } from 'app/content/shortcut-icon-configuration';
 import { Breakpoint } from 'app/shared/layout.service';
 
@@ -56,6 +57,9 @@ export interface ConfigurationDefinitions {
 
   /** Custom configuration for ad categories, by category internal name */
   adCategories: { [internalName: string]: AdCategoryConfiguration };
+
+  /** Custom configuration for records, by record type internal name */
+  records: { [internalName: string]: RecordConfiguration };
 
   /** Custom configuration for custom operations, by operation internal name */
   operations: { [internalName: string]: OperationConfiguration };
