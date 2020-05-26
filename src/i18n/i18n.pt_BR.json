@@ -516,6 +516,7 @@
     "accountBalance": "Saldo de conta",
     "installments": "Parcelas",
     "installmentNumber": "Número",
+    "installmentNumberOfTotal": "{number} of {total}",
     "occurrences": "Ocorrências",
     "noAccounts": "Você não tem nenhuma conta para realizar o pagamento",
     "noTypes": "Não existem tipos de pagamento possíveis",
