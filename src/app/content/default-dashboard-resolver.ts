@@ -5,6 +5,7 @@ import { DashboardColumn, DashboardItemConfig } from 'app/content/dashboard-item
 import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { QuickAccessType } from 'app/content/quick-access-type';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { QuickAccessDescriptor } from 'app/content/quick-access-descriptor';
 
 /**
  * By default, the dashboard is comprised of:
@@ -34,7 +35,7 @@ export class DefaultDashboardResolver implements DashboardResolver {
    * Returns a default quick access, comprised of:
    * - Accounts (only for mobile devices, as for larger displays an account status item will be shown per account)
    * - Pay user
-   * - Receive payment
+   * - Receive QR payment OR Receive Payment (POS)
    * - Contacts
    * - Search users (business directory)
    * - Search ads (marketplace)
@@ -43,20 +44,24 @@ export class DefaultDashboardResolver implements DashboardResolver {
    */
   quickAccess(injector: Injector): DashboardItemConfig {
     const banking = this.permissions(injector).banking || {};
+    const qr = !!(banking.tickets || {}).create;
     const pos = !!(banking.payments || {}).pos;
 
-    // The quick access is always there
+    const descriptors: QuickAccessDescriptor[] = [];
+    descriptors.push({ type: QuickAccessType.Account, breakpoints: ['lt-md'] });
+    descriptors.push({ type: QuickAccessType.PayUser });
+    if (qr) {
+      descriptors.push({ type: QuickAccessType.ReceiveQRPayment });
+    } else if (pos) {
+      descriptors.push({ type: QuickAccessType.Pos });
+    }
+    descriptors.push({ type: QuickAccessType.Contacts });
+    descriptors.push({ type: QuickAccessType.SearchUsers });
+    descriptors.push({ type: QuickAccessType.SearchAds, breakpoints: pos || qr ? ['lt-md'] : null });
+    descriptors.push({ type: QuickAccessType.EditProfile });
+    descriptors.push({ type: QuickAccessType.SwitchTheme });
     return DashboardItemConfig.quickAccess({
-      descriptors: [
-        { type: QuickAccessType.Account, breakpoints: ['lt-md'] },
-        { type: QuickAccessType.PayUser },
-        { type: QuickAccessType.Pos },
-        { type: QuickAccessType.Contacts },
-        { type: QuickAccessType.SearchUsers },
-        { type: QuickAccessType.SearchAds, breakpoints: pos ? ['lt-md'] : null },
-        { type: QuickAccessType.EditProfile },
-        { type: QuickAccessType.SwitchTheme },
-      ],
+      descriptors,
       column: 'left',
       minHeight: this.minHeight,
     });

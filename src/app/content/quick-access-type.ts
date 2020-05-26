@@ -24,6 +24,11 @@ export enum QuickAccessType {
   Pos = 'pos',
 
   /**
+   * Receive QR-code payment
+   */
+  ReceiveQRPayment = 'receiveQrPayment',
+
+  /**
    * View contacts
    */
   Contacts = 'contacts',

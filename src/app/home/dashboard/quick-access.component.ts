@@ -45,8 +45,9 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
     const dataForUi = this.dataForUiHolder.dataForUi;
     const auth = dataForUi.auth;
     const permissions = auth.permissions;
-    const addAction = (descriptor: QuickAccessDescriptor | QuickAccessType,
-                       icon: Icon, label: string, activeMenu: ActiveMenu, onClick?: () => void): void => {
+    const addAction = (
+      descriptor: QuickAccessDescriptor | QuickAccessType,
+      icon: Icon, label: string, activeMenu: ActiveMenu, onClick?: () => void): void => {
       let desc: QuickAccessDescriptor;
       if (typeof descriptor === 'string') {
         desc = desc = this.descriptors.find(d => d.type === descriptor);
@@ -81,17 +82,23 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
           }));
         }
       }
-      if (permissions.banking.payments.user) {
+      const payments = permissions.banking.payments || {};
+      if (payments.user) {
         addAction(QuickAccessType.PayUser, 'quick_access_pay',
           this.i18n.dashboard.action.payUser, new ActiveMenu(Menu.PAYMENT_TO_USER));
       }
-      if (permissions.banking.payments.system) {
+      if (payments.system) {
         addAction(QuickAccessType.PaySystem, 'quick_access_pay',
           this.i18n.dashboard.action.paySystem, new ActiveMenu(Menu.PAYMENT_TO_SYSTEM));
       }
-      if (permissions.banking.payments.pos) {
+      if (payments.pos) {
         addAction(QuickAccessType.Pos, 'quick_access_pos',
           this.i18n.dashboard.action.pos, new ActiveMenu(Menu.POS));
+      }
+      const tickets = permissions.banking.tickets || {};
+      if (tickets.create) {
+        addAction(QuickAccessType.ReceiveQRPayment, 'quick_access_qrcode',
+          this.i18n.dashboard.action.receiveqrpayment, new ActiveMenu(Menu.RECEIVE_QR_PAYMENT));
       }
     }
     if (permissions.contacts && (permissions.contacts.enable)) {
@@ -152,6 +159,8 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
       }
       action.onClick();
     } else {
+      this.breadcrumb.clear();
+      this.breadcrumb.breadcrumb$.next(['/']);
       this.menu.navigate({
         entry: action.entry,
         clear: false,

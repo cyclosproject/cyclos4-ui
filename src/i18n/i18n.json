@@ -436,6 +436,7 @@
       "payUser": "Pay user",
       "paySystem": "Pay system",
       "pos": "Receive payment",
+      "receiveQRPayment": "Receive QR payment",
       "contacts": "Contacts",
       "directory": "Directory",
       "advertisements": "Marketplace",
