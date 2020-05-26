@@ -445,6 +445,7 @@
       "switchTheme": "Switch theme",
       "connectedUsers": "Connected users"
     },
+    "accounts": "Accounts",
     "accountStatus": "Statut du compte",
     "lastIncomingPayments": "Derniers paiements entrants",
     "noIncomingPayments": "Aucun paiement entrant",
