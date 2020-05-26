@@ -122,12 +122,31 @@ namespace DashboardItemConfig {
   }
 
   /**
+   * Parameters for combined account status
+   */
+  export interface CombinedAccountStatusParams extends DashboardItemParams {
+    /**
+     * Which accounts to show
+     */
+    accounts: Account[];
+  }
+
+  /**
    * Returns the configuration for the status of an account
    */
   export function accountStatus(params: AccountStatusParams): DashboardItemConfig {
     return config(DashboardItemType.ACCOUNT_STATUS, params, {
       account: params.account,
       maxTransfers: params.maxTransfers,
+    });
+  }
+
+  /**
+   * Returns the configuration for the combined status of multiple accounts
+   */
+  export function combinedAccountStatus(params: CombinedAccountStatusParams): DashboardItemConfig {
+    return config(DashboardItemType.COMBINED_ACCOUNT_STATUS, params, {
+      accounts: params.accounts
     });
   }
 

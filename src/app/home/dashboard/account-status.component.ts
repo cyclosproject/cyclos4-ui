@@ -10,8 +10,7 @@ import { ActiveMenu, Menu } from 'app/shared/menu';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 
 /**
- * Displays the status of an account.
- * Shows information such as balance, available balance, etc.
+ * Displays the status of an account, with a graph of balance history and last incoming transfers.
  */
 @Component({
   selector: 'account-status',
@@ -30,9 +29,10 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
   currency: Currency;
   balance: string;
 
-  constructor(injector: Injector,
-              private bankingHelper: BankingHelperService,
-              private accountsService: AccountsService) {
+  constructor(
+    injector: Injector,
+    private bankingHelper: BankingHelperService,
+    private accountsService: AccountsService) {
     super(injector);
   }
 

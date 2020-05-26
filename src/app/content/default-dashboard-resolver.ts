@@ -1,5 +1,5 @@
 import { Injector } from '@angular/core';
-import { AccountWithCurrency, Permissions, RoleEnum } from 'app/api/models';
+import { AccountWithCurrency, Permissions } from 'app/api/models';
 import { ContentGetter } from 'app/content/content-getter';
 import { DashboardColumn, DashboardItemConfig } from 'app/content/dashboard-item-config';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
@@ -9,7 +9,7 @@ import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 /**
  * By default, the dashboard is comprised of:
  * - Quick access: see the quickAccess() method;
- * - Account status for each account: for tablet or desktop, with a maximum of 3 last transfers
+ * - Combined account status: for tablet or desktop
  * - Last ads: for tablet or desktop
  * - Content page: except for xxs devices
  */
@@ -24,7 +24,7 @@ export class DefaultDashboardResolver implements DashboardResolver {
   dashboardItems(injector: Injector): DashboardItemConfig[] {
     return [
       this.quickAccess(injector),
-      ...this.accountStatuses(injector),
+      ...this.combinedAccountStatus(injector),
       this.latestAds(injector),
       this.contentPage(),
     ];
@@ -63,16 +63,46 @@ export class DefaultDashboardResolver implements DashboardResolver {
   }
 
   /**
+   * Returns combined account status views, with up to 4 accounts in a single card
+   */
+  combinedAccountStatus(injector: Injector): DashboardItemConfig[] {
+    const banking = this.permissions(injector).banking || {};
+    const visibleAccounts = (banking.accounts || []).filter(a => a.viewStatus);
+    let accounts = visibleAccounts.map(p => p.account);
+    const count = accounts.length;
+    if (count === 0) {
+      return [];
+    } else if (count === 1) {
+      // For a single account, use the regular account status box
+      return [this.accountStatus(injector, accounts[0], 'right')];
+    } else {
+      // Calculate which accounts are shown on each card
+      const cards = Math.ceil(count / 4);
+      const perCard = Math.floor(count / cards);
+      let remainder = count % cards;
+      const accountsPerCard: AccountWithCurrency[][] = [];
+      for (let i = 0; i < cards; i++) {
+        let upTo = perCard;
+        if (remainder > 0) {
+          upTo++;
+          remainder--;
+        }
+        accountsPerCard.push(accounts.slice(0, upTo));
+        accounts = accounts.slice(upTo);
+      }
+      return accountsPerCard.map((cardAccounts, i) => {
+        const column: DashboardColumn = (i > 1) && (i % 2 === 0) ? 'left' : 'right';
+        return this.actualCombinedAccountStatus(cardAccounts, column);
+      });
+    }
+  }
+
+  /**
    * Returns an account status item for each accounts the user can view status
    */
   accountStatuses(injector: Injector): DashboardItemConfig[] {
-    const role = injector.get(DataForUiHolder).role;
     const banking = this.permissions(injector).banking || {};
-    const allAccounts = (banking.accounts || []);
-    // TODO Cyclos 4.12 doesn't send the viewStatus flag for system accounts.
-    // This is fixed in 4.12.1. So, version 2.0, which will depend on 4.12.1, we can rely on the viewStatus flag.
-    const visibleAccounts = role === RoleEnum.ADMINISTRATOR
-      ? allAccounts : allAccounts.filter(a => a.viewStatus);
+    const visibleAccounts = (banking.accounts || []).filter(a => a.viewStatus);
     const accounts = visibleAccounts.map(p => p.account);
     return accounts.map((a, i) => {
       const column: DashboardColumn = (i > 1) && (i % 2 === 0) ? 'left' : 'right';
@@ -94,6 +124,18 @@ export class DefaultDashboardResolver implements DashboardResolver {
     return DashboardItemConfig.accountStatus({
       account,
       maxTransfers: 3,
+      breakpoints: ['gt-sm'],
+      column,
+      minHeight: this.minHeight,
+    });
+  }
+
+  /**
+   * Returns a dashboard item configuration for combined account statuses
+   */
+  private actualCombinedAccountStatus(accounts: AccountWithCurrency[], column: DashboardColumn): DashboardItemConfig {
+    return DashboardItemConfig.combinedAccountStatus({
+      accounts,
       breakpoints: ['gt-sm'],
       column,
       minHeight: this.minHeight,

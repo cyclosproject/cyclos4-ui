@@ -1,0 +1,39 @@
+<page-content [heading]="i18n.dashboard.accounts"
+  [headingActions]="headingActions" hideBack [last]="last"
+  [ngStyle]="{minHeight: minHeight}">
+  <div class="row no-gutters flex-grow-1">
+    <ng-container *ngFor="let history$ of histories">
+      <div class="col" [ngClass]="cellClass">
+        <ng-container *ngIf="(history$ | async) as history; else spinner">
+          <div class="balance">
+            <div class="balance-label">
+              <a href="#" class="account-name" (click)="menu.navigate({
+                entry: this.menu.accountEntry(history.account.type),
+                clear: false,
+                event: $event
+              })" [tooltip]="history.account.type.name">
+                {{ history.account.type.name }}
+              </a>
+            </div>
+            <div class="balance-value" [ngClass]="{
+              negative: format.isNegative(history.account.status.balance),
+              positive: format.isPositive(history.account.status.balance)
+            }">
+              {{ history.account.status.balance | currency:history.account.currency }}
+            </div>
+          </div>
+          <div class="px-3">
+            <canvas balanceHistoryChart [history]="history$.value"
+              [hideYLabels]="hideYLabels" [width]="chartWidth"
+              [height]="chartHeight"
+              [darkTheme]="(layout.theme$ | async) === 'dark'"></canvas>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+</page-content>
+
+<ng-template #spinner>
+  <spinner class="flex-grow-1"></spinner>
+</ng-template>

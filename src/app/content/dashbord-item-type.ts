@@ -14,6 +14,11 @@ export enum DashboardItemType {
   ACCOUNT_STATUS,
 
   /**
+   * Shows multiple account statueses, combined in a single card
+   */
+  COMBINED_ACCOUNT_STATUS,
+
+  /**
    * Shows the last users that joined the system
    */
   LATEST_USERS,

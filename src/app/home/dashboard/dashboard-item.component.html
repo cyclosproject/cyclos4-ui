@@ -7,6 +7,11 @@
     [last]="last" [minHeight]="minHeight$ | async" [account]="data.account"
     [maxTransfers]="data.maxTransfers"></account-status>
 
+  <combined-account-status
+    *ngSwitchCase="DashboardItemType.COMBINED_ACCOUNT_STATUS" [last]="last"
+    [minHeight]="minHeight$ | async" [accounts]="data.accounts">
+  </combined-account-status>
+
   <latest-ads *ngSwitchCase="DashboardItemType.LATEST_ADS" [last]="last"
     [minHeight]="minHeight$ | async" [groups]="data.groups" [max]="data.max"
     [showOwner]="data.showOwner">

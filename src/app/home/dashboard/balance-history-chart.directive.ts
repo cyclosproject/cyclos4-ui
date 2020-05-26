@@ -4,6 +4,7 @@ import { FormatService } from 'app/core/format.service';
 import { LayoutService } from 'app/shared/layout.service';
 import { Chart } from 'chart.js';
 import moment from 'moment-mini-ts';
+import { truthyAttr } from 'app/shared/helper';
 
 /**
  * Renders a chart on a given canvas
@@ -17,6 +18,14 @@ export class BalanceHistoryChartDirective implements OnInit, OnChanges {
 
   // This is actually used to force change detection when dark theme changes
   @Input() darkTheme: boolean;
+
+  private _hideYLabels: boolean | string = false;
+  @Input() get hideYLabels(): boolean | string {
+    return this._hideYLabels;
+  }
+  set hideYLabels(flag: boolean | string) {
+    this._hideYLabels = truthyAttr(flag);
+  }
 
   private chart: Chart;
   private amounts: number[];
@@ -85,10 +94,11 @@ export class BalanceHistoryChartDirective implements OnInit, OnChanges {
               display: false,
             },
             ticks: {
+              display: !this.hideYLabels,
               beginAtZero: !hasNegative,
               maxTicksLimit: 4,
               callback: n => this.format.formatAsCurrency(currency, n),
-            },
+            }
           }],
         },
       },
