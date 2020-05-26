@@ -11,11 +11,13 @@
   <results-layout resultType="list" [results]="results$ | async"
     (update)="update($event)" [toLink]="toLink">
 
-    <mobile-result *mobileResult="let row" [avatarImage]="avatarImage(row)"
-      [avatarIcon]="avatarIcon(row)" [date]="row.date" [amount]="row.amount"
-      [currency]="currencies.get(row.currency)" forceSign>
+    <mobile-result *mobileResult="let row"
+      [avatarImage]="bankingHelper.avatarImage(row.related)"
+      [avatarIcon]="bankingHelper.avatarIcon(row.related)" [date]="row.date"
+      [amount]="row.amount" [currency]="currencies.get(row.currency)"
+      forceSign>
       <div class="cell-text cell-main">
-        {{ subjectName(row) }}
+        {{ bankingHelper.subjectName(row.related) }}
       </div>
     </mobile-result>
 
@@ -29,31 +31,33 @@
       </thead>
       <tbody>
         <ng-container *ngFor="let row of (results$ | async)?.results">
-          <tr (click)="router.navigate(path(row))">
+          <tr (click)="router.navigate(bankingHelper.transactionPath(row))">
             <td class="avatar">
-              <avatar [image]="avatarImage(row)" [icon]="avatarIcon(row)">
+              <avatar [image]="bankingHelper.avatarImage(row.related)"
+                [icon]="bankingHelper.avatarIcon(row.related)">
               </avatar>
             </td>
             <td>
-              <a [routerLink]="path(row)">
+              <a [routerLink]="bankingHelper.transactionPath(row)">
                 {{ row.date | date }}
               </a>
             </td>
             <td>
-              <a [routerLink]="path(row)">
-                {{ subjectName(row) }}
+              <a [routerLink]="bankingHelper.transactionPath(row)">
+                {{ bankingHelper.subjectName(row.related) }}
               </a>
             </td>
             <td>
-              <a class="d-inline-block" [routerLink]="path(row)">
-                {{ scheduling(row) }}
+              <a class="d-inline-block"
+                [routerLink]="bankingHelper.transactionPath(row)">
+                {{ bankingHelper.scheduling(row) }}
               </a>
             </td>
             <td class="amount" [ngClass]="{'pb-0': layout.xxs$ | async}">
-              <a [routerLink]="path(row)" [ngClass]="{
-                        positive: format.isPositive(row.amount),
-                        negative: format.isNegative(row.amount)
-                      }">
+              <a [routerLink]="bankingHelper.transactionPath(row)" [ngClass]="{
+                  positive: format.isPositive(row.amount),
+                  negative: format.isNegative(row.amount)
+                }">
                 {{ row.amount | currency:currencies.get(row.currency):true }}
               </a>
             </td>

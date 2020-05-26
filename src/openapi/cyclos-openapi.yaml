@@ -52837,12 +52837,25 @@ components:
                 When the given owner is a user, is the reference to it
               allOf:
                 - $ref: '#/components/schemas/User'
+            query:
+              description: >-
+                Default query filters for the installments search
+              allOf:
+                - $ref: '#/components/schemas/InstallmentQueryFilters'
 
     InstallmentOverviewDataForSearch:
       description: >-
         Contains data used to search installments regardless of an owner
       allOf:
         - $ref: '#/components/schemas/BaseInstallmentDataForSearch'
+        - type: object
+          properties:
+            query:
+              description: >-
+                Default query filters for the general installments search
+              allOf:
+                - $ref: '#/components/schemas/InstallmentOverviewQueryFilters'
+
 
     InstallmentOverviewQueryFilters:
       description: >-

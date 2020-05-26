@@ -3,58 +3,110 @@
 </page-layout>
 
 <ng-template #content>
-  <transaction-filters [heading]="i18n.transaction.title.scheduled"
-    [mobileHeading]="i18n.transaction.mobileTitle.scheduled" [form]="form"
-    [data]="data" [statusOptions]="statusOptions"
-    [transferFilters]="transferFilters$ | async"></transaction-filters>
+  <page-content mode="filters" [heading]="i18n.transaction.title.scheduled"
+    [mobileHeading]="i18n.transaction.mobileTitle.scheduled">
+    <form [formGroup]="form" class="filters-form">
+      <div class="row">
+        <ng-container *ngIf="data.user && !self">
+          <div class="col-12 col-md-6">
+            <label-value [label]="i18n.general.user" kind="fieldView">
+              <user-link [user]="data.user"></user-link>
+            </label-value>
+          </div>
+          <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
+          </div>
+        </ng-container>
+        <div class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            formControlName="status" [label]="i18n.general.status"
+            [fieldOptions]="statusOptions">
+          </single-selection-field>
+        </div>
+        <div class="col-12 col-md-6" *ngIf="data.accountTypes?.length > 1">
+          <single-selection-field labelPosition="side"
+            formControlName="accountType" [label]="i18n.transaction.account"
+            [emptyOption]="i18n.general.notApplied">
+            <field-option *ngFor="let at of data.accountTypes" [value]="at.id"
+              [text]="at.name"></field-option>
+          </single-selection-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <date-field labelPosition="side" formControlName="periodBegin"
+            [label]="i18n.general.beginDate" minDate="past5" maxDate="future5"
+            fieldSize="full">
+          </date-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <date-field labelPosition="side" formControlName="periodEnd"
+            [label]="i18n.general.endDate" minDate="past5" maxDate="future5"
+            fieldSize="full">
+          </date-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <user-field labelPosition="side" formControlName="user"
+            [label]="i18n.general.user">
+          </user-field>
+        </div>
+      </div>
+    </form>
+  </page-content>
 
   <results-layout resultType="list" [results]="results$ | async"
     (update)="update($event)" [toLink]="toLink">
 
-    <mobile-result *mobileResult="let row" [avatarImage]="avatarImage(row)"
-      [avatarIcon]="avatarIcon(row)" [date]="row.date" [amount]="row.amount"
+    <mobile-result *mobileResult="let row" [date]="row.date"
+      [amount]="row.amount"
+      [avatarImage]="bankingHelper.avatarImage(row.transaction.related)"
+      [avatarIcon]="bankingHelper.avatarIcon(row.transaction.related)"
       [currency]="currencies.get(row.currency)" forceSign>
       <div class="cell-text cell-main">
-        {{ subjectName(row) }}
+        {{ bankingHelper.subjectName(row.transaction.related) }}
       </div>
     </mobile-result>
 
     <table *resultTable class="table table-hover cursor-pointer">
       <thead>
         <th class="avatar"></th>
-        <th>{{ i18n.general.date }}</th>
+        <th>{{ i18n.transaction.dueDate }}</th>
         <th>{{ i18n.transaction.fromTo }}</th>
-        <th>{{ i18n.transaction.scheduling }}</th>
+        <th>{{ i18n.transaction.installmentNumber }}</th>
         <th class="amount">{{ i18n.transaction.amount }}</th>
       </thead>
       <tbody>
         <ng-container *ngFor="let row of (results$ | async)?.results">
-          <tr (click)="router.navigate(path(row))">
+          <tr
+            (click)="router.navigate(bankingHelper.transactionPath(row.transaction))">
             <td class="avatar" [ngClass]="{'pb-0': layout.xxs$ | async}">
-              <avatar [image]="avatarImage(row)" [icon]="avatarIcon(row)">
+              <avatar
+                [image]="bankingHelper.avatarImage(row.transaction.related)"
+                [icon]="bankingHelper.avatarIcon(row.transaction.related)">
               </avatar>
             </td>
             <td>
-              <a [routerLink]="path(row)">
-                {{ row.date | date }}
+              <a
+                [routerLink]="bankingHelper.transactionPath(row.transaction)">
+                {{ row.dueDate | date }}
               </a>
             </td>
             <td>
-              <a [routerLink]="path(row)">
-                {{ subjectName(row) }}
+              <a
+                [routerLink]="bankingHelper.transactionPath(row.transaction)">
+                {{ bankingHelper.subjectName(row.transaction.related) }}
               </a>
             </td>
             <td>
-              <a class="d-inline-block" [routerLink]="path(row)">
-                {{ scheduling(row) }}
+              <a class="d-inline-block"
+                [routerLink]="bankingHelper.transactionPath(row.transaction)">
+                {{ number(row) }}
               </a>
             </td>
             <td class="amount">
-              <a [routerLink]="path(row)" [ngClass]="{
+              <a [routerLink]="bankingHelper.transactionPath(row.transaction)"
+                [ngClass]="{
                     positive: format.isPositive(row.amount),
                     negative: format.isNegative(row.amount)
                   }">
-                {{ row.amount | currency:currencies.get(row.currency):true }}
+                {{ row.amount | currency:currencies.get(row.transaction.currency):true }}
               </a>
             </td>
           </tr>

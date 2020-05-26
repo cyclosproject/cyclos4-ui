@@ -516,6 +516,7 @@
     "accountBalance": "Account balance",
     "installments": "Installments",
     "installmentNumber": "Number",
+    "installmentNumberOfTotal": "{number} of {total}",
     "occurrences": "Ocurrences",
     "noAccounts": "You don't have any accounts to perform the payment",
     "noTypes": "There are no possible payment types",

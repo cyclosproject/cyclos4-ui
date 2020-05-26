@@ -150,8 +150,8 @@
       [amount]="row.amount" [currency]="row.currency" forceSign>
       <div class="cell-text">
         {{ i18n.transaction.fromToText({
-          from: bankingHelper.accountOwnerDisplay(row.from),
-          to: bankingHelper.accountOwnerDisplay(row.to)
+          from: bankingHelper.ownerName(row.from),
+          to: bankingHelper.ownerName(row.to)
         }) }}</div>
     </mobile-result>
 
@@ -172,14 +172,12 @@
             </td>
             <td>
               <a [routerLink]="path(row)">
-                {{ bankingHelper.accountOwnerDisplay(
-                  format.isNegative(row.amount) ? row.to : row.from) }}
+                {{ bankingHelper.ownerName(row.from) }}
               </a>
             </td>
             <td>
               <a [routerLink]="path(row)">
-                {{ bankingHelper.accountOwnerDisplay(
-                  format.isNegative(row.amount) ? row.from : row.to) }}
+                {{ bankingHelper.ownerName(row.to) }}
               </a>
             </td>
             <td class="amount">

@@ -5,7 +5,7 @@ import { BaseComponent } from 'app/shared/base.component';
 import { FieldOption } from 'app/shared/field-option';
 
 /**
- * Filters used to search transactions (scheduled / recurring / authorized payments)
+ * Filters used to search transactions
  */
 @Component({
   selector: 'transaction-filters',

@@ -1,7 +1,7 @@
 import { Directive, Injector, OnInit } from '@angular/core';
 import {
-  Currency, Image, RecurringPaymentStatusEnum, TransactionDataForSearch,
-  TransactionKind, TransactionQueryFilters, TransactionResult, TransferFilter,
+  Currency, TransactionDataForSearch, TransactionKind,
+  TransactionQueryFilters, TransactionResult, TransferFilter
 } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -28,8 +28,8 @@ export abstract class BaseTransactionsSearch
   currencies = new Map<string, Currency>();
 
   protected transactionsService: TransactionsService;
-  protected transactionStatusService: TransactionStatusService;
-  protected bankingHelper: BankingHelperService;
+  public transactionStatusService: TransactionStatusService;
+  public bankingHelper: BankingHelperService;
 
   constructor(injector: Injector) {
     super(injector);
@@ -106,86 +106,8 @@ export abstract class BaseTransactionsSearch
     return params;
   }
 
-  /**
-   * Returns the route components for the given row
-   * @param row The row
-   */
-  path(row: TransactionResult): string[] {
-    return ['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(row)];
-  }
-
   get toLink() {
-    return (row: TransactionResult) => this.path(row);
+    return (row: TransactionResult) => this.bankingHelper.transactionPath(row);
   }
 
-  /**
-   * Returns the icon used on the given row's avatar
-   * @param row The row
-   */
-  avatarIcon(row: TransactionResult): string {
-    return row.related.kind === 'user' ? 'user' : 'account_balance_circle';
-  }
-
-  /**
-   * Returns the image used on the given row's avatar
-   * @param row The row
-   */
-  avatarImage(row: TransactionResult): Image {
-    return (row.related.user || {}).image;
-  }
-
-  /**
-   * Returns wither the user display or 'System account'
-   * @param row The row
-   */
-  subjectName(row: TransactionResult): string {
-    if (row.related.kind === 'system') {
-      return this.i18n.account.system;
-    } else {
-      return (row.related.user || {}).display;
-    }
-  }
-
-  /**
-   * Returns the status name
-   * @param row The transaction
-   */
-  status(row: TransactionResult): string {
-    return this.transactionStatusService.transactionStatus(row);
-  }
-
-  /**
-   * Returns the scheduling label for the given transaction result
-   */
-  scheduling(row: TransactionResult) {
-    switch (row.kind) {
-      case TransactionKind.SCHEDULED_PAYMENT:
-        if (row.installmentCount === 1) {
-          const installment = row.firstInstallment || {};
-          return this.i18n.transaction.schedulingStatus.scheduledToDate(installment.dueDate);
-        } else {
-          const count = row.installmentCount;
-          const firstOpen = row.firstOpenInstallment;
-          if (firstOpen) {
-            return this.i18n.transaction.schedulingStatus.openInstallments({
-              count: String(count),
-              dueDate: this.format.formatAsDate(firstOpen.dueDate),
-            });
-          } else {
-            return this.i18n.transaction.schedulingStatus.closedInstallments(String(count));
-          }
-        }
-      case TransactionKind.RECURRING_PAYMENT:
-        switch (row.recurringPaymentStatus) {
-          case RecurringPaymentStatusEnum.CLOSED:
-            return this.i18n.transaction.schedulingStatus.closedRecurring;
-          case RecurringPaymentStatusEnum.CANCELED:
-            return this.i18n.transaction.schedulingStatus.canceledRecurring;
-          default:
-            return this.i18n.transaction.schedulingStatus.openRecurring(this.format.formatAsDate(row.nextOccurrenceDate));
-        }
-      default:
-        return this.i18n.transaction.schedulingStatus.direct;
-    }
-  }
 }

@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   Account, AccountHistoryResult, AccountKind, AccountType, AccountWithOwner,
-  BaseTransferDataForSearch, PreselectedPeriod, Transaction, TransactionDataForSearch,
-  Transfer, VoucherCreationTypeEnum, VoucherStatusEnum,
+  BaseTransferDataForSearch, Image, PreselectedPeriod, RecurringPaymentStatusEnum,
+  Transaction, TransactionDataForSearch, TransactionKind, TransactionResult,
+  Transfer, VoucherCreationTypeEnum, VoucherStatusEnum
 } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
@@ -56,17 +57,6 @@ export class BankingHelperService {
       return `${account.type.name} - ${account.number}`;
     } else {
       return account.type.name;
-    }
-  }
-  /**
-   * Returns a display label for the given account owner
-   * @param account The account
-   */
-  accountOwnerDisplay(account: AccountWithOwner) {
-    if (account.kind === AccountKind.SYSTEM) {
-      return (account.type || {}).name;
-    } else {
-      return (account.user || {}).display;
     }
   }
 
@@ -124,21 +114,6 @@ export class BankingHelperService {
   }
 
   /**
-   * Returns the related user / system account display name
-   */
-  subjectName(row: AccountHistoryResult): string {
-    if (row.relatedAccount.kind === AccountKind.USER) {
-      // Show the user display
-      return row.relatedAccount.user.display;
-    } else {
-      // Show the system account type name
-      return this.format.isNegative(row.amount)
-        ? row.type.to.name
-        : row.type.from.name;
-    }
-  }
-
-  /**
    * Returns the voucher status display
    */
   voucherStatus(status: VoucherStatusEnum): string {
@@ -165,6 +140,86 @@ export class BankingHelperService {
         return this.i18n.voucher.boughtType;
       case VoucherCreationTypeEnum.GENERATED:
         return this.i18n.voucher.generatedType;
+    }
+  }
+
+  /**
+   * Returns the avatar icon for the given account
+   */
+  avatarIcon(account: AccountWithOwner): string {
+    return account.kind === 'user' ? 'user' : 'account_balance_circle';
+  }
+
+  /**
+   * Returns the avatar image for the given account
+   */
+  avatarImage(account: AccountWithOwner): Image {
+    return (account.user || {}).image;
+  }
+
+  /**
+   * Returns the user / system account display name
+   */
+  subjectName(account: AccountWithOwner): string {
+    if (account.kind === AccountKind.USER) {
+      // Show the user display
+      return account.user.display;
+    } else {
+      // Show the system account type name
+      return account.type.name;
+    }
+  }
+
+  /**
+   * Returns the name to be displayed for the given account
+   */
+  ownerName(account: AccountWithOwner): string {
+    if (account.kind === 'system') {
+      return this.i18n.account.system;
+    } else {
+      return (account.user || {}).display;
+    }
+  }
+
+  /**
+   * Returns the path components to navigate to the details of a givne transaction
+   */
+  transactionPath(tx: TransactionResult): string[] {
+    return ['/banking', 'transaction', this.transactionNumberOrId(tx)];
+  }
+
+  /**
+   * Returns the scheduling label for the given transaction result
+   */
+  scheduling(row: TransactionResult) {
+    switch (row.kind) {
+      case TransactionKind.SCHEDULED_PAYMENT:
+        if (row.installmentCount === 1) {
+          const installment = row.firstInstallment || {};
+          return this.i18n.transaction.schedulingStatus.scheduledToDate(installment.dueDate);
+        } else {
+          const count = row.installmentCount;
+          const firstOpen = row.firstOpenInstallment;
+          if (firstOpen) {
+            return this.i18n.transaction.schedulingStatus.openInstallments({
+              count: String(count),
+              dueDate: this.format.formatAsDate(firstOpen.dueDate),
+            });
+          } else {
+            return this.i18n.transaction.schedulingStatus.closedInstallments(String(count));
+          }
+        }
+      case TransactionKind.RECURRING_PAYMENT:
+        switch (row.recurringPaymentStatus) {
+          case RecurringPaymentStatusEnum.CLOSED:
+            return this.i18n.transaction.schedulingStatus.closedRecurring;
+          case RecurringPaymentStatusEnum.CANCELED:
+            return this.i18n.transaction.schedulingStatus.canceledRecurring;
+          default:
+            return this.i18n.transaction.schedulingStatus.openRecurring(this.format.formatAsDate(row.nextOccurrenceDate));
+        }
+      default:
+        return this.i18n.transaction.schedulingStatus.direct;
     }
   }
 }
