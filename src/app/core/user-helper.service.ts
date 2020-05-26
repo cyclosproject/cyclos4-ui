@@ -54,7 +54,7 @@ export class UserHelperService {
    * @returns An array with both mobile and land-line forms
    */
   setupRegistrationForm(form: FormGroup, data: UserDataForNew | OperatorDataForNew,
-    serverSideValidator?: (name: string) => AsyncValidatorFn): [FormGroup, FormGroup] {
+                        serverSideValidator?: (name: string) => AsyncValidatorFn): [FormGroup, FormGroup] {
     serverSideValidator = serverSideValidator || (() => null);
     const user = data['operator'] || data.user;
 

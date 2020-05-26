@@ -25,7 +25,7 @@ export class ViewUserAgreementsComponent extends BaseViewPageComponent<UserAgree
   param: string;
   self: boolean;
   optionalControl: FormControl;
-  noAgreements: boolean
+  noAgreements: boolean;
   allOptional: Agreement[];
   acceptedOptional: Agreement[];
   acceptedRequired: Agreement[];

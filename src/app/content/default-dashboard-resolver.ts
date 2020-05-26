@@ -3,9 +3,9 @@ import { AccountWithCurrency, Permissions } from 'app/api/models';
 import { ContentGetter } from 'app/content/content-getter';
 import { DashboardColumn, DashboardItemConfig } from 'app/content/dashboard-item-config';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
+import { QuickAccessDescriptor } from 'app/content/quick-access-descriptor';
 import { QuickAccessType } from 'app/content/quick-access-type';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { QuickAccessDescriptor } from 'app/content/quick-access-descriptor';
 
 /**
  * By default, the dashboard is comprised of:

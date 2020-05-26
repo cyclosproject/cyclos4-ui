@@ -36,7 +36,7 @@
         </div>
       </label-value>
       <file-field [required]="create"
-        [label]="create || !(fileName$ | async) ? i18n.document.newDocument : i18n.document.replaceDocument"
+        [label]="create || ((fileName$ | async) !== null) ? i18n.document.newDocument : i18n.document.replaceDocument"
         [formControl]="fileControl">
       </file-field>
     </ng-container>

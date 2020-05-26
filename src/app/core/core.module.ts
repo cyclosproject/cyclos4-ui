@@ -11,6 +11,7 @@ import { CacheService } from 'app/core/cache.service';
 import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { ExportHelperService } from 'app/core/export-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { FormatService } from 'app/core/format.service';
 import { LoginState } from 'app/core/login-state';
@@ -38,7 +39,6 @@ import { SharedModule } from 'app/shared/shared.module';
 import { ShortcutService } from 'app/shared/shortcut.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { NextRequestState } from './next-request-state';
-import { ExportHelperService } from 'app/core/export-helper.service';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,

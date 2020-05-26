@@ -1,6 +1,7 @@
 import {
   AccountWithOwner, AdminMenuEnum, Auth, DatePeriod, Entity,
-  Notification, NotificationEntityTypeEnum, NotificationTypeEnum, Operation, OperationScopeEnum, UserMenuEnum, InternalNamedEntity, NamedEntity,
+  InternalNamedEntity, NamedEntity, Notification, NotificationEntityTypeEnum,
+  NotificationTypeEnum, Operation, OperationScopeEnum, UserMenuEnum
 } from 'app/api/models';
 import { empty } from 'app/shared/helper';
 import { ActiveMenu, Menu, RootMenu } from 'app/shared/menu';
