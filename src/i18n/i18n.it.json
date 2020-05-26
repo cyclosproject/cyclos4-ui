@@ -516,6 +516,7 @@
     "accountBalance": "Saldo del conto",
     "installments": "Rate",
     "installmentNumber": "Numero",
+    "installmentNumberOfTotal": "{number} of {total}",
     "occurrences": "Occorrenze",
     "noAccounts": "Non hai nessun conto per eseguire il pagamento",
     "noTypes": "Non ci sono tipi di pagamento possibili",
