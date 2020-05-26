@@ -21,7 +21,6 @@ export class CombinedAccountStatusComponent extends BaseDashboardComponent imple
   cellClass: string;
   chartWidth: number;
   chartHeight: number;
-  hideYLabels: boolean;
 
   histories: BehaviorSubject<AccountBalanceHistoryResult>[] = [];
 
@@ -37,7 +36,6 @@ export class CombinedAccountStatusComponent extends BaseDashboardComponent imple
     this.cellClass = two ? 'col-12' : 'col-6';
     this.chartWidth = two ? 600 : 320;
     this.chartHeight = two ? 120 : 140;
-    this.hideYLabels = !two;
 
     // Initialize the subjects for balance histories if up to 2 accounts
     for (const account of this.accounts) {
