@@ -436,6 +436,7 @@
       "payUser": "Betaal",
       "paySystem": "Euro's kopen",
       "pos": "Receive payment",
+      "receiveQRPayment": "Receive QR payment",
       "contacts": "Contacten",
       "directory": "Bedrijven",
       "advertisements": "Marketplace",
