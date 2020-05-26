@@ -436,6 +436,7 @@
       "payUser": "Pago a usuario",
       "paySystem": "Pago a sistema",
       "pos": "Recibir pago",
+      "receiveQRPayment": "Receive QR payment",
       "contacts": "Contactos",
       "directory": "Anunciantes",
       "advertisements": "Comercio electrónico",
