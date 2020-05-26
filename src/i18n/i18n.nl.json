@@ -516,6 +516,7 @@
     "accountBalance": "Rekening saldo",
     "installments": "Termijnbetalingen",
     "installmentNumber": "Nummer",
+    "installmentNumberOfTotal": "{number} of {total}",
     "occurrences": "Ocurrences",
     "noAccounts": "U hoeft geen rekeningen voor het uitvoeren van de betaling",
     "noTypes": "Er zijn geen mogelijke betaling soorten",
