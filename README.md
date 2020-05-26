@@ -538,6 +538,7 @@ The following dashboard items are available:
 
 - **Quick access**: Presents a list with links to common actions. Each link has an icon and a label. Allows specifying which links are shown and on which resolution breakpoints they are shown;
 - **Account status**: Shows relevant data for an account, namely the current balance, a chart with the account balance over the last few months and a list with the last incoming transfers. Also has a button to view the account history;
+- **Combined account status**: Shows the current balance and a chart with balance history for multiple accounts. The account name is a link to the full account history;
 - **Latest advertisements**: Shows some of the latest advertisements;
 - **Latest users**: Shows some of the users that have been activated last;
 - **Content**: Shows a custom content.
@@ -545,7 +546,8 @@ The following dashboard items are available:
 The default dashboard is comprised of:
 
 - Quick access on all breakpoints, but only showing account links for `lt-md`, as larger breakpoints will have a dedicated account status item;
-- Account status for each account the logged user has, only for breakpoint `gt-sm`;
+- Account status if the user has a single visible account, only for breakpoint `gt-sm`;
+- Combined account status if the user has multiple accounts, only for breakpoint `gt-sm`;
 - Latest advertisements, only for breakpoint `gt-sm`;
 - A content page, showing a sample events static page, on all breakpoints.
 
