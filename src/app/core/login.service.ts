@@ -11,7 +11,7 @@ import { NotificationService } from 'app/core/notification.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { I18n } from 'app/i18n/i18n';
 import { empty, isSameOrigin } from 'app/shared/helper';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 
 /**
@@ -21,7 +21,6 @@ import { first, map, switchMap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class LoginService {
-  private _loggingOut = new BehaviorSubject(false);
   user$ = new BehaviorSubject<User>(null);
   auth$ = new BehaviorSubject<Auth>(null);
 
@@ -51,7 +50,7 @@ export class LoginService {
 
     // Whenever the user is logged out, clear the status
     pushNotifications.loggedOut$.subscribe(() => {
-      if (this._loggingOut.value) {
+      if (this.loginState.loggingOut) {
         // In the middle of a logout
         return;
       }
@@ -64,7 +63,7 @@ export class LoginService {
         this.loggedOutConfirmation();
       } else {
         // As soon as translations are initialized, confirm whether to login again
-        this.i18n.initialized$.pipe(first()).subscribe(() => this.loggedOutConfirmation);
+        this.i18n.initialized$.pipe(first()).subscribe(() => this.loggedOutConfirmation());
       }
     });
 
@@ -94,13 +93,6 @@ export class LoginService {
   }
 
   /**
-   * Adds a new observer notified when the logout process starts. The flag is cleared once the logout request is processed.
-   */
-  subscribeForLoggingOut(next?: (value: boolean) => void, error?: (error: any) => void, complete?: () => void): Subscription {
-    return this._loggingOut.subscribe(next, error, complete);
-  }
-
-  /**
    * Redirects the user to the login page.
    * @param redirectUrl Where to go after logging in
    */
@@ -115,8 +107,10 @@ export class LoginService {
       location.assign(url);
     } else {
       // Go to the login page
-      this.loginState.redirectUrl = redirectUrl;
-      this.router.navigateByUrl('/login');
+      this.dataForUiHolder.reload().pipe(first()).subscribe(() => {
+        this.loginState.redirectUrl = redirectUrl;
+        this.router.navigateByUrl('/login');
+      });
     }
   }
 
@@ -149,13 +143,6 @@ export class LoginService {
       localStorage.setItem(name, key);
     }
     return key;
-  }
-
-  /**
-   * Returns whether the service is in the process of logging out
-   */
-  get loggingOut(): boolean {
-    return this._loggingOut.value;
   }
 
   /**
@@ -208,7 +195,7 @@ export class LoginService {
       // No one logged in
       return;
     }
-    this._loggingOut.next(true);
+    this.loginState.loggingOut = true;
     this.nextRequestState.ignoreNextError = true;
     const handler = () => {
       if (Configuration.afterLogoutUrl) {
@@ -218,7 +205,7 @@ export class LoginService {
 
         // Then reload the DataForUi instance (as guest)
         return this.dataForUiHolder.reload().subscribe(() => {
-          this._loggingOut.next(false);
+          this.loginState.loggingOut = false;
           this.router.navigateByUrl(redirectUrl || '/');
         });
       }

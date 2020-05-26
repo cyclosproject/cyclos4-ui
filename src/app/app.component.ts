@@ -15,6 +15,7 @@ import { LayoutService } from 'app/shared/layout.service';
 import { ArrowsVertical, ShortcutService } from 'app/shared/shortcut.service';
 import 'hammerjs';
 import { BehaviorSubject } from 'rxjs';
+import { LoginState } from 'app/core/login-state';
 
 @Component({
   selector: 'app-root',
@@ -38,6 +39,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private dataForUiHolder: DataForUiHolder,
     public login: LoginService,
+    public loginState: LoginState,
     public menu: MenuService,
     public layout: LayoutService,
     private banner: BannerService,
@@ -68,7 +70,7 @@ export class AppComponent implements OnInit {
     if (this.dataForUiHolder.dataForUi) {
       this.doInitialize(this.dataForUiHolder.dataForUi);
     }
-    this.login.subscribeForLoggingOut(flag => this.loggingOut$.next(flag));
+    this.loginState.subscribeForLoggingOut(flag => this.loggingOut$.next(flag));
 
     // Some browsers (like Firefox) show an outline on focused anchors.
     // After the page is loaded, blur the menus, so none will be outlined

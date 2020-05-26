@@ -4,7 +4,7 @@ import { User } from 'app/api/models';
 import { UsersService } from 'app/api/services';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { ErrorStatus } from 'app/core/error-status';
-import { LoginService } from 'app/core/login.service';
+import { LoginState } from 'app/core/login-state';
 import { Observable, of } from 'rxjs';
 
 /**
@@ -21,8 +21,8 @@ export class UserCacheService {
   constructor(
     private usersService: UsersService,
     private errorHandler: ErrorHandlerService,
-    private login: LoginService) {
-    this.login.subscribeForLoggingOut(() => {
+    private loginState: LoginState) {
+    this.loginState.subscribeForLoggingOut(() => {
       // Whenever the user logs out, clear the cache, as other users that could login in the same browser can have different permissions
       this.cache.clear();
       this.invalidKeys.clear();

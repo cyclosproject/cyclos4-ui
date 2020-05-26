@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { BannerCard } from 'app/content/banner-card';
 import { BannerService } from 'app/core/banner.service';
+import { LoginState } from 'app/core/login-state';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { empty, truthyAttr } from 'app/shared/helper';
@@ -52,6 +53,7 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
   constructor(
     public layout: LayoutService,
     public login: LoginService,
+    private loginState: LoginState,
     public menu: MenuService,
     public banner: BannerService) { }
 
@@ -93,7 +95,7 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
       this.bannerCards$.next(cards);
       updateLeftAreaVisible();
     }));
-    this.subs.push(this.login.subscribeForLoggingOut(flag => {
+    this.subs.push(this.loginState.subscribeForLoggingOut(flag => {
       this.loggingOut$.next(flag);
     }));
 
