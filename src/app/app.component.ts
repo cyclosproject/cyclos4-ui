@@ -5,6 +5,7 @@ import { Configuration } from 'app/configuration';
 import { BannerService } from 'app/core/banner.service';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { LoginState } from 'app/core/login-state';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { SidenavComponent } from 'app/core/sidenav.component';
@@ -15,7 +16,6 @@ import { LayoutService } from 'app/shared/layout.service';
 import { ArrowsVertical, ShortcutService } from 'app/shared/shortcut.service';
 import 'hammerjs';
 import { BehaviorSubject } from 'rxjs';
-import { LoginState } from 'app/core/login-state';
 
 @Component({
   selector: 'app-root',

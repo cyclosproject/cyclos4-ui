@@ -1,6 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AdKind, BasicProfileFieldEnum, PhoneKind, PhoneView, RoleEnum, UserRelationshipEnum, UserView, UserProfileSectionEnum } from 'app/api/models';
+import {
+  AdKind, BasicProfileFieldEnum, PhoneKind, PhoneView, RoleEnum,
+  UserProfileSectionEnum, UserRelationshipEnum, UserView
+} from 'app/api/models';
 import { ContactsService, UsersService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
 import { MapsService } from 'app/core/maps.service';
