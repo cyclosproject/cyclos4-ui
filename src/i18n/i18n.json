@@ -1747,5 +1747,59 @@
     "savedSuccessfully": "Saved successfully",
     "process": "Process dynamic document",
     "category": "Category"
+  },
+  "token": {
+    "title": {
+      "new": "{0} details",
+      "view": "{0} details",
+      "assign": "Assign"
+    },
+    "mobileTitle": {
+      "view": "{0} details"
+    },
+    "action": {
+      "activate": "Activate",
+      "assign": "Assign",
+      "block": "Block",
+      "cancel": "Cancel",
+      "changeDeadline": "Change deadline",
+      "changeExpiry": "Change expiry",
+      "unblock": "Unblock",
+      "done": {
+        "activated": "The token was activated",
+        "assigned": "The token was assigned",
+        "blocked": "The token was blocked",
+        "canceled": "The token was canceled",
+        "created": "The token was created",
+        "deadlineChanged": "The token deadline was changed",
+        "expiryChanged": "The token expiry was changed",
+        "unblocked": "The token was unblocked"
+      },
+      "message": {
+        "cancel": "You are about to cancel the token. Be aware that this is a permanent action. Are you sure you want to change the token status to canceled?"
+      }
+    },
+    "status": {
+      "activationExpired": "Activation expired",
+      "active": "Active",
+      "blocked": "Blocked",
+      "canceled": "Canceled",
+      "expired": "Expired",
+      "pending": "Pending activation",
+      "unassigned": "Unassigned"
+    },
+    "value": "Value",
+    "label": "Label",
+    "activationDeadline": "Activation deadline",
+    "noDeadline": "No deadline",
+    "expiryDate": "Expiry date",
+    "noExpiryDate": "Without expiry",
+    "activationDate": "Activation date",
+    "creationDate": "Creation date",
+    "activationBeginDate": "Activation begin date",
+    "activationEndDate": "Activation end date",
+    "expiryBeginDate": "Expiry begin date",
+    "expiryEndDate": "Expiry end date",
+    "unassigned": "Unassigned"
   }
 }

@@ -1,0 +1,76 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [mode]="'empty'" [heading]="data?.type.pluralName"
+      [mobileHeading]="data?.type.pluralName"
+      [headingActions]="headingActions$ | async">
+      <div *ngIf="!isOwner()" class="col-12 col-md-6">
+        <label-value [label]="i18n.general.user" kind="fieldView"
+          labelPosition="side">
+          <user-link [user]="data.user"></user-link>
+        </label-value>
+      </div>
+    </page-content>
+
+    <results-layout [results]="data?.tokens">
+      <mobile-result *mobileResult="let row">
+        <div class="d-flex">
+          <div>
+            <label-value *ngIf="!isOwner()" [label]="i18n.general.operator"
+              labelPosition="above">
+              {{ row.user?.user? row.user.display : '' }}
+            </label-value>
+            <label-value
+              [label]="isNfc() ? i18n.token.label : i18n.token.value"
+              labelPosition="above">
+              {{ row.value }}
+            </label-value>
+            <label-value [label]="i18n.token.creationDate"
+              labelPosition="above">
+              {{ row.creationDate | date }}
+            </label-value>
+            <label-value [label]="i18n.token.activationDate"
+              labelPosition="above">
+              {{ row.activationDate | date }}
+            </label-value>
+            <label-value [label]="i18n.token.expiryDate"
+              labelPosition="above">
+              {{ row.expiryDate | date }}
+            </label-value>
+            <label-value [label]="i18n.general.status" labelPosition="above">
+              {{ statusDisplay(row.status) }}
+            </label-value>
+          </div>
+          <div class="ml-auto text-right d-flex flex-column">
+            <button [tooltip]="i18n.general.view" class="btn btn-icon"
+              (click)="router.navigate(view(row)); $event.stopPropagation(); $event.preventDefault()">
+              <icon icon="search"></icon>
+            </button>
+          </div>
+        </div>
+      </mobile-result>
+
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead>
+          <th *ngIf="!isOwner()">{{ i18n.general.operator }}</th>
+          <th>{{ isNfc() ? i18n.token.label : i18n.token.value }}</th>
+          <th>{{ i18n.token.creationDate }}</th>
+          <th>{{ i18n.token.activationDate }}</th>
+          <th>{{ i18n.token.expiryDate }}</th>
+          <th>{{ i18n.general.status }}</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of data?.tokens"
+            (click)="router.navigate(view(row)); $event.stopPropagation(); $event.preventDefault()">
+            <td *ngIf="!isOwner()">{{ row.user?.user? row.user.display : '' }}
+            </td>
+            <td>{{ row.value }}</td>
+            <td>{{ row.creationDate | date }}</td>
+            <td>{{ row.activationDate | date }}</td>
+            <td>{{ row.expiryDate | date }}</td>
+            <td>{{ statusDisplay(row.status) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>

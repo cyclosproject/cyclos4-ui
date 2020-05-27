@@ -1,0 +1,32 @@
+<h1>{{ i18n.token.title.new(type.name) }}</h1>
+<form [formGroup]="form" class="d-flex flex-grow-1 flex-column">
+  <label-value *ngIf="user" [label]="i18n.general.user" kind="fieldView"
+    labelPosition="side">
+    {{ user.display }}
+  </label-value>
+  <user-field *ngIf="!user" [label]="i18n.general.user"
+    formControlName="user">
+  </user-field>
+  <single-selection-field *ngIf="(operators$ | async)?.length > 0"
+    formControlName="operator" [label]="i18n.general.operator"
+    [emptyOption]="i18n.general.notSet">
+    <field-option *ngFor="let operator of (operators$ | async)"
+      [value]="operator.id" [text]="operator.name">
+    </field-option>
+  </single-selection-field>
+  <input-field required formControlName="value" [mask]="type.mask"
+    [label]="i18n.token.value" [placeholder]="type.mask? type.mask : ''">
+  </input-field>
+  <boolean-field *ngIf="canActivate$ | async" formControlName="activateNow"
+    [label]="i18n.token.action.activate">
+  </boolean-field>
+  <actions forceRow>
+    <action-button [label]="i18n.general.submit" (action)="submit()"
+      [disabled]="requesting$ | async">
+    </action-button>
+    <ng-template #blank>&nbsp;</ng-template>
+    <action-button outline (action)="modalRef.hide()"
+      [label]="i18n.general.cancel">
+    </action-button>
+  </actions>
+</form>

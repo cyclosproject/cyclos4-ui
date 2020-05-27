@@ -1,0 +1,21 @@
+<h1>{{ i18n.token.title.assign }}</h1>
+<form [formGroup]="form" class="d-flex flex-grow-1 flex-column">
+  <user-field required [label]="i18n.general.user" formControlName="user">
+  </user-field>
+  <single-selection-field *ngIf="(operators$ | async)?.length > 0"
+    formControlName="operator" [label]="i18n.general.operator"
+    [emptyOption]="i18n.general.notSet">
+    <field-option *ngFor="let operator of (operators$ | async)"
+      [value]="operator.id" [text]="operator.display">
+    </field-option>
+  </single-selection-field>
+  <actions forceRow>
+    <action-button [label]="i18n.general.submit" (action)="submit()"
+      [disabled]="requesting$ | async">
+    </action-button>
+    <ng-template #blank>&nbsp;</ng-template>
+    <action-button outline (action)="modalRef.hide()"
+      [label]="i18n.general.cancel">
+    </action-button>
+  </actions>
+</form>
