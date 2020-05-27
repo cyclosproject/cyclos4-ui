@@ -3,8 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { AccountHistoryComponent } from 'app/banking/accounts/account-history.component';
 import { PaymentComponent } from 'app/banking/payment/payment.component';
 import { ReceiveQrPaymentComponent } from 'app/banking/ticket/receive-qr-payment.component';
-import { SearchAuthorizedPaymentsComponent } from 'app/banking/transactions/search-authorized-payments.component';
-import { SearchScheduledPaymentsComponent } from 'app/banking/transactions/search-scheduled-payments.component';
+import { SearchOwnerInstallmentsComponent } from 'app/banking/transactions/search-owner-installments.component';
+import { SearchOwnerTransactionsComponent } from 'app/banking/transactions/search-owner-transactions.component';
+import { SearchTransactionsOverviewComponent } from 'app/banking/transactions/search-transactions-overview.component';
 import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view-authorization-history.component';
 import { ViewTransactionComponent } from 'app/banking/transactions/view-transaction.component';
 import { SearchTransfersOverviewComponent } from 'app/banking/transfers/search-transfers-overview.component';
@@ -63,12 +64,29 @@ const bankingRoutes: Routes = [
         component: ReceiveQrPaymentComponent,
       },
       {
-        path: ':owner/scheduled-payments',
-        component: SearchScheduledPaymentsComponent,
+        path: ':owner/installments',
+        component: SearchOwnerInstallmentsComponent,
       },
       {
         path: ':owner/authorized-payments',
-        component: SearchAuthorizedPaymentsComponent,
+        component: SearchOwnerTransactionsComponent,
+        data: {
+          kind: 'authorized'
+        }
+      },
+      {
+        path: 'authorized-payments',
+        component: SearchTransactionsOverviewComponent,
+        data: {
+          kind: 'authorized'
+        }
+      },
+      {
+        path: 'pending-my-authorization',
+        component: SearchTransactionsOverviewComponent,
+        data: {
+          kind: 'myAuth'
+        }
       },
       {
         path: ':user/vouchers/redeem',

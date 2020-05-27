@@ -443,7 +443,8 @@
       "password": "Password",
       "passwords": "Password",
       "switchTheme": "Cambia tema",
-      "connectedUsers": "Utenti connessi"
+      "connectedUsers": "Utenti connessi",
+      "receiveQRPayment": "Receive QR payment"
     },
     "accountStatus": "Stato conto",
     "lastIncomingPayments": "Ultimi pagamenti in arrivo",
@@ -457,7 +458,8 @@
       "neverCreated": "Il tuo {type} deve essere impostato.",
       "securityAnswer": "Dovresti impostare la domanda di sicurezza, che sarà necessaria nel caso in cui dovrai reimpostare la password.",
       "proceed": "Clicca qui per procedere"
-    }
+    },
+    "accounts": "Accounts"
   },
   "account": {
     "account": "Conto",
@@ -668,7 +670,8 @@
       "weekly.count": "Il numero massimo di pagamenti consentito per settimana è {count}",
       "monthly.amount": "La quantità massima mensile di {amount} è stata superata",
       "monthly.count": "Il numero massimo di pagamenti consentiti al mese è {count}"
-    }
+    },
+    "installmentNumberOfTotal": "{number} of {total}"
   },
   "voucher": {
     "error": {

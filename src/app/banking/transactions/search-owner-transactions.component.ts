@@ -1,13 +1,15 @@
-import { Directive, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  Currency, TransactionDataForSearch, TransactionKind,
+  Currency, TransactionAuthorizationStatusEnum, TransactionDataForSearch,
   TransactionQueryFilters, TransactionResult, TransferFilter
 } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
+import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';
+import { Menu } from 'app/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 
 export type TransactionSearchParams = TransactionQueryFilters & {
@@ -15,38 +17,46 @@ export type TransactionSearchParams = TransactionQueryFilters & {
 };
 
 /**
- * Base implementation for pages that search for transaction
+ * Search for transactions of a specific owner
  */
-@Directive()
-export abstract class BaseTransactionsSearch
+@Component({
+  selector: 'search-owner-transactions',
+  templateUrl: 'search-owner-transactions.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class SearchOwnerTransactionsComponent
   extends BaseSearchPageComponent<TransactionDataForSearch, TransactionSearchParams, TransactionResult>
   implements OnInit {
 
+  kind: 'authorized';
   param: string;
   self: boolean;
+  heading: string;
+  mobileHeading: string;
   transferFilters$ = new BehaviorSubject<TransferFilter[]>([]);
   currencies = new Map<string, Currency>();
 
-  protected transactionsService: TransactionsService;
-  public transactionStatusService: TransactionStatusService;
-  public bankingHelper: BankingHelperService;
-
-  constructor(injector: Injector) {
+  constructor(
+    injector: Injector,
+    private transactionsService: TransactionsService,
+    public transactionStatusService: TransactionStatusService,
+    public bankingHelper: BankingHelperService) {
     super(injector);
-    this.transactionsService = injector.get(TransactionsService);
-    this.transactionStatusService = injector.get(TransactionStatusService);
-    this.bankingHelper = injector.get(BankingHelperService);
-  }
-
-  getFormControlNames() {
-    return ['status', 'accountType', 'transferFilter', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd'];
   }
 
   ngOnInit() {
     super.ngOnInit();
     const route = this.route.snapshot;
+    this.kind = route.data.kind;
     this.param = route.params.owner;
     this.self = this.authHelper.isSelf(this.param);
+
+    switch (this.kind) {
+      case 'authorized':
+        this.heading = this.i18n.transaction.title.authorizations;
+        this.mobileHeading = this.i18n.transaction.mobileTitle.authorizations;
+        break;
+    }
 
     // Get the transactions search data
     this.stateManager.cache('data',
@@ -87,13 +97,33 @@ export abstract class BaseTransactionsSearch
       }));
   }
 
-  /**
-   * Must be implemented to return the actual kinds of transactions to be returned
-   */
-  protected abstract getKinds(): TransactionKind[];
-
   doSearch(value: TransactionSearchParams) {
     return this.transactionsService.searchTransactions$Response(value);
+  }
+
+  getFormControlNames() {
+    return ['status', 'accountType', 'transferFilter', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd'];
+  }
+
+  getInitialFormValue(data: TransactionDataForSearch) {
+    const value = super.getInitialFormValue(data);
+    switch (this.kind) {
+      case 'authorized':
+        value.status = TransactionAuthorizationStatusEnum.PENDING;
+        break;
+    }
+    return value;
+  }
+
+  get statusOptions(): FieldOption[] {
+    switch (this.kind) {
+      case 'authorized':
+        const statuses = Object.values(TransactionAuthorizationStatusEnum) as TransactionAuthorizationStatusEnum[];
+        return statuses.map(st => ({
+          value: st,
+          text: this.transactionStatusService.authorizationStatus(st),
+        }));
+    }
   }
 
   protected toSearchParams(value: any): TransactionSearchParams {
@@ -102,12 +132,28 @@ export abstract class BaseTransactionsSearch
     params.accountTypes = value.accountType ? [value.accountType] : null;
     params.transferFilters = value.transferFilter ? [value.transferFilter] : null;
     params.datePeriod = this.bankingHelper.resolveDatePeriod(value);
-    params.kinds = this.getKinds().filter(k => this.data.visibleKinds.includes(k));
+
+    switch (this.kind) {
+      case 'authorized':
+        params.authorizationStatuses = [value.status];
+        params.authorized = true;
+        break;
+    }
+
     return params;
+  }
+
+  resolveMenu(data: TransactionDataForSearch) {
+    let menu: Menu;
+    switch (this.kind) {
+      case 'authorized':
+        menu = Menu.AUTHORIZED_PAYMENTS;
+        break;
+    }
+    return this.authHelper.userMenu(data.user, menu);
   }
 
   get toLink() {
     return (row: TransactionResult) => this.bankingHelper.transactionPath(row);
   }
-
 }

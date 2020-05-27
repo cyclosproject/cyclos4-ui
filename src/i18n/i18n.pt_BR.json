@@ -443,7 +443,8 @@
       "password": "Senha",
       "passwords": "Senhas",
       "switchTheme": "Mudar tema",
-      "connectedUsers": "Usuários conectados"
+      "connectedUsers": "Usuários conectados",
+      "receiveQRPayment": "Receive QR payment"
     },
     "accountStatus": "Status da conta",
     "lastIncomingPayments": "Últimos pagamentos recebidos",
@@ -457,7 +458,8 @@
       "neverCreated": "Sua {type} precisa ser definido.",
       "securityAnswer": "Você deve definir a pergunta de segurança, que será necessária caso precise redefinir sua senha.",
       "proceed": "Clique aqui para continuar"
-    }
+    },
+    "accounts": "Accounts"
   },
   "account": {
     "account": "Conta",
@@ -668,7 +670,8 @@
       "weekly.count": "O número máximo permitido de pagamentos por semana é {count}",
       "monthly.amount": "O valor máximo mensal de {amount} foi excedido",
       "monthly.count": "O número máximo permitido de pagamentos por mês é {count}"
-    }
+    },
+    "installmentNumberOfTotal": "{number} of {total}"
   },
   "voucher": {
     "error": {
