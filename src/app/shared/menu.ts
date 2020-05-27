@@ -138,10 +138,10 @@ export namespace Menu {
   export const RUN_ACTION_OPERATION = new Menu(RootMenu.BANKING, 'RUN_ACTION_OPERATION');
 
   // Records
-  export const SEARCH_USER_RECORDS = new Menu(RootMenu.PERSONAL, 'SEARCH_USER_RECORDS');
-  export const SEARCH_SYSTEM_RECORDS = new Menu(RootMenu.CONTENT, 'SEARCH_SYSTEM_RECORDS');
-  export const SEARCH_ADMIN_RECORDS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_ADMIN_RECORDS');
-  export const SEARCH_BROKER_RECORDS = new Menu(RootMenu.BROKERING, 'SEARCH_BROKER_RECORDS');
+  export const SEARCH_RECORDS_BANKING = new Menu(RootMenu.BANKING, 'USER_RECORDS_BANKING');
+  export const SEARCH_RECORDS_MARKETPLACE = new Menu(RootMenu.MARKETPLACE, 'USER_RECORDS_MARKETPLACE');
+  export const SEARCH_RECORDS_PERSONAL = new Menu(RootMenu.PERSONAL, 'USER_RECORDS_PERSONAL');
+  export const SEARCH_RECORDS_BROKERING = new Menu(RootMenu.BROKERING, 'USER_RECORDS_PERSONAL');
 
   // Content (one per root menu)
   export const CONTENT_PAGE_BANKING = new Menu(RootMenu.BANKING, 'CONTENT_PAGE_BANKING');

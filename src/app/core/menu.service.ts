@@ -421,8 +421,7 @@ export class MenuService {
     const marketplace = permissions.marketplace || {};
     const operations = permissions.operations || {};
     const vouchers = this.resolveVoucherPermissions(permissions.vouchers || {});
-    const userOperations = (operations.user || []).filter(o => o.run).map(o => o.operation);
-    const systemOperations = (operations.system || []).filter(o => o.run).map(o => o.operation);
+    const records = permissions.records || {};
 
     const roots = new Map<RootMenu, RootMenuEntry>();
     // Lambda that adds a root menu
@@ -474,20 +473,22 @@ export class MenuService {
     };
 
     // Lambda that adds all custom operations the given root menu entry
+    const systemOperations = (operations.system || []).filter(o => o.run).map(o => o.operation);
+    const userOperations = (operations.user || []).filter(o => o.run).map(o => o.operation);
     const addOperations = (root: RootMenu) => {
       if (restrictedAccess) {
         return;
       }
-      let opMenu: Menu;
+      let operationMenu: Menu;
       switch (root) {
         case RootMenu.BANKING:
-          opMenu = Menu.RUN_OPERATION_BANKING;
+          operationMenu = Menu.RUN_OPERATION_BANKING;
           break;
         case RootMenu.MARKETPLACE:
-          opMenu = Menu.RUN_OPERATION_MARKETPLACE;
+          operationMenu = Menu.RUN_OPERATION_MARKETPLACE;
           break;
         case RootMenu.PERSONAL:
-          opMenu = Menu.RUN_OPERATION_PERSONAL;
+          operationMenu = Menu.RUN_OPERATION_PERSONAL;
           break;
         default:
           // Invalid root menu for operations
@@ -496,7 +497,7 @@ export class MenuService {
 
       const doAddOperations = (path: string, ops: Operation[]) => {
         for (const op of ops) {
-          const activeMenu = new ActiveMenu(opMenu, { operation: op });
+          const activeMenu = new ActiveMenu(operationMenu, { operation: op });
           const icon = this.operationHelper.icon(op);
           add(activeMenu, `/operations/${path}/${ApiHelper.internalNameOrId(op)}`, icon, op.label);
         }
@@ -507,32 +508,32 @@ export class MenuService {
       doAddOperations('self', userOperations.filter(o => ApiHelper.userMenuMatches(root, o.userMenu)));
     };
 
-    // Lambda that adds records in the given root menu entry
-    const addRecords = (menu: Menu, recordPermissions: RecordPermissions[], owner: string, my?: boolean) => {
-      if ((!my || !auth.global) && recordPermissions.length > 0) {
-        for (const permission of recordPermissions) {
-          // If it's a general search exclude records not listed in menu
-          const type = permission.type;
-          if (owner === RecordHelperService.GENERAL_SEARCH && !type.showInMenu) {
-            continue;
-          }
-          const activeMenu = new ActiveMenu(menu, { recordType: type });
-          const pathFunction = () => this.recordHelper.resolvePath(
-            permission, owner, owner === ApiHelper.SYSTEM);
-          const path = pathFunction();
-          if (path != null) {
-            const icon = this.recordHelper.icon(type);
-            add(
-              activeMenu,
-              path,
-              icon,
-              permission.type.pluralName,
-              null,
-              // Calculate the path dinamically while the single form has not been saved for first time
-              permission.type.layout === RecordLayoutEnum.SINGLE && !permission.singleRecordId ? pathFunction : null);
-          }
-        }
+    // Lambda that adds all record types the given root menu entry
+    const systemRecords = records.system || [];
+    const userRecords = records.userManagement || [];
+    const myRecords = records.user || [];
+    const addRecords = (root: RootMenu) => {
+      if (restrictedAccess) {
+        return;
       }
+      const doAddRecords = (owner: string, perms: RecordPermissions[]) => {
+        for (const permission of perms) {
+          const type = permission.type;
+          const activeMenu = this.recordHelper.activeMenuForRecordType(owner === RecordHelperService.GENERAL_SEARCH, type);
+          const icon = this.recordHelper.icon(type);
+          const path = this.recordHelper.resolvePath(permission, owner);
+          const label = type.layout === RecordLayoutEnum.SINGLE ? type.name : type.pluralName;
+          add(activeMenu, path, icon, label);
+        }
+      };
+
+      // Add each kind of records
+      doAddRecords('system', systemRecords.filter(p => ApiHelper.adminMenuMatches(root, p.type.adminMenu)));
+      if ((role === RoleEnum.BROKER && root === RootMenu.BROKERING)
+        || (role === RoleEnum.ADMINISTRATOR && root === RootMenu.MARKETPLACE)) {
+        doAddRecords(RecordHelperService.GENERAL_SEARCH, userRecords);
+      }
+      doAddRecords('self', myRecords.filter(p => ApiHelper.userMenuMatches(root, p.type.userMenu)));
     };
 
     // Add the submenus
@@ -610,6 +611,7 @@ export class MenuService {
       if (vouchers.view) {
         add(Menu.SEARCH_VOUCHERS, '/banking/vouchers', 'search', this.i18n.menu.bankingSearchVouchers);
       }
+      addRecords(RootMenu.BANKING);
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);
 
@@ -690,6 +692,7 @@ export class MenuService {
         add(Menu.SEARCH_BOUGHT_VOUCHERS, '/banking/self/vouchers/bought', 'local_play',
           this.i18n.menu.bankingBoughtVouchers);
       }
+      addRecords(RootMenu.MARKETPLACE);
       addOperations(RootMenu.MARKETPLACE);
       addContentPages(Menu.CONTENT_PAGE_MARKETPLACE);
 
@@ -732,22 +735,6 @@ export class MenuService {
       if (permissions.documents.viewIndividual || permissions.documents.viewShared?.length > 0) {
         add(Menu.MY_DOCUMENTS, `/users/documents`, 'library_books', this.i18n.menu.personalDocuments);
       }
-
-      // Records
-      addRecords( // My
-        Menu.SEARCH_USER_RECORDS,
-        this.recordHelper.recordPermissions(),
-        ApiHelper.SELF,
-        true);
-      addRecords( // User management (general search)
-        role === RoleEnum.ADMINISTRATOR ? Menu.SEARCH_ADMIN_RECORDS : Menu.SEARCH_BROKER_RECORDS,
-        this.recordHelper.recordPermissions(false, true),
-        RecordHelperService.GENERAL_SEARCH);
-      addRecords( // System
-        Menu.SEARCH_SYSTEM_RECORDS,
-        this.recordHelper.recordPermissions(true),
-        ApiHelper.SYSTEM);
-
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);
       }
@@ -756,6 +743,7 @@ export class MenuService {
           'notifications_off', this.i18n.menu.personalNotificationSettings);
       }
       add(Menu.SETTINGS, '/personal/settings', 'settings', this.i18n.menu.personalSettings);
+      addRecords(RootMenu.PERSONAL);
       addOperations(RootMenu.PERSONAL);
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);
 

@@ -28542,7 +28542,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/RecordTypeWithMenu'
+                  $ref: '#/components/schemas/RecordType'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -43741,6 +43741,26 @@ components:
         - random
         - relevance
 
+    UserProfileSectionEnum:
+      description: >
+        Which user profile section should a data be displayed
+
+        Possible values are:
+
+        - `banking`: Banking / accounts
+
+        - `information`: Data / information
+
+        - `management`: Management of user data
+
+        - `marketplace`: Marketplace / advertisements
+      type: string
+      enum:
+        - banking
+        - information
+        - management
+        - marketplace
+
     UserRegistrationStatusEnum:
       description: >
         The status of the user after the registration
@@ -54332,7 +54352,12 @@ components:
                 Only returned in contexts where the operation can be executed.
               allOf:
                 - $ref: '#/components/schemas/UserMenuEnum'
-
+            userProfileSection:
+              description: >-
+                In which user profile section the operation shows up.
+                Only returned in contexts where the operation can be executed.
+              allOf:
+                - $ref: '#/components/schemas/UserProfileSectionEnum'
 
     OperationDataForRun:
       description: >-
@@ -57202,7 +57227,7 @@ components:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/RecordTypeWithMenu'
+          $ref: '#/components/schemas/RecordType'
         create:
           description: >-
             Can the authenticated user create new records of this type?
@@ -57565,6 +57590,24 @@ components:
               type: boolean
             layout:
               $ref: '#/components/schemas/RecordLayoutEnum'
+            adminMenu:
+              description: >-
+                In which administration menu the record type shows up.
+                Only returned for system record types.
+              allOf:
+                - $ref: '#/components/schemas/AdminMenuEnum'
+            userMenu:
+              description: >-
+                In which user menu the record type shows up.
+                Only returned for user record types.
+              allOf:
+                - $ref: '#/components/schemas/UserMenuEnum'
+            userProfileSection:
+              description: >-
+                In which user profile section the record type shows up.
+                Only returned for user record types.
+              allOf:
+                - $ref: '#/components/schemas/UserProfileSectionEnum'
 
     RecordTypeDetailed:
       description: >-
@@ -57593,18 +57636,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/RecordSection'
-
-    RecordTypeWithMenu:
-      description: >-
-        A record type with information on whether to show on user menu
-      allOf:
-        - $ref: '#/components/schemas/RecordType'
-        - type: object
-          properties:
-            showInMenu:
-              description: >-
-                Should this record type be shown in the user menu?
-              type: boolean
 
     RecordView:
       description: >-
