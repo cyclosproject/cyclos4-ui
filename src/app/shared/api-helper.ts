@@ -193,13 +193,12 @@ export class ApiHelper {
 
   /**
    * Returns whether the given frontend root menu matches the Cyclos root menu for an administrator function.
-   * As the administration functions are restricted in this frontend, matches `USER_MANAGEMENT` and the rest to `BANKING`.
    */
   static adminMenuMatches(root: RootMenu, adminMenu: AdminMenuEnum) {
-    if (adminMenu === AdminMenuEnum.USER_MANAGEMENT) {
-      return root === RootMenu.MARKETPLACE;
-    } else {
+    if (adminMenu === AdminMenuEnum.SYSTEM_BANKING) {
       return root === RootMenu.BANKING;
+    } else {
+      return root === RootMenu.MARKETPLACE;
     }
   }
 

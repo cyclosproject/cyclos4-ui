@@ -1,0 +1,48 @@
+<page-layout [ready]="data$ | async">
+  <page-content [heading]="i18n.token.title.view(data?.type.name)"
+    [mobileHeading]="i18n.token.mobileTitle.view(data?.type.name)"
+    [headingActions]="headingActions$ | async" last mode="viewForm">
+    <ng-container *ngIf="data">
+      <div class="d-flex flex-grow-1 flex-column">
+        <label-value *ngIf="showUser()" [label]="i18n.general.user"
+          kind="fieldView" labelPosition="side">
+          <user-link [user]="data.user?.user ? data.user.user : data.user">
+          </user-link>
+        </label-value>
+        <label-value *ngIf="data.user?.user" [label]="i18n.general.operator"
+          kind="fieldView" labelPosition="side">
+          {{ data.user.display }}
+        </label-value>
+        <label-value [label]="valueLabel()">
+          {{ data.value }}
+        </label-value>
+        <label-value *ngIf="data.creationDate"
+          [label]="i18n.general.creationDate">
+          {{ data.creationDate | date }}
+        </label-value>
+        <label-value *ngIf="data.activationDate"
+          [label]="i18n.document.category">
+          {{ data.activationDate | date  }}
+        </label-value>
+        <label-value *ngIf="data.status" [label]="i18n.general.status">
+          {{ statusDisplay(data.status) }}
+        </label-value>
+        <label-value *ngIf="showDeadLine()"
+          [label]="i18n.token.activationDeadline">
+          {{ data.activationDeadline ? (data.activationDeadline | date) :  i18n.token.noDeadline }}
+        </label-value>
+        <label-value *ngIf="showExpiryDate()" [label]="i18n.token.expiryDate">
+          {{ data.expiryDate ? (data.expiryDate | date) :  i18n.token.noExpiryDate }}
+        </label-value>
+        <div *ngIf="isQrCode(data)">
+          <h2 class="mt-3"></h2>
+          <div
+            class="qr-container image d-flex justify-content-center mb-4 align-self-center">
+            <img *ngIf="qrCodeUrl$ | async as url" [src]="url | trust:'url'"
+              alt="QR-code" class="mw-100">
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </page-content>
+</page-layout>

@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { RecordCustomField, RecordLayoutEnum, RecordPermissions, RecordType, RecordTypeDetailed, RoleEnum, User } from 'app/api/models';
+import {
+  AdminMenuEnum, RecordCustomField, RecordLayoutEnum, RecordPermissions,
+  RecordType, RecordTypeDetailed, RoleEnum, User, UserMenuEnum
+} from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
@@ -44,7 +47,7 @@ export class RecordHelperService {
   /**
    * Resolves the path to the according record page either view, edit, or new
    */
-  resolvePath(permission: RecordPermissions, owner: string, system: boolean = false): string {
+  resolvePath(permission: RecordPermissions, owner: string): string {
     const type = permission.type;
     if (owner === RecordHelperService.GENERAL_SEARCH) {
       // Force list when doing a general search
@@ -65,7 +68,7 @@ export class RecordHelperService {
     };
     if (type.layout === RecordLayoutEnum.SINGLE && permission.singleRecordId == null) {
       // Search single record dinamically
-      for (const record of this.recordPermissions(system)) {
+      for (const record of this.recordPermissions(owner === ApiHelper.SYSTEM)) {
         if (type.id === record.type.id) {
           return pathFunction(record.singleRecordId);
         }
@@ -100,21 +103,45 @@ export class RecordHelperService {
   }
 
   /**
-   * Returns the active menu for the given record type
+   * Returns the ActiveMenu which represents this record type.
    */
-  menuForRecordType(user: User, type: RecordType, userManagement: boolean = false): Menu | ActiveMenu | Observable<Menu> {
-    if (this.authHelper.isSelf(user)) {
-      let menu: Menu;
-      if (userManagement) {
-        const dataForUi = this.dataForUiHolder.dataForUi;
-        const auth = dataForUi.auth || {};
-        menu = auth.role === RoleEnum.ADMINISTRATOR ? Menu.SEARCH_ADMIN_RECORDS : Menu.SEARCH_BROKER_RECORDS;
-      } else if (user == null) {
-        menu = Menu.SEARCH_SYSTEM_RECORDS;
-      } else {
-        menu = Menu.SEARCH_USER_RECORDS;
+  activeMenuForRecordType(general: boolean, type: RecordType): ActiveMenu {
+    let menu: Menu;
+    if (general) {
+      // General records search
+      const dataForUi = this.dataForUiHolder.dataForUi;
+      const auth = dataForUi.auth || {};
+      menu = auth.role === RoleEnum.BROKER ? Menu.SEARCH_RECORDS_BROKERING : Menu.SEARCH_RECORDS_MARKETPLACE;
+    } else if (type.adminMenu) {
+      // System record type
+      menu = type.adminMenu === AdminMenuEnum.SYSTEM_BANKING
+        ? Menu.SEARCH_RECORDS_BANKING : Menu.SEARCH_RECORDS_MARKETPLACE;
+    } else if (type.userMenu) {
+      // My record type
+      switch (type.userMenu) {
+        case UserMenuEnum.BANKING:
+          menu = Menu.SEARCH_RECORDS_BANKING;
+          break;
+        case UserMenuEnum.PERSONAL:
+          menu = Menu.SEARCH_RECORDS_PERSONAL;
+          break;
+        default:
+          menu = Menu.SEARCH_RECORDS_MARKETPLACE;
+          break;
       }
-      return new ActiveMenu(menu, { recordType: type });
+    } else {
+      // Fallback
+      menu = Menu.SEARCH_RECORDS_MARKETPLACE;
+    }
+    return new ActiveMenu(menu, { recordType: type });
+  }
+
+  /**
+   * Returns the active menu for the given record type.
+   */
+  menuForRecordType(user: User, type: RecordType): Menu | ActiveMenu | Observable<Menu> {
+    if (!user || this.authHelper.isSelf(user)) {
+      return this.activeMenuForRecordType(!user, type);
     } else {
       return this.authHelper.searchUsersMenu(user);
     }

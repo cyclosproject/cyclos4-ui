@@ -40,6 +40,11 @@ import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { UsersResultsComponent } from 'app/users/search/users-results.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
+import { AssignTokenComponent } from 'app/users/tokens/assign-token.component';
+import { CreateTokenComponent } from 'app/users/tokens/create-token.component';
+import { ListTokenComponent } from 'app/users/tokens/list-token.component';
+import { SearchTokenComponent } from 'app/users/tokens/search-token.component';
+import { ViewTokenComponent } from 'app/users/tokens/view-token.component';
 import { UsersRoutingModule } from 'app/users/users-routing.module';
 
 /**
@@ -104,6 +109,12 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
     ProcessDynamicDocumentComponent,
     ListDocumentsComponent,
     SearchDocumentsComponent,
+
+    AssignTokenComponent,
+    CreateTokenComponent,
+    ViewTokenComponent,
+    ListTokenComponent,
+    SearchTokenComponent
   ],
   entryComponents: [
     VerifyPhoneComponent,

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AsyncValidatorFn, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import {
-  AvailabilityEnum, BasicUserDataForNew, OperatorDataForNew, OperatorGroupAccountAccessEnum,
-  ProfileFieldActions, User, UserBasicData, UserDataForNew, UserStatusEnum,
+  AvailabilityEnum, BasicUserDataForNew, OperatorDataForNew, OperatorGroupAccountAccessEnum, ProfileFieldActions, TokenStatusEnum, User,
+  UserBasicData, UserDataForNew, UserStatusEnum
 } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { LoginService } from 'app/core/login.service';
@@ -224,6 +224,28 @@ export class UserHelperService {
         return this.i18n.operatorGroup.accountAccessOwn;
       case OperatorGroupAccountAccessEnum.NONE:
         return this.i18n.operatorGroup.accountAccessNone;
+    }
+  }
+
+  /**
+   * Returns the token status display
+   */
+  tokenStatus(status: TokenStatusEnum): string {
+    switch (status) {
+      case TokenStatusEnum.ACTIVATION_EXPIRED:
+        return this.i18n.token.status.activationExpired;
+      case TokenStatusEnum.ACTIVE:
+        return this.i18n.token.status.active;
+      case TokenStatusEnum.BLOCKED:
+        return this.i18n.token.status.blocked;
+      case TokenStatusEnum.CANCELED:
+        return this.i18n.token.status.canceled;
+      case TokenStatusEnum.EXPIRED:
+        return this.i18n.token.status.expired;
+      case TokenStatusEnum.PENDING:
+        return this.i18n.token.status.pending;
+      case TokenStatusEnum.UNASSIGNED:
+        return this.i18n.token.status.unassigned;
     }
   }
 

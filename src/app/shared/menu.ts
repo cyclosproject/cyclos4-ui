@@ -1,4 +1,4 @@
-import { AccountType, Operation, RecordType } from 'app/api/models';
+import { AccountType, Operation, RecordType, TokenType } from 'app/api/models';
 import { empty } from 'app/shared/helper';
 
 /** The types of menus in the application */
@@ -138,10 +138,10 @@ export namespace Menu {
   export const RUN_ACTION_OPERATION = new Menu(RootMenu.BANKING, 'RUN_ACTION_OPERATION');
 
   // Records
-  export const SEARCH_USER_RECORDS = new Menu(RootMenu.PERSONAL, 'SEARCH_USER_RECORDS');
-  export const SEARCH_SYSTEM_RECORDS = new Menu(RootMenu.CONTENT, 'SEARCH_SYSTEM_RECORDS');
-  export const SEARCH_ADMIN_RECORDS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_ADMIN_RECORDS');
-  export const SEARCH_BROKER_RECORDS = new Menu(RootMenu.BROKERING, 'SEARCH_BROKER_RECORDS');
+  export const SEARCH_RECORDS_BANKING = new Menu(RootMenu.BANKING, 'USER_RECORDS_BANKING');
+  export const SEARCH_RECORDS_MARKETPLACE = new Menu(RootMenu.MARKETPLACE, 'USER_RECORDS_MARKETPLACE');
+  export const SEARCH_RECORDS_PERSONAL = new Menu(RootMenu.PERSONAL, 'USER_RECORDS_PERSONAL');
+  export const SEARCH_RECORDS_BROKERING = new Menu(RootMenu.BROKERING, 'USER_RECORDS_PERSONAL');
 
   // Content (one per root menu)
   export const CONTENT_PAGE_BANKING = new Menu(RootMenu.BANKING, 'CONTENT_PAGE_BANKING');
@@ -151,6 +151,10 @@ export namespace Menu {
 
   // Documents
   export const MY_DOCUMENTS = new Menu(RootMenu.PERSONAL, 'MY_DOCUMENTS');
+
+  // Tokens
+  export const MY_TOKENS = new Menu(RootMenu.PERSONAL, 'MY_TOKENS');
+  export const USER_TOKENS = new Menu(RootMenu.MARKETPLACE, 'USER_TOKENS');
 
   /**
    * Returns the various `Menu` that represents content pages in distinct root menus
@@ -168,6 +172,7 @@ export interface ActiveMenuData {
   contentPage?: string;
   operation?: Operation;
   recordType?: RecordType;
+  tokenType?: TokenType;
 }
 
 /**
@@ -209,7 +214,9 @@ export class ActiveMenu {
       || (data1.accountType && data2.accountType && data1.accountType.id === data2.accountType.id)
       || (data1.operation && data2.operation && data1.operation.id === data2.operation.id)
       || (data1.contentPage && data1.contentPage === data2.contentPage)
-      || (data1.recordType && data2.recordType && data1.recordType.id === data2.recordType.id);
+      || (data1.recordType && data2.recordType && data1.recordType.id === data2.recordType.id)
+      || (data1.tokenType && data2.tokenType && data1.tokenType.id === data2.tokenType.id);
+
   }
 }
 

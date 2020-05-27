@@ -33,6 +33,9 @@ import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
+import { ListTokenComponent } from 'app/users/tokens/list-token.component';
+import { SearchTokenComponent } from 'app/users/tokens/search-token.component';
+import { ViewTokenComponent } from 'app/users/tokens/view-token.component';
 
 const usersRoutes: Routes = [
   {
@@ -241,6 +244,21 @@ const usersRoutes: Routes = [
       {
         path: 'documents/process-dynamic/:id',
         component: ProcessDynamicDocumentComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: ':user/tokens/:type',
+        component: ListTokenComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: 'tokens/search/:type',
+        component: SearchTokenComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: 'tokens/view/:id',
+        component: ViewTokenComponent,
         canActivate: [LoggedUserGuard],
       },
     ],

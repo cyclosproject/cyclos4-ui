@@ -28542,7 +28542,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/RecordTypeWithMenu'
+                  $ref: '#/components/schemas/RecordType'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -30059,6 +30059,70 @@ A note for dynamic custom fields: If a script is used to generate possible value
         '204':
           description: >-
             The token activation deadline date is changed and nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /tokens/{id}/qr-code:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      operationId: getTokenQrCode
+      summary: >-
+        Returns the QR-code image for the given token only if its physical type is
+        `qrCode`
+      description: >-
+        This request will return the image contents as expected but our
+        api  documentation page (or any other usage of an &lt;img&gt; tag),
+        created  using swagger-ui, generates a second request to include the image
+        in the page. This new (GET) request won't send the authentication
+        parameters and  as this path requires authentication the image will be
+        shown as broken. Optionally, to solve the problem described above and to
+        allow authenticate the user when using sessions, a `sessionToken` or
+        `accessClientToken`  query parameter could be specified.
+      tags:
+        - Tokens
+      parameters:
+        - name: size
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ImageSizeEnum'
+      responses:
+        '200':
+          description: >-
+            The image content
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -43741,6 +43805,26 @@ components:
         - random
         - relevance
 
+    UserProfileSectionEnum:
+      description: >
+        Which user profile section should a data be displayed
+
+        Possible values are:
+
+        - `banking`: Banking / accounts
+
+        - `information`: Data / information
+
+        - `management`: Management of user data
+
+        - `marketplace`: Marketplace / advertisements
+      type: string
+      enum:
+        - banking
+        - information
+        - management
+        - marketplace
+
     UserRegistrationStatusEnum:
       description: >
         The status of the user after the registration
@@ -54332,7 +54416,12 @@ components:
                 Only returned in contexts where the operation can be executed.
               allOf:
                 - $ref: '#/components/schemas/UserMenuEnum'
-
+            userProfileSection:
+              description: >-
+                In which user profile section the operation shows up.
+                Only returned in contexts where the operation can be executed.
+              allOf:
+                - $ref: '#/components/schemas/UserProfileSectionEnum'
 
     OperationDataForRun:
       description: >-
@@ -57202,7 +57291,7 @@ components:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/RecordTypeWithMenu'
+          $ref: '#/components/schemas/RecordType'
         create:
           description: >-
             Can the authenticated user create new records of this type?
@@ -57565,6 +57654,24 @@ components:
               type: boolean
             layout:
               $ref: '#/components/schemas/RecordLayoutEnum'
+            adminMenu:
+              description: >-
+                In which administration menu the record type shows up.
+                Only returned for system record types.
+              allOf:
+                - $ref: '#/components/schemas/AdminMenuEnum'
+            userMenu:
+              description: >-
+                In which user menu the record type shows up.
+                Only returned for user record types.
+              allOf:
+                - $ref: '#/components/schemas/UserMenuEnum'
+            userProfileSection:
+              description: >-
+                In which user profile section the record type shows up.
+                Only returned for user record types.
+              allOf:
+                - $ref: '#/components/schemas/UserProfileSectionEnum'
 
     RecordTypeDetailed:
       description: >-
@@ -57593,18 +57700,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/RecordSection'
-
-    RecordTypeWithMenu:
-      description: >-
-        A record type with information on whether to show on user menu
-      allOf:
-        - $ref: '#/components/schemas/RecordType'
-        - type: object
-          properties:
-            showInMenu:
-              description: >-
-                Should this record type be shown in the user menu?
-              type: boolean
 
     RecordView:
       description: >-
@@ -62728,7 +62823,7 @@ components:
                 The tokens for this type and user.
               type: array
               items:
-                $ref: '#/components/schemas/Token'
+                $ref: '#/components/schemas/TokenResult'
 
     UserValidationPermissions:
       description: >-

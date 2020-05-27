@@ -48,7 +48,8 @@
     "WebshopSettings",
     "ShoppingCarts",
     "Validation",
-    "Documents"
+    "Documents",
+    "Tokens"
   ],
   "enumStyle": "upper",
   "skipJsonSuffix": true

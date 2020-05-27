@@ -160,7 +160,7 @@ export class SearchRecordsComponent
 
   resolveMenu(data: BaseRecordDataForSearch) {
     const user = this.generalSearch ? null : (data as RecordDataForSearch).user;
-    return this.recordsHelper.menuForRecordType(user, data.type, this.generalSearch);
+    return this.recordsHelper.menuForRecordType(user, data.type);
   }
 
   get generalSearch() {

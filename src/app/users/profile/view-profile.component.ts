@@ -1,6 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AdKind, BasicProfileFieldEnum, PhoneKind, PhoneView, RoleEnum, UserRelationshipEnum, UserView } from 'app/api/models';
+import {
+  AdKind, BasicProfileFieldEnum, PhoneKind, PhoneView, RoleEnum,
+  UserProfileSectionEnum, UserRelationshipEnum, UserView
+} from 'app/api/models';
 import { ContactsService, UsersService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
 import { MapsService } from 'app/core/maps.service';
@@ -113,6 +116,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const brokering = permissions.brokering || {};
     const vouchers = permissions.vouchers || {};
     const documents = permissions.documents || {};
+    const tokens = permissions.tokens || [];
 
     if (user.relationship === UserRelationshipEnum.SELF) {
       // For the own user, we just show the edit as a top-level action
@@ -285,18 +289,15 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/marketplace', this.param, 'webshop-settings', 'view']);
         }));
       }
+      for (const token of tokens) {
+        this.managementActions.push(new HeadingAction('vpn_key', token.type.pluralName, () => {
+          this.router.navigate(['/users', this.param, 'tokens', token.type.id]);
+        }));
+      }
       if (notificationSettings.view) {
         this.managementActions.push(new HeadingAction('notifications_off', this.i18n.user.profile.notificationSettings, () => {
           this.router.navigate(['/users', this.param, 'notification-settings']);
         }));
-      }
-      // Records
-      for (const record of permissions.records || []) {
-        const icon = this.recordsHelper.icon(record.type);
-        actions.push(new HeadingAction(icon, this.i18n.record.action(
-          { type: record.type.pluralName, count: record.count }), () => {
-            this.router.navigateByUrl(this.recordsHelper.resolvePath(record, this.param));
-          }));
       }
       // Documents
       if (documents.view) {
@@ -304,10 +305,22 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/users', this.param, 'documents', 'search']);
         }));
       }
-
+      // Records
+      for (const record of permissions.records || []) {
+        const type = record.type;
+        const addTo = type.userProfileSection === UserProfileSectionEnum.BANKING
+          ? this.bankingActions : this.managementActions;
+        const icon = this.recordsHelper.icon(type);
+        addTo.push(new HeadingAction(icon, this.i18n.record.action(
+          { type: type.pluralName, count: record.count }), () => {
+            this.router.navigateByUrl(this.recordsHelper.resolvePath(record, this.param));
+          }));
+      }
       // Custom operations
       for (const operation of permissions.operations || []) {
-        actions.push(this.operationsHelper.headingAction(operation, user.id));
+        const addTo = operation.userProfileSection === UserProfileSectionEnum.BANKING
+          ? this.bankingActions : this.managementActions;
+        addTo.push(this.operationsHelper.headingAction(operation, user.id));
       }
       if (!empty(actions) && actions.length < 6) {
         this.headingActions = actions;
