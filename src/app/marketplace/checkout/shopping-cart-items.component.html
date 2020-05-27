@@ -1,6 +1,6 @@
 <ng-container *ngIf="layout.ltsm$ | async; else largeTable">
   <results-layout [results]="items" resultType="list"
-    [toLink]="detailed ? toLink : null">
+    [toLink]="detailed ? toLink : null" [embedded]="true">
     <mobile-result *mobileResult="let row" [avatarImage]="row.product.image"
       avatarIcon="shopping_basket" [title]="row.product.name">
       <div class="d-flex">
@@ -32,6 +32,7 @@
         </div>
       </div>
     </mobile-result>
+    <table *resultTable></table>
   </results-layout>
 </ng-container>
 <ng-template #largeTable>

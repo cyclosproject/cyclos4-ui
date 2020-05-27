@@ -60,18 +60,18 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
       headingActions.push(new HeadingAction('done',
         data.canSetDeliveryInformation ?
           this.i18n.ad.setDeliveryMethod : this.i18n.ad.accept, () =>
-        this.accept(), true));
+        this.accept()));
     }
 
     if (data.canReject) {
       headingActions.push(new HeadingAction('clear',
         this.i18n.ad.reject, () =>
-        this.reject(), true));
+        this.reject()));
     }
 
     if (data.history) {
       headingActions.push(new HeadingAction('history', this.i18n.general.viewHistory, () =>
-        this.router.navigate(['/marketplace', 'order', this.id, 'history']), true));
+        this.router.navigate(['/marketplace', 'order', this.id, 'history'])));
     }
 
     this.exportHelper.headingActions(data.exportFormats, f => this.orderService.exportOrder$Response({
