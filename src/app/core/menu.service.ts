@@ -589,12 +589,22 @@ export class MenuService {
         add(Menu.RECEIVE_QR_PAYMENT, `/banking/qr`, 'scan_qr_code', this.i18n.menu.bankingReceiveQrPayment);
       }
       if ((banking.scheduledPayments || {}).view) {
-        add(Menu.SCHEDULED_PAYMENTS, `/banking/${owner}/scheduled-payments`,
+        add(Menu.SCHEDULED_PAYMENTS, `/banking/${owner}/installments`,
           'schedule', this.i18n.menu.bankingScheduledPayments);
       }
-      if ((banking.authorizations || {}).view) {
-        add(Menu.AUTHORIZED_PAYMENTS, `/banking/${owner}/authorized-payments`,
-          'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
+      const authorizations = (banking.authorizations || {});
+      if (authorizations.authorize) {
+        add(Menu.PENDING_MY_AUTHORIZATION, `/banking/pending-my-authorization`,
+          'assignment_late', this.i18n.menu.bankingPendingMyAuth);
+      }
+      if (authorizations.view) {
+        if (role === RoleEnum.ADMINISTRATOR) {
+          add(Menu.AUTHORIZED_PAYMENTS_OVERVIEW, `/banking/authorized-payments`,
+            'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
+        } else {
+          add(Menu.AUTHORIZED_PAYMENTS, `/banking/${owner}/authorized-payments`,
+            'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
+        }
       }
       if (banking.searchGeneralTransfers) {
         add(Menu.ADMIN_TRANSFERS_OVERVIEW, `/banking/transfers-overview`,

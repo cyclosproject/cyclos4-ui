@@ -15,14 +15,14 @@ export type InstallmentSearchParams = InstallmentQueryFilters & {
 };
 
 /**
- * Search for scheduled payment installments
+ * Search for installments from the point of view of a given owner
  */
 @Component({
-  selector: 'search-scheduled-payments',
-  templateUrl: 'search-scheduled-payments.component.html',
+  selector: 'search-owner-installments',
+  templateUrl: 'search-owner-installments.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchScheduledPaymentsComponent
+export class SearchOwnerInstallmentsComponent
   extends BaseSearchPageComponent<InstallmentDataForSearch, InstallmentSearchParams, InstallmentResult>
   implements OnInit {
 

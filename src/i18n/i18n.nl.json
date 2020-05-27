@@ -443,7 +443,8 @@
       "password": "Wachtwoord",
       "passwords": "Wachtwoorden",
       "switchTheme": "Switch theme",
-      "connectedUsers": "Connected users"
+      "connectedUsers": "Connected users",
+      "receiveQRPayment": "Receive QR payment"
     },
     "accountStatus": "Rekeningoverzicht",
     "lastIncomingPayments": "Laatste inkomende betalingen",
@@ -457,7 +458,8 @@
       "neverCreated": "Your {type} needs to be set.",
       "securityAnswer": "You should set the security question, which will be required in case you need to reset your password.",
       "proceed": "Click here to proceed"
-    }
+    },
+    "accounts": "Accounts"
   },
   "account": {
     "account": "Account",
@@ -668,7 +670,8 @@
       "weekly.count": "Het maximaal toegestane aantal betalingen per week is {count}",
       "monthly.amount": "De maximale maandelijkse bedrag van {amount} werd overschreden",
       "monthly.count": "Het maximaal toegestane aantal betalingen per maand is {count}"
-    }
+    },
+    "installmentNumberOfTotal": "{number} of {total}"
   },
   "voucher": {
     "error": {

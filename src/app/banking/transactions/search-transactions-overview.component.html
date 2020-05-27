@@ -1,0 +1,116 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content mode="filters" [heading]="heading"
+    [mobileHeading]="mobileHeading">
+    <form [formGroup]="form" class="filters-form">
+      <div class="row">
+        <div *ngIf="statusOptions?.length > 0" class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            formControlName="status" [label]="i18n.general.status"
+            [fieldOptions]="statusOptions">
+          </single-selection-field>
+        </div>
+        <div *ngIf="currencies?.length > 1" class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            formControlName="currency" [label]="i18n.general.currency"
+            [emptyOption]="i18n.general.notApplied">
+            <field-option *ngFor="let currency of currencies"
+              [value]="currency.id" [text]="currency.name"></field-option>
+          </single-selection-field>
+        </div>
+        <ng-container *ngIf="usePeriod">
+          <div class="col-12 col-md-6"
+            *ngIf="data.preselectedPeriods?.length > 0">
+            <single-selection-field labelPosition="side"
+              formControlName="preselectedPeriod"
+              [label]="i18n.general.period">
+              <field-option *ngFor="let period of data.preselectedPeriods"
+                [id]="period['id']" [value]="period" [text]="period.name">
+              </field-option>
+            </single-selection-field>
+          </div>
+          <div
+            *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
+            class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="periodBegin"
+              [label]="i18n.general.beginDate" minDate="past5" maxDate="today"
+              fieldSize="full">
+            </date-field>
+          </div>
+          <div
+            *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
+            class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="periodEnd"
+              [label]="i18n.general.endDate" minDate="past5" maxDate="today"
+              fieldSize="full">
+            </date-field>
+          </div>
+        </ng-container>
+        <div class="col-12 col-md-6">
+          <user-field labelPosition="side" formControlName="user"
+            [label]="i18n.general.user">
+          </user-field>
+        </div>
+      </div>
+    </form>
+  </page-content>
+
+  <results-layout resultType="list" [results]="results$ | async"
+    (update)="update($event)" [toLink]="toLink">
+
+    <mobile-result *mobileResult="let row" [date]="row.date"
+      [amount]="row.amount" [currency]="currenciesByKey.get(row.currency)">
+      <div class="cell-text cell-main">
+        {{ i18n.transaction.fromToText({
+          from: bankingHelper.subjectName(row.from),
+          to: bankingHelper.subjectName(row.to)
+        }) }}
+      </div>
+    </mobile-result>
+
+    <table *resultTable class="table table-hover cursor-pointer">
+      <thead>
+        <th>{{ i18n.general.date }}</th>
+        <th>{{ i18n.transaction.from }}</th>
+        <th>{{ i18n.transaction.to }}</th>
+        <th>{{ i18n.transaction.scheduling }}</th>
+        <th class="amount">{{ i18n.transaction.amount }}</th>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of (results$ | async)?.results">
+          <tr (click)="router.navigate(bankingHelper.transactionPath(row))">
+            <td>
+              <a [routerLink]="bankingHelper.transactionPath(row)">
+                {{ row.date | date }}
+              </a>
+            </td>
+            <td>
+              <a [routerLink]="bankingHelper.transactionPath(row)">
+                {{ bankingHelper.subjectName(row.from) }}
+              </a>
+            </td>
+            <td>
+              <a [routerLink]="bankingHelper.transactionPath(row)">
+                {{ bankingHelper.subjectName(row.to) }}
+              </a>
+            </td>
+            <td>
+              <a class="d-inline-block"
+                [routerLink]="bankingHelper.transactionPath(row)">
+                {{ bankingHelper.scheduling(row) }}
+              </a>
+            </td>
+            <td class="amount" [ngClass]="{'pb-0': layout.xxs$ | async}">
+              <a [routerLink]="bankingHelper.transactionPath(row)">
+                {{ row.amount | currency:currenciesByKey.get(row.currency) }}
+              </a>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </results-layout>
+</ng-template>
