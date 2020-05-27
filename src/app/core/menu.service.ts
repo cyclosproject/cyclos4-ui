@@ -598,7 +598,7 @@ export class MenuService {
           'assignment_late', this.i18n.menu.bankingPendingMyAuth);
       }
       if (authorizations.view) {
-        if (banking.searchGeneralAuthorizedPayments) {
+        if (role === RoleEnum.ADMINISTRATOR && banking.searchGeneralAuthorizedPayments) {
           add(Menu.AUTHORIZED_PAYMENTS_OVERVIEW, `/banking/authorized-payments`,
             'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
         } else {
@@ -641,6 +641,10 @@ export class MenuService {
         if (banking.searchGeneralTransfers) {
           add(Menu.BROKER_TRANSFERS_OVERVIEW, `/banking/transfers-overview`,
             'compare_arrows', this.i18n.menu.bankingTransfersOverview);
+        }
+        if (banking.searchGeneralAuthorizedPayments) {
+          add(Menu.BROKER_AUTHORIZED_PAYMENTS_OVERVIEW, `/banking/authorized-payments`,
+            'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
         }
       }
 

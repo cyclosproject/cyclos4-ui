@@ -117,6 +117,7 @@ export namespace Menu {
   export const MY_BROKERED_USERS = new Menu(RootMenu.BROKERING, 'MY_BROKERED_USERS');
   export const BROKER_REGISTRATION = new Menu(RootMenu.BROKERING, 'BROKER_REGISTRATION');
   export const BROKER_TRANSFERS_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_TRANSFERS_OVERVIEW');
+  export const BROKER_AUTHORIZED_PAYMENTS_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_AUTHORIZED_PAYMENTS_OVERVIEW');
 
   // Personal
   export const MY_PROFILE = new Menu(RootMenu.PERSONAL, 'MY_PROFILE');

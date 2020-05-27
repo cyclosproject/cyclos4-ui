@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   Currency, TransactionAuthorizationStatusEnum, TransactionDataForSearch,
-  TransactionOverviewDataForSearch, TransactionOverviewQueryFilters, TransactionOverviewResult
+  TransactionOverviewDataForSearch, TransactionOverviewQueryFilters, TransactionOverviewResult, RoleEnum
 } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -134,7 +134,11 @@ export class SearchTransactionsOverviewComponent
     let menu: Menu;
     switch (this.kind) {
       case 'authorized':
-        menu = Menu.AUTHORIZED_PAYMENTS_OVERVIEW;
+        if (this.dataForUiHolder.role === RoleEnum.BROKER) {
+          menu = Menu.BROKER_AUTHORIZED_PAYMENTS_OVERVIEW;
+        } else {
+          menu = Menu.AUTHORIZED_PAYMENTS_OVERVIEW;
+        }
         break;
       case 'myAuth':
         menu = Menu.PENDING_MY_AUTHORIZATION;
