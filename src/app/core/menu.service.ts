@@ -598,7 +598,7 @@ export class MenuService {
           'assignment_late', this.i18n.menu.bankingPendingMyAuth);
       }
       if (authorizations.view) {
-        if (role === RoleEnum.ADMINISTRATOR) {
+        if (banking.searchGeneralAuthorizedPayments) {
           add(Menu.AUTHORIZED_PAYMENTS_OVERVIEW, `/banking/authorized-payments`,
             'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
         } else {

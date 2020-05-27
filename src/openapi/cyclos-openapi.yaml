@@ -46556,22 +46556,52 @@ components:
           allOf:
             - $ref: '#/components/schemas/TicketsPermissions'
 
-        searchGeneralTransfers:
-          description: >-
-            Can the authenticated admin / broker perform a general transfers
-            search (all visible transfers, regardless of the user / account)?
-          type:
-            boolean
         searchUsersWithBalances:
           description: >-
             Can the authenticated admin / broker search managed users together
             with their account balances?
           type:
             boolean
+        searchGeneralTransfers:
+          description: >-
+            Can the authenticated admin / broker perform a general transfers
+            search (all visible transfers, regardless of the user / account)?
+          type:
+            boolean
+        searchGeneralAuthorizedPayments:
+          description: >-
+            Can the authenticated admin / broker perform a general transaction
+            search for authorizations?
+          type:
+            boolean
+        searchGeneralScheduledPayments:
+          description: >-
+            Can the authenticated admin / broker perform a general scheduled
+            payments / installments search?
+          type:
+            boolean
+        searchGeneralExternalPayments:
+          description: >-
+            Can the authenticated admin / broker perform a general external
+            payments search?
+          type:
+            boolean
+        searchGeneralPaymentRequests:
+          description: >-
+            Can the authenticated admin / broker perform a general payment
+            requests search?
+          type:
+            boolean
         searchGeneralBalanceLimits:
           description: >-
             Can the authenticated admin / broker perform a general account
             balance limit search, for all visible accounts?
+          type:
+            boolean
+        searchGeneralPaymentLimits:
+          description: >-
+            Can the authenticated admin / broker perform a general account
+            payment limit search, for all visible accounts?
           type:
             boolean
 
