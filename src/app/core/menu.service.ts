@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import {
-  AccountType, Auth, DataForUi, Operation, RecordLayoutEnum, RecordPermissions, RoleEnum, VouchersPermissions,
+  AccountType, Auth, DataForUi, Operation, RecordLayoutEnum, RecordPermissions, RoleEnum, VouchersPermissions
 } from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -717,7 +717,12 @@ export class MenuService {
         marketplaceRoot.label = publicDirectory.label;
         marketplaceRoot.title = publicDirectory.label;
       }
-
+      if (auth.role === RoleEnum.ADMINISTRATOR) {
+        for (const token of permissions.tokens?.user) {
+          const activeMenu = new ActiveMenu(Menu.USER_TOKENS, { tokenType: token.type });
+          add(activeMenu, `/users/tokens/search/${token.type.id}`, 'vpn_key', token.type.pluralName);
+        }
+      }
       // Personal
       const myProfile = permissions.myProfile || {};
       add(Menu.MY_PROFILE, '/users/self/profile', 'account_box', this.i18n.menu.personalViewProfile);
@@ -743,7 +748,11 @@ export class MenuService {
         add(Menu.AGREEMENTS, '/users/self/agreements', 'ballot', this.i18n.menu.personalAgreements);
       }
       if (permissions.documents.viewIndividual || permissions.documents.viewShared?.length > 0) {
-        add(Menu.MY_DOCUMENTS, `/users/documents`, 'library_books', this.i18n.menu.personalDocuments);
+        add(Menu.MY_DOCUMENTS, '/users/documents', 'library_books', this.i18n.menu.personalDocuments);
+      }
+      for (const token of permissions.tokens?.my) {
+        const activeMenu = new ActiveMenu(Menu.MY_TOKENS, { tokenType: token.type });
+        add(activeMenu, `/users/self/tokens/${token.type.id}`, 'vpn_key', token.type.pluralName);
       }
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);

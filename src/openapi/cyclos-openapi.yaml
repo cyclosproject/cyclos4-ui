@@ -30089,6 +30089,70 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /tokens/{id}/qr-code:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      operationId: getTokenQrCode
+      summary: >-
+        Returns the QR-code image for the given token only if its physical type is
+        `qrCode`
+      description: >-
+        This request will return the image contents as expected but our
+        api  documentation page (or any other usage of an &lt;img&gt; tag),
+        created  using swagger-ui, generates a second request to include the image
+        in the page. This new (GET) request won't send the authentication
+        parameters and  as this path requires authentication the image will be
+        shown as broken. Optionally, to solve the problem described above and to
+        allow authenticate the user when using sessions, a `sessionToken` or
+        `accessClientToken`  query parameter could be specified.
+      tags:
+        - Tokens
+      parameters:
+        - name: size
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ImageSizeEnum'
+      responses:
+        '200':
+          description: >-
+            The image content
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /tokens/{type}/data-for-new:
     parameters:
       - name: type
@@ -62759,7 +62823,7 @@ components:
                 The tokens for this type and user.
               type: array
               items:
-                $ref: '#/components/schemas/Token'
+                $ref: '#/components/schemas/TokenResult'
 
     UserValidationPermissions:
       description: >-

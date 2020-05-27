@@ -1,4 +1,4 @@
-import { AccountType, Operation, RecordType } from 'app/api/models';
+import { AccountType, Operation, RecordType, TokenType } from 'app/api/models';
 import { empty } from 'app/shared/helper';
 
 /** The types of menus in the application */
@@ -154,6 +154,10 @@ export namespace Menu {
   // Documents
   export const MY_DOCUMENTS = new Menu(RootMenu.PERSONAL, 'MY_DOCUMENTS');
 
+  // Tokens
+  export const MY_TOKENS = new Menu(RootMenu.PERSONAL, 'MY_TOKENS');
+  export const USER_TOKENS = new Menu(RootMenu.MARKETPLACE, 'USER_TOKENS');
+
   /**
    * Returns the various `Menu` that represents content pages in distinct root menus
    */
@@ -170,6 +174,7 @@ export interface ActiveMenuData {
   contentPage?: string;
   operation?: Operation;
   recordType?: RecordType;
+  tokenType?: TokenType;
 }
 
 /**
@@ -211,7 +216,9 @@ export class ActiveMenu {
       || (data1.accountType && data2.accountType && data1.accountType.id === data2.accountType.id)
       || (data1.operation && data2.operation && data1.operation.id === data2.operation.id)
       || (data1.contentPage && data1.contentPage === data2.contentPage)
-      || (data1.recordType && data2.recordType && data1.recordType.id === data2.recordType.id);
+      || (data1.recordType && data2.recordType && data1.recordType.id === data2.recordType.id)
+      || (data1.tokenType && data2.tokenType && data1.tokenType.id === data2.tokenType.id);
+
   }
 }
 

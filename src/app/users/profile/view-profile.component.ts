@@ -115,6 +115,8 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const operators = permissions.operators || {};
     const brokering = permissions.brokering || {};
     const vouchers = permissions.vouchers || {};
+    const documents = permissions.documents || {};
+    const tokens = permissions.tokens || [];
 
     if (user.relationship === UserRelationshipEnum.SELF) {
       // For the own user, we just show the edit as a top-level action
@@ -287,13 +289,18 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/marketplace', this.param, 'webshop-settings', 'view']);
         }));
       }
+      for (const token of tokens) {
+        this.managementActions.push(new HeadingAction('vpn_key', token.type.pluralName, () => {
+          this.router.navigate(['/users', this.param, 'tokens', token.type.id]);
+        }));
+      }
       if (notificationSettings.view) {
         this.managementActions.push(new HeadingAction('notifications_off', this.i18n.user.profile.notificationSettings, () => {
           this.router.navigate(['/users', this.param, 'notification-settings']);
         }));
       }
       // Documents
-      if (permissions.documents.view) {
+      if (documents.view) {
         this.managementActions.push(new HeadingAction('library_books', this.i18n.document.title.list, () => {
           this.router.navigate(['/users', this.param, 'documents', 'search']);
         }));
