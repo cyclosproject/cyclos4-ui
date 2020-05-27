@@ -28,7 +28,9 @@
       [mode]="(layout.ltsm$ | async) ? 'tight' : 'table'" last>
       <ng-container *ngIf="layout.ltsm$ | async; else largeTable">
         <div class="mobile-results">
-          <maybe-link *ngFor="let row of rows" class="mobile-result"
+          <maybe-link *ngFor="let row of rows; let last = last"
+            class="mobile-result"
+            [ngClass]="{'border-bottom-0': embedded && last}"
             [link]="linkUrl(row)" (click)="handleClick(row, $event)"
             (keydown.enter)="handleClick(row, $event)">
             <ng-container

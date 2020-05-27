@@ -37,8 +37,25 @@
             first && 
             data.userAccounts.length === 0 && 
             data.messageCategories.length === 0 &&
-            !data.forwardMessagesAllowed}">
-            {{section}}</h2>
+            !data.forwardMessagesAllowed}"
+            class="d-flex flex-column flex-xs-row justify-content-between">
+            <div class="mb-2 mb-xs-0">
+              {{section}}
+            </div>
+            <div [ngClass]="{'section-title-action': layout.gtsm$ | async}"
+              *ngIf="!adminSettings && notificationSections.get(section).length > 3 && data.editable">
+              <button class="btn btn-outline-primary" [ngClass]="{
+                  'mr-3': !(layout.ltxs$ | async),
+                  'mb-2': layout.ltxs$ | async}"
+                (click)="enableNotifications(section, true)">
+                {{ i18n.notificationSettings.enableAll }}
+              </button>
+              <button class="btn btn-outline-primary"
+                (click)="enableNotifications(section, false)">
+                {{ i18n.notificationSettings.disableAll }}
+              </button>
+            </div>
+          </h2>
           <ng-container
             *ngFor="let notification of notificationSections.get(section)">
             <label-value [label]="resolveNotificationLabel(notification)"
@@ -51,18 +68,6 @@
               </notification-type-setting>
             </label-value>
           </ng-container>
-          <actions
-            *ngIf="!adminSettings && notificationSections.get(section).length > 3 && data.editable"
-            class="mt-3 mb-3">
-            <button class="btn btn-outline-primary"
-              (click)="enableNotifications(section, true)">
-              {{ i18n.notificationSettings.enableAll }}
-            </button>
-            <button class="btn btn-outline-primary"
-              (click)="enableNotifications(section, false)">
-              {{ i18n.notificationSettings.disableAll }}
-            </button>
-          </actions>
         </ng-container>
         <ng-container *ngIf="data.smsAllowed">
           <h2>{{i18n.general.sendMedium.sms}}</h2>

@@ -101,7 +101,6 @@ export class EditWebshopSettingsComponent
 
     this.addSub(this.webshopSettingsService.updateWebshopSettings({ user: this.user, body: value }).subscribe(() => {
       this.notification.snackBar(this.i18n.ad.webshopSettingsSaved);
-      history.back();
     }));
   }
 

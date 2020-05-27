@@ -40,6 +40,7 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
   @Input() results: PagedResults<R> | R[];
   @Input() rendering$ = new BehaviorSubject(false);
   @Input() referencePoint: MaxDistance;
+  @Input() embedded: boolean; // When embedding results into other widgets some borders are removed
   @Output() update = new EventEmitter<PageData>();
 
   @ContentChild(ResultCategoryDirective, { read: TemplateRef }) categoryTemplate: TemplateRef<any>;

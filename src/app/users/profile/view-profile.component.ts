@@ -112,6 +112,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const operators = permissions.operators || {};
     const brokering = permissions.brokering || {};
     const vouchers = permissions.vouchers || {};
+    const documents = permissions.documents || {};
 
     if (user.relationship === UserRelationshipEnum.SELF) {
       // For the own user, we just show the edit as a top-level action
@@ -298,7 +299,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           }));
       }
       // Documents
-      if (permissions.documents.view) {
+      if (documents.view) {
         this.managementActions.push(new HeadingAction('library_books', this.i18n.document.title.list, () => {
           this.router.navigate(['/users', this.param, 'documents', 'search']);
         }));

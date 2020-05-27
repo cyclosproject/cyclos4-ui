@@ -675,7 +675,7 @@ export class MenuService {
         add(Menu.SEARCH_USER_WEBSHOP, 'marketplace/self/webshop/list', 'shopping_basket', this.i18n.menu.marketplaceMyWebshop);
         add(Menu.SALES, 'marketplace/self/sales', 'local_offer', this.i18n.menu.marketplaceMySales);
         add(Menu.DELIVERY_METHODS, 'marketplace/self/delivery-methods', 'local_shipping', this.i18n.menu.marketplaceDeliveryMethods);
-        add(Menu.WEBSHOP_SETTINGS, 'marketplace/self/webshop-settings/view', 'store', this.i18n.menu.marketplaceWebshopSettings);
+        add(Menu.WEBSHOP_SETTINGS, 'marketplace/self/webshop-settings/edit', 'store', this.i18n.menu.marketplaceWebshopSettings);
       }
 
       if (simple.questions || webshop.questions) {
