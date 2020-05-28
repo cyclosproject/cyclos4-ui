@@ -15,11 +15,14 @@
   icon {
     color: $tiled-results-icon-color;
   }
-  h1, h2, h3 {
+  h1, h2, h3, hr {
     margin-left: 0;
     margin-right: 0;
     padding-left: 0;
     padding-right: 0;
+  }
+  hr {
+    opacity: 0.33;
   }
 }
 

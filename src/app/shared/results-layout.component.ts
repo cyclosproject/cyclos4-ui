@@ -208,6 +208,12 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
 
     // Convert each result to a point
     const markers = new Array<google.maps.Marker>(rows.length);
+    const byLocation = new Map<string, google.maps.Marker[]>();
+    const markerKey = (marker: google.maps.Marker) => {
+      const pos = marker.getPosition();
+      return this.format.formatAsNumber(pos.lat(), 5)
+        + '|' + this.format.formatAsNumber(pos.lng(), 5);
+    };
     rows.forEach(r => {
       const address = this.toAddress(r);
       const location = address == null ? null : address.location;
@@ -218,17 +224,37 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
           icon: Configuration.mainMapMarker,
           position: new google.maps.LatLng(location.latitude, location.longitude),
         });
+        marker['row'] = r;
+        marker['address'] = address;
+        const key = markerKey(marker);
+        let onLocation = byLocation.get(key);
+        if (!onLocation) {
+          onLocation = [];
+          byLocation.set(key, onLocation);
+        }
+        onLocation.push(marker);
         bounds.extend(marker.getPosition());
         marker.addListener('click', () => {
           this.closeAllInfoWindows();
           const infoWindow = this.infoWindow(marker);
-          const view = this.infoWindowContent.createEmbeddedView({
-            $implicit: r, address,
-          });
-          view.detectChanges();
-          const roots = view.rootNodes;
-          if (!empty(roots)) {
-            infoWindow.setContent(roots[0]);
+          const allRoots = [];
+          for (const m of onLocation) {
+            const view = this.infoWindowContent.createEmbeddedView({
+              $implicit: m['row'], address: m['address']
+            });
+            view.detectChanges();
+            const roots = view.rootNodes || [];
+            if (!empty(roots)) {
+              if (!empty(allRoots)) {
+                allRoots.push(document.createElement('hr'));
+              }
+              Array.prototype.push.apply(allRoots, roots);
+            }
+          }
+          if (!empty(allRoots)) {
+            const container = document.createElement('div');
+            allRoots.forEach(e => container.appendChild(e));
+            infoWindow.setContent(container);
             infoWindow.open(this.map, marker);
           }
         });
