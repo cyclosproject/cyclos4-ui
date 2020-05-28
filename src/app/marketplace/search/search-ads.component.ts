@@ -28,6 +28,7 @@ export class SearchAdsComponent
 
   categoryTrail$ = new BehaviorSubject<AdCategoryWithChildren[]>(null);
   currency$ = new BehaviorSubject<Currency>(null);
+  profileFields: (string | CustomFieldDetailed)[];
   basicFields: CustomFieldDetailed[];
   advancedFields: CustomFieldDetailed[];
   marketplacePermissions: MarketplacePermissions;
@@ -85,6 +86,10 @@ export class SearchAdsComponent
     this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
       useDefaults: false,
     }));
+
+    this.form.setControl('profileFields',
+      this.fieldHelper.profileFieldsForSearchFormGroup(data.basicProfileFields, data.customProfileFields));
+
     this.headingActions = [this.moreFiltersAction];
 
     this.addSub(this.form.get('currency').valueChanges.subscribe(id =>
@@ -101,9 +106,10 @@ export class SearchAdsComponent
   }
 
   protected toSearchParams(value: any): AdQueryFilters {
-    const params: AdQueryFilters = value;
+    const params: AdQueryFilters = { ...value };
     const isMap = this.resultType === ResultType.MAP;
     params.customFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
+    params.profileFields = this.fieldHelper.toProfileFieldsFilter(value.profileFields);
     params.addressResult = isMap ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
     const distanceFilter: MaxDistance = value.distanceFilter;
     if (distanceFilter) {

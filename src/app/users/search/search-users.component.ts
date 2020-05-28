@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   Country, CustomFieldDetailed, RoleEnum, User, UserAddressResultEnum,
-  UserDataForMap, UserDataForSearch, UserQueryFilters,
+  UserDataForMap, UserDataForSearch, UserQueryFilters
 } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { UsersService } from 'app/api/services';
@@ -12,7 +12,7 @@ import { empty } from 'app/shared/helper';
 import { MaxDistance } from 'app/shared/max-distance';
 import { Menu } from 'app/shared/menu';
 import { ResultType } from 'app/shared/result-type';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export enum UserSearchKind {
   Public,
@@ -48,8 +48,7 @@ export class SearchUsersComponent
   canSearch: boolean;
   canViewMap: boolean;
   countries$: Observable<Country[]>;
-  basicField$ = new BehaviorSubject<CustomFieldDetailed>(null);
-  advancedFields$ = new BehaviorSubject<CustomFieldDetailed[]>([]);
+  customFieldsInSearch: CustomFieldDetailed[];
 
   constructor(
     injector: Injector,
@@ -162,19 +161,16 @@ export class SearchUsersComponent
         // When there are no fields in list, set the display
         data.fieldsInList = ['display'];
       }
-      const fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
       this.doIgnoringUpdate(() => {
-        this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(fieldsInSearch, {
-          useDefaults: false,
-        }));
-        this.basicField$.next(fieldsInSearch.length === 0 ? null : fieldsInSearch[0]);
-        this.advancedFields$.next(fieldsInSearch.length > 1 ? fieldsInSearch.slice(1) : []);
+        this.customFieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
+        this.form.setControl('profileFields',
+          this.fieldHelper.profileFieldsForSearchFormGroup(data.basicFields, this.customFieldsInSearch));
         if (!this.broker && data.broker) {
           this.broker = data.broker;
         }
         this.data = data;
         this.headingActions = [
-          ...empty(this.advancedFields$.value) ? [] : [this.moreFiltersAction],
+          ...empty(data.fieldsInSearch) ? [] : [this.moreFiltersAction],
           ...this.exportHelper.headingActions(this.data.exportFormats, f => this.usersService.exportUsers$Response({
             format: f.internalName,
             ...this.toSearchParams(this.form.value)
@@ -201,11 +197,12 @@ export class SearchUsersComponent
   }
 
   protected toSearchParams(value: any): UserQueryFilters {
-    const filters: UserQueryFilters = value;
+    const filters: UserQueryFilters = { ...value };
     if (this.kind === UserSearchKind.Broker) {
       filters.brokers = [this.param];
     }
-    filters.profileFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
+    filters.profileFields = this.fieldHelper.toProfileFieldsFilter(value.profileFields);
+
     const distanceFilter: MaxDistance = value.distanceFilter;
     if (distanceFilter) {
       filters.maxDistance = distanceFilter.maxDistance;

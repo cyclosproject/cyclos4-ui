@@ -15,6 +15,7 @@ import { AgreementsContentDialogComponent } from 'app/shared/agreement-content-d
 import { AgreementLinkComponent } from 'app/shared/agreement-link.component';
 import { AvatarComponent } from 'app/shared/avatar.component';
 import { BannerCardComponent } from 'app/shared/banner-card.component';
+import { BasicProfileFieldFilterComponent } from 'app/shared/basic-profile-field-filter.component';
 import { BooleanFieldComponent } from 'app/shared/boolean-field.component';
 import { BooleanPipe } from 'app/shared/boolean.pipe';
 import { ButtonToggleComponent } from 'app/shared/button-toggle.component';
@@ -184,6 +185,7 @@ export function initTooltipConfig(): TooltipConfig {
     DecimalFieldComponent,
     CustomFieldInputComponent,
     CustomFieldFilterComponent,
+    BasicProfileFieldFilterComponent,
     FieldPrivacyComponent,
     MaxDistanceFieldComponent,
     ImagesFieldComponent,
@@ -315,6 +317,7 @@ export function initTooltipConfig(): TooltipConfig {
     DecimalFieldComponent,
     CustomFieldInputComponent,
     CustomFieldFilterComponent,
+    BasicProfileFieldFilterComponent,
     FieldPrivacyComponent,
     MaxDistanceFieldComponent,
     ImagesFieldComponent,

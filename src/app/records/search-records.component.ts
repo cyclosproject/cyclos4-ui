@@ -29,7 +29,6 @@ export class SearchRecordsComponent
   param: string;
   fieldsInSearch: Array<CustomFieldDetailed>;
   fieldsInList: Array<CustomFieldDetailed>;
-  profileFields: Array<CustomFieldDetailed>;
   groups: Array<Group>;
 
   constructor(
@@ -58,19 +57,16 @@ export class SearchRecordsComponent
   }
 
   onDataInitialized(data: GeneralRecordsDataForSearch | RecordDataForSearch) {
-
     if (!this.generalSearch && data.type.layout !== RecordLayoutEnum.LIST) {
       throw new Error(`Invalid record layout: ${data.type.layout}`);
     }
-    this.profileFields = data.customProfileFields || [];
     this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
     this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
     this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(this.fieldsInSearch, {
       useDefaults: false,
     }));
-    this.form.setControl('profileFields', this.fieldHelper.customValuesFormGroup(this.profileFields, {
-      useDefaults: false,
-    }));
+    this.form.setControl('profileFields',
+      this.fieldHelper.profileFieldsForSearchFormGroup(data.basicProfileFields, data.customProfileFields));
     this.form.patchValue(data.query);
 
     const headingActions: HeadingAction[] = [];
@@ -139,18 +135,15 @@ export class SearchRecordsComponent
     return (record: RecordResult) => this.viewPath(record);
   }
 
-  protected toSearchParams(params: any): RecordSearchParams {
-    params.customFields = this.fieldHelper.toCustomValuesFilter(params.customValues);
-    params.profileFields = this.fieldHelper.toCustomValuesFilter(params.profileFields);
-    params.creationPeriod = ApiHelper.dateRangeFilter(params.beginDate, params.endDate);
-    delete params.beginDate;
-    delete params.endDate;
-
+  protected toSearchParams(value: any): RecordSearchParams {
+    const params: RecordSearchParams = { ...value };
+    params.customFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
+    params.profileFields = this.fieldHelper.toProfileFieldsFilter(value.profileFields);
+    params.creationPeriod = ApiHelper.dateRangeFilter(value.beginDate, value.endDate);
     if (!this.generalSearch) {
       params.owner = this.param;
     }
     params.type = this.type;
-    delete params.customValues;
     return params;
   }
 

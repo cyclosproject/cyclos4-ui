@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AsyncValidatorFn, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  CustomField, CustomFieldBinaryValues, CustomFieldDetailed, CustomFieldSizeEnum,
-  CustomFieldTypeEnum, CustomFieldValue, LinkedEntityTypeEnum
+  BasicProfileFieldInput, CustomField, CustomFieldBinaryValues,
+  CustomFieldDetailed, CustomFieldSizeEnum, CustomFieldTypeEnum,
+  CustomFieldValue, LinkedEntityTypeEnum
 } from 'app/api/models';
 import { FormatService } from 'app/core/format.service';
 import { I18n } from 'app/i18n/i18n';
@@ -46,7 +47,7 @@ export class FieldHelperService {
    * @param field The field identifier
    * @param customFields The known custom fields
    */
-  fieldDisplay(field: string, customFields: CustomField[]): string {
+  fieldDisplay(field: string, customFields?: CustomField[]): string {
     switch (field) {
       case 'display':
         return this.i18n.general.user;
@@ -58,10 +59,12 @@ export class FieldHelperService {
         return this.i18n.user.email;
       case 'phone':
         return this.i18n.phone.phoneNumber;
+      case 'address':
+        return this.i18n.address.address;
       case 'accountNumber':
         return this.i18n.account.number;
       default:
-        const customField = customFields.find(cf => cf.internalName === field);
+        const customField = (customFields || []).find(cf => cf.internalName === field);
         return (customField || {}).name;
     }
   }
@@ -76,6 +79,26 @@ export class FieldHelperService {
     } else {
       return field;
     }
+  }
+
+  /**
+   * Returns a FormGroup which contains a form control for each of the given user profile fields
+   * @param basicFields The basic profile fields
+   * @param customFields The custom profile fields
+   * @returns The FormGroup
+   */
+  profileFieldsForSearchFormGroup(basicFields: BasicProfileFieldInput[], customFields: CustomFieldDetailed[]): FormGroup {
+    const group = this.formBuilder.group({});
+    // Append the basic profile fields
+    for (const bf of basicFields) {
+      group.addControl(bf.field, this.formBuilder.control(null));
+    }
+    // Append the custom profile fields
+    const customControls = this.customValuesFormControlMap(customFields, { useDefaults: false });
+    for (const [name, control] of customControls) {
+      group.addControl(name, control);
+    }
+    return group;
   }
 
   /**
@@ -197,15 +220,22 @@ export class FieldHelperService {
    */
   toCustomValuesFilter(customValues: { [key: string]: string }): string[] {
     const result: string[] = [];
-    for (const key in customValues || {}) {
-      if (customValues.hasOwnProperty(key)) {
-        const value = customValues[key];
-        if (!empty(value)) {
-          result.push(key + ':' + customValues[key]);
-        }
+    for (const key of Object.keys(customValues || {})) {
+      const value = customValues[key];
+      if (!empty(value)) {
+        result.push(key + ':' + customValues[key]);
       }
     }
     return result;
+  }
+
+  /**
+   * Returns a suitable representation for using user profile field values in searches
+   * @param values The profile field values map
+   */
+  toProfileFieldsFilter(values: { [key: string]: string }): string[] {
+    // TODO we should correctly handle custom fields which are ranges.
+    return this.toCustomValuesFilter(values);
   }
 
   /**

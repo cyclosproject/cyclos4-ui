@@ -52,7 +52,14 @@
               [formControl]="form.get('customValues').get(cf.internalName)">
             </custom-field-filter>
           </div>
-          <div class="col-12 col-md-6" *ngFor="let cf of profileFields">
+          <div class="col-12 col-md-6"
+            *ngFor="let bf of data.basicProfileFields">
+            <basic-profile-field-filter labelPosition="side" [field]="bf"
+              [formControl]="form.get('profileFields').get(bf.field)">
+            </basic-profile-field-filter>
+          </div>
+          <div class="col-12 col-md-6"
+            *ngFor="let cf of data.customProfileFields">
             <custom-field-filter labelPosition="side" [field]="cf"
               [formControl]="form.get('profileFields').get(cf.internalName)">
             </custom-field-filter>

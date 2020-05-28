@@ -39,16 +39,16 @@
               [label]="i18n.general.distanceFilter">
             </max-distance-field>
           </div>
-          <div class="col-12 col-md-6" *ngIf="(basicField$ | async) as cf">
-            <custom-field-filter labelPosition="side" [field]="cf"
-              [formControl]="form.get('customValues').get(cf.internalName)">
-            </custom-field-filter>
-          </div>
           <ng-container *ngIf="moreFilters$ | async">
+            <div class="col-12 col-md-6" *ngFor="let f of data.basicFields">
+              <basic-profile-field-filter labelPosition="side" [field]="f"
+                [formControl]="form.get('profileFields').get(f.field)">
+              </basic-profile-field-filter>
+            </div>
             <div class="col-12 col-md-6"
-              *ngFor="let cf of advancedFields$ | async">
+              *ngFor="let cf of customFieldsInSearch">
               <custom-field-filter labelPosition="side" [field]="cf"
-                [formControl]="form.get('customValues').get(cf.internalName)">
+                [formControl]="form.get('profileFields').get(cf.internalName)">
               </custom-field-filter>
             </div>
           </ng-container>
