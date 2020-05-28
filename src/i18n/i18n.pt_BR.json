@@ -252,7 +252,7 @@
     "banking.pos": "Receber pagamento",
     "banking.receiveQrPayment": "Receber código QR",
     "banking.scheduledPayments": "Pagamentos agendados",
-    "banking.pendingMyAuth": "Awaiting my authorization",
+    "banking.pendingMyAuth": "Aguardando minha autorização",
     "banking.authorizations": "Autorizações de pagamento",
     "banking.searchVouchers": "Busca de cupons",
     "banking.buyVouchers": "Comprar cupons",
@@ -581,7 +581,7 @@
       "paymentConfirmation": "Confirmação de pagamento",
       "pendingPayment": "Pagamento submetido para autorização",
       "processedPayment": "Pagamento efetuado",
-      "pendingMyAuthorization": "Pending my authorization",
+      "pendingMyAuthorization": "Pendente de minha autorização",
       "authorizations": "Autorizações de pagamento",
       "authorizationHistory": "Histórico de autorizações",
       "scheduled": "Pagamentos agendados",
@@ -608,7 +608,7 @@
       "paymentConfirmation": "Confirmação",
       "pendingPayment": "Pendente de autorização",
       "processedPayment": "Pagamento efetuado",
-      "pendingMyAuthorization": "To authorize",
+      "pendingMyAuthorization": "Para autorizar",
       "authorizations": "Autorizações",
       "authorizationHistory": "Histórico",
       "scheduled": "Pagamentos agendados",
@@ -1753,56 +1753,56 @@
   },
   "token": {
     "title": {
-      "new": "{0} details",
-      "view": "{0} details",
-      "assign": "Assign"
+      "new": "Detalhes de {0}",
+      "view": "Detalhes de {0}",
+      "assign": "Atribuir"
     },
     "mobileTitle": {
-      "view": "{0} details"
+      "view": "Detalhes de {0}"
     },
     "action": {
       "activate": "Ativar",
-      "assign": "Assign",
-      "block": "Block",
-      "cancel": "Cancel",
-      "changeDeadline": "Change deadline",
-      "changeExpiry": "Change expiry",
+      "assign": "Atribuir",
+      "block": "Bloquear",
+      "cancel": "Cancelar",
+      "changeDeadline": "Alterar prazo",
+      "changeExpiry": "Alterar expiração",
       "unblock": "Desbloquear",
       "done": {
-        "activated": "The token was activated",
-        "assigned": "The token was assigned",
-        "blocked": "The token was blocked",
-        "canceled": "The token was canceled",
-        "created": "The token was created",
-        "deadlineChanged": "The token deadline was changed",
-        "expiryChanged": "The token expiry was changed",
-        "unblocked": "The token was unblocked"
+        "activated": "O token foi ativado",
+        "assigned": "O token foi atribuído",
+        "blocked": "O token foi bloqueado",
+        "canceled": "O token foi cancelado",
+        "created": "O token foi criado",
+        "deadlineChanged": "O prazo do token foi alterado",
+        "expiryChanged": "O vencimento do token foi alterado",
+        "unblocked": "O token foi desbloqueado"
       },
       "message": {
-        "cancel": "You are about to cancel the token. Be aware that this is a permanent action. Are you sure you want to change the token status to canceled?"
+        "cancel": "Você está prestes a cancelar o token. Esteja ciente que esta é uma ação permanente. Tem certeza que deseja alterar o status do token para cancelado?"
       }
     },
     "status": {
-      "activationExpired": "Activation expired",
+      "activationExpired": "Ativação expirada",
       "active": "Ativa",
-      "blocked": "Blocked",
-      "canceled": "Canceled",
-      "expired": "Expired",
-      "pending": "Pending activation",
-      "unassigned": "Unassigned"
+      "blocked": "Bloqueado",
+      "canceled": "Cancelado",
+      "expired": "Vencido",
+      "pending": "Pendente de ativação",
+      "unassigned": "Não atribuido"
     },
-    "value": "Value",
-    "label": "Label",
-    "activationDeadline": "Activation deadline",
-    "noDeadline": "No deadline",
-    "expiryDate": "Expiry date",
-    "noExpiryDate": "Without expiry",
-    "activationDate": "Activation date",
-    "creationDate": "Creation date",
-    "activationBeginDate": "Activation begin date",
-    "activationEndDate": "Activation end date",
-    "expiryBeginDate": "Expiry begin date",
-    "expiryEndDate": "Expiry end date",
-    "unassigned": "Unassigned"
+    "value": "Valor",
+    "label": "Rótulo",
+    "activationDeadline": "Prazo de ativação",
+    "noDeadline": "Sem prazo",
+    "expiryDate": "Data de expiração",
+    "noExpiryDate": "Sem expiração",
+    "activationDate": "Data de ativação",
+    "creationDate": "Data de criação",
+    "activationBeginDate": "Data inicial de ativação",
+    "activationEndDate": "Data final de ativação",
+    "expiryBeginDate": "Data inicial de expiração",
+    "expiryEndDate": "Data final de expiração",
+    "unassigned": "Não atribuido"
   }
 }
