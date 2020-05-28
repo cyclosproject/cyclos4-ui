@@ -2,7 +2,7 @@
 <ng-container *ngIf="imageAvailability !== 'disabled'">
   <h2 class="border-0">{{ i18n.user.title.image }}</h2>
   <div class="row">
-    <div class="col-12 col-sm-6">
+    <div class="col-12 col-sm-4">
       <div class="d-flex justify-content-center justify-content-sm-start">
         <avatar *ngIf="image$ | async; else noImage" [image]="image"
           size="huge" useLightbox>
@@ -15,7 +15,7 @@
         keepUrls (uploadDone)="onUploadDone($event[0])"></image-upload>
     </div>
     <div
-      class="col-12 col-sm-6 mt-3 mt-sm-0 d-flex justify-content-between justify-content-sm-end align-items-end"
+      class="col-12 col-sm-8 mt-3 mt-sm-0 d-flex justify-content-between justify-content-sm-end align-items-end"
       *ngIf="(upload.uploading$ | async) === false">
       <action-button [disabled]="requesting$ | async"
         (action)="upload.perform()" [label]="i18n.field.image.upload" outline>

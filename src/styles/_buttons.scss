@@ -5,7 +5,7 @@ button[disabled], button[disabled]:hover {
 }
 
 button, input[type=button] {
-  height: $input-height;
+  min-height: $input-height;
   width: 100%;
 }
 @include media-breakpoint-up(xs) {
