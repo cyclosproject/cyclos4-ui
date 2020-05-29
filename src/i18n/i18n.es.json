@@ -969,7 +969,6 @@
     "contactInfo.atAddress": "En",
     "confirmation.message": "Para guardar el perfil ingrese su {type}",
     "profileSaved": "El perfil se ha guardado",
-    "imagesChanged": "Para guardar los cambios en las imágenes, el perfil debe ser guardado",
     "newEmailConfirmed": "Su nuevo correo electrónico fue confirmado",
     "passwordConfirmation": "Confirmación de {type}",
     "securityQuestion.message": "Si usted olvida su contraseña, necesitará contestar correctamente a la pregunta de seguridad para poder restablecerla.\nPuede definir la pregunta mas tarde, pero tenga en cuenta que la recuperación de contraseña no funcionará hasta que la haya definido.",
