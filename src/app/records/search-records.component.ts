@@ -64,8 +64,10 @@ export class SearchRecordsComponent
     this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
     this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
     this.form.setControl('customValues', this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch));
-    this.form.setControl('profileFields',
-      this.fieldHelper.profileFieldsForSearchFormGroup(data.basicProfileFields, data.customProfileFields));
+    if (this.generalSearch) {
+      this.form.setControl('profileFields',
+        this.fieldHelper.profileFieldsForSearchFormGroup(data.basicProfileFields, data.customProfileFields));
+    }
     this.form.patchValue(data.query);
 
     const headingActions: HeadingAction[] = [];

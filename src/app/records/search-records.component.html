@@ -10,26 +10,28 @@
             <input-field labelPosition="side" formControlName="keywords"
               [label]="i18n.general.keywords" fieldSize="full"></input-field>
           </div>
-          <div *ngIf="groups.length > 1" class="col-12 col-md-6">
-            <multi-selection-field labelPosition="side"
-              hierarchyProperty="groupSet" formControlName="groups"
-              [label]="i18n.user.groups">
-              <field-option *ngFor="let group of groups"
-                [value]="ApiHelper.internalNameOrId(group)"
-                [internalName]="group.internalName" [id]="group.id"
-                [text]="group.name" [parent]="group.groupSet">
-              </field-option>
-            </multi-selection-field>
-          </div>
-          <div class="col-12 col-md-6">
-            <user-field labelPosition="side" [label]="i18n.user.broker"
-              formControlName="broker" [filters]="{roles: ['broker']}">
-            </user-field>
-          </div>
-          <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="user"
-              [label]="i18n.general.user"></user-field>
-          </div>
+          <ng-container *ngIf="generalSearch">
+            <div *ngIf="groups.length > 1" class="col-12 col-md-6">
+              <multi-selection-field labelPosition="side"
+                hierarchyProperty="groupSet" formControlName="groups"
+                [label]="i18n.user.groups">
+                <field-option *ngFor="let group of groups"
+                  [value]="ApiHelper.internalNameOrId(group)"
+                  [internalName]="group.internalName" [id]="group.id"
+                  [text]="group.name" [parent]="group.groupSet">
+                </field-option>
+              </multi-selection-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <user-field labelPosition="side" [label]="i18n.user.broker"
+                formControlName="broker" [filters]="{roles: ['broker']}">
+              </user-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <user-field labelPosition="side" formControlName="user"
+                [label]="i18n.general.user"></user-field>
+            </div>
+          </ng-container>
           <div class="col-12 col-md-6">
             <user-field labelPosition="side" formControlName="createdBy"
               [label]="i18n.record.createdBy"></user-field>
@@ -53,18 +55,20 @@
               [formControl]="form.get('customValues').get(cf.internalName)">
             </custom-field-filter>
           </div>
-          <div class="col-12 col-md-6"
-            *ngFor="let bf of data.basicProfileFields">
-            <basic-profile-field-filter labelPosition="side" [field]="bf"
-              [formControl]="form.get('profileFields').get(bf.field)">
-            </basic-profile-field-filter>
-          </div>
-          <div class="col-12 col-md-6"
-            *ngFor="let cf of data.customProfileFields">
-            <custom-field-filter labelPosition="side" [field]="cf"
-              [formControl]="form.get('profileFields').get(cf.internalName)">
-            </custom-field-filter>
-          </div>
+          <ng-container *ngIf="generalSearch">
+            <div class="col-12 col-md-6"
+              *ngFor="let bf of data.basicProfileFields">
+              <basic-profile-field-filter labelPosition="side" [field]="bf"
+                [formControl]="form.get('profileFields').get(bf.field)">
+              </basic-profile-field-filter>
+            </div>
+            <div class="col-12 col-md-6"
+              *ngFor="let cf of data.customProfileFields">
+              <custom-field-filter labelPosition="side" [field]="cf"
+                [formControl]="form.get('profileFields').get(cf.internalName)">
+              </custom-field-filter>
+            </div>
+          </ng-container>
         </div>
       </form>
     </page-content>
