@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import {
   BaseRecordDataForSearch, CustomFieldDetailed, GeneralRecordsDataForSearch,
   GeneralRecordsQueryFilters, Group, RecordDataForSearch, RecordLayoutEnum,
-  RecordQueryFilters, RecordResult, RecordWithOwnerResult
+  RecordQueryFilters, RecordResult, RecordWithOwnerResult, BasicProfileFieldInput
 } from 'app/api/models';
 import { RecordsService } from 'app/api/services';
 import { RecordHelperService } from 'app/core/records-helper.service';
@@ -28,9 +28,11 @@ export class SearchRecordsComponent
 
   type: string;
   param: string;
-  fieldsInSearch: Array<CustomFieldDetailed>;
-  fieldsInList: Array<CustomFieldDetailed>;
-  groups: Array<Group>;
+  fieldsInSearch: CustomFieldDetailed[];
+  fieldsInList: CustomFieldDetailed[];
+  groups: Group[];
+  basicProfileFields: BasicProfileFieldInput[];
+  customProfileFields: CustomFieldDetailed[];
 
   constructor(
     injector: Injector,
@@ -65,8 +67,12 @@ export class SearchRecordsComponent
     this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
     this.form.setControl('customValues', this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch));
     if (this.generalSearch) {
+      const general = data as GeneralRecordsDataForSearch;
+      this.basicProfileFields = general.basicProfileFields;
+      this.customProfileFields = general.customProfileFields;
+      this.groups = general.groups || [];
       this.form.setControl('profileFields',
-        this.fieldHelper.profileFieldsForSearchFormGroup(data.basicProfileFields, data.customProfileFields));
+        this.fieldHelper.profileFieldsForSearchFormGroup(this.basicProfileFields, this.customProfileFields));
     }
     this.form.patchValue(data.query);
 
@@ -88,7 +94,6 @@ export class SearchRecordsComponent
         }
       });
     this.headingActions = headingActions;
-    this.groups = (data as GeneralRecordsDataForSearch).groups || [];
     super.onDataInitialized(data);
   }
 

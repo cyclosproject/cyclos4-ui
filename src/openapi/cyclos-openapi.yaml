@@ -46404,6 +46404,7 @@ components:
                 `GET /agreements/{key}/content` to fetch the content.
 
 
+
                 The agreement content.
 
     AgreementsPermissions:
@@ -47355,24 +47356,6 @@ components:
               type: array
               items:
                 type: string
-            basicProfileFields:
-              description: >-
-                The list of basic user profile fields that can be used as search
-                filters. Only returned if searching user records.
-              type: array
-              items:
-                $ref: '#/components/schemas/BasicProfileFieldInput'
-            customProfileFields:
-              description: >-
-                The list of custom user profile fields that can be used as search
-                filters. Only returned if searching user records.
-              type: array
-              items:
-                $ref: '#/components/schemas/CustomFieldDetailed'
-            addressFieldsInSearch:
-              type: array
-              items:
-                $ref: '#/components/schemas/AddressQueryFieldEnum'
             exportFormats:
               description: >-
                 The formats which the data can be exported
@@ -50068,6 +50051,8 @@ components:
           description: >-
             Use `passwordType.mode == 'generated'` instead.
 
+
+
             Indicates whether the password that is being affected is generated (when
             `true`) or manual (when `false`).
           type: boolean
@@ -52193,6 +52178,24 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Group'
+            basicProfileFields:
+              description: >-
+                The list of basic user profile fields that can be used as search
+                filters. Only returned if searching user records.
+              type: array
+              items:
+                $ref: '#/components/schemas/BasicProfileFieldInput'
+            customProfileFields:
+              description: >-
+                The list of custom user profile fields that can be used as search
+                filters. Only returned if searching user records.
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomFieldDetailed'
+            addressFieldsInSearch:
+              type: array
+              items:
+                $ref: '#/components/schemas/AddressQueryFieldEnum'
             query:
               description: >-
                 Default query filters for searching records
@@ -53094,6 +53097,17 @@ components:
               description: >-
                 Only if the installment was processed, contains the internal
                 identifier of the generated transfer.
+              type: string
+            transactionNumber:
+              deprecated: true
+              x-remove-version: 4.15
+              description: >-
+                Use `transferTransactionNumber` instead.
+
+
+
+                Only if the installment was processed, contains the transaction
+                number of the generated transfer.
               type: string
             transferTransactionNumber:
               description: >-

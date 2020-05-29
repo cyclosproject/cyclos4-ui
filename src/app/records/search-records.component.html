@@ -57,13 +57,13 @@
           </div>
           <ng-container *ngIf="generalSearch">
             <div class="col-12 col-md-6"
-              *ngFor="let bf of data.basicProfileFields">
+              *ngFor="let bf of basicProfileFields">
               <basic-profile-field-filter labelPosition="side" [field]="bf"
                 [formControl]="form.get('profileFields').get(bf.field)">
               </basic-profile-field-filter>
             </div>
             <div class="col-12 col-md-6"
-              *ngFor="let cf of data.customProfileFields">
+              *ngFor="let cf of customProfileFields">
               <custom-field-filter labelPosition="side" [field]="cf"
                 [formControl]="form.get('profileFields').get(cf.internalName)">
               </custom-field-filter>
