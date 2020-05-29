@@ -13,7 +13,7 @@
           <div *ngIf="groups.length > 1" class="col-12 col-md-6">
             <multi-selection-field labelPosition="side"
               hierarchyProperty="groupSet" formControlName="groups"
-              [label]="i18n.general.groups">
+              [label]="i18n.user.groups">
               <field-option *ngFor="let group of groups"
                 [value]="ApiHelper.internalNameOrId(group)"
                 [internalName]="group.internalName" [id]="group.id"
@@ -22,8 +22,9 @@
             </multi-selection-field>
           </div>
           <div class="col-12 col-md-6">
-            <multiple-users-field [label]="i18n.general.brokers"
-              formControlName="brokers"></multiple-users-field>
+            <user-field labelPosition="side" [label]="i18n.user.broker"
+              formControlName="broker" [filters]="{roles: ['broker']}">
+            </user-field>
           </div>
           <div class="col-12 col-md-6">
             <user-field labelPosition="side" formControlName="user"

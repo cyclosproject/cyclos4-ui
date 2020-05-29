@@ -1,8 +1,9 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  BaseRecordDataForSearch, CustomFieldDetailed, GeneralRecordsDataForSearch, Group,
-  RecordDataForSearch, RecordLayoutEnum, RecordQueryFilters, RecordResult, RecordWithOwnerResult,
+  BaseRecordDataForSearch, CustomFieldDetailed, GeneralRecordsDataForSearch,
+  GeneralRecordsQueryFilters, Group, RecordDataForSearch, RecordLayoutEnum,
+  RecordQueryFilters, RecordResult, RecordWithOwnerResult
 } from 'app/api/models';
 import { RecordsService } from 'app/api/services';
 import { RecordHelperService } from 'app/core/records-helper.service';
@@ -62,9 +63,7 @@ export class SearchRecordsComponent
     }
     this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
     this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
-    this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(this.fieldsInSearch, {
-      useDefaults: false,
-    }));
+    this.form.setControl('customValues', this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch));
     this.form.setControl('profileFields',
       this.fieldHelper.profileFieldsForSearchFormGroup(data.basicProfileFields, data.customProfileFields));
     this.form.patchValue(data.query);
@@ -140,7 +139,11 @@ export class SearchRecordsComponent
     params.customFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
     params.profileFields = this.fieldHelper.toProfileFieldsFilter(value.profileFields);
     params.creationPeriod = ApiHelper.dateRangeFilter(value.beginDate, value.endDate);
-    if (!this.generalSearch) {
+    if (this.generalSearch) {
+      const generalParams = params as GeneralRecordsQueryFilters;
+      generalParams.brokers = value.broker ? [value.broker] : [];
+      delete generalParams['broker'];
+    } else {
       params.owner = this.param;
     }
     params.type = this.type;
@@ -148,7 +151,7 @@ export class SearchRecordsComponent
   }
 
   protected getFormControlNames(): string[] {
-    return ['keywords', 'customValues', 'createdBy', 'beginDate', 'endDate', 'brokers', 'groups', 'user', 'profileFields'];
+    return ['keywords', 'customValues', 'createdBy', 'beginDate', 'endDate', 'broker', 'groups', 'user', 'profileFields'];
   }
 
   resolveMenu(data: BaseRecordDataForSearch) {
