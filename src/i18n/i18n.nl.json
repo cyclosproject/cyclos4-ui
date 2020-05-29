@@ -23,8 +23,6 @@
     "notAppliedSelect": "Not applied (select to apply)",
     "user": "Gebruiker",
     "operator": "Operator",
-    "brokers": "Brokers",
-    "groups": "Groups",
     "name": "Volledige naam",
     "to": "to",
     "description": "Omschrijving",
@@ -173,6 +171,7 @@
       "from": "From {min}",
       "to": "Up to {max}"
     },
+    "rangeTo": "to",
     "fileSize": {
       "b": "{n} bytes",
       "k": "{n}KB",
@@ -771,6 +770,10 @@
     "refundDate": "Refund date"
   },
   "field": {
+    "date": {
+      "clear": "Clear",
+      "today": "Today"
+    },
     "privacy": {
       "name": "Privacy",
       "private.tooltip": "Dit veld is privé. Klik op toestaan om het te bekijken.",
@@ -931,6 +934,9 @@
       "userBrokerings": "Broker members"
     },
     "group": "Groep",
+    "broker": "Broker",
+    "brokers": "Brokers",
+    "groups": "Groups",
     "groupSet": "Group set",
     "group.filter": "Groups",
     "registrationDate": "Registration date",
