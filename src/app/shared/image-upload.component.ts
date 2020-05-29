@@ -180,6 +180,13 @@ export class ImageUploadComponent extends AbstractComponent implements OnDestroy
           }
           url = `marketplace/${this.owner}/images`;
           break;
+        case ImageKind.PROFILE:
+          // Upload image to the user directly
+          if (!this.owner) {
+            throw new Error('Missing owner');
+          }
+          url = `${this.owner}/images`;
+          break;
         case ImageKind.USER_CUSTOM:
           // Upload a user custom image
           if (!this.owner) {

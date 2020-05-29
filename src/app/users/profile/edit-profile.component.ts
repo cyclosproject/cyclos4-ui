@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   AddressManage, AvailabilityEnum, ContactInfoManage, CreateDeviceConfirmation,
   CustomField, CustomFieldDetailed, CustomFieldValue, DataForEditFullProfile,
-  DeviceConfirmationTypeEnum, FullProfileEdit, Image, PhoneEditWithId, PhoneKind, PhoneManage,
+  DeviceConfirmationTypeEnum, FullProfileEdit, Image, PhoneEditWithId, PhoneKind, PhoneManage
 } from 'app/api/models';
 import { ImagesService, PhonesService, UsersService } from 'app/api/services';
 import { AddressHelperService } from 'app/core/address-helper.service';
@@ -19,9 +19,7 @@ import { VerifyPhoneComponent } from 'app/users/profile/verify-phone.component';
 import { cloneDeep } from 'lodash';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
-import { take } from 'rxjs/operators';
-
-const IMAGE_MANAGED_TIMEOUT = 6_000;
+import { first, take } from 'rxjs/operators';
 
 const BASIC_FIELDS = ['name', 'username', 'email'];
 export type Availability = 'disabled' | 'single' | 'multiple';
@@ -38,7 +36,7 @@ let modelIndex = 0;
 })
 export class EditProfileComponent
   extends BasePageComponent<DataForEditFullProfile>
-  implements OnInit, OnDestroy {
+  implements OnInit {
 
   ConfirmationMode = ConfirmationMode;
   createDeviceConfirmation: () => CreateDeviceConfirmation;
@@ -81,18 +79,15 @@ export class EditProfileComponent
 
   // Arrays to keep the visible models
   images: Image[];
-  uploadedImages: Image[];
   phones: PhoneManage[];
   addresses: AddressManage[];
   locatedAddresses: AddressManage[];
   contactInfos: ContactInfoManage[];
-  reorderImages: string[];
 
   // These keep track of removed models
   removedPhones: string[];
   removedAddresses: string[];
   removedContactInfos: string[];
-  removedImages: string[];
 
   constructor(
     injector: Injector,
@@ -149,11 +144,6 @@ export class EditProfileComponent
 
       this.ready$.next(true);
     }));
-  }
-
-  ngOnDestroy() {
-    super.ngOnDestroy();
-    this.removeAllTempImages();
   }
 
   locateControl(locator: FormControlLocator): AbstractControl {
@@ -289,7 +279,6 @@ export class EditProfileComponent
       body: this.editForSubmit(),
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.user.profileSaved);
-      this.uploadedImages = null;
       this.reload();
       scrollTop();
     }));
@@ -308,10 +297,7 @@ export class EditProfileComponent
       removeAddresses: this.removedAddresses,
       createContactInfos: this.createContactInfos.map(f => f.value),
       modifyContactInfos: this.modifyContactInfos.map(f => f.value),
-      removeContactInfos: this.removedContactInfos,
-      addImages: this.uploadedImages.map(i => i.id),
-      removeImages: this.removedImages,
-      reorderImages: this.reorderImages,
+      removeContactInfos: this.removedContactInfos
     };
 
     // We just have to handle single phones / addresses, which can dynamically create / modify / remove models
@@ -374,7 +360,6 @@ export class EditProfileComponent
     this.removedPhones = [];
     this.removedAddresses = [];
     this.removedContactInfos = [];
-    this.removedImages = [];
 
     if (data.contactInfoConfiguration && data.contactInfoConfiguration.availability !== AvailabilityEnum.DISABLED) {
       // Additional contacts are enabled. Copy the fields to the address configuration
@@ -409,7 +394,6 @@ export class EditProfileComponent
     }
 
     this.images = this.data.images.slice();
-    this.uploadedImages = [];
     this.phones = [];
 
     // Prepare the mobile forms
@@ -837,80 +821,53 @@ export class EditProfileComponent
     }));
   }
 
-  removeSingleImage() {
-    this.removeAllTempImages();
-    this.removeExistingImages();
-    this.notification.snackBar(this.i18n.user.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
-  }
-
-  private removeAllTempImages() {
-    (this.uploadedImages || []).forEach(img => {
-      this.addSub(this.imagesService.deleteImage({ idOrKey: img.id }).subscribe());
-    });
-    this.uploadedImages = [];
-  }
-
-  private removeExistingImages() {
-    if (empty(this.removedImages) && !empty(this.data.images)) {
-      this.removedImages = (this.data.images || []).map(i => i.id);
-    }
-    this.images = [];
-  }
-
+  /**
+   * Updates images and displays a notification after the image was uploaded
+   */
   onUploadDone(images: Image[]) {
-    if (this.imagesAvailability === 'single') {
-      this.removeAllTempImages();
-      this.removeExistingImages();
-
-      // When there's a single image, we have to remove the existing one, if any
-      this.images = images;
-    } else {
-      // Multiple images: append them
-      this.images = [...this.images, ...images];
-    }
-    this.notification.snackBar(this.i18n.user.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
-    this.uploadedImages = [...(this.uploadedImages || []), ...images];
+    this.images = ([...this.images, ...images]);
     this.changeDetector.detectChanges();
   }
 
+  /**
+   * Reorder or remove images
+   */
   manageImages() {
     const ref = this.modal.show(ManageImagesComponent, {
       class: 'modal-form',
       initialState: {
-        images: this.images,
+        images: this.images
       },
     });
     const component = ref.content as ManageImagesComponent;
-    this.addSub(component.result.pipe(take(1)).subscribe(result => {
-      const hasRemovedImages = !empty(result.removedImages);
-      if (hasRemovedImages) {
-        // At least one removed image
+    component.result.pipe(first()).subscribe(result => {
+      if (!empty(result.removedImages)) {
+        // Remove each of the removed images
         for (const removed of result.removedImages) {
-          if (!this.removedImages.includes(removed) && (this.data.images || []).find(i => i.id === removed) != null) {
-            // This removed image is a previously existing image
-            this.removedImages = [removed, ...this.removedImages];
-          } else if (this.uploadedImages.find(i => i.id === removed) != null) {
-            // This removed image is an uploaded temp image
-            this.imagesService.deleteImage({ idOrKey: removed }).subscribe();
-          }
+          this.addSub(this.imagesService.deleteImage({ idOrKey: removed }).subscribe());
         }
         // Update the images and uploaded images lists
         this.images = this.images.filter(i => !result.removedImages.includes(i.id));
-        this.uploadedImages = this.uploadedImages.filter(i => !result.removedImages.includes(i.id));
       }
+
       const hasOrderChanged = !empty(result.order);
       if (hasOrderChanged) {
         // The order has changed
-        this.reorderImages = result.order;
-        this.images = this.reorderImages.map(id => {
+        this.images = result.order.map(id => {
           return this.images.find(i => i.id === id);
         });
-      }
-      if (hasRemovedImages || hasOrderChanged) {
-        this.notification.snackBar(this.i18n.user.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
+        this.addSub(this.imagesService.reorderProfileImages({ ids: result.order, user: this.param }).subscribe());
       }
       ref.hide();
-    }));
+    });
+  }
+
+  removeAllImages() {
+    for (const image of this.images || []) {
+      this.addSub(this.imagesService.deleteImage({ idOrKey: image.id }).subscribe());
+    }
+    this.images = [];
+    this.changeDetector.detectChanges();
   }
 
   fieldSize(cf: CustomFieldDetailed) {

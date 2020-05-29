@@ -969,7 +969,6 @@
     "contactInfo.atAddress": "At",
     "confirmation.message": "To save your profile, provide your {type}",
     "profileSaved": "The profile was saved",
-    "imagesChanged": "To actually save the changes on images, the profile needs to be saved",
     "newEmailConfirmed": "Your new e-mail address was successfully confirmed",
     "passwordConfirmation": "{type} confirmation",
     "securityQuestion.message": "If you happen to forget your password, you will need to correctly answer the security question in order to reset the password.<br>This can be set later, but keep in mind that the password recovery won't work without it.",
