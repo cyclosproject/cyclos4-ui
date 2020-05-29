@@ -3,9 +3,17 @@
 </label-value>
 
 <ng-template #widget>
+  <input *ngIf="layout.ltsm$ | async; else customWidget" [id]="id"
+    [formControl]="formControl" [name]="name" type="date"
+    class="form-control flex-grow-1" [ngClass]="{
+      'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
+    }">
+  <field-errors [control]="formControl"></field-errors>
+</ng-template>
+<ng-template #customWidget>
   <!-- Need a relatively-positioned element to position the dropdown corretcly -->
   <div class="date-field-wrapper" style="position:relative" dropdown
-    #dropdown="bs-dropdown" container="body" (onShown)="onShown()"
+    #dropdown="bs-dropdown" (onShown)="onShown()"
     (onHidden)="onHidden(); toggleButton.focus()">
     <div class="date-field d-flex align-items-center">
       <ng-container
@@ -33,15 +41,24 @@
         class="calendar-toggle btn btn-icon">
         <icon icon="calendar_today"></icon>
       </button>
-      <div class="dropdown-menu calendar-dropdown" *dropdownMenu role="dialog"
-        attr.id="'calendar-' + id" attr.aria-labelledby="id"
+      <div class="dropdown-menu dropdown-menu-right calendar-dropdown-menu"
+        *dropdownMenu role="dialog" attr.id="'calendar-' + id"
+        attr.aria-labelledby="id"
         (click)="$event.preventDefault(); $event.stopPropagation();">
         <calendar class="flex-grow-1" [id]="id" [formControl]="formControl"
           [minDate]="minDate" [maxDate]="maxDate"
           (select)="selectFromCalendar($event)">
         </calendar>
-        <actions *ngIf="(layout.ltsm$ | async)">
-          <button type="button" class="btn btn-primary"
+        <actions forceRow class="mt-0 p-2" minimal>
+          <button type="button" class="btn btn-outline-primary"
+            (click)="setToday()">
+            {{ i18n.field.date.today }}
+          </button>
+          <button type="button" class="btn btn-outline-primary"
+            (click)="value = null; hide()">
+            {{ i18n.field.date.clear }}
+          </button>
+          <button type="button" class="btn btn-outline-primary"
             (click)="dropdown.hide()">
             {{ i18n.general.close }}
           </button>

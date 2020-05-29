@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, Host, Injector, Input, Optional, SkipSelf, ViewChild } from '@angular/core';
-import { ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import { ControlContainer, FormArray, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator, FormBuilder } from '@angular/forms';
 import { CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { FieldOption } from 'app/shared/field-option';
-import { truthyAttr } from 'app/shared/helper';
+import { truthyAttr, empty } from 'app/shared/helper';
 import { InputFieldComponent } from 'app/shared/input-field.component';
 import { MultiSelectionFieldComponent } from 'app/shared/multi-selection-field.component';
 import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
@@ -14,6 +14,9 @@ import { UserFieldComponent } from 'app/shared/user-field.component';
 const INPUT = [
   CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.TEXT,
   CustomFieldTypeEnum.RICH_TEXT, CustomFieldTypeEnum.URL];
+const RANGE = [
+  CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.DECIMAL,
+  CustomFieldTypeEnum.DATE];
 const ENUMERATED = [CustomFieldTypeEnum.SINGLE_SELECTION, CustomFieldTypeEnum.MULTI_SELECTION];
 
 /**
@@ -28,7 +31,10 @@ const ENUMERATED = [CustomFieldTypeEnum.SINGLE_SELECTION, CustomFieldTypeEnum.MU
     { provide: NG_VALIDATORS, useExisting: CustomFieldFilterComponent, multi: true },
   ],
 })
-export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> implements Validator {
+export class CustomFieldFilterComponent
+  extends BaseFormFieldComponent<string>
+  implements Validator, OnInit {
+
   private _field: CustomFieldDetailed;
   @Input() get field(): CustomFieldDetailed {
     return this._field;
@@ -55,6 +61,8 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
   linkedEntityType: LinkedEntityTypeEnum;
   fieldOptions: FieldOption[];
 
+  range: FormArray;
+
   @ViewChild('inputField') inputField: InputFieldComponent;
   @ViewChild('multiSelectionField') multiSelectionField: MultiSelectionFieldComponent;
   @ViewChild('singleSelectionField') singleSelectionField: SingleSelectionFieldComponent;
@@ -75,8 +83,19 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private fieldHelper: FieldHelperService,
+    private formBuilder: FormBuilder
   ) {
     super(injector, controlContainer);
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    if (RANGE.includes(this.type)) {
+      this.range = this.formBuilder.array([null, null]);
+      this.addSub(this.range.valueChanges.subscribe((arr: string[]) => {
+        this.setValue(empty(arr) || empty(arr[0]) && empty(arr[1]) ? '' : arr.join(ApiHelper.VALUE_SEPARATOR));
+      }));
+    }
   }
 
   preprocessValue(value: any): string {

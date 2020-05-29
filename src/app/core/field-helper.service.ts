@@ -82,21 +82,30 @@ export class FieldHelperService {
   }
 
   /**
+   * Returns a FormGroup which contains a form control for each of the given custom field used for search
+   * @param customFields The custom profile fields
+   * @returns The FormGroup
+   */
+  customFieldsForSearchFormGroup(customFields: CustomFieldDetailed[]): FormGroup {
+    const group = this.formBuilder.group({});
+    const customControls = this.customValuesFormControlMap(customFields, { useDefaults: false });
+    for (const [name, control] of customControls) {
+      group.addControl(name, control);
+    }
+    return group;
+  }
+
+  /**
    * Returns a FormGroup which contains a form control for each of the given user profile fields
    * @param basicFields The basic profile fields
    * @param customFields The custom profile fields
    * @returns The FormGroup
    */
   profileFieldsForSearchFormGroup(basicFields: BasicProfileFieldInput[], customFields: CustomFieldDetailed[]): FormGroup {
-    const group = this.formBuilder.group({});
+    const group = this.customFieldsForSearchFormGroup(customFields);
     // Append the basic profile fields
     for (const bf of basicFields) {
       group.addControl(bf.field, this.formBuilder.control(null));
-    }
-    // Append the custom profile fields
-    const customControls = this.customValuesFormControlMap(customFields, { useDefaults: false });
-    for (const [name, control] of customControls) {
-      group.addControl(name, control);
     }
     return group;
   }

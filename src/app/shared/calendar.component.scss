@@ -17,6 +17,8 @@ button {
   line-height: 1em;
   transition: background-color 0.4s;
   cursor: pointer;
+  min-width: unset;
+  min-height: unset;
 
   &:hover, &:focus {
     background-color: $calendar-hover-bg;
@@ -40,6 +42,7 @@ button[disabled] {
 
   button, .year-range {
     height: $calendar-header-height;
+    min-height: unset;
     color: $calendar-header-color;
   }
   button[disabled], button[disabled]:hover {
@@ -54,11 +57,13 @@ button[disabled] {
   }
   .month, .year {
     height: $calendar-header-nav-size;
+    min-height: unset;
     margin: 0 0.5rem;
   }
   .calendar-nav {
     width: $calendar-header-nav-size;
     height: $calendar-header-nav-size;
+    min-height: unset;
   }
   .year-range {
     display: flex;
@@ -66,12 +71,12 @@ button[disabled] {
     justify-content: center;
     line-height: 1em;
     height: $calendar-header-nav-size;
+    min-height: unset;
   }
 }
 
 .calendar-body {
   padding: 0.5rem 0;
-  height: calc(#{7 * $calendar-cell-height} + 2px + 1rem);
 }
 .calendar-days, .calendar-months, .calendar-years {
   width: 100%;

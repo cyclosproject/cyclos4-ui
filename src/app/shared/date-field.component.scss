@@ -41,15 +41,37 @@
   pointer-events: none;
 }
 
-.dropdown-menu {
-  height: calc(#{7 * $calendar-cell-height} + 1rem + #{$calendar-header-height} + 2px);
-  max-height: unset;
-  padding: 0;
-  overflow: hidden;
-}
-
 .calendar-toggle {
   display: none;
+}
+
+.calendar-dropdown-menu.show {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: unset;
+}
+
+body.lt-sm :host ::ng-deep .calendar-dropdown-menu.show {
+  position: fixed !important;
+  top: 5% !important;
+  left: 5% !important;
+  width: 90% !important;
+  height: 90% !important;
+  display: flex !important;
+  z-index: $zindex-tooltip;
+  flex-direction: column;
+  min-height: unset !important;
+  min-width: unset !important;
+  transform: unset !important;
+}
+
+@include media-breakpoint-up(sm) {
+  .calendar-dropdown-menu.show {
+    margin-left: -20rem;
+    height: calc(#{7 * $calendar-cell-height} + 7rem + #{$calendar-header-height} + 2px);
+    width: 20rem;
+  }
 }
 
 @include media-breakpoint-up(xs) {

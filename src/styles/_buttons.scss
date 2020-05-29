@@ -78,6 +78,10 @@ table.table {
   }
 }
 
+actions.minimal button {
+  min-width: 0 !important;
+}
+
 body.dark {
   .btn-primary {
     @include button-variant($button-color-dark, $button-border-color-dark);

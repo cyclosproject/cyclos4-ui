@@ -37,6 +37,39 @@
     [required]="required" [formControl]="formControl">
   </user-field>
 
-  <!-- TODO: No support for integer, decimal or date for now (all those should be ranges) -->
+  <!-- Integer, decimal and date are ranges -->
+  <label-value *ngIf="range" [label]="label" [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize" [required]="required" kind="field">
+    <div class="d-flex w-100" [ngClass]="{'flex-column': type === 'date'}">
+      <div class="flex-grow-1">
+        <input-field #integerMin *ngIf="type == 'integer'" [id]="id + '_min'"
+          [name]="name ? name + '_min' : null" [formControl]="range.at(0)"
+          [type]="'number'"></input-field>
+        <decimal-field #decimalMin *ngIf="type == 'decimal'"
+          [id]="id + '_min'" [scale]="field.decimalDigits"
+          [name]="name ? name + '_min' : null" [formControl]="range.at(0)">
+        </decimal-field>
+        <date-field #dateMin *ngIf="type == 'date'" [id]="id + '_min'" minimal
+          [name]="name ? name + '_min' : null" [formControl]="range.at(0)">
+        </date-field>
+      </div>
+      <div class="d-flex px-1 pt-1 align-items-center">
+        {{ i18n.general.rangeTo }}</div>
+      <div class="flex-grow-1">
+        <input-field #integerMax *ngIf="type == 'integer'" [id]="id + '_max'"
+          [name]="name ? name + '_max' : null" [formControl]="range.at(1)"
+          [type]="'number'"></input-field>
+        <decimal-field #decimalMax *ngIf="type == 'decimal'"
+          [id]="id + '_max'" [scale]="field.decimalDigits"
+          [name]="name ? name + '_max' : null" [formControl]="range.at(1)">
+        </decimal-field>
+        <date-field #dateMax *ngIf="type == 'date'" [id]="id + '_max'" minimal
+          [name]="name ? name + '_max' : null" [formControl]="range.at(1)">
+        </date-field>
+      </div>
+    </div>
+    <ng-container *ngIf="range">
+    </ng-container>
+  </label-value>
 
 </ng-template>

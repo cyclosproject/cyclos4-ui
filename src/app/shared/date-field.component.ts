@@ -11,7 +11,7 @@ import { ISO_DATE } from 'app/core/format.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { CalendarComponent } from 'app/shared/calendar.component';
 import { DateConstraint, dateConstraintAsMoment } from 'app/shared/date-constraint';
-import { empty } from 'app/shared/helper';
+import { empty, truthyAttr } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { range } from 'lodash';
 import moment, { Moment } from 'moment-mini-ts';
@@ -32,6 +32,14 @@ import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 })
 export class DateFieldComponent
   extends BaseFormFieldComponent<string> implements Validator, OnInit {
+
+  _minimal: boolean | string = false;
+  @Input() get minimal(): boolean | string {
+    return this._minimal;
+  }
+  set minimal(flag: boolean | string) {
+    this._minimal = truthyAttr(flag);
+  }
 
   @Input() minDate: DateConstraint = 'any';
   @Input() maxDate: DateConstraint = 'any';
@@ -103,11 +111,7 @@ export class DateFieldComponent
   }
 
   set valueAsMoment(value: Moment) {
-    if (value == null) {
-      this.setValue(null);
-    } else {
-      this.setValue(value.format(ISO_DATE));
-    }
+    this.value = value ? value.format(ISO_DATE) : null;
   }
 
   ngOnInit() {
@@ -228,5 +232,9 @@ export class DateFieldComponent
   selectFromCalendar(date: Moment) {
     this.dropdown.hide();
     this.valueAsMoment = date;
+  }
+
+  setToday() {
+    this.selectFromCalendar(moment());
   }
 }

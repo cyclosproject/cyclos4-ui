@@ -83,9 +83,7 @@ export class SearchAdsComponent
     const customField = (name: string) => data.customFields.find(f => f.internalName === name);
     this.basicFields = data.fieldsInBasicSearch.map(customField);
     this.advancedFields = data.fieldsInAdvancedSearch.map(customField);
-    this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
-      useDefaults: false,
-    }));
+    this.form.setControl('customValues', this.fieldHelper.customFieldsForSearchFormGroup(data.customFields));
 
     this.form.setControl('profileFields',
       this.fieldHelper.profileFieldsForSearchFormGroup(data.basicProfileFields, data.customProfileFields));

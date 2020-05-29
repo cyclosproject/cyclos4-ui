@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, HostBinding } from '@angular/core';
 import { truthyAttr } from 'app/shared/helper';
 
 @Component({
@@ -24,6 +24,14 @@ export class ActionsComponent implements OnInit {
   }
   set reverseRow(reverseRow: boolean | string) {
     this._reverseRow = truthyAttr(reverseRow);
+  }
+
+  private _minimal: boolean | string;
+  @HostBinding('class.minimal') @Input() get minimal(): boolean | string {
+    return this._minimal;
+  }
+  set minimal(minimal: boolean | string) {
+    this._minimal = truthyAttr(minimal);
   }
 
   constructor(private element: ElementRef) {
