@@ -969,7 +969,6 @@
     "contactInfo.atAddress": "At",
     "confirmation.message": "Pour enregistrer votre profil, indiquez votre {type}",
     "profileSaved": "Le profil a été enregistré",
-    "imagesChanged": "Pour enregistrer les modifications sur les images, le profil doit être enregistré.",
     "newEmailConfirmed": "Votre nouvelle adresse e-mail a été confirmée avec succès",
     "passwordConfirmation": "Confirmation {type}",
     "securityQuestion.message": "Si vous oubliez votre mot de passe, vous devrez répondre correctement à la question de sécurité pour pouvoir le réinitialiser. <br> Cette option peut être définie ultérieurement, mais gardez à l'esprit que la récupération du mot de passe ne fonctionnera pas sans elle.",
