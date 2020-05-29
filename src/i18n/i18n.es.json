@@ -1318,7 +1318,6 @@
     "byOwner": "Por {owner}",
     "showAllCategories": "Mostrar todas",
     "rootCategory": "Principal",
-    "imagesChanged": "Para guardar los cambios en las imágenes, se debe guardar el anuncio",
     "orderAccepted": "La orden fue procesada",
     "orderRejected": "La orden fue rechazada",
     "orderSavedAsDraft": "La orden se ha guardado como borrador",
