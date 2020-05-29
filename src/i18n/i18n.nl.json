@@ -969,7 +969,6 @@
     "contactInfo.atAddress": "At",
     "confirmation.message": "Opslaan in uw profiel, uw {type}",
     "profileSaved": "Het profiel is opgeslagen",
-    "imagesChanged": "Eigenlijk sla de wijzigingen op de beelden, het profiel moet worden opgeslagen",
     "newEmailConfirmed": "Uw nieuw e-mail adres correct is bevestigd",
     "passwordConfirmation": "{type} bevestiging",
     "securityQuestion.message": "Mocht u uw wachtwoord vergeet, moet u het correct antwoord op de vraag om het wachtwoord opnieuw instellen.<br>Dit kan worden ingesteld later, maar houd in gedachten dat de terugwinning van het wachtwoord werkt niet zonder.",
