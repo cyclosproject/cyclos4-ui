@@ -1318,7 +1318,6 @@
     "byOwner": "Door {owner}",
     "showAllCategories": "Toon alle",
     "rootCategory": "Hoofd-",
-    "imagesChanged": "To actually save the changes on images, the advertisement needs to be saved",
     "orderAccepted": "The order was processed",
     "orderRejected": "The order was rejected",
     "orderSavedAsDraft": "The order was saved as draft",
