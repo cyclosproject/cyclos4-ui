@@ -4,12 +4,12 @@ button[disabled], button[disabled]:hover {
   cursor: default !important;
 }
 
-button, input[type=button] {
+.btn {
   min-height: $input-height;
   width: 100%;
 }
 @include media-breakpoint-up(xs) {
-  button, input[type=button] {
+  .btn {
     width: auto;
   }
 }
