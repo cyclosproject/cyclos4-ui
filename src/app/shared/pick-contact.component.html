@@ -1,25 +1,29 @@
 <h1>{{ i18n.field.user.contactTitle }}</h1>
 
-<ng-container *ngIf="(ready$ | async); else spinner">
-  <div *ngIf="(contacts$ | async)?.length === 0; else contactLinks">
-    {{ i18n.field.user.contactEmpty }}
-  </div>
-  <ng-template #contactLinks>
-    <a *ngFor="let c of contacts$ | async; let i = index;"
-      class="d-block mb-1 undecorated" [ngClass]="'contact-link-' + i"
-      href="#" (click)="emit(c.contact, $event)">
-      {{ c.contact.display }}
-    </a>
-  </ng-template>
-</ng-container>
-
-<ng-template #spinner>
-  <spinner class="mx-auto my-3"></spinner>
-</ng-template>
-
+<results-layout resultType="list" [results]="results$ | async"
+  (update)="update($event)" [onClick]="onClick" [rendering$]="rendering$"
+  [ngStyle]="{'min-height': '44vh'}">
+  <mobile-result *mobileResult="let row">
+    <div class="cell-text">
+      {{ row.contact.display }}</div>
+  </mobile-result>
+  <table *resultTable class="table table-hover cursor-pointer">
+    <thead>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let row of (results$ | async)?.results">
+        <tr (click)="emit(row)">
+          <td [ngClass]="{'text-muted': isExcluded(row)}"
+            [ngStyle]="{'text-decoration': isExcluded(row) ? 'line-through' : ''}">
+            {{ row.contact.display }}
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</results-layout>
 <actions>
-  <span></span>
-  <button class="btn btn-outline-primary" (click)="modalRef.hide()">
+  <button class="btn btn-primary d-block w-100" (click)="modalRef.hide()">
     {{ i18n.general.cancel }}
   </button>
 </actions>

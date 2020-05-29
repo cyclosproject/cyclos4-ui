@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
-import { User } from 'app/api/models';
+import { ContactResult, User } from 'app/api/models';
 import { ContactsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
+import { PageData } from 'app/shared/page-data';
+import { PagedResults } from 'app/shared/paged-results';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 /**
  * A component to be shown in a dialog, showing the user contact list
@@ -17,13 +18,13 @@ import { map } from 'rxjs/operators';
 })
 export class PickContactComponent extends BaseComponent implements OnInit {
 
-  @Input() exclude: string[];
+  private pageSize = 6;
 
+  @Input() exclude: string[];
   @Output() select = new EventEmitter<User>();
 
-  contacts$ = new BehaviorSubject<User[]>(null);
-
-  ready$ = this.contacts$.asObservable().pipe(map(c => c !== null));
+  results$ = new BehaviorSubject<PagedResults<ContactResult>>(null);
+  rendering$ = new BehaviorSubject(false);
 
   constructor(
     injector: Injector,
@@ -35,26 +36,51 @@ export class PickContactComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.contactsService.searchContactList({
+    this.update();
+  }
+
+  /**
+   * Updates the search results
+   */
+  update(pageData?: PageData) {
+    const data: any = pageData || {};
+    this.rendering = true;
+    this.results = null;
+    this.addSub(this.contactsService.searchContactList$Response({
       user: ApiHelper.SELF,
       fields: ['contact'],
-    }).subscribe(result => {
-      const contacts = (result || []).filter(c => !(this.exclude || []).includes(c.id));
-      this.contacts$.next(contacts);
-    }));
+      pageSize: data.pageSize || this.pageSize,
+      page: data.page
+    }).subscribe(response => this.results = PagedResults.from(response)));
   }
 
-  emit(contact: User, event?: MouseEvent) {
-    this.select.emit(contact);
-    if (event) {
-      event.preventDefault();
-      event.stopPropagation();
+  emit(row: ContactResult) {
+    if (!this.isExcluded(row)) {
+      this.select.emit(row.contact);
+      this.modalRef.hide();
     }
-    this.close();
   }
 
-  close() {
-    this.modalRef.hide();
+  get onClick() {
+    return (row: ContactResult) => this.emit(row);
+  }
+
+  isExcluded(row: ContactResult) {
+    return (this.exclude || []).includes(row.id);
+  }
+
+  get results(): PagedResults<ContactResult> {
+    return this.results$.value;
+  }
+  set results(results: PagedResults<ContactResult>) {
+    this.results$.next(results);
+  }
+
+  get rendering(): boolean {
+    return this.rendering$.value;
+  }
+  set rendering(rendering: boolean) {
+    this.rendering$.next(rendering);
   }
 
 }
