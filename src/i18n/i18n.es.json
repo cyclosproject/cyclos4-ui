@@ -23,8 +23,6 @@
     "notAppliedSelect": "No aplicado (seleccionar para aplicar)",
     "user": "Usuario",
     "operator": "Operador",
-    "brokers": "Brokers",
-    "groups": "Grupos",
     "name": "Nombre",
     "to": "hasta",
     "description": "Descripción",
@@ -173,6 +171,7 @@
       "from": "Desde {min}",
       "to": "Hasta {max}"
     },
+    "rangeTo": "to",
     "fileSize": {
       "b": "{n} bytes",
       "k": "{n}KB",
@@ -771,6 +770,10 @@
     "refundDate": "Fecha de Rembolso"
   },
   "field": {
+    "date": {
+      "clear": "Clear",
+      "today": "Today"
+    },
     "privacy": {
       "name": "Privacidad",
       "private.tooltip": "El campo es privado. Haga click para permitir a otros usuarios ver el campo.",
@@ -931,6 +934,9 @@
       "userBrokerings": "Brokers"
     },
     "group": "Grupo",
+    "broker": "Broker",
+    "brokers": "Brokers",
+    "groups": "Groups",
     "groupSet": "Conjunto de grupos",
     "group.filter": "Grupos",
     "registrationDate": "Fecha de registro",
