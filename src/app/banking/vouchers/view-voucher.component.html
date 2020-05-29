@@ -85,7 +85,7 @@
         </div>
       </ng-container>
       <!-- QrCode -->
-      <h2 class="mt-3"></h2>
+      <hr class="mt-3" />
       <div
         class="qr-container image d-flex justify-content-center mb-4 align-self-center">
         <img *ngIf="qrCodeUrl$ | async as url" [src]="url | trust:'url'"

@@ -4,7 +4,7 @@
       [mobileHeading]="data.type.pluralName"
       [headingActions]="headingActions$ | async">
       <ng-container *ngFor="let row of (results$ | async); let first = first">
-        <h2 class="mb-0" [ngClass]="first ? 'border-0' : ''"></h2>
+        <hr class="mb-0" [ngClass]="first ? 'border-0' : ''" />
         <label-value [label]="i18n.general.creationDate">
           {{ row.creationDate | dateTime }}
         </label-value>

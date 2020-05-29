@@ -15,8 +15,6 @@ import { first } from 'rxjs/operators';
 
 export type StockType = 'available' | 'notAvailable' | 'quantity';
 
-const IMAGE_MANAGED_TIMEOUT = 6_000;
-
 /**
  * Edits an advertisement or webshop
  */
@@ -339,21 +337,15 @@ export class EditAdComponent
           this.addSub(this.imagesService.reorderAdImages({ ids: result.order, ad: this.id }).subscribe());
         }
       }
-      if (this.create && (this.hasRemovedImages || hasOrderChanged)) {
-        this.notification.snackBar(this.i18n.ad.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
-      }
       ref.hide();
     });
   }
 
   /**
-   * Updates images and displays a notification after the image was uploaded
+   * Updates images
    */
   onUploadDone(images: Image[]) {
     this.images = ([...this.images, ...images]);
-    if (this.create) {
-      this.notification.snackBar(this.i18n.ad.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
-    }
     this.uploadedImages = [...(this.uploadedImages || []), ...images];
     this.changeDetector.detectChanges();
   }
