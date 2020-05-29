@@ -171,7 +171,7 @@
       "from": "De {min}",
       "to": "Até {max}"
     },
-    "rangeTo": "to",
+    "rangeTo": "Até",
     "fileSize": {
       "b": "{n} bytes",
       "k": "{n}KB",
@@ -771,8 +771,8 @@
   },
   "field": {
     "date": {
-      "clear": "Clear",
-      "today": "Today"
+      "clear": "Limpar",
+      "today": "Hoje"
     },
     "privacy": {
       "name": "Privacidade",
@@ -934,9 +934,9 @@
       "userBrokerings": "Membros do corretor"
     },
     "group": "Grupo",
-    "broker": "Broker",
-    "brokers": "Brokers",
-    "groups": "Groups",
+    "broker": "Corretor",
+    "brokers": "Corretores",
+    "groups": "Grupos",
     "groupSet": "Conjunto de grupos",
     "group.filter": "Grupos",
     "registrationDate": "Data de registro",
