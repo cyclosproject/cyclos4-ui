@@ -28,7 +28,7 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     return this.selection$.value;
   }
   set selection(value: A) {
-    this.selection$.next(value);
+    this.select(value);
   }
   options$ = new BehaviorSubject<A[]>(null);
 
@@ -193,7 +193,7 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     if (this.value !== newValue) {
       this.value = newValue;
     }
-    this.selection = selected;
+    this.selection$.next(selected);
     if (options.emitEvent !== false) {
       this.selected.emit(selected);
     }
