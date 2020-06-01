@@ -16,6 +16,7 @@
     </button>
 
     <div #dropDownMenu class="dropdown-menu" *dropdownMenu role="menu"
+      [ngClass]="dropdownOnRight ? 'dropdown-menu-right' : null"
       style="visibility: hidden" [attr.id]="dropdownMenuId"
       attr.aria-labelledby="id"
       (click)="$event.preventDefault(); $event.stopPropagation();">

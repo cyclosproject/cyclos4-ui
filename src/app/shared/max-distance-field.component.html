@@ -31,6 +31,7 @@
       }}</div>
       <div class="col-4">
         <single-selection-field formControlName="address"
+          [dropdownOnRight]="layout.ltmd$ | async"
           [emptyOption]="i18n.general.geolocation.current">
           <field-option *ngFor="let address of data.addresses || []"
             [value]="address.id"

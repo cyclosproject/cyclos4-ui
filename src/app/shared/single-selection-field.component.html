@@ -3,7 +3,8 @@
 </label-value>
 
 <ng-template #widget>
-  <div class="w-100" dropdown #dropdown="bs-dropdown" (onShown)="onShown();"
+  <div style="position: relative" class="w-100" dropdown
+    #dropdown="bs-dropdown" (onShown)="onShown();"
     (onHidden)="onHidden(); toggleButton.focus()">
     <button #toggleButton dropdownToggle [id]="id" type="button"
       class="form-control text-left custom-select w-100"
@@ -15,8 +16,9 @@
         [innerHTML]="display$ | async | trust"></div>
     </button>
 
-    <div #dropDownMenu class="dropdown-menu" *dropdownMenu role="listbox"
-      style="visibility: hidden" [attr.id]="dropdownMenuId"
+    <div #dropDownMenu class="dropdown-menu" *dropdownMenu
+      [ngClass]="dropdownOnRight ? 'dropdown-menu-right' : null"
+      role="listbox" style="visibility: hidden" [attr.id]="dropdownMenuId"
       attr.aria-labelledby="id"
       (click)="$event.preventDefault(); $event.stopPropagation();">
       <a *ngIf="emptyLabel != null" role="option" class="select-option mt-1"

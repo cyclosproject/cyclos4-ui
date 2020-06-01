@@ -2,7 +2,7 @@ import { Directive, ElementRef, Injector, Input, OnDestroy, OnInit, ViewChild } 
 import { ControlContainer } from '@angular/forms';
 import { BaseFormFieldWithOptionsComponent } from 'app/shared/base-form-field-with-options.component';
 import { FieldOption, fieldOptionMatches } from 'app/shared/field-option';
-import { empty } from 'app/shared/helper';
+import { empty, truthyAttr } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { Escape } from 'app/shared/shortcut.service';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
@@ -15,6 +15,14 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOptionsComponent<T> implements OnInit, OnDestroy {
   /** When set, the displayed text */
   @Input() display: string;
+
+  _dropdownOnRight: boolean | string = false;
+  @Input() get dropdownOnRight(): boolean | string {
+    return this._dropdownOnRight;
+  }
+  set dropdownOnRight(flag: boolean | string) {
+    this._dropdownOnRight = truthyAttr(flag);
+  }
 
   @ViewChild('toggleButton') toggleRef: ElementRef;
   @ViewChild('dropdown') dropdown: BsDropdownDirective;
