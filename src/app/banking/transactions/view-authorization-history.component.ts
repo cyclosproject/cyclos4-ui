@@ -33,7 +33,7 @@ export class ViewAuthorizationHistoryComponent extends BaseViewPageComponent<Tra
       key,
       fields: [
         'transactionNumber', 'date', 'amount', 'kind', 'type',
-        'fromKind', 'fromUser', 'toKind', 'toUser', 'authorizations'],
+        'from', 'to', 'authorizations'],
     })
       .subscribe(transaction => {
         this.data = transaction;
