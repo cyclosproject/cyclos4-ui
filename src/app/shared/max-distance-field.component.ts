@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy, Component, Host, HostBinding,
-  Injector, Input, OnInit, Optional, SkipSelf, ViewChild,
+  Injector, Input, OnInit, Optional, SkipSelf, ViewChild
 } from '@angular/core';
 import { ControlContainer, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DistanceUnitEnum, SearchByDistanceData } from 'app/api/models';
@@ -8,6 +8,7 @@ import { NotificationService } from 'app/core/notification.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';
+import { LayoutService } from 'app/shared/layout.service';
 import { MaxDistance } from 'app/shared/max-distance';
 import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
 import { distinctUntilChanged } from 'rxjs/operators';
@@ -40,10 +41,12 @@ export class MaxDistanceFieldComponent
   form: FormGroup;
   enabledControl: FormControl;
   maxDistanceOptions: FieldOption[];
+  lastPositionError: PositionError;
 
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
+    public layout: LayoutService,
     private notification: NotificationService,
     private formBuilder: FormBuilder,
   ) {
@@ -95,28 +98,57 @@ export class MaxDistanceFieldComponent
         latitude: address ? address.location.latitude : value.latitude,
         longitude: address ? address.location.longitude : value.longitude,
       };
-      this.value = maxDistance.maxDistance != null && maxDistance.latitude != null && maxDistance.latitude != null ? maxDistance : null;
+      if (maxDistance.maxDistance != null) {
+        if (maxDistance.latitude == null || maxDistance.latitude == null) {
+          if (this.lastPositionError == null) {
+            this.notification.error(this.i18n.error.geolocation.general);
+          } else {
+            switch (this.lastPositionError.code) {
+              case this.lastPositionError.PERMISSION_DENIED:
+                this.notification.error(this.i18n.error.geolocation.denied);
+                break;
+              case this.lastPositionError.POSITION_UNAVAILABLE:
+              case this.lastPositionError.TIMEOUT:
+                this.notification.error(this.i18n.error.geolocation.unavailable);
+                break;
+              default:
+                this.notification.error(this.i18n.error.geolocation.general);
+            }
+          }
+        } else {
+          this.value = maxDistance;
+        }
+      }
     }
   }
 
   private updateCurrentLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(pos => {
+        this.lastPositionError = null;
         this.form.patchValue({
           latitude: pos.coords.latitude,
           longitude: pos.coords.longitude,
         });
       }, error => {
+        this.lastPositionError = error;
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            this.notification.error(this.i18n.error.geolocation.denied);
+            this.notification.snackBar(this.i18n.error.geolocation.denied);
+            if (empty(this.data.addresses)) {
+              // No address and no permission: disable the field
+              this.enabledControl.setValue(false);
+            } else {
+              // Select the first address
+              this.address.value = this.data.addresses[0].id;
+            }
             break;
           case error.POSITION_UNAVAILABLE:
           case error.TIMEOUT:
-            this.notification.warning(this.i18n.error.geolocation.unavailable);
+            this.notification.snackBar(this.i18n.error.geolocation.unavailable);
             break;
           default:
-            this.notification.error(this.i18n.error.geolocation.general);
+            this.notification.snackBar(this.i18n.error.geolocation.general);
         }
       });
     } else {
