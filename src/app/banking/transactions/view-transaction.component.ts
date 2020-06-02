@@ -420,7 +420,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
 
     return () => ({
       type: DeviceConfirmationTypeEnum.MANAGE_INSTALLMENT,
-      transaction: installment.id,
+      installment: installment.id,
       installmentAction: action,
     });
   }
