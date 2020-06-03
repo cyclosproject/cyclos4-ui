@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AuthorizationActionEnum, CreateDeviceConfirmation, CustomFieldDetailed,
-  CustomFieldTypeEnum, DeviceConfirmationTypeEnum, InstallmentActionEnum,
-  InstallmentStatusEnum, InstallmentView,
-  RecurringPaymentActionEnum, ScheduledPaymentActionEnum,
-  TransactionKind, TransactionView,
+  AuthorizationActionEnum, CreateDeviceConfirmation, CustomFieldDetailed, CustomFieldTypeEnum, DeviceConfirmationTypeEnum,
+  FailedOccurrenceActionEnum, InstallmentActionEnum, InstallmentStatusEnum, InstallmentView, RecurringPaymentActionEnum,
+  ScheduledPaymentActionEnum, TransactionKind, TransactionView
 } from 'app/api/models';
 import { InstallmentsService, TransactionsService, TransfersService } from 'app/api/services';
 import { PendingPaymentsService } from 'app/api/services/pending-payments.service';
@@ -30,7 +28,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
   mobileTitle: string;
   lastAuthComment: string;
   hasDueAmount = false;
-  hasInstallmentActions = false;
+  hasActions = false;
 
   constructor(
     injector: Injector,
@@ -65,7 +63,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
         [this.title, this.mobileTitle] = this.titles(transaction.kind);
         this.headingActions = this.initActions(transaction);
         this.hasDueAmount = transaction.dueAmount && !this.format.isZero(transaction.dueAmount);
-        this.hasInstallmentActions = !!(transaction.installments || []).find(i => i.canProcess || i.canSettle);
+        this.hasActions = !!(transaction.installments || transaction.occurrences || []).find(i => i.canProcess || i.canSettle);
         this.data = transaction;
         if (transaction.transfer) {
           transaction.transfer.transaction = transaction;
@@ -447,7 +445,9 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
     this.notification.confirm({
       title: this.i18n.transaction.processInstallment,
       message: this.i18n.transaction.processInstallmentMessage(installment.number),
-      createDeviceConfirmation: this.installmentDeviceConfirmation(InstallmentActionEnum.PROCESS, installment),
+      createDeviceConfirmation: this.data.kind === TransactionKind.SCHEDULED_PAYMENT ?
+        this.installmentDeviceConfirmation(InstallmentActionEnum.PROCESS, installment) :
+        this.failedOccurreneceDeviceConfirmation(FailedOccurrenceActionEnum.PROCESS, installment),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.addSub(this.installmentsService.processInstallment({
@@ -458,6 +458,17 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
           this.reload();
         }));
       },
+    });
+  }
+
+  private failedOccurreneceDeviceConfirmation(
+    action: FailedOccurrenceActionEnum,
+    installment: InstallmentView): () => CreateDeviceConfirmation {
+
+    return () => ({
+      type: DeviceConfirmationTypeEnum.MANAGE_FAILED_OCCURRENCE,
+      failedOccurrence: installment.id,
+      failedOccurrenceAction: action,
     });
   }
 
