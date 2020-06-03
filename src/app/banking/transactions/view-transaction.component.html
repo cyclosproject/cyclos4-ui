@@ -86,7 +86,7 @@
         <th>{{ i18n.transaction.dueDate }}</th>
         <th>{{ i18n.general.status }}</th>
         <th class="amount">{{ i18n.transaction.amount }}</th>
-        <th class="actions" *ngIf="hasInstallmentActions"></th>
+        <th class="actions" *ngIf="hasActions"></th>
       </thead>
       <tbody>
         <tr *ngFor="let installment of transaction.installments"
@@ -112,15 +112,18 @@
               {{ installment.amount | currency:transaction.currency }}
             </maybe-link>
           </td>
-          <td *ngIf="hasInstallmentActions" class="actions">
+          <td *ngIf="hasActions" class="actions actions-multiple">
             <button *ngIf="installment.canProcess"
               [tooltip]="i18n.transaction.processInstallment"
-              class="btn btn-icon" (click)="processInstallment(installment)">
+              class="btn btn-icon align-items-center"
+              (click)="processInstallment(installment)">
               <icon icon="play_circle_outline"></icon>
             </button>
             <button *ngIf="installment.canSettle"
               [tooltip]="i18n.transaction.settleInstallment"
-              class="btn btn-icon" (click)="settleInstallment(installment)">
+              class="btn btn-icon align-items-center"
+              [ngClass]="{'ml-2': installment.canProcess}"
+              (click)="settleInstallment(installment)">
               <icon icon="thumb_up"></icon>
             </button>
           </td>
@@ -139,6 +142,7 @@
         <th>{{ i18n.general.date }}</th>
         <th>{{ i18n.general.status }}</th>
         <th class="text-right">{{ i18n.transaction.amount }}</th>
+        <th class="actions" *ngIf="hasActions"></th>
       </thead>
       <tbody>
         <tr *ngFor="let occurrence of transaction.occurrences"
@@ -163,6 +167,14 @@
             <maybe-link [link]="path(occurrence)">
               {{ occurrence.amount | currency:transaction.currency }}
             </maybe-link>
+          </td>
+          <td *ngIf="hasActions" class="actions">
+            <button *ngIf="occurrence.canProcess"
+              [tooltip]="i18n.transaction.processInstallment"
+              class="btn btn-icon align-items-center"
+              (click)="processInstallment(occurrence)">
+              <icon icon="play_circle_outline"></icon>
+            </button>
           </td>
         </tr>
       </tbody>
