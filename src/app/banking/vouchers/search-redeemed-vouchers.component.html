@@ -5,13 +5,19 @@
 <ng-template #content>
   <page-content mode="filters" [heading]="i18n.voucher.title.redeemed"
     [mobileHeading]="i18n.voucher.mobileTitle.redeemed">
-    <ng-container *ngIf="!self">
-      <user-info class="pt-3" [user]="data.user"></user-info>
-      <hr class="pt-0 pb-0 mb-0 mt-3">
-    </ng-container>
     <form [formGroup]="form"
       class="filters-form filters-form-separator border-0">
       <div class="row no-gutters">
+        <ng-container *ngIf="data.user && !self">
+          <div class="col-12 col-md-6">
+            <label-value [label]="i18n.general.user" labelPosition="side"
+              kind="fieldView">
+              <user-link [user]="data.user"></user-link>
+            </label-value>
+          </div>
+          <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
+          </div>
+        </ng-container>
         <div *ngIf="data.types?.length > 1" class="col-12 col-md-6">
           <multi-selection-field labelPosition="side" formControlName="types"
             [label]="i18n.general.type">

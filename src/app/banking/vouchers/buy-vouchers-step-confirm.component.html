@@ -1,3 +1,7 @@
+<ng-container *ngIf="data.user && !authHelper.isSelf(data.user)">
+  <user-info [user]="data.user">
+  </user-info>
+</ng-container>
 <!-- description + image -->
 <label-value [label]="i18n.general.type">
   {{ data.type.voucherTitle }}

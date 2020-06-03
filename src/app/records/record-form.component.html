@@ -4,6 +4,10 @@
     i18n.record.title.edit(data.type.name)" [mobileHeading]="create ? 
     i18n.record.mobileTitle.new(data.type.name) :
     i18n.record.mobileTitle.edit(data.type.name)">
+    <ng-container *ngIf="data.user && !authHelper.isSelf(data.user)">
+      <user-info [user]="data.user"></user-info>
+      <hr>
+    </ng-container>
     <form [formGroup]="form" [ngClass]="{'mr-n3': columnLayout}">
       <ng-container *ngIf="data.type.informationText">
         <rich-text-container [value]="data.type.informationText">

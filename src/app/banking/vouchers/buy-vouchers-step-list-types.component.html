@@ -1,5 +1,8 @@
-<page-content mode="empty" [heading]="i18n.voucher.title.buy"
+<page-content [mode]="user && !authHelper.isSelf(user) ? 'normal' : 'empty'"
+  [heading]="i18n.voucher.title.buy"
   [mobileHeading]="i18n.voucher.mobileTitle.buy">
+  <user-info *ngIf="user && !authHelper.isSelf(user)" [user]="user"
+    labelCols="2"></user-info>
 </page-content>
 
 <results-layout resultType="list" [results]="types" [onClick]="selectType">

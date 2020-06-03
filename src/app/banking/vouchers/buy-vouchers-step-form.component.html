@@ -1,4 +1,6 @@
 <ng-container [formGroup]="form">
+  <user-info *ngIf="data.user && !authHelper.isSelf(data.user)"
+    [user]="data.user"></user-info>
   <!-- description + image -->
   <label-value [label]="i18n.voucher.buy.originAccount" kind="fieldView">
     {{ data.account.type.name }}

@@ -14,6 +14,7 @@ export class ListUserBrokersComponent
   implements OnInit {
 
   param: string;
+  self: boolean;
   brokers: Brokering[];
 
   constructor(
@@ -37,6 +38,7 @@ export class ListUserBrokersComponent
   }
 
   onDataInitialized(data: UserBrokersData) {
+    this.self = this.authHelper.isSelf(data.user);
     this.brokers = data.brokers;
     this.headingActions = [];
     if (data.editable) {

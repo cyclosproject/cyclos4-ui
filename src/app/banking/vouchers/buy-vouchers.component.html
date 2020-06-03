@@ -2,7 +2,7 @@
 
   <!-- Step 1: Select voucher type -->
   <ng-container *ngSwitchCase="'select-type'">
-    <buy-vouchers-step-list-types [types]="data.types"
+    <buy-vouchers-step-list-types [user]="data.user" [types]="data.types"
       (typeSelected)="toForm($event)">
     </buy-vouchers-step-list-types>
   </ng-container>

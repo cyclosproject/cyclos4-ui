@@ -27,6 +27,7 @@ export class UserAdsComponent
   private kind: AdKind;
   private param: string;
   shortName: string;
+  self: boolean;
 
   constructor(
     injector: Injector,
@@ -53,6 +54,7 @@ export class UserAdsComponent
 
   onDataInitialized(data: UserAdsDataForSearch) {
     super.onDataInitialized(data);
+    this.self = this.authHelper.isSelfOrOwner(data.user);
     this.shortName = words(data.user.display, MAX_SIZE_SHORT_NAME);
     if (data.createNew) {
       this.headingActions = [
@@ -67,6 +69,24 @@ export class UserAdsComponent
     params.user = this.param;
     params.kind = this.kind;
     return params;
+  }
+
+  resolveHeading(mobile: boolean): string {
+    if (this.self) {
+      // Self title
+      if (this.simple) {
+        return mobile ? this.i18n.ad.mobileTitle.myAdvertisements : this.i18n.ad.title.myAdvertisements;
+      } else {
+        return mobile ? this.i18n.ad.mobileTitle.myWebshop : this.i18n.ad.title.myWebshop;
+      }
+    }
+    // Management title
+    if (this.simple) {
+      return mobile ? this.i18n.ad.mobileTitle.viewAdvertisements : this.i18n.ad.title.viewAdvertisements;
+    } else {
+      return mobile ? this.i18n.ad.mobileTitle.viewWebshop : this.i18n.ad.title.viewWebshop;
+    }
+
   }
 
   doSearch(filters: UserAdsSearchParams): Observable<HttpResponse<AdResult[]>> {
@@ -102,7 +122,7 @@ export class UserAdsComponent
   }
 
   get isManager() {
-    return !this.authHelper.isSelfOrOwner(this.data.user) &&
+    return !self &&
       (this.dataForUiHolder.role === RoleEnum.BROKER || this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR);
   }
 

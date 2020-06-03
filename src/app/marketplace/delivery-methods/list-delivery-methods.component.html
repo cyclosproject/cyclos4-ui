@@ -1,15 +1,10 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content mode="empty" class="no-padding"
-      [heading]="i18n.ad.title.deliveryMethods"
+    <page-content [heading]="i18n.ad.title.deliveryMethods"
       [mobileHeading]="i18n.ad.mobileTitle.deliveryMethods"
-      [headingActions]="headingActions$ | async">
-      <div class="col-12 col-md-6" *ngIf="!self">
-        <label-value [label]="i18n.general.user" kind="fieldView"
-          labelPosition="side">
-          <user-link [user]="data.user"></user-link>
-        </label-value>
-      </div>
+      [headingActions]="headingActions$ | async"
+      [mode]="!self ? 'normal' : 'empty'">
+      <user-info *ngIf="!self" [user]="data.user"></user-info>
     </page-content>
 
     <results-layout [results]="data.deliveryMethods" [toLink]="toLink">

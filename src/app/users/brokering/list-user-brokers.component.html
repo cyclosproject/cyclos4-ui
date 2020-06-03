@@ -1,8 +1,10 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [mode]="'empty'" [heading]="i18n.brokers.title.list"
+    <page-content [heading]="i18n.brokers.title.list"
       [mobileHeading]="i18n.brokers.mobileTitle.list"
-      [headingActions]="headingActions$ | async">
+      [headingActions]="headingActions$ | async"
+      [mode]="self ? 'empty' : 'normal'">
+      <user-info *ngIf="!self" [user]="data.user"></user-info>
     </page-content>
     <results-layout [results]="data.brokers" [toLink]="toLink">
       <mobile-result *mobileResult="let row" [avatarImage]="row.broker?.image"

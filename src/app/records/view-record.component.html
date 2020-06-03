@@ -12,7 +12,7 @@
         <label-value [labelPosition]="labelPosition"
           [class]="resolveColumnClass()" *ngIf="!isOwner()"
           [label]="i18n.general.user">
-          {{ data.user.display }}
+          <user-link [user]="data.user"></user-link>
         </label-value>
         <label-value [labelPosition]="labelPosition"
           [class]="resolveColumnClass()" *ngIf="data.creationDate"

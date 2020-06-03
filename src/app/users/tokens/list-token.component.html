@@ -1,21 +1,17 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [mode]="'empty'" [heading]="data?.type.pluralName"
+    <page-content [heading]="data?.type.pluralName"
       [mobileHeading]="data?.type.pluralName"
-      [headingActions]="headingActions$ | async">
-      <div *ngIf="!isOwner()" class="col-12 col-md-6">
-        <label-value [label]="i18n.general.user" kind="fieldView"
-          labelPosition="side">
-          <user-link [user]="data.user"></user-link>
-        </label-value>
-      </div>
+      [headingActions]="headingActions$ | async"
+      [mode]="!self ? 'normal' : 'empty'">
+      <user-info *ngIf="!self" [user]="data.user"></user-info>
     </page-content>
 
     <results-layout [results]="data?.tokens">
       <mobile-result *mobileResult="let row">
         <div class="d-flex">
           <div>
-            <label-value *ngIf="!isOwner()" [label]="i18n.general.operator"
+            <label-value *ngIf="!self" [label]="i18n.general.operator"
               labelPosition="above">
               {{ row.user?.user? row.user.display : '' }}
             </label-value>
@@ -51,7 +47,7 @@
 
       <table *resultTable class="table table-hover cursor-pointer">
         <thead>
-          <th *ngIf="!isOwner()">{{ i18n.general.operator }}</th>
+          <th *ngIf="!self">{{ i18n.general.operator }}</th>
           <th>{{ isNfc() ? i18n.token.label : i18n.token.value }}</th>
           <th>{{ i18n.token.creationDate }}</th>
           <th>{{ i18n.token.activationDate }}</th>
@@ -61,7 +57,7 @@
         <tbody>
           <tr *ngFor="let row of data?.tokens"
             (click)="router.navigate(view(row)); $event.stopPropagation(); $event.preventDefault()">
-            <td *ngIf="!isOwner()">{{ row.user?.user? row.user.display : '' }}
+            <td *ngIf="!self">{{ row.user?.user? row.user.display : '' }}
             </td>
             <td>{{ row.value }}</td>
             <td>{{ row.creationDate | date }}</td>

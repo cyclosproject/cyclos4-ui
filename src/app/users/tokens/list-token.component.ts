@@ -22,6 +22,7 @@ export class ListTokenComponent
 
   user: string;
   type: string;
+  self: boolean;
 
   constructor(
     injector: Injector,
@@ -40,6 +41,7 @@ export class ListTokenComponent
 
   onDataInitialized(data: UserTokensListData) {
     super.onDataInitialized(data);
+    this.self = this.authHelper.isSelf(data.user);
     if (this.canCreate() && data.type.physicalType !== PhysicalTokenTypeEnum.NFC_TAG) {
       this.headingActions = [new HeadingAction('add', this.i18n.general.add, () => {
         this.modal.show(CreateTokenComponent, {
@@ -75,19 +77,15 @@ export class ListTokenComponent
     return this.data.type.physicalType === PhysicalTokenTypeEnum.NFC_TAG;
   }
 
-  isOwner(): boolean {
-    return this.authHelper.isSelf(this.user);
-  }
-
   canCreate(): boolean {
-    if (!this.isOwner()) {
+    if (!this.self) {
       return this.dataForUiHolder.auth.permissions.tokens.user.find(p => p.type.id === this.type)?.create;
     }
     return false;
   }
 
   canActivate(): boolean {
-    if (this.isOwner()) {
+    if (this.self) {
       return this.dataForUiHolder.auth.permissions.tokens.my.find(p => p.type.id === this.type)?.activate;
     }
     return false;

@@ -42,7 +42,7 @@
         </ng-container>
         <hr *ngIf="data.maxImages > 0" class="mt-4 mb-2" />
         <label-value kind="fieldView" *ngIf="!self"
-          [label]="i18n.general.user" class="mb-3">
+          [label]="i18n.general.user">
           <user-link [user]="data.owner"></user-link>
         </label-value>
         <label-value kind="fieldView" *ngIf="!create"

@@ -3,15 +3,18 @@
 </page-layout>
 
 <ng-template #content>
-  <page-content mode="filters" [heading]="simple ?
-  i18n.ad.title.owner(shortName) :
-  i18n.ad.title.webshopOwner(shortName)" [mobileHeading]="simple ? 
-    i18n.ad.mobileTitle.owner :
-    i18n.ad.mobileTitle.webshopOwner"
+  <page-content mode="filters" [heading]="resolveHeading(false)"
+    [mobileHeading]="resolveHeading(true)"
     [headingActions]="headingActions$ | async">
     <form [formGroup]="form"
       class="filters-form filters-form-separator border-0">
       <div class="row">
+        <div class="col-12 col-md-6" *ngIf="!self">
+          <label-value [label]="i18n.general.user" kind="fieldView"
+            labelPosition="side">
+            <user-link [user]="data.user"></user-link>
+          </label-value>
+        </div>
         <div class="col-12 col-md-6">
           <input-field labelPosition="side" formControlName="keywords"
             [label]="i18n.general.keywords" fieldSize="full"></input-field>

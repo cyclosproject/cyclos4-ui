@@ -20,6 +20,8 @@ export class SearchBoughtVouchersComponent
   extends BaseSearchPageComponent<UserVouchersDataForSearch, UserVouchersSearchParams, VoucherResult> implements OnInit {
 
   user: string;
+  self: boolean;
+
   constructor(injector: Injector, private vouchersService: VouchersService) {
     super(injector);
   }
@@ -27,7 +29,8 @@ export class SearchBoughtVouchersComponent
   ngOnInit() {
     super.ngOnInit();
     const params = this.route.snapshot.params;
-    this.user = this.authHelper.isSelf(params.user) ? this.ApiHelper.SELF : params.user;
+    this.self = this.authHelper.isSelf(params.user);
+    this.user = this.self ? this.ApiHelper.SELF : params.user;
 
     this.addSub(
       this.vouchersService.getUserVouchersDataForSearch({ user: this.user, relation: VoucherRelationEnum.BOUGHT })

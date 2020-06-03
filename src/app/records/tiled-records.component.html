@@ -3,8 +3,12 @@
     <page-content [heading]="data.type.pluralName"
       [mobileHeading]="data.type.pluralName"
       [headingActions]="headingActions$ | async">
+      <ng-container *ngIf="data.user && !authHelper.isSelf(data.user)">
+        <user-info [user]="data.user"></user-info>
+        <hr>
+      </ng-container>
       <ng-container *ngFor="let row of (results$ | async); let first = first">
-        <hr class="mb-0" [ngClass]="first ? 'border-0' : ''" />
+        <hr *ngIf="!first" />
         <label-value [label]="i18n.general.creationDate">
           {{ row.creationDate | dateTime }}
         </label-value>

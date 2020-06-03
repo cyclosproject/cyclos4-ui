@@ -1,9 +1,9 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  BaseRecordDataForSearch, CustomFieldDetailed, GeneralRecordsDataForSearch,
+  BaseRecordDataForSearch, BasicProfileFieldInput, CustomFieldDetailed, GeneralRecordsDataForSearch,
   GeneralRecordsQueryFilters, Group, RecordDataForSearch, RecordLayoutEnum,
-  RecordQueryFilters, RecordResult, RecordWithOwnerResult, BasicProfileFieldInput
+  RecordQueryFilters, RecordResult, RecordWithOwnerResult
 } from 'app/api/models';
 import { RecordsService } from 'app/api/services';
 import { RecordHelperService } from 'app/core/records-helper.service';
@@ -139,6 +139,10 @@ export class SearchRecordsComponent
 
   get toLink() {
     return (record: RecordResult) => this.viewPath(record);
+  }
+
+  get user() {
+    return this.data ? (this.data as RecordDataForSearch).user : null;
   }
 
   protected toSearchParams(value: any): RecordSearchParams {

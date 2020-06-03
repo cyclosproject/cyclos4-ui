@@ -5,7 +5,7 @@
 <ng-template #content>
   <page-content [heading]="i18n.agreements.title.history"
     [mobileHeading]="i18n.agreements.mobileTitle.history"
-    [mode]="self ? 'emptyFilters' : 'filters'">
+    [mode]="self ? 'empty' : 'normal'">
     <user-info *ngIf="!self" [user]="data.user"></user-info>
   </page-content>
   <results-layout [results]="data.history" [onClick]="showAgreement">

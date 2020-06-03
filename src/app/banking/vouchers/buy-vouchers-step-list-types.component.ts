@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, Output } from '@angular/core';
-import { VoucherTypeDetailed } from 'app/api/models';
+import { User, VoucherTypeDetailed } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 
 /**
@@ -13,6 +13,7 @@ import { BaseComponent } from 'app/shared/base.component';
 export class BuyVouchersStepListTypesComponent extends BaseComponent {
 
   @Input() types: VoucherTypeDetailed[];
+  @Input() user: User;
 
   @Output() typeSelected = new EventEmitter<VoucherTypeDetailed>();
 

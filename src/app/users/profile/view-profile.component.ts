@@ -161,7 +161,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       }
       if (scheduledPayments.view) {
         this.bankingActions.push(new HeadingAction('schedule', this.i18n.user.profile.viewScheduledPayments, () => {
-          this.router.navigate(['/banking', this.param, 'scheduled-payments']);
+          this.router.navigate(['/banking', this.param, 'installments']);
         }));
       }
       if (authorizedPayments.view) {
