@@ -111,10 +111,11 @@ export class UserAdsComponent
     const auth = this.dataForUiHolder.auth || {};
     const permissions = auth.permissions || {};
     const marketplace = permissions.marketplace || {};
+    // Check authorization is active and is the owner or a manager with permission
     return this.data.requiresAuthorization &&
-      (this.simple ?
+      (this.self || (this.simple ?
         marketplace.userSimple.viewPending :
-        marketplace.userWebshop.viewPending);
+        marketplace.userWebshop.viewPending));
   }
 
   get canViewDraft(): boolean {
