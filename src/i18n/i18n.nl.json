@@ -648,6 +648,9 @@
     "settleScheduled": "De afwikkeling van de geplande betaling",
     "settleScheduled.message": "Dit zal permanent te markeren alle resterende termijnen als opgelost",
     "settleScheduled.done": "Deze geplande betaling heeft plaatsgevonden",
+    "processScheduled": "Process this scheduled payment",
+    "processScheduled.message": "Are you sure to process now this scheduled payment?",
+    "processScheduled.done": "This scheduled payment was processed",
     "cancelRecurring": "Annuleren deze terugkerende betaling",
     "cancelRecurring.message": "Dit zal definitief opheffen van de periodieke betaling en het voorkomen van een toekomstige gebeurtenis",
     "cancelRecurring.done": "Deze periodieke betaling is geannuleerd",
@@ -1648,6 +1651,7 @@
     "registration.fillForm": "Fill-in the registration form",
     "registration.disclaimer": "<b>Disclaimer:</b> None of your {app} data will be shared with these providers, and the only purpose of reading your personal data from them is to fill in the registration form and logging you in after you're registered.",
     "disclaimer": "<b>Disclaimer</b>: None of your {app} data will be shared with any provider. The only data read from the providers are your display name and e-mail, with the sole purpose to logging-in faster on {app}.",
+    "noResults": "There are not identity providers added yet.",
     "title": {
       "manage.self": "Manage your identity providers",
       "manage.user": "Manage user identity providers"
