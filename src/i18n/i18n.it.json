@@ -648,6 +648,9 @@
     "settleScheduled": "Salda il pagamento previsto",
     "settleScheduled.message": "Questo contrassegna permanentemente tutte le rate rimanenti come risolte",
     "settleScheduled.done": "Questo pagamento pianificato è stato completato",
+    "processScheduled": "Process this scheduled payment",
+    "processScheduled.message": "Are you sure to process now this scheduled payment?",
+    "processScheduled.done": "This scheduled payment was processed",
     "cancelRecurring": "Annulla questo pagamento ricorrente",
     "cancelRecurring.message": "Questo cancellerà definitivamente il pagamento ricorrente e impedirà qualsiasi evento futuro",
     "cancelRecurring.done": "Questo pagamento ricorrente è stato annullato",
@@ -1648,6 +1651,7 @@
     "registration.fillForm": "Compila il modulo di registrazione",
     "registration.disclaimer": "<b>Avviso:</b> Nessuno dei tuoi dati {app} sarà condiviso con questi fornitori, e l'unico scopo di leggere i tuoi dati personali è quello di compilare il modulo di registrazione e di accedere dopo la registrazione.",
     "disclaimer": "<b>Avviso</b>: nessuno dei tuoi dati {app} sarà condiviso con qualsiasi provider. Gli unici dati letti dai provider sono il nome visualizzato e l'e-mail, con l'unico scopo di accedere più velocemente su {app}.",
+    "noResults": "There are not identity providers added yet.",
     "title": {
       "manage.self": "Gestisci i tuoi identity provider",
       "manage.user": "Gestisci gli identity provider utente"
