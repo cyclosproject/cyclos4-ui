@@ -170,7 +170,7 @@
           </td>
           <td *ngIf="hasActions" class="actions">
             <button *ngIf="occurrence.canProcess"
-              [tooltip]="i18n.transaction.processInstallment"
+              [tooltip]="i18n.transaction.processFailedOccurrence"
               class="btn btn-icon align-items-center"
               (click)="processInstallment(occurrence)">
               <icon icon="play_circle_outline"></icon>

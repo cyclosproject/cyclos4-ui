@@ -441,10 +441,15 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
     });
   }
 
+  isScheduledPayment(): boolean {
+    return this.data.kind === TransactionKind.SCHEDULED_PAYMENT;
+  }
+
   processInstallment(installment: InstallmentView) {
     this.notification.confirm({
-      title: this.i18n.transaction.processInstallment,
-      message: this.i18n.transaction.processInstallmentMessage(installment.number),
+      title: this.isScheduledPayment() ? this.i18n.transaction.processInstallment : this.i18n.transaction.processFailedOccurrence,
+      message: this.isScheduledPayment() ? this.i18n.transaction.processInstallmentMessage(installment.number)
+        : this.i18n.transaction.processFailedOccurrenceMessage(installment.number),
       createDeviceConfirmation: this.data.kind === TransactionKind.SCHEDULED_PAYMENT ?
         this.installmentDeviceConfirmation(InstallmentActionEnum.PROCESS, installment) :
         this.failedOccurreneceDeviceConfirmation(FailedOccurrenceActionEnum.PROCESS, installment),
@@ -454,7 +459,9 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
           key: installment.id,
           confirmationPassword: res.confirmationPassword,
         }).subscribe(() => {
-          this.notification.snackBar(this.i18n.transaction.processInstallmentDone);
+          this.notification.snackBar(
+            this.isScheduledPayment() ? this.i18n.transaction.processInstallmentDone : this.i18n.transaction.processFailedOccurrenceDone
+          );
           this.reload();
         }));
       },
