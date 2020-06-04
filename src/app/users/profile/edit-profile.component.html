@@ -102,7 +102,7 @@
     </ng-container>
 
     <!-- Custom profile fields -->
-    <ng-container *ngFor="let cf of data.userConfiguration.customFields"
+    <ng-container *ngFor="let cf of data.userConfiguration?.customFields"
       [formGroup]="user.get('customValues')">
       <!-- Don't show custom values that are empty and non-editable -->
       <label-value *ngIf="canEdit(cf) || !isEmpty(cf)" [label]="cf.name"

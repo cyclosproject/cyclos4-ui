@@ -23,7 +23,7 @@
       [onClick]="onClick">
 
       <mobile-result *mobileResult="let row">
-        <label-value *ngFor="let col of (result$ | async).columns"
+        <label-value *ngFor="let col of (result$ | async)?.columns"
           labelPosition="sideForced" valueFormat="html" [label]="col.header"
           [value]="row[col.property]">
         </label-value>
@@ -32,7 +32,7 @@
       <table *resultTable class="table table-hover"
         [ngClass]="{'cursor-pointer': data.rowAction}">
         <thead>
-          <th *ngFor="let col of (result$ | async).columns" [ngStyle]="{
+          <th *ngFor="let col of (result$ | async)?.columns" [ngStyle]="{
                   textAlign: col.align,
                   width: col.width
                 }">
@@ -40,9 +40,9 @@
           </th>
         </thead>
         <tbody>
-          <tr *ngFor="let row of (result$ | async).rows"
+          <tr *ngFor="let row of (result$ | async)?.rows"
             (click)="rowClick(row)">
-            <td *ngFor="let col of (result$ | async).columns" [ngStyle]="{
+            <td *ngFor="let col of (result$ | async)?.columns" [ngStyle]="{
                     textAlign: col.align
                   }" [innerHTML]="row[col.property] | trust">
             </td>

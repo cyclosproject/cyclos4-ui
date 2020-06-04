@@ -28,7 +28,7 @@
       <th *ngIf="resultKind === 'operator'">{{ i18n.user.group }}</th>
     </thead>
     <tbody>
-      <tr *ngFor="let row of results.results"
+      <tr *ngFor="let row of results?.results"
         (click)="canViewProfile ? router.navigate(path(row)) : null">
         <td *ngIf="resultKind !== 'operator'" class="avatar">
           <avatar [image]="user(row).image"></avatar>

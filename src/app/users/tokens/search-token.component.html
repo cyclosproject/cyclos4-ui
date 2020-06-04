@@ -108,7 +108,7 @@
         <th>{{ i18n.general.status }}</th>
       </thead>
       <tbody>
-        <tr *ngFor="let row of results?.results"
+        <tr *ngFor="let row of (results$ | async)?.results"
           (click)="router.navigate(view(row)); $event.stopPropagation(); $event.preventDefault()">
           <td>{{ row.user ? row.user.display : i18n.token.unassigned }}</td>
           <td>{{ row.value }}</td>

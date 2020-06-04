@@ -7,7 +7,7 @@
       <user-info *ngIf="!self" [user]="data.user"></user-info>
     </page-content>
 
-    <results-layout [results]="data?.tokens">
+    <results-layout [results]="data.tokens">
       <mobile-result *mobileResult="let row">
         <div class="d-flex">
           <div>
@@ -55,7 +55,7 @@
           <th>{{ i18n.general.status }}</th>
         </thead>
         <tbody>
-          <tr *ngFor="let row of data?.tokens"
+          <tr *ngFor="let row of data.tokens"
             (click)="router.navigate(view(row)); $event.stopPropagation(); $event.preventDefault()">
             <td *ngIf="!self">{{ row.user?.user? row.user.display : '' }}
             </td>

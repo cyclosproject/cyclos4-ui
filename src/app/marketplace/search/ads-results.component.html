@@ -58,7 +58,7 @@
       <th class="text-right">{{ i18n.ad.price }}</th>
     </thead>
     <tbody>
-      <tr *ngFor="let ad of results.results"
+      <tr *ngFor="let ad of results?.results"
         (click)="router.navigate(path(ad))">
         <td class="avatar">
           <avatar [image]="ad.image" icon="shopping_basket"></avatar>
