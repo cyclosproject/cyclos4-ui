@@ -68,7 +68,7 @@
           <th class="actions"></th>
         </thead>
         <tbody>
-          <tr *ngFor="let row of results?.results"
+          <tr *ngFor="let row of (results$ | async)?.results"
             (click)="isStatic(row.kind) ? navigateToView(row) : router.navigate(process(row)); $event.stopPropagation(); $event.preventDefault()">
             <td width="20%">{{ row.name }}</td>
             <td>{{ row.description }}</td>

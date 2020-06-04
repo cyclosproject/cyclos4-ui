@@ -129,7 +129,7 @@
           <th class="actions"></th>
         </thead>
         <tbody>
-          <tr *ngFor="let row of results?.results"
+          <tr *ngFor="let row of (results$ | async)?.results"
             (click)="router.navigate(viewPath(row))">
             <td>{{ row.creationDate | dateTime }}</td>
             <td *ngIf="generalSearch">{{ recordOwner(row) }}</td>
