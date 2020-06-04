@@ -8,6 +8,7 @@ import { InstallmentsService, TransactionsService, TransfersService } from 'app/
 import { PendingPaymentsService } from 'app/api/services/pending-payments.service';
 import { RecurringPaymentsService } from 'app/api/services/recurring-payments.service';
 import { ScheduledPaymentsService } from 'app/api/services/scheduled-payments.service';
+import { ConfirmCallbackParams } from 'app/core/notification.service';
 import { OperationHelperService } from 'app/core/operation-helper.service';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { HeadingAction } from 'app/shared/action';
@@ -82,59 +83,45 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       }));
     const auth = transaction.authorizationPermissions || {};
     if (!empty(transaction.authorizations)) {
-      actions.push(new HeadingAction('check_circle_outline', this.i18n.transaction.viewAuthorizations, () => {
-        this.router.navigate(['banking', 'transaction', this.key, 'authorization-history']);
-      }));
+      actions.push(new HeadingAction('check_circle_outline', this.i18n.transaction.viewAuthorizations,
+        () => this.router.navigate(['banking', 'transaction', this.key, 'authorization-history'])));
     }
     if (auth.authorize) {
-      actions.push(new HeadingAction('thumb_up', this.i18n.transaction.authorizePending, () => {
-        this.authorize();
-      }));
+      actions.push(new HeadingAction('thumb_up', this.i18n.transaction.authorizePending, () => this.authorize()));
     }
     if (auth.deny) {
-      actions.push(new HeadingAction('thumb_down', this.i18n.transaction.denyPending, () => {
-        this.deny();
-      }));
+      actions.push(new HeadingAction('thumb_down', this.i18n.transaction.denyPending, () => this.deny()));
     }
     if (auth.cancel) {
-      actions.push(new HeadingAction('cancel', this.i18n.transaction.cancelAuthorization, () => {
-        this.cancelAuthorization();
-      }));
+      actions.push(new HeadingAction('cancel', this.i18n.transaction.cancelAuthorization, () => this.cancelAuthorization()));
     }
 
     const scheduled = transaction.scheduledPaymentPermissions || {};
     if (scheduled.block) {
-      actions.push(new HeadingAction('block', this.i18n.transaction.blockScheduling, () => {
-        this.blockScheduled();
-      }));
+      actions.push(new HeadingAction('block', this.i18n.transaction.blockScheduling, () => this.blockScheduled()));
     }
     if (scheduled.unblock) {
-      actions.push(new HeadingAction('schedule', this.i18n.transaction.unblockScheduling, () => {
-        this.unblockScheduled();
-      }));
+      actions.push(new HeadingAction('schedule', this.i18n.transaction.unblockScheduling, () => this.unblockScheduled()));
     }
     if (scheduled.cancel) {
-      actions.push(new HeadingAction('cancel', this.i18n.transaction.cancelScheduled, () => {
-        this.cancelScheduled();
-      }));
+      actions.push(new HeadingAction('cancel', this.i18n.transaction.cancelScheduled, () => this.cancelScheduled()));
     }
     if (scheduled.settle) {
-      actions.push(new HeadingAction('done_all', this.i18n.transaction.settleScheduled, () => {
-        this.settleScheduled();
-      }));
+      actions.push(new HeadingAction('done_all', this.i18n.transaction.settleScheduled, () => this.settleScheduled()));
+    }
+    if (transaction.kind === TransactionKind.SCHEDULED_PAYMENT
+      && transaction.installments.length === 1
+      && transaction.installments[0].canProcess) {
+      actions.push(new HeadingAction('play_circle_outline', this.i18n.transaction.processScheduled,
+        () => this.processScheduled(transaction.installments[0])));
     }
 
-    const recurring = transaction.recurringPaymentPermissions || {};
-    if (recurring.cancel) {
-      actions.push(new HeadingAction('cancel', this.i18n.transaction.cancelRecurring, () => {
-        this.cancelRecurring();
-      }));
+    if (transaction.recurringPaymentPermissions?.cancel) {
+      actions.push(new HeadingAction('cancel', this.i18n.transaction.cancelRecurring, () => this.cancelRecurring()));
     }
 
-    if ((transaction.transfer || {}).canChargeback) {
-      actions.push(new HeadingAction('undo', this.i18n.transaction.chargebackTransfer, () => {
-        this.chargeback();
-      }));
+    if (transaction.transfer?.canChargeback) {
+      actions.push(new HeadingAction('undo', this.i18n.transaction.chargebackTransfer, () => this.chargeback()));
     }
 
     for (const operation of (transaction.transfer || {}).operations || []) {
@@ -172,7 +159,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword,
           body: {
-            comments: res.customValues.comments,
+            comments: res.customValues.comments
           },
         }).subscribe(nextLevel => {
           if (nextLevel) {
@@ -182,7 +169,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
           }
           this.reload();
         }));
-      },
+      }
     });
   }
 
@@ -200,11 +187,8 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
           body: {
             comments: res.customValues.comments,
           },
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.transaction.denyPendingDone);
-          this.reload();
-        }));
-      },
+        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.denyPendingDone)));
+      }
     });
   }
 
@@ -222,11 +206,8 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
           body: {
             comments: res.customValues.comments,
           },
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.transaction.cancelAuthorizationDone);
-          this.reload();
-        }));
-      },
+        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.cancelAuthorizationDone)));
+      }
     });
   }
 
@@ -248,11 +229,8 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
         this.addSub(this.scheduledPaymentsService.blockScheduledPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.transaction.blockSchedulingDone);
-          this.reload();
-        }));
-      },
+        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.blockSchedulingDone)));
+      }
     });
   }
 
@@ -266,11 +244,8 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
         this.addSub(this.scheduledPaymentsService.unblockScheduledPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.transaction.unblockSchedulingDone);
-          this.reload();
-        }));
-      },
+        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.unblockSchedulingDone)));
+      }
     });
   }
 
@@ -284,11 +259,8 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
         this.addSub(this.scheduledPaymentsService.cancelScheduledPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.transaction.cancelScheduledDone);
-          this.reload();
-        }));
-      },
+        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.cancelScheduledDone)));
+      }
     });
   }
 
@@ -302,11 +274,8 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
         this.addSub(this.scheduledPaymentsService.settleScheduledPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.transaction.settleScheduledDone);
-          this.reload();
-        }));
-      },
+        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.settleScheduledDone)));
+      }
     });
   }
 
@@ -328,11 +297,8 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
         this.addSub(this.recurringPaymentsService.cancelRecurringPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.transaction.cancelRecurringDone);
-          this.reload();
-        }));
-      },
+        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.cancelRecurringDone)));
+      }
     });
   }
 
@@ -353,11 +319,8 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
         this.addSub(this.transfersService.chargebackTransfer({
           key: this.transaction.transfer.id,
           confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.transaction.chargebackTransferDone);
-          this.reload();
-        }));
-      },
+        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.chargebackTransferDone)));
+      }
     });
   }
 
@@ -433,11 +396,8 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
         this.addSub(this.installmentsService.settleInstallment({
           key: installment.id,
           confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.transaction.settleInstallmentDone);
-          this.reload();
-        }));
-      },
+        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.settleInstallmentDone)));
+      }
     });
   }
 
@@ -447,25 +407,42 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
 
   processInstallment(installment: InstallmentView) {
     this.notification.confirm({
-      title: this.isScheduledPayment() ? this.i18n.transaction.processInstallment : this.i18n.transaction.processFailedOccurrence,
-      message: this.isScheduledPayment() ? this.i18n.transaction.processInstallmentMessage(installment.number)
-        : this.i18n.transaction.processFailedOccurrenceMessage(installment.number),
-      createDeviceConfirmation: this.data.kind === TransactionKind.SCHEDULED_PAYMENT ?
-        this.installmentDeviceConfirmation(InstallmentActionEnum.PROCESS, installment) :
-        this.failedOccurreneceDeviceConfirmation(FailedOccurrenceActionEnum.PROCESS, installment),
+      title: this.i18n.transaction.processInstallment,
+      message: this.i18n.transaction.processInstallmentMessage(installment.number),
+      createDeviceConfirmation: this.installmentDeviceConfirmation(InstallmentActionEnum.PROCESS, installment),
       passwordInput: this.transaction.confirmationPasswordInput,
-      callback: res => {
-        this.addSub(this.installmentsService.processInstallment({
-          key: installment.id,
-          confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => {
-          this.notification.snackBar(
-            this.isScheduledPayment() ? this.i18n.transaction.processInstallmentDone : this.i18n.transaction.processFailedOccurrenceDone
-          );
-          this.reload();
-        }));
-      },
+      callback: this.processCallback(installment.id, this.i18n.transaction.processInstallmentDone),
     });
+  }
+
+  processOccurrence(installment: InstallmentView) {
+    this.notification.confirm({
+      title: this.i18n.transaction.processFailedOccurrence,
+      message: this.i18n.transaction.processFailedOccurrenceMessage(installment.number),
+      createDeviceConfirmation: this.failedOccurreneceDeviceConfirmation(FailedOccurrenceActionEnum.PROCESS, installment),
+      passwordInput: this.transaction.confirmationPasswordInput,
+      callback: this.processCallback(installment.id, this.i18n.transaction.processFailedOccurrenceDone),
+    });
+  }
+
+  processScheduled(installment: InstallmentView) {
+    this.notification.confirm({
+      title: this.i18n.transaction.processScheduled,
+      message: this.i18n.transaction.processScheduledMessage,
+      createDeviceConfirmation: this.installmentDeviceConfirmation(InstallmentActionEnum.PROCESS, installment),
+      passwordInput: this.transaction.confirmationPasswordInput,
+      callback: this.processCallback(installment.id, this.i18n.transaction.processScheduledDone),
+    });
+  }
+
+  processCallback(key: string, notificationMsg: string): (params: ConfirmCallbackParams) => void {
+    return res => this.addSub(this.installmentsService.processInstallment({ key, confirmationPassword: res.confirmationPassword })
+      .subscribe(() => this.sendNotificationAndReload(notificationMsg)));
+  }
+
+  sendNotificationAndReload(msg: string) {
+    this.notification.snackBar(msg);
+    this.reload();
   }
 
   private failedOccurreneceDeviceConfirmation(
