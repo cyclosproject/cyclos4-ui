@@ -4,6 +4,7 @@ import {
   Image, LinkedEntityTypeEnum, StoredFile,
 } from 'app/api/models';
 import { FilesService, ImagesService } from 'app/api/services';
+import { FieldHelperService } from 'app/core/field-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { I18n } from 'app/i18n/i18n';
 import { AbstractComponent } from 'app/shared/abstract.component';
@@ -41,7 +42,8 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
     public i18n: I18n,
     private nextRequestState: NextRequestState,
     private filesService: FilesService,
-    private imagesService: ImagesService) {
+    private imagesService: ImagesService,
+    private fieldHelper: FieldHelperService) {
     super(injector);
   }
 
@@ -104,7 +106,7 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
   field: CustomField;
   type: CustomFieldTypeEnum;
   value: any;
-  hasValue = false;
+  protected doHasValue = false;
   link: string;
   externalLink: string;
 
@@ -135,7 +137,7 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
       this.type = CustomFieldTypeEnum.STRING;
     }
     this.value = valueAndLink.value;
-    this.hasValue = this.value != null && (this.value.length === undefined || this.value.length > 0);
+    this.doHasValue = this.value != null && (this.value.length === undefined || this.value.length > 0);
     if (valueAndLink.link) {
       if (valueAndLink.link.includes('://')) {
         this.externalLink = valueAndLink.link;
@@ -145,108 +147,12 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
     }
   }
 
-  private getValue(): { value: any, link?: string } {
-    switch (this.type) {
-      case CustomFieldTypeEnum.BOOLEAN:
-        if (this.fieldValue.booleanValue != null) {
-          return {
-            value: this.fieldValue.booleanValue
-              ? this.i18n.general.yes
-              : this.i18n.general.no,
-          };
-        }
-        break;
-      case CustomFieldTypeEnum.DATE:
-        return {
-          value: this.format.formatAsDate(this.fieldValue.dateValue),
-        };
-      case CustomFieldTypeEnum.DECIMAL:
-        return {
-          value: this.format.formatAsNumber(this.fieldValue.decimalValue, this.field.decimalDigits),
-        };
-      case CustomFieldTypeEnum.DYNAMIC_SELECTION:
-        const dyn = this.fieldValue.dynamicValue;
-        if (dyn) {
-          return {
-            value: dyn.label || dyn.value,
-          };
-        }
-        break;
-      case CustomFieldTypeEnum.FILE:
-        return {
-          value: this.fieldValue.fileValues,
-        };
-      case CustomFieldTypeEnum.IMAGE:
-        return {
-          value: this.fieldValue.imageValues,
-        };
-      case CustomFieldTypeEnum.INTEGER:
-        return {
-          value: this.format.formatAsNumber(this.fieldValue.integerValue, 0),
-        };
-      case CustomFieldTypeEnum.LINKED_ENTITY:
-        let entity = null;
-        let path: string[] = null;
+  get hasValue() {
+    return this.doHasValue;
+  }
 
-        switch (this.field.linkedEntityType) {
-          case LinkedEntityTypeEnum.USER:
-            entity = this.fieldValue.userValue;
-            path = ['users', ':id', 'profile'];
-            break;
-          case LinkedEntityTypeEnum.ADVERTISEMENT:
-            entity = this.fieldValue.adValue;
-            path = ['marketplace', 'view', ':id'];
-            break;
-          case LinkedEntityTypeEnum.TRANSACTION:
-            entity = this.fieldValue.transactionValue;
-            path = ['banking', 'transaction', ':id'];
-            break;
-          case LinkedEntityTypeEnum.TRANSFER:
-            entity = this.fieldValue.transferValue;
-            path = ['banking', 'transfer', ':id'];
-            break;
-          case LinkedEntityTypeEnum.RECORD:
-            entity = this.fieldValue.recordValue;
-            path = ['records', 'view', ':id'];
-            break;
-        }
-        if (entity != null) {
-          const link = path == null || entity.id == null ? null :
-            '/' + path.map(part => part === ':id' ? entity.id : part).join('/');
-          return {
-            value: entity.display || entity.name || entity.transactionNumber || entity.id,
-            link,
-          };
-        }
-        break;
-      case CustomFieldTypeEnum.SINGLE_SELECTION:
-      case CustomFieldTypeEnum.MULTI_SELECTION:
-        return {
-          value: this.fieldValue.enumeratedValues || [],
-        };
-      case CustomFieldTypeEnum.RICH_TEXT:
-        let rich = this.fieldValue.stringValue;
-        if (rich != null && rich.length > 0) {
-          if (this.plainText) {
-            const div = document.createElement('div');
-            div.innerHTML = rich;
-            rich = div.textContent || div.innerText || '';
-          }
-        }
-        return {
-          value: rich,
-        };
-      case CustomFieldTypeEnum.URL:
-        return {
-          value: this.fieldValue.stringValue,
-          link: this.fieldValue.stringValue,
-        };
-      default:
-        return {
-          value: this.fieldValue.stringValue,
-        };
-    }
-    return null;
+  private getValue(): { value: any, link?: string } {
+    return this.fieldHelper.getValue(this.fieldValue, this.plainText);
   }
 
   private createFieldValue(): CustomFieldValue {

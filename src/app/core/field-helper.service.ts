@@ -43,6 +43,113 @@ export class FieldHelperService {
   }
 
   /**
+   * Returns a formatted value for the given custom field value
+   */
+  getValue(fieldValue: CustomFieldValue, plainText?: boolean | string) {
+    switch (fieldValue.field.type) {
+      case CustomFieldTypeEnum.BOOLEAN:
+        if (fieldValue.booleanValue != null) {
+          return {
+            value: fieldValue.booleanValue
+              ? this.i18n.general.yes
+              : this.i18n.general.no,
+          };
+        }
+        break;
+      case CustomFieldTypeEnum.DATE:
+        return {
+          value: this.format.formatAsDate(fieldValue.dateValue),
+        };
+      case CustomFieldTypeEnum.DECIMAL:
+        return {
+          value: this.format.formatAsNumber(fieldValue.decimalValue, fieldValue.field.decimalDigits),
+        };
+      case CustomFieldTypeEnum.DYNAMIC_SELECTION:
+        const dyn = fieldValue.dynamicValue;
+        if (dyn) {
+          return {
+            value: dyn.label || dyn.value,
+          };
+        }
+        break;
+      case CustomFieldTypeEnum.FILE:
+        return {
+          value: fieldValue.fileValues,
+        };
+      case CustomFieldTypeEnum.IMAGE:
+        return {
+          value: fieldValue.imageValues,
+        };
+      case CustomFieldTypeEnum.INTEGER:
+        return {
+          value: this.format.formatAsNumber(fieldValue.integerValue, 0),
+        };
+      case CustomFieldTypeEnum.LINKED_ENTITY:
+        let entity = null;
+        let path: string[] = null;
+
+        switch (fieldValue.field.linkedEntityType) {
+          case LinkedEntityTypeEnum.USER:
+            entity = fieldValue.userValue;
+            path = ['users', ':id', 'profile'];
+            break;
+          case LinkedEntityTypeEnum.ADVERTISEMENT:
+            entity = fieldValue.adValue;
+            path = ['marketplace', 'view', ':id'];
+            break;
+          case LinkedEntityTypeEnum.TRANSACTION:
+            entity = fieldValue.transactionValue;
+            path = ['banking', 'transaction', ':id'];
+            break;
+          case LinkedEntityTypeEnum.TRANSFER:
+            entity = fieldValue.transferValue;
+            path = ['banking', 'transfer', ':id'];
+            break;
+          case LinkedEntityTypeEnum.RECORD:
+            entity = fieldValue.recordValue;
+            path = ['records', 'view', ':id'];
+            break;
+        }
+        if (entity != null) {
+          const link = path == null || entity.id == null ? null :
+            '/' + path.map(part => part === ':id' ? entity.id : part).join('/');
+          return {
+            value: entity.display || entity.name || entity.transactionNumber || entity.id,
+            link,
+          };
+        }
+        break;
+      case CustomFieldTypeEnum.SINGLE_SELECTION:
+      case CustomFieldTypeEnum.MULTI_SELECTION:
+        return {
+          value: fieldValue.enumeratedValues || [],
+        };
+      case CustomFieldTypeEnum.RICH_TEXT:
+        let rich = fieldValue.stringValue;
+        if (rich != null && rich.length > 0) {
+          if (plainText) {
+            const div = document.createElement('div');
+            div.innerHTML = rich;
+            rich = div.textContent || div.innerText || '';
+          }
+        }
+        return {
+          value: rich,
+        };
+      case CustomFieldTypeEnum.URL:
+        return {
+          value: fieldValue.stringValue,
+          link: fieldValue.stringValue,
+        };
+      default:
+        return {
+          value: fieldValue.stringValue,
+        };
+    }
+    return null;
+  }
+
+  /**
    * Returns the display name of the given field
    * @param field The field identifier
    * @param customFields The known custom fields
