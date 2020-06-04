@@ -648,6 +648,9 @@
     "settleScheduled": "Saldar el pago agendado",
     "settleScheduled.message": "Esto marcará todas las cuotas restantes como saldadas de forma permanente",
     "settleScheduled.done": "El pago agendado ha sido saldado",
+    "processScheduled": "Process this scheduled payment",
+    "processScheduled.message": "Are you sure to process now this scheduled payment?",
+    "processScheduled.done": "This scheduled payment was processed",
     "cancelRecurring": "Cancelar el pago recurrente",
     "cancelRecurring.message": "Esto cancelará permanentemente el pago recurrente previniendo ocurrencias futuras",
     "cancelRecurring.done": "El pago recurrente ha sido cancelado",
@@ -1648,6 +1651,7 @@
     "registration.fillForm": "Completar el formulario de registro",
     "registration.disclaimer": "<b>Descargo de responsabilidad:</b> Ninguno de los datos en su {app} serán compartidos con estos proveedores. El único propósito de lleer sus datos de carácter personal desde el proveedor es rellenar su formulario de registración y facilitar su acceso una vez completado el proceso.",
     "disclaimer": "<b>Descargo de responsabilidad</b>: Ninguno de sus datos en {app} serán compartidos con los proveedores. Los únicos datos que se toman de su proveedor serán su nombre y e-mail, y con el único propósito de acelerar y facilitar el proceso de acceso a {app}.",
+    "noResults": "There are not identity providers added yet.",
     "title": {
       "manage.self": "Administrar sus proveedores de identidad",
       "manage.user": "Administrar sus proveedores de identidad"
