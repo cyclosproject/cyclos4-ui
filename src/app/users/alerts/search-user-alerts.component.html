@@ -68,7 +68,7 @@
     </form>
   </page-content>
   <results-layout resultType="list" [results]="results$ | async"
-    (update)="update($event)">
+    (update)="update($event)" [rendering$]="rendering$">
 
     <mobile-result *mobileResult="let row" [avatarImage]="row.user?.image"
       avatarIcon="user">

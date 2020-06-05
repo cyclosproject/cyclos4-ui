@@ -59,7 +59,7 @@
   </page-content>
 
   <results-layout resultType="list" [results]="results$ | async"
-    (update)="update($event)" [toLink]="toLink">
+    (update)="update($event)" [toLink]="toLink" [rendering$]="rendering$">
 
     <mobile-result *mobileResult="let row" [date]="row.date"
       [amount]="row.amount" [currency]="currenciesByKey.get(row.currency)">

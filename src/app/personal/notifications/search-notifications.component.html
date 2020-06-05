@@ -15,7 +15,7 @@
 
   </page-content>
   <results-layout resultType="list" [results]="results$ | async"
-    (update)="update($event)" [onClick]="onClick">
+    (update)="update($event)" [onClick]="onClick" [rendering$]="rendering$">
 
     <mobile-result *mobileResult="let row"
       [avatarImage]="row.relatedUser?.image" avatarIcon="notifications_none">

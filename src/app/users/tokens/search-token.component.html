@@ -63,7 +63,7 @@
     </form>
   </page-content>
 
-  <results-layout [results]="results$ | async">
+  <results-layout [results]="results$ | async" [rendering$]="rendering$">
     <mobile-result *mobileResult="let row">
       <div class="d-flex">
         <div>

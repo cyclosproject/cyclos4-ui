@@ -55,7 +55,7 @@
     </form>
   </page-content>
   <results-layout resultType="list" [results]="results$ | async"
-    [toLink]="toLink" (update)="update($event)">
+    [toLink]="toLink" (update)="update($event)" [rendering$]="rendering$">
 
     <mobile-result *mobileResult="let row" [date]="row.redeemDate"
       [amount]="row.amount" [currency]="row.type.configuration.currency"

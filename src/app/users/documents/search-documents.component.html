@@ -24,7 +24,8 @@
       </form>
     </page-content>
 
-    <results-layout resultType="list" [results]="results$ | async">
+    <results-layout resultType="list" [results]="results$ | async"
+      [rendering$]="rendering$">
       <mobile-result *mobileResult="let row">
         <div class="d-flex">
           <div>
