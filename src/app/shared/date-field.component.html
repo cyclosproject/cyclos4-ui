@@ -50,8 +50,8 @@
           (select)="selectFromCalendar($event)">
         </calendar>
         <actions forceRow class="mt-0 p-2" minimal>
-          <button type="button" class="btn btn-outline-primary"
-            (click)="setToday()">
+          <button *ngIf="todayEnabled" type="button"
+            class="btn btn-outline-primary" (click)="setToday()">
             {{ i18n.field.date.today }}
           </button>
           <button type="button" class="btn btn-outline-primary"
@@ -66,5 +66,4 @@
       </div>
     </div>
   </div>
-  <field-errors [control]="formControl"></field-errors>
 </ng-template>

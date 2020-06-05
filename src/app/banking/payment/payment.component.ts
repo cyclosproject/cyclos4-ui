@@ -13,6 +13,7 @@ import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
+import { cloneDeep } from 'lodash';
 import { isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -372,7 +373,9 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
   }
 
   private confirmDataRequest(): Observable<PaymentPreview> {
-    const value = this.form.value;
+    // Clone value before manipulate it otherwise it will trigger
+    // valueChanges and eventually will hide/display some fields
+    const value = cloneDeep(this.form.value);
     const payment: PerformPayment = value;
     switch (value.scheduling) {
       case 'futureDate':
