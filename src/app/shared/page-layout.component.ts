@@ -85,7 +85,7 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
       const fullWidth = this.layout.fullWidth;
       const hasLeftMenu = this.leftMenuVisible;
       const hasCards = !empty(this.bannerCards$.value);
-      this.leftAreaVisible$.next(gtmd && !fullWidth && (hasLeftMenu || hasCards));
+      this.leftAreaVisible$.next(!this.hideMenu && gtmd && !fullWidth && (hasLeftMenu || hasCards));
     };
     this.subs.push(this.layout.gtmd$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.leftMenuVisible$.subscribe(updateLeftAreaVisible));
