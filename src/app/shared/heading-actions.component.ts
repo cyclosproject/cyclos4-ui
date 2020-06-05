@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { HeadingAction } from 'app/shared/action';
 import { BaseComponent } from 'app/shared/base.component';
+import { HeadingSubActionsComponent } from 'app/shared/heading-sub-actions.component';
 import { blurIfClick } from 'app/shared/helper';
 import { ActionsRight, Escape } from 'app/shared/shortcut.service';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 const HeadingActionsMenu = 'heading-actions-menu';
@@ -36,7 +38,7 @@ export class HeadingActionsComponent extends BaseComponent implements OnInit {
   groupActions$ = new BehaviorSubject(false);
   shortcutsSub: Subscription;
 
-  constructor(injector: Injector) {
+  constructor(injector: Injector, private modal: BsModalService) {
     super(injector);
   }
 
@@ -93,5 +95,16 @@ export class HeadingActionsComponent extends BaseComponent implements OnInit {
       this.shortcutsSub = null;
     }
     this.layout.setFocusTrap(null);
+  }
+
+  clickAction(action: HeadingAction, param: any) {
+    if (action.subActions?.length > 0) {
+      this.modal.show(HeadingSubActionsComponent, {
+        class: 'modal-form modal-form-small',
+        initialState: { action }
+      });
+    } else {
+      action.onClick(param);
+    }
   }
 }

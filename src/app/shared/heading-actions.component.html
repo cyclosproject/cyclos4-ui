@@ -24,7 +24,7 @@
         *ngFor="let action of visibleActions$.value; let first = first; let i = index;"
         class="heading-action-option" [ngClass]="'heading-action-' + i"
         href="#"
-        (click)="dropdown.hide();action.onClick(actionLink); $event.stopPropagation(); $event.preventDefault()">
+        (click)="dropdown.hide(); clickAction(action, actionLink); $event.stopPropagation(); $event.preventDefault()">
         <icon size="1.5rem" [icon]="action.icon"></icon>
         <div class="heading-action-option-text">{{ action.label }}</div>
       </a>

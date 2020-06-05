@@ -45,6 +45,7 @@ import { FocusedDirective } from 'app/shared/focused.directive';
 import { FormatFieldValueComponent } from 'app/shared/format-field-value.component';
 import { HeadingActionButtonComponent } from 'app/shared/heading-action-button.component';
 import { HeadingActionsComponent } from 'app/shared/heading-actions.component';
+import { HeadingSubActionsComponent } from 'app/shared/heading-sub-actions.component';
 import { HtmlFieldComponent } from 'app/shared/html-field.component';
 import { IconWithCounterComponent } from 'app/shared/icon-with-counter.component';
 import { IconComponent } from 'app/shared/icon.component';
@@ -217,6 +218,7 @@ export function initTooltipConfig(): TooltipConfig {
     AgreementsContentDialogComponent,
     CountdownButtonComponent,
     ActionButtonComponent,
+    HeadingSubActionsComponent,
 
     TrustPipe,
     DatePipe,
@@ -349,6 +351,7 @@ export function initTooltipConfig(): TooltipConfig {
     AgreementsContentDialogComponent,
     CountdownButtonComponent,
     ActionButtonComponent,
+    HeadingSubActionsComponent,
 
     FocusedDirective,
     NumbersOnlyDirective,
