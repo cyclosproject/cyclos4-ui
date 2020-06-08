@@ -1806,15 +1806,15 @@
     "value": "Value",
     "label": "Label",
     "activationDeadline": "Activation deadline",
-    "noDeadline": "No deadline",
-    "expiryDate": "Expiry date",
+    "noDeadline": "Sin fecha límite",
+    "expiryDate": "Fecha de expiración",
     "noExpiryDate": "Without expiry",
-    "activationDate": "Activation date",
-    "creationDate": "Creation date",
+    "activationDate": "Fecha de activación",
+    "creationDate": "Fecha de creación",
     "activationBeginDate": "Activation begin date",
     "activationEndDate": "Activation end date",
     "expiryBeginDate": "Expiry begin date",
     "expiryEndDate": "Expiry end date",
-    "unassigned": "Unassigned"
+    "unassigned": "Sin asignar"
   }
 }
