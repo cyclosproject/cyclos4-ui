@@ -23,8 +23,6 @@
     "notAppliedSelect": "Não aplicado (selecione para aplicar)",
     "user": "Usuário",
     "operator": "Operador",
-    "brokers": "Corretores",
-    "groups": "Grupos",
     "name": "Nome",
     "to": "para",
     "description": "Descrição",
@@ -63,7 +61,7 @@
     "remove.confirm": "Tem certeza que deseja remover o item {item}?",
     "remove.done": "O item {item} foi removido",
     "remove.tooltip": "Remover {item}",
-    "remoteAddress": "IP address",
+    "remoteAddress": "Endereço IP",
     "save": "Salvar",
     "addNew": "Adicionar novo",
     "yes": "Sim",
@@ -173,6 +171,7 @@
       "from": "De {min}",
       "to": "Até {max}"
     },
+    "rangeTo": "Até",
     "fileSize": {
       "b": "{n} bytes",
       "k": "{n}KB",
@@ -252,6 +251,7 @@
     "banking.pos": "Receber pagamento",
     "banking.receiveQrPayment": "Receber código QR",
     "banking.scheduledPayments": "Pagamentos agendados",
+    "banking.pendingMyAuth": "Aguardando minha autorização",
     "banking.authorizations": "Autorizações de pagamento",
     "banking.searchVouchers": "Busca de cupons",
     "banking.buyVouchers": "Comprar cupons",
@@ -291,7 +291,7 @@
     "personal.password": "Senha",
     "personal.passwords": "Senhas",
     "personal.identityProviders": "Provedores de identidade",
-    "personal.agreements": "Agreements",
+    "personal.agreements": "Termos de adesão",
     "personal.notifications": "Notificações",
     "personal.notificationSettings": "Configurações de notificações",
     "personal.settings": "Definições",
@@ -309,7 +309,7 @@
   "password": {
     "confirmationMessage": "Forneça seu {passwordType} para confirmar esta operação",
     "confirm.noPassword": "Para confirmar você precisa informar sua {passwordType}, mas você nao possui nenhuma",
-    "confirm.mode": "Confirmar com",
+    "confirm.mode": "Confirme com",
     "confirm.mode.device": "Telefone celular",
     "confirm.mode.password": "Senha",
     "confirm.device.active": "Para confirmar, leia este código QR com seu telefone celular",
@@ -436,6 +436,7 @@
       "payUser": "Pagar usuário",
       "paySystem": "Pagar sistema",
       "pos": "Receber pagamento",
+      "receiveQRPayment": "Receber pagamento QR",
       "contacts": "Contatos",
       "directory": "Diretório",
       "advertisements": "Anúncios",
@@ -443,9 +444,9 @@
       "password": "Senha",
       "passwords": "Senhas",
       "switchTheme": "Mudar tema",
-      "connectedUsers": "Usuários conectados",
-      "receiveQRPayment": "Receive QR payment"
+      "connectedUsers": "Usuários conectados"
     },
+    "accounts": "Contas",
     "accountStatus": "Status da conta",
     "lastIncomingPayments": "Últimos pagamentos recebidos",
     "noIncomingPayments": "Nenhum pagamento recebido",
@@ -458,8 +459,7 @@
       "neverCreated": "Sua {type} precisa ser definido.",
       "securityAnswer": "Você deve definir a pergunta de segurança, que será necessária caso precise redefinir sua senha.",
       "proceed": "Clique aqui para continuar"
-    },
-    "accounts": "Accounts"
+    }
   },
   "account": {
     "account": "Conta",
@@ -516,6 +516,7 @@
     "accountBalance": "Saldo de conta",
     "installments": "Parcelas",
     "installmentNumber": "Número",
+    "installmentNumberOfTotal": "{number} de {total}",
     "occurrences": "Ocorrências",
     "noAccounts": "Você não tem nenhuma conta para realizar o pagamento",
     "noTypes": "Não existem tipos de pagamento possíveis",
@@ -579,6 +580,7 @@
       "paymentConfirmation": "Confirmação de pagamento",
       "pendingPayment": "Pagamento submetido para autorização",
       "processedPayment": "Pagamento efetuado",
+      "pendingMyAuthorization": "Pendente de minha autorização",
       "authorizations": "Autorizações de pagamento",
       "authorizationHistory": "Histórico de autorizações",
       "scheduled": "Pagamentos agendados",
@@ -605,6 +607,7 @@
       "paymentConfirmation": "Confirmação",
       "pendingPayment": "Pendente de autorização",
       "processedPayment": "Pagamento efetuado",
+      "pendingMyAuthorization": "Para autorizar",
       "authorizations": "Autorizações",
       "authorizationHistory": "Histórico",
       "scheduled": "Pagamentos agendados",
@@ -645,6 +648,9 @@
     "settleScheduled": "Liquidar o pagamento agendado",
     "settleScheduled.message": "Isso vai marcar permanentemente todas as parcelas restantes como liquidadas",
     "settleScheduled.done": "Este pagamento agendado foi liquidado",
+    "processScheduled": "Processar este pagamento agendado",
+    "processScheduled.message": "Tem certeza de que deseja processar agora este pagamento agendado?",
+    "processScheduled.done": "Este pagamento agendado foi processado",
     "cancelRecurring": "Cancelar este pagamento recorrente",
     "cancelRecurring.message": "Isto irá cancelar permanentemente o pagamento recorrente e evitar futuras ocorrência",
     "cancelRecurring.done": "Este pagamento recorrente foi cancelado",
@@ -670,8 +676,7 @@
       "weekly.count": "O número máximo permitido de pagamentos por semana é {count}",
       "monthly.amount": "O valor máximo mensal de {amount} foi excedido",
       "monthly.count": "O número máximo permitido de pagamentos por mês é {count}"
-    },
-    "installmentNumberOfTotal": "{number} of {total}"
+    }
   },
   "voucher": {
     "error": {
@@ -768,6 +773,10 @@
     "refundDate": "Data de reembolso"
   },
   "field": {
+    "date": {
+      "clear": "Limpar",
+      "today": "Hoje"
+    },
     "privacy": {
       "name": "Privacidade",
       "private.tooltip": "Este campo é privado. Clique para permitir que outros possam visualizá-lo.",
@@ -928,6 +937,9 @@
       "userBrokerings": "Membros do corretor"
     },
     "group": "Grupo",
+    "broker": "Corretor",
+    "brokers": "Corretores",
+    "groups": "Grupos",
     "groupSet": "Conjunto de grupos",
     "group.filter": "Grupos",
     "registrationDate": "Data de registro",
@@ -960,7 +972,6 @@
     "contactInfo.atAddress": "Em",
     "confirmation.message": "Para salvar o seu perfil, forneça seu {type}",
     "profileSaved": "O perfil foi salvo",
-    "imagesChanged": "Para que as mudanças nas imagens sejam concluídas é necessário salvar o perfil",
     "newEmailConfirmed": "Seu novo endereço de e-mail foi confirmado com sucesso",
     "passwordConfirmation": "{type} confirmação",
     "securityQuestion.message": "Se acontecer de você esquecer sua senha, você precisará responder corretamente a pergunta de segurança a fim de redefinir a senha.<br>Isto pode ser definido mais tarde, mas tenha em mente que a recuperação de senha não funcionará sem ela.",
@@ -1004,7 +1015,7 @@
       "status.operator": "Estado do operador",
       "group.user": "Grupo do usuário",
       "group.operator": "Grupo do operador",
-      "agreements": "Agreements",
+      "agreements": "Termos de adesão",
       "viewRedeemedVouchers": "Ver cupons resgatados",
       "redeemVoucher": "Resgatar cupons",
       "viewBoughtVouchers": "Ver cupoms comprados",
@@ -1114,27 +1125,27 @@
       "history.user": "Histórico de estado",
       "history.operator": "Histórico de estado"
     },
-    "active": "Ativo",
+    "active": "Ativa",
     "blocked": "Acesso bloqueado",
-    "disabled": "Desabilitado",
+    "disabled": "Desabilitada",
     "pending": "Pendente de ativação",
     "purged": "Removido (todos os dados privados são apagados)",
     "removed": "Removido (nenhum dado privado é apagado)"
   },
   "agreements": {
-    "agreement": "Agreement",
-    "required": "Required agreements",
-    "optional": "Optional agreements",
-    "optional.saved": "The selected agreements have been saved",
-    "accepted": "Accepted",
-    "noAccepted": "No accepted agreements",
+    "agreement": "Termo de adesão",
+    "required": "Termos de adesão obrigatórios",
+    "optional": "Termos de adesão opcionais  ",
+    "optional.saved": "Os termos selecionados foram salvos",
+    "accepted": "Aceito",
+    "noAccepted": "Nenhum termo de adesão aceito",
     "title": {
-      "accepted": "Accepted agreements",
-      "history": "Agreements history"
+      "accepted": "Termos de adesão aceitos",
+      "history": "Histórico de termos de adesão"
     },
     "mobileTitle": {
-      "accepted": "Agreements",
-      "history": "Agreements history"
+      "accepted": "Termos de adesão",
+      "history": "Histórico de termos de adesão"
     }
   },
   "groupMembership": {
@@ -1310,7 +1321,6 @@
     "byOwner": "Por {owner}",
     "showAllCategories": "Mostrar todos",
     "rootCategory": "Principal",
-    "imagesChanged": "Para realmente salvar as alterações em imagens, o anúncio precisa ser salvo",
     "orderAccepted": "O pedido foi processado",
     "orderRejected": "O pedido foi rejeitado",
     "orderSavedAsDraft": "O pedido foi salvo como rascunho",
@@ -1408,8 +1418,10 @@
     "remarks": "Observações",
     "title": {
       "search": "Buscar anúncios",
-      "owner": "Anúncios de {name}",
-      "webshopOwner": "Loja virtual de {name}",
+      "myAdvertisements": "Meus anúncios",
+      "myWebshop": "Minha loja virtual",
+      "viewAdvertisements": "Ver anúncios",
+      "viewWebshop": "Ver loja virtual",
       "new": "Novo anúncio",
       "edit": "Editar anúncio",
       "purchases": "Compras",
@@ -1433,8 +1445,10 @@
     },
     "mobileTitle": {
       "search": "Anúncios",
-      "owner": "Anúncios",
-      "webshopOwner": "Loja virtual",
+      "myAdvertisements": "Meus anúncios",
+      "myWebshop": "Minha loja virtual",
+      "viewAdvertisements": "Ver anúncios",
+      "viewWebshop": "Ver loja virtual",
       "details": "Anúncio",
       "new": "Novo anúncio",
       "edit": "Editar anúncio",
@@ -1637,6 +1651,7 @@
     "registration.fillForm": "Preencha o formulário de registro",
     "registration.disclaimer": "<b>Aviso Legal:</b> Nenhum dos seus dados {app} será compartilhado com estes provedores, e o único propósito de ler seus dados pessoais deles é preencher o formulário de registro e logar você depois de estar registrado.",
     "disclaimer": "<b>Aviso</b>: Nenhum dos seus dados {app} serão compartilhados com qualquer provedor. Os únicos dados lidos pelos provedores são o seu nome de exibição e e-mail, com o único propósito de fazer login mais rápido no {app}.",
+    "noResults": "Não há provedores de identidade adicionados ainda.",
     "title": {
       "manage.self": "Gerenciar seus provedores de identidade",
       "manage.user": "Gerenciar provedores de identidade do usuário"
@@ -1747,5 +1762,59 @@
     "savedSuccessfully": "Salvo com sucesso",
     "process": "Processar documento dinâmico",
     "category": "Categoria"
+  },
+  "token": {
+    "title": {
+      "new": "Detalhes de {0}",
+      "view": "Detalhes de {0}",
+      "assign": "Atribuir"
+    },
+    "mobileTitle": {
+      "view": "Detalhes de {0}"
+    },
+    "action": {
+      "activate": "Ativar",
+      "assign": "Atribuir",
+      "block": "Bloquear",
+      "cancel": "Cancelar",
+      "changeDeadline": "Alterar prazo",
+      "changeExpiry": "Alterar expiração",
+      "unblock": "Desbloquear",
+      "done": {
+        "activated": "O token foi ativado",
+        "assigned": "O token foi atribuído",
+        "blocked": "O token foi bloqueado",
+        "canceled": "O token foi cancelado",
+        "created": "O token foi criado",
+        "deadlineChanged": "O prazo do token foi alterado",
+        "expiryChanged": "O vencimento do token foi alterado",
+        "unblocked": "O token foi desbloqueado"
+      },
+      "message": {
+        "cancel": "Você está prestes a cancelar o token. Esteja ciente que esta é uma ação permanente. Tem certeza que deseja alterar o status do token para cancelado?"
+      }
+    },
+    "status": {
+      "activationExpired": "Ativação expirada",
+      "active": "Ativa",
+      "blocked": "Bloqueado",
+      "canceled": "Cancelado",
+      "expired": "Vencido",
+      "pending": "Pendente de ativação",
+      "unassigned": "Não atribuido"
+    },
+    "value": "Valor",
+    "label": "Rótulo",
+    "activationDeadline": "Prazo de ativação",
+    "noDeadline": "Sem prazo",
+    "expiryDate": "Data de expiração",
+    "noExpiryDate": "Sem expiração",
+    "activationDate": "Data de ativação",
+    "creationDate": "Data de criação",
+    "activationBeginDate": "Data inicial de ativação",
+    "activationEndDate": "Data final de ativação",
+    "expiryBeginDate": "Data inicial de expiração",
+    "expiryEndDate": "Data final de expiração",
+    "unassigned": "Não atribuido"
   }
 }
