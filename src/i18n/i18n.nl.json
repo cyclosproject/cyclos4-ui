@@ -23,8 +23,6 @@
     "notAppliedSelect": "Not applied (select to apply)",
     "user": "Gebruiker",
     "operator": "Operator",
-    "brokers": "Brokers",
-    "groups": "Groups",
     "name": "Volledige naam",
     "to": "to",
     "description": "Omschrijving",
@@ -173,6 +171,7 @@
       "from": "From {min}",
       "to": "Up to {max}"
     },
+    "rangeTo": "to",
     "fileSize": {
       "b": "{n} bytes",
       "k": "{n}KB",
@@ -252,6 +251,7 @@
     "banking.pos": "Receive payment",
     "banking.receiveQrPayment": "Receive QR-code",
     "banking.scheduledPayments": "Geautoriseerde betalingen",
+    "banking.pendingMyAuth": "Awaiting my authorization",
     "banking.authorizations": "Betalingsautorisaties",
     "banking.searchVouchers": "Search vouchers",
     "banking.buyVouchers": "Buy vouchers",
@@ -436,6 +436,7 @@
       "payUser": "Betaal",
       "paySystem": "Euro's kopen",
       "pos": "Receive payment",
+      "receiveQRPayment": "Receive QR payment",
       "contacts": "Contacten",
       "directory": "Bedrijven",
       "advertisements": "Marketplace",
@@ -443,9 +444,9 @@
       "password": "Wachtwoord",
       "passwords": "Wachtwoorden",
       "switchTheme": "Switch theme",
-      "connectedUsers": "Connected users",
-      "receiveQRPayment": "Receive QR payment"
+      "connectedUsers": "Connected users"
     },
+    "accounts": "Accounts",
     "accountStatus": "Rekeningoverzicht",
     "lastIncomingPayments": "Laatste inkomende betalingen",
     "noIncomingPayments": "Geen inkomende betalingen",
@@ -458,8 +459,7 @@
       "neverCreated": "Your {type} needs to be set.",
       "securityAnswer": "You should set the security question, which will be required in case you need to reset your password.",
       "proceed": "Click here to proceed"
-    },
-    "accounts": "Accounts"
+    }
   },
   "account": {
     "account": "Account",
@@ -516,6 +516,7 @@
     "accountBalance": "Rekening saldo",
     "installments": "Termijnbetalingen",
     "installmentNumber": "Nummer",
+    "installmentNumberOfTotal": "{number} of {total}",
     "occurrences": "Ocurrences",
     "noAccounts": "U hoeft geen rekeningen voor het uitvoeren van de betaling",
     "noTypes": "Er zijn geen mogelijke betaling soorten",
@@ -579,6 +580,7 @@
       "paymentConfirmation": "Bevestiging van de betaling",
       "pendingPayment": "Betaling ingediend voor een vergunning",
       "processedPayment": "Betaling uitgevoerd",
+      "pendingMyAuthorization": "Pending my authorization",
       "authorizations": "Betalingsautorisaties",
       "authorizationHistory": "Autorisatie geschiedenis",
       "scheduled": "Geautoriseerde betalingen",
@@ -605,6 +607,7 @@
       "paymentConfirmation": "Confirmation",
       "pendingPayment": "Pending authorization",
       "processedPayment": "Payment done",
+      "pendingMyAuthorization": "To authorize",
       "authorizations": "Authorizations",
       "authorizationHistory": "History",
       "scheduled": "Scheduled payments",
@@ -645,6 +648,9 @@
     "settleScheduled": "De afwikkeling van de geplande betaling",
     "settleScheduled.message": "Dit zal permanent te markeren alle resterende termijnen als opgelost",
     "settleScheduled.done": "Deze geplande betaling heeft plaatsgevonden",
+    "processScheduled": "Process this scheduled payment",
+    "processScheduled.message": "Are you sure to process now this scheduled payment?",
+    "processScheduled.done": "This scheduled payment was processed",
     "cancelRecurring": "Annuleren deze terugkerende betaling",
     "cancelRecurring.message": "Dit zal definitief opheffen van de periodieke betaling en het voorkomen van een toekomstige gebeurtenis",
     "cancelRecurring.done": "Deze periodieke betaling is geannuleerd",
@@ -670,8 +676,7 @@
       "weekly.count": "Het maximaal toegestane aantal betalingen per week is {count}",
       "monthly.amount": "De maximale maandelijkse bedrag van {amount} werd overschreden",
       "monthly.count": "Het maximaal toegestane aantal betalingen per maand is {count}"
-    },
-    "installmentNumberOfTotal": "{number} of {total}"
+    }
   },
   "voucher": {
     "error": {
@@ -768,6 +773,10 @@
     "refundDate": "Refund date"
   },
   "field": {
+    "date": {
+      "clear": "Clear",
+      "today": "Today"
+    },
     "privacy": {
       "name": "Privacy",
       "private.tooltip": "Dit veld is privé. Klik op toestaan om het te bekijken.",
@@ -928,6 +937,9 @@
       "userBrokerings": "Broker members"
     },
     "group": "Groep",
+    "broker": "Broker",
+    "brokers": "Brokers",
+    "groups": "Groups",
     "groupSet": "Group set",
     "group.filter": "Groups",
     "registrationDate": "Registration date",
@@ -960,7 +972,6 @@
     "contactInfo.atAddress": "At",
     "confirmation.message": "Opslaan in uw profiel, uw {type}",
     "profileSaved": "Het profiel is opgeslagen",
-    "imagesChanged": "Eigenlijk sla de wijzigingen op de beelden, het profiel moet worden opgeslagen",
     "newEmailConfirmed": "Uw nieuw e-mail adres correct is bevestigd",
     "passwordConfirmation": "{type} bevestiging",
     "securityQuestion.message": "Mocht u uw wachtwoord vergeet, moet u het correct antwoord op de vraag om het wachtwoord opnieuw instellen.<br>Dit kan worden ingesteld later, maar houd in gedachten dat de terugwinning van het wachtwoord werkt niet zonder.",
@@ -1310,7 +1321,6 @@
     "byOwner": "Door {owner}",
     "showAllCategories": "Toon alle",
     "rootCategory": "Hoofd-",
-    "imagesChanged": "To actually save the changes on images, the advertisement needs to be saved",
     "orderAccepted": "The order was processed",
     "orderRejected": "The order was rejected",
     "orderSavedAsDraft": "The order was saved as draft",
@@ -1408,8 +1418,10 @@
     "remarks": "Remarks",
     "title": {
       "search": "Search advertisements",
-      "owner": "Advertenties van {name}",
-      "webshopOwner": "Web shop of {name}",
+      "myAdvertisements": "My advertisements",
+      "myWebshop": "My web shop",
+      "viewAdvertisements": "View advertisements",
+      "viewWebshop": "View web shop",
       "new": "New advertisement",
       "edit": "Edit advertisement",
       "purchases": "Purchases",
@@ -1433,8 +1445,10 @@
     },
     "mobileTitle": {
       "search": "Advertisements",
-      "owner": "Advertisements",
-      "webshopOwner": "Web shop",
+      "myAdvertisements": "My advertisements",
+      "myWebshop": "My web shop",
+      "viewAdvertisements": "View advertisements",
+      "viewWebshop": "View web shop",
       "details": "Advertisement",
       "new": "New advertisement",
       "edit": "Edit advertisement",
@@ -1637,6 +1651,7 @@
     "registration.fillForm": "Fill-in the registration form",
     "registration.disclaimer": "<b>Disclaimer:</b> None of your {app} data will be shared with these providers, and the only purpose of reading your personal data from them is to fill in the registration form and logging you in after you're registered.",
     "disclaimer": "<b>Disclaimer</b>: None of your {app} data will be shared with any provider. The only data read from the providers are your display name and e-mail, with the sole purpose to logging-in faster on {app}.",
+    "noResults": "There are not identity providers added yet.",
     "title": {
       "manage.self": "Manage your identity providers",
       "manage.user": "Manage user identity providers"
@@ -1747,5 +1762,59 @@
     "savedSuccessfully": "Saved successfully",
     "process": "Process dynamic document",
     "category": "Category"
+  },
+  "token": {
+    "title": {
+      "new": "{0} details",
+      "view": "{0} details",
+      "assign": "Assign"
+    },
+    "mobileTitle": {
+      "view": "{0} details"
+    },
+    "action": {
+      "activate": "Activeren",
+      "assign": "Assign",
+      "block": "Block",
+      "cancel": "Cancel",
+      "changeDeadline": "Change deadline",
+      "changeExpiry": "Change expiry",
+      "unblock": "Deblokkeren",
+      "done": {
+        "activated": "The token was activated",
+        "assigned": "The token was assigned",
+        "blocked": "The token was blocked",
+        "canceled": "The token was canceled",
+        "created": "The token was created",
+        "deadlineChanged": "The token deadline was changed",
+        "expiryChanged": "The token expiry was changed",
+        "unblocked": "The token was unblocked"
+      },
+      "message": {
+        "cancel": "You are about to cancel the token. Be aware that this is a permanent action. Are you sure you want to change the token status to canceled?"
+      }
+    },
+    "status": {
+      "activationExpired": "Activation expired",
+      "active": "Actief",
+      "blocked": "Blocked",
+      "canceled": "Canceled",
+      "expired": "Expired",
+      "pending": "Pending activation",
+      "unassigned": "Unassigned"
+    },
+    "value": "Value",
+    "label": "Label",
+    "activationDeadline": "Activation deadline",
+    "noDeadline": "No deadline",
+    "expiryDate": "Expiry date",
+    "noExpiryDate": "Without expiry",
+    "activationDate": "Activation date",
+    "creationDate": "Creation date",
+    "activationBeginDate": "Activation begin date",
+    "activationEndDate": "Activation end date",
+    "expiryBeginDate": "Expiry begin date",
+    "expiryEndDate": "Expiry end date",
+    "unassigned": "Unassigned"
   }
 }
