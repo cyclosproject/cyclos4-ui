@@ -444,8 +444,7 @@
       "password": "Contraseña",
       "passwords": "Contraseñas",
       "switchTheme": "Cambiar tema",
-      "connectedUsers": "Usuarios conectados",
-      "receiveQRPayment": "Receive QR payment"
+      "connectedUsers": "Usuarios conectados"
     },
     "accounts": "Accounts",
     "accountStatus": "Estado de cuenta",
@@ -460,8 +459,7 @@
       "neverCreated": "Su {type} necesita ser definido.",
       "securityAnswer": "Debe definir su pregunta de seguridad, esta le será requerida en caso de que necesite restablecer su contraseña.",
       "proceed": "Clic aquí para continuar"
-    },
-    "accounts": "Accounts"
+    }
   },
   "account": {
     "account": "Cuenta",
@@ -678,8 +676,7 @@
       "weekly.count": "El número máximo de pagos permitidos por semana es de {count}",
       "monthly.amount": "El monto máximo por mes, de {amount}, ha sido superado",
       "monthly.count": "El número máximo de pagos permitidos por mes es de {count}"
-    },
-    "installmentNumberOfTotal": "{number} of {total}"
+    }
   },
   "voucher": {
     "error": {
@@ -1809,15 +1806,15 @@
     "value": "Value",
     "label": "Label",
     "activationDeadline": "Activation deadline",
-    "noDeadline": "No deadline",
-    "expiryDate": "Expiry date",
+    "noDeadline": "Sin fecha límite",
+    "expiryDate": "Fecha de expiración",
     "noExpiryDate": "Without expiry",
-    "activationDate": "Activation date",
-    "creationDate": "Creation date",
+    "activationDate": "Fecha de activación",
+    "creationDate": "Fecha de creación",
     "activationBeginDate": "Activation begin date",
     "activationEndDate": "Activation end date",
     "expiryBeginDate": "Expiry begin date",
     "expiryEndDate": "Expiry end date",
-    "unassigned": "Unassigned"
+    "unassigned": "Sin asignar"
   }
 }
