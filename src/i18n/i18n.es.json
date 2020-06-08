@@ -1753,9 +1753,9 @@
       "search": "Documents"
     },
     "enable": "Habilitar",
-    "userVisible": "Visible for members",
-    "brokerVisible": "Visible for brokers",
-    "brokerManageable": "Manageable by broker",
+    "userVisible": "Visible para miembros",
+    "brokerVisible": "Visible para brokers",
+    "brokerManageable": "Administrable por broker",
     "replaceDocument": "Replace document",
     "newDocument": "New document",
     "document": "Document",
@@ -1765,19 +1765,19 @@
   },
   "token": {
     "title": {
-      "new": "{0} details",
-      "view": "{0} details",
-      "assign": "Assign"
+      "new": "Detalles de {0}",
+      "view": "Detalles de {0}",
+      "assign": "Asignar"
     },
     "mobileTitle": {
-      "view": "{0} details"
+      "view": "Detalles de {0}"
     },
     "action": {
       "activate": "Activar",
-      "assign": "Assign",
-      "block": "Block",
-      "cancel": "Cancel",
-      "changeDeadline": "Change deadline",
+      "assign": "Asignar",
+      "block": "Bloquear",
+      "cancel": "Cancelar",
+      "changeDeadline": "Cambiar fecha límite",
       "changeExpiry": "Change expiry",
       "unblock": "Desbloquear",
       "done": {
@@ -1786,7 +1786,7 @@
         "blocked": "The token was blocked",
         "canceled": "The token was canceled",
         "created": "The token was created",
-        "deadlineChanged": "The token deadline was changed",
+        "deadlineChanged": "La fecha límite del token fue cambiada",
         "expiryChanged": "The token expiry was changed",
         "unblocked": "The token was unblocked"
       },
@@ -1795,17 +1795,17 @@
       }
     },
     "status": {
-      "activationExpired": "Activation expired",
+      "activationExpired": "Activación expirada",
       "active": "Activa",
       "blocked": "Blocked",
       "canceled": "Canceled",
-      "expired": "Expired",
-      "pending": "Pending activation",
-      "unassigned": "Unassigned"
+      "expired": "Expirado",
+      "pending": "Activación pendiente",
+      "unassigned": "Sin asignar"
     },
-    "value": "Value",
-    "label": "Label",
-    "activationDeadline": "Activation deadline",
+    "value": "Valor",
+    "label": "Etiqueta",
+    "activationDeadline": "Fecha límite de activación",
     "noDeadline": "Sin fecha límite",
     "expiryDate": "Fecha de expiración",
     "noExpiryDate": "Without expiry",
