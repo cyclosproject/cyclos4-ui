@@ -1798,7 +1798,7 @@
       "activationExpired": "Activación expirada",
       "active": "Activa",
       "blocked": "Blocked",
-      "canceled": "Canceled",
+      "canceled": "Cancelado",
       "expired": "Expirado",
       "pending": "Activación pendiente",
       "unassigned": "Sin asignar"
@@ -1808,7 +1808,7 @@
     "activationDeadline": "Fecha límite de activación",
     "noDeadline": "Sin fecha límite",
     "expiryDate": "Fecha de expiración",
-    "noExpiryDate": "Without expiry",
+    "noExpiryDate": "Sin expiración",
     "activationDate": "Fecha de activación",
     "creationDate": "Fecha de creación",
     "activationBeginDate": "Activation begin date",
