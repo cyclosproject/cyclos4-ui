@@ -23,8 +23,6 @@
     "notAppliedSelect": "Not applied (select to apply)",
     "user": "Utilisateur",
     "operator": "Opérateur",
-    "brokers": "Brokers",
-    "groups": "Groups",
     "name": "Nom",
     "to": "to",
     "description": "Description",
@@ -173,6 +171,7 @@
       "from": "From {min}",
       "to": "Up to {max}"
     },
+    "rangeTo": "to",
     "fileSize": {
       "b": "{n} octets",
       "k": "{n}Ko",
@@ -252,6 +251,7 @@
     "banking.pos": "Receive payment",
     "banking.receiveQrPayment": "Receive QR-code",
     "banking.scheduledPayments": "Paiements planifiés",
+    "banking.pendingMyAuth": "Awaiting my authorization",
     "banking.authorizations": "Autorisations de paiement",
     "banking.searchVouchers": "Search vouchers",
     "banking.buyVouchers": "Buy vouchers",
@@ -436,6 +436,7 @@
       "payUser": "Payer l'utilisateur",
       "paySystem": "Payer le système",
       "pos": "Receive payment",
+      "receiveQRPayment": "Receive QR payment",
       "contacts": "Contacts",
       "directory": "Annuaire",
       "advertisements": "Marketplace",
@@ -446,6 +447,7 @@
       "connectedUsers": "Connected users",
       "receiveQRPayment": "Receive QR payment"
     },
+    "accounts": "Accounts",
     "accountStatus": "Statut du compte",
     "lastIncomingPayments": "Derniers paiements entrants",
     "noIncomingPayments": "Aucun paiement entrant",
@@ -516,6 +518,7 @@
     "accountBalance": "Solde du compte",
     "installments": "Versements",
     "installmentNumber": "Numéro",
+    "installmentNumberOfTotal": "{number} of {total}",
     "occurrences": "Occurrences",
     "noAccounts": "Vous n'avez pas de compte pour effectuer le paiement",
     "noTypes": "Il n'y a pas de types de paiement possibles",
@@ -579,6 +582,7 @@
       "paymentConfirmation": "Confirmation de paiement",
       "pendingPayment": "Paiement soumis pour autorisation",
       "processedPayment": "Paiement effectué",
+      "pendingMyAuthorization": "Pending my authorization",
       "authorizations": "Autorisations de paiement",
       "authorizationHistory": "Historique d'autorisation",
       "scheduled": "Paiements planifiés",
@@ -605,6 +609,7 @@
       "paymentConfirmation": "Confirmation",
       "pendingPayment": "Pending authorization",
       "processedPayment": "Payment done",
+      "pendingMyAuthorization": "To authorize",
       "authorizations": "Authorizations",
       "authorizationHistory": "History",
       "scheduled": "Scheduled payments",
@@ -645,6 +650,9 @@
     "settleScheduled": "Régler le paiement prévu",
     "settleScheduled.message": "Ceci marquera définitivement tous les versements restants comme réglés",
     "settleScheduled.done": "Ce paiement prévu a été réglé",
+    "processScheduled": "Process this scheduled payment",
+    "processScheduled.message": "Are you sure to process now this scheduled payment?",
+    "processScheduled.done": "This scheduled payment was processed",
     "cancelRecurring": "Annuler ce paiement récurrent",
     "cancelRecurring.message": "Cela annulera définitivement le paiement récurrent et empêchera toute occurrence future.",
     "cancelRecurring.done": "Ce paiement récurrent a été annulé",
@@ -768,6 +776,10 @@
     "refundDate": "Refund date"
   },
   "field": {
+    "date": {
+      "clear": "Clear",
+      "today": "Today"
+    },
     "privacy": {
       "name": "Confidentialité",
       "private.tooltip": "Ce champ est privé. Cliquez pour permettre aux autres de le voir.",
@@ -928,6 +940,9 @@
       "userBrokerings": "Broker members"
     },
     "group": "Groupe",
+    "broker": "Broker",
+    "brokers": "Brokers",
+    "groups": "Groups",
     "groupSet": "Group set",
     "group.filter": "Groups",
     "registrationDate": "Registration date",
@@ -960,7 +975,6 @@
     "contactInfo.atAddress": "At",
     "confirmation.message": "Pour enregistrer votre profil, indiquez votre {type}",
     "profileSaved": "Le profil a été enregistré",
-    "imagesChanged": "Pour enregistrer les modifications sur les images, le profil doit être enregistré.",
     "newEmailConfirmed": "Votre nouvelle adresse e-mail a été confirmée avec succès",
     "passwordConfirmation": "Confirmation {type}",
     "securityQuestion.message": "Si vous oubliez votre mot de passe, vous devrez répondre correctement à la question de sécurité pour pouvoir le réinitialiser. <br> Cette option peut être définie ultérieurement, mais gardez à l'esprit que la récupération du mot de passe ne fonctionnera pas sans elle.",
@@ -1310,7 +1324,6 @@
     "byOwner": "Par {owner}",
     "showAllCategories": "Afficher tout",
     "rootCategory": "Principal",
-    "imagesChanged": "To actually save the changes on images, the advertisement needs to be saved",
     "orderAccepted": "The order was processed",
     "orderRejected": "The order was rejected",
     "orderSavedAsDraft": "The order was saved as draft",
@@ -1408,8 +1421,10 @@
     "remarks": "Remarks",
     "title": {
       "search": "Search advertisements",
-      "owner": "Annonces de {name}",
-      "webshopOwner": "Web shop of {name}",
+      "myAdvertisements": "My advertisements",
+      "myWebshop": "My web shop",
+      "viewAdvertisements": "View advertisements",
+      "viewWebshop": "View web shop",
       "new": "New advertisement",
       "edit": "Edit advertisement",
       "purchases": "Purchases",
@@ -1433,8 +1448,10 @@
     },
     "mobileTitle": {
       "search": "Advertisements",
-      "owner": "Advertisements",
-      "webshopOwner": "Web shop",
+      "myAdvertisements": "My advertisements",
+      "myWebshop": "My web shop",
+      "viewAdvertisements": "View advertisements",
+      "viewWebshop": "View web shop",
       "details": "Advertisement",
       "new": "New advertisement",
       "edit": "Edit advertisement",
@@ -1637,6 +1654,7 @@
     "registration.fillForm": "Fill-in the registration form",
     "registration.disclaimer": "<b>Disclaimer:</b> None of your {app} data will be shared with these providers, and the only purpose of reading your personal data from them is to fill in the registration form and logging you in after you're registered.",
     "disclaimer": "<b>Disclaimer</b>: None of your {app} data will be shared with any provider. The only data read from the providers are your display name and e-mail, with the sole purpose to logging-in faster on {app}.",
+    "noResults": "There are not identity providers added yet.",
     "title": {
       "manage.self": "Manage your identity providers",
       "manage.user": "Manage user identity providers"
@@ -1747,5 +1765,59 @@
     "savedSuccessfully": "Saved successfully",
     "process": "Process dynamic document",
     "category": "Category"
+  },
+  "token": {
+    "title": {
+      "new": "{0} details",
+      "view": "{0} details",
+      "assign": "Assign"
+    },
+    "mobileTitle": {
+      "view": "{0} details"
+    },
+    "action": {
+      "activate": "Activer",
+      "assign": "Assign",
+      "block": "Block",
+      "cancel": "Cancel",
+      "changeDeadline": "Change deadline",
+      "changeExpiry": "Change expiry",
+      "unblock": "Débloquer",
+      "done": {
+        "activated": "The token was activated",
+        "assigned": "The token was assigned",
+        "blocked": "The token was blocked",
+        "canceled": "The token was canceled",
+        "created": "The token was created",
+        "deadlineChanged": "The token deadline was changed",
+        "expiryChanged": "The token expiry was changed",
+        "unblocked": "The token was unblocked"
+      },
+      "message": {
+        "cancel": "You are about to cancel the token. Be aware that this is a permanent action. Are you sure you want to change the token status to canceled?"
+      }
+    },
+    "status": {
+      "activationExpired": "Activation expired",
+      "active": "Activé",
+      "blocked": "Blocked",
+      "canceled": "Canceled",
+      "expired": "Expired",
+      "pending": "Pending activation",
+      "unassigned": "Unassigned"
+    },
+    "value": "Value",
+    "label": "Label",
+    "activationDeadline": "Activation deadline",
+    "noDeadline": "No deadline",
+    "expiryDate": "Expiry date",
+    "noExpiryDate": "Without expiry",
+    "activationDate": "Activation date",
+    "creationDate": "Creation date",
+    "activationBeginDate": "Activation begin date",
+    "activationEndDate": "Activation end date",
+    "expiryBeginDate": "Expiry begin date",
+    "expiryEndDate": "Expiry end date",
+    "unassigned": "Unassigned"
   }
 }
