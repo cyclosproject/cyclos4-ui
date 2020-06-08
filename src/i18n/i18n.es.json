@@ -1813,8 +1813,8 @@
     "creationDate": "Fecha de creación",
     "activationBeginDate": "Activation begin date",
     "activationEndDate": "Activation end date",
-    "expiryBeginDate": "Expiry begin date",
-    "expiryEndDate": "Expiry end date",
+    "expiryBeginDate": "Expiración desde",
+    "expiryEndDate": "Expiración hasta",
     "unassigned": "Sin asignar"
   }
 }
