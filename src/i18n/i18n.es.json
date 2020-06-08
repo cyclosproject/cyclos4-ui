@@ -23,8 +23,6 @@
     "notAppliedSelect": "No aplicado (seleccionar para aplicar)",
     "user": "Usuario",
     "operator": "Operador",
-    "brokers": "Brokers",
-    "groups": "Grupos",
     "name": "Nombre",
     "to": "hasta",
     "description": "Descripción",
@@ -173,6 +171,7 @@
       "from": "Desde {min}",
       "to": "Hasta {max}"
     },
+    "rangeTo": "to",
     "fileSize": {
       "b": "{n} bytes",
       "k": "{n}KB",
@@ -252,6 +251,7 @@
     "banking.pos": "Recibir pago",
     "banking.receiveQrPayment": "Recibir código QR",
     "banking.scheduledPayments": "Pagos agendados",
+    "banking.pendingMyAuth": "Awaiting my authorization",
     "banking.authorizations": "Pagos con autorización",
     "banking.searchVouchers": "Buscar cupones",
     "banking.buyVouchers": "Comprar cupones",
@@ -436,6 +436,7 @@
       "payUser": "Pago a usuario",
       "paySystem": "Pago a sistema",
       "pos": "Recibir pago",
+      "receiveQRPayment": "Receive QR payment",
       "contacts": "Contactos",
       "directory": "Anunciantes",
       "advertisements": "Comercio electrónico",
@@ -443,9 +444,9 @@
       "password": "Contraseña",
       "passwords": "Contraseñas",
       "switchTheme": "Cambiar tema",
-      "connectedUsers": "Usuarios conectados",
-      "receiveQRPayment": "Receive QR payment"
+      "connectedUsers": "Usuarios conectados"
     },
+    "accounts": "Accounts",
     "accountStatus": "Estado de cuenta",
     "lastIncomingPayments": "Ultimos pagos recibidos",
     "noIncomingPayments": "No hay pagos recibidos",
@@ -458,8 +459,7 @@
       "neverCreated": "Su {type} necesita ser definido.",
       "securityAnswer": "Debe definir su pregunta de seguridad, esta le será requerida en caso de que necesite restablecer su contraseña.",
       "proceed": "Clic aquí para continuar"
-    },
-    "accounts": "Accounts"
+    }
   },
   "account": {
     "account": "Cuenta",
@@ -516,6 +516,7 @@
     "accountBalance": "Saldo",
     "installments": "Cuotas",
     "installmentNumber": "Número",
+    "installmentNumberOfTotal": "{number} of {total}",
     "occurrences": "Ocurrencias",
     "noAccounts": "No posee ninguna cuenta para poder realizar el pago",
     "noTypes": "No hay tipos de transacción posibles",
@@ -579,6 +580,7 @@
       "paymentConfirmation": "Confirmación de pago",
       "pendingPayment": "Pago enviado para su autorización",
       "processedPayment": "Pago realizado",
+      "pendingMyAuthorization": "Pending my authorization",
       "authorizations": "Autorizaciones de pago",
       "authorizationHistory": "Historial de autorizaciones",
       "scheduled": "Pagos agendados",
@@ -605,6 +607,7 @@
       "paymentConfirmation": "Confirmación",
       "pendingPayment": "Autorización pendiente",
       "processedPayment": "Pago realizado",
+      "pendingMyAuthorization": "To authorize",
       "authorizations": "Autorizaciones",
       "authorizationHistory": "Historial de autorizaciones",
       "scheduled": "Pagos agendados",
@@ -645,6 +648,9 @@
     "settleScheduled": "Saldar el pago agendado",
     "settleScheduled.message": "Esto marcará todas las cuotas restantes como saldadas de forma permanente",
     "settleScheduled.done": "El pago agendado ha sido saldado",
+    "processScheduled": "Process this scheduled payment",
+    "processScheduled.message": "Are you sure to process now this scheduled payment?",
+    "processScheduled.done": "This scheduled payment was processed",
     "cancelRecurring": "Cancelar el pago recurrente",
     "cancelRecurring.message": "Esto cancelará permanentemente el pago recurrente previniendo ocurrencias futuras",
     "cancelRecurring.done": "El pago recurrente ha sido cancelado",
@@ -670,8 +676,7 @@
       "weekly.count": "El número máximo de pagos permitidos por semana es de {count}",
       "monthly.amount": "El monto máximo por mes, de {amount}, ha sido superado",
       "monthly.count": "El número máximo de pagos permitidos por mes es de {count}"
-    },
-    "installmentNumberOfTotal": "{number} of {total}"
+    }
   },
   "voucher": {
     "error": {
@@ -768,6 +773,10 @@
     "refundDate": "Fecha de Rembolso"
   },
   "field": {
+    "date": {
+      "clear": "Clear",
+      "today": "Today"
+    },
     "privacy": {
       "name": "Privacidad",
       "private.tooltip": "El campo es privado. Haga click para permitir a otros usuarios ver el campo.",
@@ -928,6 +937,9 @@
       "userBrokerings": "Brokers"
     },
     "group": "Grupo",
+    "broker": "Broker",
+    "brokers": "Brokers",
+    "groups": "Groups",
     "groupSet": "Conjunto de grupos",
     "group.filter": "Grupos",
     "registrationDate": "Fecha de registro",
@@ -960,7 +972,6 @@
     "contactInfo.atAddress": "En",
     "confirmation.message": "Para guardar el perfil ingrese su {type}",
     "profileSaved": "El perfil se ha guardado",
-    "imagesChanged": "Para guardar los cambios en las imágenes, el perfil debe ser guardado",
     "newEmailConfirmed": "Su nuevo correo electrónico fue confirmado",
     "passwordConfirmation": "Confirmación de {type}",
     "securityQuestion.message": "Si usted olvida su contraseña, necesitará contestar correctamente a la pregunta de seguridad para poder restablecerla.\nPuede definir la pregunta mas tarde, pero tenga en cuenta que la recuperación de contraseña no funcionará hasta que la haya definido.",
@@ -1114,9 +1125,9 @@
       "history.user": "Historial de estados",
       "history.operator": "Historial de estados"
     },
-    "active": "Activo",
+    "active": "Activa",
     "blocked": "Acceso bloqueado",
-    "disabled": "Deshabilitado",
+    "disabled": "Deshabilitada",
     "pending": "Activación pendiente",
     "purged": "Purgado (todos los datos privados fueron borrados)",
     "removed": "Eliminado (los datos privados no fueron borrados)"
@@ -1310,7 +1321,6 @@
     "byOwner": "Por {owner}",
     "showAllCategories": "Mostrar todas",
     "rootCategory": "Principal",
-    "imagesChanged": "Para guardar los cambios en las imágenes, se debe guardar el anuncio",
     "orderAccepted": "La orden fue procesada",
     "orderRejected": "La orden fue rechazada",
     "orderSavedAsDraft": "La orden se ha guardado como borrador",
@@ -1408,8 +1418,10 @@
     "remarks": "Comentarios",
     "title": {
       "search": "Búsqueda de anuncios",
-      "owner": "Anuncios de {name}",
-      "webshopOwner": "Tienda virtual de {name}",
+      "myAdvertisements": "My advertisements",
+      "myWebshop": "My web shop",
+      "viewAdvertisements": "View advertisements",
+      "viewWebshop": "View web shop",
       "new": "Nuevo anuncio",
       "edit": "Editar anuncio",
       "purchases": "Compras",
@@ -1433,8 +1445,10 @@
     },
     "mobileTitle": {
       "search": "Anuncios",
-      "owner": "Anuncios",
-      "webshopOwner": "Tienda virtual",
+      "myAdvertisements": "My advertisements",
+      "myWebshop": "My web shop",
+      "viewAdvertisements": "View advertisements",
+      "viewWebshop": "View web shop",
       "details": "Anuncio",
       "new": "Nuevo anuncio",
       "edit": "Editar anuncio",
@@ -1637,6 +1651,7 @@
     "registration.fillForm": "Completar el formulario de registro",
     "registration.disclaimer": "<b>Descargo de responsabilidad:</b> Ninguno de los datos en su {app} serán compartidos con estos proveedores. El único propósito de lleer sus datos de carácter personal desde el proveedor es rellenar su formulario de registración y facilitar su acceso una vez completado el proceso.",
     "disclaimer": "<b>Descargo de responsabilidad</b>: Ninguno de sus datos en {app} serán compartidos con los proveedores. Los únicos datos que se toman de su proveedor serán su nombre y e-mail, y con el único propósito de acelerar y facilitar el proceso de acceso a {app}.",
+    "noResults": "There are not identity providers added yet.",
     "title": {
       "manage.self": "Administrar sus proveedores de identidad",
       "manage.user": "Administrar sus proveedores de identidad"
@@ -1747,5 +1762,59 @@
     "savedSuccessfully": "Saved successfully",
     "process": "Process dynamic document",
     "category": "Category"
+  },
+  "token": {
+    "title": {
+      "new": "{0} details",
+      "view": "{0} details",
+      "assign": "Assign"
+    },
+    "mobileTitle": {
+      "view": "{0} details"
+    },
+    "action": {
+      "activate": "Activar",
+      "assign": "Assign",
+      "block": "Block",
+      "cancel": "Cancel",
+      "changeDeadline": "Change deadline",
+      "changeExpiry": "Change expiry",
+      "unblock": "Desbloquear",
+      "done": {
+        "activated": "The token was activated",
+        "assigned": "The token was assigned",
+        "blocked": "The token was blocked",
+        "canceled": "The token was canceled",
+        "created": "The token was created",
+        "deadlineChanged": "The token deadline was changed",
+        "expiryChanged": "The token expiry was changed",
+        "unblocked": "The token was unblocked"
+      },
+      "message": {
+        "cancel": "You are about to cancel the token. Be aware that this is a permanent action. Are you sure you want to change the token status to canceled?"
+      }
+    },
+    "status": {
+      "activationExpired": "Activation expired",
+      "active": "Activa",
+      "blocked": "Blocked",
+      "canceled": "Canceled",
+      "expired": "Expired",
+      "pending": "Pending activation",
+      "unassigned": "Unassigned"
+    },
+    "value": "Value",
+    "label": "Label",
+    "activationDeadline": "Activation deadline",
+    "noDeadline": "No deadline",
+    "expiryDate": "Expiry date",
+    "noExpiryDate": "Without expiry",
+    "activationDate": "Activation date",
+    "creationDate": "Creation date",
+    "activationBeginDate": "Activation begin date",
+    "activationEndDate": "Activation end date",
+    "expiryBeginDate": "Expiry begin date",
+    "expiryEndDate": "Expiry end date",
+    "unassigned": "Unassigned"
   }
 }
