@@ -14,7 +14,7 @@ import { DateConstraint, dateConstraintAsMoment } from 'app/shared/date-constrai
 import { empty, truthyAttr } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { range } from 'lodash';
-import moment, { Moment, now } from 'moment-mini-ts';
+import moment, { Moment } from 'moment-mini-ts';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 
 /**
