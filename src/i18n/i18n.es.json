@@ -291,7 +291,7 @@
     "personal.password": "Contraseñas",
     "personal.passwords": "Contraseñas",
     "personal.identityProviders": "Proveedores de identidad",
-    "personal.agreements": "Agreements",
+    "personal.agreements": "Acuerdos",
     "personal.notifications": "Notificaciones",
     "personal.notificationSettings": "Ajustes de notificaciones",
     "personal.settings": "Ajustes",
@@ -420,7 +420,7 @@
     "message.previouslyAccepted": "Los términos de acuerdo ha sido actualizados.\n\nUsted debe aceptar los nuevos términos de acuerdo para poder continuar.",
     "message.firstTime": "Para completar su registro, debe aceptar estos términos.",
     "agree": "He aceptado los siguientes términos de acuerdo: {agreements}",
-    "preface": "I hereby declare that I have read and agree with the following:"
+    "preface": "Declaro que he leído y estoy de acuerdo con lo siguiente"
   },
   "securityQuestion": {
     "message": "La pregunta de seguridad es necesaria en caso de que usted necesite restablecer su contraseña. Si desea cambiarla, una vez definida, por favor contacte a la administración.",
@@ -446,7 +446,7 @@
       "switchTheme": "Cambiar tema",
       "connectedUsers": "Usuarios conectados"
     },
-    "accounts": "Accounts",
+    "accounts": "Cuentas",
     "accountStatus": "Estado de cuenta",
     "lastIncomingPayments": "Ultimos pagos recibidos",
     "noIncomingPayments": "No hay pagos recibidos",
@@ -516,7 +516,7 @@
     "accountBalance": "Saldo",
     "installments": "Cuotas",
     "installmentNumber": "Número",
-    "installmentNumberOfTotal": "{number} of {total}",
+    "installmentNumberOfTotal": "{number} de {total}",
     "occurrences": "Ocurrencias",
     "noAccounts": "No posee ninguna cuenta para poder realizar el pago",
     "noTypes": "No hay tipos de transacción posibles",
@@ -607,7 +607,7 @@
       "paymentConfirmation": "Confirmación",
       "pendingPayment": "Autorización pendiente",
       "processedPayment": "Pago realizado",
-      "pendingMyAuthorization": "To authorize",
+      "pendingMyAuthorization": "Para autorizar",
       "authorizations": "Autorizaciones",
       "authorizationHistory": "Historial de autorizaciones",
       "scheduled": "Pagos agendados",
@@ -648,7 +648,7 @@
     "settleScheduled": "Saldar el pago agendado",
     "settleScheduled.message": "Esto marcará todas las cuotas restantes como saldadas de forma permanente",
     "settleScheduled.done": "El pago agendado ha sido saldado",
-    "processScheduled": "Process this scheduled payment",
+    "processScheduled": "Procesar este pago agendado",
     "processScheduled.message": "Are you sure to process now this scheduled payment?",
     "processScheduled.done": "This scheduled payment was processed",
     "cancelRecurring": "Cancelar el pago recurrente",
@@ -1015,7 +1015,7 @@
       "status.operator": "Estado del operador",
       "group.user": "Grupo de usuario",
       "group.operator": "Grupo de operador",
-      "agreements": "Agreements",
+      "agreements": "Acuerdos",
       "viewRedeemedVouchers": "Ver cupones canjeados",
       "redeemVoucher": "Canjear cupón",
       "viewBoughtVouchers": "Ver cupones comprados",
@@ -1133,19 +1133,19 @@
     "removed": "Eliminado (los datos privados no fueron borrados)"
   },
   "agreements": {
-    "agreement": "Agreement",
-    "required": "Required agreements",
-    "optional": "Optional agreements",
-    "optional.saved": "The selected agreements have been saved",
-    "accepted": "Accepted",
-    "noAccepted": "No accepted agreements",
+    "agreement": "Acuerdo",
+    "required": "Acuerdos requeridos",
+    "optional": "Acuerdos opcionales",
+    "optional.saved": "Los acuerdos seleccionados fueron guardados",
+    "accepted": "Aceptado",
+    "noAccepted": "Aacuerdos rechazados",
     "title": {
-      "accepted": "Accepted agreements",
-      "history": "Agreements history"
+      "accepted": "Acuerdos aceptados",
+      "history": "Historial de acuerdos"
     },
     "mobileTitle": {
-      "accepted": "Agreements",
-      "history": "Agreements history"
+      "accepted": "Acuerdos",
+      "history": "Historial de acuerdos"
     }
   },
   "groupMembership": {
@@ -1739,29 +1739,29 @@
   },
   "document": {
     "title": {
-      "new": "Create new document",
-      "view": "Document details",
-      "edit": "Document details",
-      "list": "Documents",
-      "search": "Documents"
+      "new": "Crear documento",
+      "view": "Detalles del documento",
+      "edit": "Detalles del documento",
+      "list": "Documentos",
+      "search": "Documentos"
     },
     "mobileTitle": {
-      "new": "Create new document",
-      "view": "Document details",
-      "edit": "Document details",
-      "list": "Documents",
-      "search": "Documents"
+      "new": "Crear documento",
+      "view": "Detalles del documento",
+      "edit": "Detalles del documento",
+      "list": "Documentos",
+      "search": "Documentos"
     },
     "enable": "Habilitar",
     "userVisible": "Visible para miembros",
     "brokerVisible": "Visible para brokers",
     "brokerManageable": "Administrable por broker",
-    "replaceDocument": "Replace document",
-    "newDocument": "New document",
-    "document": "Document",
-    "savedSuccessfully": "Saved successfully",
-    "process": "Process dynamic document",
-    "category": "Category"
+    "replaceDocument": "Reemplazar documento",
+    "newDocument": "Nuevo documento",
+    "document": "Documento",
+    "savedSuccessfully": "Guardado con éxito",
+    "process": "Procesar documento dinámico",
+    "category": "Categoría"
   },
   "token": {
     "title": {
@@ -1778,26 +1778,26 @@
       "block": "Bloquear",
       "cancel": "Cancelar",
       "changeDeadline": "Cambiar fecha límite",
-      "changeExpiry": "Change expiry",
+      "changeExpiry": "Cambiar expirado",
       "unblock": "Desbloquear",
       "done": {
-        "activated": "The token was activated",
-        "assigned": "The token was assigned",
-        "blocked": "The token was blocked",
-        "canceled": "The token was canceled",
-        "created": "The token was created",
+        "activated": "El token fue activado",
+        "assigned": "El token fue asignado",
+        "blocked": "El token fue bloqueado",
+        "canceled": "El token fue cancelado",
+        "created": "El token fue creado",
         "deadlineChanged": "La fecha límite del token fue cambiada",
-        "expiryChanged": "The token expiry was changed",
-        "unblocked": "The token was unblocked"
+        "expiryChanged": "La fecha de expiración del token fue cambiada",
+        "unblocked": "El token fue desbloqueado"
       },
       "message": {
-        "cancel": "You are about to cancel the token. Be aware that this is a permanent action. Are you sure you want to change the token status to canceled?"
+        "cancel": "Está a punto de cancelar el token. Considere que esta es una acción permanente. Está seguro de que desea cancelar el token?"
       }
     },
     "status": {
       "activationExpired": "Activación expirada",
       "active": "Activa",
-      "blocked": "Blocked",
+      "blocked": "Bloqueado",
       "canceled": "Cancelado",
       "expired": "Expirado",
       "pending": "Activación pendiente",
@@ -1811,8 +1811,8 @@
     "noExpiryDate": "Sin expiración",
     "activationDate": "Fecha de activación",
     "creationDate": "Fecha de creación",
-    "activationBeginDate": "Activation begin date",
-    "activationEndDate": "Activation end date",
+    "activationBeginDate": "Activado desde",
+    "activationEndDate": "Activado hasta ",
     "expiryBeginDate": "Expiración desde",
     "expiryEndDate": "Expiración hasta",
     "unassigned": "Sin asignar"
