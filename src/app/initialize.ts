@@ -24,6 +24,14 @@ function setupConfigurationDefaults() {
   Configuration.searchPageSizeXs = 20;
   Configuration.searchPageSize = 40;
   Configuration.quickSearchPageSize = 10;
+  Configuration.menuBar = false;
+  Configuration.homePage = {
+    content: ContentGetter.url('content/home.html'),
+  };
+  Configuration.breakpoints = {};
+  for (const bp of ALL_BREAKPOINTS) {
+    Configuration.breakpoints[bp] = {};
+  }
   Configuration.adCategories = {
     community: { icon: 'people', color: '#2196f3' },
     food: { icon: 'restaurant', color: '#f04d4e' },
@@ -34,15 +42,6 @@ function setupConfigurationDefaults() {
     leisure: { icon: 'mood', color: '#687ebd' },
     services: { icon: 'room_service', color: '#8ec63f' },
   };
-  Configuration.menuBar = false;
-  Configuration.homePage = {
-    content: ContentGetter.url('content/home.html'),
-  };
-  Configuration.breakpoints = {};
-  for (const bp of ALL_BREAKPOINTS) {
-    Configuration.breakpoints[bp] = {};
-  }
-  Configuration.adCategories = {};
   Configuration.operations = {};
   Configuration.records = {};
   Configuration.mainMapMarker = window.document.baseURI + '/images/map-marker-main.png';
