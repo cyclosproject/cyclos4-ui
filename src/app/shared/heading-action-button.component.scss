@@ -5,6 +5,7 @@
 }
 
 .btn {
+  max-width: 100%; // Makes text ellipis work
   display: inline-flex;
   justify-content: flex-start;
   align-items: center;
