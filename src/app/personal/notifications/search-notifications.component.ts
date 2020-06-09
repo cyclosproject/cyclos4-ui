@@ -7,7 +7,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { Menu } from 'app/shared/menu';
 import { forkJoin, Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, skip } from 'rxjs/operators';
 
 type NotificationSearchParams = QueryFilters & { onlyUnread: boolean };
 
@@ -33,9 +33,6 @@ export class SearchNotificationsComponent
   ngOnInit() {
     super.ngOnInit();
 
-    // Whenever a new notification arrives, update the list
-    this.addSub(this.notification.notificationsStatus$.subscribe(() => this.update()));
-
     // Update the data with any non-null value, so the search page is properly initialized
     this.data = {};
 
@@ -47,6 +44,9 @@ export class SearchNotificationsComponent
       status.lastViewDate = this.dataForUiHolder.now().toISOString();
       status.newNotifications = 0;
       status$.next(status);
+      // Whenever a new notification arrives, update the list
+      // Skip first subscription invocation to avoid duplicate initial search
+      this.addSub(this.notification.notificationsStatus$.pipe(skip(1)).subscribe(() => this.update()));
     }));
 
     // Update the heading actions with the mark all as read if there's any unread notifications
