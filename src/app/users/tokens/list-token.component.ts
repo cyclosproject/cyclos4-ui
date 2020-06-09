@@ -54,7 +54,7 @@ export class ListTokenComponent
     if (this.canActivate()) {
       this.headingActions = [new HeadingAction('how_to_reg', this.i18n.token.action.activate, () => {
         this.notification.confirm({
-          title: this.i18n.token.action.changeExpiry,
+          title: this.i18n.token.action.activate,
           customFields: [{
             internalName: 'value',
             name: this.i18n.token.value,
