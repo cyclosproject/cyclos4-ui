@@ -22,15 +22,13 @@
     <receive-qr-payment-step-pending [ticket]="ticket$ | async"
       [qrCodeUrl]="qrCodeUrl$ | async"></receive-qr-payment-step-pending>
     <actions forceRow>
-      <button *ngIf="supportsShare; else empty" class="btn btn-primary"
-        [disabled]="requesting$ | async"
-        (click)="share()">{{ i18n.general.share }}</button>
-
+      <action-button *ngIf="supportsShare; else empty" (action)="share()"
+        [label]="i18n.general.share" [disabled]="requesting$ | async">
+      </action-button>
       <ng-template #empty><span></span></ng-template>
-
-      <button class="btn btn-outline-primary" (click)="reload()">
-        {{ i18n.general.previous }}
-      </button>
+      <action-button outline (action)="reload()"
+        [label]="i18n.general.previous">
+      </action-button>
     </actions>
   </page-content>
 
@@ -41,12 +39,12 @@
     <receive-qr-payment-step-done [payment]="payment$ | async">
     </receive-qr-payment-step-done>
     <actions forceRow>
-      <button class="btn btn-primary" (click)="viewPerformed()">
-        {{ i18n.transaction.doneView }}
-      </button>
-      <button class="btn btn-outline-primary" (click)="reload()">
-        {{ i18n.transaction.doneNew }}
-      </button>
+      <action-button (action)="viewPerformed()"
+        [label]="i18n.transaction.doneView">
+      </action-button>
+      <action-button outline (action)="reload()"
+        [label]="i18n.transaction.doneNew">
+      </action-button>
     </actions>
   </page-content>
 

@@ -8,13 +8,12 @@
       [formControl]="urlControl" (enter)="selectUrl(urlControl.value)">
     </input-field>
     <actions>
-      <button class="btn btn-primary" (click)="selectUrl(urlControl.value)">
-        {{ i18n.general.submit }}
-      </button>
-      <button *ngIf="urlOnly" class="btn btn-outline-primary"
-        (click)="modalRef.hide()">
-        {{ i18n.general.cancel }}
-      </button>
+      <action-button (action)="selectUrl(urlControl.value)"
+        [label]="i18n.general.submit">
+      </action-button>
+      <action-button *ngIf="urlOnly" outline (action)="modalRef.hide()"
+        [label]="i18n.general.cancel">
+      </action-button>
     </actions>
   </ng-container>
 
@@ -68,16 +67,15 @@
   (uploadDone)="selectUrl($event[0]?.url)"></image-upload>
 
 <actions *ngIf="!urlOnly">
-  <button *ngIf="(canUpload$ | async); else noUpload" class="btn btn-primary"
-    (click)="upload.perform()">
-    {{ i18n.field.html.image.upload }}
-  </button>
+  <action-button *ngIf="(canUpload$ | async); else noUpload"
+    (action)="upload.perform()" [label]="i18n.field.html.image.upload">
+  </action-button>
 
   <ng-template #noUpload>
     <span></span>
   </ng-template>
 
-  <button class="btn btn-outline-primary" (click)="modalRef.hide()">
-    {{ i18n.general.cancel }}
-  </button>
+  <action-button outline (action)="modalRef.hide()"
+    [label]="i18n.general.cancel">
+  </action-button>
 </actions>

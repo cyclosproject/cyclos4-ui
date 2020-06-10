@@ -1,5 +1,5 @@
-<button #button type="button" class="btn d-flex justify-content-center w-100"
-  [ngClass]="{ 'link-with-icon': icon,
+<button #button type="button"
+  class="btn d-flex justify-content-center w-100 h-100" [ngClass]="{ 'link-with-icon': icon,
   'btn-primary': !outline,
   'btn-outline-primary': outline }"
   (click)="onClick($event); $event.stopPropagation()"

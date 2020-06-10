@@ -10,11 +10,11 @@
             <div class="mb-2 mb-xs-0">
               {{ i18n.general.images }}
             </div>
-            <button
+            <action-button
               *ngIf="canUploadImages && (multiUpload.uploading$ | async) === false"
-              class="btn btn-outline-primary" (click)="multiUpload.perform()">
-              {{ i18n.field.image.upload }}
-            </button>
+              outline (action)="multiUpload.perform()"
+              [label]="i18n.field.image.upload">
+            </action-button>
           </h2>
           <div class="row no-gutters">
             <div
@@ -31,9 +31,9 @@
             </ng-container>
           </div>
           <div *ngIf="images.length > 0" class="d-flex justify-content-end">
-            <button class="btn btn-outline-primary" (click)="manageImages()">
-              {{ i18n.field.image.manage }}
-            </button>
+            <action-button outline (action)="manageImages()"
+              [label]="i18n.field.image.manage">
+            </action-button>
           </div>
           <image-upload #multiUpload target="marketplace"
             [max]="data.maxImages" (uploadDone)="onUploadDone($event)"
@@ -194,12 +194,12 @@
         </ng-container>
       </form>
       <actions>
-        <button class="btn btn-primary" (click)="save()">
-          {{ i18n.general.save }}
-        </button>
-        <button *ngIf="data.canCreateNew" class="btn btn-outline-primary"
-          [disabled]="requesting$ | async"
-          (click)="save(true)">{{ i18n.ad.saveAndInsertNew }}</button>
+        <action-button (action)="save()" [label]="i18n.general.save">
+        </action-button>
+        <action-button *ngIf="data.canCreateNew" outline
+          [disabled]="requesting$ | async" (action)="save(true)"
+          [label]="i18n.ad.saveAndInsertNew">
+        </action-button>
       </actions>
     </page-content>
   </ng-container>

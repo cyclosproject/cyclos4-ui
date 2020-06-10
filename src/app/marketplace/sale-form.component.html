@@ -24,9 +24,9 @@
             {{ i18n.ad.products  }}
           </div>
           <div [ngClass]="{'section-title-action': layout.gtsm$ | async}">
-            <button class="btn btn-outline-primary" (click)="addProducts()">
-              {{ i18n.ad.addProducts }}
-            </button>
+            <action-button outline (action)="addProducts()"
+              [label]="i18n.ad.addProducts">
+            </action-button>
           </div>
         </h2>
         <order-products [products$]="products$"
@@ -71,14 +71,12 @@
         </textarea-field>
       </div>
       <actions>
-        <button class="btn btn-primary" [disabled]="requesting$ | async"
-          (click)="save()">
-          {{ i18n.ad.submitToBuyer }}
-        </button>
-        <button class="btn btn-outline-primary"
-          [disabled]="requesting$ | async" (click)="save(true)">
-          {{ i18n.ad.saveDraft }}
-        </button>
+        <action-button [disabled]="requesting$ | async" (action)="save()"
+          [label]="i18n.ad.submitToBuyer">
+        </action-button>
+        <action-button [disabled]="requesting$ | async" outline
+          (action)="save(true)" [label]="i18n.ad.saveDraft">
+        </action-button>
       </actions>
     </page-content>
   </ng-container>

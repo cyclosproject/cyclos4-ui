@@ -36,9 +36,9 @@
       </label-value>
     </ng-container>
     <actions>
-      <button class="btn btn-primary" (click)="download()"
-        [disabled]="requesting$ | async"> {{i18n.general.download}}
-      </button>
+      <action-button (action)="download()" [disabled]="requesting$ | async"
+        [label]="i18n.general.download">
+      </action-button>
     </actions>
   </page-content>
 </page-layout>

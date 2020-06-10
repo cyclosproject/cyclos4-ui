@@ -51,10 +51,9 @@
         </decimal-field>
       </form>
       <actions forceRow>
-        <button class="btn btn-primary" (click)="save()"
-          [disabled]="requesting$ | async">
-          {{ i18n.general.submit }}
-        </button>
+        <action-button [disabled]="requesting$ | async" (action)="save()"
+          [label]="i18n.general.submit">
+        </action-button>
       </actions>
     </page-content>
   </ng-container>

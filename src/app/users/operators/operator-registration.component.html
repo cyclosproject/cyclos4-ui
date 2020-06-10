@@ -84,9 +84,8 @@
         </ng-container>
       </ng-container>
       <actions>
-        <button class="btn btn-primary" (click)="register()">
-          {{ i18n.general.submit }}
-        </button>
+        <action-button (action)="register()" [label]="i18n.general.submit">
+        </action-button>
       </actions>
     </form>
   </page-content>
@@ -94,12 +93,12 @@
   <ng-template #done>
     <p [innerHTML]="doneMessageHtml | trust"></p>
     <actions forceRow>
-      <button class="btn btn-primary" (click)="reload()">
-        {{ i18n.user.operatorRegistrationAddAnother }}
-      </button>
-      <button class="btn btn-primary" (click)="viewProfile()">
-        {{ i18n.user.registration.viewProfile }}
-      </button>
+      <action-button (action)="reload()"
+        [label]="i18n.user.operatorRegistrationAddAnother">
+      </action-button>
+      <action-button (action)="viewProfile()"
+        [label]="i18n.user.registration.viewProfile">
+      </action-button>
     </actions>
   </ng-template>
 </page-layout>

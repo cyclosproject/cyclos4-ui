@@ -23,7 +23,7 @@
   </table>
 </results-layout>
 <actions>
-  <button class="btn btn-primary d-block w-100" (click)="modalRef.hide()">
-    {{ i18n.general.cancel }}
-  </button>
+  <action-button class="d-block w-100" (action)="modalRef.hide()"
+    [label]="i18n.general.cancel">
+  </action-button>
 </actions>

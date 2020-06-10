@@ -15,6 +15,7 @@ import { BehaviorSubject, Observable, Subscription, timer } from 'rxjs';
 export class CountdownButtonComponent implements OnInit {
 
   @HostBinding('class.d-inline-block') classInlineBlock = true;
+  @HostBinding('class.button') classButton = true;
 
   text$ = new BehaviorSubject<string>(null);
   disabled$ = new BehaviorSubject<boolean>(false);

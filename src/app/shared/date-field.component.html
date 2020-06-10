@@ -50,18 +50,15 @@
           (select)="selectFromCalendar($event)">
         </calendar>
         <actions forceRow class="mt-0 p-2" minimal>
-          <button *ngIf="todayEnabled" type="button"
-            class="btn btn-outline-primary" (click)="setToday()">
-            {{ i18n.field.date.today }}
-          </button>
-          <button type="button" class="btn btn-outline-primary"
-            (click)="value = null; hide()">
-            {{ i18n.field.date.clear }}
-          </button>
-          <button type="button" class="btn btn-outline-primary"
-            (click)="dropdown.hide()">
-            {{ i18n.general.close }}
-          </button>
+          <action-button *ngIf="todayEnabled" outline (action)="setToday()"
+            [label]="i18n.field.date.today">
+          </action-button>
+          <action-button outline (action)="value = null; hide()"
+            [label]="i18n.field.date.clear">
+          </action-button>
+          <action-button outline (action)="dropdown.hide()"
+            [label]="i18n.general.close">
+          </action-button>
         </actions>
       </div>
     </div>

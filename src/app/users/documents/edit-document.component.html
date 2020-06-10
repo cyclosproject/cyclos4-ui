@@ -41,9 +41,9 @@
       </file-field>
     </ng-container>
     <actions>
-      <button class="btn btn-primary" (click)="save()"
-        [disabled]="requesting$ | async"> {{i18n.general.save}}
-      </button>
+      <action-button (action)="save()" [disabled]="requesting$ | async"
+        [label]="i18n.general.save">
+      </action-button>
     </actions>
   </page-content>
 </page-layout>

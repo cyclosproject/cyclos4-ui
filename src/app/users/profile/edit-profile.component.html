@@ -21,14 +21,12 @@
           [owner]="param" (uploadDone)="onUploadDone($event)"></image-upload>
         <actions class="mt-3" forceRow
           *ngIf="canEdit('image') && (singleUpload.uploading$ | async) === false">
-          <button class="btn btn-outline-primary"
-            (click)="singleUpload.perform()">
-            {{ i18n.field.image.upload }}
-          </button>
-          <button *ngIf="images.length > 0" class="btn btn-outline-primary"
-            (click)="removeAllImages()">
-            {{ i18n.field.image.remove }}
-          </button>
+          <action-button outline (action)="singleUpload.perform()"
+            [label]="i18n.field.image.upload">
+          </action-button>
+          <action-button *ngIf="images.length > 0" outline
+            (action)="removeAllImages()" [label]="i18n.field.image.remove">
+          </action-button>
         </actions>
       </ng-container>
       <ng-container *ngIf="imagesAvailability === 'multiple'">
@@ -37,11 +35,11 @@
           <div class="mb-2 mb-xs-0">
             {{ i18n.user.title.images }}
           </div>
-          <button
+          <action-button
             *ngIf="canUploadImages && (multiUpload.uploading$ | async) === false"
-            class="btn btn-outline-primary" (click)="multiUpload.perform()">
-            {{ i18n.field.image.upload }}
-          </button>
+            outline (action)="multiUpload.perform()"
+            [label]="i18n.field.image.upload">
+          </action-button>
         </h2>
         <div class="row no-gutters">
           <div
@@ -60,9 +58,9 @@
         </div>
         <div *ngIf="canEdit('image') && images.length > 0"
           class="d-flex justify-content-end">
-          <button class="btn btn-outline-primary" (click)="manageImages()">
-            {{ i18n.field.image.manage }}
-          </button>
+          <action-button outline (action)="manageImages()"
+            [label]="i18n.field.image.manage">
+          </action-button>
         </div>
         <image-upload #multiUpload target="profile" [owner]="param"
           [max]="data.imageConfiguration.maxImages"
@@ -210,12 +208,11 @@
             (imageLoaded)="mapShown(singleAddress)"
             [address]="singleAddress.value"></static-map>
           <ng-template #viewMap>
-            <button
+            <action-button
               *ngIf="(singleAddress['locating$'] | async) === false; else locatingSpinner"
-              class="btn btn-outline-primary" type="button"
-              (click)="locateAddress(singleAddress)">
-              {{ i18n.general.mapView }}
-            </button>
+              outline (action)="locateAddress(singleAddress)"
+              [label]="i18n.general.mapView">
+            </action-button>
           </ng-template>
         </label-value>
       </ng-container>
@@ -251,15 +248,15 @@
         <!-- When can create just one of them, use individual buttons -->
         <div *ngIf="canCreateLandLine && !canCreateMobile"
           class="section-title-action">
-          <button class="btn btn-outline-primary" (click)="addLandLine()">
-            {{ i18n.user.phoneAddLandLine }}
-          </button>
+          <action-button outline (action)="addLandLine()"
+            [label]="i18n.user.phoneAddLandLine">
+          </action-button>
         </div>
         <div *ngIf="!canCreateLandLine && canCreateMobile"
           class="section-title-action">
-          <button class="btn btn-outline-primary" (click)="addMobile()">
-            {{ i18n.user.phoneAddMobile }}
-          </button>
+          <action-button outline (action)="addMobile()"
+            [label]="i18n.user.phoneAddMobile">
+          </action-button>
         </div>
       </h2>
       <div *ngIf="phones.length == 0">
@@ -312,12 +309,11 @@
           <div class="d-flex w-100 justify-content-between">
             <field-privacy [control]="phone['form'].get('hidden')"
               justifyStart></field-privacy>
-            <button
+            <action-button
               *ngIf="editableFields.has('phone') && (layout.gtxxs$ | async)"
-              class="btn btn-outline-primary" type="button"
-              (click)="removePhone(phone)">
-              {{ i18n.user.phoneRemove }}
-            </button>
+              outline (action)="removePhone(phone)"
+              [label]="i18n.user.phoneRemove">
+            </action-button>
           </div>
         </label-value>
         <div
@@ -325,11 +321,9 @@
           class="d-flex justify-content-end" [ngClass]="{
             'mt-3': !data.phoneConfiguration.managePrivacy
           }">
-          <button *ngIf="editableFields.has('phone')"
-            class="btn btn-outline-primary" type="button"
-            (click)="removePhone(phone)">
-            {{ i18n.user.phoneRemove }}
-          </button>
+          <action-button *ngIf="editableFields.has('phone')" outline
+            (action)="removePhone(phone)" [label]="i18n.user.phoneRemove">
+          </action-button>
         </div>
         <hr *ngIf="!last">
       </ng-container>
@@ -343,10 +337,9 @@
           {{ i18n.user.title.addresses }}
         </div>
         <div class="section-title-action">
-          <button *ngIf="canCreateAddress" class="btn btn-outline-primary"
-            (click)="addAddress()">
-            {{ i18n.user.addressAdd }}
-          </button>
+          <action-button *ngIf="canCreateAddress" outline
+            (action)="addAddress()" [label]="i18n.user.addressAdd">
+          </action-button>
         </div>
       </h2>
       <div *ngIf="data.addresses.length == 0">
@@ -368,12 +361,11 @@
           <div class="d-flex w-100 justify-content-between">
             <field-privacy [control]="address['form'].get('hidden')"
               justifyStart></field-privacy>
-            <button
+            <action-button
               *ngIf="editableFields.has('address') && !maps.enabled && (layout.gtxxs$ | async)"
-              class="btn btn-outline-primary" type="button"
-              (click)="removeAddress(address)">
-              {{ i18n.user.addressRemove }}
-            </button>
+              outline (action)="removeAddress(address)"
+              [label]="i18n.user.addressRemove">
+            </action-button>
           </div>
         </label-value>
         <label-value kind="field"
@@ -391,18 +383,17 @@
           <div *ngIf="layout.gtxs$ | async" class="col-4"></div>
           <div class="col-12 col-sm-8">
             <actions class="mt-0" forceRow>
-              <button *ngIf="editableFields.has('address')"
-                class="btn btn-outline-primary" type="button"
-                (click)="removeAddress(address)">
-                {{ i18n.user.addressRemove }}
-              </button>
+              <action-button *ngIf="editableFields.has('address')" outline
+                (action)="removeAddress(address)"
+                [label]="i18n.user.addressRemove">
+              </action-button>
               <ng-container *ngIf="(address['form'].get('location').value.latitude == null)
                   && (address['form']['locating$'] | async) === false">
                 <div class="flex-grow-1"></div>
-                <button class="btn btn-outline-primary" type="button"
-                  (click)="locateAddress(address['form'])">
-                  {{ i18n.general.mapView }}
-                </button>
+                <action-button outline
+                  (action)="locateAddress(address['form'])"
+                  [label]="i18n.general.mapView">
+                </action-button>
               </ng-container>
             </actions>
           </div>
@@ -423,10 +414,9 @@
           {{ i18n.user.title.contactInfos }}
         </div>
         <div class="section-title-action">
-          <button *ngIf="canCreateContactInfo" class="btn btn-outline-primary"
-            (click)="addContactInfo()">
-            {{ i18n.user.contactInfoAdd }}
-          </button>
+          <action-button *ngIf="canCreateContactInfo" outline
+            (action)="addContactInfo()" [label]="i18n.user.contactInfoAdd">
+          </action-button>
         </div>
       </h2>
       <div *ngIf="contactInfos.length == 0">
@@ -475,20 +465,18 @@
           <div class="d-flex w-100 justify-content-between">
             <field-privacy [control]="contactInfo['form'].get('hidden')"
               justifyStart></field-privacy>
-            <button *ngIf="(layout.gtxxs$ | async)"
-              class="btn btn-outline-primary" type="button"
-              (click)="removeContactInfo(contactInfo)">
-              {{ i18n.user.contactInfoRemove }}
-            </button>
+            <action-button *ngIf="(layout.gtxxs$ | async)" outline
+              (action)="removeContactInfo(contactInfo)"
+              [label]="i18n.user.contactInfoRemove">
+            </action-button>
           </div>
         </label-value>
         <div
           *ngIf="(layout.xxs$ | async) || !data.contactInfoConfiguration.managePrivacy"
           class="d-flex justify-content-end">
-          <button class="btn btn-outline-primary" type="button"
-            (click)="removeContactInfo(contactInfo)">
-            {{ i18n.user.contactInfoRemove }}
-          </button>
+          <action-button outline (action)="removeContactInfo(contactInfo)"
+            [label]="i18n.user.contactInfoRemove">
+          </action-button>
         </div>
 
         <hr *ngIf="!last">
@@ -496,10 +484,9 @@
     </ng-container>
 
     <actions>
-      <button class="btn btn-primary btn-main"
-        [disabled]="requesting$ | async" (click)="saveOrConfirm()">
-        {{ i18n.general.save }}
-      </button>
+      <action-button class="btn-main" [disabled]="requesting$ | async"
+        (action)="saveOrConfirm()" [label]="i18n.general.save">
+      </action-button>
     </actions>
   </page-content>
 </page-layout>

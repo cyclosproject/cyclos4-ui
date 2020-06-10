@@ -4,9 +4,8 @@
       {{ i18n.user.newEmailConfirmed }}
     </notification>
     <actions *ngIf="(login.user$ | async) == null" ngClass="mt-3" forceRow>
-      <button class="btn btn-primary" (click)="goToLogin()">
-        {{ i18n.menu.login }}
-      </button>
+      <action-button (action)="goToLogin()" [label]="i18n.menu.login">
+      </action-button>
     </actions>
   </page-content>
 </page-layout>

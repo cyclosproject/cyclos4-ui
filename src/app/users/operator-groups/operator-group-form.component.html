@@ -70,10 +70,9 @@
         </boolean-field>
       </form>
       <actions>
-        <button class="btn btn-primary btn-main"
-          [disabled]="requesting$ | async" (click)="save()">
-          {{ i18n.general.save }}
-        </button>
+        <action-button class="btn-main" [disabled]="requesting$ | async"
+          (action)="save()" [label]="i18n.general.save">
+        </action-button>
       </actions>
     </page-content>
   </ng-container>

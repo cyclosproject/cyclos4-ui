@@ -42,10 +42,9 @@
       </ng-container>
     </form>
     <actions>
-      <button class="btn btn-primary" [disabled]="requesting$ | async"
-        (click)="save()">
-        {{ i18n.general.save }}
-      </button>
+      <action-button [disabled]="requesting$ | async" (action)="save()"
+        [label]="i18n.general.save">
+      </action-button>
     </actions>
   </page-content>
 </page-layout>

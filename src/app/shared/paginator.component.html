@@ -19,12 +19,15 @@
   </ng-template>
   <div *ngIf="layout.xxs$ | async" class="row no-gutters w-100">
     <div class="col-6 px-2">
-      <button *ngIf="results.page > 0" class="btn btn-outline-primary"
-        (click)="nextOrPrevious(false)">{{ i18n.general.results.previousXxs }}</button>
+      <action-button *ngIf="results.page > 0" outline
+        (action)="nextOrPrevious(false)"
+        [label]="i18n.general.results.previousXxs">
+      </action-button>
     </div>
     <div class="col-6 px-2">
-      <button *ngIf="results.hasNext" class="btn btn-primary"
-        (click)="nextOrPrevious(true)">{{ i18n.general.results.nextXxs }}</button>
+      <action-button *ngIf="results.hasNext" (action)="nextOrPrevious(true)"
+        [label]="i18n.general.results.nextXxs">
+      </action-button>
     </div>
   </div>
 

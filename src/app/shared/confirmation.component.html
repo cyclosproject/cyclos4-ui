@@ -25,8 +25,7 @@
       [label]="confirmLabel">
     </action-button>
     <ng-template #blank>&nbsp;</ng-template>
-    <button class="btn btn-outline-primary" (click)="modalRef.hide()">
-      {{ cancelLabel }}
-    </button>
+    <action-button outline (action)="modalRef.hide()" [label]="cancelLabel">
+    </action-button>
   </actions>
 </form>

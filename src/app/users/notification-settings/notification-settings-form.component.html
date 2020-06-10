@@ -44,16 +44,15 @@
             </div>
             <div [ngClass]="{'section-title-action': layout.gtsm$ | async}"
               *ngIf="!adminSettings && notificationSections.get(section).length > 3 && data.editable">
-              <button class="btn btn-outline-primary" [ngClass]="{
-                  'mr-3': !(layout.ltxs$ | async),
-                  'mb-2': layout.ltxs$ | async}"
-                (click)="enableNotifications(section, true)">
-                {{ i18n.notificationSettings.enableAll }}
-              </button>
-              <button class="btn btn-outline-primary"
-                (click)="enableNotifications(section, false)">
-                {{ i18n.notificationSettings.disableAll }}
-              </button>
+              <action-button outline
+                [ngClass]="{'mr-3': !(layout.ltxs$ | async), 'mb-2': layout.ltxs$ | async}"
+                (action)="enableNotifications(section, true)"
+                [label]="i18n.notificationSettings.enableAll">
+              </action-button>
+              <action-button outline
+                (action)="enableNotifications(section, false)"
+                [label]="i18n.notificationSettings.disableAll">
+              </action-button>
             </div>
           </h2>
           <ng-container
@@ -75,10 +74,9 @@
         </ng-container>
       </form>
       <actions>
-        <button *ngIf="data.editable" class="btn btn-primary"
-          [disabled]="requesting$ | async" (click)="save()">
-          {{ i18n.general.save }}
-        </button>
+        <action-button *ngIf="data.editable" [disabled]="requesting$ | async"
+          (action)="save()" [label]="i18n.general.save">
+        </action-button>
       </actions>
     </page-content>
   </ng-container>

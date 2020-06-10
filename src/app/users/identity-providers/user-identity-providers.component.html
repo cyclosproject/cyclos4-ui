@@ -38,11 +38,11 @@
             </div>
           </div>
           <div class="col-12 col-md-3 mt-3 mt-md-0">
-            <button class="d-block ml-auto btn btn-primary"
+            <action-button class="d-block ml-auto"
               *ngFor="let action of actions(uip); let last = last"
-              [ngClass]="{'mb-3': !last}" (click)="action.onClick()">
-              {{ action.label }}
-            </button>
+              [ngClass]="{'mb-3': !last}" (action)="action.onClick()"
+              [label]="action.label">
+            </action-button>
           </div>
         </div>
       </ng-container>

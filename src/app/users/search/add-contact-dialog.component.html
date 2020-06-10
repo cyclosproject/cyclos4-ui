@@ -6,11 +6,10 @@
 </user-field>
 
 <actions forceRow>
-  <button class="btn btn-primary" [disabled]="requesting$ | async"
-    (click)="addContact()">
-    {{ i18n.general.submit }}
-  </button>
-  <button class="btn btn-outline-primary" (click)="modalRef.hide()">
-    {{ i18n.general.cancel }}
-  </button>
+  <action-button [disabled]="requesting$ | async" (action)="addContact()"
+    [label]="i18n.general.submit">
+  </action-button>
+  <action-button outline (action)="modalRef.hide()"
+    [label]="i18n.general.cancel">
+  </action-button>
 </actions>

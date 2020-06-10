@@ -30,14 +30,18 @@
           </format-field-value>
         </label-value>
         <actions class="mb-3">
-          <button *ngIf="data.edit" class="btn btn-primary"
-            [disabled]="requesting$ | async"
-            (click)="router.navigate(editPath(row))">{{ i18n.general.edit }}</button>
-          <button class="btn btn-primary" [disabled]="requesting$ | async"
-            (click)="router.navigate(viewPath(row))">{{ i18n.general.view }}</button>
-          <button *ngIf="data.remove" class="btn btn-outline-primary"
-            [disabled]="requesting$ | async"
-            (click)="remove(row)">{{ i18n.general.remove }}</button>
+          <action-button *ngIf="data.edit" [disabled]="requesting$ | async"
+            (action)="router.navigate(editPath(row))"
+            [label]="i18n.general.edit">
+          </action-button>
+          <action-button [disabled]="requesting$ | async"
+            (action)="router.navigate(viewPath(row))"
+            [label]="i18n.general.view">
+          </action-button>
+          <action-button *ngIf="data.remove" outline
+            [disabled]="requesting$ | async" (action)="remove(row)"
+            [label]="i18n.general.remove">
+          </action-button>
         </actions>
       </ng-container>
     </page-content>

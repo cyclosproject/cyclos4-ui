@@ -30,9 +30,9 @@
         [disabled]="!canConfirm || (requesting$ | async)" (action)="perform()"
         [label]="i18n.general.confirm"></action-button>
       <ng-template #spacer>&nbsp;</ng-template>
-      <button class="btn btn-outline-primary" (click)="backToForm()">
-        {{ i18n.general.previous }}
-      </button>
+      <action-button outline (action)="backToForm()"
+        [label]="i18n.general.previous">
+      </action-button>
     </actions>
   </page-content>
 
@@ -42,12 +42,12 @@
     <payment-step-done class="flex-grow-1 d-flex flex-column"
       [performed]="performed"></payment-step-done>
     <actions forceRow>
-      <button class="btn btn-primary" (click)="viewPerformed()">
-        {{ i18n.transaction.doneView }}
-      </button>
-      <button class="btn btn-outline-primary" (click)="reload()">
-        {{ i18n.transaction.doneNew }}
-      </button>
+      <action-button (action)="viewPerformed()"
+        [label]="i18n.transaction.doneView">
+      </action-button>
+      <action-button outline (action)="reload()"
+        [label]="i18n.transaction.doneNew">
+      </action-button>
     </actions>
   </page-content>
 

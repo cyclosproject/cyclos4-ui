@@ -10,11 +10,9 @@
 </ng-container>
 
 <actions>
-  <button class="btn btn-primary" (click)="save()">
-    {{ i18n.general.save }}
-  </button>
-
-  <button class="btn btn-outline-primary" (click)="modalRef.hide()">
-    {{ i18n.general.cancel }}
-  </button>
+  <action-button (action)="save()" [label]="i18n.general.save">
+  </action-button>
+  <action-button outline (action)="modalRef.hide()"
+    [label]="i18n.general.cancel">
+  </action-button>
 </actions>

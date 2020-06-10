@@ -13,13 +13,13 @@ button[disabled], button[disabled]:hover {
     width: auto;
   }
 }
-button.btn-transparent {
+.btn-transparent {
   background: transparent;
   border: none;
   box-shadow: none;
 }
 .lt-sm {
-  button.btn-main {
+  .btn-main {
     height: 3rem;
   }
 }
@@ -79,8 +79,10 @@ table.table {
   }
 }
 
-actions.minimal button {
-  min-width: 0 !important;
+actions.minimal {
+  button, .button{
+    min-width: 0 !important;
+  }
 }
 
 body.dark {

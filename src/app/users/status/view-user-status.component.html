@@ -22,8 +22,8 @@
           [label]="i18n.general.comments"></textarea-field>
       </form>
       <actions>
-        <button class="btn btn-primary"
-          (click)="save()">{{ i18n.general.submit }}</button>
+        <action-button (action)="save()" [label]="i18n.general.submit">
+        </action-button>
       </actions>
     </ng-container>
   </page-content>

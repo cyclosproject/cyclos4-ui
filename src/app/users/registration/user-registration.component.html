@@ -25,10 +25,9 @@
     </div>
     <actions forceRow>
       <span></span>
-      <button *ngIf="groups.length > 1" class="btn btn-outline-primary"
-        (click)="backToGroup()">
-        {{ i18n.general.previous }}
-      </button>
+      <action-button *ngIf="groups.length > 1" outline
+        (action)="backToGroup()" [label]="i18n.general.previous">
+      </action-button>
     </actions>
   </page-content>
 
@@ -50,10 +49,11 @@
       <action-button [disabled]="requesting$ | async" (action)="showConfirm()"
         [label]="i18n.general.next">
       </action-button>
-      <button *ngIf="groups.length > 1 || data.identityProviders?.length > 0"
-        class="btn btn-outline-primary" (click)="backToIdentityProviders()">
-        {{ i18n.general.previous }}
-      </button>
+      <action-button
+        *ngIf="groups.length > 1 || data.identityProviders?.length > 0"
+        outline (action)="backToIdentityProviders()"
+        [label]="i18n.general.previous">
+      </action-button>
     </actions>
   </page-content>
 
@@ -71,9 +71,9 @@
       <action-button [disabled]="requesting$ | async" (action)="register()"
         [label]="i18n.general.submit">
       </action-button>
-      <button class="btn btn-outline-primary" (click)="backToFields()">
-        {{ i18n.general.previous }}
-      </button>
+      <action-button outline (action)="backToFields()"
+        [label]="i18n.general.previous">
+      </action-button>
     </actions>
   </page-content>
 
@@ -86,18 +86,15 @@
       </registration-step-done>
     </div>
     <actions forceRow>
-      <button *ngIf="login.user" class="btn btn-primary" (click)="reload()">
-        {{ i18n.user.registration.registerAnotherUser }}
-      </button>
-      <button *ngIf="login.user" class="btn btn-primary"
-        (click)="viewProfile()">
-        {{ i18n.user.registration.viewProfile }}
-      </button>
-
-      <button *ngIf="!login.user" class="btn btn-primary"
-        (click)="goToLogin()">
-        {{ i18n.menu.login }}
-      </button>
+      <action-button *ngIf="login.user" (action)="reload()"
+        [label]="i18n.user.registration.registerAnotherUser">
+      </action-button>
+      <action-button *ngIf="login.user" (action)="viewProfile()"
+        [label]="i18n.user.registration.viewProfile">
+      </action-button>
+      <action-button *ngIf="!login.user" (action)="goToLogin()"
+        [label]="i18n.menu.login">
+      </action-button>
     </actions>
   </page-content>
 

@@ -9,9 +9,9 @@
       </custom-field-input>
     </ng-container>
     <actions>
-      <button class="btn btn-primary" (click)="process()">
-        {{ i18n.general.submit }}
-      </button>
+      <action-button (action)="process()" [disabled]="requesting$ | async"
+        [label]="i18n.general.submit">
+      </action-button>
     </actions>
   </page-content>
 

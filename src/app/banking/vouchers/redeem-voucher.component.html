@@ -77,10 +77,9 @@
         <action-button [disabled]="requesting$ | async" (action)="submit()"
           [label]="i18n.general.submit">
         </action-button>
-
-        <button class="btn btn-outline-primary" (click)="backToForm()">
-          {{ i18n.general.previous }}
-        </button>
+        <action-button outline (action)="backToForm()"
+          [label]="i18n.general.previous">
+        </action-button>
       </actions>
     </ng-container>
   </page-content>

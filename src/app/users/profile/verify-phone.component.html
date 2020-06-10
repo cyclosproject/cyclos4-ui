@@ -13,20 +13,19 @@
       type="number" focused></input-field>
   </div>
   <div class="col-3">
-    <button class="btn btn-primary d-block w-100" (click)="sendCode()">
-      {{ i18n.phone.verify.send }}
-    </button>
+    <action-button class="d-block w-100" (action)="sendCode()"
+      [label]="i18n.phone.verify.send">
+    </action-button>
   </div>
 </div>
 
 <div class="mt-3 pb-1">{{ message$ | async }}</div>
 
 <actions>
-  <button class="btn btn-primary" [disabled]="requesting$ | async"
-    (click)="verify()">
-    {{ i18n.general.confirm }}
-  </button>
-  <button class="btn btn-outline-primary" (click)="modalRef.hide()">
-    {{ i18n.general.cancel }}
-  </button>
+  <action-button [disabled]="requesting$ | async" (action)="verify()"
+    [label]="i18n.general.confirm">
+  </action-button>
+  <action-button outline (action)="modalRef.hide()"
+    [label]="i18n.general.cancel">
+  </action-button>
 </actions>

@@ -48,9 +48,8 @@
   </table>
 </results-layout>
 <actions>
-  <button class="btn btn-primary" (click)="close()">
-    {{ i18n.general.close }}
-  </button>
+  <action-button (action)="close()" [label]="i18n.general.close">
+  </action-button>
 </actions>
 
 <ng-template #spinner>

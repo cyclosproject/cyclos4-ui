@@ -9,7 +9,7 @@
 
 <actions>
   <span></span>
-  <button class="btn btn-outline-primary" (click)="modalRef.hide()">
-    {{ i18n.general.cancel }}
-  </button>
+  <action-button outline (action)="modalRef.hide()"
+    [label]="i18n.general.cancel">
+  </action-button>
 </actions>
