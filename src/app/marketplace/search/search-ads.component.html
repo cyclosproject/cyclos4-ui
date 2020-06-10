@@ -142,13 +142,14 @@
         </ng-container>
       </div>
     </form>
-    <div *ngIf="layout.gtxxs$ | async" class="row no-gutters filters-row">
+    <div class="row no-gutters filters-row">
       <div class="col-12 col-xs-7 col-md-9">
         <result-type-field [allowedResultTypes]="allowedResultTypes$ | async"
           [formControl]="resultTypeControl">
         </result-type-field>
       </div>
-      <div *ngIf="['tiles', 'list'].includes(resultType)"
+      <div
+        *ngIf="(layout.gtxxs$ | async) && ['tiles', 'list'].includes(resultType)"
         class="col-12 col-xs-5 col-md-3">
         <single-selection-field [formControl]="form.get('orderBy')"
           [display]="i18n.general.orderBy"

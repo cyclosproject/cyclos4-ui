@@ -1,5 +1,5 @@
-<div *ngIf="(layout.gtxxs$ | async) && (allowedResultTypes?.length > 0)"
-  class="btn-group" btnRadioGroup [formControl]="formControl">
+<div *ngIf="allowedResultTypes?.length > 0" class="btn-group" btnRadioGroup
+  [formControl]="formControl">
   <label #button class="btn btn-icon m-0"
     [ngClass]="['focusable', 'resultType-' + resultType]"
     *ngFor="let resultType of allowedResultTypes"
