@@ -444,8 +444,7 @@
       "password": "Mot de passe",
       "passwords": "Mots de passe",
       "switchTheme": "Switch theme",
-      "connectedUsers": "Connected users",
-      "receiveQRPayment": "Receive QR payment"
+      "connectedUsers": "Connected users"
     },
     "accounts": "Accounts",
     "accountStatus": "Statut du compte",
@@ -460,8 +459,7 @@
       "neverCreated": "Your {type} needs to be set.",
       "securityAnswer": "You should set the security question, which will be required in case you need to reset your password.",
       "proceed": "Click here to proceed"
-    },
-    "accounts": "Accounts"
+    }
   },
   "account": {
     "account": "Account",
@@ -489,6 +487,30 @@
       "dateAsc": "Date (oldest first)",
       "amountAsc": "Amount (lowest first)",
       "amountDesc": "Amount (highest first)"
+    },
+    "balanceLimits": {
+      "negativeLimit": "Negative balance limit",
+      "positiveLimit": "Positive balance limit",
+      "unlimited": "Unlimited",
+      "mode": "Mode",
+      "personalized": "Personalized",
+      "productDefault": "Product default",
+      "negative": "Negative",
+      "positive": "Positive",
+      "confirm": "You must confirm to apply the new balance limits",
+      "saved": "The balance limits were saved",
+      "title": {
+        "list": "Account balance limits",
+        "view": "Account balance limits details",
+        "edit": "Account balance limits details",
+        "history": "Account balance limits history"
+      },
+      "mobileTitle": {
+        "list": "Account balance limits",
+        "view": "Account balance limits details",
+        "edit": "Account balance limits details",
+        "history": "Account balance limits history"
+      }
     }
   },
   "transaction": {
@@ -678,8 +700,7 @@
       "weekly.count": "Le nombre maximum de paiements autorisés par semaine est de {count}",
       "monthly.amount": "Le montant mensuel maximal de {amount} a été dépassé",
       "monthly.count": "Le nombre maximum de paiements autorisés par mois est de {count}"
-    },
-    "installmentNumberOfTotal": "{number} of {total}"
+    }
   },
   "voucher": {
     "error": {
@@ -1023,7 +1044,8 @@
       "redeemVoucher": "Redeem voucher",
       "viewBoughtVouchers": "View bought vouchers",
       "buyVouchers": "Buy vouchers",
-      "notificationSettings": "Notification settings"
+      "notificationSettings": "Notification settings",
+      "accountsBalanceLimits": "Account balance limits"
     },
     "registration": {
       "group.public": "Choisissez le groupe auquel vous souhaitez participer",
