@@ -487,6 +487,30 @@
       "dateAsc": "Fecha (más antiguo primero)",
       "amountAsc": "Monto (de menor a mayor)",
       "amountDesc": "Monto (de mayor a menor)"
+    },
+    "balanceLimits": {
+      "negativeLimit": "Negative balance limit",
+      "positiveLimit": "Positive balance limit",
+      "unlimited": "Unlimited",
+      "mode": "Mode",
+      "personalized": "Personalized",
+      "productDefault": "Product default",
+      "negative": "Negative",
+      "positive": "Positive",
+      "confirm": "You must confirm to apply the new balance limits",
+      "saved": "The balance limits were saved",
+      "title": {
+        "list": "Account balance limits",
+        "view": "Account balance limits details",
+        "edit": "Account balance limits details",
+        "history": "Account balance limits history"
+      },
+      "mobileTitle": {
+        "list": "Account balance limits",
+        "view": "Account balance limits details",
+        "edit": "Account balance limits details",
+        "history": "Account balance limits history"
+      }
     }
   },
   "transaction": {
@@ -1020,7 +1044,8 @@
       "redeemVoucher": "Canjear cupón",
       "viewBoughtVouchers": "Ver cupones comprados",
       "buyVouchers": "Comprar cupones",
-      "notificationSettings": "Ajustes de notificaciones"
+      "notificationSettings": "Ajustes de notificaciones",
+      "accountsBalanceLimits": "Account balance limits"
     },
     "registration": {
       "group.public": "Elija el grupo en el que desea registrarse",
