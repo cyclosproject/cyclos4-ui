@@ -1,0 +1,31 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [mode]="'normal'"
+      [heading]="i18n.account.balanceLimits.title.list"
+      [mobileHeading]="i18n.account.balanceLimits.mobileTitle.list"
+      [headingActions]="headingActions$ | async">
+      <user-info [user]="data.user"></user-info>
+    </page-content>
+
+    <results-layout [results]="data.accountLimits">
+
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead>
+          <th>{{ i18n.account.account }}</th>
+          <th>{{ i18n.account.balanceLimits.negativeLimit }}</th>
+          <th>{{ i18n.account.balanceLimits.positiveLimit }}</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of data.accountLimits"
+            (click)="router.navigate(path(row.account.type)); $event.stopPropagation()">
+            <td width="20%">{{ row.account.type.name }}</td>
+            <td>{{ row.creditLimit | currency:row.account.currency }}</td>
+            <td>
+              {{ row.upperCreditLimit ? (row.upperCreditLimit | currency:row.account.currency) : i18n.account.balanceLimits.unlimited }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>
