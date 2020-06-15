@@ -444,8 +444,7 @@
       "password": "Password",
       "passwords": "Password",
       "switchTheme": "Cambia tema",
-      "connectedUsers": "Utenti connessi",
-      "receiveQRPayment": "Receive QR payment"
+      "connectedUsers": "Utenti connessi"
     },
     "accounts": "Accounts",
     "accountStatus": "Stato conto",
@@ -460,8 +459,7 @@
       "neverCreated": "Il tuo {type} deve essere impostato.",
       "securityAnswer": "Dovresti impostare la domanda di sicurezza, che sarà necessaria nel caso in cui dovrai reimpostare la password.",
       "proceed": "Clicca qui per procedere"
-    },
-    "accounts": "Accounts"
+    }
   },
   "account": {
     "account": "Conto",
@@ -489,6 +487,30 @@
       "dateAsc": "Data (dalla meno recente)",
       "amountAsc": "Importo (crescente)",
       "amountDesc": "Importo (decrescente)"
+    },
+    "balanceLimits": {
+      "negativeLimit": "Negative balance limit",
+      "positiveLimit": "Positive balance limit",
+      "unlimited": "Unlimited",
+      "mode": "Mode",
+      "personalized": "Personalized",
+      "productDefault": "Product default",
+      "negative": "Negative",
+      "positive": "Positive",
+      "confirm": "You must confirm to apply the new balance limits",
+      "saved": "The balance limits were saved",
+      "title": {
+        "list": "Account balance limits",
+        "view": "Account balance limits details",
+        "edit": "Account balance limits details",
+        "history": "Account balance limits history"
+      },
+      "mobileTitle": {
+        "list": "Account balance limits",
+        "view": "Account balance limits details",
+        "edit": "Account balance limits details",
+        "history": "Account balance limits history"
+      }
     }
   },
   "transaction": {
@@ -678,8 +700,7 @@
       "weekly.count": "Il numero massimo di pagamenti consentito per settimana è {count}",
       "monthly.amount": "La quantità massima mensile di {amount} è stata superata",
       "monthly.count": "Il numero massimo di pagamenti consentiti al mese è {count}"
-    },
-    "installmentNumberOfTotal": "{number} of {total}"
+    }
   },
   "voucher": {
     "error": {
@@ -1023,7 +1044,8 @@
       "redeemVoucher": "Riscatta voucher",
       "viewBoughtVouchers": "Vedi voucher acquistati",
       "buyVouchers": "Acquista voucher",
-      "notificationSettings": "Impostazioni di notifica"
+      "notificationSettings": "Impostazioni di notifica",
+      "accountsBalanceLimits": "Account balance limits"
     },
     "registration": {
       "group.public": "Scegliere il gruppo a cui si desidera partecipare",
