@@ -495,8 +495,8 @@
       "mode": "Mode",
       "personalized": "Personalized",
       "productDefault": "Product default",
-      "negative": "Negative",
-      "positive": "Positive",
+      "negative": "Negativo",
+      "positive": "Positivo",
       "confirm": "You must confirm to apply the new balance limits",
       "saved": "The balance limits were saved",
       "title": {
