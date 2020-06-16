@@ -489,27 +489,27 @@
       "amountDesc": "Monto (de mayor a menor)"
     },
     "balanceLimits": {
-      "negativeLimit": "Negative balance limit",
-      "positiveLimit": "Positive balance limit",
-      "unlimited": "Unlimited",
-      "mode": "Mode",
-      "personalized": "Personalized",
-      "productDefault": "Product default",
+      "negativeLimit": "Límite de saldo negativo",
+      "positiveLimit": "Límite de saldo positivo",
+      "unlimited": "Sin límites",
+      "mode": "Modo",
+      "personalized": "Personalizado",
+      "productDefault": "Producto por defecto",
       "negative": "Negativo",
       "positive": "Positivo",
-      "confirm": "You must confirm to apply the new balance limits",
-      "saved": "The balance limits were saved",
+      "confirm": "Debe confirmar para aplicar los nuevos límites de saldo",
+      "saved": "Los límites de saldo se han guardado",
       "title": {
-        "list": "Account balance limits",
-        "view": "Account balance limits details",
-        "edit": "Account balance limits details",
-        "history": "Account balance limits history"
+        "list": "Límites de saldo de cuenta",
+        "view": "Detalles de límites de saldo de la cuenta",
+        "edit": "Detalles de límites de saldo de la cuenta",
+        "history": "Historial de límites de saldo de cuenta"
       },
       "mobileTitle": {
-        "list": "Account balance limits",
-        "view": "Account balance limits details",
-        "edit": "Account balance limits details",
-        "history": "Account balance limits history"
+        "list": "Límites de saldo de cuenta",
+        "view": "Detalles de límites de saldo de la cuenta",
+        "edit": "Detalles de límites de saldo de la cuenta",
+        "history": "Historial de límites de saldo de cuenta"
       }
     }
   },
@@ -1045,7 +1045,7 @@
       "viewBoughtVouchers": "Ver cupones comprados",
       "buyVouchers": "Comprar cupones",
       "notificationSettings": "Ajustes de notificaciones",
-      "accountsBalanceLimits": "Account balance limits"
+      "accountsBalanceLimits": "Límites de saldo de cuenta"
     },
     "registration": {
       "group.public": "Elija el grupo en el que desea registrarse",
