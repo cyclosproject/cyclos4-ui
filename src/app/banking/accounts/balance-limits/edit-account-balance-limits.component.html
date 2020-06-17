@@ -18,7 +18,8 @@
           [fieldOptions]="negativeModeOptions">
         </single-selection-field>
         <decimal-field [hidden]="isDefaultCreditLimit$ | async"
-          formControlName="creditLimit" required
+          formControlName="creditLimit"
+          [required]="!(isDefaultCreditLimit$ | async)" negative
           [label]="i18n.account.balanceLimits.negativeLimit"
           [scale]="data.account.currency.decimalDigits"
           [prefix]="data.account.currency.prefix"
@@ -38,8 +39,9 @@
         </single-selection-field>
         <decimal-field
           [hidden]="(isDefaultUpperCreditLimit$ | async) || (isUnlimitedUpperCreditLimit$ | async)"
-          formControlName="upperCreditLimit" required
-          [label]="i18n.account.balanceLimits.positiveLimit"
+          formControlName="upperCreditLimit"
+          [required]="!((isDefaultUpperCreditLimit$ | async) || (isUnlimitedUpperCreditLimit$ | async))"
+          negative [label]="i18n.account.balanceLimits.positiveLimit"
           [scale]="data.account.currency.decimalDigits"
           [prefix]="data.account.currency.prefix"
           [suffix]="data.account.currency.suffix">

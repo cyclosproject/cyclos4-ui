@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { AccountBalanceLimitsData } from 'app/api/models';
+import { AccountBalanceLimitsData, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, SetAccountBalanceLimits } from 'app/api/models';
 import { BalanceLimitsService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { FieldOption } from 'app/shared/field-option';
@@ -97,12 +97,37 @@ export class EditAccountBalanceLimitsComponent
       delete value.upperCreditLimit;
     }
 
-    this.addSub(this.balanceLimitsService.setAccountBalanceLimits({ user: this.user, accountType: this.accountType, body: value })
-      .subscribe(() => {
-        this.notification.snackBar(this.i18n.document.savedSuccessfully);
-        this.reload();
-      })
+    delete value.creditLimitMode;
+    delete value.upperCreditLimitMode;
+
+    if (this.data.confirmationPasswordInput) {
+      this.notification.confirm({
+        title: this.i18n.general.confirm,
+        message: this.i18n.account.balanceLimits.confirm,
+        createDeviceConfirmation: this.balanceLimitsDeviceConfirmation(),
+        passwordInput: this.data.confirmationPasswordInput,
+        callback: res => this.doSave(value, res.confirmationPassword)
+      });
+    } else {
+      this.doSave(value);
+    }
+  }
+
+  doSave(value: SetAccountBalanceLimits, confirmationPassword?: string) {
+    this.addSub(this.balanceLimitsService.setAccountBalanceLimits({
+      user: this.user, accountType: this.accountType, confirmationPassword, body: value
+    }).subscribe(() => {
+      this.notification.snackBar(this.i18n.account.balanceLimits.saved);
+      this.reload();
+    })
     );
+  }
+
+  balanceLimitsDeviceConfirmation(): () => CreateDeviceConfirmation {
+    return () => ({
+      type: DeviceConfirmationTypeEnum.CHANGE_ACCOUNT_LIMITS,
+      account: this.data.account.id,
+    });
   }
 
   formControl(internalName: string): AbstractControl {

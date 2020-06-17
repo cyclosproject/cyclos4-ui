@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { CustomFieldSizeEnum } from 'app/api/models';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
-import { empty } from 'app/shared/helper';
+import { empty, truthyAttr } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { BehaviorSubject } from 'rxjs';
 
@@ -61,6 +61,15 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
   /** Text to show when component is disabled and value is empty  */
   @Input() emptyLabel: '';
 
+  /** If true the value will be always negative */
+  private _negative: boolean | string = false;
+  @Input() get negative(): boolean | string {
+    return this._negative;
+  }
+  set negative(show: boolean | string) {
+    this._negative = truthyAttr(show);
+  }
+
   @ViewChild('inputField') private inputRef: ElementRef;
 
   internalControl: FormControl;
@@ -89,7 +98,16 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
       // If we don't do this, values parsed as undefined (invalid) become null (valid, but empty)
       return undefined;
     }
-    return empty(value) ? null : this.format.numberToFixed(value, this.scale);
+    return empty(value) ? null : this.format.numberToFixed(this.negative ? this.toNegative(value) : value, this.scale);
+  }
+
+  toNegative(value: string): string {
+    if (value) {
+      if (!value.startsWith('-')) {
+        return '-' + value;
+      }
+    }
+    return value;
   }
 
   get input(): HTMLInputElement {
