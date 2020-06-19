@@ -1,6 +1,7 @@
 {
   "general": {
     "by": "By",
+    "changedBy": "Changed by",
     "type": "Type",
     "code": "Code",
     "period": "Periode",
@@ -259,6 +260,7 @@
     "banking.redeemVoucher": "Redeem voucher",
     "banking.redeemedVouchers": "View redeemed",
     "banking.transfersOverview": "Transfers overview",
+    "banking.accountBalanceLimits": "Account balance limits",
     "operators": "Operators",
     "operators.operators": "Operators",
     "operators.register": "Register operator",
@@ -491,6 +493,12 @@
     "balanceLimits": {
       "negativeLimit": "Negative balance limit",
       "positiveLimit": "Positive balance limit",
+      "personalizedNegativeLimit": "Personalized negative limit",
+      "personalizedPositiveLimit": "Personalized positive limit",
+      "fromNegativeLimit": "From negative limit",
+      "toNegativeLimit": "To negative limit",
+      "fromPositiveLimit": "From positive limit",
+      "toPositiveLimit": "To positive limit",
       "unlimited": "Unlimited",
       "mode": "Mode",
       "personalized": "Personalized",
@@ -499,17 +507,20 @@
       "positive": "Positive",
       "confirm": "You must confirm to apply the new balance limits",
       "saved": "The balance limits were saved",
+      "usersOfBroker": "Users of the broker",
       "title": {
         "list": "Account balance limits",
         "view": "Account balance limits details",
         "edit": "Account balance limits details",
-        "history": "Account balance limits history"
+        "history": "Account balance limits history",
+        "overview": "Account balance limits overview"
       },
       "mobileTitle": {
-        "list": "Account balance limits",
-        "view": "Account balance limits details",
-        "edit": "Account balance limits details",
-        "history": "Account balance limits history"
+        "list": "Balance limits",
+        "view": "Balance limits details",
+        "edit": "Balance limits details",
+        "history": "Balance limits history",
+        "overview": "Balance limits overview"
       }
     }
   },
