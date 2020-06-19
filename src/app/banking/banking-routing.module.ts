@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AccountHistoryComponent } from 'app/banking/accounts/account-history.component';
 import { EditAccountBalanceLimitsComponent } from 'app/banking/accounts/balance-limits/edit-account-balance-limits.component';
 import { ListAccountsBalanceLimitsComponent } from 'app/banking/accounts/balance-limits/list-accounts-balance-limits.component';
+import { SearchBalanceLimitsOverviewComponent } from 'app/banking/accounts/balance-limits/search-balance-limits-overview.component';
 import { ViewAccountBalanceLimitsComponent } from 'app/banking/accounts/balance-limits/view-account-balance-limits.component';
 import { PaymentComponent } from 'app/banking/payment/payment.component';
 import { ReceiveQrPaymentComponent } from 'app/banking/ticket/receive-qr-payment.component';
@@ -126,6 +127,10 @@ const bankingRoutes: Routes = [
       {
         path: ':user/account-balance-limits/:accountType/edit',
         component: EditAccountBalanceLimitsComponent,
+      },
+      {
+        path: 'account-balance-limits-overview',
+        component: SearchBalanceLimitsOverviewComponent,
       },
     ],
   },

@@ -621,6 +621,12 @@ export class MenuService {
       if (vouchers.view) {
         add(Menu.SEARCH_VOUCHERS, '/banking/vouchers', 'search', this.i18n.menu.bankingSearchVouchers);
       }
+
+      if (banking.searchGeneralBalanceLimits) {
+        add(Menu.ACCOUNT_BALANCE_LIMITS_OVERVIEW, '/banking/account-balance-limits-overview', 'swap_vert',
+          this.i18n.menu.bankingAccountBalanceLimits);
+      }
+
       addRecords(RootMenu.BANKING);
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);

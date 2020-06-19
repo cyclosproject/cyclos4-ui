@@ -3,6 +3,7 @@ import { AccountHistoryComponent } from 'app/banking/accounts/account-history.co
 import { AccountStatusViewComponent } from 'app/banking/accounts/account-status-view.component';
 import { EditAccountBalanceLimitsComponent } from 'app/banking/accounts/balance-limits/edit-account-balance-limits.component';
 import { ListAccountsBalanceLimitsComponent } from 'app/banking/accounts/balance-limits/list-accounts-balance-limits.component';
+import { SearchBalanceLimitsOverviewComponent } from 'app/banking/accounts/balance-limits/search-balance-limits-overview.component';
 import { ViewAccountBalanceLimitsComponent } from 'app/banking/accounts/balance-limits/view-account-balance-limits.component';
 import { BankingRoutingModule } from 'app/banking/banking-routing.module';
 import { PaymentStepConfirmComponent } from 'app/banking/payment/payment-step-confirm.component';
@@ -78,7 +79,8 @@ import { ViewVoucherComponent } from './vouchers/view-voucher.component';
 
     ViewAccountBalanceLimitsComponent,
     EditAccountBalanceLimitsComponent,
-    ListAccountsBalanceLimitsComponent
+    ListAccountsBalanceLimitsComponent,
+    SearchBalanceLimitsOverviewComponent
   ],
 })
 export class BankingModule {

@@ -49,13 +49,13 @@ export class ViewAccountBalanceLimitsComponent
   onDataInitialized(data: AccountBalanceLimitsData) {
     super.onDataInitialized(data);
     this.detailsHeadingActions =
-      data.editable ? [new HeadingAction('edit', this.i18n.general.edit, () => this.navigateToEdit(), true)] : [];
-    this.detailsHeadingActions.push(new HeadingAction('history', this.i18n.general.viewHistory, () => this.showHistory(), true));
+      data.editable ? [new HeadingAction('edit', this.i18n.general.edit, () => this.navigateToEdit())] : [];
+    this.detailsHeadingActions.push(new HeadingAction('history', this.i18n.general.viewHistory, () => this.showHistory()));
     this.headingActions = this.detailsHeadingActions;
 
     this.historyHeadingActions =
-      data.editable ? [new HeadingAction('edit', this.i18n.general.edit, () => this.navigateToEdit(), true)] : [];
-    this.historyHeadingActions.push(new HeadingAction('arrow_back', this.i18n.general.details, () => this.showView(), true));
+      data.editable ? [new HeadingAction('edit', this.i18n.general.edit, () => this.navigateToEdit())] : [];
+    this.historyHeadingActions.push(new HeadingAction('arrow_back', this.i18n.general.details, () => this.showView()));
   }
 
   upperCreditLimitMode(): string {

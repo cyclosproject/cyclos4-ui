@@ -41,7 +41,7 @@
           [hidden]="(isDefaultUpperCreditLimit$ | async) || (isUnlimitedUpperCreditLimit$ | async)"
           formControlName="upperCreditLimit"
           [required]="!((isDefaultUpperCreditLimit$ | async) || (isUnlimitedUpperCreditLimit$ | async))"
-          negative [label]="i18n.account.balanceLimits.positiveLimit"
+          [label]="i18n.account.balanceLimits.positiveLimit"
           [scale]="data.account.currency.decimalDigits"
           [prefix]="data.account.currency.prefix"
           [suffix]="data.account.currency.suffix">
