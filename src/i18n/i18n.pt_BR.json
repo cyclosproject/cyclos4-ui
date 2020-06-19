@@ -1,6 +1,7 @@
 {
   "general": {
     "by": "Por",
+    "changedBy": "Changed by",
     "type": "Tipo",
     "code": "Código",
     "period": "Período",
@@ -259,6 +260,7 @@
     "banking.redeemVoucher": "Resgatar cupons",
     "banking.redeemedVouchers": "Ver resgatados",
     "banking.transfersOverview": "Visão geral de transações",
+    "banking.accountBalanceLimits": "Account balance limits",
     "operators": "Operadores",
     "operators.operators": "Operadores",
     "operators.register": "Registrar operador",
@@ -491,6 +493,12 @@
     "balanceLimits": {
       "negativeLimit": "Limite de saldo negativo",
       "positiveLimit": "Limite de saldo positivo",
+      "personalizedNegativeLimit": "Personalized negative limit",
+      "personalizedPositiveLimit": "Personalized positive limit",
+      "fromNegativeLimit": "From negative limit",
+      "toNegativeLimit": "To negative limit",
+      "fromPositiveLimit": "From positive limit",
+      "toPositiveLimit": "To positive limit",
       "unlimited": "Ilimitado",
       "mode": "Modo",
       "personalized": "Personalizado",
@@ -499,17 +507,20 @@
       "positive": "Positivo",
       "confirm": "Você deve confirmar para aplicar os novos limites de saldo",
       "saved": "Os limites de saldo foram salvos",
+      "usersOfBroker": "Users of the broker",
       "title": {
         "list": "Limites de saldo da conta",
         "view": "Detalhes dos limites de saldo",
         "edit": "Detalhes dos limites de saldo",
-        "history": "Histórico dos limites de saldo"
+        "history": "Histórico dos limites de saldo",
+        "overview": "Account balance limits overview"
       },
       "mobileTitle": {
-        "list": "Limites de saldo da conta",
-        "view": "Detalhes dos limites de saldo",
-        "edit": "Detalhes dos limites de saldo",
-        "history": "Histórico dos limites de saldo"
+        "list": "Balance limits",
+        "view": "Balance limits details",
+        "edit": "Balance limits details",
+        "history": "Balance limits history",
+        "overview": "Balance limits overview"
       }
     }
   },
