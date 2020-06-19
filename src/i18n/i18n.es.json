@@ -1,6 +1,7 @@
 {
   "general": {
     "by": "Por",
+    "changedBy": "Changed by",
     "type": "Tipo",
     "code": "Código",
     "period": "Período",
@@ -259,6 +260,7 @@
     "banking.redeemVoucher": "Canjear cupón",
     "banking.redeemedVouchers": "Cupones canjeados",
     "banking.transfersOverview": "Visión general de Transferencias",
+    "banking.accountBalanceLimits": "Account balance limits",
     "operators": "Operadores",
     "operators.operators": "Operadores",
     "operators.register": "Registrar operador",
@@ -491,6 +493,12 @@
     "balanceLimits": {
       "negativeLimit": "Límite de saldo negativo",
       "positiveLimit": "Límite de saldo positivo",
+      "personalizedNegativeLimit": "Personalized negative limit",
+      "personalizedPositiveLimit": "Personalized positive limit",
+      "fromNegativeLimit": "From negative limit",
+      "toNegativeLimit": "To negative limit",
+      "fromPositiveLimit": "From positive limit",
+      "toPositiveLimit": "To positive limit",
       "unlimited": "Sin límites",
       "mode": "Modo",
       "personalized": "Personalizado",
@@ -499,17 +507,20 @@
       "positive": "Positivo",
       "confirm": "Debe confirmar para aplicar los nuevos límites de saldo",
       "saved": "Los límites de saldo se han guardado",
+      "usersOfBroker": "Users of the broker",
       "title": {
         "list": "Límites de saldo de cuenta",
         "view": "Detalles de límites de saldo de la cuenta",
         "edit": "Detalles de límites de saldo de la cuenta",
-        "history": "Historial de límites de saldo de cuenta"
+        "history": "Historial de límites de saldo de cuenta",
+        "overview": "Account balance limits overview"
       },
       "mobileTitle": {
-        "list": "Límites de saldo de cuenta",
-        "view": "Detalles de límites de saldo de la cuenta",
-        "edit": "Detalles de límites de saldo de la cuenta",
-        "history": "Historial de límites de saldo de cuenta"
+        "list": "Balance limits",
+        "view": "Balance limits details",
+        "edit": "Balance limits details",
+        "history": "Balance limits history",
+        "overview": "Balance limits overview"
       }
     }
   },
