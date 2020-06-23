@@ -261,6 +261,7 @@
     "banking.redeemedVouchers": "Cupones canjeados",
     "banking.transfersOverview": "Visión general de Transferencias",
     "banking.accountBalanceLimits": "Account balance limits",
+    "banking.accountPaymentLimits": "Account payment limits",
     "operators": "Operadores",
     "operators.operators": "Operadores",
     "operators.register": "Registrar operador",
@@ -490,6 +491,13 @@
       "amountAsc": "Monto (de menor a mayor)",
       "amountDesc": "Monto (de mayor a menor)"
     },
+    "limits": {
+      "unlimited": "Unlimited",
+      "mode": "Mode",
+      "personalized": "Personalized",
+      "productDefault": "Product default",
+      "usersOfBroker": "Users of the broker"
+    },
     "balanceLimits": {
       "negativeLimit": "Límite de saldo negativo",
       "positiveLimit": "Límite de saldo positivo",
@@ -499,15 +507,10 @@
       "toNegativeLimit": "To negative limit",
       "fromPositiveLimit": "From positive limit",
       "toPositiveLimit": "To positive limit",
-      "unlimited": "Sin límites",
-      "mode": "Modo",
-      "personalized": "Personalizado",
-      "productDefault": "Producto por defecto",
       "negative": "Negativo",
       "positive": "Positivo",
       "confirm": "Debe confirmar para aplicar los nuevos límites de saldo",
       "saved": "Los límites de saldo se han guardado",
-      "usersOfBroker": "Users of the broker",
       "title": {
         "list": "Límites de saldo de cuenta",
         "view": "Detalles de límites de saldo de la cuenta",
@@ -521,6 +524,40 @@
         "edit": "Balance limits details",
         "history": "Balance limits history",
         "overview": "Balance limits overview"
+      }
+    },
+    "paymentLimits": {
+      "paymentLimit": "Payment limit",
+      "dailyLimit": "Daily limit",
+      "weeklyLimit": "Weekly limit",
+      "monthlyLimit": "Monthly limit",
+      "personalizedPaymentLimit": "Personalized payment limit",
+      "personalizedDailyLimit": "Personalized daily limit",
+      "personalizedWeeklyLimit": "Personalized weekly limit",
+      "personalizedMonthlyLimit": "Personalized monthly limit",
+      "fromPaymentLimit": "From payment limit",
+      "fromDailyLimit": "From daily limit",
+      "fromWeeklyLimit": "From weekly limit",
+      "fromMonthlyLimit": "From monthly limit",
+      "toPaymentLimit": "To payment limit",
+      "toDailyLimit": "To daily limit",
+      "toWeeklyLimit": "To weekly limit",
+      "toMonthlyLimit": "To monthly limit",
+      "confirm": "You must confirm to apply the new payment limits",
+      "saved": "The payment limits were saved",
+      "title": {
+        "list": "Accounts payment limits",
+        "view": "Account payment limits details",
+        "edit": "Account payment limits details",
+        "history": "Account payment limits history",
+        "overview": "Account payment limits overview"
+      },
+      "mobileTitle": {
+        "list": "Payment limits",
+        "view": "Payment limits details",
+        "edit": "Payment limits details",
+        "history": "Payment limits history",
+        "overview": "Payment limits overview"
       }
     }
   },
@@ -1056,7 +1093,8 @@
       "viewBoughtVouchers": "Ver cupones comprados",
       "buyVouchers": "Comprar cupones",
       "notificationSettings": "Ajustes de notificaciones",
-      "accountsBalanceLimits": "Límites de saldo de cuenta"
+      "accountsBalanceLimits": "Límites de saldo de cuenta",
+      "accountsPaymentLimits": "Account payment limits"
     },
     "registration": {
       "group.public": "Elija el grupo en el que desea registrarse",
