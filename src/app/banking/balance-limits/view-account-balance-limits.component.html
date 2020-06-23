@@ -17,14 +17,14 @@
       <label-value [label]="i18n.account.balanceLimits.negativeLimit">
         {{ data.creditLimit | currency:data.account.currency}}
       </label-value>
-      <label-value [label]="i18n.account.balanceLimits.mode">
-        {{ data.customCreditLimit ? i18n.account.balanceLimits.personalized : i18n.account.balanceLimits.productDefault }}
+      <label-value [label]="i18n.account.limits.mode">
+        {{ data.customCreditLimit ? i18n.account.limits.personalized : i18n.account.limits.productDefault }}
       </label-value>
       <h3>{{ i18n.account.balanceLimits.positiveLimit }}</h3>
       <label-value [label]="i18n.account.balanceLimits.positiveLimit">
-        {{ data.upperCreditLimit ? (data.upperCreditLimit | currency:data.account.currency) : i18n.account.balanceLimits.unlimited }}
+        {{ data.upperCreditLimit ? (data.upperCreditLimit | currency:data.account.currency) : i18n.account.limits.unlimited }}
       </label-value>
-      <label-value [label]="i18n.account.balanceLimits.mode">
+      <label-value [label]="i18n.account.limits.mode">
         {{ upperCreditLimitMode() }}
       </label-value>
     </ng-container>
@@ -54,12 +54,12 @@
             <td>{{ row.date | date }}</td>
             <td>{{ row.by.display }}</td>
             <td>
-              {{ row.customCreditLimit ? (row.creditLimit | currency:data.account.currency) : i18n.account.balanceLimits.productDefault}}
+              {{ row.customCreditLimit ? (row.creditLimit | currency:data.account.currency) : i18n.account.limits.productDefault}}
             </td>
             <td>
               {{ row.customUpperCreditLimit ? ( row.upperCreditLimit ?
-                (row.upperCreditLimit | currency:data.account.currency) : i18n.account.balanceLimits.unlimited)
-                : i18n.account.balanceLimits.productDefault }}
+                (row.upperCreditLimit | currency:data.account.currency) : i18n.account.limits.unlimited)
+                : i18n.account.limits.productDefault }}
             </td>
             <td>{{ row.comment }}</td>
           </tr>

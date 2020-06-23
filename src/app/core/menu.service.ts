@@ -627,6 +627,11 @@ export class MenuService {
           this.i18n.menu.bankingAccountBalanceLimits);
       }
 
+      if (banking.searchGeneralPaymentLimits) {
+        add(Menu.ACCOUNT_PAYMENT_LIMITS_OVERVIEW, '/banking/account-payment-limits-overview', 'swap_vert',
+          this.i18n.menu.bankingAccountPaymentLimits);
+      }
+
       addRecords(RootMenu.BANKING);
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);

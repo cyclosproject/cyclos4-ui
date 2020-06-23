@@ -13,8 +13,7 @@
       <div class="mt-3">
         <h3>{{ i18n.account.balanceLimits.negativeLimit }}</h3>
         <single-selection-field labelPosition="side"
-          formControlName="creditLimitMode"
-          [label]="i18n.account.balanceLimits.mode"
+          formControlName="creditLimitMode" [label]="i18n.account.limits.mode"
           [fieldOptions]="negativeModeOptions">
         </single-selection-field>
         <decimal-field [hidden]="isDefaultCreditLimit$ | async"
@@ -34,7 +33,7 @@
         <h3>{{ i18n.account.balanceLimits.positiveLimit }}</h3>
         <single-selection-field labelPosition="side"
           formControlName="upperCreditLimitMode"
-          [label]="i18n.account.balanceLimits.mode"
+          [label]="i18n.account.limits.mode"
           [fieldOptions]="positiveModeOptions">
         </single-selection-field>
         <decimal-field
@@ -48,7 +47,7 @@
         </decimal-field>
         <label-value [hidden]="!(isDefaultUpperCreditLimit$ | async)"
           [label]="i18n.account.balanceLimits.positiveLimit">
-          {{ data.defaultUpperCreditLimit ? (data.defaultUpperCreditLimit | currency:data.account.currency) : i18n.account.balanceLimits.unlimited }}
+          {{ data.defaultUpperCreditLimit ? (data.defaultUpperCreditLimit | currency:data.account.currency) : i18n.account.limits.unlimited }}
         </label-value>
       </div>
       <textarea-field class="mt-4" formControlName="comment"

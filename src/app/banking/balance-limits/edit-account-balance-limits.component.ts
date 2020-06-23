@@ -42,15 +42,15 @@ export class EditAccountBalanceLimitsComponent
   }
 
   get positiveModeOptions(): FieldOption[] {
-    const options = [{ value: 'default', text: this.i18n.account.balanceLimits.productDefault }];
-    options.push({ value: 'personalized', text: this.i18n.account.balanceLimits.personalized });
-    options.push({ value: 'unlimited', text: this.i18n.account.balanceLimits.unlimited });
+    const options = [{ value: 'default', text: this.i18n.account.limits.productDefault }];
+    options.push({ value: 'personalized', text: this.i18n.account.limits.personalized });
+    options.push({ value: 'unlimited', text: this.i18n.account.limits.unlimited });
     return options;
   }
 
   get negativeModeOptions(): FieldOption[] {
-    const options = [{ value: 'default', text: this.i18n.account.balanceLimits.productDefault }];
-    options.push({ value: 'personalized', text: this.i18n.account.balanceLimits.personalized });
+    const options = [{ value: 'default', text: this.i18n.account.limits.productDefault }];
+    options.push({ value: 'personalized', text: this.i18n.account.limits.personalized });
     return options;
   }
 

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { EntityReference, UserAccountBalanceLimitsListData } from 'app/api/models';
 import { BalanceLimitsService } from 'app/api/services/balance-limits.service';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { Menu } from 'app/shared/menu';
 
 /**
  * List the user accounts' balance limits
@@ -41,6 +40,6 @@ export class ListAccountsBalanceLimitsComponent
   }
 
   resolveMenu() {
-    return this.authHelper.userMenu(null, Menu.MY_DOCUMENTS);
+    return this.authHelper.searchUsersMenu();
   }
 }

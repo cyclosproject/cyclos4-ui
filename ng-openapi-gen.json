@@ -50,7 +50,8 @@
     "Validation",
     "Documents",
     "Tokens",
-    "BalanceLimits"
+    "BalanceLimits",
+    "PaymentLimits"
   ],
   "enumStyle": "upper",
   "skipJsonSuffix": true

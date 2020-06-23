@@ -1,40 +1,40 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AccountBalanceLimitsData } from 'app/api/models';
-import { BalanceLimitsService } from 'app/api/services';
+import { AccountBalanceLimitsData, AccountPaymentLimitsData } from 'app/api/models';
+import { PaymentLimitsService } from 'app/api/services';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { BehaviorSubject } from 'rxjs';
 
-export type BalanceLimitsStep = 'details' | 'history';
+export type PaymentLimitsStep = 'details' | 'history';
 
 /**
- * View the balance limits of an account
+ * View the payment limits of an account
  */
 @Component({
-  selector: 'view-account-balance-limits',
-  templateUrl: 'view-account-balance-limits.component.html',
+  selector: 'view-account-payment-limits',
+  templateUrl: 'view-account-payment-limits.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ViewAccountBalanceLimitsComponent
-  extends BasePageComponent<AccountBalanceLimitsData>
+export class ViewAccountPaymentLimitsComponent
+  extends BasePageComponent<AccountPaymentLimitsData>
   implements OnInit {
 
   user: string;
   accountType: string;
   detailsHeadingActions: HeadingAction[];
   historyHeadingActions: HeadingAction[];
-  step$ = new BehaviorSubject<BalanceLimitsStep>('details');
+  step$ = new BehaviorSubject<PaymentLimitsStep>('details');
 
   constructor(
     injector: Injector,
-    private balanceLimitsService: BalanceLimitsService) {
+    private paymentLimitsService: PaymentLimitsService) {
     super(injector);
   }
 
-  get step(): BalanceLimitsStep {
+  get step(): PaymentLimitsStep {
     return this.step$.value;
   }
-  set step(step: BalanceLimitsStep) {
+  set step(step: PaymentLimitsStep) {
     this.step$.next(step);
   }
 
@@ -42,7 +42,7 @@ export class ViewAccountBalanceLimitsComponent
     super.ngOnInit();
     this.user = this.route.snapshot.params.user;
     this.accountType = this.route.snapshot.params.accountType;
-    this.addSub(this.balanceLimitsService.getAccountBalanceLimits({ user: this.user, accountType: this.accountType })
+    this.addSub(this.paymentLimitsService.getAccountPaymentLimits({ user: this.user, accountType: this.accountType })
       .subscribe(data => this.data = data));
   }
 
@@ -58,13 +58,8 @@ export class ViewAccountBalanceLimitsComponent
     this.historyHeadingActions.push(new HeadingAction('arrow_back', this.i18n.general.details, () => this.showView()));
   }
 
-  upperCreditLimitMode(): string {
-    if (this.data.upperCreditLimit) {
-      return this.data.customUpperCreditLimit ?
-        this.i18n.account.balanceLimits.personalized : this.i18n.account.balanceLimits.productDefault;
-    } else {
-      return this.data.customUpperCreditLimit ? this.i18n.account.balanceLimits.unlimited : this.i18n.account.balanceLimits.productDefault;
-    }
+  limitMode(custom: boolean): string {
+    return custom ? this.i18n.account.limits.personalized : this.i18n.account.limits.productDefault;
   }
 
   showHistory() {
@@ -78,7 +73,7 @@ export class ViewAccountBalanceLimitsComponent
   }
 
   navigateToEdit() {
-    this.router.navigate(['/banking', this.user, 'account-balance-limits', this.accountType, 'edit']);
+    this.router.navigate(['/banking', this.user, 'account-payment-limits', this.accountType, 'edit']);
   }
 
   resolveMenu() {

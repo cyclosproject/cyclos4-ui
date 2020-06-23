@@ -11735,8 +11735,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
         Saves the optional agreements for the authenticated user.
       description: >-
         The optional agreements that are passed in are marked as accepted, and
-        those ommitted are marked as no longer accepted (if they weren't
-        previously accepted).
+        those ommitted are marked as no longer accepted (if they were previously
+        accepted).
       tags:
         - Agreements
       security:
@@ -57497,7 +57497,7 @@ components:
           properties:
             user:
               description: >-
-                The user searching a record type, empty if there is self otherwise the managed user
+                The records owner. Only returned if is not system.
               allOf:
                 - $ref: '#/components/schemas/User'
             query:
@@ -62140,6 +62140,16 @@ components:
             security question, so that the user can set it again?
           type: boolean
 
+    UserPaymentLimitsPermissions:
+      description: >-
+        Permissions regarding the account payment limits of a given user
+      type: object
+      properties:
+        view:
+          description: >-
+            Can the authenticated user view the payment limits of the user?
+          type: boolean
+
     UserPaymentPermissions:
       description: >-
         Permissions for payments regarding a user
@@ -62210,6 +62220,8 @@ components:
           $ref: '#/components/schemas/UserProfilePermissions'
         passwords:
           $ref: '#/components/schemas/UserPasswordsPermissions'
+        products:
+          $ref: '#/components/schemas/UserProductsPermissions'
         validation:
           $ref: '#/components/schemas/UserValidationPermissions'
         contact:
@@ -62232,6 +62244,8 @@ components:
             $ref: '#/components/schemas/AccountWithCurrency'
         balanceLimits:
           $ref: '#/components/schemas/UserBalanceLimitsPermissions'
+        paymentLimits:
+          $ref: '#/components/schemas/UserPaymentLimitsPermissions'
         payment:
           $ref: '#/components/schemas/UserPaymentPermissions'
         scheduledPayments:
@@ -62429,6 +62443,36 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProductAssignmentLog'
+
+
+    UserProductsPermissions:
+      description: >-
+        Permissions over products of a given user
+      type: object
+      properties:
+        view:
+          description: >-
+            Can the authenticated user view assigned products?
+          type: boolean
+        individual:
+          description: >-
+            The individual products assigned to the user
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityReference'
+        group:
+          description: >-
+            The products assigned to the user's group
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityReference'
+        groupSet:
+          description: >-
+            The products assigned to the user's group set
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityReference'
+
 
 
     UserProfilePermissions:
