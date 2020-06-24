@@ -117,6 +117,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const vouchers = permissions.vouchers || {};
     const documents = permissions.documents || {};
     const tokens = permissions.tokens || [];
+    const products = permissions.products || {};
 
     if (user.relationship === UserRelationshipEnum.SELF) {
       // For the own user, we just show the edit as a top-level action
@@ -238,6 +239,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       if (operators.viewOperators) {
         this.managementActions.push(new HeadingAction('supervisor_account', this.i18n.user.profile.viewOperators, () => {
           this.router.navigate(['/users', this.param, 'operators']);
+        }));
+      }
+      if (products.view) {
+        this.managementActions.push(new HeadingAction('admin_panel_settings', this.i18n.user.profile.products, () => {
+          this.router.navigate(['/users', this.param, 'product-assignment']);
         }));
       }
       const actions = manager ? this.managementActions : [];

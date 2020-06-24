@@ -36,6 +36,7 @@ import { ViewUserStatusComponent } from 'app/users/status/view-user-status.compo
 import { ListTokenComponent } from 'app/users/tokens/list-token.component';
 import { SearchTokenComponent } from 'app/users/tokens/search-token.component';
 import { ViewTokenComponent } from 'app/users/tokens/view-token.component';
+import { ListProductAssignmentComponent } from 'app/users/products/list-product-assignment.component';
 
 const usersRoutes: Routes = [
   {
@@ -259,6 +260,11 @@ const usersRoutes: Routes = [
       {
         path: 'tokens/view/:id',
         component: ViewTokenComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: ':user/product-assignment',
+        component: ListProductAssignmentComponent,
         canActivate: [LoggedUserGuard],
       },
     ],

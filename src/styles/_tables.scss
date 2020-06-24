@@ -38,6 +38,9 @@ table.table {
   th.no-border {
     border-top: none;
   }
+  td.no-border {
+    border-bottom: none;
+  }
   .table-head-color {
     color: $table-head-color;
     font-weight: $font-weight-bold;

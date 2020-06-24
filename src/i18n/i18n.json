@@ -1020,7 +1020,8 @@
       "redeemVoucher": "Redeem voucher",
       "viewBoughtVouchers": "View bought vouchers",
       "buyVouchers": "Buy vouchers",
-      "notificationSettings": "Notification settings"
+      "notificationSettings": "Notification settings",
+      "products": "Products"
     },
     "registration": {
       "group.public": "Choose the group you want to participate",
@@ -1816,5 +1817,26 @@
     "expiryBeginDate": "Expiry begin date",
     "expiryEndDate": "Expiry end date",
     "unassigned": "Unassigned"
+  },
+  "product": {
+    "title": {
+      "list": "Assigned products"
+    },
+    "mobileTitle": {
+      "list": "Assigned products"
+    },
+    "assigned": {
+      "individual": "Products assigned individually to user",
+      "group": "Products assigned to user's group",
+      "groupSet": "Products assigned to group set"
+    },
+    "assignIndividualProduct": "Assign individual product",
+    "userAccount": "User account",
+    "product": "Product",
+    "kind": {
+      "administrator": "Administrator",
+      "broker": "Broker",
+      "member": "Member"
+    }
   }
 }
