@@ -1,0 +1,148 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content mode="filters"
+    [heading]="i18n.account.balanceLimits.title.overview"
+    [mobileHeading]="i18n.account.balanceLimits.mobileTitle.overview"
+    [headingActions]="headingActions$ | async">
+    <form [formGroup]="form" class="filters-form filters-form-separator">
+      <div class="row no-gutters">
+        <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
+          <multi-selection-field labelPosition="side"
+            hierarchyProperty="groupSet" formControlName="groups"
+            [label]="i18n.user.groupFilter">
+            <field-option *ngFor="let group of data.groups"
+              [value]="ApiHelper.internalNameOrId(group)"
+              [internalName]="group.internalName" [id]="group.id"
+              [text]="group.name" [parent]="group.groupSet">
+            </field-option>
+          </multi-selection-field>
+        </div>
+        <div *ngIf="data.accountTypes?.length > 1" class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            formControlName="accountType" [label]="i18n.account.account"
+            [emptyOption]="i18n.general.all">
+            <field-option *ngFor="let accountType of data.accountTypes"
+              [id]="accountType.id" [value]="accountType.id"
+              [text]="accountType.name">
+            </field-option>
+          </single-selection-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            formControlName="customLimit" [fieldOptions]="customLimitOptions"
+            [emptyOption]="i18n.general.all"
+            [label]="i18n.account.balanceLimits.personalizedNegativeLimit">
+          </single-selection-field>
+        </div>
+        <!-- Force a new line to keep date range in same row -->
+        <div class="w-100" [hidden]="!(isCustomLimit$ | async)"></div>
+        <div class="col-12 col-md-6" [hidden]="!(isCustomLimit$ | async)">
+          <decimal-field formControlName="limitFrom" negative
+            [label]="i18n.account.balanceLimits.fromNegativeLimit">
+          </decimal-field>
+        </div>
+        <div class="col-12 col-md-6" [hidden]="!(isCustomLimit$ | async)">
+          <decimal-field formControlName="limitTo" negative
+            [label]="i18n.account.balanceLimits.toNegativeLimit">
+          </decimal-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            formControlName="customUpperLimit"
+            [fieldOptions]="customLimitOptions"
+            [emptyOption]="i18n.general.all"
+            [label]="i18n.account.balanceLimits.personalizedPositiveLimit">
+          </single-selection-field>
+        </div>
+        <!-- Force a new line to keep date range in same row -->
+        <div class="w-100" [hidden]="!(isCustomUpperLimit$ | async)"></div>
+        <div class="col-12 col-md-6"
+          [hidden]="!(isCustomUpperLimit$ | async)">
+          <decimal-field formControlName="upperLimitFrom"
+            [label]="i18n.account.balanceLimits.fromPositiveLimit">
+          </decimal-field>
+        </div>
+        <div class="col-12 col-md-6"
+          [hidden]="!(isCustomUpperLimit$ | async)">
+          <decimal-field formControlName="upperLimitTo"
+            [label]="i18n.account.balanceLimits.toPositiveLimit">
+          </decimal-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <user-field labelPosition="side" formControlName="user"
+            [label]="i18n.general.user" [allowContacts]="false">
+          </user-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <user-field labelPosition="side" formControlName="broker"
+            [label]="i18n.account.limits.usersOfBroker"
+            [filters]="userSearchFilters(true)" [allowContacts]="false">
+          </user-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <user-field labelPosition="side" formControlName="by"
+            [label]="i18n.general.changedBy"
+            [filters]="userSearchFilters(false)" [allowContacts]="false">
+          </user-field>
+        </div>
+      </div>
+    </form>
+  </page-content>
+
+  <results-layout [results]="results$ | async" [rendering$]="rendering$"
+    (update)="update($event)">
+    <mobile-result *mobileResult="let row"
+      (click)="router.navigate(view(row)); $event.stopPropagation()">
+      <div class="d-flex">
+        <div class="w-100">
+          <label-value [label]="i18n.general.user" labelPosition="sideForced">
+            {{ row.user.display }}
+          </label-value>
+          <label-value [label]="i18n.account.account"
+            labelPosition="sideForced">
+            {{ row.account.type.name }}
+          </label-value>
+          <label-value [label]="i18n.account.balanceLimits.negative"
+            labelPosition="sideForced">
+            {{ row.customCreditLimit ?
+              (row.creditLimit | currency:row.account.currency) : i18n.account.limits.productDefault }}
+          </label-value>
+          <label-value [label]="i18n.account.balanceLimits.positive"
+            labelPosition="sideForced">
+            {{ row.customUpperCreditLimit ?
+              (row.upperCreditLimit ? (row.upperCreditLimit | currency:row.account.currency) : i18n.account.limits.unlimited) :
+                i18n.account.limits.productDefault}}
+          </label-value>
+        </div>
+      </div>
+    </mobile-result>
+
+    <table *resultTable class="table table-hover cursor-pointer">
+      <thead>
+        <th>{{ i18n.general.user }}</th>
+        <th>{{ i18n.account.account }}</th>
+        <th>{{ i18n.account.balanceLimits.negativeLimit }}</th>
+        <th>{{ i18n.account.balanceLimits.positiveLimit }}</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of (results$ | async)?.results"
+          (click)="router.navigate(view(row)); $event.stopPropagation()">
+          <td width="25%">{{ row.user.display }}</td>
+          <td width="25%">{{ row.account.type.name }}</td>
+          <td>
+            {{ row.customCreditLimit ?
+              (row.creditLimit | currency:row.account.currency) : i18n.account.limits.productDefault }}
+          </td>
+          <td>
+            {{ row.customUpperCreditLimit ?
+              (row.upperCreditLimit ? (row.upperCreditLimit | currency:row.account.currency) : i18n.account.limits.unlimited) :
+                i18n.account.limits.productDefault}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </results-layout>
+</ng-template>

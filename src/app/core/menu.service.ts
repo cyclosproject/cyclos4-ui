@@ -621,6 +621,17 @@ export class MenuService {
       if (vouchers.view) {
         add(Menu.SEARCH_VOUCHERS, '/banking/vouchers', 'search', this.i18n.menu.bankingSearchVouchers);
       }
+
+      if (banking.searchGeneralBalanceLimits) {
+        add(Menu.ACCOUNT_BALANCE_LIMITS_OVERVIEW, '/banking/account-balance-limits-overview', 'swap_vert',
+          this.i18n.menu.bankingAccountBalanceLimits);
+      }
+
+      if (banking.searchGeneralPaymentLimits) {
+        add(Menu.ACCOUNT_PAYMENT_LIMITS_OVERVIEW, '/banking/account-payment-limits-overview', 'swap_vert',
+          this.i18n.menu.bankingAccountPaymentLimits);
+      }
+
       addRecords(RootMenu.BANKING);
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);

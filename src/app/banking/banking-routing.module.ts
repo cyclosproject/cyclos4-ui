@@ -1,6 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AccountHistoryComponent } from 'app/banking/accounts/account-history.component';
+import { EditAccountBalanceLimitsComponent } from 'app/banking/balance-limits/edit-account-balance-limits.component';
+import { ListAccountsBalanceLimitsComponent } from 'app/banking/balance-limits/list-accounts-balance-limits.component';
+import { SearchBalanceLimitsOverviewComponent } from 'app/banking/balance-limits/search-balance-limits-overview.component';
+import { ViewAccountBalanceLimitsComponent } from 'app/banking/balance-limits/view-account-balance-limits.component';
+import { EditAccountPaymentLimitsComponent } from 'app/banking/payment-limits/edit-account-payment-limits.component';
+import { ListAccountsPaymentLimitsComponent } from 'app/banking/payment-limits/list-accounts-payment-limits.component';
+import { SearchPaymentLimitsOverviewComponent } from 'app/banking/payment-limits/search-payment-limits-overview.component';
+import { ViewAccountPaymentLimitsComponent } from 'app/banking/payment-limits/view-account-payment-limits.component';
 import { PaymentComponent } from 'app/banking/payment/payment.component';
 import { ReceiveQrPaymentComponent } from 'app/banking/ticket/receive-qr-payment.component';
 import { SearchOwnerInstallmentsComponent } from 'app/banking/transactions/search-owner-installments.component';
@@ -111,6 +119,38 @@ const bankingRoutes: Routes = [
       {
         path: 'vouchers',
         component: SearchVouchersComponent,
+      },
+      {
+        path: ':user/account-balance-limits',
+        component: ListAccountsBalanceLimitsComponent,
+      },
+      {
+        path: ':user/account-balance-limits/:accountType',
+        component: ViewAccountBalanceLimitsComponent,
+      },
+      {
+        path: ':user/account-balance-limits/:accountType/edit',
+        component: EditAccountBalanceLimitsComponent,
+      },
+      {
+        path: 'account-balance-limits-overview',
+        component: SearchBalanceLimitsOverviewComponent,
+      },
+      {
+        path: ':user/account-payment-limits',
+        component: ListAccountsPaymentLimitsComponent,
+      },
+      {
+        path: ':user/account-payment-limits/:accountType',
+        component: ViewAccountPaymentLimitsComponent,
+      },
+      {
+        path: ':user/account-payment-limits/:accountType/edit',
+        component: EditAccountPaymentLimitsComponent,
+      },
+      {
+        path: 'account-payment-limits-overview',
+        component: SearchPaymentLimitsOverviewComponent,
       },
     ],
   },

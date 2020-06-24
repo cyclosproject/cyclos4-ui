@@ -1,0 +1,70 @@
+<page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
+
+  <!-- View details -->
+  <page-content *ngSwitchCase="'details'"
+    [heading]="i18n.account.balanceLimits.title.view"
+    [mobileHeading]="i18n.account.balanceLimits.mobileTitle.view"
+    [headingActions]="headingActions$ | async">
+    <ng-container *ngIf="data">
+      <label-value [label]="i18n.general.user" kind="fieldView"
+        labelPosition="side">
+        <user-link [user]="data.user"></user-link>
+      </label-value>
+      <label-value [label]="i18n.account.account">
+        {{ data.account.type.name }}
+      </label-value>
+      <h3>{{ i18n.account.balanceLimits.negativeLimit }}</h3>
+      <label-value [label]="i18n.account.balanceLimits.negativeLimit">
+        {{ data.creditLimit | currency:data.account.currency}}
+      </label-value>
+      <label-value [label]="i18n.account.limits.mode">
+        {{ data.customCreditLimit ? i18n.account.limits.personalized : i18n.account.limits.productDefault }}
+      </label-value>
+      <h3>{{ i18n.account.balanceLimits.positiveLimit }}</h3>
+      <label-value [label]="i18n.account.balanceLimits.positiveLimit">
+        {{ data.upperCreditLimit ? (data.upperCreditLimit | currency:data.account.currency) : i18n.account.limits.unlimited }}
+      </label-value>
+      <label-value [label]="i18n.account.limits.mode">
+        {{ upperCreditLimitMode() }}
+      </label-value>
+    </ng-container>
+  </page-content>
+
+  <!-- View history -->
+  <ng-container *ngSwitchCase="'history'">
+    <page-content [mode]="'empty'"
+      [heading]="i18n.account.balanceLimits.title.history"
+      [mobileHeading]="i18n.account.balanceLimits.mobileTitle.history"
+      [headingActions]="headingActions$ | async">
+      <user-info [user]="data.user"></user-info>
+    </page-content>
+
+    <results-layout [results]="data.history">
+
+      <table *resultTable class="table">
+        <thead>
+          <th>{{ i18n.general.date }}</th>
+          <th>{{ i18n.general.performedBy }}</th>
+          <th>{{ i18n.account.balanceLimits.negative }}</th>
+          <th>{{ i18n.account.balanceLimits.positive }}</th>
+          <th>{{ i18n.general.comments }}</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of data.history">
+            <td>{{ row.date | date }}</td>
+            <td>{{ row.by.display }}</td>
+            <td>
+              {{ row.customCreditLimit ? (row.creditLimit | currency:data.account.currency) : i18n.account.limits.productDefault}}
+            </td>
+            <td>
+              {{ row.customUpperCreditLimit ? ( row.upperCreditLimit ?
+                (row.upperCreditLimit | currency:data.account.currency) : i18n.account.limits.unlimited)
+                : i18n.account.limits.productDefault }}
+            </td>
+            <td>{{ row.comment }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>

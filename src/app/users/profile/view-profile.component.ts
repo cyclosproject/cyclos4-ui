@@ -165,6 +165,16 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/banking', this.param, 'installments']);
         }));
       }
+      if (permissions.balanceLimits.view) {
+        this.bankingActions.push(new HeadingAction('swap_vert', this.i18n.user.profile.accountsBalanceLimits, () => {
+          this.router.navigate(['/banking', this.param, 'account-balance-limits']);
+        }));
+      }
+      if (permissions.paymentLimits.view) {
+        this.bankingActions.push(new HeadingAction('swap_vert', this.i18n.user.profile.accountsPaymentLimits, () => {
+          this.router.navigate(['/banking', this.param, 'account-payment-limits']);
+        }));
+      }
       if (authorizedPayments.view) {
         this.bankingActions.push(new HeadingAction('assignment_turned_in', this.i18n.user.profile.viewAuthorizedPayments, () => {
           this.router.navigate(['/banking', this.param, 'authorized-payments']);

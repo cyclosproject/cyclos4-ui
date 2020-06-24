@@ -1,6 +1,7 @@
 {
   "general": {
     "by": "By",
+    "changedBy": "Changed by",
     "type": "Type",
     "code": "Code",
     "period": "Period",
@@ -259,6 +260,8 @@
     "banking.redeemVoucher": "Redeem voucher",
     "banking.redeemedVouchers": "View redeemed",
     "banking.transfersOverview": "Transfers overview",
+    "banking.accountBalanceLimits": "Account balance limits",
+    "banking.accountPaymentLimits": "Account payment limits",
     "operators": "Operators",
     "operators.operators": "Operators",
     "operators.register": "Register operator",
@@ -487,6 +490,75 @@
       "dateAsc": "Date (oldest first)",
       "amountAsc": "Amount (lowest first)",
       "amountDesc": "Amount (highest first)"
+    },
+    "limits": {
+      "unlimited": "Unlimited",
+      "mode": "Mode",
+      "personalized": "Personalized",
+      "productDefault": "Product default",
+      "usersOfBroker": "Users of the broker"
+    },
+    "balanceLimits": {
+      "negativeLimit": "Negative balance limit",
+      "positiveLimit": "Positive balance limit",
+      "personalizedNegativeLimit": "Personalized negative limit",
+      "personalizedPositiveLimit": "Personalized positive limit",
+      "fromNegativeLimit": "From negative limit",
+      "toNegativeLimit": "To negative limit",
+      "fromPositiveLimit": "From positive limit",
+      "toPositiveLimit": "To positive limit",
+      "negative": "Negative",
+      "positive": "Positive",
+      "confirm": "You must confirm to apply the new balance limits",
+      "saved": "The balance limits were saved",
+      "title": {
+        "list": "Account balance limits",
+        "view": "Account balance limits details",
+        "edit": "Account balance limits details",
+        "history": "Account balance limits history",
+        "overview": "Account balance limits overview"
+      },
+      "mobileTitle": {
+        "list": "Balance limits",
+        "view": "Balance limits details",
+        "edit": "Balance limits details",
+        "history": "Balance limits history",
+        "overview": "Balance limits overview"
+      }
+    },
+    "paymentLimits": {
+      "paymentLimit": "Payment limit",
+      "dailyLimit": "Daily limit",
+      "weeklyLimit": "Weekly limit",
+      "monthlyLimit": "Monthly limit",
+      "personalizedPaymentLimit": "Personalized payment limit",
+      "personalizedDailyLimit": "Personalized daily limit",
+      "personalizedWeeklyLimit": "Personalized weekly limit",
+      "personalizedMonthlyLimit": "Personalized monthly limit",
+      "fromPaymentLimit": "From payment limit",
+      "fromDailyLimit": "From daily limit",
+      "fromWeeklyLimit": "From weekly limit",
+      "fromMonthlyLimit": "From monthly limit",
+      "toPaymentLimit": "To payment limit",
+      "toDailyLimit": "To daily limit",
+      "toWeeklyLimit": "To weekly limit",
+      "toMonthlyLimit": "To monthly limit",
+      "confirm": "You must confirm to apply the new payment limits",
+      "saved": "The payment limits were saved",
+      "title": {
+        "list": "Accounts payment limits",
+        "view": "Account payment limits details",
+        "edit": "Account payment limits details",
+        "history": "Account payment limits history",
+        "overview": "Account payment limits overview"
+      },
+      "mobileTitle": {
+        "list": "Payment limits",
+        "view": "Payment limits details",
+        "edit": "Payment limits details",
+        "history": "Payment limits history",
+        "overview": "Payment limits overview"
+      }
     }
   },
   "transaction": {
@@ -1021,7 +1093,9 @@
       "viewBoughtVouchers": "View bought vouchers",
       "buyVouchers": "Buy vouchers",
       "notificationSettings": "Notification settings",
-      "products": "Products"
+      "products": "Products",
+      "accountsBalanceLimits": "Account balance limits",
+      "accountsPaymentLimits": "Account payment limits"
     },
     "registration": {
       "group.public": "Choose the group you want to participate",

@@ -159,6 +159,12 @@ export namespace Menu {
   export const MY_TOKENS = new Menu(RootMenu.PERSONAL, 'MY_TOKENS');
   export const USER_TOKENS = new Menu(RootMenu.MARKETPLACE, 'USER_TOKENS');
 
+  // Account balance limits
+  export const ACCOUNT_BALANCE_LIMITS_OVERVIEW = new Menu(RootMenu.BANKING, 'ACCOUNT_BALANCE_LIMITS_OVERVIEW');
+
+  // Account payment limits
+  export const ACCOUNT_PAYMENT_LIMITS_OVERVIEW = new Menu(RootMenu.BANKING, 'ACCOUNT_PAYMENT_LIMITS_OVERVIEW');
+
   /**
    * Returns the various `Menu` that represents content pages in distinct root menus
    */

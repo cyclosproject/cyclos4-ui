@@ -62140,6 +62140,16 @@ components:
             security question, so that the user can set it again?
           type: boolean
 
+    UserPaymentLimitsPermissions:
+      description: >-
+        Permissions regarding the account payment limits of a given user
+      type: object
+      properties:
+        view:
+          description: >-
+            Can the authenticated user view the payment limits of the user?
+          type: boolean
+
     UserPaymentPermissions:
       description: >-
         Permissions for payments regarding a user
@@ -62234,6 +62244,8 @@ components:
             $ref: '#/components/schemas/AccountWithCurrency'
         balanceLimits:
           $ref: '#/components/schemas/UserBalanceLimitsPermissions'
+        paymentLimits:
+          $ref: '#/components/schemas/UserPaymentLimitsPermissions'
         payment:
           $ref: '#/components/schemas/UserPaymentPermissions'
         scheduledPayments:
