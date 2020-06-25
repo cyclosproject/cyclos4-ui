@@ -25,7 +25,7 @@ export class CreateTokenComponent extends BaseComponent implements OnInit {
 
   form: FormGroup;
   operators$ = new BehaviorSubject<OperatorResult[]>(null);
-  canActivate$ = new BehaviorSubject<boolean>(this.user ? true : false);
+  canActivate$ = new BehaviorSubject<boolean>(null);
 
   constructor(
     injector: Injector,
@@ -36,6 +36,7 @@ export class CreateTokenComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.canActivate$.next(!!this.user);
     this.form = this.formBuilder.group({
       user: this.user ? this.user.id : null,
       operator: null,
