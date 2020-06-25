@@ -178,6 +178,10 @@ body.dark {
       background-color: $table-head-bg-dark;
     }
 
+    .table-head-color {
+      color: $table-head-color-dark;
+    }
+
     &, a, a:hover {
       color: $table-color-dark;
     }
@@ -187,6 +191,10 @@ body.dark {
       &, a, a:hover {
         color: $table-hover-color-dark;
       }
+    }
+
+    tr.no-hover {
+      background-color: $table-bg-dark !important;
     }
 
     th, td, thead th {
