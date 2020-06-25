@@ -1093,7 +1093,7 @@
       "viewBoughtVouchers": "Ver cupoms comprados",
       "buyVouchers": "Comprar cupons",
       "notificationSettings": "Configurações de notificações",
-      "products": "Products",
+      "products": "Produtos",
       "accountsBalanceLimits": "Limites de saldo da conta",
       "accountsPaymentLimits": "Limites de pagamento da conta"
     },
@@ -1894,15 +1894,15 @@
   },
   "product": {
     "title": {
-      "list": "Assigned products",
-      "history": "Assigned products history"
+      "list": "Produtos atribuídos",
+      "history": "Histórico de produtos atribuídos"
     },
     "mobileTitle": {
-      "list": "Assigned products",
-      "history": "Assigned products history"
+      "list": "Produtos atribuídos",
+      "history": "Histórico de produtos atribuídos"
     },
     "assigned": {
-      "individual": "Products assigned individually to user",
+      "individual": "Produtos atribuídos individualmente ao usuário",
       "group": "Products assigned to user's group",
       "groupSet": "Products assigned to group set"
     },
