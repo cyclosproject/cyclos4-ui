@@ -1093,6 +1093,7 @@
       "viewBoughtVouchers": "Vedi voucher acquistati",
       "buyVouchers": "Acquista voucher",
       "notificationSettings": "Impostazioni di notifica",
+      "products": "Products",
       "accountsBalanceLimits": "Account balance limits",
       "accountsPaymentLimits": "Account payment limits"
     },
@@ -1890,5 +1891,32 @@
     "expiryBeginDate": "Expiry begin date",
     "expiryEndDate": "Expiry end date",
     "unassigned": "Unassigned"
+  },
+  "product": {
+    "title": {
+      "list": "Assigned products",
+      "history": "Assigned products history"
+    },
+    "mobileTitle": {
+      "list": "Assigned products",
+      "history": "Assigned products history"
+    },
+    "assigned": {
+      "individual": "Products assigned individually to user",
+      "group": "Products assigned to user's group",
+      "groupSet": "Products assigned to group set"
+    },
+    "assign": "Assign",
+    "unassign": "Unassign",
+    "assignIndividualProduct": "Assign individual product",
+    "userAccount": "User account",
+    "product": "Product",
+    "action": "Action",
+    "productAssigned": "The product was assigned to the user",
+    "kind": {
+      "administrator": "Administrator",
+      "broker": "Broker",
+      "member": "Member"
+    }
   }
 }
