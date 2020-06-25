@@ -1903,20 +1903,20 @@
     },
     "assigned": {
       "individual": "Produtos atribuídos individualmente ao usuário",
-      "group": "Products assigned to user's group",
-      "groupSet": "Products assigned to group set"
+      "group": "Produtos atribuídos ao grupo do usuário",
+      "groupSet": "Produtos atribuídos ao conjunto de grupos"
     },
-    "assign": "Assign",
-    "unassign": "Unassign",
-    "assignIndividualProduct": "Assign individual product",
-    "userAccount": "User account",
-    "product": "Product",
-    "action": "Action",
-    "productAssigned": "The product was assigned to the user",
+    "assign": "Atribuir",
+    "unassign": "Desatribuir",
+    "assignIndividualProduct": "Atribuir produto individual",
+    "userAccount": "Conta de usuário",
+    "product": "Produto",
+    "action": "Ação",
+    "productAssigned": "O produto foi atribuído ao usuário",
     "kind": {
-      "administrator": "Administrator",
-      "broker": "Broker",
-      "member": "Member"
+      "administrator": "Administrador",
+      "broker": "Corretor",
+      "member": "Membro"
     }
   }
 }
