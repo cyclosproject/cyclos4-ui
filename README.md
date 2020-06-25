@@ -259,8 +259,9 @@ To achieve this, Cyclos allows using a script to generate links. As a global adm
 ```groovy
 import org.cyclos.impl.utils.LinkType
 import org.cyclos.entities.system.ExternalRedirectExecution
+import org.cyclos.utils.StringHelper
 
-if (user != null && user.admin && admin.group.adminType != null) {
+if (user != null && user.admin && user.group.adminType != null) {
     // Don't generate custom links for system administrators
     return null
 }
@@ -278,6 +279,9 @@ switch (type) {
     case LinkType.EXTERNAL_REDIRECT:
         ExternalRedirectExecution e = binding.externalRedirectExecution
         return "${root}/operations/callback/${maskId(e.id)}/${e.verificationToken}"
+    case LinkType.NOTIFICATION:
+        def l = StringHelper.camelize(location.name())
+        return "${root}/redirect/${l}" + entityId ? "?id=${maskId(entityId)}" : ""
 }
 ```
 
