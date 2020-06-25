@@ -2,8 +2,7 @@
   <page-content mode="filters" [heading]="i18n.notification.title"
     [mobileHeading]="i18n.notification.mobileTitle"
     [headingActions]="headingActions$ | async">
-    <form [formGroup]="form"
-      class="filters-form filters-form-separator border-0">
+    <form [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row">
         <div class="col-12 col-md-6">
           <boolean-field labelPosition="sideForced"

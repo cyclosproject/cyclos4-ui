@@ -7,8 +7,7 @@
       [headingActions]="headingActions$ | async">
       <form
         *ngIf="(moreFilters$ | async) || (this.layout.ltsm$ | async) === false"
-        [formGroup]="form"
-        class="filters-form filters-form-separator border-0">
+        [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row">
           <ng-container
             *ngIf="data.user && !authHelper.isSelfOrOwner(data.user)">

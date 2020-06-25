@@ -2,8 +2,7 @@
   <ng-container *ngIf="data">
     <page-content mode="filters" [heading]="i18n.connectedUser.title"
       [mobileHeading]="i18n.connectedUser.mobileTitle">
-      <form [formGroup]="form"
-        class="filters-form filters-form-separator border-0">
+      <form [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row">
           <div *ngIf="data.channels?.length > 1" class="col-12 col-md-6">
             <multi-selection-field labelPosition="side"

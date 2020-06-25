@@ -6,7 +6,8 @@
   <page-content mode="filters" [heading]="i18n.ad.title.search"
     [mobileHeading]="i18n.ad.mobileTitle.search"
     [headingActions]="headingActions$ | async">
-    <form [formGroup]="form" class="filters-form filters-form-separator">
+    <form [formGroup]="form"
+      class="filters-form filters-form-separator border-bottom">
       <div class="row no-gutters">
         <div class="col-12 col-md-6">
           <input-field labelPosition="side" formControlName="keywords"

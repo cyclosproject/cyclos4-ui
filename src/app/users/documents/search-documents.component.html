@@ -3,8 +3,7 @@
     <page-content mode="filters" [heading]="i18n.document.title.search"
       [mobileHeading]="i18n.document.mobileTitle.search"
       [headingActions]="headingActions$ | async">
-      <form [formGroup]="form"
-        class="filters-form filters-form-separator border-0">
+      <form [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row">
           <ng-container *ngIf="!authHelper.isSelf(data.user)">
             <div class="col-12 col-md-6">

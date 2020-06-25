@@ -5,8 +5,7 @@
 <ng-template #content>
   <page-content mode="filters" [heading]="i18n.voucher.title.redeemed"
     [mobileHeading]="i18n.voucher.mobileTitle.redeemed">
-    <form [formGroup]="form"
-      class="filters-form filters-form-separator border-0">
+    <form [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row no-gutters">
         <ng-container *ngIf="data.user && !self">
           <div class="col-12 col-md-6">

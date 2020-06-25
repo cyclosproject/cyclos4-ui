@@ -6,7 +6,8 @@
   <page-content mode="filters" [heading]="heading"
     [mobileHeading]="mobileHeading"
     [headingActions]="headingActions$ | async">
-    <form [formGroup]="form" class="filters-form filters-form-separator">
+    <form [formGroup]="form"
+      class="filters-form filters-form-separator border-bottom">
       <div class="row">
         <div class="col-12 col-md-6" *ngIf="!self && broker">
           <label-value [label]="i18n.general.user" labelPosition="side">

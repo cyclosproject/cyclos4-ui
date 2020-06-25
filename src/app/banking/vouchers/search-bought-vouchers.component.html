@@ -6,8 +6,7 @@
   <page-content mode="filters" [heading]="i18n.voucher.title.searchBought"
     [mobileHeading]="i18n.voucher.mobileTitle.bought">
 
-    <form [formGroup]="form"
-      class="filters-form filters-form-separator border-0">
+    <form [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row">
         <ng-container *ngIf="data.user && !self">
           <div class="col-12 col-md-6">
