@@ -21,16 +21,13 @@
   <ng-container *ngIf="!empty(products)">
     <h2 class="mt-3 mb-2">{{ title }}</h2>
     <ng-container *ngIf="layout.ltsm$ | async; else largeTable">
-      <div class="mobile-results">
-        <div *ngFor="let prod of products" class="d-flex">
-          <div class="cell-main">{{ prod.name }}</div>
-          <div *ngIf="!readOnly && canRemove(prod)"
-            class="ml-auto text-right">
-            <button [tooltip]="i18n.general.remove" class="btn btn-icon"
-              (click)="remove(prod); $event.stopPropagation(); $event.preventDefault()">
-              <icon icon="clear"></icon>
-            </button>
-          </div>
+      <div *ngFor="let prod of products" class="d-flex mb-2">
+        <div class="cell-main">{{ prod.name }}</div>
+        <div *ngIf="!readOnly && canRemove(prod)" class="ml-auto text-right">
+          <button [tooltip]="i18n.general.remove" class="btn btn-icon"
+            (click)="remove(prod); $event.stopPropagation(); $event.preventDefault()">
+            <icon icon="clear"></icon>
+          </button>
         </div>
       </div>
     </ng-container>

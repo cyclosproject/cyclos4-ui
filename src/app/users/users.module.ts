@@ -23,6 +23,8 @@ import { OperatorRegistrationComponent } from 'app/users/operators/operator-regi
 import { SearchUserOperatorsComponent } from 'app/users/operators/search-user-operators.component';
 import { ChangePasswordDialogComponent } from 'app/users/passwords/change-password-dialog.component';
 import { ManagePasswordsComponent } from 'app/users/passwords/manage-passwords.component';
+import { ListProductAssignmentComponent } from 'app/users/products/list-product-assignment.component';
+import { ViewProductAssignmentHistoryComponent } from 'app/users/products/view-product-assignment-history.component';
 import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
 import { VerifyPhoneComponent } from 'app/users/profile/verify-phone.component';
@@ -45,7 +47,6 @@ import { CreateTokenComponent } from 'app/users/tokens/create-token.component';
 import { ListTokenComponent } from 'app/users/tokens/list-token.component';
 import { SearchTokenComponent } from 'app/users/tokens/search-token.component';
 import { ViewTokenComponent } from 'app/users/tokens/view-token.component';
-import { ListProductAssignmentComponent } from 'app/users/products/list-product-assignment.component';
 import { UsersRoutingModule } from 'app/users/users-routing.module';
 
 /**
@@ -118,6 +119,7 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
     SearchTokenComponent,
 
     ListProductAssignmentComponent,
+    ViewProductAssignmentHistoryComponent,
   ],
   entryComponents: [
     VerifyPhoneComponent,

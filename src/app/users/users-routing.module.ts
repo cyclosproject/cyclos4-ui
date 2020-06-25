@@ -24,6 +24,8 @@ import { ViewOperatorGroupComponent } from 'app/users/operator-groups/view-opera
 import { OperatorRegistrationComponent } from 'app/users/operators/operator-registration.component';
 import { SearchUserOperatorsComponent } from 'app/users/operators/search-user-operators.component';
 import { ManagePasswordsComponent } from 'app/users/passwords/manage-passwords.component';
+import { ListProductAssignmentComponent } from 'app/users/products/list-product-assignment.component';
+import { ViewProductAssignmentHistoryComponent } from 'app/users/products/view-product-assignment-history.component';
 import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
 import { ViewProfileComponent } from 'app/users/profile/view-profile.component';
@@ -36,7 +38,6 @@ import { ViewUserStatusComponent } from 'app/users/status/view-user-status.compo
 import { ListTokenComponent } from 'app/users/tokens/list-token.component';
 import { SearchTokenComponent } from 'app/users/tokens/search-token.component';
 import { ViewTokenComponent } from 'app/users/tokens/view-token.component';
-import { ListProductAssignmentComponent } from 'app/users/products/list-product-assignment.component';
 
 const usersRoutes: Routes = [
   {
@@ -265,6 +266,11 @@ const usersRoutes: Routes = [
       {
         path: ':user/product-assignment',
         component: ListProductAssignmentComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: ':user/product-assignment/history',
+        component: ViewProductAssignmentHistoryComponent,
         canActivate: [LoggedUserGuard],
       },
     ],
