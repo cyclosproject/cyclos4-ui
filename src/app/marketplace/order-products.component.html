@@ -1,6 +1,6 @@
 <ng-container *ngIf="((data$ | async) && data.length > 0) else noProducts">
   <form [formGroup]="form">
-    <table class="table table-hover cursor-pointer">
+    <table class="table table-hover">
       <thead>
         <th class="no-border" width="13%">{{ i18n.ad.number }}</th>
         <th class="no-border" width="13%" [ngStyle]="{'max-width': '130px'}">
@@ -21,9 +21,9 @@
         <tr *ngFor="let row of data">
           <td>{{ row.product.productNumber }}
           </td>
-          <td class="link" [ngStyle]="{'max-width': '130px'}"><span
-              class="ellipsis-clamp-2"
-              (click)="navigate(row)">{{ row.product.name }}</span></td>
+          <td class="link" [ngStyle]="{'max-width': '130px'}"
+            (click)="navigate(row)">
+            <span class="ellipsis-clamp-2">{{ row.product.name }}</span></td>
           <td class="text-right">
             {{  row.product.price | currency: currency }}
           </td>

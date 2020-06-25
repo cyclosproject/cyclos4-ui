@@ -38,7 +38,7 @@
 <ng-template #largeTable>
   <h2 class="mt-4 mb-2">{{ i18n.ad.products }}
   </h2>
-  <table class="table table-hover cursor-pointer">
+  <table class="table table-hover">
     <thead>
       <th colspan="2" class="avatar no-border">{{ i18n.ad.product }}</th>
       <th class="no-border">{{ i18n.ad.number }}</th>
@@ -58,8 +58,9 @@
             icon="shopping_basket"></avatar>
         <td width="30%"
           [ngClass]="{'link' : detailed, 'border-bottom-0': last}"
-          [ngStyle]="{'text-decoration': !isAvailable(row) ? 'line-through' : ''}">
-          <span (click)="navigate(row)">{{ row.product.name }}</span>
+          [ngStyle]="{'text-decoration': !isAvailable(row) ? 'line-through' : ''}"
+          (click)="navigate(row)">
+          <span>{{ row.product.name }}</span>
         </td>
         <td [ngClass]="{'border-bottom-0': last}">
           {{ row.product.productNumber }}</td>

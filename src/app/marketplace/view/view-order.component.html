@@ -37,7 +37,7 @@
     </div>
     <h2 class="mt-4 mb-2">{{ i18n.ad.products }}
     </h2>
-    <table class="table table-hover cursor-pointer small-height">
+    <table class="table table-hover small-height">
       <thead>
         <th *ngIf="layout.gtxs$ | async" class="no-border">
           {{ i18n.ad.number }}</th>
@@ -51,7 +51,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let row of data.items"
-          (click)="router.navigate(path(row))">
+          (click)="router.navigate(path(row))" class="cursor-pointer">
           <td *ngIf="layout.gtxs$ | async">{{ row.product.productNumber }}
           </td>
           <td class="link">{{ row.product.name }}</td>
