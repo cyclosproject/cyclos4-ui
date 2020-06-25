@@ -8,12 +8,14 @@ import { CoreModule } from 'app/core/core.module';
 import { HomeModule } from 'app/home/home.module';
 import { INITIALIZE } from 'app/initialize';
 import { LoginModule } from 'app/login/login.module';
+import { RedirectToLocationComponent } from 'app/redirect-to-location-component';
 import { SharedModule } from 'app/shared/shared.module';
 import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    RedirectToLocationComponent
   ],
   imports: [
     HttpClientModule,

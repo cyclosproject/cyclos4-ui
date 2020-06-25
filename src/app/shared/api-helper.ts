@@ -262,9 +262,12 @@ export class ApiHelper {
         return `/banking/transaction/${id}`;
       case 'transfer':
         return `/banking/transfer/${id}`;
+      case 'newUser':
       case 'user':
       case 'userProfile':
         return `/users/${id}/profile`;
+      case 'orderStock':
+      case 'adQuestionAnswered':
       case 'advertisement':
         return `/marketplace/view/${id}`;
       case 'password':
@@ -273,6 +276,23 @@ export class ApiHelper {
       case 'notification':
       case 'notifications':
         return `/personal/notifications`;
+      case 'notificationSetting':
+        return `/users/self/notification-settings`;
+      case 'order':
+        return `/marketplace/order/${id}`;
+      case 'unansweredAdQuestion':
+      case 'unansweredWebShopQuestion':
+        return `/marketplace/unanswered-questions/view/${id}`;
+      case 'voucher':
+        return `/banking/vouchers/${id}`;
+      case 'operatorProfile':
+        return `/users/operators/${id}`;
+      case 'record':
+        return `/records/view/${id}`;
+      case 'token':
+        return `/users/tokens/view/${id}`;
+      default:
+        return null;
     }
   }
 
