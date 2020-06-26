@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { Notification } from 'app/api/models';
 import { NotificationsService } from 'app/api/services';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
@@ -30,11 +31,7 @@ export class PushNotificationComponent {
   }
   set notification(notification: Notification) {
     this._notification = notification;
-    const data = ApiHelper.notificationData(notification);
-    if (data) {
-      this.path = data.path;
-      this.menu = data.menu;
-    }
+    this.path = ApiHelper.notificationPath(notification);
     this.changeDetector.detectChanges();
   }
 
@@ -51,6 +48,7 @@ export class PushNotificationComponent {
     private menuService: MenuService,
     private errorHandler: ErrorHandlerService,
     private changeDetector: ChangeDetectorRef,
+    private router: Router,
   ) {
     this.closed.subscribe(() => {
       if (this.timeoutHandle) {
@@ -61,15 +59,9 @@ export class PushNotificationComponent {
     this.timeoutHandle = setTimeout(() => this.closed.emit(), TimeoutMillis);
   }
 
-  navigate(event: MouseEvent) {
-    if (this.menu) {
-      this.menuService.navigate({
-        url: this.path,
-        menu: this.menu,
-        event,
-      });
-    }
-
+  navigate() {
+    this.menuService.setActiveMenu(null);
+    this.router.navigateByUrl(this.path);
     this.markAsReadAndClose();
   }
 

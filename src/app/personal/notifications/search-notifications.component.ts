@@ -81,8 +81,7 @@ export class SearchNotificationsComponent
   }
 
   path(notification: Notification) {
-    const data = ApiHelper.notificationData(notification);
-    return data ? data.path : null;
+    return ApiHelper.notificationPath(notification);
   }
 
   markAllRead() {

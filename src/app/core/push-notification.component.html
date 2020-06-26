@@ -4,7 +4,7 @@
     <avatar [image]="notification.relatedUser?.image" icon="notifications">
     </avatar>
     <div class="subject">
-      <maybe-link [link]="path" (click)="navigate($event)">
+      <maybe-link [link]="path" (click)="navigate()">
         {{ notification.subject }}
       </maybe-link>
     </div>
@@ -15,7 +15,7 @@
     </button>
   </div>
   <div class="toast-body">
-    <maybe-link [link]="path" (click)="navigate($event)">
+    <maybe-link [link]="path" (click)="navigate()">
       {{ notification.message }}
     </maybe-link>
   </div>

@@ -4,7 +4,7 @@ import {
   NotificationTypeEnum, Operation, OperationScopeEnum, UserMenuEnum
 } from 'app/api/models';
 import { empty } from 'app/shared/helper';
-import { ActiveMenu, Menu, RootMenu } from 'app/shared/menu';
+import { Menu, RootMenu } from 'app/shared/menu';
 
 /**
  * Helper methods for working with API model
@@ -131,42 +131,28 @@ export class ApiHelper {
    * Returns the path to where a notification should point to
    * @param notification The Cyclos notification
    */
-  static notificationData(notification: Notification): { path: string, menu: ActiveMenu } {
+  static notificationPath(notification: Notification): string {
     switch (notification.entityType) {
       case NotificationEntityTypeEnum.USER:
-        return {
-          path: `/users/${notification.entityId}/profile`,
-          menu: new ActiveMenu(Menu.SEARCH_USERS),
-        };
+        return `/users/${notification.entityId}/profile`;
+      case NotificationEntityTypeEnum.INSTALLMENT:
+      case NotificationEntityTypeEnum.OCCURRENCE:
+        return `/banking/transaction/${notification.entityId}`;
       case NotificationEntityTypeEnum.TRANSACTION:
-        return {
-          path: `/banking/transaction/${notification.entityId}`,
-          menu: new ActiveMenu(Menu.ACCOUNT_HISTORY),
-        };
+        return `/banking/transaction/${notification.entityId}`;
       case NotificationEntityTypeEnum.TRANSFER:
-        return {
-          path: `/banking/transfer/${notification.entityId}`,
-          menu: new ActiveMenu(Menu.ACCOUNT_HISTORY),
-        };
+        return `/banking/transfer/${notification.entityId}`;
       case NotificationEntityTypeEnum.MARKETPLACE:
-        return {
-          path: `/marketplace/view/${notification.entityId}`,
-          menu: new ActiveMenu(Menu.SEARCH_ADS),
-        };
+        return `/marketplace/view/${notification.entityId}`;
       case NotificationEntityTypeEnum.AD_QUESTION:
-        const answer = notification.type === NotificationTypeEnum.AD_QUESTION_ANSWERED;
-        return {
-          path: answer ?
-            `/marketplace/view/${notification.entityId}` :
-            `/marketplace/unanswered-questions/view/${notification.entityId}`,
-          menu: new ActiveMenu(answer ? Menu.SEARCH_ADS : Menu.UNANSWERED_QUESTIONS),
-        };
+        return notification.type === NotificationTypeEnum.AD_QUESTION_ANSWERED ?
+          `/marketplace/view/${notification.entityId}` : `/marketplace/unanswered-questions/view/${notification.entityId}`;
       case NotificationEntityTypeEnum.ORDER:
-        return {
-          path: `/marketplace/order/${notification.entityId}`,
-          menu: new ActiveMenu(ApiHelper.isBuyerOrderNotification(notification.type) ?
-            Menu.PURCHASES : Menu.SALES),
-        };
+        return `/marketplace/order/${notification.entityId}`;
+      case NotificationEntityTypeEnum.TOKEN:
+        return `/users/tokens/view/${notification.entityId}`;
+      case NotificationEntityTypeEnum.VOUCHER:
+        return `/banking/vouchers/${notification.entityId}`;
     }
   }
 
