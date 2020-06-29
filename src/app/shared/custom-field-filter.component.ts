@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
-import { ControlContainer, FormArray, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator, FormBuilder } from '@angular/forms';
+import { ControlContainer, FormArray, FormBuilder, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from '@angular/forms';
 import { CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { FieldOption } from 'app/shared/field-option';
-import { truthyAttr, empty } from 'app/shared/helper';
+import { empty, truthyAttr } from 'app/shared/helper';
 import { InputFieldComponent } from 'app/shared/input-field.component';
 import { MultiSelectionFieldComponent } from 'app/shared/multi-selection-field.component';
 import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';

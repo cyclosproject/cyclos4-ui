@@ -164,6 +164,8 @@ export class FieldHelperService {
         return this.i18n.user.username;
       case 'email':
         return this.i18n.user.email;
+      case 'image':
+        return this.i18n.general.image;
       case 'phone':
         return this.i18n.phone.phoneNumber;
       case 'address':

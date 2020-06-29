@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Host, Injector, Input, Optional, SkipSelf, ViewChild } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BasicProfileFieldInput } from 'app/api/models';
+import { BasicProfileFieldEnum, BasicProfileFieldInput } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { truthyAttr } from 'app/shared/helper';
 import { InputFieldComponent } from 'app/shared/input-field.component';
+import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
 
 /**
  * Component which uses an user profile field, either basic or custom, as a search filter
@@ -39,6 +40,7 @@ export class BasicProfileFieldFilterComponent extends BaseFormFieldComponent<str
   }
 
   @ViewChild('input') input: InputFieldComponent;
+  @ViewChild('image') image: SingleSelectionFieldComponent;
 
   constructor(
     injector: Injector,
@@ -49,7 +51,11 @@ export class BasicProfileFieldFilterComponent extends BaseFormFieldComponent<str
   }
 
   protected getFocusableControl() {
-    return this.input;
+    return this.isImage() ? this.image : this.input;
+  }
+
+  isImage(): boolean {
+    return this.field.field === BasicProfileFieldEnum.IMAGE;
   }
 
   protected getDisabledValue(): string {
