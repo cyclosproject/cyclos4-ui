@@ -298,6 +298,7 @@
     "personal.notifications": "Notificaciones",
     "personal.notificationSettings": "Ajustes de notificaciones",
     "personal.settings": "Ajustes",
+    "personal.privacySettings": "Privacy settings",
     "content": "Información"
   },
   "login": {
@@ -1095,7 +1096,8 @@
       "notificationSettings": "Ajustes de notificaciones",
       "products": "Products",
       "accountsBalanceLimits": "Límites de saldo de cuenta",
-      "accountsPaymentLimits": "Account payment limits"
+      "accountsPaymentLimits": "Account payment limits",
+      "privacySettings": "Privacy settings"
     },
     "registration": {
       "group.public": "Elija el grupo en el que desea registrarse",
@@ -1761,6 +1763,15 @@
     "theme": "Tema",
     "theme.light": "Claro",
     "theme.dark": "Oscuro"
+  },
+  "privacySettings": {
+    "title": "Privacy settings",
+    "mobileTitle": "Privacy settings",
+    "enableControl": "Enable privacy control",
+    "controlsSection": "Departments allowed to access private data",
+    "information": "In this page it is possible to set whether access to those fields is restricted, and how those fields may be used.",
+    "dataSubjectToControls": "Personal data subject to privacy control:",
+    "saved": "The privacy settings were saved"
   },
   "record": {
     "createdBy": "Creado por",
