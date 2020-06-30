@@ -777,6 +777,9 @@ export class MenuService {
           'notifications_off', this.i18n.menu.personalNotificationSettings);
       }
       add(Menu.SETTINGS, '/personal/settings', 'settings', this.i18n.menu.personalSettings);
+      if ((permissions.privacySettings || {}).view) {
+        add(Menu.PRIVACY_SETTINGS, '/users/self/privacy-settings', 'settings', this.i18n.menu.personalPrivacySettings);
+      }
       addRecords(RootMenu.PERSONAL);
       addOperations(RootMenu.PERSONAL);
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);

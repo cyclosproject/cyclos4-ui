@@ -317,6 +317,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/users', this.param, 'notification-settings']);
         }));
       }
+      if (permissions.privacySettings?.view) {
+        this.managementActions.push(new HeadingAction('settings', this.i18n.user.profile.privacySettings, () => {
+          this.router.navigate(['/users', this.param, 'privacy-settings']);
+        }));
+      }
       // Documents
       if (documents.view) {
         this.managementActions.push(new HeadingAction('library_books', this.i18n.document.title.list, () => {

@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { EditPrivacySettingsComponent } from 'app/personal/privacy-settings/edit-privacy-settings.component';
+import { ViewPrivacySettingsComponent } from 'app/personal/privacy-settings/view-privacy-settings.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { ViewAgreementsHistoryComponent } from 'app/users/agreements/view-agreements-history.component';
 import { ViewUserAgreementsComponent } from 'app/users/agreements/view-user-agreements.component';
@@ -120,6 +122,9 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
 
     ListProductAssignmentComponent,
     ViewProductAssignmentHistoryComponent,
+
+    EditPrivacySettingsComponent,
+    ViewPrivacySettingsComponent
   ],
   entryComponents: [
     VerifyPhoneComponent,

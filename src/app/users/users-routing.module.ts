@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CountriesResolve } from 'app/countries.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
+import { EditPrivacySettingsComponent } from 'app/personal/privacy-settings/edit-privacy-settings.component';
+import { ViewPrivacySettingsComponent } from 'app/personal/privacy-settings/view-privacy-settings.component';
 import { ViewAgreementsHistoryComponent } from 'app/users/agreements/view-agreements-history.component';
 import { ViewUserAgreementsComponent } from 'app/users/agreements/view-user-agreements.component';
 import { SearchUserAlertsComponent } from 'app/users/alerts/search-user-alerts.component';
@@ -271,6 +273,16 @@ const usersRoutes: Routes = [
       {
         path: ':user/product-assignment/history',
         component: ViewProductAssignmentHistoryComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: ':user/privacy-settings',
+        component: ViewPrivacySettingsComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: ':user/privacy-settings/edit',
+        component: EditPrivacySettingsComponent,
         canActivate: [LoggedUserGuard],
       },
     ],
