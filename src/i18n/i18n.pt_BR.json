@@ -298,7 +298,7 @@
     "personal.notifications": "Notificações",
     "personal.notificationSettings": "Configurações de notificações",
     "personal.settings": "Definições",
-    "personal.privacySettings": "Privacy settings",
+    "personal.privacySettings": "Configurações de privacidade",
     "content": "Informação"
   },
   "login": {
@@ -1097,7 +1097,7 @@
       "products": "Produtos",
       "accountsBalanceLimits": "Limites de saldo da conta",
       "accountsPaymentLimits": "Limites de pagamento da conta",
-      "privacySettings": "Privacy settings"
+      "privacySettings": "Configurações de privacidade"
     },
     "registration": {
       "group.public": "Escolha o grupo que deseja participar",
@@ -1765,13 +1765,13 @@
     "theme.dark": "Escuro"
   },
   "privacySettings": {
-    "title": "Privacy settings",
-    "mobileTitle": "Privacy settings",
-    "enableControl": "Enable privacy control",
-    "controlsSection": "Departments allowed to access private data",
-    "information": "In this page it is possible to set whether access to those fields is restricted, and how those fields may be used.",
-    "dataSubjectToControls": "Personal data subject to privacy control:",
-    "saved": "The privacy settings were saved"
+    "title": "Configurações de privacidade",
+    "mobileTitle": "Configurações de privacidade",
+    "enableControl": "Ativar controle de privacidade",
+    "controlsSection": "Departamentos autorizados a acessar dados privados",
+    "information": "Nesta página é possível definir se o acesso a esses campos é restrito, e como esses campos podem ser usados.",
+    "dataSubjectToControls": "Dados pessoais sujeitos ao controle de privacidade:",
+    "saved": "As configurações de privacidade foram salvas"
   },
   "record": {
     "createdBy": "Criado por",
