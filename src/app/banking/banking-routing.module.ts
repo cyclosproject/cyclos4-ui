@@ -10,6 +10,8 @@ import { ListAccountsPaymentLimitsComponent } from 'app/banking/payment-limits/l
 import { SearchPaymentLimitsOverviewComponent } from 'app/banking/payment-limits/search-payment-limits-overview.component';
 import { ViewAccountPaymentLimitsComponent } from 'app/banking/payment-limits/view-account-payment-limits.component';
 import { PaymentComponent } from 'app/banking/payment/payment.component';
+import { AcceptPaymentRequestComponent } from 'app/banking/request-payment/accept-payment-request.component';
+import { RequestPaymentComponent } from 'app/banking/request-payment/request-payment.component';
 import { ReceiveQrPaymentComponent } from 'app/banking/ticket/receive-qr-payment.component';
 import { SearchOwnerInstallmentsComponent } from 'app/banking/transactions/search-owner-installments.component';
 import { SearchOwnerTransactionsComponent } from 'app/banking/transactions/search-owner-transactions.component';
@@ -62,6 +64,32 @@ const bankingRoutes: Routes = [
       {
         path: ':from/payment/:to',
         component: PaymentComponent,
+      },
+      {
+        path: ':from/payment-request',
+        component: RequestPaymentComponent,
+      },
+      {
+        path: 'payment-request/:key/accept',
+        component: AcceptPaymentRequestComponent,
+      },
+      {
+        path: ':from/payment-request/:to',
+        component: RequestPaymentComponent,
+      },
+      {
+        path: ':owner/payment-requests',
+        component: SearchOwnerTransactionsComponent,
+        data: {
+          kind: 'payment-request'
+        }
+      },
+      {
+        path: 'payment-requests',
+        component: SearchTransactionsOverviewComponent,
+        data: {
+          kind: 'payment-request'
+        }
       },
       {
         path: 'pos',

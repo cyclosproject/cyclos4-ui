@@ -103,6 +103,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const accountTypes = (permissions.accounts || []).map(a => a.type);
     const contact = permissions.contact || {};
     const payment = permissions.payment || {};
+    const paymentRequests = permissions.paymentRequests || {};
     const scheduledPayments = permissions.scheduledPayments || {};
     const authorizedPayments = permissions.authorizedPayments || {};
     const marketplace = permissions.marketplace || {};
@@ -158,6 +159,31 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       if (payment.asUserToSystem) {
         this.bankingActions.push(new HeadingAction('payment', this.i18n.user.profile.payAsUserToSystem, () => {
           this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SYSTEM]);
+        }));
+      }
+      if (paymentRequests.sendFromSystem) {
+        this.bankingActions.push(new HeadingAction('payment', this.i18n.user.profile.requestPaymentFromSystem, () => {
+          this.router.navigate(['/banking', ApiHelper.SYSTEM, 'payment-request', this.param]);
+        }));
+      }
+      if (paymentRequests.sendFromUser) {
+        this.bankingActions.push(new HeadingAction('payment', this.i18n.user.profile.requestPaymentFromUser, () => {
+          this.router.navigate(['/banking', ApiHelper.SELF, 'payment-request', this.param]);
+        }));
+      }
+      if (paymentRequests.sendAsUserToUser) {
+        this.bankingActions.push(new HeadingAction('payment', this.i18n.user.profile.requestPaymentAsUserFromUser, () => {
+          this.router.navigate(['/banking', this.param, 'payment-request']);
+        }));
+      }
+      if (paymentRequests.sendAsUserToSystem) {
+        this.bankingActions.push(new HeadingAction('payment', this.i18n.user.profile.requestPaymentAsUserFromSystem, () => {
+          this.router.navigate(['/banking', this.param, 'payment-request', ApiHelper.SYSTEM]);
+        }));
+      }
+      if (paymentRequests.view) {
+        this.bankingActions.push(new HeadingAction('payment', this.i18n.user.profile.viewPaymentRequests, () => {
+          this.router.navigate(['/banking', this.param, 'payment-requests']);
         }));
       }
       if (scheduledPayments.view) {

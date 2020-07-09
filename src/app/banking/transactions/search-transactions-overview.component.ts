@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  Currency, TransactionAuthorizationStatusEnum, TransactionDataForSearch,
-  TransactionOverviewDataForSearch, TransactionOverviewQueryFilters, TransactionOverviewResult, RoleEnum
+  Currency,
+  PaymentRequestStatusEnum, RoleEnum, TransactionAuthorizationStatusEnum, TransactionDataForSearch,
+  TransactionKind, TransactionOverviewDataForSearch, TransactionOverviewQueryFilters, TransactionOverviewResult
 } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
+import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { FieldOption } from 'app/shared/field-option';
 import { Menu } from 'app/shared/menu';
@@ -22,12 +24,14 @@ export class SearchTransactionsOverviewComponent
   extends BaseSearchPageComponent<TransactionOverviewDataForSearch, TransactionOverviewQueryFilters, TransactionOverviewResult>
   implements OnInit {
 
-  kind: 'authorized' | 'myAuth';
+  kind: 'authorized' | 'myAuth' | 'payment-request';
   heading: string;
   mobileHeading: string;
   usePeriod = true;
   currenciesByKey = new Map<string, Currency>();
   currencies: Currency[];
+  hasTransactionNumber: boolean;
+  transactionNumberPattern: string;
 
   constructor(
     injector: Injector,
@@ -52,6 +56,10 @@ export class SearchTransactionsOverviewComponent
         this.mobileHeading = this.i18n.transaction.mobileTitle.pendingMyAuthorization;
         this.usePeriod = false;
         break;
+      case 'payment-request':
+        this.heading = this.i18n.transaction.title.paymentRequestsOverview;
+        this.mobileHeading = this.i18n.transaction.mobileTitle.paymentRequestsOverview;
+        break;
     }
 
     // Get the transactions search data
@@ -73,6 +81,12 @@ export class SearchTransactionsOverviewComponent
     this.currencies.sort((c1, c2) => c1.name.localeCompare(c2.name));
     this.currenciesByKey = new Map();
     this.currencies.forEach(c => this.currenciesByKey.set(c.id, c));
+    const transactionNumberPatterns = this.currencies
+      .map(c => c.transactionNumberPattern)
+      .filter(p => p)
+      .reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], []);
+    this.hasTransactionNumber = transactionNumberPatterns.length > 0;
+    this.transactionNumberPattern = transactionNumberPatterns.length === 1 ? transactionNumberPatterns[0] : null;
     this.headingActions = this.exportHelper.headingActions(data.exportFormats,
       f => this.transactionsService.exportTransactionsOverview$Response({
         format: f.internalName,
@@ -85,7 +99,8 @@ export class SearchTransactionsOverviewComponent
   }
 
   getFormControlNames() {
-    return ['status', 'currency', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd'];
+    return ['status', 'currency', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd', 'transactionNumber', 'expirationBegin',
+      'expirationEnd'];
   }
 
   getInitialFormValue(data: TransactionDataForSearch) {
@@ -93,6 +108,9 @@ export class SearchTransactionsOverviewComponent
     switch (this.kind) {
       case 'authorized':
         value.status = TransactionAuthorizationStatusEnum.PENDING;
+        break;
+      case 'payment-request':
+        value.status = PaymentRequestStatusEnum.OPEN;
         break;
     }
     return value;
@@ -106,6 +124,11 @@ export class SearchTransactionsOverviewComponent
           value: st,
           text: this.transactionStatusService.authorizationStatus(st),
         }));
+      case 'payment-request':
+        return (Object.values(PaymentRequestStatusEnum) as PaymentRequestStatusEnum[]).map(st => ({
+          value: st,
+          text: this.transactionStatusService.paymentRequestStatus(st)
+        }));
       case 'myAuth':
         // Isn't filtered by status
         return null;
@@ -118,6 +141,9 @@ export class SearchTransactionsOverviewComponent
     if (this.usePeriod) {
       params.datePeriod = this.bankingHelper.resolveDatePeriod(value);
     }
+    if (this.isPaymentRequest()) {
+      params.paymentRequestExpiration = ApiHelper.dateRangeFilter(value.expirationBegin, value.expirationEnd);
+    }
     switch (this.kind) {
       case 'authorized':
         params.authorizationStatuses = [value.status];
@@ -126,8 +152,16 @@ export class SearchTransactionsOverviewComponent
       case 'myAuth':
         params.pendingMyAuthorization = true;
         break;
+      case 'payment-request':
+        params.paymentRequestStatuses = [value.status];
+        params.kinds = [TransactionKind.PAYMENT_REQUEST];
+        break;
     }
     return params;
+  }
+
+  isPaymentRequest(): boolean {
+    return this.kind === 'payment-request';
   }
 
   resolveMenu(data: TransactionDataForSearch) {
@@ -142,6 +176,9 @@ export class SearchTransactionsOverviewComponent
         break;
       case 'myAuth':
         menu = Menu.PENDING_MY_AUTHORIZATION;
+        break;
+      case 'payment-request':
+        menu = Menu.PAYMENT_REQUESTS_OVERVIEW;
         break;
     }
     return this.authHelper.userMenu(data.user, menu);

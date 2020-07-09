@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  Currency, TransactionAuthorizationStatusEnum, TransactionDataForSearch,
-  TransactionQueryFilters, TransactionResult, TransferFilter
+  Currency,
+  PaymentRequestStatusEnum, TransactionAuthorizationStatusEnum, TransactionDataForSearch,
+  TransactionKind, TransactionQueryFilters, TransactionResult, TransferFilter
 } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -28,13 +29,15 @@ export class SearchOwnerTransactionsComponent
   extends BaseSearchPageComponent<TransactionDataForSearch, TransactionSearchParams, TransactionResult>
   implements OnInit {
 
-  kind: 'authorized';
+  kind: 'authorized' | 'payment-request';
   param: string;
   self: boolean;
   heading: string;
   mobileHeading: string;
   transferFilters$ = new BehaviorSubject<TransferFilter[]>([]);
   currencies = new Map<string, Currency>();
+  hasTransactionNumber: boolean;
+  transactionNumberPattern: string;
 
   constructor(
     injector: Injector,
@@ -55,6 +58,10 @@ export class SearchOwnerTransactionsComponent
       case 'authorized':
         this.heading = this.i18n.transaction.title.authorizations;
         this.mobileHeading = this.i18n.transaction.mobileTitle.authorizations;
+        break;
+      case 'payment-request':
+        this.heading = this.i18n.transaction.title.paymentRequests;
+        this.mobileHeading = this.i18n.transaction.mobileTitle.paymentRequests;
         break;
     }
 
@@ -90,6 +97,12 @@ export class SearchOwnerTransactionsComponent
 
   onDataInitialized(data: TransactionDataForSearch) {
     super.onDataInitialized(data);
+    const transactionNumberPatterns = Array.from(this.currencies.values())
+      .map(c => c.transactionNumberPattern)
+      .filter(p => p)
+      .reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], []);
+    this.hasTransactionNumber = transactionNumberPatterns.length > 0;
+    this.transactionNumberPattern = transactionNumberPatterns.length === 1 ? transactionNumberPatterns[0] : null;
     this.headingActions = this.exportHelper.headingActions(data.exportFormats,
       f => this.transactionsService.exportTransactions$Response({
         format: f.internalName,
@@ -97,12 +110,17 @@ export class SearchOwnerTransactionsComponent
       }));
   }
 
+  isPaymentRequest(): boolean {
+    return this.kind === 'payment-request';
+  }
+
   doSearch(value: TransactionSearchParams) {
     return this.transactionsService.searchTransactions$Response(value);
   }
 
   getFormControlNames() {
-    return ['status', 'accountType', 'transferFilter', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd'];
+    return ['status', 'accountType', 'transferFilter', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd', 'direction',
+      'transactionNumber'];
   }
 
   getInitialFormValue(data: TransactionDataForSearch) {
@@ -111,6 +129,9 @@ export class SearchOwnerTransactionsComponent
       case 'authorized':
         value.status = TransactionAuthorizationStatusEnum.PENDING;
         break;
+      case 'payment-request':
+        value.status = PaymentRequestStatusEnum.OPEN;
+        break;
     }
     return value;
   }
@@ -118,10 +139,14 @@ export class SearchOwnerTransactionsComponent
   get statusOptions(): FieldOption[] {
     switch (this.kind) {
       case 'authorized':
-        const statuses = Object.values(TransactionAuthorizationStatusEnum) as TransactionAuthorizationStatusEnum[];
-        return statuses.map(st => ({
+        return (Object.values(TransactionAuthorizationStatusEnum) as TransactionAuthorizationStatusEnum[]).map(st => ({
           value: st,
-          text: this.transactionStatusService.authorizationStatus(st),
+          text: this.transactionStatusService.authorizationStatus(st)
+        }));
+      case 'payment-request':
+        return (Object.values(PaymentRequestStatusEnum) as PaymentRequestStatusEnum[]).map(st => ({
+          value: st,
+          text: this.transactionStatusService.paymentRequestStatus(st)
         }));
     }
   }
@@ -138,6 +163,10 @@ export class SearchOwnerTransactionsComponent
         params.authorizationStatuses = [value.status];
         params.authorized = true;
         break;
+      case 'payment-request':
+        params.paymentRequestStatuses = [value.status];
+        params.kinds = [TransactionKind.PAYMENT_REQUEST];
+        break;
     }
 
     return params;
@@ -148,6 +177,9 @@ export class SearchOwnerTransactionsComponent
     switch (this.kind) {
       case 'authorized':
         menu = Menu.AUTHORIZED_PAYMENTS;
+        break;
+      case 'payment-request':
+        menu = Menu.PAYMENT_REQUESTS;
         break;
     }
     return this.authHelper.userMenu(data.user, menu);
