@@ -31,6 +31,9 @@ import { ViewProductAssignmentHistoryComponent } from 'app/users/products/view-p
 import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
 import { ViewProfileComponent } from 'app/users/profile/view-profile.component';
+import { SearchReferencesComponent } from 'app/users/references/search-references.component';
+import { SetReferenceComponent } from 'app/users/references/set-reference.component';
+import { ViewReferenceComponent } from 'app/users/references/view-reference.component';
 import { UserRegistrationComponent } from 'app/users/registration/user-registration.component';
 import { ValidateRegistrationComponent } from 'app/users/registration/validate-registration.component';
 import { ContactListComponent } from 'app/users/search/contact-list.component';
@@ -285,6 +288,26 @@ const usersRoutes: Routes = [
         component: EditPrivacySettingsComponent,
         canActivate: [LoggedUserGuard],
       },
+      {
+        path: ':user/references/search',
+        component: SearchReferencesComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: 'references/view/:id',
+        component: ViewReferenceComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: 'references/set/:from/:to',
+        component: SetReferenceComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: 'references/edit/:id',
+        component: SetReferenceComponent,
+        canActivate: [LoggedUserGuard],
+      }
     ],
   },
 ];

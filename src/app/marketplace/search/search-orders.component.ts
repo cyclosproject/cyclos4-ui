@@ -62,11 +62,10 @@ export class SearchOrdersComponent
   }
 
   protected toSearchParams(value: any): SearchUserOrdersParams {
-    const result: SearchUserOrdersParams = value;
     value.user = this.param;
     value.sales = this.sales;
     if (value.periodBegin || value.periodEnd) {
-      result.creationPeriod = this.ApiHelper.dateRangeFilter(value.periodBegin, value.periodEnd);
+      value.creationPeriod = this.ApiHelper.dateRangeFilter(value.periodBegin, value.periodEnd);
     }
     return value;
   }

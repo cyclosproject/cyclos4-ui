@@ -1,0 +1,134 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content mode="filters" [heading]="i18n.reference.title.search"
+      [mobileHeading]="i18n.reference.mobileTitle.search"
+      [headingActions]="headingActions$ | async">
+      <form [formGroup]="form" class="filters-form filters-form-separator">
+        <div class="row">
+          <ng-container *ngIf="data.user && !isOwner">
+            <div class="col-12 col-md-6">
+              <label-value [label]="i18n.general.user" labelPosition="side"
+                kind="fieldView">
+                <user-link [user]="data.user"></user-link>
+              </label-value>
+            </div>
+            <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
+            </div>
+          </ng-container>
+          <div class="col-12 col-md-6">
+            <radio-group-field formControlName="direction"
+              [label]="i18n.reference.direction.direction">
+              <field-option [value]="ReferenceDirectionEnum.GIVEN"
+                [text]="i18n.reference.direction.given"></field-option>
+              <field-option [value]="ReferenceDirectionEnum.RECEIVED"
+                [text]="i18n.reference.direction.received"></field-option>
+            </radio-group-field>
+          </div>
+        </div>
+      </form>
+    </page-content>
+
+    <page-content *ngIf="(layout.gtsm$ | async) && (stats$ | async)"
+      mode="table">
+      <table class="table table-hover small-height">
+        <thead>
+          <th width="33%">{{ i18n.reference.value }}</th>
+          <th>{{ i18n.reference.allTime }}</th>
+          <th>{{ i18n.reference.last30Days }}</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entry of levels">
+            <td>
+              <rating-stats [level]="entry.level" [textLeft]="entry.text">
+              </rating-stats>
+            </td>
+            <td (click)="filter(entry.level, true)"
+              class="link link-undecorated">
+              <ng-container
+                *ngTemplateOutlet="columnData; context: {count: allTime?.counts[entry.level], total: allTime?.total }">
+              </ng-container>
+            </td>
+            <td (click)="filter(entry.level)" class="link link-undecorated">
+              <ng-container
+                *ngTemplateOutlet="columnData; context: {count: last30Days?.counts[entry.level], total: last30Days?.total }">
+              </ng-container>
+            </td>
+          </tr>
+          <tr>
+            <td class="font-weight-bold">{{ i18n.reference.total }}</td>
+            <td (click)="filter(null, true)" class="link link-undecorated"> {{
+              allTime?.total }} </td>
+            <td (click)="filter()" class="link link-undecorated">
+              {{ last30Days?.total }}</td>
+          </tr>
+          <tr>
+            <td class="font-weight-bold">
+              {{ i18n.reference.percentagePositive }}</td>
+            <td>
+              {{ ((allTime?.totalPositive  / allTime?.total) || 0 | percent) }}
+            </td>
+            <td>
+              {{ ((last30Days?.totalPositive / last30Days?.total) || 0 | percent) }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </page-content>
+
+    <results-layout resultType="list" [results]="results$ | async"
+      (update)="update($event)" [rendering$]="rendering$" [toLink]="toLink">
+
+      <mobile-result *mobileResult="let row"
+        [avatarImage]="row.relatedUser.image" avatarIcon="user">
+        <div class="d-flex">
+          <div>
+            <div class="cell-main">
+              {{ row.relatedUser.display }}
+            </div>
+            <div class="cell-cell-date">
+              {{ row.date | dateTime }}
+            </div>
+            <div class="cell-text">
+              <rating-stats [level]="row.level"></rating-stats>
+            </div>
+          </div>
+        </div>
+      </mobile-result>
+
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead>
+          <th width="33%">{{ i18n.general.date }}</th>
+          <th>{{ i18n.general.name }}</th>
+          <th>{{ i18n.reference.level.level }}</th>
+          <th class="actions"></th>
+        </thead>
+        <tbody>
+          <ng-container *ngFor=" let row of (results$ | async)?.results">
+            <tr (click)="router.navigate(path(row))">
+              <td>{{ row.date | dateTime }}</td>
+              <td>{{ row.relatedUser.shortDisplay }}</td>
+              <td>
+                <rating-stats [level]="row.level"></rating-stats>
+              </td>
+              <td class="actions actions-multiple">
+                <button *ngIf="data.manage" [tooltip]="i18n.general.remove"
+                  class="btn btn-icon" (click)="remove(row)">
+                  <icon icon="clear"></icon>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>
+
+<ng-template #columnData let-count="count" let-total="total">
+  <div class="stats">
+    <div class="bar" [ngStyle]="{'width': (count / total) * 190 + 'px'}">
+      &nbsp;</div>
+    <span class="count">{{ count }}</span>
+  </div>
+
+</ng-template>

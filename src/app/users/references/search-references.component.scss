@@ -1,0 +1,16 @@
+@import 'src/definitions';
+
+.bar {
+  display: inline-block;
+  background-color: #fdce7e;
+  border-radius: 1px;
+}
+
+.count,
+.bar {
+  vertical-align: middle;
+}
+
+.count {
+  padding-left: 5px;
+}

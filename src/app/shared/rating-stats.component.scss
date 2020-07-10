@@ -1,0 +1,34 @@
+@import 'src/definitions';
+
+.stars {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+}
+
+.red {
+  color: rgb(255, 96, 90);
+  text-shadow: 0 1px 0 #dc0000;
+}
+.orange {
+  color: rgb(255, 182, 87);
+  text-shadow: 0 1px 0 #ff8d00;
+}
+.yellow {
+  color: rgb(255, 240, 68);
+  text-shadow: 0 1px 0 #e0ba00;
+}
+.green {
+  color: rgb(174, 239, 27);
+  text-shadow: 0 1px 0 #5aca07;
+}
+.darkGreen {
+  color: rgb(57, 181, 74);
+  text-shadow: 0 1px 0 #266300;
+}
+
+span {
+  vertical-align: middle;
+  width: 90px;
+  display: inline-block;
+}

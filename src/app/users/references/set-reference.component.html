@@ -1,0 +1,46 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content
+      [heading]="create ? i18n.reference.title.set : i18n.reference.title.edit"
+      [mobileHeading]="create ? i18n.reference.mobileTitle.set : i18n.reference.title.edit"
+      [headingActions]="headingActions$ | async">
+      <form [formGroup]="form">
+        <label-value *ngIf="!create" [label]="i18n.general.date">
+          {{ data.date | dateTime }}
+        </label-value>
+        <label-value [label]="i18n.reference.from">
+          <user-link [user]="data.from"></user-link>
+        </label-value>
+        <label-value [label]="i18n.reference.to">
+          <user-link [user]="data.to"></user-link>
+        </label-value>
+        <single-selection-field formControlName="level"
+          [label]="i18n.reference.level.level" required>
+          <field-option [value]="ReferenceLevelEnum.VERY_BAD"
+            [text]="i18n.reference.level.veryBad">
+          </field-option>
+          <field-option [value]="ReferenceLevelEnum.BAD"
+            [text]="i18n.reference.level.bad">
+          </field-option>
+          <field-option [value]="ReferenceLevelEnum.NEUTRAL"
+            [text]="i18n.reference.level.neutral">
+          </field-option>
+          <field-option [value]="ReferenceLevelEnum.GOOD"
+            [text]="i18n.reference.level.good">
+          </field-option>
+          <field-option [value]="ReferenceLevelEnum.VERY_GOOD"
+            [text]="i18n.reference.level.veryGood">
+          </field-option>
+        </single-selection-field>
+        <textarea-field formControlName="comments"
+          [label]="i18n.general.comments" required>
+        </textarea-field>
+      </form>
+      <actions forceRow>
+        <action-button [disabled]="requesting$ | async" (action)="save()"
+          [label]="i18n.general.submit">
+        </action-button>
+      </actions>
+    </page-content>
+  </ng-container>
+</page-layout>

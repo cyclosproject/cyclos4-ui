@@ -31,6 +31,9 @@ import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
 import { VerifyPhoneComponent } from 'app/users/profile/verify-phone.component';
 import { ViewProfileComponent } from 'app/users/profile/view-profile.component';
+import { SearchReferencesComponent } from 'app/users/references/search-references.component';
+import { SetReferenceComponent } from 'app/users/references/set-reference.component';
+import { ViewReferenceComponent } from 'app/users/references/view-reference.component';
 import { RegistrationStepConfirmComponent } from 'app/users/registration/registration-step-confirm.component';
 import { RegistrationStepDoneComponent } from 'app/users/registration/registration-step-done.component';
 import { RegistrationStepFieldsComponent } from 'app/users/registration/registration-step-fields.component';
@@ -124,7 +127,11 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
     ViewProductAssignmentHistoryComponent,
 
     EditPrivacySettingsComponent,
-    ViewPrivacySettingsComponent
+    ViewPrivacySettingsComponent,
+
+    SearchReferencesComponent,
+    ViewReferenceComponent,
+    SetReferenceComponent
   ],
   entryComponents: [
     VerifyPhoneComponent,

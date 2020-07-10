@@ -1,0 +1,23 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content mode="viewForm" [heading]="i18n.reference.title.view"
+      [mobileHeading]="i18n.reference.mobileTitle.view"
+      [headingActions]="headingActions$ | async">
+      <label-value [label]="i18n.general.date">
+        {{ data.date | dateTime }}
+      </label-value>
+      <label-value [label]="i18n.reference.from">
+        <user-link [user]="data.from"></user-link>
+      </label-value>
+      <label-value [label]="i18n.reference.to">
+        <user-link [user]="data.to"></user-link>
+      </label-value>
+      <label-value [label]="i18n.reference.level.level">
+        <rating-stats [level]="data.level"></rating-stats>
+      </label-value>
+      <label-value [label]="i18n.general.comments">
+        {{ data.comments }}
+      </label-value>
+    </page-content>
+  </ng-container>
+</page-layout>

@@ -90,6 +90,18 @@
         </label-value>
         <custom-field-value *ngFor="let value of user.customValues"
           [fieldValue]="value"></custom-field-value>
+        <label-value *ngIf="data.references"
+          [label]="i18n.user.profile.references">
+          <a [routerLink]="referencesPath()">
+            <rating-stats *ngIf="data.references.count > 0"
+              [score]="data.references.score" [textRight]="data.references.count > 1 ?
+            i18n.reference.count.multi(data.references.count) :
+            i18n.reference.count.single">
+            </rating-stats>
+            <ng-container *ngIf="data.references.count === 0">
+              {{ i18n.reference.notGiven }}</ng-container>
+          </a>
+        </label-value>
       </div>
     </div>
     <div class="d-flex flex-grow-1 flex-column">

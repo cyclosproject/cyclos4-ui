@@ -130,6 +130,7 @@ export namespace Menu {
   export const NOTIFICATIONS_SETTINGS = new Menu(RootMenu.PERSONAL, 'NOTIFICATIONS_SETTINGS');
   export const SETTINGS = new Menu(RootMenu.PERSONAL, 'SETTINGS');
   export const PRIVACY_SETTINGS = new Menu(RootMenu.PERSONAL, 'PRIVACY_SETTINGS');
+  export const REFERENCES = new Menu(RootMenu.PERSONAL, 'REFERENCES');
 
   // Custom operations (one per root menu in owner, also one per operation container)
   export const RUN_OPERATION_BANKING = new Menu(RootMenu.BANKING, 'RUN_OPERATION_BANKING');

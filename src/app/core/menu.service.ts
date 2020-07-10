@@ -780,6 +780,10 @@ export class MenuService {
       if ((permissions.privacySettings || {}).view) {
         add(Menu.PRIVACY_SETTINGS, '/users/self/privacy-settings', 'settings', this.i18n.menu.personalPrivacySettings);
       }
+
+      if ((permissions.references || {}).view) {
+        add(Menu.REFERENCES, '/users/self/references/search', 'stars', this.i18n.menu.personalReferences);
+      }
       addRecords(RootMenu.PERSONAL);
       addOperations(RootMenu.PERSONAL);
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);

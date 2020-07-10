@@ -53,7 +53,8 @@
     "ProductAssignment",
     "BalanceLimits",
     "PaymentLimits",
-    "PrivacySettings"
+    "PrivacySettings",
+    "References"
   ],
   "enumStyle": "upper",
   "skipJsonSuffix": true

@@ -322,6 +322,12 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/users', this.param, 'privacy-settings']);
         }));
       }
+      // References
+      if (permissions.references?.view) {
+        actions.push(new HeadingAction('stars', this.i18n.user.profile.references, () => {
+          this.router.navigate(['/users', this.param, 'references', 'search']);
+        }));
+      }
       // Documents
       if (documents.view) {
         this.managementActions.push(new HeadingAction('library_books', this.i18n.document.title.list, () => {
@@ -351,6 +357,10 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
         this.updateHeadingActions();
       }
     }
+  }
+
+  referencesPath() {
+    return ['/users', this.param, 'references', 'search'];
   }
 
   private updateHeadingActions() {

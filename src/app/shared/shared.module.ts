@@ -78,6 +78,7 @@ import { PickContactComponent } from 'app/shared/pick-contact.component';
 import { ProfileAddressesComponent } from 'app/shared/profile-addresses.component';
 import { ProfileImagesComponent } from 'app/shared/profile-images.component';
 import { RadioGroupFieldComponent } from 'app/shared/radio-group-field.component';
+import { RatingStatsComponent } from 'app/shared/rating-stats.component';
 import { ResultCategoryDirective } from 'app/shared/result-category.directive';
 import { ResultInfoWindowDirective } from 'app/shared/result-info-window.directive';
 import { ResultTableDirective } from 'app/shared/result-table.directive';
@@ -211,6 +212,7 @@ export function initTooltipConfig(): TooltipConfig {
     CaptchaComponent,
     ScanQrCodeComponent,
     IconWithCounterComponent,
+    RatingStatsComponent,
     ButtonToggleComponent,
     NotificationTypeSettingComponent,
     AcceptAgreementsComponent,
@@ -344,6 +346,8 @@ export function initTooltipConfig(): TooltipConfig {
     CaptchaComponent,
     ScanQrCodeComponent,
     IconWithCounterComponent,
+    RatingStatsComponent,
+
     ButtonToggleComponent,
     NotificationTypeSettingComponent,
     AcceptAgreementsComponent,
