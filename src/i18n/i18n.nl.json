@@ -304,6 +304,7 @@
     "personal.notificationSettings": "Notification settings",
     "personal.settings": "Settings",
     "personal.privacySettings": "Privacy settings",
+    "personal.references": "References",
     "content": "Informatie"
   },
   "login": {
@@ -1143,7 +1144,8 @@
       "products": "Products",
       "accountsBalanceLimits": "Account balance limits",
       "accountsPaymentLimits": "Account payment limits",
-      "privacySettings": "Privacy settings"
+      "privacySettings": "Privacy settings",
+      "references": "References"
     },
     "registration": {
       "group.public": "Kies de groep die u wilt om deel te nemen",
@@ -1948,6 +1950,47 @@
     "expiryBeginDate": "Expiry begin date",
     "expiryEndDate": "Expiry end date",
     "unassigned": "Unassigned"
+  },
+  "reference": {
+    "set": "Set reference",
+    "referenceSet": "The reference has been given successfully",
+    "count": {
+      "single": "(1 reference)",
+      "multi": "({count} references)"
+    },
+    "title": {
+      "search": "References",
+      "view": "Reference details",
+      "set": "Set new reference",
+      "edit": "Edit given reference"
+    },
+    "mobileTitle": {
+      "search": "References",
+      "view": "Reference details",
+      "set": "Set new reference",
+      "edit": "Edit given reference"
+    },
+    "direction": {
+      "direction": "Direction",
+      "received": "Received",
+      "given": "Given"
+    },
+    "level": {
+      "level": "Level",
+      "bad": "Bad",
+      "veryBad": "Very bad",
+      "good": "Good",
+      "veryGood": "Very good",
+      "neutral": "Neutral"
+    },
+    "from": "From",
+    "to": "To",
+    "notGiven": "Not given yet",
+    "value": "Value",
+    "allTime": "All time",
+    "last30Days": "Last 30 days",
+    "total": "Total",
+    "percentagePositive": "Percentage positive"
   },
   "product": {
     "title": {
