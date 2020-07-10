@@ -1,0 +1,36 @@
+<page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
+  <page-content *ngSwitchCase="'form'" [heading]="title"
+    [mobileHeading]="mobileTitle"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+    <request-payment-step-form class="flex-grow-1 d-flex flex-column"
+      [data]="data" [form]="form" [currency]="currency$ | async"
+      [paymentTypeData$]="paymentTypeData$"
+      (availablePaymentTypes)="availablePaymentTypes = $event"
+      [customValuesControlGetter]="customValuesControlGetter">
+    </request-payment-step-form>
+    <actions forceRow>
+      <action-button [disabled]="requesting$ | async" (action)="perform()"
+        [label]="i18n.general.confirm"></action-button>
+    </actions>
+  </page-content>
+
+  <page-content *ngSwitchCase="'done'" hideBack
+    [heading]="this.i18n.transaction.title.paymentRequestSent"
+    [mobileHeading]="this.i18n.transaction.mobileTitle.paymentRequestSent"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+    <request-payment-step-done class="flex-grow-1 d-flex flex-column"
+      [performed]="performed"></request-payment-step-done>
+    <actions forceRow>
+      <action-button (action)="viewPerformed()"
+        [label]="i18n.transaction.doneView">
+      </action-button>
+      <action-button outline (action)="reload()"
+        [label]="i18n.transaction.doneNew">
+      </action-button>
+    </actions>
+  </page-content>
+
+  <page-content *ngSwitchDefault>
+    <spinner></spinner>
+  </page-content>
+</page-layout>

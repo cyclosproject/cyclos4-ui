@@ -54,7 +54,8 @@
     "BalanceLimits",
     "PaymentLimits",
     "PrivacySettings",
-    "References"
+    "References",
+    "PaymentRequests"
   ],
   "enumStyle": "upper",
   "skipJsonSuffix": true

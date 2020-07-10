@@ -82,10 +82,14 @@ export namespace Menu {
   export const SCHEDULED_PAYMENTS = new Menu(RootMenu.BANKING, 'SCHEDULED_PAYMENTS');
   export const AUTHORIZED_PAYMENTS = new Menu(RootMenu.BANKING, 'AUTHORIZED_PAYMENTS');
   export const AUTHORIZED_PAYMENTS_OVERVIEW = new Menu(RootMenu.BANKING, 'AUTHORIZED_PAYMENTS_OVERVIEW');
+  export const PAYMENT_REQUESTS = new Menu(RootMenu.BANKING, 'PAYMENT_REQUESTS');
+  export const PAYMENT_REQUESTS_OVERVIEW = new Menu(RootMenu.BANKING, 'PAYMENT_REQUESTS_OVERVIEW');
   export const PENDING_MY_AUTHORIZATION = new Menu(RootMenu.BANKING, 'PENDING_MY_AUTHORIZATION');
   export const REDEEM_VOUCHER = new Menu(RootMenu.BANKING, 'REDEEM_VOUCHER');
   export const SEARCH_REDEEMED = new Menu(RootMenu.BANKING, 'SEARCH_REDEEMED');
   export const SEARCH_VOUCHERS = new Menu(RootMenu.BANKING, 'SEARCH_VOUCHERS');
+  export const PAYMENT_REQUEST_TO_USER = new Menu(RootMenu.BANKING, 'PAYMENT_REQUEST_TO_USER');
+  export const PAYMENT_REQUEST_TO_SYSTEM = new Menu(RootMenu.BANKING, 'PAYMENT_REQUEST_TO_SYSTEM');
 
   // Users / Marketplace
   export const SEARCH_USERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USERS');

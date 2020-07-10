@@ -14,6 +14,11 @@ import { PaymentStepConfirmComponent } from 'app/banking/payment/payment-step-co
 import { PaymentStepDoneComponent } from 'app/banking/payment/payment-step-done.component';
 import { PaymentStepFormComponent } from 'app/banking/payment/payment-step-form.component';
 import { PaymentComponent } from 'app/banking/payment/payment.component';
+import { AcceptPaymentRequestStepConfirmComponent } from 'app/banking/request-payment/accept-payment-request-step-confirm.component';
+import { AcceptPaymentRequestComponent } from 'app/banking/request-payment/accept-payment-request.component';
+import { RequestPaymentStepDoneComponent } from 'app/banking/request-payment/request-payment-step-done.component';
+import { RequestPaymentStepFormComponent } from 'app/banking/request-payment/request-payment-step-form.component';
+import { RequestPaymentComponent } from 'app/banking/request-payment/request-payment.component';
 import { ReceiveQrPaymentStepDoneComponent } from 'app/banking/ticket/receive-qr-payment-step-done.component';
 import { ReceiveQrPaymentStepFormComponent } from 'app/banking/ticket/receive-qr-payment-step-form.component';
 import { ReceiveQrPaymentStepPendingComponent } from 'app/banking/ticket/receive-qr-payment-step-pending.component';
@@ -89,7 +94,13 @@ import { ViewVoucherComponent } from './vouchers/view-voucher.component';
     ViewAccountPaymentLimitsComponent,
     EditAccountPaymentLimitsComponent,
     ListAccountsPaymentLimitsComponent,
-    SearchPaymentLimitsOverviewComponent
+    SearchPaymentLimitsOverviewComponent,
+
+    RequestPaymentComponent,
+    RequestPaymentStepFormComponent,
+    RequestPaymentStepDoneComponent,
+    AcceptPaymentRequestComponent,
+    AcceptPaymentRequestStepConfirmComponent
   ],
 })
 export class BankingModule {

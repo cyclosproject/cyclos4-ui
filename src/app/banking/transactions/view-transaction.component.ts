@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AuthorizationActionEnum, CreateDeviceConfirmation, CustomFieldDetailed, CustomFieldTypeEnum, DeviceConfirmationTypeEnum,
-  FailedOccurrenceActionEnum, InstallmentActionEnum, InstallmentStatusEnum, InstallmentView, RecurringPaymentActionEnum,
+  FailedOccurrenceActionEnum, InstallmentActionEnum, InstallmentStatusEnum, InstallmentView,
+  PaymentRequestActionEnum, RecurringPaymentActionEnum,
   ScheduledPaymentActionEnum, TransactionKind, TransactionView
 } from 'app/api/models';
-import { InstallmentsService, TransactionsService, TransfersService } from 'app/api/services';
+import { InstallmentsService, PaymentRequestsService, TransactionsService, TransfersService } from 'app/api/services';
 import { PendingPaymentsService } from 'app/api/services/pending-payments.service';
 import { RecurringPaymentsService } from 'app/api/services/recurring-payments.service';
 import { ScheduledPaymentsService } from 'app/api/services/scheduled-payments.service';
@@ -12,6 +13,7 @@ import { ConfirmCallbackParams } from 'app/core/notification.service';
 import { OperationHelperService } from 'app/core/operation-helper.service';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { HeadingAction } from 'app/shared/action';
+import { ApiHelper } from 'app/shared/api-helper';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { empty } from 'app/shared/helper';
 
@@ -39,6 +41,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
     private pendingPaymentsService: PendingPaymentsService,
     private scheduledPaymentsService: ScheduledPaymentsService,
     private recurringPaymentsService: RecurringPaymentsService,
+    private paymentRequestsService: PaymentRequestsService,
     private transfersService: TransfersService,
     private operationHelper: OperationHelperService,
   ) {
@@ -118,6 +121,24 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
 
     if (transaction.recurringPaymentPermissions?.cancel) {
       actions.push(new HeadingAction('cancel', this.i18n.transaction.cancelRecurring, () => this.cancelRecurring()));
+    }
+
+    const requestPermissions = transaction.paymentRequestPermissions || {};
+    if (requestPermissions.accept) {
+      actions.push(new HeadingAction('thumb_up', this.i18n.transaction.acceptPaymentRequest, () => this.acceptPaymentRequest()));
+    }
+    if (requestPermissions.reject) {
+      actions.push(new HeadingAction('thumb_down', this.i18n.transaction.rejectPaymentRequest, () => this.rejectPaymentRequest()));
+    }
+    if (requestPermissions.cancel) {
+      actions.push(new HeadingAction('cancel', this.i18n.transaction.cancelPaymentRequest, () => this.cancelPaymentRequest()));
+    }
+    if (requestPermissions.reschedule) {
+      actions.push(new HeadingAction('schedule', this.i18n.transaction.reschedulePaymentRequest, () => this.reschedulePaymentRequest()));
+    }
+    if (requestPermissions.changeExpiration) {
+      actions.push(new HeadingAction('schedule', this.i18n.transaction.changePaymentRequestExpiration,
+        () => this.changePaymentRequestExpiration()));
     }
 
     if (transaction.transfer?.canChargeback) {
@@ -279,7 +300,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
     });
   }
 
-  private recurrDeviceConfirmation(action: RecurringPaymentActionEnum): () => CreateDeviceConfirmation {
+  private recurringDeviceConfirmation(action: RecurringPaymentActionEnum): () => CreateDeviceConfirmation {
     return () => ({
       type: DeviceConfirmationTypeEnum.MANAGE_RECURRING_PAYMENT,
       transaction: this.transaction.id,
@@ -291,7 +312,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
     this.notification.confirm({
       title: this.i18n.transaction.cancelRecurring,
       message: this.i18n.transaction.cancelRecurringMessage,
-      createDeviceConfirmation: this.recurrDeviceConfirmation(RecurringPaymentActionEnum.CANCEL),
+      createDeviceConfirmation: this.recurringDeviceConfirmation(RecurringPaymentActionEnum.CANCEL),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.addSub(this.recurringPaymentsService.cancelRecurringPayment({
@@ -300,6 +321,109 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
         }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.cancelRecurringDone)));
       }
     });
+  }
+
+  private paymentRequestDeviceConfirmation(action: PaymentRequestActionEnum): () => CreateDeviceConfirmation {
+    return () => ({
+      type: DeviceConfirmationTypeEnum.MANAGE_PAYMENT_REQUEST,
+      transaction: this.transaction.id,
+      paymentRequestAction: action,
+    });
+  }
+
+  private cancelPaymentRequest() {
+    this.notification.confirm({
+      title: this.i18n.transaction.cancelPaymentRequest,
+      createDeviceConfirmation: this.paymentRequestDeviceConfirmation(PaymentRequestActionEnum.CANCEL),
+      passwordInput: this.transaction.confirmationPasswordInput,
+      customFields: [{
+        internalName: 'comments',
+        name: this.i18n.general.comments,
+        type: CustomFieldTypeEnum.TEXT
+      }],
+      callback: res => {
+        this.addSub(this.paymentRequestsService.cancelPaymentRequest({
+          key: this.transaction.id,
+          body: res.customValues.comments,
+          confirmationPassword: res.confirmationPassword,
+        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.cancelPaymentRequestDone)));
+      }
+    });
+  }
+
+  private rejectPaymentRequest() {
+    this.notification.confirm({
+      title: this.i18n.transaction.rejectPaymentRequest,
+      createDeviceConfirmation: this.paymentRequestDeviceConfirmation(PaymentRequestActionEnum.DENY),
+      passwordInput: this.transaction.confirmationPasswordInput,
+      customFields: [{
+        internalName: 'comments',
+        name: this.i18n.general.comments,
+        type: CustomFieldTypeEnum.TEXT
+      }],
+      callback: res => {
+        this.addSub(this.paymentRequestsService.rejectPaymentRequest({
+          key: this.transaction.id,
+          body: res.customValues.comments,
+          confirmationPassword: res.confirmationPassword,
+        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.rejectPaymentRequestDone)));
+      }
+    });
+  }
+
+  private changePaymentRequestExpiration() {
+    this.notification.confirm({
+      title: this.i18n.transaction.changePaymentRequestExpiration,
+      createDeviceConfirmation: this.paymentRequestDeviceConfirmation(PaymentRequestActionEnum.CHANGE_EXPIRATION),
+      passwordInput: this.transaction.confirmationPasswordInput,
+      customFields: [{
+        internalName: 'expiry',
+        name: this.i18n.token.expiryDate,
+        type: CustomFieldTypeEnum.DATE,
+        required: true
+      }, {
+        internalName: 'comments',
+        defaultValue: this.data.changeExpirationDateComments,
+        name: this.i18n.general.comments,
+        type: CustomFieldTypeEnum.TEXT
+      }],
+      callback: res => {
+        this.addSub(this.paymentRequestsService.changePaymentRequestExpirationDate({
+          key: this.transaction.id,
+          confirmationPassword: res.confirmationPassword,
+          body: { comments: res.customValues.comments, newExpirationDate: ApiHelper.shiftToDayEnd(res.customValues.expiry) }
+        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.changePaymentRequestExpirationDone)));
+      }
+    });
+  }
+
+  private reschedulePaymentRequest() {
+    this.notification.confirm({
+      title: this.i18n.transaction.reschedulePaymentRequest,
+      createDeviceConfirmation: this.paymentRequestDeviceConfirmation(PaymentRequestActionEnum.RESCHEDULE),
+      passwordInput: this.transaction.confirmationPasswordInput,
+      customFields: [{
+        internalName: 'expiry',
+        name: this.i18n.token.expiryDate,
+        type: CustomFieldTypeEnum.DATE,
+        required: true
+      }, {
+        internalName: 'comments',
+        name: this.i18n.general.comments,
+        type: CustomFieldTypeEnum.TEXT
+      }],
+      callback: res => {
+        this.addSub(this.paymentRequestsService.reschedulePaymentRequest({
+          key: this.transaction.id,
+          confirmationPassword: res.confirmationPassword,
+          body: { comments: res.customValues.comments, processDate: res.customValues.expiry }
+        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.reschedulePaymentRequestDone)));
+      }
+    });
+  }
+
+  private acceptPaymentRequest() {
+    this.router.navigate(['/banking', 'payment-request', this.data.id, 'accept']);
   }
 
   private chargebackDeviceConfirmation(): () => CreateDeviceConfirmation {
@@ -403,6 +527,10 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
 
   isScheduledPayment(): boolean {
     return this.data.kind === TransactionKind.SCHEDULED_PAYMENT;
+  }
+
+  isPaymentRequest(): boolean {
+    return this.data.kind === TransactionKind.PAYMENT_REQUEST;
   }
 
   processInstallment(installment: InstallmentView) {

@@ -19,10 +19,29 @@
         <div class="col-12 col-md-6">
           <single-selection-field labelPosition="side"
             formControlName="status" [label]="i18n.general.status"
-            [fieldOptions]="statusOptions">
+            [fieldOptions]="statusOptions"
+            [emptyOption]="i18n.general.notApplied">
           </single-selection-field>
         </div>
-        <div class="col-12 col-md-6" *ngIf="data.accountTypes?.length > 1">
+        <div *ngIf="isPaymentRequest()" class="col-12 col-md-6">
+          <radio-group-field labelPosition="side"
+            [label]="i18n.transaction.direction" formControlName="direction">
+            <field-option value="all" [text]="i18n.general.all">
+            </field-option>
+            <field-option value="credit" [text]="i18n.transaction.sender">
+            </field-option>
+            <field-option value="debit" [text]="i18n.transaction.receiver">
+            </field-option>
+          </radio-group-field>
+        </div>
+        <div *ngIf="hasTransactionNumber" class="col-12 col-md-6">
+          <input-field labelPosition="side"
+            formControlName="transactionNumber"
+            [mask]="transactionNumberPattern"
+            [label]="i18n.transaction.number"></input-field>
+        </div>
+        <div class="col-12 col-md-6"
+          *ngIf="!isPaymentRequest() && (data.accountTypes?.length > 1)">
           <single-selection-field labelPosition="side"
             formControlName="accountType" [label]="i18n.transaction.account"
             [emptyOption]="i18n.general.notApplied">
@@ -92,7 +111,11 @@
       <thead>
         <th class="avatar"></th>
         <th>{{ i18n.general.date }}</th>
-        <th>{{ i18n.transaction.fromTo }}</th>
+        <th *ngIf="!isPaymentRequest()">{{ i18n.transaction.fromTo }}</th>
+        <ng-container *ngIf="isPaymentRequest()">
+          <th>{{ i18n.transaction.senderOrReceiver }}</th>
+          <th>{{ i18n.general.status }}</th>
+        </ng-container>
         <th>{{ i18n.transaction.scheduling }}</th>
         <th class="amount">{{ i18n.transaction.amount }}</th>
       </thead>
@@ -112,6 +135,12 @@
             <td>
               <a [routerLink]="bankingHelper.transactionPath(row)">
                 {{ bankingHelper.subjectName(row.related) }}
+              </a>
+            </td>
+            <td *ngIf="isPaymentRequest()">
+              <a class="d-inline-block"
+                [routerLink]="bankingHelper.transactionPath(row)">
+                {{ transactionStatusService.transactionStatus(row) }}
               </a>
             </td>
             <td>

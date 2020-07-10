@@ -584,6 +584,15 @@ export class MenuService {
       if (payments.pos) {
         add(Menu.POS, `/banking/pos`, 'payment', this.i18n.menu.bankingPos);
       }
+      const paymentRequests = banking.paymentRequests || {};
+      if (paymentRequests.view) {
+        add(Menu.PAYMENT_REQUEST_TO_USER, `/banking/${owner}/payment-request`, 'account_balance_wallet',
+          this.i18n.menu.bankingRequestPaymentFromUser);
+        if (role !== RoleEnum.ADMINISTRATOR) {
+          add(Menu.PAYMENT_REQUEST_TO_SYSTEM, `/banking/${owner}/payment-request/system`, 'account_balance_wallet',
+            this.i18n.menu.bankingRequestPaymentFromSystem);
+        }
+      }
       const tickets = banking.tickets || {};
       if (tickets.create) {
         add(Menu.RECEIVE_QR_PAYMENT, `/banking/qr`, 'scan_qr_code', this.i18n.menu.bankingReceiveQrPayment);
@@ -609,6 +618,16 @@ export class MenuService {
       if (banking.searchGeneralTransfers) {
         add(Menu.ADMIN_TRANSFERS_OVERVIEW, `/banking/transfers-overview`,
           'compare_arrows', this.i18n.menu.bankingTransfersOverview);
+      }
+
+      if (paymentRequests.view) {
+        if (role === RoleEnum.ADMINISTRATOR && banking.searchGeneralPaymentRequests) {
+          add(Menu.PAYMENT_REQUESTS_OVERVIEW, `/banking/payment-requests`,
+            'payment', this.i18n.menu.bankingPaymentRequests);
+        } else {
+          add(Menu.PAYMENT_REQUESTS, `/banking/${owner}/payment-requests`,
+            'payment', this.i18n.menu.bankingPaymentRequests);
+        }
       }
 
       if (vouchers.viewRedeemed) {
