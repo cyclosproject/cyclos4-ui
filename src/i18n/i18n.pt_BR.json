@@ -304,7 +304,7 @@
     "personal.notificationSettings": "Configurações de notificações",
     "personal.settings": "Definições",
     "personal.privacySettings": "Configurações de privacidade",
-    "personal.references": "References",
+    "personal.references": "Referências",
     "content": "Informação"
   },
   "login": {
@@ -1145,7 +1145,7 @@
       "accountsBalanceLimits": "Limites de saldo da conta",
       "accountsPaymentLimits": "Limites de pagamento da conta",
       "privacySettings": "Configurações de privacidade",
-      "references": "References"
+      "references": "Referências"
     },
     "registration": {
       "group.public": "Escolha o grupo que deseja participar",
@@ -1952,45 +1952,45 @@
     "unassigned": "Não atribuido"
   },
   "reference": {
-    "set": "Set reference",
-    "referenceSet": "The reference has been given successfully",
+    "set": "Definir referência",
+    "referenceSet": "A referência foi dada com sucesso",
     "count": {
-      "single": "(1 reference)",
-      "multi": "({count} references)"
+      "single": "(1 referência)",
+      "multi": "({count} referências)"
     },
     "title": {
-      "search": "References",
-      "view": "Reference details",
-      "set": "Set new reference",
-      "edit": "Edit given reference"
+      "search": "Referências",
+      "view": "Detalhes da referência",
+      "set": "Definir nova referência",
+      "edit": "Editar referência dada"
     },
     "mobileTitle": {
-      "search": "References",
-      "view": "Reference details",
-      "set": "Set new reference",
-      "edit": "Edit given reference"
+      "search": "Referências",
+      "view": "Detalhes da referência",
+      "set": "Definir nova referência",
+      "edit": "Editar referência dada"
     },
     "direction": {
-      "direction": "Direction",
-      "received": "Received",
-      "given": "Given"
+      "direction": "Direção",
+      "received": "Recebida",
+      "given": "Dada"
     },
     "level": {
-      "level": "Level",
-      "bad": "Bad",
-      "veryBad": "Very bad",
-      "good": "Good",
-      "veryGood": "Very good",
-      "neutral": "Neutral"
+      "level": "Nível",
+      "bad": "Ruim",
+      "veryBad": "Muito ruim",
+      "good": "Bom",
+      "veryGood": "Muito bom",
+      "neutral": "Neutro"
     },
-    "from": "From",
-    "to": "To",
-    "notGiven": "Not given yet",
-    "value": "Value",
-    "allTime": "All time",
-    "last30Days": "Last 30 days",
+    "from": "De",
+    "to": "Para",
+    "notGiven": "Não determinado ainda",
+    "value": "Valor",
+    "allTime": "Todo o período",
+    "last30Days": "Últimos 30 Dias",
     "total": "Total",
-    "percentagePositive": "Percentage positive"
+    "percentagePositive": "Porcentagem positiva"
   },
   "product": {
     "title": {
