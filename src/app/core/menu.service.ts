@@ -585,13 +585,13 @@ export class MenuService {
         add(Menu.POS, `/banking/pos`, 'payment', this.i18n.menu.bankingPos);
       }
       const paymentRequests = banking.paymentRequests || {};
-      if (paymentRequests.view) {
+      if (paymentRequests.sendToUser) {
         add(Menu.PAYMENT_REQUEST_TO_USER, `/banking/${owner}/payment-request`, 'account_balance_wallet',
           this.i18n.menu.bankingRequestPaymentFromUser);
-        if (role !== RoleEnum.ADMINISTRATOR) {
-          add(Menu.PAYMENT_REQUEST_TO_SYSTEM, `/banking/${owner}/payment-request/system`, 'account_balance_wallet',
-            this.i18n.menu.bankingRequestPaymentFromSystem);
-        }
+      }
+      if (paymentRequests.sendToSystem) {
+        add(Menu.PAYMENT_REQUEST_TO_SYSTEM, `/banking/${owner}/payment-request/system`, 'account_balance_wallet',
+          this.i18n.menu.bankingRequestPaymentFromSystem);
       }
       const tickets = banking.tickets || {};
       if (tickets.create) {

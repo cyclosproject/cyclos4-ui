@@ -165,10 +165,10 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
       description: null,
       scheduling: [PaymentSchedulingEnum.DIRECT, Validators.required],
       installmentsCount: null,
-      firstInstallmentIsImmediate: true,
+      firstInstallmentIsImmediate: false,
       repeatUntilCanceled: true,
       occurrencesCount: [null, OCCURRENCES_COUNT_VAL],
-      firstOccurrenceIsImmediate: true,
+      firstOccurrenceIsImmediate: false,
     });
   }
 

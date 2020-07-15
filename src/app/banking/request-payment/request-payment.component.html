@@ -4,7 +4,7 @@
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <request-payment-step-form class="flex-grow-1 d-flex flex-column"
       [data]="data" [form]="form" [currency]="currency$ | async"
-      [paymentTypeData$]="paymentTypeData$"
+      [paymentTypeData$]="paymentTypeData$" [toSystem]="toSystem"
       (availablePaymentTypes)="availablePaymentTypes = $event"
       [customValuesControlGetter]="customValuesControlGetter">
     </request-payment-step-form>

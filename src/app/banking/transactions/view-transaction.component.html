@@ -20,6 +20,10 @@
     [label]="i18n.general.expirationDate">
     {{ transaction.expirationDate | dateTime }}
   </label-value>
+  <label-value *ngIf="isPaymentRequest() && transaction.processDate"
+    [label]="i18n.transaction.processDate">
+    {{ transaction.processDate | dateTime }}
+  </label-value>
   <label-value [label]="i18n.transaction.amount">
     {{ transaction.amount | currency:transaction.currency }}
   </label-value>
