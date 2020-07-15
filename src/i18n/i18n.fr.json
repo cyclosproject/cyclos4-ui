@@ -774,7 +774,7 @@
     "cancelPaymentRequest.done": "The payment request was canceled",
     "rejectPaymentRequest": "Deny this payment request",
     "rejectPaymentRequest.done": "The payment request was denied",
-    "changePaymentRequestExpiration": "Change this payment request expiration date",
+    "changePaymentRequestExpiration": "Change expiration date",
     "changePaymentRequestExpiration.done": "The payment request expiration date was changed",
     "reschedulePaymentRequest": "Reschedule this recurring payment",
     "reschedulePaymentRequest.done": "The payment request was reschedule",
