@@ -153,6 +153,8 @@ export class ApiHelper {
         return `/users/tokens/view/${notification.entityId}`;
       case NotificationEntityTypeEnum.VOUCHER:
         return `/banking/vouchers/${notification.entityId}`;
+      case NotificationEntityTypeEnum.REFERENCE:
+        return `/users/references/view/${notification.entityId}`;
     }
   }
 

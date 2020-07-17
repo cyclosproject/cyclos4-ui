@@ -126,9 +126,10 @@
 
 <ng-template #columnData let-count="count" let-total="total">
   <div class="stats">
-    <div class="bar" [ngStyle]="{'width': (count / total) * 190 + 'px'}">
+    <div *ngIf="count > 0" class="bar"
+      [ngStyle]="{'width': (count / total) * 190 + 'px'}">
       &nbsp;</div>
-    <span class="count">{{ count }}</span>
+    <span class="count" [ngClass]="{'pl-2': count > 0}">{{ count }}</span>
   </div>
 
 </ng-template>
