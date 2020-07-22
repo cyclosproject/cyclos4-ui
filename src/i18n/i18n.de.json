@@ -114,88 +114,88 @@
         "mar": "Mar",
         "apr": "Apr",
         "may": "Mai",
-        "jun": "Jun",
+        "jun": "Juni",
         "jul": "Jul",
         "aug": "Aug",
         "sep": "Sep",
-        "oct": "Oct",
+        "oct": "Okt",
         "nov": "Nov",
-        "dec": "Dec"
+        "dec": "Dez"
       }
     },
     "timeField": {
       "pattern": "{amount} {field}",
       "plural": {
-        "days": "Days",
-        "hours": "Hours",
-        "millis": "Milliseconds",
-        "minutes": "Minutes",
-        "months": "Months",
-        "seconds": "Seconds",
-        "weeks": "Weeks",
-        "years": "Years"
+        "days": "Tage",
+        "hours": "Stunden",
+        "millis": "Millisekunden",
+        "minutes": "Minuten",
+        "months": "Monate",
+        "seconds": "Sekunden",
+        "weeks": "Wochen",
+        "years": "Jahre"
       },
       "singular": {
-        "day": "Day",
-        "hour": "Hour",
-        "milli": "Millisecond",
+        "day": "Tag",
+        "hour": "Stunde",
+        "milli": "Millisekunde",
         "minute": "Minute",
-        "month": "Month",
-        "second": "Second",
-        "week": "Week",
-        "year": "Year"
+        "month": "Monat",
+        "second": "Zweiter",
+        "week": "Woche",
+        "year": "Jahr"
       }
     },
     "weekday": {
       "min": {
-        "sun": "S",
-        "mon": "M",
-        "tue": "T",
-        "wed": "W",
-        "thu": "T",
-        "fri": "F",
-        "sat": "S"
+        "sun": "Son",
+        "mon": "Mon",
+        "tue": "Die",
+        "wed": "Mit",
+        "thu": "Don",
+        "fri": "Fre",
+        "sat": "Sam"
       },
       "long": {
-        "sun": "Sunday",
-        "mon": "Monday",
-        "tue": "Tuesday",
-        "wed": "Wednesday",
-        "thu": "Thursday",
-        "fri": "Friday",
-        "sat": "Saturday"
+        "sun": "Sonntag",
+        "mon": "Montag",
+        "tue": "Dienstag",
+        "wed": "Mittwoch",
+        "thu": "Donnerstag",
+        "fri": "Freitag",
+        "sat": "Samstag"
       }
     },
     "range": {
-      "fromTo": "From {min} to {max}",
-      "from": "From {min}",
-      "to": "Up to {max}"
+      "fromTo": "Von {min} bis {max}",
+      "from": "Von {min}",
+      "to": "Bis zu {max}"
     },
-    "rangeTo": "to",
+    "rangeTo": "zu",
     "fileSize": {
-      "b": "{n} bytes",
+      "b": "{n} Bytes",
       "k": "{n}KB",
       "m": "{n}MB"
     },
     "results": {
-      "withTotal": "Showing {first} - {last} of {total} results",
-      "noTotal": "Showing {first} - {last} results",
-      "none": "No results match the search criteria",
-      "nextXxs": "Next",
-      "previousXxs": "Previous"
+      "withTotal": "Zeige {first} - {last} von {total} Ergebnissen",
+      "noTotal": "Zeige {first} - {last} Ergebnisse",
+      "none": "Keine Ergebnisse entsprechen den Suchkriterien",
+      "nextXxs": "Weiter",
+      "previousXxs": "Vorherige"
     },
     "geolocation": {
-      "kilometersFrom": "km from",
-      "milesFrom": "miles from",
-      "current": "Current location",
-      "myAddress": "My address"
+      "kilometersFrom": "km von",
+      "milesFrom": "Meilen von",
+      "current": "Aktueller Standort",
+      "myAddress": "Meine Adresse"
     }
   },
   "error": {
-    "general": "There was an unexpected error while processing your request",
-    "serverOffline": "The server couldn't be contacted.<br>Please, try again later.",
-    "invalidRequest": "It is not possible to connect to the server.<br>Please make sure you are connected to the Internet and try again in a few seconds.",
-    "queryParse": "Invalid keywords",
+    "general": "Es gab einen unerwarteten Fehler bei der Bearbeitung Ihrer Anfrage",
+    "serverOffline": "Der Server konnte nicht kontaktiert werden.<br>Bitte versuchen Sie es später erneut.",
+    "invalidRequest": "Es ist nicht möglich, sich mit dem Server zu verbinden.<br>Bitte stellen Sie sicher, dass Sie mit dem Internet verbunden sind und versuchen Sie es in ein paar Sekunden erneut.",
+    "queryParse": "Ungültige Stichwörter",
     "uploadSizeExceeded": "The uploaded file exceeds the maximum allowed size of {size}",
     "maxItems": "Cannot add more than {max} elements",
     "validation": "The action couldn't be processed, as there were validation errors",
