@@ -145,9 +145,9 @@
     "staleEntity": "This data cannot be saved because it has been modified by someone else.<br>Please, load the page again and restart the operation.",
     "removeDataInUse": "This item cannot be removed because it is currently in use.",
     "notFound": {
-      "location": "The location you typed or tried to access was not found",
-      "type": "The requested data could not be found: {type}",
-      "typeKey": "The requested data could not be found: {type} with key {key}"
+      "location": "Der Ort, den Sie eingegeben oder versucht haben zuzugreifen, wurde nicht gefunden",
+      "type": "Die angeforderten Daten konnten nicht gefunden werden: {type}",
+      "typeKey": "Die angeforderten Daten konnten nicht gefunden werden: {type} mit dem Schlüssel {key}"
     },
     "login": "The given name / password are incorrect. Please, try again.",
     "remoteAddressBlocked": "Your IP address is blocked for exceeding login attempts",
@@ -174,9 +174,9 @@
       "maxDate": "Should be {max} or before"
     },
     "geolocation": {
-      "denied": "No permission to get the current location. Please, grant this permission in your browser.",
-      "unavailable": "The current location is unavailable",
-      "general": "Error getting the current location"
+      "denied": "Keine Berechtigung, um den aktuellen Standort zu erhalten. Bitte erteilen Sie diese Berechtigung in Ihrem Browser.",
+      "unavailable": "Die aktuelle Position ist nicht verfügbar",
+      "general": "Fehler beim Abrufen des aktuellen Standorts"
     }
   },
   "menu": {
