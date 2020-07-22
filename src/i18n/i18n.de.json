@@ -316,18 +316,18 @@
     "confirm.device.none": "Um zu bestätigen, müssen Sie ein vertrauenswürdiges Mobiltelefon haben, aber Sie haben keines",
     "confirm.deviceOrPassword.active": "Um zu bestätigen, scannen Sie entweder diesen QR-Code mit Ihrem Mobiltelefon oder geben Sie Ihr {password} ein",
     "confirm.deviceOrPassword.none": "Um zu bestätigen, müssen Sie ein vertrauenswürdiges Mobiltelefon haben oder Ihr {password} angeben, aber Sie haben keines",
-    "confirm.deviceOrOtp.noMediums": "Um zu bestätigen, benötigen Sie entweder ein vertrauenswürdiges Mobiltelefon (und Sie haben keines) oder ein Bestätigungs-Passwort, aber es gibt keine möglichen Empfänger.<br>Bitte kontaktieren Sie die Administration.",
-    "confirm.deviceOrOtp.active": "In order to confirm, either scan this QR-code with your mobile phone, use the previously sent confirmation password or request a new one",
-    "confirm.deviceOrOtp.request": "In order to confirm, either scan this QR-code with your mobile phone, or request a confirmation password below",
-    "confirm.otp.noMediums": "In order to confirm you need a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
-    "confirm.otp.active": "You can use the previously sent confirmation password or request a new one",
-    "confirm.otp.request": "Please, request a confirmation password below in order to confirm",
-    "otp.sent": "The password was sent to {dest}",
-    "otp.receiveBy": "Get by {medium}",
+    "confirm.deviceOrOtp.noMediums": "Um zu bestätigen, benötigen Sie entweder ein vertrauenswürdiges Mobiltelefon (und Sie haben keines) oder ein Passwort, aber es gibt keine möglichen Empfänger.<br>Bitte kontaktieren Sie die Administration.",
+    "confirm.deviceOrOtp.active": "Um zu bestätigen, scannen Sie entweder diesen QR-Code mit Ihrem Smartphone, verwenden Sie das zuvor gesendete Passwort oder fordern Sie ein neues an",
+    "confirm.deviceOrOtp.request": "Um zu bestätigen, scannen Sie entweder diesen QR-Code mit Ihrem Smartphone oder fordern Sie unten ein Passwort an",
+    "confirm.otp.noMediums": "Um zu bestätigen, benötigen Sie ein Passwort, aber es gibt keine möglichen Empfänger.<br>Bitte kontaktieren Sie die Administration.",
+    "confirm.otp.active": "Sie können das zuvor gesendete Passwort verwenden oder ein neues anfordern",
+    "confirm.otp.request": "Bitte fordern Sie unten ein Passwort an, um es zu bestätigen",
+    "otp.sent": "Das Passwort wurde an {dest} gesendet",
+    "otp.receiveBy": "Erhalten durch {medium}",
     "otp.receiveBy.countdown": "{medium} sent({remaining} sec)",
-    "oldPassword": "Old password",
-    "newPassword": "New password",
-    "passwordConfirmation": "Password confirmation",
+    "oldPassword": "Altes Passwort",
+    "newPassword": "Neues Passwort",
+    "passwordConfirmation": "Passwort Bestätigung",
     "error": {
       "disabled": "Ihr Passwort wurde deaktiviert. Bitte kontaktieren Sie die Administration.",
       "reset": "Ihr Passwort wurde zurückgesetzt.",
@@ -338,14 +338,14 @@
       "invalid": "Die angegebene {type} ist ungültig"
     },
     "title": {
-      "change.self": "Change your password",
+      "change.self": "Ändern Sie Ihr Passwort",
       "change.user": "Change user password",
       "forgotten": "User identification / password recovery",
-      "manage.single.self": "Manage your password",
-      "manage.multiple.self": "Manage your passwords",
+      "manage.single.self": "Passwort verwalten",
+      "manage.multiple.self": "Passwörter verwalten",
       "manage.single.user": "Manage user password",
       "manage.multiple.user": "Manage user passwords",
-      "securityAnswer": "Set your security answer"
+      "securityAnswer": "Setzen Sie Ihre Sicherheitsantwort"
     },
     "mobileTitle": {
       "change.self": "Password change",
@@ -369,7 +369,7 @@
       "generated.done.email": "You should receive shortly an e-mail with your new password.",
       "generated.done.sms": "You should receive shortly an SMS message with your new password.",
       "manual.done": "Your password has been successfully changed. You can now use it to login.",
-      "title.changePassword": "Change your password"
+      "title.changePassword": "Ändern Sie Ihr Passwort"
     },
     "expired": {
       "preface": "Your {type} has expired.",
