@@ -213,14 +213,14 @@
     "remoteAddressBlocked": "Your IP address is blocked for exceeding login attempts",
     "permission": "You don't have sufficient permissions to perform the requested action",
     "unauthorized": {
-      "address": "Your IP address is not allowed to login",
-      "url": "Access is not allowed from this URL"
+      "address": "Ihre IP-Adresse darf sich nicht einloggen",
+      "url": "Zugriff ist von dieser URL nicht erlaubt"
     },
     "loggedOut": "You have been disconnected. Please, login again and repeat the operation.",
     "otp": "There was an error when sending the password. Please, try again later.",
     "securityAnswer": {
-      "invalid": "The given security answer is invalid",
-      "disabled": "By exceeding the number of security question attempts, this request has been aborted. Please, contact the administration"
+      "invalid": "Die angegebene Sicherheitsantwort ist ungültig",
+      "disabled": "Durch Überschreiten der Anzahl der Sicherheitsfragen wurde diese Anfrage abgebrochen. Bitte kontaktieren Sie die Administration"
     },
     "illegalAction": "The action you attempted to perform is invalid",
     "field": {
@@ -310,14 +310,14 @@
   "login": {
     "title": "Login",
     "mobileTitle": "Login",
-    "message": "You can login with your username and password",
-    "disconnected": "You have been disconnected.<br>Please, login again in order to view the requested page.",
+    "message": "Sie können sich mit Ihrem Benutzernamen und Ihrem Passwort anmelden",
+    "disconnected": "Die Verbindung wurde getrennt.<br>Bitte melden Sie sich erneut an, um die angeforderte Seite anzusehen.",
     "principal": "User",
-    "forgotPassword": "Forgot your password?",
-    "register": "Not a user yet? Register here."
+    "forgotPassword": "Passwort vergessen?",
+    "register": "Noch kein Benutzer? Melden Sie sich hier an."
   },
   "password": {
-    "confirmationMessage": "Supply your {passwordType} to confirm this operation",
+    "confirmationMessage": "Geben Sie Ihren {passwordType} an, um diesen Vorgang zu bestätigen",
     "confirm.noPassword": "In order to confirm you need a {passwordType}, but you do not have any",
     "confirm.mode": "Confirm with",
     "confirm.mode.device": "Mobile phone",
@@ -339,13 +339,13 @@
     "newPassword": "New password",
     "passwordConfirmation": "Password confirmation",
     "error": {
-      "disabled": "Your password has been disabled. Please, contact the administration.",
-      "reset": "Your password has been reset.",
-      "indefinitelyBlocked": "Your password has been disabled by exceeding the maximum tries. Please, contact the administration.",
-      "temporarilyBlocked": "Your password is temporarily blocked by exceeding the maximum tries.",
-      "expired": "Your password has expired. Please, contact the administration.",
-      "pending": "Your password is pending activation. Please, contact the administration.",
-      "invalid": "The given {type} is invalid"
+      "disabled": "Ihr Passwort wurde deaktiviert. Bitte kontaktieren Sie die Administration.",
+      "reset": "Ihr Passwort wurde zurückgesetzt.",
+      "indefinitelyBlocked": "Ihr Passwort wurde wegen Überschreitung der maximal möglichen Versuche deaktiviert. Bitte kontaktieren Sie die Administration.",
+      "temporarilyBlocked": "Ihr Passwort ist vorübergehend wegen Überschreitung der maximal möglichen Versuche gesperrt.",
+      "expired": "Ihr Passwort ist abgelaufen. Bitte kontaktieren Sie die Administration.",
+      "pending": "Ihr Passwort ist noch nicht aktiviert. Bitte kontaktieren Sie die Administration.",
+      "invalid": "Die angegebene {type} ist ungültig"
     },
     "title": {
       "change.self": "Change your password",
