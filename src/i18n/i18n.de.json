@@ -216,18 +216,18 @@
       "address": "Ihre IP-Adresse darf sich nicht einloggen",
       "url": "Zugriff ist von dieser URL nicht erlaubt"
     },
-    "loggedOut": "You have been disconnected. Please, login again and repeat the operation.",
-    "otp": "There was an error when sending the password. Please, try again later.",
+    "loggedOut": "Die Verbindung wurde getrennt. Bitte melden Sie sich erneut an und wiederholen Sie den Vorgang.",
+    "otp": "Beim Senden des Passworts ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
     "securityAnswer": {
       "invalid": "Die angegebene Sicherheitsantwort ist ungültig",
       "disabled": "Durch Überschreiten der Anzahl der Sicherheitsfragen wurde diese Anfrage abgebrochen. Bitte kontaktieren Sie die Administration"
     },
-    "illegalAction": "The action you attempted to perform is invalid",
+    "illegalAction": "Die Aktion, die Sie versucht haben durchzuführen ist ungültig",
     "field": {
-      "invalid": "This field is invalid",
-      "required": "This field is required",
-      "passwordsMatch": "The passwords don't match",
-      "minLength": "Should have at least {min} characters",
+      "invalid": "Dieses Feld ist ungültig",
+      "required": "Dieses Feld ist erforderlich",
+      "passwordsMatch": "Die Passwörter stimmen nicht überein",
+      "minLength": "Sollte mindestens {min} Zeichen haben",
       "number": "Invalid numeric value",
       "date": "Invalid date",
       "minDate": "Should be {min} or after",
