@@ -401,42 +401,42 @@
       "temporarilyBlocked": "Vorübergehend gesperrt"
     },
     "action": {
-      "change": "Change",
+      "change": "Ändern",
       "change.done": "Ihr {type} wurde geändert",
-      "change.generated.confirm": "This will generate a new {type}, and the value will be displayed only once. Are you sure?",
-      "change.generated.done": "The value for {type} is <data>{value}</data>.<br>Make sure to memorize it, as it won't be displayed again.",
-      "unblock": "Unblock",
-      "unblock.confirm": "Are you sure to unblock your {type}?",
-      "unblock.done": "Your {type} was unblocked",
-      "activate": "Activate",
-      "activate.confirm": "This will activate your {type}, and the generated value will be displayed only once. Are you sure?",
-      "enable": "Enable",
-      "enable.confirm": "Are you sure to enable your {type}?",
-      "enable.done": "Your {type} was enabled",
-      "disable": "Disable",
-      "disable.confirm": "Are you sure to disable your {type}?",
-      "disable.done": "Your {type} was disabled"
+      "change.generated.confirm": "Dies generiert einen neuen {type}, und der Wert wird nur einmal angezeigt. Sind Sie sicher?",
+      "change.generated.done": "Der Wert für {type} ist <data>{value}</data>.<br>Stellen Sie sicher, dass Sie ihn sich einprägen, da er nicht wieder angezeigt wird.",
+      "unblock": "Entsperren",
+      "unblock.confirm": "Sind Sie sicher, dass Sie Ihren {type} entsperren wollen?",
+      "unblock.done": "Ihr {type} wurde entsperrt",
+      "activate": "Aktivieren",
+      "activate.confirm": "Dadurch wird Ihren {type} aktivieren und der generierte Wert wird nur einmal angezeigt. Sind Sie sicher?",
+      "enable": "Aktivieren",
+      "enable.confirm": "Sind Sie sicher, dass Sie Ihren {type} aktivieren wollen?",
+      "enable.done": "Ihr {type} wurde aktiviert",
+      "disable": "Deaktivieren",
+      "disable.confirm": "Sind Sie sicher, dass Sie Ihren {type} deaktivieren wollen?",
+      "disable.done": "Ihr {type} wurde deaktiviert"
     }
   },
   "pendingAgreements": {
     "title": {
-      "previouslyAccepted": "Updated agreement",
-      "firstTime": "Registration agreement"
+      "previouslyAccepted": "Vereinbarung aktualisiert",
+      "firstTime": "Registrierungsvereinbarung"
     },
     "mobileTitle": {
-      "previouslyAccepted": "Updated agreement",
-      "firstTime": "Registration agreement"
+      "previouslyAccepted": "Vereinbarung aktualisiert",
+      "firstTime": "Registrierungsvereinbarung"
     },
-    "message.previouslyAccepted": "The registration agreement has been updated.<br><br>In order to continue, you must agree with the new terms.",
+    "message.previouslyAccepted": "Die Registrierungsvereinbarung wurde aktualisiert.<br><br>Um fortzufahren, müssen Sie den neuen Bedingungen zustimmen.",
     "message.firstTime": "In order to complete your registration, you must agree with these terms.",
-    "agree": "I agree with the following registration agreements: {agreements}",
+    "agree": "Ich stimme den folgenden Registrierungsvereinbarungen zu: {agreements}",
     "preface": "I hereby declare that I have read and agree with the following:"
   },
   "securityQuestion": {
-    "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
-    "question": "Security question",
-    "answer": "Your answer",
-    "set": "Your security answer was set"
+    "message": "Die Sicherheitsfrage wird benötigt, falls Sie Ihr Passwort zurücksetzen müssen. Einmal festgelegt, wenn Sie es ändern müssen, kontaktieren Sie die Administration.",
+    "question": "Sicherheitsfrage",
+    "answer": "Ihre Antwort",
+    "set": "Ihre Sicherheitsantwort wurde festgelegt"
   },
   "dashboard": {
     "quickAccess": "Quick access",
@@ -1148,13 +1148,13 @@
       "references": "References"
     },
     "registration": {
-      "group.public": "Choose the group you want to participate",
+      "group.public": "Wähle die Gruppe, an der Sie teilnehmen möchten",
       "group.manager": "Choose the group for the new user",
       "skipActivationEmail": "Skip activation e-mail",
       "password.assign": "Assign password",
       "password.forceChange": "Force user to change",
-      "active.public": "You have been successfully registered, and your account is now active.",
-      "inactive.public": "Your account was successfully created.<br>However, you will need to be activated by the administration.<br>You will be notified when your account is active.",
+      "active.public": "Sie wurden erfolgreich registriert, Ihr Konto ist jetzt aktiv.",
+      "inactive.public": "Ihr Konto wurde erfolgreich erstellt.<br>Sie müssen jedoch von der Administration aktiviert werden.<br>Sie werden benachrichtigt, wenn Ihr Konto aktiv ist.",
       "pending.public": "Your registration has been submitted, and needs to be verified.<br>You should receive an e-mail shortly with instructions on how to activate your account.<br>If you don't receive the e-mail, make sure to check your spam / junk folder.",
       "active.manager": "The user's account for {user} has been activated.",
       "inactive.manager": "The user {user} has been registered, however, still needs activatation by the administration.",
@@ -1886,7 +1886,7 @@
       "list": "Documents",
       "search": "Documents"
     },
-    "enable": "Enable",
+    "enable": "Aktivieren",
     "userVisible": "Visible for members",
     "brokerVisible": "Visible for brokers",
     "brokerManageable": "Manageable by broker",
@@ -1907,13 +1907,13 @@
       "view": "{0} details"
     },
     "action": {
-      "activate": "Activate",
+      "activate": "Aktivieren",
       "assign": "Assign",
       "block": "Block",
       "cancel": "Cancel",
       "changeDeadline": "Change deadline",
       "changeExpiry": "Change expiry",
-      "unblock": "Unblock",
+      "unblock": "Entsperren",
       "done": {
         "activated": "The token was activated",
         "assigned": "The token was assigned",
