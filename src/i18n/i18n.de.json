@@ -46,7 +46,7 @@
     "lessFilters": "Less filters",
     "showLessFilters": "Show less filters",
     "enabled": "Enabled",
-    "disabled": "Disabled",
+    "disabled": "Deaktiviert",
     "back": "Back",
     "previous": "Previous",
     "next": "Next",
@@ -327,7 +327,7 @@
     "otp.receiveBy.countdown": "{medium} sent({remaining} sec)",
     "oldPassword": "Altes Passwort",
     "newPassword": "Neues Passwort",
-    "passwordConfirmation": "Passwort Bestätigung",
+    "passwordConfirmation": "Passwortbestätigung",
     "error": {
       "disabled": "Ihr Passwort wurde deaktiviert. Bitte kontaktieren Sie die Administration.",
       "reset": "Ihr Passwort wurde zurückgesetzt.",
@@ -348,14 +348,14 @@
       "securityAnswer": "Setzen Sie Ihre Sicherheitsantwort"
     },
     "mobileTitle": {
-      "change.self": "Password change",
-      "change.user": "Password change",
+      "change.self": "Passwortänderung",
+      "change.user": "Passwortänderung",
       "forgotten": "User / password recovery",
       "manage.single.self": "Password",
       "manage.multiple.self": "Passwords",
       "manage.single.user": "User password",
       "manage.multiple.user": "User passwords",
-      "securityAnswer": "Security answer"
+      "securityAnswer": "Sicherheitsantwort"
     },
     "forgotten": {
       "preface": "Here you can recover your user identification and change your password. Fill in your user identification below, and you will receive a verification code. You can use one of the following:",
@@ -365,34 +365,34 @@
       "code.sent": "The verification code was sent to {to}",
       "sendMedium": "Receive code by",
       "generate": "Generate password",
-      "generated.message": "Once you submit, a new password will be generated and sent to your e-mail address",
-      "generated.done.email": "You should receive shortly an e-mail with your new password.",
+      "generated.message": "Sobald Sie einreichen, wird ein neues Passwort generiert und an Ihre E-Mail-Adresse gesendet",
+      "generated.done.email": "Sie sollten in Kürze eine E-Mail mit Ihrem neuen Passwort erhalten.",
       "generated.done.sms": "You should receive shortly an SMS message with your new password.",
-      "manual.done": "Your password has been successfully changed. You can now use it to login.",
+      "manual.done": "Ihr Passwort wurde erfolgreich geändert. Sie können es jetzt verwenden, um sich anzumelden.",
       "title.changePassword": "Ändern Sie Ihr Passwort"
     },
     "expired": {
       "preface": "Your {type} has expired.",
-      "message.manual": "In order to proceed, you must change it.",
-      "message.generated": "In order to proceed, a new value must be generated.<br>This value will only be displayed once, so, make sure you either memorize it or write it down.",
-      "generatedValue": "The value for {type} is <data>{value}</data>.<br>This value won't be displayed again, so, make sure you either memorize it or write it down.",
-      "generateNew": "Generate new",
-      "changed": "Your {type} was changed"
+      "message.manual": "Um fortzufahren, müssen Sie es ändern.",
+      "message.generated": "Um fortzufahren, muss ein neuer Wert generiert werden.<br>Dieser Wert wird nur einmal angezeigt, also stellen Sie sicher, dass Sie ihn sich entweder einprägen oder aufschreiben.",
+      "generatedValue": "Der Wert für {type} ist <data>{value}</data>.<br>Dieser Wert wird nicht wieder angezeigt, also stellen Sie sicher, dass Sie ihn sich entweder einprägen oder aufschreiben.",
+      "generateNew": "Neues generieren",
+      "changed": "Ihr {type} wurde geändert"
     },
-    "statusSince": "Since {date}",
+    "statusSince": "Seit {date}",
     "status": {
-      "active": "Active",
-      "disabled": "Disabled",
+      "active": "Aktiv",
+      "disabled": "Deaktiviert",
       "expired": "Expired",
       "indefinitelyBlocked": "Blocked",
-      "neverCreated": "Never created",
-      "pending": "Pending",
-      "reset": "Reset",
-      "temporarilyBlocked": "Temporarily blocked"
+      "neverCreated": "Nie erstellt",
+      "pending": "Ausstehend",
+      "reset": "Zurücksetzen",
+      "temporarilyBlocked": "Vorübergehend gesperrt"
     },
     "action": {
-      "change": "Change",
-      "change.done": "Your {type} was changed",
+      "change": "Ändern",
+      "change.done": "Ihr {type} wurde geändert",
       "change.generated.confirm": "This will generate a new {type}, and the value will be displayed only once. Are you sure?",
       "change.generated.done": "The value for {type} is <data>{value}</data>.<br>Make sure to memorize it, as it won't be displayed again.",
       "unblock": "Unblock",
@@ -710,7 +710,7 @@
     },
     "status": {
       "redeemed": "Redeemed",
-      "pending": "Pending",
+      "pending": "Ausstehend",
       "open": "Open",
       "expired": "Expired",
       "canceled": "Canceled"
@@ -1125,9 +1125,9 @@
       "history.user": "Status history",
       "history.operator": "Status history"
     },
-    "active": "Active",
+    "active": "Aktiv",
     "blocked": "Access blocked",
-    "disabled": "Disabled",
+    "disabled": "Deaktiviert",
     "pending": "Pending activation",
     "purged": "Purged (all private data is erased)",
     "removed": "Removed (no private data is erased)"
@@ -1210,9 +1210,9 @@
     "verified": "Verified",
     "error": {
       "verify": {
-        "expired": "The verification code was not sent or has expired.<br> Please, send the code again to your phone and restart the process.",
-        "invalid": "Invalid verification code",
-        "maxAttempts": "You have exceeded the number of allowed attempts.<br>Please, send the code again to your phone and restart the process."
+        "expired": "Der Bestätigungscode wurde nicht gesendet oder ist abgelaufen.<br> Bitte senden Sie den Code erneut an Ihr Smartphone und starten Sie den Prozess neu.",
+        "invalid": "Ungültiger Bestätigungscode",
+        "maxAttempts": "Sie haben die Anzahl der erlaubten Versuche überschritten.<br>Bitte senden Sie den Code erneut an Ihr Smartphone und starten Sie den Prozess neu."
       }
     },
     "verify": {
@@ -1389,11 +1389,11 @@
     },
     "status": {
       "active": "Published",
-      "disabled": "Disabled",
+      "disabled": "Deaktiviert",
       "draft": "Draft",
       "expired": "Expired",
       "hidden": "Hidden",
-      "pending": "Pending",
+      "pending": "Ausstehend",
       "scheduled": "Scheduled"
     },
     "orderStatus": {
@@ -1796,7 +1796,7 @@
     },
     "status": {
       "activationExpired": "Activation expired",
-      "active": "Active",
+      "active": "Aktiv",
       "blocked": "Blocked",
       "canceled": "Canceled",
       "expired": "Expired",
