@@ -273,10 +273,10 @@
     "operators.groups": "Operatorgruppen",
     "brokering": "Brokering",
     "brokering.users": "Nutzende",
-    "brokering.register": "Benutzer registrieren",
+    "brokering.register": "Nutzende registrieren",
     "marketplace": "Marktplatz",
     "marketplace.users": "Nutzende",
-    "marketplace.register": "Benutzer registrieren",
+    "marketplace.register": "Nutzende registrieren",
     "marketplace.directory": "Verzeichnis",
     "marketplace.userSearch": "Nutzende",
     "marketplace.businessDirectory": "Business-Verzeichnis",
@@ -312,7 +312,7 @@
     "mobileTitle": "Anmelden",
     "message": "Sie können sich mit Ihrem Benutzernamen und Ihrem Passwort anmelden",
     "disconnected": "Die Verbindung wurde getrennt.<br>Bitte melden Sie sich erneut an, um die angeforderte Seite anzusehen.",
-    "principal": "Benutzer",
+    "principal": "Nutzende",
     "forgotPassword": "Passwort vergessen?",
     "register": "Noch kein Benutzer? Melden Sie sich hier an."
   },
@@ -350,7 +350,7 @@
     "title": {
       "change.self": "Ändern Sie Ihr Passwort",
       "change.user": "Nutzerpasswort ändern",
-      "forgotten": "Benutzeridentifikation/Passwort-Wiederherstellung",
+      "forgotten": "Nutzeridentifikation/Passwort-Wiederherstellung",
       "manage.single.self": "Passwort verwalten",
       "manage.multiple.self": "Passwörter verwalten",
       "manage.single.user": "Nutzerpasswort verwalten",
@@ -360,7 +360,7 @@
     "mobileTitle": {
       "change.self": "Passwortänderung",
       "change.user": "Passwortänderung",
-      "forgotten": "Benutzer / Passwort wiederherstellen",
+      "forgotten": "Nutzende / Passwort wiederherstellen",
       "manage.single.self": "Passwort",
       "manage.multiple.self": "Passwörter",
       "manage.single.user": "Nutzerpasswort",
@@ -368,8 +368,8 @@
       "securityAnswer": "Sicherheitsantwort"
     },
     "forgotten": {
-      "preface": "Hier können Sie Ihre Benutzerkennung wiederherstellen und Ihr Passwort ändern. Geben Sie unten Ihre Benutzeridentifikation ein und Sie werden einen Bestätigungscode erhalten. Sie können einen der folgenden verwenden:",
-      "principal": "Benutzer",
+      "preface": "Hier können Sie Ihre Nutzerkennung wiederherstellen und Ihr Passwort ändern. Geben Sie unten Ihre Nutzeridentifikation ein und Sie werden einen Bestätigungscode erhalten. Sie können einen der folgenden verwenden:",
+      "principal": "Nutzende",
       "captcha": "Captcha-Überprüfung",
       "code": "Bestätigungscode",
       "code.sent": "Der Bestätigungscode wurde an {to} gesendet",
@@ -607,7 +607,7 @@
     "occurrences": "Häufigkeit",
     "noAccounts": "Sie haben keine Konten zum Ausführen der Zahlung",
     "noTypes": "Es gibt keine möglichen Zahlungsarten",
-    "noTypesSelection": "Es gibt keine möglichen Zahlungsarten für dieses Konto und Benutzer",
+    "noTypesSelection": "Es gibt keine möglichen Zahlungsarten für dieses Konto und Nutzende",
     "scheduling": "Terminplanung",
     "scheduling.direct": "Jetzt bezahlen",
     "scheduling.single": "Geplant",
@@ -1228,22 +1228,22 @@
       "removed": "Sind Sie sicher, dass Sie {user} dauerhaft entfernen wollen?\nDiese Aktion kann nicht rückgängig gemacht werden!"
     },
     "done": {
-      "active": "{user} was activated",
-      "blocked": "{user} was blocked",
-      "disabled": "{user} was disabled",
-      "purged": "{user} was permanently removed, together with all personal data",
-      "removed": "{user} was permanently removed"
+      "active": "{user} wurde aktiviert",
+      "blocked": "{user} wurde blockiert",
+      "disabled": "{user} wurde deaktiviert",
+      "purged": "{user} wurde dauerhaft entfernt, zusammen mit allen persönlichen Daten",
+      "removed": "{user} wurde dauerhaft entfernt"
     },
     "title": {
-      "status.user": "User status",
+      "status.user": "Nutzerstatus",
       "status.operator": "Operator status",
-      "change.user": "Change user status",
+      "change.user": "Nutzerstatus ändern",
       "change.operator": "Change operator status",
-      "history.user": "User status history",
+      "history.user": "Nutzerstatusverlauf",
       "history.operator": "Operator status history"
     },
     "mobileTitle": {
-      "status.user": "User status",
+      "status.user": "Nutzerstatus",
       "status.operator": "Operator status",
       "change.user": "Change status",
       "change.operator": "Change status",
@@ -1278,18 +1278,18 @@
     "new": "New group",
     "confirm": "Are you sure to change {user} to group {group}?",
     "confirm.aliasOperator": "Are you sure to grant {user} the same permissions as the owner?",
-    "done.user": "The user group was changed",
+    "done.user": "Die Nutzergruppe wurde geändert",
     "done.operator": "The operator group was changed",
     "title": {
-      "group.user": "User group",
+      "group.user": "Nutzergruppe",
       "group.operator": "Operator group",
-      "change.user": "Change user group",
+      "change.user": "Nutzergruppe ändern",
       "change.operator": "Change group",
-      "history.user": "User group history",
+      "history.user": "Nutzergruppenverlauf",
       "history.operator": "Operator group history"
     },
     "mobileTitle": {
-      "group.user": "User group",
+      "group.user": "Nutzergruppe",
       "group.operator": "Operator group",
       "change.user": "Change group",
       "change.operator": "Change group",
@@ -1618,8 +1618,8 @@
       "paymentAwaitingAuthorization": "Payments pending by authorization",
       "paymentPerformed": "Payments",
       "systemAlert": "System alerts",
-      "userAlert": "User alerts",
-      "userRegistration": "New registered users",
+      "userAlert": "Nutzerbenachrichtigungen",
+      "userRegistration": "Neue registrierte Nutzende",
       "voucherBuyingAboutToExpire": "Voucher buying about to expire"
     },
     "user": {
@@ -1703,7 +1703,7 @@
         "newTokenPendingActivation": "New token / card pending activation",
         "passwordStatusChanged": "Password status changed",
         "tokenStatusChanged": "Token / card status changed",
-        "userStatusChanged": "User status changed"
+        "userStatusChanged": "Nutzerstatus geändert"
       },
       "reference": {
         "changed": "Reference changed",
@@ -1751,12 +1751,12 @@
     "disableAll": "Disable all"
   },
   "connectedUser": {
-    "title": "Connected users",
-    "mobileTitle": "Connected users",
+    "title": "Verbundene Nutzende",
+    "mobileTitle": "Verbundene Nutzende",
     "loggedInAt": "Logged in at",
     "channel": "Channel",
     "ipAddress": "IP Address",
-    "disconnect": "Disconnect user",
+    "disconnect": "Nutzende trennen",
     "viewConnected": {
       "operator": "View connected operators",
       "broker": "View connected brokers",
@@ -1764,7 +1764,7 @@
       "member": "View connected members"
     },
     "showConnected": "Show connected",
-    "disconnected": "{user} has been disconnected"
+    "disconnected": "{user} wurde getrennt"
   },
   "identityProvider": {
     "popup": "Contacting {provider}. Please, wait...",
@@ -1779,7 +1779,7 @@
     "noResults": "There are not identity providers added yet.",
     "title": {
       "manage.self": "Manage your identity providers",
-      "manage.user": "Manage user identity providers"
+      "manage.user": "Verwalten von Nutzeridentitätern"
     },
     "mobileTitle": {
       "manage.self": "Identity providers",
@@ -1796,7 +1796,7 @@
     "disconnected": "Disconnected"
   },
   "operation": {
-    "user": "User",
+    "user": "Nutzende",
     "ad": "Advertisement",
     "transfer": "Transfer",
     "fileUpload": "File upload",
@@ -1841,23 +1841,23 @@
     "saved": "The {name} was saved"
   },
   "userAlert": {
-    "title": "Search user alerts",
+    "title": "Suche Nutzende-Warnungen",
     "text": "Text",
-    "mobileTitle": "User alerts",
+    "mobileTitle": "Nutzerbenachrichtigungen",
     "type": {
       "title": "Type",
       "custom": "Custom",
-      "givenVeryBadRefs": "User gave too many 'very bad' references",
+      "givenVeryBadRefs": "Nutzende hat zu viele \"sehr schlechte\" Referenzen angegeben",
       "insufficientBalanceForInitialCredit": "Insufficient balance for an account's initial credit",
       "maxDeviceActivationAttemptsReached": "Max device activation attempts reached",
       "maxDeviceConfirmationCheckAttemptsReached": "Max device confirmation check attempts reached",
       "maxTokenActivationAttemptsReached": "Max token activation attempts reached",
-      "maxUserLocalizationAttemptsReached": "Max user localization attempts reached",
+      "maxUserLocalizationAttemptsReached": "Maximale Anzahl von Lokalisierungsversuchen erreicht",
       "maxVoucherRedeemAttemptsReached": "Max voucher redeem attempts reached",
-      "moveUserAutomaticallyFailed": "Move user automatically to group failed",
+      "moveUserAutomaticallyFailed": "Automatisches Verschieben des Nutzenden zur Gruppe fehlgeschlagen",
       "passwordDisabledByTries": "Password is indefinitely blocked by exceeding attempts",
       "passwordTemporarilyBlocked": "Password temporarily blocked by exceeding attempts",
-      "receivedVeryBadRefs": "User received too many 'very bad' references",
+      "receivedVeryBadRefs": "Nutzende hat zu viele \"sehr schlechte\" Referenzen erhalten",
       "scheduledPaymentFailed": "Scheduled payment failed"
     }
   },
@@ -2009,7 +2009,7 @@
     "assign": "Assign",
     "unassign": "Unassign",
     "assignIndividualProduct": "Assign individual product",
-    "userAccount": "User account",
+    "userAccount": "Nutzerkonto",
     "product": "Product",
     "action": "Action",
     "productAssigned": "The product was assigned to the user",
