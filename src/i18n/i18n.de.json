@@ -200,10 +200,10 @@
     "operators.groups": "Operatorgruppen",
     "brokering": "Brokering",
     "brokering.users": "Nutzende",
-    "brokering.register": "Benutzer registrieren",
+    "brokering.register": "Nutzende registrieren",
     "marketplace": "Marktplatz",
     "marketplace.users": "Nutzende",
-    "marketplace.register": "Benutzer registrieren",
+    "marketplace.register": "Nutzende registrieren",
     "marketplace.directory": "Verzeichnis",
     "marketplace.userSearch": "Nutzende",
     "marketplace.businessDirectory": "Business-Verzeichnis",
@@ -223,7 +223,7 @@
     "mobileTitle": "Anmelden",
     "message": "Sie können sich mit Ihrem Benutzernamen und Ihrem Passwort anmelden",
     "disconnected": "Die Verbindung wurde getrennt.<br>Bitte melden Sie sich erneut an, um die angeforderte Seite anzusehen.",
-    "principal": "Benutzer",
+    "principal": "Nutzende",
     "forgotPassword": "Passwort vergessen?",
     "register": "Noch kein Benutzer? Melden Sie sich hier an."
   },
@@ -279,7 +279,7 @@
     },
     "forgotten": {
       "preface": "Hier können Sie Ihr Passwort wiederherstellen. Geben Sie unten Ihre Benutzeridentifikation ein. Sie können eines der Folgenden verwenden:",
-      "principal": "Benutzer",
+      "principal": "Nutzende",
       "captcha": "Geben Sie die Zeichen unten ein",
       "email": "Sie werden in Kürze eine E-Mail mit Ihrer Benutzerkennung und Anweisungen, wie Sie Ihr Passwort zurücksetzen können, erhalten",
       "generated.message": "Sobald Sie einreichen, wird ein neues Passwort generiert und an Ihre E-Mail-Adresse gesendet",
@@ -425,7 +425,7 @@
     "occurrences": "Häufigkeit",
     "noAccounts": "Sie haben keine Konten zum Ausführen der Zahlung",
     "noTypes": "Es gibt keine möglichen Zahlungsarten",
-    "noTypesSelection": "Es gibt keine möglichen Zahlungsarten für dieses Konto und Benutzer",
+    "noTypesSelection": "Es gibt keine möglichen Zahlungsarten für dieses Konto und Nutzende",
     "scheduling": "Terminplanung",
     "scheduling.direct": "Jetzt bezahlen",
     "scheduling.single": "Geplant",
@@ -803,21 +803,21 @@
     },
     "done": {
       "active": "{user} wurde aktiviert",
-      "blocked": "{user} was blocked",
-      "disabled": "{user} was disabled",
-      "purged": "{user} was permanently removed, together with all personal data",
-      "removed": "{user} was permanently removed"
+      "blocked": "{user} wurde blockiert",
+      "disabled": "{user} wurde deaktiviert",
+      "purged": "{user} wurde dauerhaft entfernt, zusammen mit allen persönlichen Daten",
+      "removed": "{user} wurde dauerhaft entfernt"
     },
     "title": {
-      "status.user": "User status",
+      "status.user": "Nutzerstatus",
       "status.operator": "Operator status",
-      "change.user": "Change user status",
+      "change.user": "Nutzerstatus ändern",
       "change.operator": "Change operator status",
-      "history.user": "User status history",
+      "history.user": "Nutzerstatusverlauf",
       "history.operator": "Operator status history"
     },
     "mobileTitle": {
-      "status.user": "User status",
+      "status.user": "Nutzerstatus",
       "status.operator": "Operator status",
       "change.user": "Change status",
       "change.operator": "Change status",
@@ -836,18 +836,18 @@
     "new": "New group",
     "confirm": "Are you sure to change {user} to group {group}?",
     "confirm.aliasOperator": "Are you sure to grant {user} the same permissions as the owner?",
-    "done.user": "The user group was changed",
+    "done.user": "Die Nutzergruppe wurde geändert",
     "done.operator": "The operator group was changed",
     "title": {
-      "group.user": "User group",
+      "group.user": "Nutzergruppe",
       "group.operator": "Operator group",
-      "change.user": "Change user group",
+      "change.user": "Nutzergruppe ändern",
       "change.operator": "Change group",
-      "history.user": "User group history",
+      "history.user": "Nutzergruppenverlauf",
       "history.operator": "Operator group history"
     },
     "mobileTitle": {
-      "group.user": "User group",
+      "group.user": "Nutzergruppe",
       "group.operator": "Operator group",
       "change.user": "Change group",
       "change.operator": "Change group",
@@ -935,7 +935,7 @@
     }
   },
   "operation": {
-    "user": "User",
+    "user": "Nutzende",
     "ad": "Advertisement",
     "transfer": "Transfer",
     "fileUpload": "File upload",
