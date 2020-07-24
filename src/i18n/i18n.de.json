@@ -683,7 +683,7 @@
       "totalOpenAmount": "The total amount of all open vouchers would exceed {maxAmount}, as defined in this voucher type. The current total open amount is {currentAmount}.",
       "buy": {
         "amountForPeriod": "Buying on this voucher type is limited by period. Until {date} only {amount} is available for buying.",
-        "openAmount": "The current user exceeds the maximum allowed open amount of {maxAmount} for vouchers of this type. The current open amount is {currentAmount}.",
+        "openAmount": "Der aktuelle Nutzende überschreitet den maximal zulässigen offenen Betrag von {maxAmount} für Gutscheine dieses Typs. Der aktuelle offene Betrag beträgt {currentAmount}.",
         "notAllowedForUser": "Der aktuelle Nutzende darf keine Gutscheine dieses Typs kaufen."
       },
       "redeem": {
@@ -1151,7 +1151,7 @@
   "groupMembership": {
     "current": "Current group",
     "new": "New group",
-    "confirm": "Are you sure to change {user} to group {group}?",
+    "confirm": "Sind Sie sicher, {user} in Gruppe {group} zu ändern?",
     "confirm.aliasOperator": "Are you sure to grant {user} the same permissions as the owner?",
     "done.user": "Die Nutzergruppe wurde geändert",
     "done.operator": "The operator group was changed",
