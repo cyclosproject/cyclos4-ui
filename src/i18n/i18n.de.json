@@ -835,7 +835,7 @@
     "current": "Current group",
     "new": "New group",
     "confirm": "Sind Sie sicher, {user} in Gruppe {group} zu ändern?",
-    "confirm.aliasOperator": "Are you sure to grant {user} the same permissions as the owner?",
+    "confirm.aliasOperator": "Sind Sie sicher, dass Sie {user} die gleichen Berechtigungen erteilen wollen, wie dem Eigentümer?",
     "done.user": "Die Nutzergruppe wurde geändert",
     "done.operator": "The operator group was changed",
     "title": {
