@@ -776,55 +776,55 @@
     "rejectPaymentRequest.done": "Die Zahlungsaufforderung wurde abgelehnt",
     "changePaymentRequestExpiration": "Ablaufdatum ändern",
     "changePaymentRequestExpiration.done": "Das Ablaufdatum der Zahlungsanforderung wurde geändert",
-    "reschedulePaymentRequest": "Reschedule this recurring payment",
-    "reschedulePaymentRequest.done": "The payment request was reschedule",
-    "confirmPaymentRequest": "Are you sure to send this payment request?",
-    "firstOccurrenceIsImmediate": "First occurrence is immediate",
-    "firstInstallmentIsImmediate": "First installment is immediate",
+    "reschedulePaymentRequest": "Diese wiederkehrende Zahlung verschieben",
+    "reschedulePaymentRequest.done": "Die Zahlungsaufforderung wurde verschoben",
+    "confirmPaymentRequest": "Sind Sie sicher, dass Sie diese Zahlungsaufforderung senden wollen?",
+    "firstOccurrenceIsImmediate": "Erstes Vorkommen ist sofort",
+    "firstInstallmentIsImmediate": "Erste Rate ist sofort",
     "error": {
-      "minTime": "A minimum period of time should be awaited to make a payment of this type.",
-      "balance": "Insufficient balance to perform this operation",
-      "upperLimit": "You cannot perform this payment because the upper balance limit of the destination account has been exceeded",
-      "daily.amount": "The maximum daily amount of {amount} was exceeded",
-      "daily.count": "The maximum allowed number of payments per day is {count}",
-      "weekly.amount": "The maximum weekly amount of {amount} was exceeded",
-      "weekly.count": "The maximum allowed number of payments per week is {count}",
-      "monthly.amount": "The maximum monthly amount of {amount} was exceeded",
-      "monthly.count": "The maximum allowed number of payments per month is {count}"
+      "minTime": "Für eine Zahlung dieser Art sollte ein minimaler Zeitraum erwartet werden.",
+      "balance": "Unzureichendes Guthaben um diesen Vorgang auszuführen",
+      "upperLimit": "Sie können diese Zahlung nicht durchführen, da das obere Kontolimit des Zielkontos überschritten wurde",
+      "daily.amount": "Der maximale Tagesbetrag von {amount} wurde überschritten",
+      "daily.count": "Die maximal erlaubte Anzahl von Zahlungen pro Tag ist {count}",
+      "weekly.amount": "Der maximale Wochenbetrag von {amount} wurde überschritten",
+      "weekly.count": "Die maximal erlaubte Anzahl von Zahlungen pro Woche ist {count}",
+      "monthly.amount": "Der maximale monatliche Betrag von {amount} wurde überschritten",
+      "monthly.count": "Die maximal erlaubte Anzahl von Zahlungen pro Monat ist {count}"
     }
   },
   "voucher": {
     "error": {
-      "totalOpenAmount": "The total amount of all open vouchers would exceed {maxAmount}, as defined in this voucher type. The current total open amount is {currentAmount}.",
+      "totalOpenAmount": "Der Gesamtbetrag aller offenen Gutscheine würde {maxAmount} überschreiten, wie in diesem Gutscheintyp definiert. Der aktuell offene Gesamtbetrag beträgt {currentAmount}.",
       "buy": {
-        "amountForPeriod": "Buying on this voucher type is limited by period. Until {date} only {amount} is available for buying.",
+        "amountForPeriod": "Der Kauf dieses Gutscheintyps ist je nach Zeitraum begrenzt. Bis am {date} sind nur {amount} zum Kauf verfügbar.",
         "openAmount": "Der aktuelle Nutzende überschreitet den maximal zulässigen offenen Betrag von {maxAmount} für Gutscheine dieses Typs. Der aktuelle offene Betrag beträgt {currentAmount}.",
         "notAllowedForUser": "Der aktuelle Nutzende darf keine Gutscheine dieses Typs kaufen."
       },
       "redeem": {
-        "status": "This voucher cannot be redeemed. Its current status is: {status}.",
+        "status": "Dieser Gutschein kann nicht eingelöst werden. Sein aktueller Status ist: {status}.",
         "user": "Der aktuelle Nutzende kann Gutscheine dieses Typs nicht einlösen.",
-        "notAllowedYet": "This voucher cannot be redeemed before {beginDate}.",
-        "notAllowedToday": "This voucher cannot be redeemed today. The days allowed for redeeming are: {allowedDays}.",
+        "notAllowedYet": "Dieser Gutschein kann nicht vor dem {beginDate} eingelöst werden.",
+        "notAllowedToday": "Dieser Gutschein kann heute nicht eingelöst werden. Die einlösbaren Tage sind: {allowedDays}.",
         "userBlocked": "Sie wurden durch Überschreitung der Anzahl erlaubter Versuche blockiert."
       }
     },
     "redeem": {
       "error": {
-        "status": "This voucher cannot be redeemed. Its current status is: {status}.",
+        "status": "Dieser Gutschein kann nicht eingelöst werden. Sein aktueller Status ist: {status}.",
         "user": "Der aktuelle Nutzende kann Gutscheine dieses Typs nicht einlösen.",
-        "notAllowedYet": "This voucher cannot be redeemed before {beginDate}.",
-        "notAllowedToday": "This voucher cannot be redeemed today. The days allowed for redeeming are: {allowedDays}.",
+        "notAllowedYet": "Dieser Gutschein kann nicht vor dem {beginDate} eingelöst werden.",
+        "notAllowedToday": "Dieser Gutschein kann heute nicht eingelöst werden. Die einlösbaren Tage sind: {allowedDays}.",
         "userBlocked": "Sie wurden durch Überschreitung der Anzahl erlaubter Versuche blockiert."
       },
-      "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
-      "done": "The voucher was redeemed successfully.",
-      "date": "Redeeming date",
-      "redeemer": "Redeemer",
-      "payment": "Redeem payment"
+      "confirm": "Die Details des Gutscheins sind unten angegeben. Bitte überprüfen Sie sie unten und bestätigen Sie diese Aktion.",
+      "done": "Der Gutschein wurde erfolgreich eingelöst.",
+      "date": "Einlösungsdatum",
+      "redeemer": "Einlöser",
+      "payment": "Zahlung einlösen"
     },
     "status": {
-      "redeemed": "Redeemed",
+      "redeemed": "Eingelöst",
       "pending": "Ausstehend",
       "open": "Open",
       "expired": "Expired",
