@@ -198,7 +198,7 @@
     "operators.operators": "Operatoren",
     "operators.register": "Operator registrieren",
     "operators.groups": "Operatorgruppen",
-    "brokering": "Brokering",
+    "brokering": "Vermittlung",
     "brokering.users": "Nutzende",
     "brokering.register": "Nutzende registrieren",
     "marketplace": "Marktplatz",
@@ -653,7 +653,7 @@
       "userBrokerings": "Broker-Mitglieder"
     },
     "group": "Gruppe",
-    "groupSet": "Group set",
+    "groupSet": "Gruppierung",
     "group.filter": "Gruppen",
     "registrationDate": "Registrierungsdatum",
     "activationDate": "Aktivierungsdatum",
