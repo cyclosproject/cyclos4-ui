@@ -1277,7 +1277,7 @@
     "current": "Current group",
     "new": "New group",
     "confirm": "Sind Sie sicher, {user} in Gruppe {group} zu ändern?",
-    "confirm.aliasOperator": "Are you sure to grant {user} the same permissions as the owner?",
+    "confirm.aliasOperator": "Sind Sie sicher, dass Sie {user} die gleichen Berechtigungen erteilen wollen, wie dem Eigentümer?",
     "done.user": "Die Nutzergruppe wurde geändert",
     "done.operator": "The operator group was changed",
     "title": {
@@ -1406,7 +1406,7 @@
     "discount": "Discount %",
     "endDate": "Published end date",
     "error": {
-      "cannotBuyFromSeller": "At the moment, you are not allowed to buy products from this user. Please contact your administrator.",
+      "cannotBuyFromSeller": "Im Moment sind Sie nicht berechtigt, Produkte von diesem Benutzer zu kaufen. Bitte kontaktieren Sie Ihren Administrator.",
       "cannotProceedToCheckout": "You can not proceed with checkout because some items are unavailable or you do not have enough balance",
       "notEnoughStock": "The quantity demanded cannot be delivered, because the article is almost out of stock."
     },
@@ -1769,8 +1769,8 @@
   "identityProvider": {
     "popup": "Contacting {provider}. Please, wait...",
     "login": "Continue with <b>{provider}</b>",
-    "login.noMatch": "No user found with e-mail {email}. You will need to login with your regular user and password. After logging-in, your {app} account will be automatically linked, so, on the next time, the 'Continue with {provider}' functionality will work directly.",
-    "login.noEmail": "Couldn't read an e-mail address from your {provider} account. You will need to login with your regular user and password. After logging-in, your {app} account will be automatically linked, so, on the next time, the 'Continue with {provider}' functionality will work directly.",
+    "login.noMatch": "Kein Benutzer mit der E-Mail {email} gefunden. Sie müssen sich mit Ihrem regulären Benutzername und Passwort anmelden. Nach der Anmeldung wird Ihr {app} -Konto automatisch verknüpft, also beim nächsten Mal wird die 'Weiter mit {provider}' Funktion direkt funktionieren.",
+    "login.noEmail": "Konnte keine E-Mail-Adresse von Ihrem {provider} -Konto lesen. Sie müssen sich mit Ihrem regulären Benutzername und Passwort anmelden. Nach der Anmeldung wird Ihr {app} -Konto automatisch verknüpft, also beim nächsten Mal wird die 'Weiter mit {provider}' Funktion direkt funktionieren.",
     "registration": "Register faster with your identity provider:",
     "registration.or": "Or",
     "registration.fillForm": "Fill-in the registration form",
@@ -1868,7 +1868,7 @@
       "applicationRestarted": "Application restarted",
       "custom": "Custom",
       "maxGlobalSmsReached": "The global maximum of SMS messages per month has been reached",
-      "maxIncorrectLoginAttempts": "Max incorrect login attempts for invalid user"
+      "maxIncorrectLoginAttempts": "Max falsche Anmeldeversuche für ungültigen Nutzenden"
     }
   },
   "document": {
@@ -2002,8 +2002,8 @@
       "history": "Assigned products history"
     },
     "assigned": {
-      "individual": "Products assigned individually to user",
-      "group": "Products assigned to user's group",
+      "individual": "Individuell zugewiesene Produkte",
+      "group": "Produkte, die der Nutzergruppe zugeordnet sind",
       "groupSet": "Products assigned to group set"
     },
     "assign": "Assign",
@@ -2012,7 +2012,7 @@
     "userAccount": "Nutzerkonto",
     "product": "Product",
     "action": "Action",
-    "productAssigned": "The product was assigned to the user",
+    "productAssigned": "Das Produkt wurde dem Nutzenden zugewiesen",
     "kind": {
       "administrator": "Administrator",
       "broker": "Broker",
