@@ -900,9 +900,9 @@
     "zip": "Postleitzahl"
   },
   "ad": {
-    "name": "Title",
-    "owner": "Publisher",
-    "price": "Price",
+    "name": "Titel",
+    "owner": "Herausgeber",
+    "price": "Preis",
     "category": "Category",
     "categories": "Categories",
     "byOwner": "By {owner}",
