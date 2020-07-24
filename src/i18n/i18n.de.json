@@ -1556,51 +1556,51 @@
         "orderPaymentExpired": "Zahlung der Bestellung abgelaufen",
         "orderPending": "Ausstehende Bestellung",
         "orderPendingAuthorization": "Bestellung wartet auf Zahlungsautorisierung",
-        "orderPendingDeliveryData": "Order awaiting delivery information",
-        "orderProcessedBySeller": "Order accepted by seller",
-        "orderRejectedBySeller": "Order rejected by seller",
-        "buyerSalePending": "Order created",
-        "buyerSaleRejectedBySeller": "Sale order canceled"
+        "orderPendingDeliveryData": "Bestellung wartet auf Lieferinformationen",
+        "orderProcessedBySeller": "Bestellung vom Verkäufer akzeptiert",
+        "orderRejectedBySeller": "Bestellung vom Verkäufer abgelehnt",
+        "buyerSalePending": "Bestellung erstellt",
+        "buyerSaleRejectedBySeller": "Verkaufsbestellung abgebrochen"
       },
       "feedback": {
-        "changed": "Feedback changed",
-        "created": "Feedback received",
-        "expirationReminder": "Feedback reminder",
-        "optional": "Feedback optional",
-        "replyCreated": "Feedback reply received",
-        "required": "Feedback required"
+        "changed": "Bewertung geändert",
+        "created": "Bewertung erhalten",
+        "expirationReminder": "Bewertungserinnerung",
+        "optional": "Bewertung optional",
+        "replyCreated": "Antwort auf Bewertung erhalten",
+        "required": "Bewertung erforderlich"
       },
       "personal": {
         "brokerAssigned": "Broker assigned",
         "brokerUnassigned": "Broker unassigned",
-        "maxSmsPerMonthReached": "Maximum SMS per month reached",
-        "newToken": "New token / card",
-        "newTokenPendingActivation": "New token / card pending activation",
-        "passwordStatusChanged": "Password status changed",
-        "tokenStatusChanged": "Token / card status changed",
+        "maxSmsPerMonthReached": "Maximale SMS pro Monat erreicht",
+        "newToken": "Neues Token / Karte",
+        "newTokenPendingActivation": "Neues Token / Karte Aktivierung ausstehend",
+        "passwordStatusChanged": "Passwort-Status geändert",
+        "tokenStatusChanged": "Token/Kartenstatus geändert",
         "userStatusChanged": "Nutzerstatus geändert"
       },
       "reference": {
-        "changed": "Reference changed",
-        "created": "Reference received"
+        "changed": "Referenz geändert",
+        "created": "Referenz erhalten"
       },
       "seller": {
-        "adAuthorized": "Advertisement authorized",
-        "adExpired": "Advertisement expired",
-        "adLowStock": "Low quantity of article",
-        "adOutOfStock": "Article out of stock",
-        "adQuestionCreated": "New ad question",
-        "adRejected": "Advertisement rejected",
-        "orderCanceled": "Sale order canceled",
-        "orderCreated": "New web shop order",
-        "orderPaymentCanceled": "Sale order payment canceled",
-        "orderPaymentDenied": "Sale order payment denied",
-        "orderPaymentExpired": "Sale order payment expired",
-        "orderPendingAuthorization": "Sale order awaiting payment authorization",
-        "orderPendingDeliveryData": "Delivery information requested",
-        "orderProcessedByBuyer": "Order accepted by buyer",
-        "orderRejectedByBuyer": "Order rejected",
-        "saleProcessedByBuyer": "Sale realized"
+        "adAuthorized": "Werbung autorisiert",
+        "adExpired": "Werbung abgelaufen",
+        "adLowStock": "Geringe Artikelmenge",
+        "adOutOfStock": "Artikel ausverkauft",
+        "adQuestionCreated": "Neue Anzeigenfrage",
+        "adRejected": "Werbung abgelehnt",
+        "orderCanceled": "Verkaufsbestellung abgebrochen",
+        "orderCreated": "Neue Web-Shop Bestellung",
+        "orderPaymentCanceled": "Zahlung der Verkaufsbestellung storniert",
+        "orderPaymentDenied": "Zahlung der Verkaufsbestellung abgelehnt",
+        "orderPaymentExpired": "Zahlung der Verkaufsbestellung abgelaufen",
+        "orderPendingAuthorization": "Verkaufsbestellung wartet auf Zahlungsautorisierung",
+        "orderPendingDeliveryData": "Lieferinformationen angefordert",
+        "orderProcessedByBuyer": "Bestellung vom Käufer akzeptiert",
+        "orderRejectedByBuyer": "Bestellung abgelehnt",
+        "saleProcessedByBuyer": "Verkauf realisiert"
       }
     }
   },
@@ -1628,17 +1628,17 @@
   "connectedUser": {
     "title": "Verbundene Nutzende",
     "mobileTitle": "Verbundene Nutzende",
-    "loggedInAt": "Logged in at",
-    "channel": "Channel",
-    "ipAddress": "IP Address",
+    "loggedInAt": "Angemeldet am",
+    "channel": "Kanal",
+    "ipAddress": "IP-Adresse",
     "disconnect": "Nutzende trennen",
     "viewConnected": {
-      "operator": "View connected operators",
-      "broker": "View connected brokers",
-      "admin": "View connected admins",
-      "member": "View connected members"
+      "operator": "Verknüpfte Operatoren anzeigen",
+      "broker": "Verknüpfte Broker anzeigen",
+      "admin": "Angemeldete Administratoren anzeigen",
+      "member": "Verbundene Mitglieder anzeigen"
     },
-    "showConnected": "Show connected",
+    "showConnected": "Verbundene anzeigen",
     "disconnected": "{user} wurde getrennt"
   },
   "identityProvider": {
@@ -1658,7 +1658,7 @@
     },
     "mobileTitle": {
       "manage.self": "Identity providers",
-      "manage.user": "Identity providers"
+      "manage.user": "Identitätsanbieter"
     },
     "action": {
       "connect": "Connect",
@@ -1711,15 +1711,15 @@
     "text": "Text",
     "mobileTitle": "Nutzerbenachrichtigungen",
     "type": {
-      "title": "Type",
+      "title": "Typ",
       "custom": "Custom",
       "givenVeryBadRefs": "Nutzende hat zu viele \"sehr schlechte\" Referenzen angegeben",
-      "insufficientBalanceForInitialCredit": "Insufficient balance for an account's initial credit",
-      "maxDeviceActivationAttemptsReached": "Max device activation attempts reached",
-      "maxDeviceConfirmationCheckAttemptsReached": "Max device confirmation check attempts reached",
-      "maxTokenActivationAttemptsReached": "Max token activation attempts reached",
+      "insufficientBalanceForInitialCredit": "Unzureichender Kontostand für das Startguthaben eines Kontos",
+      "maxDeviceActivationAttemptsReached": "Maximale Gerät aktivierungsversuche erreicht",
+      "maxDeviceConfirmationCheckAttemptsReached": "Maximale Versuche zur Überprüfung der Gerätebestätigung erreicht",
+      "maxTokenActivationAttemptsReached": "Maximale Token Aktivierungsversuche erreicht",
       "maxUserLocalizationAttemptsReached": "Maximale Anzahl von Lokalisierungsversuchen erreicht",
-      "maxVoucherRedeemAttemptsReached": "Max voucher redeem attempts reached",
+      "maxVoucherRedeemAttemptsReached": "Max zulässige Anzahl der Einlöseversuche für Gutscheine erreicht",
       "moveUserAutomaticallyFailed": "Automatisches Verschieben des Nutzenden zur Gruppe fehlgeschlagen",
       "passwordDisabledByTries": "Password is indefinitely blocked by exceeding attempts",
       "passwordTemporarilyBlocked": "Password temporarily blocked by exceeding attempts",
