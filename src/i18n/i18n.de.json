@@ -1204,10 +1204,10 @@
     "number.landLine": "Festnetztelefon Nummer",
     "phoneNumber": "Telefonnummer",
     "extension": "Festnetz Durchwahl",
-    "extensionValue": "ext. {value}",
-    "numberExtensionValue": "{number} ext. {extension}",
-    "enabledSms": "Enabled for SMS",
-    "verified": "Verified",
+    "extensionValue": "Erw. {value}",
+    "numberExtensionValue": "{number} erw. {extension}",
+    "enabledSms": "Für SMS aktiviert",
+    "verified": "Verifiziert",
     "error": {
       "verify": {
         "expired": "Der Bestätigungscode wurde nicht gesendet oder ist abgelaufen.<br> Bitte senden Sie den Code erneut an Ihr Smartphone und starten Sie den Prozess neu.",
@@ -1216,38 +1216,38 @@
       }
     },
     "verify": {
-      "title": "Verify {number} for SMS",
-      "mobileTitle": "Verification",
+      "title": "Verifiziere {number} für SMS",
+      "mobileTitle": "Verifizierung",
       "code": "Code",
-      "send": "Send",
-      "message": "Click the button above to send the verification code to your phone",
-      "done": "The verification code was sent to {number}"
+      "send": "Senden",
+      "message": "Klicken Sie oben auf den Knopf, um den Bestätigungscode an Ihr Smartphone zu senden",
+      "done": "Der Bestätigungscode wurde an {number} gesendet"
     }
   },
   "address": {
-    "address": "Address",
-    "line1": "Address line 1",
-    "line2": "Address line 2",
-    "buildingNumber": "Building number",
-    "city": "City",
-    "complement": "Complement",
-    "country": "Country",
-    "neighborhood": "Neighborhood",
-    "poBox": "Post-office box",
-    "region": "Region / state",
-    "street": "Street",
-    "zip": "Zip code"
+    "address": "Addresse",
+    "line1": "Adresszeile 1",
+    "line2": "Adresszeile 2",
+    "buildingNumber": "Hausnummer",
+    "city": "Stadt ",
+    "complement": "Adresszusatz",
+    "country": "Land",
+    "neighborhood": "Nachbarschaft",
+    "poBox": "Postfach",
+    "region": "Region/Bundesland:",
+    "street": "Straße",
+    "zip": "Postleitzahl"
   },
   "ad": {
-    "accept": "Accept",
-    "acceptOrder": "Accept order",
-    "addedProduct": "The product was added to cart",
-    "addedProductOrder": "The product was added to the order",
-    "addedProductAlreadyInCart": "The product was added to cart (this item has been added previously to your cart)",
-    "addToCart": "Add to cart",
+    "accept": "Akzeptieren",
+    "acceptOrder": "Bestellung annehmen",
+    "addedProduct": "Das Produkt wurde in den Warenkorb gelegt",
+    "addedProductOrder": "Das Produkt wurde zur Bestellung hinzugefügt",
+    "addedProductAlreadyInCart": "Der Artikel wurde in den Warenkorb gelegt (dieser Artikel wurde zuvor in Ihren Warenkorb hinzugefügt)",
+    "addToCart": "In den Warenkorb legen",
     "adjustedQuantity": {
-      "max": "- the quantity demanded cannot be delivered, because there is a maximum of items you are allowed to have in your shopping cart. The quantity of this article is automatically reduced.<br>",
-      "min": "- the quantity demanded cannot be delivered, because there is a minimum of items you are allowed to have in your shopping cart. The quantity of this article is automatically increased.<br>",
+      "max": "- die geforderte Menge kann nicht geliefert werden, da es ein Maximum an Artikeln gibt, die Sie in Ihrem Warenkorb haben dürfen. Die Menge dieses Artikels wird automatisch reduziert.<br>",
+      "min": "- die geforderte Menge kann nicht geliefert werden, da es ein Minimum an Artikeln gibt, die Sie in Ihrem Warenkorb haben dürfen. Die Menge dieses Artikels wird automatisch erhöht.<br>",
       "stock": "- the quantity demanded cannot be delivered, because the article is almost out of stock. The quantity of this article is automatically reduced.<br>"
     },
     "adInterestCreated": "The ad interest was created",
