@@ -936,12 +936,12 @@
   },
   "operation": {
     "user": "Nutzende",
-    "ad": "Advertisement",
-    "transfer": "Transfer",
-    "fileUpload": "File upload",
-    "redirecting": "You are being redirected...",
+    "ad": "Werbung",
+    "transfer": "Überweisung",
+    "fileUpload": "Datei hochladen",
+    "redirecting": "Sie werden umgeleitet...",
     "mobileTitle": {
-      "result": "Result"
+      "result": "Ergebnis"
     }
   },
   "setting": {
