@@ -910,8 +910,8 @@
     "rootCategory": "Haupt",
     "orderBy": {
       "date": "Last published",
-      "priceAsc": "Lowest price",
-      "priceDesc": "Highest price"
+      "priceAsc": "Niedrigster Preis",
+      "priceDesc": "Höchster Preis"
     },
     "title": {
       "search": "Anzeigen suchen",
@@ -924,14 +924,14 @@
     }
   },
   "notification": {
-    "message": "Message",
-    "title": "Notifications",
-    "mobileTitle": "Notifications",
-    "onlyUnread": "Unread only",
+    "message": "Nachricht",
+    "title": "Benachrichtigungen",
+    "mobileTitle": "Benachrichtigungen",
+    "onlyUnread": "Nur ungelesene",
     "actions": {
-      "remove": "Remove this notification",
-      "removeAll": "Remove all",
-      "markAllRead": "Mark all as read"
+      "remove": "Diese Benachrichtigung entfernen",
+      "removeAll": "Alle entfernen",
+      "markAllRead": "Alle als gelesen markieren"
     }
   },
   "operation": {
