@@ -576,25 +576,25 @@
   "field": {
     "privacy": {
       "name": "Privacy",
-      "private.tooltip": "This field is private. Click to allow other to view it.",
-      "public.tooltip": "This field is visible by others. Click to make it private."
+      "private.tooltip": "Dieses Feld ist privat. Klicken Sie hier, um es anderen anzuzeigen.",
+      "public.tooltip": "Dieses Feld ist für andere sichtbar. Klicken Sie hier, um es privat zu machen."
     },
     "image": {
-      "noImage": "No image",
-      "noImages": "No images",
-      "upload": "Upload a new image",
-      "manage": "Reorder or remove images",
-      "remove": "Remove this image",
-      "manageMessage": "You can drag / drop images to reorder them",
-      "manageAfterConfirm": "After confirmation, please make sure to click the Save button in order for the changes to be applied."
+      "noImage": "Kein Bild",
+      "noImages": "Keine Bilder",
+      "upload": "Neues Bild hochladen",
+      "manage": "Bilder neu anordnen oder entfernen",
+      "remove": "Dieses Bild entfernen",
+      "manageMessage": "Sie können Bilder ziehen / loslassen um Sie neu zu sortieren.",
+      "manageAfterConfirm": "Nach der Bestätigung stellen Sie sicher, dass Sie auf die Schaltfläche Speichern klicken, damit die Änderungen angewendet werden können."
     },
     "file": {
-      "noFile": "No file",
-      "noFiles": "No files",
-      "upload": "Upload a new file",
-      "manage": "Reorder or remove files",
-      "remove": "Remove this file",
-      "manage.message": "You can drag / drop files to reorder them"
+      "noFile": "Keine Datei",
+      "noFiles": "Keine Dateien",
+      "upload": "Neue Datei hochladen",
+      "manage": "Dateien neu anordnen oder entfernen",
+      "remove": "Diese Datei entfernen",
+      "manage.message": "Sie können Dateien ziehen / loslassen um Sie neu zu sortieren."
     },
     "user": {
       "placeholder.allowSearch": "Zum Suchen eingeben",
