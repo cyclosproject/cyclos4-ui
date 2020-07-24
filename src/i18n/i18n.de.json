@@ -562,15 +562,15 @@
     "processFailedOccurrence.message": "Sind Sie sicher, dass Sie jetzt die Nummer {number} bearbeiten möchten?",
     "processFailedOccurrence.done": "Das Vorkommen wurde bearbeitet",
     "error": {
-      "minTime": "A minimum period of time should be awaited to make a payment of this type.",
-      "balance": "Insufficient balance to perform this operation",
-      "upperLimit": "You cannot perform this payment because the upper balance limit of the destination account has been exceeded",
-      "daily.amount": "The maximum daily amount of {amount} was exceeded",
-      "daily.count": "The maximum allowed number of payments per day is {count}",
-      "weekly.amount": "The maximum weekly amount of {amount} was exceeded",
-      "weekly.count": "The maximum allowed number of payments per week is {count}",
-      "monthly.amount": "The maximum monthly amount of {amount} was exceeded",
-      "monthly.count": "The maximum allowed number of payments per month is {count}"
+      "minTime": "Für eine Zahlung dieser Art sollte ein minimaler Zeitraum erwartet werden.",
+      "balance": "Unzureichendes Guthaben um diesen Vorgang auszuführen",
+      "upperLimit": "Sie können diese Zahlung nicht durchführen, da das obere Kontolimit des Zielkontos überschritten wurde",
+      "daily.amount": "Der maximale Tagesbetrag von {amount} wurde überschritten",
+      "daily.count": "Die maximal erlaubte Anzahl von Zahlungen pro Tag ist {count}",
+      "weekly.amount": "Der maximale Wochenbetrag von {amount} wurde überschritten",
+      "weekly.count": "Die maximal erlaubte Anzahl von Zahlungen pro Woche ist {count}",
+      "monthly.amount": "Der maximale monatliche Betrag von {amount} wurde überschritten",
+      "monthly.count": "Die maximal erlaubte Anzahl von Zahlungen pro Monat ist {count}"
     }
   },
   "field": {
