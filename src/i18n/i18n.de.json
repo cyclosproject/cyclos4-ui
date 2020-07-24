@@ -914,13 +914,13 @@
       "priceDesc": "Highest price"
     },
     "title": {
-      "search": "Search advertisements",
+      "search": "Anzeigen suchen",
       "owner": "Anzeigen von {name}"
     },
     "mobileTitle": {
-      "search": "Advertisements",
+      "search": "Werbung",
       "owner": "Anzeigen",
-      "details": "Advertisement"
+      "details": "Werbung"
     }
   },
   "notification": {
