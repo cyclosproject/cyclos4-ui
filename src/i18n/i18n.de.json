@@ -909,7 +909,7 @@
     "showAllCategories": "Alle anzeigen",
     "rootCategory": "Haupt",
     "orderBy": {
-      "date": "Last published",
+      "date": "Zuletzt veröffentlicht",
       "priceAsc": "Niedrigster Preis",
       "priceDesc": "Höchster Preis"
     },
@@ -945,10 +945,10 @@
     }
   },
   "setting": {
-    "title": "Settings",
-    "mobileTitle": "Settings",
-    "theme": "Theme",
-    "theme.light": "Light",
-    "theme.dark": "Dark"
+    "title": "Einstellungen",
+    "mobileTitle": "Einstellungen",
+    "theme": "Thema",
+    "theme.light": "Hell",
+    "theme.dark": "Dunkel"
   }
 }
