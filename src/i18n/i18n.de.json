@@ -750,7 +750,7 @@
   "operatorGroup": {
     "title": {
       "list": "Operator-Gruppen",
-      "view": "Operator group",
+      "view": "Operatorgruppe",
       "new": "Neue Operatorgruppe",
       "edit": "Operatorgruppe bearbeiten",
       "permissions": "Berechtigungen",
@@ -787,9 +787,9 @@
     "notifications": "Benachrichtigungen",
     "viewAdvertisements": "Anzeigen aufrufen",
     "brokering": "Brokering-Operationen ausführen",
-    "runOperations": "Run operations",
-    "created": "The operator group was created",
-    "saved": "The operator group was saved"
+    "runOperations": "Operationen ausführen",
+    "created": "Die Operatorgruppe wurde erstellt",
+    "saved": "Die Operatorgruppe wurde gespeichert"
   },
   "userStatus": {
     "current": "Aktueller Status",
@@ -832,39 +832,39 @@
     "removed": "Entfernt (es werden keine privaten Daten gelöscht)"
   },
   "groupMembership": {
-    "current": "Current group",
-    "new": "New group",
+    "current": "Aktuelle Gruppe",
+    "new": "Neue Gruppe",
     "confirm": "Sind Sie sicher, {user} in Gruppe {group} zu ändern?",
     "confirm.aliasOperator": "Sind Sie sicher, dass Sie {user} die gleichen Berechtigungen erteilen wollen, wie dem Eigentümer?",
     "done.user": "Die Nutzergruppe wurde geändert",
-    "done.operator": "The operator group was changed",
+    "done.operator": "Die Operatorgruppe wurde geändert",
     "title": {
       "group.user": "Nutzergruppe",
-      "group.operator": "Operator group",
+      "group.operator": "Operatorgruppe",
       "change.user": "Nutzergruppe ändern",
-      "change.operator": "Change group",
+      "change.operator": "Gruppe ändern",
       "history.user": "Nutzergruppenverlauf",
-      "history.operator": "Operator group history"
+      "history.operator": "Operatorgruppenverlauf"
     },
     "mobileTitle": {
       "group.user": "Nutzergruppe",
-      "group.operator": "Operator group",
+      "group.operator": "Operatorgruppe",
       "change.user": "Gruppe ändern",
-      "change.operator": "Change group",
+      "change.operator": "Gruppe ändern",
       "history.user": "Gruppenverlauf",
-      "history.operator": "Group history"
+      "history.operator": "Gruppenverlauf"
     }
   },
   "phone": {
-    "mobile": "Mobile phone",
-    "landLine": "Land-line phone",
-    "name.mobile": "Mobile phone name",
-    "name.landLine": "Land-line phone name",
-    "number": "Number",
-    "number.mobile": "Mobile phone number",
-    "number.landLine": "Land-line phone number",
-    "phoneNumber": "Phone number",
-    "extension": "Land-line extension",
+    "mobile": "Smartphone",
+    "landLine": "Festnetztelefon",
+    "name.mobile": "Smartphone Name",
+    "name.landLine": "Festnetztelefon Name",
+    "number": "Nummer",
+    "number.mobile": "Smartphone Nummer",
+    "number.landLine": "Festnetztelefon Nummer",
+    "phoneNumber": "Telefonnummer",
+    "extension": "Festnetz Durchwahl",
     "extensionValue": "ext. {value}",
     "numberExtensionValue": "{number} ext. {extension}",
     "enabledSms": "Enabled for SMS",
