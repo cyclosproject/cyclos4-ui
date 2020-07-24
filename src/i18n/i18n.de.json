@@ -1615,15 +1615,15 @@
     "personal": "Persönlich",
     "payments": "Zahlungen",
     "marketplaceAsBuyer": "Marktplatz als Käufer",
-    "marketplaceAsSeller": "Marketplace as seller",
-    "feedbackAndReferences": "Feedback and references",
-    "smsCount": "You have used {count} of {total} free SMS messages this month.",
-    "paymentNotifications.above": "Only notify payments above",
-    "paymentNotifications.below": "Only notify payments below",
-    "saved": "The notification settings were saved",
-    "enableOrDisable": "Enable or disable {section}",
-    "enableAll": "Enable all",
-    "disableAll": "Disable all"
+    "marketplaceAsSeller": "Marktplatz als Verkäufer",
+    "feedbackAndReferences": "Bewertungen und Referenzen",
+    "smsCount": "Sie haben diesen Monat {count} von {total} kostenlosen SMS-Nachrichten verwendet.",
+    "paymentNotifications.above": "Nur obige Zahlungen benachrichtigen",
+    "paymentNotifications.below": "Nur nachfolgende Zahlungen benachrichtigen",
+    "saved": "Die Benachrichtigungseinstellungen wurden gespeichert",
+    "enableOrDisable": "{section} aktivieren oder deaktivieren",
+    "enableAll": "Alle aktivieren",
+    "disableAll": "Alle deaktivieren"
   },
   "connectedUser": {
     "title": "Verbundene Nutzende",
@@ -1642,42 +1642,42 @@
     "disconnected": "{user} wurde getrennt"
   },
   "identityProvider": {
-    "popup": "Contacting {provider}. Please, wait...",
-    "login": "Continue with <b>{provider}</b>",
+    "popup": "Kontaktiere {provider}. Bitte warten...",
+    "login": "Weiter mit <b>{provider}</b>",
     "login.noMatch": "Kein Benutzer mit der E-Mail {email} gefunden. Sie müssen sich mit Ihrem regulären Benutzername und Passwort anmelden. Nach der Anmeldung wird Ihr {app} -Konto automatisch verknüpft, also beim nächsten Mal wird die 'Weiter mit {provider}' Funktion direkt funktionieren.",
     "login.noEmail": "Konnte keine E-Mail-Adresse von Ihrem {provider} -Konto lesen. Sie müssen sich mit Ihrem regulären Benutzername und Passwort anmelden. Nach der Anmeldung wird Ihr {app} -Konto automatisch verknüpft, also beim nächsten Mal wird die 'Weiter mit {provider}' Funktion direkt funktionieren.",
-    "registration": "Register faster with your identity provider:",
-    "registration.or": "Or",
-    "registration.fillForm": "Fill-in the registration form",
-    "registration.disclaimer": "<b>Disclaimer:</b> None of your {app} data will be shared with these providers, and the only purpose of reading your personal data from them is to fill in the registration form and logging you in after you're registered.",
-    "disclaimer": "<b>Disclaimer</b>: None of your {app} data will be shared with any provider. The only data read from the providers are your display name and e-mail, with the sole purpose to logging-in faster on {app}.",
-    "noResults": "There are not identity providers added yet.",
+    "registration": "Schnellere Registrierung bei Ihrem Identitätsanbieter:",
+    "registration.or": "oder",
+    "registration.fillForm": "Füllen Sie das Anmeldeformular aus",
+    "registration.disclaimer": "<b>Disclaimer:</b> Keine Ihrer {app} Daten wird mit diesen Anbietern geteilt und der einzige Zweck, Ihre persönlichen Daten von ihnen zu lesen, ist, das Anmeldeformular auszufüllen und Sie nach Ihrer Registrierung einzuloggen.",
+    "disclaimer": "<b>Haftungsausschluss</b>: Keine Ihrer {app} Daten wird an irgendeinen Anbieter weitergegeben. Die einzigen Daten, die von den Anbietern gelesen werden, sind Ihr Anzeigename und Ihre E-Mail, mit dem einzigen Zweck, sich auf {app} schneller einzuloggen.",
+    "noResults": "Es wurden noch keine Identitätsanbieter hinzugefügt.",
     "title": {
-      "manage.self": "Manage your identity providers",
+      "manage.self": "Verwalten Sie Ihre Identitätsanbieter",
       "manage.user": "Verwalten von Nutzeridentitätern"
     },
     "mobileTitle": {
-      "manage.self": "Identity providers",
+      "manage.self": "Identitätsanbieter",
       "manage.user": "Identitätsanbieter"
     },
     "action": {
-      "connect": "Connect",
-      "connect.done": "You can now login as {name} using {provider}",
-      "disconnect": "Disconnect",
-      "disconnect.confirm": "This will disable the 'Continue with {provider}' functionality. Are you sure?",
-      "disconnect.done": "The login with {provider} has been disabled"
+      "connect": "Verbinden",
+      "connect.done": "Sie können sich jetzt als {name} mit {provider} anmelden",
+      "disconnect": "Verbindung trennen",
+      "disconnect.confirm": "Dies wird die Funktion 'Mit {provider} fortfahren' deaktivieren. Sind Sie sicher?",
+      "disconnect.done": "Der Login mit {provider} wurde deaktiviert"
     },
-    "connectedOn": "Connected on {date}",
-    "disconnected": "Disconnected"
+    "connectedOn": "Verbunden am {date}",
+    "disconnected": "Verbindung getrennt"
   },
   "operation": {
     "user": "Nutzende",
-    "ad": "Advertisement",
-    "transfer": "Transfer",
-    "fileUpload": "File upload",
-    "redirecting": "You are being redirected...",
+    "ad": "Werbung",
+    "transfer": "Überweisung",
+    "fileUpload": "Datei hochladen",
+    "redirecting": "Sie werden umgeleitet...",
     "mobileTitle": {
-      "result": "Result"
+      "result": "Ergebnis"
     }
   },
   "setting": {
@@ -1770,51 +1770,51 @@
       "assign": "Assign"
     },
     "mobileTitle": {
-      "view": "{0} details"
+      "view": "{0} Details"
     },
     "action": {
       "activate": "Aktivieren",
-      "assign": "Assign",
-      "block": "Block",
-      "cancel": "Cancel",
-      "changeDeadline": "Change deadline",
-      "changeExpiry": "Change expiry",
+      "assign": "Zuweisen",
+      "block": "Blockieren",
+      "cancel": "Abbrechen",
+      "changeDeadline": "Abgabetermin ändern",
+      "changeExpiry": "Ablaufdatum ändern",
       "unblock": "Entsperren",
       "done": {
-        "activated": "The token was activated",
-        "assigned": "The token was assigned",
-        "blocked": "The token was blocked",
-        "canceled": "The token was canceled",
-        "created": "The token was created",
-        "deadlineChanged": "The token deadline was changed",
-        "expiryChanged": "The token expiry was changed",
-        "unblocked": "The token was unblocked"
+        "activated": "Das Token wurde aktiviert",
+        "assigned": "Das Token wurde zugewiesen",
+        "blocked": "Der Token wurde gesperrt",
+        "canceled": "Das Token wurde abgebrochen",
+        "created": "Der Token wurde erstellt",
+        "deadlineChanged": "Der Token Deadline wurde geändert",
+        "expiryChanged": "Das Ablaufdatum des Token wurde geändert",
+        "unblocked": "Das Token wurde entsperrt"
       },
       "message": {
-        "cancel": "You are about to cancel the token. Be aware that this is a permanent action. Are you sure you want to change the token status to canceled?"
+        "cancel": "Sie sind dabei, den Token zu stornieren. Bitte beachten Sie, dass dies eine permanente Aktion ist. Sind Sie sicher, dass Sie den Token-Status abbrechen wollen?"
       }
     },
     "status": {
-      "activationExpired": "Activation expired",
+      "activationExpired": "Aktivierung abgelaufen",
       "active": "Aktiv",
-      "blocked": "Blocked",
-      "canceled": "Canceled",
-      "expired": "Expired",
-      "pending": "Pending activation",
-      "unassigned": "Unassigned"
+      "blocked": "Blockiert",
+      "canceled": "Abgebrochen",
+      "expired": "Abgelaufen",
+      "pending": "Ausstehende Aktivierung",
+      "unassigned": "Nicht zugeordnet"
     },
-    "value": "Value",
-    "label": "Label",
-    "activationDeadline": "Activation deadline",
-    "noDeadline": "No deadline",
-    "expiryDate": "Expiry date",
-    "noExpiryDate": "Without expiry",
-    "activationDate": "Activation date",
-    "creationDate": "Creation date",
-    "activationBeginDate": "Activation begin date",
-    "activationEndDate": "Activation end date",
-    "expiryBeginDate": "Expiry begin date",
-    "expiryEndDate": "Expiry end date",
-    "unassigned": "Unassigned"
+    "value": "Wert",
+    "label": "Bezeichnung",
+    "activationDeadline": "Aktivierungsfrist",
+    "noDeadline": "Keine Frist",
+    "expiryDate": "Ablaufdatum",
+    "noExpiryDate": "Ohne Ablaufdatum",
+    "activationDate": "Aktivierungsdatum",
+    "creationDate": "Erstellungsdatum",
+    "activationBeginDate": "Aktivierungsdatum",
+    "activationEndDate": "Aktivierungsdatum",
+    "expiryBeginDate": "Ablaufdatum",
+    "expiryEndDate": "Ablaufdatum",
+    "unassigned": "Nicht zugeordnet"
   }
 }
