@@ -1176,7 +1176,7 @@
   "operatorGroup": {
     "title": {
       "list": "Operator-Gruppen",
-      "view": "Operator group",
+      "view": "Operatorgruppe",
       "new": "Neue Operatorgruppe",
       "edit": "Operatorgruppe bearbeiten",
       "permissions": "Berechtigungen",
@@ -1212,10 +1212,10 @@
     "editOwnProfile": "Eigenes Profil bearbeiten",
     "notifications": "Benachrichtigungen",
     "viewAdvertisements": "Anzeigen aufrufen",
-    "brokering": "Perform brokering operations",
-    "runOperations": "Run operations",
-    "created": "The operator group was created",
-    "saved": "The operator group was saved"
+    "brokering": "Brokering-Operationen ausführen",
+    "runOperations": "Operationen ausführen",
+    "created": "Die Operatorgruppe wurde erstellt",
+    "saved": "Die Operatorgruppe wurde gespeichert"
   },
   "userStatus": {
     "current": "Aktueller Status",
@@ -1258,77 +1258,77 @@
     "removed": "Entfernt (es werden keine privaten Daten gelöscht)"
   },
   "agreements": {
-    "agreement": "Agreement",
-    "required": "Required agreements",
-    "optional": "Optional agreements",
-    "optional.saved": "The selected agreements have been saved",
-    "accepted": "Accepted",
-    "noAccepted": "No accepted agreements",
+    "agreement": "Vereinbarung",
+    "required": "Erforderliche Vereinbarungen",
+    "optional": "Optionale Vereinbarungen",
+    "optional.saved": "Die ausgewählten Vereinbarungen wurden gespeichert",
+    "accepted": "Akzeptiert",
+    "noAccepted": "Keine akzeptierten Vereinbarungen",
     "title": {
-      "accepted": "Accepted agreements",
-      "history": "Agreements history"
+      "accepted": "Akzeptierte Vereinbarungen",
+      "history": "Vereinbarungsverlauf"
     },
     "mobileTitle": {
-      "accepted": "Agreements",
-      "history": "Agreements history"
+      "accepted": "Vereinbarungen",
+      "history": "Vereinbarungsverlauf"
     }
   },
   "groupMembership": {
-    "current": "Current group",
-    "new": "New group",
+    "current": "Aktuelle Gruppe",
+    "new": "Neue Gruppe",
     "confirm": "Sind Sie sicher, {user} in Gruppe {group} zu ändern?",
     "confirm.aliasOperator": "Sind Sie sicher, dass Sie {user} die gleichen Berechtigungen erteilen wollen, wie dem Eigentümer?",
     "done.user": "Die Nutzergruppe wurde geändert",
-    "done.operator": "The operator group was changed",
+    "done.operator": "Die Operatorgruppe wurde geändert",
     "title": {
       "group.user": "Nutzergruppe",
-      "group.operator": "Operator group",
+      "group.operator": "Operatorgruppe",
       "change.user": "Nutzergruppe ändern",
-      "change.operator": "Change group",
+      "change.operator": "Gruppe ändern",
       "history.user": "Nutzergruppenverlauf",
-      "history.operator": "Operator group history"
+      "history.operator": "Operatorgruppenverlauf"
     },
     "mobileTitle": {
       "group.user": "Nutzergruppe",
-      "group.operator": "Operator group",
+      "group.operator": "Operatorgruppe",
       "change.user": "Gruppe ändern",
-      "change.operator": "Change group",
+      "change.operator": "Gruppe ändern",
       "history.user": "Gruppenverlauf",
-      "history.operator": "Group history"
+      "history.operator": "Gruppenverlauf"
     }
   },
   "brokers": {
     "title": {
-      "list": "Brokers",
-      "new": "Add broker",
-      "history": "Brokers history"
+      "list": "Broker",
+      "new": "Broker hinzufügen",
+      "history": "Broker Verlauf"
     },
     "mobileTitle": {
-      "list": "Brokers",
-      "new": "Add broker",
-      "history": "Brokers history"
+      "list": "Broker",
+      "new": "Broker hinzufügen",
+      "history": "Broker Verlauf"
     },
-    "mainBroker": "Main broker",
-    "setMain": "Set main",
+    "mainBroker": "Hauptbroker",
+    "setMain": "Als Hauptbroker festlegen",
     "broker": "Broker",
-    "brokerAdded": "The broker has been added successfully",
-    "administration": "The administration",
+    "brokerAdded": "Der Broker wurde erfolgreich hinzugefügt",
+    "administration": "Die Verwaltung",
     "action": {
-      "add": "Added as broker",
-      "remove": "Removed a broker",
-      "setMain": "Set as main"
+      "add": "Als Broker hinzugefügt",
+      "remove": "Broker entfernt",
+      "setMain": "Als Haupt festlegen"
     }
   },
   "phone": {
-    "mobile": "Mobile phone",
-    "landLine": "Land-line phone",
-    "name.mobile": "Mobile phone name",
-    "name.landLine": "Land-line phone name",
-    "number": "Number",
-    "number.mobile": "Mobile phone number",
-    "number.landLine": "Land-line phone number",
-    "phoneNumber": "Phone number",
-    "extension": "Land-line extension",
+    "mobile": "Smartphone",
+    "landLine": "Festnetztelefon",
+    "name.mobile": "Smartphone Name",
+    "name.landLine": "Festnetztelefon Name",
+    "number": "Nummer",
+    "number.mobile": "Smartphone Nummer",
+    "number.landLine": "Festnetztelefon Nummer",
+    "phoneNumber": "Telefonnummer",
+    "extension": "Festnetz Durchwahl",
     "extensionValue": "ext. {value}",
     "numberExtensionValue": "{number} ext. {extension}",
     "enabledSms": "Enabled for SMS",
