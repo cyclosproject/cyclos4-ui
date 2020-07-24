@@ -271,7 +271,7 @@
     "operators.operators": "Operatoren",
     "operators.register": "Operator registrieren",
     "operators.groups": "Operatorgruppen",
-    "brokering": "Brokering",
+    "brokering": "Vermittlung",
     "brokering.users": "Nutzende",
     "brokering.register": "Nutzende registrieren",
     "marketplace": "Marktplatz",
@@ -1053,9 +1053,9 @@
     },
     "group": "Gruppe",
     "broker": "Broker",
-    "brokers": "Brokers",
+    "brokers": "Broker",
     "groups": "Gruppen",
-    "groupSet": "Group set",
+    "groupSet": "Gruppierung",
     "group.filter": "Gruppen",
     "registrationDate": "Registrierungsdatum",
     "activationDate": "Aktivierungsdatum",
@@ -1824,21 +1824,21 @@
   "record": {
     "createdBy": "Erstellt von",
     "lastModifiedBy": "Zuletzt geändert von",
-    "lastModificationDate": "Last modified at",
+    "lastModificationDate": "Zuletzt geändert am",
     "action": "{type} ({count})",
-    "fields": "Fields",
+    "fields": "Felder",
     "title": {
-      "details": "{name} details",
-      "new": "Create new {name}",
-      "edit": "Edit {name}"
+      "details": "{name} Details",
+      "new": "Neuer {name} erstellen",
+      "edit": "{name} bearbeiten"
     },
     "mobileTitle": {
-      "details": "{name} details",
-      "new": "Create new {name}",
-      "edit": "Edit {name}"
+      "details": "{name} Details",
+      "new": "Neuer {name} erstellen",
+      "edit": "{name} bearbeiten"
     },
-    "created": "The {name} was created",
-    "saved": "The {name} was saved"
+    "created": "{name} wurde erstellt",
+    "saved": "{name} wurde gespeichert"
   },
   "userAlert": {
     "title": "Suche Nutzende-Warnungen",
@@ -1846,7 +1846,7 @@
     "mobileTitle": "Nutzerbenachrichtigungen",
     "type": {
       "title": "Typ",
-      "custom": "Custom",
+      "custom": "Benutzerdefiniert",
       "givenVeryBadRefs": "Nutzende hat zu viele \"sehr schlechte\" Referenzen angegeben",
       "insufficientBalanceForInitialCredit": "Unzureichender Kontostand für das Startguthaben eines Kontos",
       "maxDeviceActivationAttemptsReached": "Maximale Gerät aktivierungsversuche erreicht",
@@ -1863,45 +1863,45 @@
   },
   "systemAlert": {
     "type": {
-      "accountFeeChargedNoFailures": "Account fee has finished without any failures",
-      "accountFeeChargedWithFailures": "Account fee has finished with at least one failure",
-      "applicationRestarted": "Application restarted",
-      "custom": "Custom",
-      "maxGlobalSmsReached": "The global maximum of SMS messages per month has been reached",
+      "accountFeeChargedNoFailures": "Kontogebühr ohne Fehler beendet",
+      "accountFeeChargedWithFailures": "Kontogebühr wurde mit mindestens einem Fehler beendet",
+      "applicationRestarted": "Anwendung neu gestartet",
+      "custom": "Benutzerdefiniert",
+      "maxGlobalSmsReached": "Das globale Maximum an SMS Nachrichten pro Monat wurde erreicht.",
       "maxIncorrectLoginAttempts": "Max falsche Anmeldeversuche für ungültigen Nutzenden"
     }
   },
   "document": {
     "title": {
-      "new": "Create new document",
-      "view": "Document details",
-      "edit": "Document details",
-      "list": "Documents",
-      "search": "Documents"
+      "new": "Neues Dokument erstellen",
+      "view": "Dokument Details",
+      "edit": "Dokument Details",
+      "list": "Dokumente",
+      "search": "Dokumente"
     },
     "mobileTitle": {
-      "new": "Create new document",
-      "view": "Document details",
-      "edit": "Document details",
-      "list": "Documents",
-      "search": "Documents"
+      "new": "Neues Dokument erstellen",
+      "view": "Dokument Details",
+      "edit": "Dokument Details",
+      "list": "Dokumente",
+      "search": "Dokumente"
     },
     "enable": "Aktivieren",
     "userVisible": "Sichtbar für Mitglieder",
-    "brokerVisible": "Visible for brokers",
-    "brokerManageable": "Manageable by broker",
-    "replaceDocument": "Replace document",
-    "newDocument": "New document",
-    "document": "Document",
-    "savedSuccessfully": "Saved successfully",
-    "process": "Process dynamic document",
-    "category": "Category"
+    "brokerVisible": "Für Broker sichtbar",
+    "brokerManageable": "Kann von Broker verwaltet werden",
+    "replaceDocument": "Dokument ersetzen",
+    "newDocument": "Neues Dokument",
+    "document": "Dokument",
+    "savedSuccessfully": "Erfolgreich gespeichert",
+    "process": "Dynamisches Dokument bearbeiten",
+    "category": "Kategorie"
   },
   "token": {
     "title": {
-      "new": "{0} details",
-      "view": "{0} details",
-      "assign": "Assign"
+      "new": "{0} Details",
+      "view": "{0} Details",
+      "assign": "Zuweisen"
     },
     "mobileTitle": {
       "view": "{0} Details"
@@ -1961,62 +1961,62 @@
     "title": {
       "search": "Referenzen",
       "view": "Referenz Details",
-      "set": "Set new reference",
-      "edit": "Edit given reference"
+      "set": "Neue Referenz festlegen",
+      "edit": "Angegebene Referenz bearbeiten"
     },
     "mobileTitle": {
-      "search": "References",
-      "view": "Reference details",
-      "set": "Set new reference",
-      "edit": "Edit given reference"
+      "search": "Referenzen",
+      "view": "Referenz Details",
+      "set": "Neue Referenz festlegen",
+      "edit": "Angegebene Referenz bearbeiten"
     },
     "direction": {
-      "direction": "Direction",
-      "received": "Received",
-      "given": "Given"
+      "direction": "Richtung",
+      "received": "Erhalten",
+      "given": "Gegeben"
     },
     "level": {
       "level": "Level",
-      "bad": "Bad",
-      "veryBad": "Very bad",
-      "good": "Good",
-      "veryGood": "Very good",
+      "bad": "Schlecht",
+      "veryBad": "Sehr schlecht",
+      "good": "Gut",
+      "veryGood": "Sehr gut",
       "neutral": "Neutral"
     },
-    "from": "From",
-    "to": "To",
-    "notGiven": "Not given yet",
-    "value": "Value",
-    "allTime": "All time",
-    "last30Days": "Last 30 days",
-    "total": "Total",
-    "percentagePositive": "Percentage positive"
+    "from": "Von",
+    "to": "An",
+    "notGiven": "Noch nicht gegeben",
+    "value": "Wert",
+    "allTime": "Zeitlich unbegrenzt",
+    "last30Days": "Letzten 30 Tage",
+    "total": "Insgesamt",
+    "percentagePositive": "Prozentsatz positiv"
   },
   "product": {
     "title": {
-      "list": "Assigned products",
-      "history": "Assigned products history"
+      "list": "Zugeordnete Produkte",
+      "history": "Zugewiesene Produkte Verlauf"
     },
     "mobileTitle": {
-      "list": "Assigned products",
-      "history": "Assigned products history"
+      "list": "Zugeordnete Produkte",
+      "history": "Zugewiesene Produkte Verlauf"
     },
     "assigned": {
       "individual": "Individuell zugewiesene Produkte",
       "group": "Produkte, die der Nutzergruppe zugeordnet sind",
-      "groupSet": "Products assigned to group set"
+      "groupSet": "Zur Gruppe zugeordnete Produkte"
     },
-    "assign": "Assign",
-    "unassign": "Unassign",
-    "assignIndividualProduct": "Assign individual product",
+    "assign": "Zuweisen",
+    "unassign": "Zuweisung aufheben",
+    "assignIndividualProduct": "Einzelnes Produkt zuweisen",
     "userAccount": "Nutzerkonto",
-    "product": "Product",
-    "action": "Action",
+    "product": "Produkt",
+    "action": "Aktion",
     "productAssigned": "Das Produkt wurde dem Nutzenden zugewiesen",
     "kind": {
       "administrator": "Administrator",
       "broker": "Broker",
-      "member": "Member"
+      "member": "Mitglied"
     }
   }
 }
