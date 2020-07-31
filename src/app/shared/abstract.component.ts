@@ -1,4 +1,4 @@
-import { ElementRef, Injector, OnDestroy, OnInit, Type } from '@angular/core';
+import { ElementRef, Injector, OnDestroy, OnInit, Type, Directive } from '@angular/core';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
 import { I18n } from 'app/i18n/i18n';
@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 /**
  * Base class for any component
  */
+@Directive()
 export abstract class AbstractComponent implements OnInit, OnDestroy {
 
   // Export ApiHelper to templates

@@ -1,4 +1,4 @@
-import { Injector } from '@angular/core';
+import { Injector, Directive } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthHelperService } from 'app/core/auth-helper.service';
@@ -23,6 +23,7 @@ import { StateManager } from '../core/state-manager';
  * MUST call the super implementation too, or the component state
  * may become inconsistent.
  */
+@Directive()
 export abstract class BaseComponent
   extends AbstractComponent {
 
