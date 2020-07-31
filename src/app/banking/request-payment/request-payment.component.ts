@@ -13,7 +13,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
-import { cloneDeep, isEqual } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 

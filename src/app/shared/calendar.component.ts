@@ -6,7 +6,7 @@ import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, Va
 import { ISO_DATE } from 'app/core/format.service';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { DateConstraint, dateConstraintAsMoment } from 'app/shared/date-constraint';
-import { chunk, range } from 'lodash';
+import { chunk, range } from 'lodash-es';
 import moment, { Moment } from 'moment-mini-ts';
 import { BehaviorSubject } from 'rxjs';
 
@@ -127,8 +127,8 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
   }
 
   constructor(injector: Injector,
-              @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-              private changeDetector: ChangeDetectorRef,
+    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
+    private changeDetector: ChangeDetectorRef,
   ) {
     super(injector, controlContainer);
   }

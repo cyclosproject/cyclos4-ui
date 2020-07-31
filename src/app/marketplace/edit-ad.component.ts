@@ -8,7 +8,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
 import { Menu } from 'app/shared/menu';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';

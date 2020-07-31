@@ -9,7 +9,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { ResultType } from 'app/shared/result-type';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 

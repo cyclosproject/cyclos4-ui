@@ -8,7 +8,7 @@ import { RecordsService } from 'app/api/services';
 import { RecordHelperService } from 'app/core/records-helper.service';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { Observable } from 'rxjs';
 
 @Component({

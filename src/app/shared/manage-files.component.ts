@@ -5,7 +5,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { StoredFile } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 export class ManageFilesResult {

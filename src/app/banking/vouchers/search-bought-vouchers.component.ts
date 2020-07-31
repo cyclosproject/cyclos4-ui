@@ -6,7 +6,7 @@ import { VouchersService } from 'app/api/services';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { FieldOption } from 'app/shared/field-option';
 import { Menu } from 'app/shared/menu';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { Observable } from 'rxjs';
 
 type UserVouchersSearchParams = UserVouchersQueryFilters & { user: string };

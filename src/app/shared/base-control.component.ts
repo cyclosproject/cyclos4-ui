@@ -2,7 +2,7 @@ import { Directive, EventEmitter, Injector, Input, OnInit, Output } from '@angul
 import { ControlContainer, ControlValueAccessor, FormControl } from '@angular/forms';
 import { AbstractComponent } from 'app/shared/abstract.component';
 import { empty } from 'app/shared/helper';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 import { Observable } from 'rxjs';
 
 /**
@@ -25,7 +25,7 @@ export abstract class BaseControlComponent<T>
   protected validatorChange = () => { };
 
   constructor(injector: Injector,
-              protected controlContainer: ControlContainer) {
+    protected controlContainer: ControlContainer) {
     super(injector);
   }
 

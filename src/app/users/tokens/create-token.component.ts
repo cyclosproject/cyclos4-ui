@@ -4,7 +4,7 @@ import { OperatorResult, TokenType, User } from 'app/api/models';
 import { OperatorsService, TokensService } from 'app/api/services';
 import { BaseComponent } from 'app/shared/base.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 

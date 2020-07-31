@@ -4,7 +4,7 @@ import { DocumentDataForEdit, DocumentDataForNew, DocumentEdit, DocumentManage }
 import { DocumentsService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { downloadResponse, validateBeforeSubmit } from 'app/shared/helper';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 /**

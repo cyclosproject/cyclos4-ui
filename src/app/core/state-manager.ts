@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { BehaviorSubject, Observable, of as observableOf, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 

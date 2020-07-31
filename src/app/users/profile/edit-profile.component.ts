@@ -16,7 +16,7 @@ import { empty, isTouched, locateControl, scrollTop, validateBeforeSubmit } from
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
 import { Menu } from 'app/shared/menu';
 import { VerifyPhoneComponent } from 'app/users/profile/verify-phone.component';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 import { first, take } from 'rxjs/operators';

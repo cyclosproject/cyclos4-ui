@@ -6,7 +6,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
 import { ImageProperties } from 'app/shared/image-properties';
-import { endsWith } from 'lodash';
+import { endsWith } from 'lodash-es';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 /**

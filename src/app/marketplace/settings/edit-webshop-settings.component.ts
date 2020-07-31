@@ -5,7 +5,7 @@ import { WebshopSettingsService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 
 /**
  * Edit settings for webshop products

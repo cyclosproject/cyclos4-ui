@@ -11,7 +11,7 @@ import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
 
 export type PaymentStep = 'confirm' | 'done';

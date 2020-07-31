@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnIn
 import { FormControl } from '@angular/forms';
 import { Image } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 export class ManageImagesResult {

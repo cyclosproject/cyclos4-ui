@@ -9,7 +9,7 @@ import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { empty } from 'app/shared/helper';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { ActiveMenu, Menu } from 'app/shared/menu';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
 
 export type CheckoutStep = 'delivery' | 'address' | 'payment' | 'confirm';

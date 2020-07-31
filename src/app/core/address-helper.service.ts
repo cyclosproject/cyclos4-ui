@@ -4,7 +4,7 @@ import { Address, AddressConfiguration, AddressConfigurationForUserProfile, Addr
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { I18n } from 'app/i18n/i18n';
 import { empty } from 'app/shared/helper';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 
 /**
  * Helper service for handling address fields

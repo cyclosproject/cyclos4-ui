@@ -13,8 +13,8 @@ import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
-import { cloneDeep } from 'lodash';
-import { isEqual } from 'lodash';
+import { cloneDeep } from 'lodash-es';
+import { isEqual } from 'lodash-es';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 

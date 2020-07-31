@@ -13,7 +13,7 @@ import { DarkMapStyles, LightMapStyles } from 'app/shared/google-map-styles';
 import { blank, ElementReference, empty, htmlCollectionToArray } from 'app/shared/helper';
 import { PageLayoutComponent } from 'app/shared/page-layout.component';
 import { Escape, ShortcutService } from 'app/shared/shortcut.service';
-import { isEqual, trim } from 'lodash';
+import { isEqual, trim } from 'lodash-es';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
