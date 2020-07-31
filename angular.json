@@ -52,7 +52,16 @@
               "src/styles.scss",
               "node_modules/font-awesome/css/font-awesome.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "hammerjs",
+              "downloadjs",
+              "autosize",
+              "rangy",
+              "@zxing/library",
+              "big.js",
+              "lscache"
+            ]
           },
           "configurations": {
             "production": {
