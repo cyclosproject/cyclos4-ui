@@ -623,6 +623,11 @@ export class MenuService {
           'compare_arrows', this.i18n.menu.bankingTransfersOverview);
       }
 
+      if ((banking.scheduledPayments || {}).view && banking.searchGeneralScheduledPayments) {
+        add(Menu.SCHEDULED_PAYMENTS_OVERVIEW, `/banking/installments-overview`,
+          'schedule', this.i18n.menu.bankingScheduledPaymentsOverview);
+      }
+
       if (paymentRequests.view && role === RoleEnum.ADMINISTRATOR && banking.searchGeneralPaymentRequests) {
         add(Menu.PAYMENT_REQUESTS_OVERVIEW, `/banking/payment-requests`, 'payment', this.i18n.menu.bankingPaymentRequestsOverview);
       }

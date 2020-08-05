@@ -24,6 +24,7 @@ import { ReceiveQrPaymentStepFormComponent } from 'app/banking/ticket/receive-qr
 import { ReceiveQrPaymentStepPendingComponent } from 'app/banking/ticket/receive-qr-payment-step-pending.component';
 import { ReceiveQrPaymentComponent } from 'app/banking/ticket/receive-qr-payment.component';
 import { SearchOwnerInstallmentsComponent } from 'app/banking/transactions/search-owner-installments.component';
+import { SearchInstallmentsComponent } from 'app/banking/transactions/search-installments.component';
 import { SearchOwnerTransactionsComponent } from 'app/banking/transactions/search-owner-transactions.component';
 import { SearchTransactionsOverviewComponent } from 'app/banking/transactions/search-transactions-overview.component';
 import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view-authorization-history.component';
@@ -63,6 +64,7 @@ import { ViewVoucherComponent } from './vouchers/view-voucher.component';
     SearchOwnerTransactionsComponent,
     SearchTransactionsOverviewComponent,
     SearchOwnerInstallmentsComponent,
+    SearchInstallmentsComponent,
     ViewTransactionComponent,
 
     PaymentComponent,

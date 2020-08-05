@@ -1,0 +1,111 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content mode="filters" [heading]="i18n.transaction.title.scheduled"
+    [mobileHeading]="i18n.transaction.mobileTitle.scheduled"
+    [headingActions]="headingActions$ | async">
+    <form [formGroup]="form" class="filters-form">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            formControlName="status" [label]="i18n.general.status"
+            [fieldOptions]="statusOptions">
+          </single-selection-field>
+        </div>
+        <ng-container *ngIf="data.accountTypes?.length > 1">
+          <!-- Force a line break on sm and up -->
+          <div class="w-100 d-none d-sm-block"></div>
+          <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="fromAccountType"
+              [emptyOption]="i18n.general.notApplied"
+              [label]="i18n.transaction.fromAccount">
+              <field-option *ngFor="let at of data.accountTypes"
+                [value]="at.id" [internalName]="at.internalName" [id]="at.id"
+                [text]="at.name">
+              </field-option>
+            </single-selection-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="toAccountType"
+              [emptyOption]="i18n.general.notApplied"
+              [label]="i18n.transaction.toAccount">
+              <field-option *ngFor="let at of data.accountTypes"
+                [value]="at.id" [internalName]="at.internalName" [id]="at.id"
+                [text]="at.name">
+              </field-option>
+            </single-selection-field>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="(moreFilters$ | async)">
+          <div *ngIf="hasTransactionNumber" class="col-12 col-md-6">
+            <input-field labelPosition="side"
+              formControlName="transactionNumber"
+              [mask]="transactionNumberPattern"
+              [label]="i18n.transaction.number"></input-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <user-field labelPosition="side" formControlName="user"
+              [label]="i18n.general.user">
+            </user-field>
+          </div>
+          <!-- Force a line break on sm and up -->
+          <div class="w-100 d-none d-sm-block"></div>
+          <div class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="periodBegin"
+              [label]="i18n.general.beginDate" minDate="past5"
+              maxDate="future5" fieldSize="full">
+            </date-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="periodEnd"
+              [label]="i18n.general.endDate" minDate="past5" maxDate="future5"
+              fieldSize="full">
+            </date-field>
+          </div>
+        </ng-container>
+      </div>
+    </form>
+  </page-content>
+
+  <results-layout resultType="list" [results]="results$ | async"
+    (update)="update($event)" [toLink]="toLink" [rendering$]="rendering$">
+
+    <mobile-result *mobileResult="let row" [date]="row.date"
+      [amount]="row.amount"
+      [avatarImage]="bankingHelper.avatarImage(row.transaction.related)"
+      [avatarIcon]="bankingHelper.avatarIcon(row.transaction.related)"
+      [currency]="currencies.get(row.currency)" forceSign>
+      <div class="cell-text cell-main">
+        {{ bankingHelper.subjectName(row.transaction.related) }}
+      </div>
+    </mobile-result>
+
+    <table *resultTable class="table table-hover cursor-pointer">
+      <thead>
+        <th>{{ i18n.transaction.dueDate }}</th>
+        <th>{{ i18n.transaction.from }}</th>
+        <th>{{ i18n.transaction.to }}</th>
+        <th>{{ i18n.transaction.installmentNumber }}</th>
+        <th class="amount">{{ i18n.transaction.amount }}</th>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of (results$ | async)?.results">
+          <tr
+            (click)="router.navigate(bankingHelper.transactionPath(row.transaction))">
+            <td>{{ row.dueDate | date }}</td>
+            <td>{{ bankingHelper.subjectName(row.transaction.from) }}</td>
+            <td>{{ bankingHelper.subjectName(row.transaction.to) }}</td>
+            <td>{{ number(row) }}</td>
+            <td class="amount">
+              {{ row.amount | currency:currencies.get(row.transaction.currency) }}
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </results-layout>
+</ng-template>

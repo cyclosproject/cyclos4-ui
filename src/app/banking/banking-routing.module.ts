@@ -27,6 +27,7 @@ import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-red
 import { SearchVouchersComponent } from 'app/banking/vouchers/search-vouchers.component';
 import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
 import { LoggedUserGuard } from 'app/logged-user-guard';
+import { SearchInstallmentsComponent } from 'app/banking/transactions/search-installments.component';
 
 const bankingRoutes: Routes = [
   {
@@ -102,6 +103,10 @@ const bankingRoutes: Routes = [
       {
         path: ':owner/installments',
         component: SearchOwnerInstallmentsComponent,
+      },
+      {
+        path: 'installments-overview',
+        component: SearchInstallmentsComponent,
       },
       {
         path: ':owner/authorized-payments',

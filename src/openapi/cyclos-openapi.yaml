@@ -60471,7 +60471,7 @@ components:
                 References for the account types
               type: array
               items:
-                $ref: '#/components/schemas/EntityReference'
+                $ref: '#/components/schemas/AccountType'
             currencies:
               description: >-
                 References for the available currencies
