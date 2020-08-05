@@ -601,6 +601,9 @@ export class MenuService {
         add(Menu.SCHEDULED_PAYMENTS, `/banking/${owner}/installments`,
           'schedule', this.i18n.menu.bankingScheduledPayments);
       }
+      if (paymentRequests.view) {
+        add(Menu.PAYMENT_REQUESTS, `/banking/${owner}/payment-requests`, 'payment', this.i18n.menu.bankingPaymentRequests);
+      }
       const authorizations = (banking.authorizations || {});
       if (authorizations.authorize) {
         add(Menu.PENDING_MY_AUTHORIZATION, `/banking/pending-my-authorization`,
@@ -620,14 +623,8 @@ export class MenuService {
           'compare_arrows', this.i18n.menu.bankingTransfersOverview);
       }
 
-      if (paymentRequests.view) {
-        if (role === RoleEnum.ADMINISTRATOR && banking.searchGeneralPaymentRequests) {
-          add(Menu.PAYMENT_REQUESTS_OVERVIEW, `/banking/payment-requests`,
-            'payment', this.i18n.menu.bankingPaymentRequests);
-        } else {
-          add(Menu.PAYMENT_REQUESTS, `/banking/${owner}/payment-requests`,
-            'payment', this.i18n.menu.bankingPaymentRequests);
-        }
+      if (paymentRequests.view && role === RoleEnum.ADMINISTRATOR && banking.searchGeneralPaymentRequests) {
+        add(Menu.PAYMENT_REQUESTS_OVERVIEW, `/banking/payment-requests`, 'payment', this.i18n.menu.bankingPaymentRequestsOverview);
       }
 
       if (vouchers.viewRedeemed) {
