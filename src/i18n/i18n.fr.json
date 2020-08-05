@@ -79,6 +79,7 @@
     "removeItemDone": "The item has been removed",
     "currency": "Currency",
     "images": "Images",
+    "usersOfBroker": "Users of the broker",
     "sendMedium": {
       "email": "E-mail",
       "sms": "SMS"
@@ -502,8 +503,7 @@
       "unlimited": "Unlimited",
       "mode": "Mode",
       "personalized": "Personalized",
-      "productDefault": "Product default",
-      "usersOfBroker": "Users of the broker"
+      "productDefault": "Product default"
     },
     "balanceLimits": {
       "negativeLimit": "Negative balance limit",
@@ -597,9 +597,11 @@
     "nextOccurrence": "Occurrence suivante",
     "channel": "Canal",
     "receivedBy": "Reçu par",
+    "chargedBack": "Charged back",
     "chargebackOf": "Rechargé de",
     "chargedBackBy": "Rechargé par",
     "authorizationComments": "Commentaires d'autorisation",
+    "actionPerformedBy": "Action performed by",
     "accountBalance": "Solde du compte",
     "installments": "Versements",
     "installmentNumber": "Numéro",
@@ -608,6 +610,16 @@
     "noAccounts": "Vous n'avez pas de compte pour effectuer le paiement",
     "noTypes": "Il n'y a pas de types de paiement possibles",
     "noTypesSelection": "Il n'y a pas de types de paiement possibles de ce compte à l'utilisateur sélectionné",
+    "transferKinds": "Transfer kinds",
+    "transferkind": {
+      "accountFee": "Account fee",
+      "chargeback": "Chargeback",
+      "import": "Import",
+      "initialCredit": "Initial credit",
+      "installment": "Installment",
+      "payment": "Payment",
+      "transferFee": "Transfer fee"
+    },
     "scheduling": "Calendrier",
     "scheduling.direct": "Payer maintenant",
     "scheduling.single": "Planifié",
@@ -861,7 +873,7 @@
     },
     "buyerGroups": "Buyer groups",
     "redeemerGroups": "Redeemer groups",
-    "creationType": "CreationType",
+    "creationType": "Creation type",
     "cancel": {
       "done": "This voucher has been canceled.",
       "packConfirmation": "There are other vouchers belonging to the same pack that will be also canceled. Are you sure to continue?",
