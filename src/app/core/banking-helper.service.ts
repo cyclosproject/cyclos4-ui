@@ -4,7 +4,7 @@ import {
   Account, AccountHistoryResult, AccountKind, AccountType, AccountWithOwner,
   BaseTransferDataForSearch, Image, PreselectedPeriod, RecurringPaymentStatusEnum,
   Transaction, TransactionDataForSearch, TransactionKind, TransactionResult,
-  Transfer, VoucherCreationTypeEnum, VoucherStatusEnum
+  Transfer, TransferKind, VoucherCreationTypeEnum, VoucherStatusEnum
 } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
@@ -128,6 +128,28 @@ export class BankingHelperService {
         return this.i18n.voucher.status.expired;
       case VoucherStatusEnum.CANCELED:
         return this.i18n.voucher.status.canceled;
+    }
+  }
+
+  /**
+   * Returns the transfer kind display
+   */
+  transferKind(kind: TransferKind): string {
+    switch (kind) {
+      case TransferKind.ACCOUNT_FEE:
+        return this.i18n.transaction.transferkind.accountFee;
+      case TransferKind.CHARGEBACK:
+        return this.i18n.transaction.transferkind.chargeback;
+      case TransferKind.IMPORT:
+        return this.i18n.transaction.transferkind.import;
+      case TransferKind.INITIAL_CREDIT:
+        return this.i18n.transaction.transferkind.initialCredit;
+      case TransferKind.INSTALLMENT:
+        return this.i18n.transaction.transferkind.installment;
+      case TransferKind.PAYMENT:
+        return this.i18n.transaction.transferkind.payment;
+      case TransferKind.TRANSFER_FEE:
+        return this.i18n.transaction.transferkind.transferFee;
     }
   }
 

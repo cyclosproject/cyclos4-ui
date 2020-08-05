@@ -20,74 +20,93 @@
             </field-option>
           </multi-selection-field>
         </div>
-        <div *ngIf="data.accountTypes?.length > 1" class="col-12 col-md-6">
+        <div *ngIf="currencies?.length > 1" class="col-12 col-md-6">
           <single-selection-field labelPosition="side"
-            formControlName="accountType" [label]="i18n.account.account"
-            [emptyOption]="i18n.general.all">
-            <field-option *ngFor="let accountType of data.accountTypes"
-              [id]="accountType.id" [value]="accountType.id"
-              [text]="accountType.name">
-            </field-option>
+            formControlName="currency" [label]="i18n.general.currency"
+            [emptyOption]="i18n.general.notApplied">
+            <field-option *ngFor="let currency of currencies"
+              [value]="currency.id" [text]="currency.name"></field-option>
           </single-selection-field>
         </div>
-        <div class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="customLimit" [fieldOptions]="customLimitOptions"
-            [emptyOption]="i18n.general.all"
-            [label]="i18n.account.balanceLimits.personalizedNegativeLimit">
-          </single-selection-field>
-        </div>
-        <!-- Force a new line to keep date range in same row -->
-        <div class="w-100" [hidden]="!(isCustomLimit$ | async)"></div>
-        <div class="col-12 col-md-6" [hidden]="!(isCustomLimit$ | async)">
-          <decimal-field formControlName="limitFrom" negative
-            [label]="i18n.account.balanceLimits.fromNegativeLimit">
-          </decimal-field>
-        </div>
-        <div class="col-12 col-md-6" [hidden]="!(isCustomLimit$ | async)">
-          <decimal-field formControlName="limitTo" negative
-            [label]="i18n.account.balanceLimits.toNegativeLimit">
-          </decimal-field>
-        </div>
-        <div class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="customUpperLimit"
-            [fieldOptions]="customLimitOptions"
-            [emptyOption]="i18n.general.all"
-            [label]="i18n.account.balanceLimits.personalizedPositiveLimit">
-          </single-selection-field>
-        </div>
-        <!-- Force a new line to keep date range in same row -->
-        <div class="w-100" [hidden]="!(isCustomUpperLimit$ | async)"></div>
-        <div class="col-12 col-md-6"
-          [hidden]="!(isCustomUpperLimit$ | async)">
-          <decimal-field formControlName="upperLimitFrom"
-            [label]="i18n.account.balanceLimits.fromPositiveLimit">
-          </decimal-field>
-        </div>
-        <div class="col-12 col-md-6"
-          [hidden]="!(isCustomUpperLimit$ | async)">
-          <decimal-field formControlName="upperLimitTo"
-            [label]="i18n.account.balanceLimits.toPositiveLimit">
-          </decimal-field>
-        </div>
-        <div class="col-12 col-md-6">
-          <user-field labelPosition="side" formControlName="user"
-            [label]="i18n.general.user" [allowContacts]="false">
-          </user-field>
-        </div>
-        <div class="col-12 col-md-6">
-          <user-field labelPosition="side" formControlName="broker"
-            [label]="i18n.account.limits.usersOfBroker"
-            [filters]="userSearchFilters(true)" [allowContacts]="false">
-          </user-field>
-        </div>
-        <div class="col-12 col-md-6">
-          <user-field labelPosition="side" formControlName="by"
-            [label]="i18n.general.changedBy"
-            [filters]="userSearchFilters(false)" [allowContacts]="false">
-          </user-field>
-        </div>
+        <ng-container *ngIf="(moreFilters$ | async)">
+          <div *ngIf="data.accountTypes?.length > 1" class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="accountType" [label]="i18n.account.account"
+              [emptyOption]="i18n.general.all">
+              <field-option *ngFor="let accountType of accountTypes()"
+                [id]="accountType.id" [value]="accountType.id"
+                [text]="accountType.name">
+              </field-option>
+            </single-selection-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="customLimit"
+              [fieldOptions]="customLimitOptions"
+              [emptyOption]="i18n.general.all"
+              [label]="i18n.account.balanceLimits.personalizedNegativeLimit">
+            </single-selection-field>
+          </div>
+          <!-- Force a new line to keep date range in same row -->
+          <div class="w-100" [hidden]="!(isCustomLimit$ | async)"></div>
+          <div class="col-12 col-md-6" [hidden]="!(isCustomLimit$ | async)">
+            <decimal-field formControlName="limitFrom" negative
+              [label]="i18n.account.balanceLimits.fromNegativeLimit"
+              fieldSize="full" [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6" [hidden]="!(isCustomLimit$ | async)">
+            <decimal-field formControlName="limitTo" negative
+              [label]="i18n.account.balanceLimits.toNegativeLimit"
+              fieldSize="full" [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="customUpperLimit"
+              [fieldOptions]="customLimitOptions"
+              [emptyOption]="i18n.general.all"
+              [label]="i18n.account.balanceLimits.personalizedPositiveLimit">
+            </single-selection-field>
+          </div>
+          <!-- Force a new line to keep date range in same row -->
+          <div class="w-100" [hidden]="!(isCustomUpperLimit$ | async)"></div>
+          <div class="col-12 col-md-6"
+            [hidden]="!(isCustomUpperLimit$ | async)">
+            <decimal-field formControlName="upperLimitFrom"
+              [label]="i18n.account.balanceLimits.fromPositiveLimit"
+              fieldSize="full" [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6"
+            [hidden]="!(isCustomUpperLimit$ | async)">
+            <decimal-field formControlName="upperLimitTo"
+              [label]="i18n.account.balanceLimits.toPositiveLimit"
+              fieldSize="full" [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <user-field labelPosition="side" formControlName="user"
+              [label]="i18n.general.user" [allowContacts]="false">
+            </user-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <user-field labelPosition="side" formControlName="broker"
+              [label]="i18n.general.usersOfBroker"
+              [filters]="userSearchFilters(true)" [allowContacts]="false">
+            </user-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <user-field labelPosition="side" formControlName="by"
+              [label]="i18n.general.changedBy"
+              [filters]="userSearchFilters(false)" [allowContacts]="false">
+            </user-field>
+          </div>
+        </ng-container>
       </div>
     </form>
   </page-content>

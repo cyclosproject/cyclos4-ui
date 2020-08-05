@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  Currency,
+  AccountType, Currency,
   PaymentRequestStatusEnum, RoleEnum, TransactionAuthorizationStatusEnum, TransactionDataForSearch,
   TransactionKind, TransactionOverviewDataForSearch, TransactionOverviewQueryFilters, TransactionOverviewResult
 } from 'app/api/models';
@@ -28,6 +28,7 @@ export class SearchTransactionsOverviewComponent
   heading: string;
   mobileHeading: string;
   usePeriod = true;
+  usePreselectedPeriod = false;
   currenciesByKey = new Map<string, Currency>();
   currencies: Currency[];
   hasTransactionNumber: boolean;
@@ -54,7 +55,6 @@ export class SearchTransactionsOverviewComponent
       case 'myAuth':
         this.heading = this.i18n.transaction.title.pendingMyAuthorization;
         this.mobileHeading = this.i18n.transaction.mobileTitle.pendingMyAuthorization;
-        this.usePeriod = false;
         break;
       case 'payment-request':
         this.heading = this.i18n.transaction.title.paymentRequestsOverview;
@@ -65,7 +65,8 @@ export class SearchTransactionsOverviewComponent
     // Get the transactions search data
     this.stateManager.cache('data',
       this.transactionsService.getTransactionsOverviewDataForSearch({
-        fields: ['user', 'accountTypes', ...(this.usePeriod ? ['preselectedPeriods'] : []), 'query'],
+        fields: ['user', 'accountTypes', ...(this.usePreselectedPeriod ? ['preselectedPeriods'] : []), 'query'],
+        pendingMyAuthorization: this.kind === 'myAuth'
       }),
     ).subscribe(data => {
       if (this.usePeriod) {
@@ -87,11 +88,26 @@ export class SearchTransactionsOverviewComponent
       .reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], []);
     this.hasTransactionNumber = transactionNumberPatterns.length > 0;
     this.transactionNumberPattern = transactionNumberPatterns.length === 1 ? transactionNumberPatterns[0] : null;
-    this.headingActions = this.exportHelper.headingActions(data.exportFormats,
+    this.headingActions = [this.moreFiltersAction];
+    this.exportHelper.headingActions(data.exportFormats,
       f => this.transactionsService.exportTransactionsOverview$Response({
         format: f.internalName,
         ...this.toSearchParams(this.form.value)
-      }));
+      })).forEach(a => this.headingActions.push(a));
+    this.addSub(this.form.controls.currency.valueChanges.subscribe(currencyId => this.updateAccountTypes(currencyId)));
+  }
+
+  updateAccountTypes(currencyId: string) {
+    const selectedFrom = this.form.controls.fromAccountTypes.value;
+    const selectedTo = this.form.controls.toAccountTypes.value;
+    if (currencyId && selectedFrom) {
+      this.form.controls.fromAccountTypes.setValue(
+        this.data.accountTypes.find(at => at.id === selectedFrom).currency?.id === currencyId ? selectedFrom : null);
+    }
+    if (currencyId && selectedTo) {
+      this.form.controls.toAccountTypes.setValue(
+        this.data.accountTypes.find(at => at.id === selectedTo).currency?.id === currencyId ? selectedTo : null);
+    }
   }
 
   doSearch(value: TransactionOverviewQueryFilters) {
@@ -100,7 +116,7 @@ export class SearchTransactionsOverviewComponent
 
   getFormControlNames() {
     return ['status', 'currency', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd', 'transactionNumber', 'expirationBegin',
-      'expirationEnd'];
+      'expirationEnd', 'transferTypes', 'authorizationPerformedBy', 'fromAccountTypes', 'toAccountTypes'];
   }
 
   getInitialFormValue(data: TransactionDataForSearch) {
@@ -160,8 +176,33 @@ export class SearchTransactionsOverviewComponent
     return params;
   }
 
+  accountTypes(): AccountType[] {
+    const currencyId = this.form.controls.currency.value;
+    const types = (this.data.accountTypes || []) as AccountType[];
+    if (currencyId) {
+      return types.filter(t => t.currency.id === currencyId);
+    }
+    return types;
+  }
+
   isPaymentRequest(): boolean {
     return this.kind === 'payment-request';
+  }
+
+  isMyAuth(): boolean {
+    return this.kind === 'myAuth';
+  }
+
+  isAuthorized(): boolean {
+    return this.kind === 'authorized';
+  }
+
+  showMoreFiltersLabel() {
+    return this.i18n.general.moreFilters;
+  }
+
+  showLessFiltersLabel() {
+    return this.i18n.general.lessFilters;
   }
 
   resolveMenu(data: TransactionDataForSearch) {

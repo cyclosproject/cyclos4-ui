@@ -27,22 +27,21 @@
       </div>
       <!-- Creation type -->
       <div class="col-12 col-md-6">
-        <radio-group-field labelPosition="side" formControlName="creationType"
-          [label]="i18n.voucher.creationType"
-          [fieldOptions]=creationTypeOptions>
-        </radio-group-field>
+        <single-selection-field labelPosition="side"
+          formControlName="creationType" [label]="i18n.voucher.creationType"
+          [fieldOptions]=creationTypeOptions
+          [emptyOption]="this.i18n.general.all">
+        </single-selection-field>
       </div>
       <!-- Printed -->
       <div class="col-12 col-md-6">
-        <radio-group-field labelPosition="side" formControlName="printed"
-          [label]="i18n.general.printed">
-          <field-option [value]="'all'" [text]="i18n.general.all">
-          </field-option>
+        <single-selection-field labelPosition="side" formControlName="printed"
+          [label]="i18n.general.printed" [emptyOption]="i18n.general.all">
           <field-option [value]="'true'" [text]="i18n.general.yes">
           </field-option>
           <field-option [value]="'false'" [text]="i18n.general.no">
           </field-option>
-        </radio-group-field>
+        </single-selection-field>
       </div>
       <ng-container *ngIf="moreFilters">
 

@@ -34,8 +34,8 @@ export class VoucherFiltersComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
     this.mask = this.data.mask ? this.data.mask : '';
     this.form.patchValue({
-      creationType: 'all',
-      printed: 'all',
+      creationType: null,
+      printed: null,
     });
   }
 
@@ -46,7 +46,7 @@ export class VoucherFiltersComponent extends BaseComponent implements OnInit {
 
   get creationTypeOptions(): FieldOption[] {
     const statuses = Object.values(VoucherCreationTypeEnum) as VoucherCreationTypeEnum[];
-    const result = [{ value: 'all', text: this.i18n.general.all }];
+    const result = [];
     return result.concat(statuses.map(st => ({ value: st, text: this.bankingHelper.voucherCreationType(st) })));
   }
 

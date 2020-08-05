@@ -1,7 +1,9 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  DataForBalanceLimitsSearch, DataForPaymentLimitsSearch, GeneralAccountPaymentLimitsResult, QueryFilters, RoleEnum, UserQueryFilters
+  Currency, DataForBalanceLimitsSearch, DataForPaymentLimitsSearch, GeneralAccountPaymentLimitsResult, QueryFilters, RoleEnum,
+  UserQueryFilters,
+  AccountType
 } from 'app/api/models';
 import { PaymentLimitsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -45,6 +47,8 @@ export class SearchPaymentLimitsOverviewComponent
   isCustomDailyLimit$ = new BehaviorSubject<boolean>(false);
   isCustomWeeklyLimit$ = new BehaviorSubject<boolean>(false);
   isCustomMonthlyLimit$ = new BehaviorSubject<boolean>(false);
+  currencies: Currency[] = [];
+  singleCurrency: Currency;
 
   constructor(
     injector: Injector,
@@ -66,10 +70,15 @@ export class SearchPaymentLimitsOverviewComponent
 
   onDataInitialized(data: DataForBalanceLimitsSearch) {
     super.onDataInitialized(data);
+    // Initialize the currencies
+    (data.accountTypes || []).forEach(at => this.currencies.push(at.currency));
+    this.singleCurrency = this.currencies.length === 1 ? this.currencies[0] : null;
     this.form.get('customAmountLimit').valueChanges.subscribe(value => this.isCustomPaymentLimit$.next(value === 'yes'));
     this.form.get('customAmountPerDayLimit').valueChanges.subscribe(value => this.isCustomDailyLimit$.next(value === 'yes'));
     this.form.get('customAmountPerWeekLimit').valueChanges.subscribe(value => this.isCustomWeeklyLimit$.next(value === 'yes'));
     this.form.get('customAmountPerMonthLimit').valueChanges.subscribe(value => this.isCustomMonthlyLimit$.next(value === 'yes'));
+    this.addSub(this.form.controls.currency.valueChanges.subscribe(currencyId => this.updateAccountTypes(currencyId)));
+    this.headingActions = [this.moreFiltersAction];
   }
 
   protected doSearch(value: PaymentLimitsSearchParams): Observable<HttpResponse<Array<GeneralAccountPaymentLimitsResult>>> {
@@ -121,6 +130,60 @@ export class SearchPaymentLimitsOverviewComponent
       filters.roles.push(RoleEnum.ADMINISTRATOR);
     }
     return filters;
+  }
+
+  updateAccountTypes(currencyId: string) {
+    const selectedAccount = this.form.controls.accountType.value;
+    if (currencyId && selectedAccount && this.data.accountTypes.find(at => at.id === selectedAccount).currency.id !== currencyId) {
+      this.form.controls.accountType.setValue(null);
+    }
+  }
+
+  accountTypes(): AccountType[] {
+    const currency = this.findCurrency(false);
+    const types = this.data.accountTypes || [];
+    if (currency) {
+      return types.filter(t => t.currency.id === currency.id);
+    }
+    return types;
+  }
+
+  findCurrency(useAccountType: boolean): Currency {
+    if (this.singleCurrency) {
+      return this.singleCurrency;
+    }
+    const currency = this.form.controls.currency.value;
+    if (currency) {
+      return this.currencies.find(c => c.id === currency);
+    }
+    const accountId = this.form.controls.accountType.value;
+    if (useAccountType && accountId) {
+      return this.data.accountTypes.find(at => at.id === accountId).currency;
+    }
+    return null;
+  }
+
+  currencyDecimalDigits(): number {
+    const c = this.findCurrency(true);
+    return c ? c.decimalDigits : 2;
+  }
+
+  currencyPrefix(): string {
+    const c = this.findCurrency(true);
+    return c ? c.prefix : null;
+  }
+
+  currencySuffix(): string {
+    const c = this.findCurrency(true);
+    return c ? c.suffix : null;
+  }
+
+  showMoreFiltersLabel() {
+    return this.i18n.general.moreFilters;
+  }
+
+  showLessFiltersLabel() {
+    return this.i18n.general.lessFilters;
   }
 
   view(row: GeneralAccountPaymentLimitsResult) {

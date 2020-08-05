@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { VoucherCreationTypeEnum, VoucherResult, VouchersDataForSearch, VouchersQueryFilters, VoucherStatusEnum } from 'app/api/models';
+import { VoucherResult, VouchersDataForSearch, VouchersQueryFilters, VoucherStatusEnum } from 'app/api/models';
 import { VouchersService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
@@ -58,12 +58,6 @@ export class SearchVouchersComponent
     if (value.amountMin || value.amountMax) {
       result.amountRange = this.ApiHelper.rangeFilter(value.amountMin, value.amountMax);
     }
-    if (value.printed === 'all') {
-      result.printed = null;
-    }
-    if (value.creationType === 'all') {
-      result.creationType = null;
-    }
     return result;
   }
 
@@ -76,12 +70,6 @@ export class SearchVouchersComponent
     return statuses.map(st => ({ value: st, text: this.bankingHelper.voucherStatus(st) }));
   }
 
-  get creationTypeOptions(): FieldOption[] {
-    const statuses = Object.values(VoucherCreationTypeEnum) as VoucherCreationTypeEnum[];
-    return statuses.map(st => ({ value: st, text: this.bankingHelper.voucherCreationType(st) }))
-      .concat({ value: null, text: this.i18n.general.all });
-  }
-
   get toLink() {
     return (row: VoucherResult) => this.path(row);
   }
@@ -91,11 +79,11 @@ export class SearchVouchersComponent
   }
 
   showMoreFiltersLabel() {
-    return this.i18n.general.showFilters;
+    return this.i18n.general.moreFilters;
   }
 
   showLessFiltersLabel() {
-    return this.i18n.general.hideFilters;
+    return this.i18n.general.lessFilters;
   }
 
   resolveMenu(_data: VouchersDataForSearch) {

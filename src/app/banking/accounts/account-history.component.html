@@ -32,14 +32,13 @@
         <div
           *ngIf="(layout.gtxxs$ | async) && data.transferFilters?.length > 1; else noTransferFilters"
           class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="transferFilter"
-            [label]="i18n.account.transferFilter"
-            [emptyOption]="i18n.general.notApplied">
+          <multi-selection-field labelPosition="side"
+            formControlName="transferFilters"
+            [label]="i18n.account.transferFilter">
             <field-option *ngFor="let filter of data.transferFilters"
-              [id]="filter.id" [value]="filter" [text]="filter.name">
+              [id]="filter.id" [value]="filter.id" [text]="filter.name">
             </field-option>
-          </single-selection-field>
+          </multi-selection-field>
         </div>
         <ng-template #noTransferFilters>
           <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
@@ -85,6 +84,29 @@
               <field-option value="debit" [text]="i18n.account.outgoing">
               </field-option>
             </single-selection-field>
+          </div>
+          <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
+            <multi-selection-field labelPosition="side"
+              hierarchyProperty="groupSet" formControlName="groups"
+              [emptyLabel]="i18n.general.notApplied"
+              [label]="i18n.user.groupFilter">
+              <field-option *ngFor="let group of data.groups"
+                [value]="ApiHelper.internalNameOrId(group)"
+                [internalName]="group.internalName" [id]="group.id"
+                [text]="group.name" [parent]="group.groupSet">
+              </field-option>
+            </multi-selection-field>
+          </div>
+          <div class="col-12 col-md-6" *ngIf="data.channels?.length > 1">
+            <multi-selection-field labelPosition="side"
+              formControlName="channels"
+              [emptyLabel]="i18n.general.notApplied"
+              [label]="i18n.transaction.channel">
+              <field-option *ngFor="let ch of data.channels" [id]="ch.id"
+                [internalName]="ch.internalName" [value]="ch.internalName"
+                [text]="ch.name">
+              </field-option>
+            </multi-selection-field>
           </div>
           <div class="col-12 col-md-6">
             <user-field labelPosition="side" formControlName="user"

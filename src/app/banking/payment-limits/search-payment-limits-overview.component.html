@@ -20,126 +20,154 @@
             </field-option>
           </multi-selection-field>
         </div>
-        <div *ngIf="data.accountTypes?.length > 1" class="col-12 col-md-6">
+        <div *ngIf="currencies?.length > 1" class="col-12 col-md-6">
           <single-selection-field labelPosition="side"
-            formControlName="accountType" [label]="i18n.account.account"
-            [emptyOption]="i18n.general.all">
-            <field-option *ngFor="let accountType of data.accountTypes"
-              [id]="accountType.id" [value]="accountType.id"
-              [text]="accountType.name">
-            </field-option>
+            formControlName="currency" [label]="i18n.general.currency"
+            [emptyOption]="i18n.general.notApplied">
+            <field-option *ngFor="let currency of currencies"
+              [value]="currency.id" [text]="currency.name"></field-option>
           </single-selection-field>
         </div>
-        <!-- Payment limit filter -->
-        <div class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="customAmountLimit"
-            [fieldOptions]="customLimitOptions"
-            [emptyOption]="i18n.general.all"
-            [label]="i18n.account.paymentLimits.personalizedPaymentLimit">
-          </single-selection-field>
-        </div>
-        <!-- Force a new line to keep range in same row -->
-        <div class="w-100" [hidden]="!(isCustomPaymentLimit$ | async)"></div>
-        <div class="col-12 col-md-6"
-          [hidden]="!(isCustomPaymentLimit$ | async)">
-          <decimal-field formControlName="paymentLimitFrom"
-            [label]="i18n.account.paymentLimits.fromPaymentLimit">
-          </decimal-field>
-        </div>
-        <div class="col-12 col-md-6"
-          [hidden]="!(isCustomPaymentLimit$ | async)">
-          <decimal-field formControlName="paymentLimitTo"
-            [label]="i18n.account.paymentLimits.toPaymentLimit">
-          </decimal-field>
-        </div>
-        <!-- Daily limit filter -->
-        <div class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="customAmountPerDayLimit"
-            [fieldOptions]="customLimitOptions"
-            [emptyOption]="i18n.general.all"
-            [label]="i18n.account.paymentLimits.personalizedDailyLimit">
-          </single-selection-field>
-        </div>
-        <!-- Force a new line to keep range in same row -->
-        <div class="w-100" [hidden]="!(isCustomDailyLimit$ | async)"></div>
-        <div class="col-12 col-md-6"
-          [hidden]="!(isCustomDailyLimit$ | async)">
-          <decimal-field formControlName="dailyLimitFrom"
-            [label]="i18n.account.paymentLimits.fromDailyLimit">
-          </decimal-field>
-        </div>
-        <div class="col-12 col-md-6"
-          [hidden]="!(isCustomDailyLimit$ | async)">
-          <decimal-field formControlName="dailyLimitTo"
-            [label]="i18n.account.paymentLimits.toDailyLimit">
-          </decimal-field>
-        </div>
-        <!-- Weekly limit filter -->
-        <div class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="customAmountPerWeekLimit"
-            [fieldOptions]="customLimitOptions"
-            [emptyOption]="i18n.general.all"
-            [label]="i18n.account.paymentLimits.personalizedWeeklyLimit">
-          </single-selection-field>
-        </div>
-        <!-- Force a new line to keep range in same row -->
-        <div class="w-100" [hidden]="!(isCustomWeeklyLimit$ | async)"></div>
-        <div class="col-12 col-md-6"
-          [hidden]="!(isCustomWeeklyLimit$ | async)">
-          <decimal-field formControlName="weeklyLimitFrom"
-            [label]="i18n.account.paymentLimits.fromWeeklyLimit">
-          </decimal-field>
-        </div>
-        <div class="col-12 col-md-6"
-          [hidden]="!(isCustomWeeklyLimit$ | async)">
-          <decimal-field formControlName="weeklyLimitTo"
-            [label]="i18n.account.paymentLimits.toWeeklyLimit">
-          </decimal-field>
-        </div>
-        <!-- Monthly limit filter -->
-        <div class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="customAmountPerMonthLimit"
-            [fieldOptions]="customLimitOptions"
-            [emptyOption]="i18n.general.all"
-            [label]="i18n.account.paymentLimits.personalizedMonthlyLimit">
-          </single-selection-field>
-        </div>
-        <!-- Force a new line to keep range in same row -->
-        <div class="w-100" [hidden]="!(isCustomMonthlyLimit$ | async)"></div>
-        <div class="col-12 col-md-6"
-          [hidden]="!(isCustomMonthlyLimit$ | async)">
-          <decimal-field formControlName="monthlyLimitFrom"
-            [label]="i18n.account.paymentLimits.fromMonthlyLimit">
-          </decimal-field>
-        </div>
-        <div class="col-12 col-md-6"
-          [hidden]="!(isCustomMonthlyLimit$ | async)">
-          <decimal-field formControlName="monthlyLimitTo"
-            [label]="i18n.account.paymentLimits.toMonthlyLimit">
-          </decimal-field>
-        </div>
+        <ng-container *ngIf="(moreFilters$ | async)">
+          <div *ngIf="data.accountTypes?.length > 1" class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="accountType" [label]="i18n.account.account"
+              [emptyOption]="i18n.general.all">
+              <field-option *ngFor="let accountType of accountTypes()"
+                [id]="accountType.id" [value]="accountType.id"
+                [text]="accountType.name">
+              </field-option>
+            </single-selection-field>
+          </div>
+          <!-- Payment limit filter -->
+          <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="customAmountLimit"
+              [fieldOptions]="customLimitOptions"
+              [emptyOption]="i18n.general.all"
+              [label]="i18n.account.paymentLimits.personalizedPaymentLimit">
+            </single-selection-field>
+          </div>
+          <!-- Force a new line to keep range in same row -->
+          <div class="w-100" [hidden]="!(isCustomPaymentLimit$ | async)">
+          </div>
+          <div class="col-12 col-md-6"
+            [hidden]="!(isCustomPaymentLimit$ | async)">
+            <decimal-field formControlName="paymentLimitFrom"
+              [label]="i18n.account.paymentLimits.fromPaymentLimit"
+              fieldSize="full" [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6"
+            [hidden]="!(isCustomPaymentLimit$ | async)">
+            <decimal-field formControlName="paymentLimitTo"
+              [label]="i18n.account.paymentLimits.toPaymentLimit"
+              fieldSize="full" [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+            </decimal-field>
+          </div>
+          <!-- Daily limit filter -->
+          <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="customAmountPerDayLimit"
+              [fieldOptions]="customLimitOptions"
+              [emptyOption]="i18n.general.all"
+              [label]="i18n.account.paymentLimits.personalizedDailyLimit">
+            </single-selection-field>
+          </div>
+          <!-- Force a new line to keep range in same row -->
+          <div class="w-100" [hidden]="!(isCustomDailyLimit$ | async)"></div>
+          <div class="col-12 col-md-6"
+            [hidden]="!(isCustomDailyLimit$ | async)">
+            <decimal-field formControlName="dailyLimitFrom"
+              [label]="i18n.account.paymentLimits.fromDailyLimit"
+              fieldSize="full" [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6"
+            [hidden]="!(isCustomDailyLimit$ | async)">
+            <decimal-field formControlName="dailyLimitTo"
+              [label]="i18n.account.paymentLimits.toDailyLimit"
+              fieldSize="full" [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+            </decimal-field>
+          </div>
+          <!-- Weekly limit filter -->
+          <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="customAmountPerWeekLimit"
+              [fieldOptions]="customLimitOptions"
+              [emptyOption]="i18n.general.all"
+              [label]="i18n.account.paymentLimits.personalizedWeeklyLimit">
+            </single-selection-field>
+          </div>
+          <!-- Force a new line to keep range in same row -->
+          <div class="w-100" [hidden]="!(isCustomWeeklyLimit$ | async)"></div>
+          <div class="col-12 col-md-6"
+            [hidden]="!(isCustomWeeklyLimit$ | async)">
+            <decimal-field formControlName="weeklyLimitFrom"
+              [label]="i18n.account.paymentLimits.fromWeeklyLimit"
+              fieldSize="full" [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6"
+            [hidden]="!(isCustomWeeklyLimit$ | async)">
+            <decimal-field formControlName="weeklyLimitTo"
+              [label]="i18n.account.paymentLimits.toWeeklyLimit"
+              fieldSize="full" [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+            </decimal-field>
+          </div>
+          <!-- Monthly limit filter -->
+          <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="customAmountPerMonthLimit"
+              [fieldOptions]="customLimitOptions"
+              [emptyOption]="i18n.general.all"
+              [label]="i18n.account.paymentLimits.personalizedMonthlyLimit">
+            </single-selection-field>
+          </div>
+          <!-- Force a new line to keep range in same row -->
+          <div class="w-100" [hidden]="!(isCustomMonthlyLimit$ | async)">
+          </div>
+          <div class="col-12 col-md-6"
+            [hidden]="!(isCustomMonthlyLimit$ | async)">
+            <decimal-field formControlName="monthlyLimitFrom"
+              [label]="i18n.account.paymentLimits.fromMonthlyLimit"
+              fieldSize="full" [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6"
+            [hidden]="!(isCustomMonthlyLimit$ | async)">
+            <decimal-field formControlName="monthlyLimitTo"
+              [label]="i18n.account.paymentLimits.toMonthlyLimit"
+              fieldSize="full" [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+            </decimal-field>
+          </div>
 
-        <div class="col-12 col-md-6">
-          <user-field labelPosition="side" formControlName="user"
-            [label]="i18n.general.user" [allowContacts]="false">
-          </user-field>
-        </div>
-        <div class="col-12 col-md-6">
-          <user-field labelPosition="side" formControlName="broker"
-            [label]="i18n.account.limits.usersOfBroker"
-            [filters]="userSearchFilters(true)" [allowContacts]="false">
-          </user-field>
-        </div>
-        <div class="col-12 col-md-6">
-          <user-field labelPosition="side" formControlName="by"
-            [label]="i18n.general.changedBy"
-            [filters]="userSearchFilters(false)" [allowContacts]="false">
-          </user-field>
-        </div>
+          <div class="col-12 col-md-6">
+            <user-field labelPosition="side" formControlName="user"
+              [label]="i18n.general.user" [allowContacts]="false">
+            </user-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <user-field labelPosition="side" formControlName="broker"
+              [label]="i18n.general.usersOfBroker"
+              [filters]="userSearchFilters(true)" [allowContacts]="false">
+            </user-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <user-field labelPosition="side" formControlName="by"
+              [label]="i18n.general.changedBy"
+              [filters]="userSearchFilters(false)" [allowContacts]="false">
+            </user-field>
+          </div>
+        </ng-container>
       </div>
     </form>
   </page-content>

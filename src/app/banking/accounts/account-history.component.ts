@@ -80,11 +80,11 @@ export class AccountHistoryComponent
 
   getFormControlNames() {
     return [
-      'transferFilter', 'preselectedPeriod',
+      'transferFilters', 'preselectedPeriod',
       'periodBegin', 'periodEnd',
       'minAmount', 'maxAmount',
       'transactionNumber', 'direction',
-      'user', 'by', 'orderBy',
+      'user', 'by', 'orderBy', 'groups', 'channels'
     ];
   }
 
@@ -132,7 +132,6 @@ export class AccountHistoryComponent
 
   toSearchParams(value: any): AccountHistorySearchParams {
     const query: AccountHistorySearchParams = value;
-    query.transferFilters = value.transferFilter == null ? [] : [value.transferFilter.id];
     query.datePeriod = this.bankingHelper.resolveDatePeriod(value);
     query.amountRange = ApiHelper.rangeFilter(value.minAmount, value.maxAmount);
 

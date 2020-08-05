@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AccountType, Currency, PreselectedPeriod, RoleEnum,
-  TransferDataForSearch, TransferFilter, TransferQueryFilters, TransferResult, TransOrderByEnum,
+  TransferDataForSearch, TransferFilter, TransferKind, TransferQueryFilters, TransferResult, TransOrderByEnum, UserQueryFilters
 } from 'app/api/models';
 import { TransfersService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
-import { empty } from 'app/shared/helper';
+import { FieldOption } from 'app/shared/field-option';
 import { Menu } from 'app/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 
@@ -45,21 +45,17 @@ export class SearchTransfersOverviewComponent
     return this.data == null ? null : this.data.preselectedPeriods;
   }
 
-  get transferFilters(): TransferFilter[] {
-    return this.data == null ? null : this.data.transferFilters;
-  }
-
   getFormControlNames() {
     return [
       'preselectedPeriod',
       'periodBegin', 'periodEnd',
-      'groups', 'channels',
+      'groups', 'currency', 'channels',
       'fromAccountType', 'toAccountType',
       'transferFilters',
-      'transferKinds', 'chargedBack',
+      'kinds', 'chargedBack',
       'minAmount', 'maxAmount',
       'transactionNumber',
-      'user', 'by', 'orderBy',
+      'user', 'by', 'orderBy', 'brokers'
     ];
   }
 
@@ -83,8 +79,8 @@ export class SearchTransfersOverviewComponent
 
   onDataInitialized(data: TransferDataForSearch) {
     super.onDataInitialized(data);
-    this.singleCurrency = (data.currencies || [])[0];
-    this.singleAccount = (data.accountTypes || [])[0];
+    this.singleCurrency = (data.currencies || []).length === 1 ? data.currencies[0] : null;
+    this.singleAccount = (data.accountTypes || []).length === 1 ? data.accountTypes[0] : null;
     const transactionNumberPatterns = (data.currencies || [])
       .map(c => c.transactionNumberPattern)
       .filter(p => p)
@@ -92,29 +88,116 @@ export class SearchTransfersOverviewComponent
     this.hasTransactionNumber = transactionNumberPatterns.length > 0;
     this.transactionNumberPattern = transactionNumberPatterns.length === 1 ? transactionNumberPatterns[0] : null;
     this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
-    this.addSub(this.form.controls.fromAccountType.valueChanges.subscribe(
-      fromAt => this.updateFilters(data, fromAt)));
+    this.addSub(this.form.controls.fromAccountType.valueChanges.subscribe(accountTypeId => this.updateTransferFilters(accountTypeId)));
+    this.addSub(this.form.controls.currency.valueChanges.subscribe(currencyId => this.updateAccountTypes(currencyId)));
 
-    this.updateFilters(data);
-
-    this.headingActions = this.exportHelper.headingActions(data.exportFormats,
+    this.headingActions = [this.moreFiltersAction];
+    this.exportHelper.headingActions(data.exportFormats,
       f => this.transfersService.exportTransfers$Response({
         format: f.internalName,
         ...this.toSearchParams(this.form.value)
-      }));
+      })).forEach(a => this.headingActions.push(a));
+  }
+
+  updateTransferFilters(accountTypeId: string) {
+    const selectedFilters = this.form.controls.transferFilters.value as string[];
+    if (accountTypeId && selectedFilters) {
+      this.form.controls.transferFilters.setValue(
+        selectedFilters.filter(filterId => this.data.transferFilters.find(tf => tf.id === filterId).accountType.id === accountTypeId));
+    }
+  }
+
+  updateAccountTypes(currencyId: string) {
+    const selectedFrom = this.form.controls.fromAccountTypes.value;
+    const selectedTo = this.form.controls.toAccountTypes.value;
+    if (currencyId && selectedFrom) {
+      const fromCurrency = (this.data.accountTypes.find(at => at.id === selectedFrom) as AccountType).currency;
+      this.form.controls.fromAccountTypes.setValue(!fromCurrency || fromCurrency.id === currencyId ? selectedFrom : null);
+    }
+    if (currencyId && selectedTo) {
+      const toCurrency = (this.data.accountTypes.find(at => at.id === selectedTo) as AccountType).currency;
+      this.form.controls.toAccountTypes.setValue(!toCurrency || toCurrency.id === currencyId ? selectedTo : null);
+    }
+  }
+
+  userSearchFilters(): UserQueryFilters {
+    return { roles: [RoleEnum.BROKER] };
+  }
+
+  findCurrency(): Currency {
+    if (this.singleCurrency) {
+      return this.singleCurrency;
+    }
+    const currency = this.form.controls.currency.value;
+    if (currency) {
+      return this.data.currencies.find(c => c.id === currency);
+    }
+    const fromAccountId = this.form.controls.fromAccountType.value;
+    if (fromAccountId) {
+      return (this.data.accountTypes.find(at => at.id === fromAccountId) as AccountType)?.currency;
+    }
+    return null;
+  }
+
+  transferFilters(): TransferFilter[] {
+    const fromAccount = this.form.controls.fromAccountType.value;
+    const filters = (this.data.transferFilters || []);
+    if (fromAccount) {
+      return filters.filter(f => f.accountType.id === fromAccount);
+    }
+    if (this.findCurrency()) {
+      const types = this.accountTypes().map(t => t.id);
+      return filters.filter(f => types.includes(f.accountType.id));
+    }
+
+    return filters;
+  }
+
+  accountTypes(): AccountType[] {
+    const currency = this.findCurrency();
+    const types = (this.data.accountTypes || []) as AccountType[];
+    if (currency) {
+      return types.filter(t => !t.currency || t.currency.id === currency.id);
+    }
+    return types;
+  }
+
+  currencyDecimalDigits(): number {
+    const c = this.findCurrency();
+    return c ? c.decimalDigits : 2;
+  }
+
+  currencyPrefix(): string {
+    const c = this.findCurrency();
+    return c ? c.prefix : null;
+  }
+
+  currencySuffix(): string {
+    const c = this.findCurrency();
+    return c ? c.suffix : null;
   }
 
   toSearchParams(value: any): TransferSearchParams {
     const query: TransferSearchParams = value;
-    query.transferFilters = value.transferFilter == null ? [] : [value.transferFilter.id];
     query.datePeriod = this.bankingHelper.resolveDatePeriod(value);
     query.amountRange = ApiHelper.rangeFilter(value.minAmount, value.maxAmount);
     query.fields = [];
+    if (value.chargedBack) {
+      query.chargedBack = value.chargedBack === 'yes';
+    }
     return query;
   }
 
   doSearch(query: TransferSearchParams) {
     return this.transfersService.searchTransfers$Response(query);
+  }
+
+  get kindOptions(): FieldOption[] {
+    const statuses = Object.values(TransferKind) as TransferKind[];
+    return statuses.map(kind => ({
+      value: kind,
+      text: this.bankingHelper.transferKind(kind),
+    }));
   }
 
   /**
@@ -129,12 +212,12 @@ export class SearchTransfersOverviewComponent
     return (row: TransferResult) => this.path(row);
   }
 
-  private updateFilters(data: TransferDataForSearch, fromAccountType?: string) {
-    let filters = (data.transferFilters || []);
-    if (!empty(fromAccountType)) {
-      filters = filters.filter(f => f.accountType.id === fromAccountType);
-    }
-    this.filters$.next(filters);
+  showMoreFiltersLabel() {
+    return this.i18n.general.moreFilters;
+  }
+
+  showLessFiltersLabel() {
+    return this.i18n.general.lessFilters;
   }
 
   resolveMenu() {

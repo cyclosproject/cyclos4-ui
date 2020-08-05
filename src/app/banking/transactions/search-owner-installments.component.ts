@@ -29,6 +29,8 @@ export class SearchOwnerInstallmentsComponent
   param: string;
   self: boolean;
   currencies = new Map<string, Currency>();
+  hasTransactionNumber: boolean;
+  transactionNumberPattern: string;
 
   constructor(
     injector: Injector,
@@ -67,8 +69,20 @@ export class SearchOwnerInstallmentsComponent
     });
   }
 
+  onDataInitialized(data: InstallmentDataForSearch) {
+    super.onDataInitialized(data);
+    const transactionNumberPatterns = (data.accountTypes || [])
+      .map(a => a.currency?.transactionNumberPattern)
+      .filter(p => p)
+      .reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], []);
+    this.hasTransactionNumber = transactionNumberPatterns.length > 0;
+    this.transactionNumberPattern = transactionNumberPatterns.length === 1 ? transactionNumberPatterns[0] : null;
+    this.headingActions = [this.moreFiltersAction];
+  }
+
   getFormControlNames() {
-    return ['status', 'accountType', 'transferFilter', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd'];
+    return ['status', 'accountType', 'transferFilter', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd', 'direction',
+      'transactionNumber'];
   }
 
   getInitialFormValue(data: TransactionDataForSearch) {
@@ -94,6 +108,14 @@ export class SearchOwnerInstallmentsComponent
     const status = value.status as InstallmentStatusEnum;
     params.statuses = [status];
     return params;
+  }
+
+  showMoreFiltersLabel() {
+    return this.i18n.general.moreFilters;
+  }
+
+  showLessFiltersLabel() {
+    return this.i18n.general.lessFilters;
   }
 
   resolveMenu(data: TransactionDataForSearch) {
