@@ -260,6 +260,7 @@
     "banking.pendingMyAuth": "Esperando mi autorización",
     "banking.authorizations": "Pagos con autorización",
     "banking.paymentRequests": "Payment requests",
+    "banking.paymentRequestsOverview": "Payment requests overview",
     "banking.searchVouchers": "Buscar cupones",
     "banking.buyVouchers": "Comprar cupones",
     "banking.boughtVouchers": "Ver comprados",
