@@ -257,6 +257,7 @@
     "banking.pos": "Receive payment",
     "banking.receiveQrPayment": "Receive QR-code",
     "banking.scheduledPayments": "Paiements planifiés",
+    "banking.scheduledPaymentsOverview": "Scheduled payments overview",
     "banking.pendingMyAuth": "Awaiting my authorization",
     "banking.authorizations": "Autorisations de paiement",
     "banking.paymentRequests": "Payment requests",
