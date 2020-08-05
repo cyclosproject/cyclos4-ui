@@ -79,6 +79,7 @@
     "removeItemDone": "O item foi removido",
     "currency": "Moeda",
     "images": "Imagens",
+    "usersOfBroker": "Users of the broker",
     "sendMedium": {
       "email": "E-mail",
       "sms": "SMS"
@@ -502,8 +503,7 @@
       "unlimited": "Ilimitado",
       "mode": "Modo",
       "personalized": "Personalizado",
-      "productDefault": "Padrão do produto",
-      "usersOfBroker": "Usuários do corretor"
+      "productDefault": "Padrão do produto"
     },
     "balanceLimits": {
       "negativeLimit": "Limite de saldo negativo",
@@ -597,9 +597,11 @@
     "nextOccurrence": "Próxima ocorrência",
     "channel": "Canal",
     "receivedBy": "Recebido por",
+    "chargedBack": "Charged back",
     "chargebackOf": "Estorno de",
     "chargedBackBy": "Estornado por",
     "authorizationComments": "Comentários da autorização",
+    "actionPerformedBy": "Action performed by",
     "accountBalance": "Saldo de conta",
     "installments": "Parcelas",
     "installmentNumber": "Número",
@@ -608,6 +610,16 @@
     "noAccounts": "Você não tem nenhuma conta para realizar o pagamento",
     "noTypes": "Não existem tipos de pagamento possíveis",
     "noTypesSelection": "Não existe tipos de pagamento possíveis a partir dessa conta para o usuário selecionado",
+    "transferKinds": "Transfer kinds",
+    "transferkind": {
+      "accountFee": "Account fee",
+      "chargeback": "Chargeback",
+      "import": "Import",
+      "initialCredit": "Initial credit",
+      "installment": "Installment",
+      "payment": "Payment",
+      "transferFee": "Transfer fee"
+    },
     "scheduling": "Agendamento",
     "scheduling.direct": "Pagar agora",
     "scheduling.single": "Agendado",
@@ -861,7 +873,7 @@
     },
     "buyerGroups": "Grupos do comprador",
     "redeemerGroups": "Grupos do resgatante",
-    "creationType": "Tipo de Criação",
+    "creationType": "Creation type",
     "cancel": {
       "done": "Este cupom foi cancelado.",
       "packConfirmation": "Existem outros cupons pertencentes ao mesmo pacote que também serão cancelados. Deseja continuar?",
