@@ -260,6 +260,7 @@
     "banking.pendingMyAuth": "Awaiting my authorization",
     "banking.authorizations": "Autorizzazioni di pagamento",
     "banking.paymentRequests": "Payment requests",
+    "banking.paymentRequestsOverview": "Payment requests overview",
     "banking.searchVouchers": "Cerca voucher",
     "banking.buyVouchers": "Acquista voucher",
     "banking.boughtVouchers": "Visualizza acquisti",
