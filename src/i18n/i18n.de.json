@@ -79,6 +79,7 @@
     "removeItemDone": "Das Element wurde entfernt",
     "currency": "Währung",
     "images": "Bilder",
+    "usersOfBroker": "Users of the broker",
     "sendMedium": {
       "email": "E-Mail",
       "sms": "SMS"
@@ -502,8 +503,7 @@
       "unlimited": "Unbegrenzt",
       "mode": "Modus",
       "personalized": "Personalisiert",
-      "productDefault": "Produkt Standard",
-      "usersOfBroker": "Nutzende des Brokers"
+      "productDefault": "Produkt Standard"
     },
     "balanceLimits": {
       "negativeLimit": "Negatives Kontolimit",
@@ -597,9 +597,11 @@
     "nextOccurrence": "Nächstes Vorkommen",
     "channel": "Kanal",
     "receivedBy": "Erhalten von",
+    "chargedBack": "Charged back",
     "chargebackOf": "Rückbuchung von",
     "chargedBackBy": "Rückbelastet von",
     "authorizationComments": "Autorisierungskommentare",
+    "actionPerformedBy": "Action performed by",
     "accountBalance": "Kontostand",
     "installments": "Raten",
     "installmentNumber": "Nummer",
@@ -608,6 +610,16 @@
     "noAccounts": "Sie haben keine Konten zum Ausführen der Zahlung",
     "noTypes": "Es gibt keine möglichen Zahlungsarten",
     "noTypesSelection": "Es gibt keine möglichen Zahlungsarten für dieses Konto und Nutzende",
+    "transferKinds": "Transfer kinds",
+    "transferkind": {
+      "accountFee": "Account fee",
+      "chargeback": "Chargeback",
+      "import": "Import",
+      "initialCredit": "Initial credit",
+      "installment": "Installment",
+      "payment": "Payment",
+      "transferFee": "Transfer fee"
+    },
     "scheduling": "Terminplanung",
     "scheduling.direct": "Jetzt bezahlen",
     "scheduling.single": "Geplant",
@@ -861,7 +873,7 @@
     },
     "buyerGroups": "Käufergruppen",
     "redeemerGroups": "Erlösergruppen",
-    "creationType": "Erstellungsart",
+    "creationType": "Creation type",
     "cancel": {
       "done": "Dieser Gutschein wurde storniert.",
       "packConfirmation": "Es gibt andere Gutscheine, die zum selben Paket gehören, die ebenfalls storniert werden. Sind Sie sicher, dass Sie fortfahren möchten?",
