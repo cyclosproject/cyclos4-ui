@@ -108,15 +108,15 @@ export class SearchTransfersOverviewComponent
   }
 
   updateAccountTypes(currencyId: string) {
-    const selectedFrom = this.form.controls.fromAccountTypes.value;
-    const selectedTo = this.form.controls.toAccountTypes.value;
+    const selectedFrom = this.form.controls.fromAccountType.value;
+    const selectedTo = this.form.controls.toAccountType.value;
     if (currencyId && selectedFrom) {
       const fromCurrency = (this.data.accountTypes.find(at => at.id === selectedFrom) as AccountType).currency;
-      this.form.controls.fromAccountTypes.setValue(!fromCurrency || fromCurrency.id === currencyId ? selectedFrom : null);
+      this.form.controls.fromAccountType.setValue(!fromCurrency || fromCurrency.id === currencyId ? selectedFrom : null);
     }
     if (currencyId && selectedTo) {
       const toCurrency = (this.data.accountTypes.find(at => at.id === selectedTo) as AccountType).currency;
-      this.form.controls.toAccountTypes.setValue(!toCurrency || toCurrency.id === currencyId ? selectedTo : null);
+      this.form.controls.toAccountType.setValue(!toCurrency || toCurrency.id === currencyId ? selectedTo : null);
     }
   }
 
@@ -124,7 +124,7 @@ export class SearchTransfersOverviewComponent
     return { roles: [RoleEnum.BROKER] };
   }
 
-  findCurrency(): Currency {
+  findCurrency(useAccountType: boolean): Currency {
     if (this.singleCurrency) {
       return this.singleCurrency;
     }
@@ -133,7 +133,7 @@ export class SearchTransfersOverviewComponent
       return this.data.currencies.find(c => c.id === currency);
     }
     const fromAccountId = this.form.controls.fromAccountType.value;
-    if (fromAccountId) {
+    if (useAccountType && fromAccountId) {
       return (this.data.accountTypes.find(at => at.id === fromAccountId) as AccountType)?.currency;
     }
     return null;
@@ -145,7 +145,7 @@ export class SearchTransfersOverviewComponent
     if (fromAccount) {
       return filters.filter(f => f.accountType.id === fromAccount);
     }
-    if (this.findCurrency()) {
+    if (this.findCurrency(true)) {
       const types = this.accountTypes().map(t => t.id);
       return filters.filter(f => types.includes(f.accountType.id));
     }
@@ -154,7 +154,7 @@ export class SearchTransfersOverviewComponent
   }
 
   accountTypes(): AccountType[] {
-    const currency = this.findCurrency();
+    const currency = this.findCurrency(false);
     const types = (this.data.accountTypes || []) as AccountType[];
     if (currency) {
       return types.filter(t => !t.currency || t.currency.id === currency.id);
@@ -163,17 +163,17 @@ export class SearchTransfersOverviewComponent
   }
 
   currencyDecimalDigits(): number {
-    const c = this.findCurrency();
+    const c = this.findCurrency(true);
     return c ? c.decimalDigits : 2;
   }
 
   currencyPrefix(): string {
-    const c = this.findCurrency();
+    const c = this.findCurrency(true);
     return c ? c.prefix : null;
   }
 
   currencySuffix(): string {
-    const c = this.findCurrency();
+    const c = this.findCurrency(true);
     return c ? c.suffix : null;
   }
 
