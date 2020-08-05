@@ -79,6 +79,7 @@
     "removeItemDone": "The item has been removed",
     "currency": "Currency",
     "images": "Images",
+    "usersOfBroker": "Users of the broker",
     "sendMedium": {
       "email": "E-mail",
       "sms": "SMS"
@@ -502,8 +503,7 @@
       "unlimited": "Unlimited",
       "mode": "Mode",
       "personalized": "Personalized",
-      "productDefault": "Product default",
-      "usersOfBroker": "Users of the broker"
+      "productDefault": "Product default"
     },
     "balanceLimits": {
       "negativeLimit": "Negative balance limit",
@@ -597,9 +597,11 @@
     "nextOccurrence": "Volgende gebeurtenis",
     "channel": "Kanaal",
     "receivedBy": "Ontvangen door",
+    "chargedBack": "Charged back",
     "chargebackOf": "Terugvordering van",
     "chargedBackBy": "Terug in rekening gebracht door",
     "authorizationComments": "Toestemming reacties",
+    "actionPerformedBy": "Action performed by",
     "accountBalance": "Rekening saldo",
     "installments": "Termijnbetalingen",
     "installmentNumber": "Nummer",
@@ -608,6 +610,16 @@
     "noAccounts": "U hoeft geen rekeningen voor het uitvoeren van de betaling",
     "noTypes": "Er zijn geen mogelijke betaling soorten",
     "noTypesSelection": "Er zijn geen mogelijke betaling typen van dit account naar de geselecteerde gebruiker",
+    "transferKinds": "Transfer kinds",
+    "transferkind": {
+      "accountFee": "Account fee",
+      "chargeback": "Chargeback",
+      "import": "Import",
+      "initialCredit": "Initial credit",
+      "installment": "Installment",
+      "payment": "Payment",
+      "transferFee": "Transfer fee"
+    },
     "scheduling": "Agendering",
     "scheduling.direct": "Betaal nu",
     "scheduling.single": "Geagendeerde",
@@ -861,7 +873,7 @@
     },
     "buyerGroups": "Buyer groups",
     "redeemerGroups": "Redeemer groups",
-    "creationType": "CreationType",
+    "creationType": "Creation type",
     "cancel": {
       "done": "This voucher has been canceled.",
       "packConfirmation": "There are other vouchers belonging to the same pack that will be also canceled. Are you sure to continue?",
