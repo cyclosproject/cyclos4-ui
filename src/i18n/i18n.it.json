@@ -79,6 +79,7 @@
     "removeItemDone": "L'elemento è stato rimosso",
     "currency": "Valuta",
     "images": "Immagini",
+    "usersOfBroker": "Users of the broker",
     "sendMedium": {
       "email": "E-mail",
       "sms": "SMS"
@@ -502,8 +503,7 @@
       "unlimited": "Unlimited",
       "mode": "Mode",
       "personalized": "Personalized",
-      "productDefault": "Product default",
-      "usersOfBroker": "Users of the broker"
+      "productDefault": "Product default"
     },
     "balanceLimits": {
       "negativeLimit": "Negative balance limit",
@@ -597,9 +597,11 @@
     "nextOccurrence": "Prossima ricorrenza",
     "channel": "Canale",
     "receivedBy": "Ricevuto da",
+    "chargedBack": "Charged back",
     "chargebackOf": "Storno di",
     "chargedBackBy": "Stornato da",
     "authorizationComments": "Commenti di autorizzazione",
+    "actionPerformedBy": "Action performed by",
     "accountBalance": "Saldo del conto",
     "installments": "Rate",
     "installmentNumber": "Numero",
@@ -608,6 +610,16 @@
     "noAccounts": "Non hai nessun conto per eseguire il pagamento",
     "noTypes": "Non ci sono tipi di pagamento possibili",
     "noTypesSelection": "Non ci sono tipi di pagamento possibili da questo conto all'utente selezionato",
+    "transferKinds": "Transfer kinds",
+    "transferkind": {
+      "accountFee": "Account fee",
+      "chargeback": "Chargeback",
+      "import": "Import",
+      "initialCredit": "Initial credit",
+      "installment": "Installment",
+      "payment": "Payment",
+      "transferFee": "Transfer fee"
+    },
     "scheduling": "Pianificazione",
     "scheduling.direct": "Paga ora",
     "scheduling.single": "Pianificato",
@@ -861,7 +873,7 @@
     },
     "buyerGroups": "Gruppi acquirenti",
     "redeemerGroups": "Gruppi accettatori",
-    "creationType": "Tipo di creazione",
+    "creationType": "Creation type",
     "cancel": {
       "done": "Questo voucher è stato annullato.",
       "packConfirmation": "Ci sono altri buoni appartenenti allo stesso pacchetto che saranno cancellati. Sei sicuro di continuare?",
