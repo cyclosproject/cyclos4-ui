@@ -79,6 +79,7 @@
     "removeItemDone": "El elemento ha sido eliminado",
     "currency": "Moneda",
     "images": "Imágenes",
+    "usersOfBroker": "Users of the broker",
     "sendMedium": {
       "email": "Correo electrónico",
       "sms": "SMS"
@@ -502,8 +503,7 @@
       "unlimited": "Unlimited",
       "mode": "Mode",
       "personalized": "Personalized",
-      "productDefault": "Product default",
-      "usersOfBroker": "Users of the broker"
+      "productDefault": "Product default"
     },
     "balanceLimits": {
       "negativeLimit": "Límite de saldo negativo",
@@ -597,9 +597,11 @@
     "nextOccurrence": "Siguiente ocurrencia",
     "channel": "Canal",
     "receivedBy": "Recibido por",
+    "chargedBack": "Charged back",
     "chargebackOf": "Devolución de",
     "chargedBackBy": "Devuelto por",
     "authorizationComments": "Comentarios",
+    "actionPerformedBy": "Action performed by",
     "accountBalance": "Saldo",
     "installments": "Cuotas",
     "installmentNumber": "Número",
@@ -608,6 +610,16 @@
     "noAccounts": "No posee ninguna cuenta para poder realizar el pago",
     "noTypes": "No hay tipos de transacción posibles",
     "noTypesSelection": "No hay tipos de transacción posibles desde esta cuenta al usuario seleccionado",
+    "transferKinds": "Transfer kinds",
+    "transferkind": {
+      "accountFee": "Account fee",
+      "chargeback": "Chargeback",
+      "import": "Import",
+      "initialCredit": "Initial credit",
+      "installment": "Installment",
+      "payment": "Payment",
+      "transferFee": "Transfer fee"
+    },
     "scheduling": "Agendado",
     "scheduling.direct": "No agendar (pagar de inmediato)",
     "scheduling.single": "Agendado a futuro",
@@ -861,7 +873,7 @@
     },
     "buyerGroups": "Grupos de compradores",
     "redeemerGroups": "Grupos que canjean",
-    "creationType": "TipoCreación",
+    "creationType": "Creation type",
     "cancel": {
       "done": "El cupón ha sido cancelado.",
       "packConfirmation": "Hay otros cupones pertenecientes al mismo paquete, que también serán cancelados. ¿Estás seguro de continuar?",
