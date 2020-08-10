@@ -54,12 +54,14 @@
     "previous": "Precedente",
     "next": "Prossimo",
     "view": "Mostra",
+    "skip": "Skip",
     "viewHistory": "Visualizza cronologia",
     "edit": "Modifica",
     "confirm": "Conferma",
     "cancel": "Annulla",
     "close": "Chiudi",
     "submit": "Invia",
+    "finish": "Finish",
     "remove": "Rimuovi",
     "remove.confirm": "Sei sicuro di voler rimuovere l'elemento {item}?",
     "remove.done": "L'elemento {item} è stato rimosso",
@@ -84,6 +86,8 @@
       "email": "E-mail",
       "sms": "SMS"
     },
+    "sendCode": "Send code",
+    "sentCodeTo": "The verification code was sent to {to}",
     "reloadPage": "Aggiorna",
     "sessionExpired": {
       "title": "Sessione scaduta",
@@ -337,7 +341,7 @@
     "confirm.otp.request": "Per favore, richiedi una password di conferma qui sotto per confermare",
     "otp.sent": "La password è stata inviata a {dest}",
     "otp.receiveBy": "Ricevi via {medium}",
-    "otp.receiveBy.countdown": "{medium} sent({remaining} sec)",
+    "otp.receiveBy.countdown": "{medium} sent ({remaining} sec)",
     "oldPassword": "Vecchia password",
     "newPassword": "Nuova password",
     "passwordConfirmation": "Conferma password",
@@ -1786,8 +1790,6 @@
     "login.noMatch": "Nessun utente trovato con l'email {email}. Dovrai effettuare il login con il tuo normale utente e password. Dopo il login, il tuo account {app} verrà automaticamente collegato, così la prossima volta, la funzionalità 'Continua con {provider}' funzionerà direttamente.",
     "login.noEmail": "Impossibile leggere l'indirizzo e-mail dal tuo account {provider} . Dovrai effettuare il login con il tuo utente normale e la password. Dopo il login, il tuo account {app} verrà automaticamente collegato, così la prossima volta, la funzionalità 'Continua con {provider}' funzionerà direttamente.",
     "registration": "Registrati più velocemente con il tuo identity provider:",
-    "registration.or": "o",
-    "registration.fillForm": "Compila il modulo di registrazione",
     "registration.disclaimer": "<b>Avviso:</b> Nessuno dei tuoi dati {app} sarà condiviso con questi fornitori, e l'unico scopo di leggere i tuoi dati personali è quello di compilare il modulo di registrazione e di accedere dopo la registrazione.",
     "disclaimer": "<b>Avviso</b>: nessuno dei tuoi dati {app} sarà condiviso con qualsiasi provider. Gli unici dati letti dai provider sono il nome visualizzato e l'e-mail, con l'unico scopo di accedere più velocemente su {app}.",
     "noResults": "There are not identity providers added yet.",
@@ -1818,6 +1820,12 @@
     "mobileTitle": {
       "result": "Risultato"
     }
+  },
+  "wizard": {
+    "alreadyExecuted": "This step was already executed",
+    "emailVerificationCode": "E-mail verification code",
+    "smsVerificationCode": "SMS verification code",
+    "codeSent.countdown": "Code sent ({remaining} sec)"
   },
   "setting": {
     "title": "Impostazioni",
