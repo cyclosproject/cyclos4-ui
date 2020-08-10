@@ -260,7 +260,7 @@
     "banking.scheduledPaymentsOverview": "Scheduled payments overview",
     "banking.pendingMyAuth": "Esperando mi autorización",
     "banking.authorizations": "Pagos con autorización",
-    "banking.paymentRequests": "Payment requests",
+    "banking.paymentRequests": "Solicitud de pago",
     "banking.paymentRequestsOverview": "Payment requests overview",
     "banking.searchVouchers": "Buscar cupones",
     "banking.buyVouchers": "Comprar cupones",
@@ -617,9 +617,9 @@
       "accountFee": "Account fee",
       "chargeback": "Chargeback",
       "import": "Import",
-      "initialCredit": "Initial credit",
-      "installment": "Installment",
-      "payment": "Payment",
+      "initialCredit": "Crédito inicial",
+      "installment": "Cuota",
+      "payment": "Pago",
       "transferFee": "Transfer fee"
     },
     "scheduling": "Agendado",
@@ -700,11 +700,11 @@
       "childTransfers": "Transferencias generadas",
       "transfersOverview": "Visión general de Transferencias",
       "receiveQrPayment": "Recibir pago de código QR",
-      "paymentRequestSent": "Payment request sent",
-      "paymentRequestSystemToUser": "Payment request from user",
-      "paymentRequestToSystem": "Payment request from system",
-      "paymentRequestToUser": "Payment request from user",
-      "paymentRequests": "Payment requests",
+      "paymentRequestSent": "Solicitud de pago enviada",
+      "paymentRequestSystemToUser": "Solicitud de pago desde usuario",
+      "paymentRequestToSystem": "Solicitud de pago de sistema",
+      "paymentRequestToUser": "Solicitud de pago de usuario",
+      "paymentRequests": "Solicitudes de pago",
       "paymentRequestsOverview": "Payment requests overview"
     },
     "mobileTitle": {
@@ -733,11 +733,11 @@
       "childTransfers": "Transferencias generadas",
       "transfersOverview": "Visión general de Transferencias",
       "receiveQrPayment": "Pago de código QR",
-      "paymentRequestSent": "Payment request sent",
-      "paymentRequestSystemToUser": "Payment request",
-      "paymentRequestToSystem": "Payment request",
-      "paymentRequestToUser": "Payment request",
-      "paymentRequests": "Payment requests",
+      "paymentRequestSent": "Solicitud de pago enviada",
+      "paymentRequestSystemToUser": "Solicitud de pago",
+      "paymentRequestToSystem": "Solicitud de pago",
+      "paymentRequestToUser": "Solicitud de pago",
+      "paymentRequests": "Solicitudes de pago",
       "paymentRequestsOverview": "Payment requests overview"
     },
     "ticketShareTitle": "Invitación a realizar un pago",
@@ -782,11 +782,11 @@
     "processFailedOccurrence": "Procesar la ocurrencia con error",
     "processFailedOccurrence.message": "¿Está seguro que desea procesar la ocurrencia número {number} ahora?",
     "processFailedOccurrence.done": "La ocurrencia ha sido procesada",
-    "acceptPaymentRequest": "Accept this payment request",
-    "acceptPaymentRequest.done": "The payment request was accepted",
-    "cancelPaymentRequest": "Cancel this payment request",
-    "cancelPaymentRequest.done": "The payment request was canceled",
-    "rejectPaymentRequest": "Deny this payment request",
+    "acceptPaymentRequest": "Aceptar la solicitud de pago",
+    "acceptPaymentRequest.done": "La solicitud de pago fue aceptada",
+    "cancelPaymentRequest": "Cancelar la solicitud de pago",
+    "cancelPaymentRequest.done": "La solicitud de pago fue cancelada",
+    "rejectPaymentRequest": "Denegar la solicitud de pago",
     "rejectPaymentRequest.done": "The payment request was denied",
     "changePaymentRequestExpiration": "Cambiar fecha de vencimiento",
     "changePaymentRequestExpiration.done": "La fecha de vencimiento de la solicitud de pago fue cambiada ",
@@ -1997,40 +1997,40 @@
       "veryGood": "Very good",
       "neutral": "Neutral"
     },
-    "from": "From",
-    "to": "To",
+    "from": "Desde",
+    "to": "A",
     "notGiven": "Not given yet",
-    "value": "Value",
+    "value": "Valor",
     "allTime": "All time",
-    "last30Days": "Last 30 days",
+    "last30Days": "Últimos 30 días",
     "total": "Total",
-    "percentagePositive": "Percentage positive"
+    "percentagePositive": "Porcentaje positivo"
   },
   "product": {
     "title": {
-      "list": "Assigned products",
+      "list": "Productos asignados",
       "history": "Historial de productos asignados"
     },
     "mobileTitle": {
-      "list": "Assigned products",
+      "list": "Productos asignados",
       "history": "Historial de productos asignados"
     },
     "assigned": {
-      "individual": "Products assigned individually to user",
-      "group": "Products assigned to user's group",
+      "individual": "Productos asignados individualmente al usuario",
+      "group": "Productos asignados al grupo de usuarios",
       "groupSet": "Products assigned to group set"
     },
-    "assign": "Assign",
-    "unassign": "Unassign",
-    "assignIndividualProduct": "Assign individual product",
-    "userAccount": "User account",
-    "product": "Product",
-    "action": "Action",
-    "productAssigned": "The product was assigned to the user",
+    "assign": "Asignar",
+    "unassign": "Desasignar",
+    "assignIndividualProduct": "Asignar producto individual",
+    "userAccount": "Cuenta de usuario",
+    "product": "Producto",
+    "action": "Acción",
+    "productAssigned": "El producto fue asignado al usuario",
     "kind": {
-      "administrator": "Administrator",
+      "administrator": "Administrador",
       "broker": "Broker",
-      "member": "Member"
+      "member": "Miembro"
     }
   }
 }
