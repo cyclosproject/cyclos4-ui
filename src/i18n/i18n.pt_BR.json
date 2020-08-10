@@ -54,12 +54,14 @@
     "previous": "Anterior",
     "next": "Próximo",
     "view": "Ver",
+    "skip": "Skip",
     "viewHistory": "Visualizar Histórico",
     "edit": "Editar",
     "confirm": "Confirmar",
     "cancel": "Cancelar",
     "close": "Fechar",
     "submit": "Enviar",
+    "finish": "Finish",
     "remove": "Remover",
     "remove.confirm": "Tem certeza que deseja remover o item {item}?",
     "remove.done": "O item {item} foi removido",
@@ -84,6 +86,8 @@
       "email": "E-mail",
       "sms": "SMS"
     },
+    "sendCode": "Send code",
+    "sentCodeTo": "The verification code was sent to {to}",
     "reloadPage": "Recarregar página",
     "sessionExpired": {
       "title": "Sessão expirada",
@@ -337,7 +341,7 @@
     "confirm.otp.request": "Por favor, solicite uma senha de confirmação para poder confirmar",
     "otp.sent": "A senha foi enviada para {dest}",
     "otp.receiveBy": "Obter via {medium}",
-    "otp.receiveBy.countdown": "{medium} enviado({remaining} seg)",
+    "otp.receiveBy.countdown": "{medium} sent ({remaining} sec)",
     "oldPassword": "Senha antiga",
     "newPassword": "Nova senha",
     "passwordConfirmation": "Confirmação da senha",
@@ -1786,8 +1790,6 @@
     "login.noMatch": "Nenhum usuário encontrado com o e-mail {email}. Você precisará fazer o login com seu usuário e senha padrão. Após o login, sua conta do {app} será automaticamente associada, então na próxima vez, a funcionalidade 'Continuar com {provider}' funcionará diretamente.",
     "login.noEmail": "Não foi possível ler um endereço de e-mail da sua conta {provider}. Você precisará fazer o login com seu usuário e senha regulares. Após o login, sua conta do {app} será automaticamente ligada, então na próxima vez, a funcionalidade 'Continuar com {provider}' funcionará diretamente.",
     "registration": "Registre-se mais rápido com seu provedor de identidade:",
-    "registration.or": "Ou",
-    "registration.fillForm": "Preencha o formulário de registro",
     "registration.disclaimer": "<b>Aviso Legal:</b> Nenhum dos seus dados {app} será compartilhado com estes provedores, e o único propósito de ler seus dados pessoais deles é preencher o formulário de registro e logar você depois de estar registrado.",
     "disclaimer": "<b>Aviso</b>: Nenhum dos seus dados {app} serão compartilhados com qualquer provedor. Os únicos dados lidos pelos provedores são o seu nome de exibição e e-mail, com o único propósito de fazer login mais rápido no {app}.",
     "noResults": "Não há provedores de identidade adicionados ainda.",
@@ -1818,6 +1820,12 @@
     "mobileTitle": {
       "result": "Resultado"
     }
+  },
+  "wizard": {
+    "alreadyExecuted": "This step was already executed",
+    "emailVerificationCode": "E-mail verification code",
+    "smsVerificationCode": "SMS verification code",
+    "codeSent.countdown": "Code sent ({remaining} sec)"
   },
   "setting": {
     "title": "Definições",
