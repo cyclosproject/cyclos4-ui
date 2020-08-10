@@ -105,12 +105,11 @@
   <label-value [label]="i18n.general.map" kind="field"
     *ngIf="defineAddress.value && maps.enabled">
     <static-map
-      *ngIf="addressForm.get('location').value.latitude != null; else viewMap"
+      *ngIf="(addressForm.get('location').valueChanges | async)?.latitude != null; else viewMap"
       (imageLoaded)="mapShown()" [address]="addressForm.value"></static-map>
     <ng-template #viewMap>
-      <action-button *ngIf="image" class="ml-3" outline
-        [disabled]="locatingAddress$ | async" (action)="locateAddress()"
-        [label]="i18n.general.mapView">
+      <action-button outline [disabled]="locatingAddress$ | async"
+        (action)="locateAddress()" [label]="i18n.general.mapView">
       </action-button>
     </ng-template>
   </label-value>
