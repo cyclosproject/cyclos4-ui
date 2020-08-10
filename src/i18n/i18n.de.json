@@ -202,7 +202,7 @@
     "staleEntity": "Diese Daten können nicht gespeichert werden, da sie von jemand anderem geändert wurden.<br>Bitte laden Sie die Seite erneut und starten Sie den Vorgang neu.",
     "removeDataInUse": "Dieses Element kann nicht entfernt werden, da es gerade verwendet wird.",
     "notFound": {
-      "location": "Der Ort, den Sie eingegeben oder versucht haben zuzugreifen, wurde nicht gefunden",
+      "location": "Der Ort, den Sie eingegeben haben oder versucht haben zuzugreifen, wurde nicht gefunden",
       "type": "Die angeforderten Daten konnten nicht gefunden werden: {type}",
       "typeKey": "Die angeforderten Daten konnten nicht gefunden werden: {type} mit dem Schlüssel {key}"
     },
@@ -231,8 +231,8 @@
       "maxDate": "Sollte {max} oder vor sein"
     },
     "geolocation": {
-      "denied": "Keine Berechtigung, um den aktuellen Standort zu erhalten. Bitte erteilen Sie diese Berechtigung in Ihrem Browser.",
-      "unavailable": "Die aktuelle Position ist nicht verfügbar",
+      "denied": "Keine Berechtigung, den aktuellen Standort zu erhalten. Bitte erteilen Sie diese Berechtigung in Ihrem Browser.",
+      "unavailable": "Der aktuelle Standort ist nicht verfügbar",
       "general": "Fehler beim Abrufen des aktuellen Standorts"
     }
   },
@@ -301,7 +301,7 @@
     "title": "Anmelden",
     "mobileTitle": "Anmelden",
     "message": "Sie können sich mit Ihrem Benutzernamen und Ihrem Passwort anmelden",
-    "disconnected": "Die Verbindung wurde getrennt.<br>Bitte melden Sie sich erneut an, um die angeforderte Seite anzusehen.",
+    "disconnected": "Die Verbindung wurde getrennt.<br>Bitte melden Sie sich erneut an, um die angeforderte Seite zu sehen.",
     "principal": "Nutzende",
     "forgotPassword": "Passwort vergessen?",
     "register": "Noch kein Benutzer? Melden Sie sich hier an."
@@ -316,10 +316,10 @@
     "confirm.device.none": "Um zu bestätigen, müssen Sie ein vertrauenswürdiges Mobiltelefon haben, aber Sie haben keines",
     "confirm.deviceOrPassword.active": "Um zu bestätigen, scannen Sie entweder diesen QR-Code mit Ihrem Mobiltelefon oder geben Sie Ihr {password} ein",
     "confirm.deviceOrPassword.none": "Um zu bestätigen, müssen Sie ein vertrauenswürdiges Mobiltelefon haben oder Ihr {password} angeben, aber Sie haben keines",
-    "confirm.deviceOrOtp.noMediums": "Um zu bestätigen, benötigen Sie entweder ein vertrauenswürdiges Mobiltelefon (und Sie haben keines) oder ein Passwort, aber es gibt keine möglichen Empfänger.<br>Bitte kontaktieren Sie die Administration.",
+    "confirm.deviceOrOtp.noMediums": "Um zu bestätigen, benötigen Sie entweder ein vertrauenswürdiges Mobiltelefon (und Sie haben keines) oder ein Passwort, aber es gibt keine Empfangsmöglichkeiten.<br>Bitte kontaktieren Sie die Administration.",
     "confirm.deviceOrOtp.active": "Um zu bestätigen, scannen Sie entweder diesen QR-Code mit Ihrem Smartphone, verwenden Sie das zuvor gesendete Passwort oder fordern Sie ein neues an",
     "confirm.deviceOrOtp.request": "Um zu bestätigen, scannen Sie entweder diesen QR-Code mit Ihrem Smartphone oder fordern Sie unten ein Passwort an",
-    "confirm.otp.noMediums": "Um zu bestätigen, benötigen Sie ein Passwort, aber es gibt keine möglichen Empfänger.<br>Bitte kontaktieren Sie die Administration.",
+    "confirm.otp.noMediums": "Um zu bestätigen, benötigen Sie ein Passwort, aber es gibt keine Empfangsmöglichkeiten.<br>Bitte kontaktieren Sie die Administration.",
     "confirm.otp.active": "Sie können das zuvor gesendete Passwort verwenden oder ein neues anfordern",
     "confirm.otp.request": "Bitte fordern Sie unten ein Passwort an, um es zu bestätigen",
     "otp.sent": "Das Passwort wurde an {dest} gesendet",
@@ -327,12 +327,12 @@
     "otp.receiveBy.countdown": "{medium} gesendet ({remaining} Sek)",
     "oldPassword": "Altes Passwort",
     "newPassword": "Neues Passwort",
-    "passwordConfirmation": "Passwortbestätigung",
+    "passwordConfirmation": "Bestätigung des Passworts",
     "error": {
       "disabled": "Ihr Passwort wurde deaktiviert. Bitte kontaktieren Sie die Administration.",
       "reset": "Ihr Passwort wurde zurückgesetzt.",
       "indefinitelyBlocked": "Ihr Passwort wurde wegen Überschreitung der maximal möglichen Versuche deaktiviert. Bitte kontaktieren Sie die Administration.",
-      "temporarilyBlocked": "Ihr Passwort ist vorübergehend wegen Überschreitung der maximal möglichen Versuche gesperrt.",
+      "temporarilyBlocked": "Ihr Passwort ist wegen Überschreitung der maximal möglichen Versuche vorübergehend  gesperrt.",
       "expired": "Ihr Passwort ist abgelaufen. Bitte kontaktieren Sie die Administration.",
       "pending": "Ihr Passwort ist noch nicht aktiviert. Bitte kontaktieren Sie die Administration.",
       "invalid": "Die angegebene {type} ist ungültig"
@@ -345,11 +345,11 @@
       "manage.multiple.self": "Passwörter verwalten",
       "manage.single.user": "Nutzerpasswort verwalten",
       "manage.multiple.user": "Nutzerpasswörter verwalten",
-      "securityAnswer": "Setzen Sie Ihre Sicherheitsantwort"
+      "securityAnswer": "Legen Sie Ihre Sicherheitsantwort fest"
     },
     "mobileTitle": {
-      "change.self": "Passwortänderung",
-      "change.user": "Passwortänderung",
+      "change.self": "Änderung des Passworts",
+      "change.user": "Änderung des Passworts",
       "forgotten": "Nutzende / Passwort wiederherstellen",
       "manage.single.self": "Passwort",
       "manage.multiple.self": "Passwörter",
