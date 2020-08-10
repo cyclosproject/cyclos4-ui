@@ -54,12 +54,14 @@
     "previous": "Anterior",
     "next": "Siguiente",
     "view": "Ver",
+    "skip": "Skip",
     "viewHistory": "Ver historial",
     "edit": "Editar",
     "confirm": "Confirmar",
     "cancel": "Cancelar",
     "close": "Cerrar",
     "submit": "Aceptar",
+    "finish": "Finish",
     "remove": "Eliminar",
     "remove.confirm": "¿Está seguro de eliminar el elemento {item}?",
     "remove.done": "El elemento {item} fue eliminado",
@@ -84,6 +86,8 @@
       "email": "Correo electrónico",
       "sms": "SMS"
     },
+    "sendCode": "Send code",
+    "sentCodeTo": "The verification code was sent to {to}",
     "reloadPage": "Recargar página",
     "sessionExpired": {
       "title": "La sesión ha expirado",
@@ -337,7 +341,7 @@
     "confirm.otp.request": "Por favor, solicite una contraseña de confirmación a continuación, para confirmar",
     "otp.sent": "La contraseña fue enviada a su {dest}",
     "otp.receiveBy": "Obtener mediante {medium}",
-    "otp.receiveBy.countdown": "{medium} enviado({remaining} seg.)",
+    "otp.receiveBy.countdown": "{medium} sent ({remaining} sec)",
     "oldPassword": "Contraseña actual",
     "newPassword": "Nueva contraseña",
     "passwordConfirmation": "Confirmación de contraseña",
@@ -1786,8 +1790,6 @@
     "login.noMatch": "No se ha encontrado ningún usuario con el correo electrónico {email}. Necesitará acceder con su usuario y contraseña regulares. Después de iniciar sesión, tu cuenta de {app} se vinculará automáticamente, de esta forma 'Continuar con {provider}' funcionará directamente la próxima vez.",
     "login.noEmail": "No se pudo leer una dirección de correo electrónico en su cuenta de {provider}. Necesitará acceder con su usuario y contraseña regulares. Después de iniciar sesión, tu cuenta de {app} se vinculará automáticamente, de esta forma 'Continuar con {provider}' funcionará directamente la próxima vez.",
     "registration": "Registrarse rápidamente con su proveedor de identidad:",
-    "registration.or": "O",
-    "registration.fillForm": "Completar el formulario de registro",
     "registration.disclaimer": "<b>Descargo de responsabilidad:</b> Ninguno de los datos en su {app} serán compartidos con estos proveedores. El único propósito de lleer sus datos de carácter personal desde el proveedor es rellenar su formulario de registración y facilitar su acceso una vez completado el proceso.",
     "disclaimer": "<b>Descargo de responsabilidad</b>: Ninguno de sus datos en {app} serán compartidos con los proveedores. Los únicos datos que se toman de su proveedor serán su nombre y e-mail, y con el único propósito de acelerar y facilitar el proceso de acceso a {app}.",
     "noResults": "Aún no se han agregado proveedores de identidad.",
@@ -1818,6 +1820,12 @@
     "mobileTitle": {
       "result": "Resultado"
     }
+  },
+  "wizard": {
+    "alreadyExecuted": "This step was already executed",
+    "emailVerificationCode": "E-mail verification code",
+    "smsVerificationCode": "SMS verification code",
+    "codeSent.countdown": "Code sent ({remaining} sec)"
   },
   "setting": {
     "title": "Ajustes",
