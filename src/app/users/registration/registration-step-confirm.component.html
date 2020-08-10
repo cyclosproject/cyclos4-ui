@@ -77,25 +77,28 @@
       </input-field>
     </ng-container>
 
-    <h2 *ngIf="data.agreements?.length > 0 || data.captchaType != null">
-      {{ i18n.user.title.registrationConfirmation }}
-    </h2>
+    <ng-container
+      *ngIf="data.agreements?.length > 0 || data.captchaType != null">
+      <h2>
+        {{ i18n.user.title.registrationConfirmation }}
+      </h2>
 
-    <div class="row no-gutters">
-      <div class="col-12 col-sm-6 col-md-5" *ngIf="data.captchaType != null">
-        <div class="mb-3">{{ i18n.user.captcha }}</div>
-        <div class="mb-3">
-          <captcha [form]="form.get('captcha')"></captcha>
+      <div class="row no-gutters">
+        <div class="col-12 col-sm-6 col-md-7"
+          *ngIf="data.agreements?.length > 0">
+          <div class="mb-3">{{ i18n.pendingAgreements.preface }}</div>
+          <accept-agreements [agreements]="data.agreements"
+            formControlName="acceptAgreements"></accept-agreements>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-5"
+          *ngIf="data.captchaType != null">
+          <div class="mb-3">{{ i18n.user.captcha }}</div>
+          <div class="mb-3">
+            <captcha [form]="form.get('captcha')"></captcha>
+          </div>
         </div>
       </div>
-
-      <div class="col-12 col-sm-6 col-md-7"
-        *ngIf="data.agreements?.length > 0">
-        <div class="mb-3">{{ i18n.pendingAgreements.preface }}</div>
-        <accept-agreements [agreements]="data.agreements"
-          formControlName="acceptAgreements"></accept-agreements>
-      </div>
-    </div>
+    </ng-container>
   </ng-container>
-
 </form>

@@ -32,6 +32,7 @@ import { TopBarComponent } from 'app/core/top-bar.component';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { UserCacheService } from 'app/core/user-cache.service';
 import { UserHelperService } from 'app/core/user-helper.service';
+import { WizardHelperService } from 'app/core/wizard-helper.service';
 import { CountriesResolve } from 'app/countries.resolve';
 import { I18n } from 'app/i18n/i18n';
 import { LayoutService } from 'app/shared/layout.service';
@@ -102,6 +103,7 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     ExportHelperService,
     TransactionStatusService,
     OperationHelperService,
+    WizardHelperService,
     API_INTERCEPTOR_PROVIDER,
     BsModalService,
   ],

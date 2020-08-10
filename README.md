@@ -285,6 +285,40 @@ switch (type) {
 }
 ```
 
+<!-- Only change this when Cyclos 4.14 is released, with a note
+```groovy
+import org.cyclos.entities.system.CustomWizardExecution
+import org.cyclos.entities.system.ExternalRedirectExecution
+import org.cyclos.impl.utils.LinkType
+import org.cyclos.utils.StringHelper
+
+if (user != null && user.admin && user.group.adminType != null) {
+    // Don't generate custom links for system administrators
+    return null
+}
+
+String root = scriptParameters.rootUrl
+switch (type) {
+    case LinkType.REGISTRATION_VALIDATION:
+        return "${root}/users/validate-registration/${validationKey}"
+    case LinkType.EMAIL_CHANGE:
+        return "${root}/users/validate-email-change/${validationKey}"
+    case LinkType.FORGOT_PASSWORD:
+        return "${root}/forgot-password/${validationKey}"
+    case LinkType.LOGIN:
+        return "${root}/login"
+    case LinkType.EXTERNAL_REDIRECT:
+        ExternalRedirectExecution e = binding.execution
+        return "${root}/operations/callback/${maskId(e.id)}/${e.verificationToken}"
+    case LinkType.WIZARD_EXTERNAL_REDIRECT:
+        CustomWizardExecution we = binding.execution
+        return "${root}/wizards/callback/${we.key}"
+    case LinkType.NOTIFICATION:
+        def l = StringHelper.camelize(location.name())
+        return "${root}/redirect/${l}" + entityId ? "?id=${maskId(entityId)}" : ""
+}
+``` -->
+
 Then, in 'System > System configuration > Configurations' select the configuration applied to users (or the default one) and mark the 'Link generation' field for customization. Then select the script you created and set the following as parameters, replacing the URL with your deployed URL:
 
 ```properties

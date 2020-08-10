@@ -96,7 +96,7 @@
 <ng-container *ngIf="addressAvailability !== 'disabled'">
   <h2 class="mt-4">{{ i18n.address.address }}</h2>
   <boolean-field *ngIf="data.addressConfiguration.availability !== 'required'"
-    [formControl]="defineAddress" [label]="i18n.user.addressDefine">
+    [formControl]="defineAddress" [label]="i18n.user.addressDefine" switch>
   </boolean-field>
   <address-form *ngIf="defineAddress.value" [addressForm]="addressForm"
     ignoreContactFields [configuration]="data.addressConfiguration"

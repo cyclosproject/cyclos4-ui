@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
-import { AsyncValidatorFn, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
-  AvailabilityEnum, BasicUserDataForNew, OperatorDataForNew, OperatorGroupAccountAccessEnum, ProfileFieldActions, TokenStatusEnum, User,
-  UserBasicData, UserDataForNew, UserStatusEnum
+  AddressConfigurationForUserProfile, AvailabilityEnum, BasicUserDataForNew, OperatorDataForNew,
+  OperatorGroupAccountAccessEnum, ProfileFieldActions, TokenStatusEnum, User,
+  UserBasicData, UserDataForNew, UserStatusEnum, UserRegistrationResult, UserRegistrationStatusEnum
 } from 'app/api/models';
+import { UsersService } from 'app/api/services';
+import { AddressHelperService } from 'app/core/address-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { LoginService } from 'app/core/login.service';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';
+import { Observable, of, Subscription, timer } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
@@ -20,6 +25,21 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
     if (origVal !== currVal) {
       return {
         passwordsMatch: true,
+      };
+    }
+  }
+  return null;
+};
+
+/** Validator function that ensures password and confirmation match */
+const SEGURITY_ANSWER_VAL: ValidatorFn = control => {
+  if (control.touched) {
+    const parent = control.parent;
+    const question = parent.get('securityQuestion') == null ? '' : parent.get('securityQuestion').value;
+    const answer = control.value;
+    if (question != null && question !== '' && (answer == null || answer === '')) {
+      return {
+        required: true,
       };
     }
   }
@@ -38,7 +58,9 @@ export class UserHelperService {
     private fieldHelper: FieldHelperService,
     private i18n: I18n,
     private formBuilder: FormBuilder,
-    private login: LoginService) {
+    private addressHelper: AddressHelperService,
+    private login: LoginService,
+    private usersService: UsersService) {
   }
 
   /**
@@ -53,23 +75,27 @@ export class UserHelperService {
    * Sets the form fields which are common for user / operator registration
    * @returns An array with both mobile and land-line forms
    */
-  setupRegistrationForm(form: FormGroup, data: UserDataForNew | OperatorDataForNew,
-                        serverSideValidator?: (name: string) => AsyncValidatorFn): [FormGroup, FormGroup] {
-    serverSideValidator = serverSideValidator || (() => null);
+  setupRegistrationForm(
+    form: FormGroup, data: UserDataForNew | OperatorDataForNew,
+    validateServerSide: boolean): [FormGroup, FormGroup] {
+
+    const group = form.controls.group.value;
     const user = data['operator'] || data.user;
 
     // Full name
     const nameActions = data.profileFieldActions.name;
     if (nameActions && nameActions.edit) {
       form.setControl('name',
-        this.formBuilder.control(user.name, Validators.required, serverSideValidator('name')),
+        this.formBuilder.control(user.name, Validators.required,
+          validateServerSide ? this.serverSideValidator(group, 'name') : null),
       );
     }
     // Login name
     const usernameActions = data.profileFieldActions.username;
     if (usernameActions && usernameActions.edit && !data.generatedUsername) {
       form.setControl('username',
-        this.formBuilder.control(user.username, Validators.required, serverSideValidator('username')),
+        this.formBuilder.control(user.username, Validators.required,
+          validateServerSide ? this.serverSideValidator(group, 'username') : null),
       );
     }
     // E-mail
@@ -81,7 +107,8 @@ export class UserHelperService {
       }
       val.push(Validators.email);
       form.setControl('email',
-        this.formBuilder.control(user.email, val, serverSideValidator('email')),
+        this.formBuilder.control(user.email, val,
+          validateServerSide ? this.serverSideValidator(group, 'email') : null),
       );
       if (data.allowSetSendActivationEmail) {
         form.setControl('skipActivationEmail', this.formBuilder.control(user.skipActivationEmail));
@@ -91,7 +118,7 @@ export class UserHelperService {
     // Custom fields
     form.setControl('customValues',
       this.fieldHelper.customValuesFormGroup(data.customFields, {
-        asyncValProvider: cf => serverSideValidator(cf.internalName),
+        asyncValProvider: validateServerSide ? cf => this.serverSideValidator(group, cf.internalName) : null,
       }));
 
     // Phones
@@ -105,7 +132,7 @@ export class UserHelperService {
       const phone = phoneConfiguration.mobilePhone;
       mobileForm = this.formBuilder.group({
         name: phone.name,
-        number: [phone.number, val, serverSideValidator('mobilePhone')],
+        number: [phone.number, val, validateServerSide ? this.serverSideValidator(group, 'mobilePhone') : null],
         hidden: phone.hidden,
       });
     }
@@ -118,7 +145,7 @@ export class UserHelperService {
       const phone = phoneConfiguration.landLinePhone;
       landLineForm = this.formBuilder.group({
         name: phone.name,
-        number: [phone.number, val, serverSideValidator('landLinePhone')],
+        number: [phone.number, val, validateServerSide ? this.serverSideValidator(group, 'landLinePhone') : null],
         hidden: phone.hidden,
       });
       if (phoneConfiguration.extensionEnabled) {
@@ -127,6 +154,68 @@ export class UserHelperService {
     }
 
     return [mobileForm, landLineForm];
+  }
+
+  /**
+   * Returns an async validator for a given registration field in a given group
+   */
+  private serverSideValidator(group: string, field: string): AsyncValidatorFn {
+    if (this.login.user) {
+      // These async providers only work for guests
+      return null;
+    }
+    return (c: AbstractControl): Observable<ValidationErrors | null> => {
+      let val = c.value;
+      if (empty(val) || !c.dirty) {
+        // Don't validate empty value (will fail validation required), nor fields that haven't been modified yet
+        return of(null);
+      }
+
+      // Multi selections hold the value as array, but we must pass it as pipe-separated
+      if (val instanceof Array) {
+        val = val.join('|');
+      }
+
+      return timer(ApiHelper.DEBOUNCE_TIME).pipe(
+        switchMap(() => {
+          return this.usersService.validateUserRegistrationField({
+            group, field, value: val,
+          });
+        }),
+        map(msg => {
+          return msg ? { message: msg } : null;
+        }),
+      );
+    };
+  }
+
+  /**
+   * Returns both a FormGroup for the address fields and a control indicating whether the address is defined,
+   * according to the given configuration. When the configuration disables addresses, both are null.
+   * Also returns an array of subscriptions, which should be unsubscribed when the calling component is disposed.
+   */
+  registrationAddressForm(configuration: AddressConfigurationForUserProfile): [FormGroup, FormControl, Subscription[]] {
+    const addressAvailability = configuration.availability;
+    let addressForm: FormGroup = null;
+    let defineControl: FormControl = null;
+    const subscriptions: Subscription[] = [];
+    if (addressAvailability !== AvailabilityEnum.DISABLED) {
+      defineControl = this.formBuilder.control(addressAvailability === AvailabilityEnum.REQUIRED);
+      addressForm = this.addressHelper.addressFormGroup(configuration);
+      const address = configuration.address;
+      addressForm.patchValue(address);
+      // When any of the fields change, clear the location
+      for (const field of configuration.enabledFields) {
+        let previous = address[field] || null;
+        subscriptions.push(addressForm.get(field).valueChanges.subscribe(newVal => {
+          if (previous !== newVal) {
+            addressForm.get('location').patchValue({ latitude: null, longitude: null });
+          }
+          previous = newVal;
+        }));
+      }
+    }
+    return [addressForm, defineControl, subscriptions];
   }
 
   /**
@@ -159,6 +248,11 @@ export class UserHelperService {
       passwordControls.push(group);
     }
     return passwordControls;
+  }
+
+  /** Returns a validation for the security answer */
+  get securityAnswerValidation() {
+    return SEGURITY_ANSWER_VAL;
   }
 
   /**
@@ -247,6 +341,81 @@ export class UserHelperService {
       case TokenStatusEnum.UNASSIGNED:
         return this.i18n.token.status.unassigned;
     }
+  }
+
+  /**
+   * Returns a HTML message that is displayed for a successful registration
+   */
+  registrationMessageHtml(result: UserRegistrationResult, manager: boolean): string {
+    const user = result.user.display;
+    switch (result.status) {
+      case UserRegistrationStatusEnum.ACTIVE:
+        return manager ? this.i18n.user.registration.activeManager(user) : this.i18n.user.registration.activePublic;
+      case UserRegistrationStatusEnum.INACTIVE:
+        return manager ? this.i18n.user.registration.inactiveManager(user) : this.i18n.user.registration.inactivePublic;
+      case UserRegistrationStatusEnum.EMAIL_VALIDATION:
+        return manager ? this.i18n.user.registration.pendingManager(user) : this.i18n.user.registration.pendingPublic;
+    }
+  }
+
+  /**
+   * Returns a HTML message for the principals and channels
+   */
+  registrationPrincipalsHtml(result: UserRegistrationResult): string {
+    const principals = result.principals;
+    if (principals == null || principals.length === 0) {
+      return '';
+    }
+    if (principals.length === 1) {
+      const principal = principals[0];
+      return this.i18n.user.registration.principalSingle({
+        principal: principal.type.name,
+        value: principal.value,
+        channels: principal.channels.map(c => c.name).join(', '),
+      });
+    }
+    const buf: string[] = [];
+    buf.push(this.i18n.user.registration.principalMultiplePreface);
+    buf.push('<ul>');
+    for (const principal of principals) {
+      buf.push('<li>');
+      buf.push(this.i18n.user.registration.principalMultipleItem({
+        principal: principal.type.name,
+        value: principal.value,
+        channels: principal.channels.map(c => c.name).join(', '),
+      }));
+      buf.push('</li>');
+    }
+    buf.push('</ul>');
+    return buf.join('');
+  }
+
+  /**
+   * Returns a message for generated passwords which is displayed on registration
+   */
+  registrationPasswordsMessage(result: UserRegistrationResult): string {
+    const passwords = result.generatedPasswords;
+    if (empty(passwords)) {
+      return this.i18n.user.registration.generatedPasswordsNone;
+    } else if (passwords.length === 1) {
+      const password = passwords[0];
+      return this.i18n.user.registration.generatedPasswordsSingle(password.name);
+    } else {
+      return this.i18n.user.registration.generatedPasswordsMultiple(
+        passwords.map(p => p.name).join(', '));
+    }
+  }
+
+  /**
+   * Returns whether the 2 given phone numbers match
+   */
+  phoneNumberMatches(a: string, b: string): boolean {
+    const length = 7;
+    a = (a || '').replace(/[^0-9]/g, '');
+    b = (b || '').replace(/[^0-9]/g, '');
+    a = a.substring(a.length - length);
+    b = b.substring(b.length - length);
+    return a === b;
   }
 
 }

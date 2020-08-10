@@ -393,7 +393,7 @@ export class AuthHelperService {
   /**
    * Opens a popup with a request for an identity provider
    */
-  identityProviderPopup(idp: IdentityProvider, type: 'login' | 'register' | 'link', group?: string):
+  identityProviderPopup(idp: IdentityProvider, type: 'login' | 'register' | 'wizard' | 'link', group?: string, key?: string):
     Observable<IdentityProviderCallbackResult> {
     const observable = new Subject<IdentityProviderCallbackResult>();
 
@@ -411,7 +411,14 @@ export class AuthHelperService {
         this.nextRequestState.nextAsGuest();
         request = this.identityProvidersService.prepareIdentityProviderRegistration({
           identityProvider: idp.internalName,
-          group: group as string,
+          group,
+        });
+        break;
+      case 'wizard':
+        this.nextRequestState.nextAsGuest();
+        request = this.identityProvidersService.prepareIdentityProviderWizard({
+          identityProvider: idp.internalName,
+          key
         });
         break;
       case 'link':

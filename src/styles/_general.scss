@@ -95,6 +95,9 @@ body.dark {
   hr {
     border-color: $border-color-dark;
   }
+  pre {
+    color: $body-color-dark;
+  }
 }
 
 /* Margins / paddings according to the layout spacer */

@@ -1,6 +1,6 @@
 openapi: '3.0.0'
 info:
-  title: 'Cyclos 4.13 API'
+  title: 'Cyclos 4.14 API'
   description: >-
     The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the
     api can be downloaded in both [YAML](http://localhost:8888/api/cyclos-openapi.yaml) or
@@ -32,9 +32,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.13/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.14/api-deprecation.html)
     for this version.
-  version: '4.13'
+  version: '4.14'
 servers:
   - url: 'http://localhost:8888/api'
 
@@ -293,6 +293,9 @@ tags:
   - name: Operations
     description: >-
       Provides access to custom operations
+  - name: Wizards
+    description: >-
+      Provides access to custom wizards
   - name: Marketplace
     description: >-
       Provides access to the marketplace, that is, searching or managing
@@ -1838,14 +1841,12 @@ paths:
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: roles
           in: query
           required: false
@@ -2426,7 +2427,6 @@ paths:
       summary: >-
         Prepares an operation to login a user from an identity provider.
       description: >-
-        Prepares an operation to login a user from an identity provider.
         Several validations are performed, and the result contains the
         URL which should be used to open a browser window to get the
         user consent.
@@ -2484,7 +2484,6 @@ paths:
       summary: >-
         Prepares an operation to register a user from an identity provider.
       description: >-
-        Prepares an operation to register a user from an identity provider.
         Several validations are performed, and the result contains the
         URL which should be used to open a browser window to get the
         user consent.
@@ -2540,6 +2539,77 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /identity-providers/{identityProvider}/wizard:
+    parameters:
+      - name: identityProvider
+        in: path
+        required: true
+        description: >-
+          Either the id or internal name of the identity provider
+        schema:
+          type: string
+    post:
+      operationId: prepareIdentityProviderWizard
+      summary: >-
+        Prepares an operation to fill in a registration wizard from an identity
+        provider.
+      description: >-
+        Several validations are performed, and the result contains the
+        URL which should be used to open a browser window to get the
+        user consent.
+        The channel configuration in Cyclos determines whether registration
+        with identity providers is allowed. Direct registration is never
+        done with wizards, even when configured in the channel.
+        The callback result will contain the execution data for the next wizard
+        step.
+      tags:
+        - IdentityProviders
+      parameters:
+        - name: key
+          in: query
+          required: true
+          description: >-
+            The wizard execution key
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Contains both the request identifier and the URL.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentityProviderRequestResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /identity-providers/{identityProvider}/link:
     parameters:
       - name: identityProvider
@@ -2555,8 +2625,6 @@ paths:
         Prepares an operation to link the authenticated user to an identity
         provider.
       description: >-
-        Prepares an operation to link the authenticated user to an identity
-        provider.
         Must be authenticated with a session token (via `Session-Token`
         request header).
         Several validations are performed, and the result contains the
@@ -2837,14 +2905,12 @@ paths:
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: products
           in: query
           required: false
@@ -3263,14 +3329,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: products
           in: query
           required: false
@@ -4340,14 +4404,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: products
           in: query
           required: false
@@ -4614,14 +4676,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -9756,14 +9816,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: range
           in: query
           required: false
@@ -10946,14 +11004,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: profileFields
           in: query
           required: false
@@ -11115,14 +11171,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -14505,14 +14559,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -14812,14 +14864,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -15092,14 +15142,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -15400,7 +15448,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: integer
-              format: int32
         - name: brokers
           in: query
           required: false
@@ -15493,7 +15540,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: integer
-              format: int32
         - name: negativeSincePeriod
           in: query
           required: false
@@ -15519,14 +15565,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: products
           in: query
           required: false
@@ -15700,7 +15744,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: integer
-              format: int32
         - name: brokers
           in: query
           required: false
@@ -15793,7 +15836,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: integer
-              format: int32
         - name: negativeSincePeriod
           in: query
           required: false
@@ -15824,14 +15866,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: products
           in: query
           required: false
@@ -16037,7 +16077,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: integer
-              format: int32
         - name: brokers
           in: query
           required: false
@@ -16130,7 +16169,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: integer
-              format: int32
         - name: negativeSincePeriod
           in: query
           required: false
@@ -16161,14 +16199,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: products
           in: query
           required: false
@@ -16620,14 +16656,12 @@ Either the ids or identification methods of users' broker"
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -16807,14 +16841,12 @@ Either the ids or identification methods of users' broker"
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -17241,14 +17273,12 @@ Either the ids or identification methods of users' broker"
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -17436,14 +17466,12 @@ Either the ids or identification methods of users' broker"
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -17850,14 +17878,12 @@ Either the ids or identification methods of users' broker"
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -18060,14 +18086,12 @@ Either the ids or identification methods of users' broker"
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -18351,14 +18375,12 @@ Either ids or internal names of the origin account type"
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -18666,14 +18688,12 @@ Either ids or internal names of the origin account type"
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -18955,14 +18975,12 @@ Either ids or internal names of the origin account type"
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -19489,14 +19507,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: paymentRequestExpiration
           in: query
           required: false
@@ -19813,14 +19829,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: paymentRequestExpiration
           in: query
           required: false
@@ -20180,14 +20194,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: paymentRequestExpiration
           in: query
           required: false
@@ -20522,14 +20534,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: paymentRequestExpiration
           in: query
           required: false
@@ -21011,14 +21021,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -21293,14 +21301,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -21610,14 +21616,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -21904,14 +21908,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -25187,14 +25189,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -25748,14 +25748,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: printed
           in: query
           required: false
@@ -25961,14 +25959,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: printed
           in: query
           required: false
@@ -26495,14 +26491,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: redeemBy
           in: query
           required: false
@@ -27811,14 +27805,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: profileFields
           in: query
           required: false
@@ -28074,14 +28066,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: profileFields
           in: query
           required: false
@@ -28665,14 +28655,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: profileFields
           in: query
           required: false
@@ -28873,14 +28861,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: profileFields
           in: query
           required: false
@@ -29103,14 +29089,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: profileFields
           in: query
           required: false
@@ -29313,14 +29297,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: profileFields
           in: query
           required: false
@@ -30382,14 +30364,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -32876,6 +32856,597 @@ A note for dynamic custom fields: If a script is used to generate possible value
                   format: binary
                   description: >-
                     The file being uploaded
+  /wizards/{key}/start:
+    parameters:
+      - name: key
+        in: path
+        required: true
+        description: >-
+          The custom wizard id or internal name
+        schema:
+          type: string
+    post:
+      operationId: startWizard
+      summary: >-
+        Starts the execution of a custom wizard.
+      description: >-
+        The data for the first step is returned. This operation is used for
+        running wizards with `kind` either `$enum.WizardKind.registration`
+        or `$enum.WizardKind.system`. Can also be used by logged users to
+        run wizards with `kind` either `$enum.WizardKind.user` over themselves.
+      tags:
+        - Wizards
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            Returns the data for the first step
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WizardExecutionData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/{user}/wizards/{key}/start:
+    parameters:
+      - $ref: '#/components/parameters/user'
+      - name: key
+        in: path
+        required: true
+        description: >-
+          The custom wizard id or internal name
+        schema:
+          type: string
+    post:
+      operationId: startUserWizard
+      summary: >-
+        Starts the execution of a custom wizard over a given user.
+      description: >-
+        The data for the first step is returned. Only wizards
+        with `kind` = `user` can be executed
+        in this operation.
+      tags:
+        - Wizards
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            Returns the data for the first step
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WizardExecutionData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /wizard-executions/{key}:
+    parameters:
+      - name: key
+        in: path
+        required: true
+        description: >-
+          The custom wizard execution key
+        schema:
+          type: string
+    get:
+      operationId: getCurrentWizardExecution
+      summary: >-
+        Returns the wizard execution data for the current step.
+      description: >-
+        Doesn't modify the wizard execution status.
+      tags:
+        - Wizards
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            Returns the data for the current step.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WizardExecutionData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: transitionWizardExecution
+      summary: >-
+        Transitions a wizard from a step to another, or finishes the wizard
+      description: >-
+        Applies a transition to the current wizard step.
+        When no transition is sent, the wizard is finished. In this case, the
+        current step must be the last wizard step. The request body contains
+        the step parameters, according to the step kind.
+      tags:
+        - Wizards
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: transition
+          in: query
+          schema:
+            type: string
+          description: >-
+            The transition id for the next step. Must be the id of one of the
+            transitions returned in `WizardExecutionData.transitions`, or
+            null, in which case the wizard finishes.
+      requestBody:
+        description: >-
+          The current step fields
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WizardTransitionParams'
+      responses:
+        '200':
+          description: >-
+            Returns the data for the next step, or, if finished, the wizard
+            result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WizardExecutionData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: cancelWizardExecution
+      summary: >-
+        Cancels a wizard execution, removing all associated context.
+      description: >-
+        All stored state for this execution is removed, and its key
+        is no longer valid.
+      tags:
+        - Wizards
+      responses:
+        '204':
+          description: >-
+            The execution was canceled and nothing is returned.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /wizard-executions/{key}/back:
+    parameters:
+      - name: key
+        in: path
+        required: true
+        description: >-
+          The custom wizard execution key
+        schema:
+          type: string
+    post:
+      operationId: backWizardExecution
+      summary: >-
+        Goes back one or more steps in a wizard execution.
+      description: >-
+        Returns the execution data for the new step.
+      tags:
+        - Wizards
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: steps
+          in: query
+          schema:
+            type: integer
+          required: false
+          description: >-
+            The number of steps to go back. When not informed, will be 1.
+      responses:
+        '200':
+          description: >-
+            Returns the data for the next step
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WizardExecutionData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /wizard-executions/{key}/redirect:
+    parameters:
+      - name: key
+        in: path
+        required: true
+        description: >-
+          The custom wizard execution key
+        schema:
+          type: string
+    post:
+      operationId: redirectWizardExecution
+      summary: >-
+        Prepares an external redirect in a wizard execution.
+      description: >-
+        The current step must be set for external redirect (the
+        `WizardExecutionData.action` must be `externalRedirect`).
+        The URL to which redirect the user is returned.
+      tags:
+        - Wizards
+      requestBody:
+        description: >-
+          The current step fields
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WizardTransitionParams'
+      responses:
+        '200':
+          description: >-
+            Returns the URL to where redirect the user
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+  /wizard-executions/{key}/callback:
+    parameters:
+      - name: key
+        in: path
+        required: true
+        description: >-
+          The custom wizard execution key
+        schema:
+          type: string
+    post:
+      operationId: runWizardCallback
+      summary: >-
+        Runs the callback of an external redirect wizard step.
+      description: >-
+        This operation is invoked after a step was redirected to an external
+        application. The script should check whether the external operation was
+        completed and act accordingly
+      tags:
+        - Wizards
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      requestBody:
+        description: >-
+          Data of the original callback request sent by the external service
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HttpRequestData'
+      responses:
+        '200':
+          description: >-
+            The new step data after transitioning to the next step.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WizardExecutionData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /wizard-executions/{key}/verification-code:
+    parameters:
+      - name: key
+        in: path
+        required: true
+        description: >-
+          The custom wizard execution key
+        schema:
+          type: string
+    post:
+      operationId: sendWizardVerificationCode
+      summary: >-
+        Sends a code to verify either e-mail or mobile phone.
+      description: >-
+        The given execution must be of a registration wizard, and be in a
+        form fields step that contain either e-mail or mobile phone, according
+        to the given send medium.
+      tags:
+        - Wizards
+      requestBody:
+        description: >-
+          The parameters for sending the code
+        content:
+          application/json:
+            schema:
+             $ref: '#/components/schemas/WizardVerificationCodeParams'
+      responses:
+        '204':
+          description: >-
+            The verification code is sent and nothing is returned.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /nfc/{tokenType}/{value}:
     get:
       operationId: getNfcToken
@@ -34449,14 +35020,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -34687,14 +35256,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: period
           in: query
           required: false
@@ -35448,14 +36015,12 @@ Either id or an identification, such as login name, e-mail, etc, for the adverti
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: priceRange
           in: query
           required: false
@@ -35838,14 +36403,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: priceRange
           in: query
           required: false
@@ -36908,14 +37471,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: skipTotalCount
           in: query
           required: false
@@ -37603,14 +38164,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The page number (zero-based) of the search. The default value is zero."
           schema:
             type: integer
-            format: int32
         - name: pageSize
           in: query
           required: false
           description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
           schema:
             type: integer
-            format: int32
         - name: productNumber
           in: query
           required: false
@@ -39638,7 +40197,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 $ref: '#/components/schemas/Error'
 
     put:
-      operationId: updateFcmToken
+      operationId: updateFcmTokens
       summary: >-
         Updates an existing FCM token
       description: >-
@@ -40598,9 +41157,11 @@ components:
 
         - `custom_operation`: Custom operation fields.
 
+        - `custom_wizard`: Custom wizard fields.
+
         - `document`: Document fields.
 
-        - `marketplace`: Advertisements field.
+        - `marketplace`: Advertisements fields.
 
         - `record`: Record fields.
 
@@ -40612,6 +41173,7 @@ components:
         - contact
         - contactInfo
         - custom_operation
+        - custom_wizard
         - document
         - marketplace
         - record
@@ -41200,6 +41762,8 @@ components:
         - `registrationData`: The profile data was read and the available data has been returned.
 
         - `registrationDone`: The user was directly registered and logged-in. The `sessionToken` is returned.
+
+        - `wizard`: The wizard execution has transitioned to the next step, and the identity provider information was stored on the server.
       type: string
       enum:
         - denied
@@ -41211,6 +41775,7 @@ components:
         - loginNoMatch
         - registrationData
         - registrationDone
+        - wizard
 
     IdentityProviderNotLinkReasonEnum:
       description: >
@@ -44005,6 +44570,77 @@ components:
         - tue
         - wed
 
+    WizardActionEnum:
+      description: >
+        Indicates which kind of action clients should take on the current step
+
+        Possible values are:
+
+        - `alreadyExecuted`: The step was previously executed and cannot be executed again (probably an external redirect). Clients should show the user a message and the transition actions.
+
+        - `externalRedirect`: The client should prepare the external redirect (`POST /wizard-executions/{key}/redirect`), which will return a URL. Then the user should be redirected to that URL.
+
+        - `finish`: The client should finish the wizard (`POST /wizard-executions/{key}`)
+
+        - `step`: The client should transition to a new step (`POST /wizard-executions/{key}[?transition={t}]`)
+      type: string
+      enum:
+        - alreadyExecuted
+        - externalRedirect
+        - finish
+        - step
+
+    WizardKind:
+      description: >
+        Indicates the type of a custom wizard
+
+        Possible values are:
+
+        - `registration`: The wizard is used to register a user
+
+        - `system`: The wizard is executed by admins
+
+        - `user`: The wizard is executed over a user
+      type: string
+      enum:
+        - registration
+        - system
+        - user
+
+    WizardResultTypeEnum:
+      description: >
+        Indicates how clients should handle the wizard result
+
+        Possible values are:
+
+        - `plainText`: The `result` field is returned, and its content is plain text
+
+        - `registration`: The `registrationResult` field is returned, just like a normal user registration would return
+
+        - `richText`: The `result` field is returned, and its content is HTML
+      type: string
+      enum:
+        - plainText
+        - registration
+        - richText
+
+    WizardStepKind:
+      description: >
+        Indicates the type of a custom wizard step
+
+        Possible values are:
+
+        - `formFields`: Shows custom wizard fields. In a registration wizard, shows any combination of profile fields, password, captcha, agreements, etc
+
+        - `group`: In a registration wizard, shows the selection of the group the user will join
+
+        - `identityProvider`: In a registration wizard, shows the available identity providers for a faster user registration
+      type: string
+      enum:
+        - formFields
+        - group
+        - identityProvider
+
     AcceptOrReschedulePaymentRequest:
       description: >-
         Parameters for accepting or rescheduling payment requests.
@@ -45807,10 +46443,10 @@ components:
       description: >-
         An address reference. The actually used fields depend on the user
         configuration
+      x-implements: IAddress
       allOf:
         - $ref: '#/components/schemas/NamedEntity'
         - type: object
-          x-implements: IAddress
           properties:
             addressLine1:
               type: string
@@ -50554,10 +51190,41 @@ components:
         publicRegistrationGroups:
           description: >-
             Groups that can be used for a public registration. Not returned for
-            logged users.
+            logged users. Also, not returned when a registration wizard is
+            required.
           type: array
           items:
             $ref: '#/components/schemas/GroupForRegistration'
+        largeScreenRegistrationWizard:
+          description: >-
+            Wizard which should be used for registration instead of the regular
+            registration form, for clients with large screens (desktops).
+            When all `largeScreenRegistrationWizard`,
+            `mediumScreenRegistrationWizard` and `smallScreenRegistrationWizard`
+            are set, the regular registration form is disabled, as well as the
+            `POST /users` operation for guests.
+          allOf:
+            - $ref: '#/components/schemas/Wizard'
+        mediumScreenRegistrationWizard:
+          description: >-
+            Wizard which should be used for registration instead of the regular
+            registration form, for clients with medium screens (tablets).
+            When all `largeScreenRegistrationWizard`,
+            `mediumScreenRegistrationWizard` and `smallScreenRegistrationWizard`
+            are set, the regular registration form is disabled, as well as the
+            `POST /users` operation for guests.
+          allOf:
+            - $ref: '#/components/schemas/Wizard'
+        smallScreenRegistrationWizard:
+          description: >-
+            Wizard which should be used for registration instead of the regular
+            registration form, for clients with small screens (phones).
+            When all `largeScreenRegistrationWizard`,
+            `mediumScreenRegistrationWizard` and `smallScreenRegistrationWizard`
+            are set, the regular registration form is disabled, as well as the
+            `POST /users` operation for guests.
+          allOf:
+            - $ref: '#/components/schemas/Wizard'
         mapData:
           description: >-
             Configuration data for map usage. Is null when maps are not used.
@@ -50738,7 +51405,7 @@ components:
                 The available account types for the search
               type: array
               items:
-                $ref: '#/components/schemas/EntityReference'
+                $ref: '#/components/schemas/AccountType'
             query:
               description: >-
                 Default query parameters
@@ -52597,6 +53264,12 @@ components:
           type: object
           additionalProperties:
             type: string
+        wizardExecutionData:
+          description: >-
+            Only when the request is for a registration wizard.
+            Contains the data for the next wizard step.
+          allOf:
+            - $ref: '#/components/schemas/WizardExecutionData'
         errorMessage:
           description: >-
             Description for the error being returned. It is possible that no
@@ -56499,6 +57172,11 @@ components:
             Permissions over own custom operations
           allOf:
             - $ref: '#/components/schemas/OperationsPermissions'
+        wizards:
+          description: >-
+            Permissions over own custom wizards
+          allOf:
+            - $ref: '#/components/schemas/WizardsPermissions'
         contacts:
           description: >-
             Permissions over contacts
@@ -58453,26 +59131,25 @@ components:
     SessionDataForSearch:
       description: >-
         Data for searching user sessions
-      allOf:
-        - type: object
-          properties:
-            roles:
-              description: >-
-                The roles the authenticated user can use to filter sessions.
-              type: array
-              items:
-                $ref: '#/components/schemas/RoleEnum'
-            channels:
-              description: >-
-                The channel internal names the authenticated user can use to filter sessions.
-              type: array
-              items:
-                $ref: '#/components/schemas/EntityReference'
-            query:
-              description: >-
-                Default query filters for searching sessions
-              allOf:
-                - $ref: '#/components/schemas/SessionQueryFilters'
+      type: object
+      properties:
+        roles:
+          description: >-
+            The roles the authenticated user can use to filter sessions.
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleEnum'
+        channels:
+          description: >-
+            The channel internal names the authenticated user can use to filter sessions.
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityReference'
+        query:
+          description: >-
+            Default query filters for searching sessions
+          allOf:
+            - $ref: '#/components/schemas/SessionQueryFilters'
 
     SessionPropertiesEdit:
       description: >-
@@ -58572,30 +59249,29 @@ components:
     SessionResult:
       description: >-
         Contains data returned when searching for sessions
-      allOf:
-        - type: object
-          properties:
-            sessionToken:
-              description: >-
-                The session token
-              type: string
-            creationDate:
-              description: >-
-                The session creation date
-              type: string
-              format: date-time
-            remoteAddress:
-              description: >-
-                The session remote address
-              type: string
-            user:
-              $ref: '#/components/schemas/User'
-            channel:
-              $ref: '#/components/schemas/EntityReference'
-            currentSession:
-              description: >-
-                Whether the session is the current one
-              type: boolean
+      type: object
+      properties:
+        sessionToken:
+          description: >-
+            The session token
+          type: string
+        creationDate:
+          description: >-
+            The session creation date
+          type: string
+          format: date-time
+        remoteAddress:
+          description: >-
+            The session remote address
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        channel:
+          $ref: '#/components/schemas/EntityReference'
+        currentSession:
+          description: >-
+            Whether the session is the current one
+          type: boolean
 
     SessionsPermissions:
       description: >-
@@ -61230,6 +61906,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserCustomFieldDetailed'
+        binaryValues:
+          description: >-
+            Holds the current values for file / image custom fields as lists of
+            `StoredFile`s / `Image`s.
+          allOf:
+            - $ref: '#/components/schemas/CustomFieldBinaryValues'
 
     UserBrokeringPermissions:
       description: >-
@@ -61413,12 +62095,6 @@ components:
                 returned when e-mail validation is enabled for edit profile, and the
                 user has changed the e-mail address.
               type: string
-            binaryValues:
-              description: >-
-                Holds the current values for file / image custom fields as lists of
-                `StoredFile`s / `Image`s.
-              allOf:
-                - $ref: '#/components/schemas/CustomFieldBinaryValues'
             confirmationPasswordInput:
               description: >-
                 If a confirmation password is used, contains the definitions on how to
@@ -61497,6 +62173,12 @@ components:
                 The object that can be altered and posted back to register the user
               allOf:
                 - $ref: '#/components/schemas/UserNew'
+            images:
+              description: >-
+                The images which are already assigned to the new user.
+              type: array
+              items:
+                $ref: '#/components/schemas/Image'
             agreements:
               description: >-
                 The agreements that needs to be accepted by the user to be able to
@@ -62263,6 +62945,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Operation'
+        wizards:
+          description: >-
+            Custom wizards the authenticated user can run over the given user
+          type: array
+          items:
+            $ref: '#/components/schemas/Wizard'
         tokens:
           description: >-
             Permissions over tokens of each visible type.
@@ -64072,4 +64760,328 @@ components:
                 user and also if the given user has its webshop enable, otherwise
                 false.
               type: boolean
+
+    Wizard:
+      description: >-
+        A custom wizard
+      allOf:
+        - $ref: '#/components/schemas/InternalNamedEntity'
+        - type: object
+          properties:
+            kind:
+              $ref: '#/components/schemas/WizardKind'
+            icon:
+              description: >-
+                The character that represents the icon in the Cyclos font
+              type: string
+            label:
+              description: >-
+                A representative label about the wizard
+              type: string
+            adminMenu:
+              description: >-
+                In which administration menu the wizard shows up.
+              allOf:
+                - $ref: '#/components/schemas/AdminMenuEnum'
+            userMenu:
+              description: >-
+                In which user menu the operation shows up.
+              allOf:
+                - $ref: '#/components/schemas/UserMenuEnum'
+            userProfileSection:
+              description: >-
+                In which user profile section the operation shows up.
+              allOf:
+                - $ref: '#/components/schemas/UserProfileSectionEnum'
+
+    WizardExecutionData:
+      description: >-
+        Information for executing a custom wizard in a given step
+      type: object
+      properties:
+        key:
+          description: >-
+            The execution identifier
+          type: string
+        wizard:
+          description: >-
+            The wizard being executed.
+          allOf:
+            - $ref: '#/components/schemas/Wizard'
+        user:
+          description: >-
+            The user over which the wizard is being executed.
+          allOf:
+            - $ref: '#/components/schemas/User'
+        path:
+          description: >-
+            Contains each previously executed step.
+            The current step is not included.
+          type: array
+          items:
+            $ref: '#/components/schemas/WizardStep'
+        step:
+          description: >-
+            Contains detailed information of the current step, including
+            which fields should be displayed.
+          allOf:
+          - $ref: '#/components/schemas/WizardStepDetailed'
+        stepNumber:
+          description: >-
+            When the wizard contains a static set of steps, returns the number
+            (1-based) of the current step.
+          type: integer
+        stepCount:
+          description: >-
+            When the wizard contains a static set of steps, returns the total
+            number of steps in this wizard. When displaying to users, the
+            displaying of the wizard results should also be counted as a step.
+            For the user it will probably be displayed as the final step, but
+            in Cyclos, there's no such step - only the result is returned.
+          type: integer
+        action:
+          $ref: '#/components/schemas/WizardActionEnum'
+        transitions:
+          description: >-
+            The possible transitions between the current step and other steps
+          type: array
+          items:
+            $ref: '#/components/schemas/WizardStepTransition'
+
+        notificationLevel:
+          description: >-
+            Indicates that a notification should be displayed in this step.
+          allOf:
+            - $ref: '#/components/schemas/NotificationLevelEnum'
+        notification:
+          description: >-
+            A notification that was sent to this step.
+            Only sent if `notificationLevel` is present.
+          type: string
+
+        resultType:
+          description: >-
+            Only returned when the wizard is finished. Indicates how clients
+            should interpret the result.
+          allOf:
+            - $ref: '#/components/schemas/WizardResultTypeEnum'
+        result:
+          description: >-
+            Only returned when the wizard is finished. Contains the execution
+            result when `resultType` is either `plainText`
+            or `richText`.
+          type: string
+        resultTitle:
+          description: >-
+            Only returned when the wizard is finished. Contains the title that should
+            be displayed together with the `result`. Only returned for menu wizards
+            (not on registration wizards).
+          type: string
+        registrationResult:
+          description: >-
+            Only returned when the wizard is finished. Contains the execution
+            result when `resultType` is `registration`
+          allOf:
+            - $ref: '#/components/schemas/UserRegistrationResult'
+        params:
+          description: >-
+            Contains each of the parameters filled-in so far. Only returned when
+            the wizard isn't finished yet (`resultType` is null).
+          allOf:
+          - $ref: '#/components/schemas/WizardTransitionParams'
+        binaryValues:
+          description: >-
+            Holds the current values for file / image custom fields as lists of
+            `StoredFile`s / `Image`s.
+          allOf:
+            - $ref: '#/components/schemas/CustomFieldBinaryValues'
+
+    WizardPermissions:
+      description: >-
+        Permissions over a specific custom wizard
+      type: object
+      properties:
+        wizard:
+          $ref: '#/components/schemas/Wizard'
+        run:
+          description: >-
+            Can run this wizard?
+          type: boolean
+
+    WizardStep:
+      description: >-
+        A custom wizard step
+      allOf:
+        - $ref: '#/components/schemas/InternalNamedEntity'
+        - type: object
+          properties:
+            kind:
+              $ref: '#/components/schemas/WizardStepKind'
+
+    WizardStepDetailed:
+      description: >-
+        A custom wizard step with detailed information
+      allOf:
+        - $ref: '#/components/schemas/WizardStep'
+        - type: object
+          properties:
+            title:
+              description: >-
+                The title that should be displayed for users on this step.
+              type: string
+            informationText:
+              description: >-
+                Descriptive text that should be displayed in this wizard step.
+              type: string
+
+            groups:
+              description: >-
+                Groups that can be used for registration. Only returned if
+                `kind` is `group`.
+              type: array
+              items:
+                $ref: '#/components/schemas/GroupForRegistration'
+
+            identityProviders:
+              description: >-
+                The identity providers available for registering.
+                Only returned if `kind` is `identityProvider`.
+              type: array
+              items:
+                $ref: '#/components/schemas/IdentityProvider'
+
+            dataForNew:
+              description: >-
+                Contains the `UserDataForNew` for the new user registration. Only
+                returned if `kind` is `formFields` and the
+                wizard kind is `registration`. The returned
+                object contains a subset of the fields, according to what should
+                be displayed in this step. For example, even if the full profile
+                contains several fields, if this step is configured to show only
+                the full name and e-mail, only those profile fields are returned
+                in `profileFieldActions`, and the `phoneConfiguration`,
+                `passwordTypes`, etc, will all be empty.
+              allOf:
+                - $ref: '#/components/schemas/UserDataForNew'
+            validateEmail:
+              description: >-
+                Indicates, in case the e-mail is shown, if it must be validated
+                by sending a code to the given e-mail address. Only returned
+                if `kind` is `formFields` and the wizard
+                kind is `registration`.
+              type: boolean
+            verifiedEmail:
+              description: >-
+                If an e-mail address was already verified, contains that address.
+                Only returned if `kind` is `formFields` and
+                the wizard kind is `registration`.
+              type: string
+            validateSms:
+              description: >-
+                Indicates, in case the mobile phone is shown, if it must be
+                validated by sending a code via SMS. Only returned
+                if `kind` is `formFields` and the wizard
+                kind is `registration`.
+              type: boolean
+            verifiedSms:
+              description: >-
+                If a mobile phone number was was already verified by SMS, contains
+                that number. Only returned if `kind` is
+                `formFields` and the wizard kind is
+                `registration`.
+              type: string
+
+            customFields:
+              description: >-
+                The custom fields defined in this wizard that should be displayed.
+                Only returned if `kind` is `formFields`.
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomFieldDetailed'
+
+    WizardStepTransition:
+      description: >-
+        A possible transition between the current and a next step
+      type: object
+      properties:
+        id:
+          description: The transition id
+          type: string
+        label:
+          description: The transition label
+          type: string
+        step:
+          description: The step to which this transition leads
+          allOf:
+            - $ref: '#/components/schemas/WizardStep'
+
+    WizardTransitionParams:
+      description: >-
+        Parameters for a transition between steps
+      type: object
+      properties:
+        group:
+          description: >-
+            The selected registration group. Only used if the current step
+            kind is `group`.
+          type: string
+
+        user:
+          description: >-
+            Partial parameters of the user being registered.
+            Only the fields in this step are considered. Others are ignored.
+          allOf:
+            - $ref: '#/components/schemas/UserNew'
+        emailVerification:
+          type: string
+          description: >-
+            When the step requires the e-mail to be verified, is the code
+            that is sent to the informed e-mail address.
+        smsVerification:
+          type: string
+          description: >-
+            When the step requires the the mobile phone number to be verified, is
+            the code that is sent via SMS to that phone.
+
+        customValues:
+          type: object
+          description: >-
+            Holds the custom wizard field values, keyed by field internal name
+            or id. The format of the value depends on the custom field type.
+            Only used if the current step kind is `formFields`
+          additionalProperties:
+            type: string
+
+    WizardVerificationCodeParams:
+      description: >-
+        Parameters to send a verification code
+      type: object
+      properties:
+        medium:
+          description: >-
+            Indicates what to verify - either email or mobile via SMS.
+          allOf:
+            - $ref: '#/components/schemas/SendMediumEnum'
+        to:
+          description: >-
+            Either the email address or mobile phone number to verify.
+          type: string
+
+    WizardsPermissions:
+      description: >-
+        Permissions over custom wizards
+      type: object
+      properties:
+        my:
+          description: >-
+            Permissions over custom wizards the user can run over self.
+          type: array
+          items:
+            $ref: '#/components/schemas/WizardPermissions'
+        system:
+          description: >-
+            Permissions over system custom wizards.
+          type: array
+          items:
+            $ref: '#/components/schemas/WizardPermissions'
 

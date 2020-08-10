@@ -4,7 +4,10 @@
 </label-value>
 
 <ng-template #widget>
-  <div class="custom-control custom-checkbox d-flex align-content-center p-0">
+  <div class="custom-control d-flex align-content-center p-0" [ngClass]="{
+    'custom-checkbox': !switch,
+    'custom-switch': switch
+   }">
     <input #checkbox type="checkbox" [name]="name"
       class="custom-control-input" [id]="id" (click)="click.emit($event)"
       (keyup.enter)="toggle(); click.emit($event)" [formControl]="formControl"

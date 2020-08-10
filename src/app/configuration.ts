@@ -5,6 +5,7 @@ import { ContentPagesResolver } from 'app/content/content-pages-resolver';
 import { ContentWithLayout } from 'app/content/content-with-layout';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { OperationConfiguration } from 'app/content/operation-configuration';
+import { WizardConfiguration } from 'app/content/wizard-configuration';
 import { RecordConfiguration } from 'app/content/record-configuration';
 import { ShortcutIconConfiguration } from 'app/content/shortcut-icon-configuration';
 import { Breakpoint } from 'app/shared/layout.service';
@@ -63,6 +64,9 @@ export interface ConfigurationDefinitions {
 
   /** Custom configuration for custom operations, by operation internal name */
   operations: { [internalName: string]: OperationConfiguration };
+
+  /** Custom configuration for wizards, by wizard internal name */
+  wizards: { [internalName: string]: WizardConfiguration };
 
   /**
    * Identifier for a static locale. A static locale is compiled into the generated

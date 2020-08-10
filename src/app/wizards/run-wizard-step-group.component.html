@@ -1,0 +1,24 @@
+<radio-group-field *ngIf="singleLine; else multiLine" [formControl]="control">
+  <field-option *ngFor="let group of groups" [value]="group.id"
+    [id]="group.id" [internalName]="group.internalName" [text]="group.name">
+  </field-option>
+</radio-group-field>
+<ng-template #multiLine>
+  <div class="row mb-2" *ngFor="let group of groups">
+    <div class="col-12 col-6 col-sm-8">
+      <div class="custom-control custom-radio">
+        <input type="radio" [formControl]="control"
+          class="custom-control-input" [id]="'group_' + group.id"
+          [value]="group.id">
+        <label class="custom-control-label" [for]="'group_' + group.id">
+          <div class="ml-1">
+            {{ group.name }}
+            <div *ngIf="group.description" class="text-muted mt-1 mb-3">
+              {{ group.description }}
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+</ng-template>

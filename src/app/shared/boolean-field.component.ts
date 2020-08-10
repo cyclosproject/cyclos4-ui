@@ -5,6 +5,7 @@ import {
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { LayoutService } from 'app/shared/layout.service';
+import { truthyAttr } from 'app/shared/helper';
 
 /**
  * Field used to edit a boolean
@@ -25,6 +26,13 @@ export class BooleanFieldComponent
   @Input() type: 'boolean' | 'string' = 'boolean';
   @Output() click = new EventEmitter<Event>();
   @ViewChild('checkbox') checkbox: ElementRef;
+  _switch: boolean | string = false;
+  @Input() get switch(): boolean | string {
+    return this._switch;
+  }
+  set switch(flag: boolean | string) {
+    this._switch = truthyAttr(flag);
+  }
 
   constructor(
     injector: Injector,

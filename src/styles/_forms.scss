@@ -161,7 +161,7 @@ input[type=number] {
   }
 }
 
-.custom-control-input{
+.custom-control-input {
   &:focus ~ .custom-control-label::before {
     box-shadow: $input-focus-box-shadow;
   }
@@ -180,6 +180,21 @@ input[type=number] {
   }
 }
 
+.custom-switch .custom-control-label {
+  &::before {
+    width: 2.25rem;
+    height: 1.25rem;
+  }
+  &::after {
+    width: 1rem;
+    height: 1rem;
+    left: 2px !important;
+    top: 4px !important;
+  }
+}
+.custom-switch .custom-control-input:checked ~ .custom-control-label::after {
+  transform: translateX(calc(1.25rem - 4px));
+}
 
 .invalid-feedback {
   font-size: 85%;

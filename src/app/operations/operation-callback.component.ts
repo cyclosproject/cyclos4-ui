@@ -3,7 +3,6 @@ import { NotificationLevelEnum, RunOperationResult } from 'app/api/models';
 import { OperationsService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { Menu } from 'app/shared/menu';
-import { first } from 'rxjs/operators';
 
 /**
  * Callback invoked after running an external redirect custom operation
@@ -36,7 +35,7 @@ export class OperationCallbackComponent
         method: 'GET',
         parameters: route.queryParams,
       },
-    }).pipe(first()).subscribe(result => {
+    }).subscribe(result => {
       if (result.notificationLevel === NotificationLevelEnum.WARNING) {
         this.alertType = 'warning';
       } else if (result.notificationLevel === NotificationLevelEnum.ERROR) {

@@ -24,7 +24,9 @@
       </registration-step-idp>
     </div>
     <actions forceRow>
-      <span></span>
+      <action-button class="mx-auto" [disabled]="requesting$ | async"
+        (action)="continueWithProvider(null)" [label]="i18n.general.skip">
+      </action-button>
       <action-button *ngIf="groups.length > 1" outline
         (action)="backToGroup()" [label]="i18n.general.previous">
       </action-button>

@@ -43,6 +43,7 @@ function setupConfigurationDefaults() {
     services: { icon: 'room_service', color: '#8ec63f' },
   };
   Configuration.operations = {};
+  Configuration.wizards = {};
   Configuration.records = {};
   Configuration.mainMapMarker = window.document.baseURI + '/images/map-marker-main.png';
   Configuration.altMapMarker = window.document.baseURI + '/images/map-marker-alt.png';

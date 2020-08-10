@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  AddressNew, AvailabilityEnum, Group, GroupForRegistration, GroupKind,
+  AddressNew, Group, GroupForRegistration, GroupKind,
   IdentityProvider, IdentityProviderCallbackStatusEnum, Image, PhoneNew, RoleEnum,
-  StoredFile, UserDataForNew, UserNew, UserRegistrationResult
+  StoredFile, UserDataForNew, UserNew, UserRegistrationResult, Wizard
 } from 'app/api/models';
 import { ImagesService, UsersService } from 'app/api/services';
-import { AddressHelperService } from 'app/core/address-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { UserHelperService } from 'app/core/user-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -16,25 +15,10 @@ import {
   mergeValidity, scrollTop, setRootSpinnerVisible, validateBeforeSubmit
 } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
-import { BehaviorSubject, Observable, of, Subscription, timer } from 'rxjs';
-import { first, map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 export type RegistrationStep = 'group' | 'idp' | 'fields' | 'confirm' | 'done';
-
-/** Validator function that ensures password and confirmation match */
-const SEGURITY_ANSWER_VAL: ValidatorFn = control => {
-  if (control.touched) {
-    const parent = control.parent;
-    const question = parent.get('securityQuestion') == null ? '' : parent.get('securityQuestion').value;
-    const answer = control.value;
-    if (question != null && question !== '' && (answer == null || answer === '')) {
-      return {
-        required: true,
-      };
-    }
-  }
-  return null;
-};
 
 /**
  * User registration. Works for guest, by admin and by broker
@@ -86,7 +70,6 @@ export class UserRegistrationComponent
     private usersService: UsersService,
     private userHelper: UserHelperService,
     private imagesService: ImagesService,
-    private addressHelper: AddressHelperService,
     private nextRequestState: NextRequestState) {
     super(injector);
   }
@@ -98,8 +81,27 @@ export class UserRegistrationComponent
     const role = auth.role;
 
     if (role == null) {
+      const dataForUi = this.dataForUiHolder.dataForUi;
+
+      // Maybe a wizard should be used instead of the regular registration form?
+      let wizard: Wizard;
+      if (this.layout.ltmd) {
+        wizard = dataForUi.smallScreenRegistrationWizard;
+      } else if (this.layout.md) {
+        wizard = dataForUi.mediumScreenRegistrationWizard;
+      } else {
+        wizard = dataForUi.largeScreenRegistrationWizard;
+      }
+      if (wizard) {
+        // Redirect to the wizard execution page
+        this.router.navigate(['wizards', 'registration', ApiHelper.internalNameOrId(wizard)], {
+          replaceUrl: true
+        });
+        return;
+      }
+
       // When guest, the possible groups are obtained from DataForUi
-      this.initializeGroups(this.dataForUiHolder.dataForUi.publicRegistrationGroups);
+      this.initializeGroups(dataForUi.publicRegistrationGroups);
     } else {
       // When admin / broker, fetch the possible registration groups from data, as they are more complete
       this.addSub(this.usersService.getUserDataForSearch({
@@ -263,70 +265,17 @@ export class UserRegistrationComponent
 
     // The profile fields and phones are handled by the helper
     [this.mobileForm, this.landLineForm] = this.userHelper.setupRegistrationForm(
-      this.form, data, (name) => this.serverSideValidator(name));
+      this.form, data, !this.login.user);
 
     // Address
-    const addressConfiguration = data.addressConfiguration;
-    const addressAvailability = addressConfiguration.availability;
-    if (addressAvailability !== AvailabilityEnum.DISABLED) {
-      this.defineAddress = this.formBuilder.control(addressAvailability === AvailabilityEnum.REQUIRED);
-      this.addressForm = this.addressHelper.addressFormGroup(addressConfiguration);
-      const address = data.addressConfiguration.address;
-      this.addressForm.patchValue(address);
-      // When any of the fields change, clear the location
-      for (const field of addressConfiguration.enabledFields) {
-        let previous = address[field] || null;
-        this.addSub(this.addressForm.get(field).valueChanges.subscribe(newVal => {
-          if (previous !== newVal) {
-            this.addressForm.get('location').patchValue({ latitude: null, longitude: null });
-          }
-          previous = newVal;
-        }));
-      }
-    } else {
-      this.addressForm = null;
-      this.defineAddress = null;
-    }
+    let addressSubs: Subscription[];
+    [this.addressForm, this.defineAddress, addressSubs] = this.userHelper.registrationAddressForm(data.addressConfiguration);
+    addressSubs.forEach(s => this.addSub(s));
 
     this.data = data;
 
     // Put the page on the fields step
     this.step = 'fields';
-  }
-
-  private serverSideValidator(field: string): AsyncValidatorFn {
-    if (this.login.user) {
-      // These async providers only work for guests
-      return null;
-    }
-    return (c: AbstractControl): Observable<ValidationErrors | null> => {
-      // Only validate when enabled
-      if (!this.asyncValidatorsEnabled) {
-        return of(null);
-      }
-
-      let val = c.value;
-      if (empty(val) || !c.dirty) {
-        // Don't validate empty value (will fail validation required), nor fields that haven't been modified yet
-        return of(null);
-      }
-
-      // Multi selections hold the value as array, but we must pass it as pipe-separated
-      if (val instanceof Array) {
-        val = val.join('|');
-      }
-
-      return timer(ApiHelper.DEBOUNCE_TIME).pipe(
-        switchMap(() => {
-          return this.usersService.validateUserRegistrationField({
-            group: this.group.value, field, value: val,
-          });
-        }),
-        map(msg => {
-          return msg ? { message: msg } : null;
-        }),
-      );
-    };
   }
 
   showConfirm() {
@@ -369,7 +318,7 @@ export class UserRegistrationComponent
     // Security question
     if (!empty(data.securityQuestions)) {
       this.confirmForm.setControl('securityQuestion', this.formBuilder.control(''));
-      this.confirmForm.setControl('securityAnswer', this.formBuilder.control('', SEGURITY_ANSWER_VAL));
+      this.confirmForm.setControl('securityAnswer', this.formBuilder.control('', this.userHelper.securityAnswerValidation));
     }
 
     // Agreements

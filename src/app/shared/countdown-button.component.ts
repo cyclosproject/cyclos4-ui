@@ -1,6 +1,4 @@
-import {
-  ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { truthyAttr } from 'app/shared/helper';
 import { BehaviorSubject, Observable, Subscription, timer } from 'rxjs';
 
@@ -47,22 +45,32 @@ export class CountdownButtonComponent implements OnInit {
 
   onClick(event: any) {
     if (!this.disabled$.getValue()) {
-      this.action.emit(event);
       this.remaining = this.disabledSeconds;
       this.disabled$.next(true);
-      this.tick();
       this.subscription = this.countdown.subscribe(() => this.tick());
+      this.action.emit(event);
+      this.tick();
     }
   }
 
   tick() {
+    if (this.disabled$.value === false) {
+      return;
+    }
     if (this.remaining <= 0) {
-      this.disabled$.next(false);
-      this.text$.next(this.label);
-      this.subscription.unsubscribe();
+      this.reenable();
     } else {
-      this.text$.next(this.disabledKey(this.remaining));
+      this.text$.next(this.disabledKey ? this.disabledKey(this.remaining) : String(this.remaining));
       this.remaining--;
+    }
+  }
+
+  reenable() {
+    this.disabled$.next(false);
+    this.text$.next(this.label);
+    this.remaining = 0;
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 }

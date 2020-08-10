@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import {
-  AccountType, Auth, DataForUi, Operation, RecordLayoutEnum, RecordPermissions, RoleEnum, VouchersPermissions
+  AccountType, Auth, DataForUi, Operation, RecordLayoutEnum, RecordPermissions, RoleEnum, VouchersPermissions, Wizard
 } from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -19,6 +19,7 @@ import { toFullUrl } from 'app/shared/helper';
 import { ActiveMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { WizardHelperService } from 'app/core/wizard-helper.service';
 
 enum NavigateAction {
   Url,
@@ -84,7 +85,8 @@ export class MenuService {
     private bankingHelper: BankingHelperService,
     private content: ContentService,
     private operationHelper: OperationHelperService,
-    private recordHelper: RecordHelperService,
+    private wizardHelper: WizardHelperService,
+    private recordHelper: RecordHelperService
   ) {
     const initialDataForUi = this.dataForUiHolder.dataForUi;
     const initialAuth = (initialDataForUi || {}).auth;
@@ -334,7 +336,26 @@ export class MenuService {
     for (const rootEntry of roots) {
       for (const entry of rootEntry.entries || []) {
         const data = entry.activeMenu.data;
-        if (data && data.operation === op) {
+        const operation = data == null ? null : data.operation;
+        if (operation && (operation.id === op || operation.internalName === op)) {
+          return entry;
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Returns the available `MenuEntry` for the wizard with the given id or internal name
+   * @param w The wizard id or internal name
+   */
+  wizardEntry(w: string): MenuEntry {
+    const roots = this._fullMenu.value || [];
+    for (const rootEntry of roots) {
+      for (const entry of rootEntry.entries || []) {
+        const data = entry.activeMenu.data;
+        const wizard = data == null ? null : data.wizard;
+        if (wizard && (wizard.id === w || wizard.internalName === w)) {
           return entry;
         }
       }
@@ -420,6 +441,7 @@ export class MenuService {
     const users = permissions.users || {};
     const marketplace = permissions.marketplace || {};
     const operations = permissions.operations || {};
+    const wizards = permissions.wizards || {};
     const vouchers = this.resolveVoucherPermissions(permissions.vouchers || {});
     const records = permissions.records || {};
 
@@ -508,6 +530,43 @@ export class MenuService {
       doAddOperations('self', userOperations.filter(o => ApiHelper.userMenuMatches(root, o.userMenu)));
     };
 
+
+    // Lambda that adds all wizards the given root menu entry
+    const systemWizards = (wizards.system || []).filter(w => w.run).map(w => w.wizard);
+    const myWizards = (wizards.my || []).filter(w => w.run).map(w => w.wizard);
+    const addWizards = (root: RootMenu) => {
+      if (restrictedAccess) {
+        return;
+      }
+      let wizardMenu: Menu;
+      switch (root) {
+        case RootMenu.BANKING:
+          wizardMenu = Menu.RUN_WIZARD_BANKING;
+          break;
+        case RootMenu.MARKETPLACE:
+          wizardMenu = Menu.RUN_WIZARD_MARKETPLACE;
+          break;
+        case RootMenu.PERSONAL:
+          wizardMenu = Menu.RUN_WIZARD_PERSONAL;
+          break;
+        default:
+          // Invalid root menu for wizards
+          return;
+      }
+
+      const doAddWizards = (path: string, ws: Wizard[]) => {
+        for (const w of ws) {
+          const activeMenu = new ActiveMenu(wizardMenu, { wizard: w });
+          const icon = this.wizardHelper.icon(w);
+          add(activeMenu, `/wizards/${path}/${ApiHelper.internalNameOrId(w)}`, icon, w.label);
+        }
+      };
+
+      // Add both system and my wizards
+      doAddWizards('system', systemWizards.filter(w => ApiHelper.adminMenuMatches(root, w.adminMenu)));
+      doAddWizards('user/self', myWizards.filter(w => ApiHelper.userMenuMatches(root, w.userMenu)));
+    };
+
     // Lambda that adds all record types the given root menu entry
     const systemRecords = records.system || [];
     const userRecords = records.userManagement || [];
@@ -535,7 +594,6 @@ export class MenuService {
       }
       doAddRecords('self', myRecords.filter(p => ApiHelper.userMenuMatches(root, p.type.userMenu)));
     };
-
     // Add the submenus
     if (restrictedAccess) {
       // No menus in restricted access
@@ -655,6 +713,7 @@ export class MenuService {
 
       addRecords(RootMenu.BANKING);
       addOperations(RootMenu.BANKING);
+      addWizards(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);
 
       // Operators
@@ -740,6 +799,7 @@ export class MenuService {
       }
       addRecords(RootMenu.MARKETPLACE);
       addOperations(RootMenu.MARKETPLACE);
+      addWizards(RootMenu.MARKETPLACE);
       addContentPages(Menu.CONTENT_PAGE_MARKETPLACE);
 
       if (role === RoleEnum.ADMINISTRATOR) {
@@ -807,6 +867,7 @@ export class MenuService {
       }
       addRecords(RootMenu.PERSONAL);
       addOperations(RootMenu.PERSONAL);
+      addWizards(RootMenu.PERSONAL);
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);
 
       // Add the logout

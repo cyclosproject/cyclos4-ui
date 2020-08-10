@@ -50,7 +50,7 @@ export class OperatorRegistrationComponent
     this.form = this.formBuilder.group({
       group: null,
     });
-    [this.mobileForm, this.landLineForm] = this.userHelper.setupRegistrationForm(this.form, data);
+    [this.mobileForm, this.landLineForm] = this.userHelper.setupRegistrationForm(this.form, data, false);
     this.passwordForms = this.userHelper.passwordRegistrationForms(data);
     this.editableFields = this.userHelper.fieldNamesByAction(data, 'edit');
   }

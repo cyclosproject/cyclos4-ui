@@ -36,8 +36,10 @@ button[disabled], button[disabled]:hover {
 
 .btn-icon {
   display: inline-flex;
-  padding: 0.4rem 0.4rem 0.4rem 0.6rem;
+  justify-content: center;
+  align-items: center;
   width: 2.6rem;
+  height: $input-height;
   @include button-variant($button-icon-bg, $button-icon-border-color);
   color: $button-icon-color;
 }
@@ -62,7 +64,6 @@ table.table {
   margin-top: 1rem;
   align-items: center;
   justify-content: center;
-  margin-top: 1rem;
   position: relative;
   height: auto;
   padding: 0.5rem 0;
@@ -76,6 +77,19 @@ table.table {
   span {
     position: relative;
     top: 1px;
+  }
+}
+
+.centered-button {
+  display: block !important;
+  width: 100%;
+  margin-top: 1rem;
+}
+@include media-breakpoint-up(sm) {
+  .centered-button {
+    width: 18rem;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 

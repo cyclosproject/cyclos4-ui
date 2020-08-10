@@ -80,6 +80,10 @@ const rootRoutes: Routes = [
     loadChildren: () => import('app/operations/operations.module').then(m => m.OperationsModule),
   },
   {
+    path: 'wizards',
+    loadChildren: () => import('app/wizards/wizards.module').then(m => m.WizardsModule),
+  },
+  {
     path: '**',
     component: NotFoundComponent,
   },

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, HostBinding } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   AddressConfiguration, AddressConfigurationForUserProfile,
@@ -18,13 +18,8 @@ import { truthyAttr } from 'app/shared/helper';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressFormComponent extends BaseComponent implements OnInit {
-  constructor(
-    injector: Injector,
-    private addressHelper: AddressHelperService,
-    public countriesResolve: CountriesResolve,
-  ) {
-    super(injector);
-  }
+
+  @HostBinding('class.d-block') displayBlock = true;
 
   @Input() configuration: AddressConfiguration;
   @Input() addressForm: FormGroup;
@@ -49,6 +44,14 @@ export class AddressFormComponent extends BaseComponent implements OnInit {
   }
   set managePrivacy(manage: boolean | string) {
     this._managePrivacy = truthyAttr(manage);
+  }
+
+  constructor(
+    injector: Injector,
+    private addressHelper: AddressHelperService,
+    public countriesResolve: CountriesResolve,
+  ) {
+    super(injector);
   }
 
   getLabel(field: AddressFieldEnum): string {

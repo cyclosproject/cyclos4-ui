@@ -1,4 +1,4 @@
-import { AccountType, Operation, RecordType, TokenType } from 'app/api/models';
+import { AccountType, Operation, RecordType, TokenType, Wizard } from 'app/api/models';
 import { empty } from 'app/shared/helper';
 
 /** The types of menus in the application */
@@ -147,6 +147,13 @@ export namespace Menu {
   export const RUN_TRANSFER_OPERATION = new Menu(RootMenu.BANKING, 'RUN_TRANSFER_OPERATION');
   export const RUN_ACTION_OPERATION = new Menu(RootMenu.BANKING, 'RUN_ACTION_OPERATION');
 
+  // Custom wizards (one per root menu)
+  export const RUN_WIZARD_BANKING = new Menu(RootMenu.BANKING, 'RUN_WIZARD_BANKING');
+  export const RUN_WIZARD_MARKETPLACE = new Menu(RootMenu.MARKETPLACE, 'RUN_WIZARD_MARKETPLACE');
+  export const RUN_WIZARD_PERSONAL = new Menu(RootMenu.PERSONAL, 'RUN_WIZARD_PERSONAL');
+  export const RUN_USER_WIZARD = new Menu(RootMenu.MARKETPLACE, 'RUN_USER_WIZARD');
+  export const RUN_REGISTRATION_WIZARD = new Menu(RootMenu.REGISTRATION, 'RUN_REGISTRATION_WIZARD');
+
   // Records
   export const SEARCH_RECORDS_BANKING = new Menu(RootMenu.BANKING, 'USER_RECORDS_BANKING');
   export const SEARCH_RECORDS_MARKETPLACE = new Menu(RootMenu.MARKETPLACE, 'USER_RECORDS_MARKETPLACE');
@@ -187,6 +194,7 @@ export interface ActiveMenuData {
   accountType?: AccountType;
   contentPage?: string;
   operation?: Operation;
+  wizard?: Wizard;
   recordType?: RecordType;
   tokenType?: TokenType;
 }
@@ -229,6 +237,7 @@ export class ActiveMenu {
     return empty(Object.keys(data1)) && empty(Object.keys(data2))
       || (data1.accountType && data2.accountType && data1.accountType.id === data2.accountType.id)
       || (data1.operation && data2.operation && data1.operation.id === data2.operation.id)
+      || (data1.wizard && data2.wizard && data1.wizard.id === data2.wizard.id)
       || (data1.contentPage && data1.contentPage === data2.contentPage)
       || (data1.recordType && data2.recordType && data1.recordType.id === data2.recordType.id)
       || (data1.tokenType && data2.tokenType && data1.tokenType.id === data2.tokenType.id);

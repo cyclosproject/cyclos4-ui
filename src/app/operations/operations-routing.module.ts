@@ -74,7 +74,7 @@ const operationRoutes: Routes = [
 ];
 
 /**
- * * Routes for the personal module
+ * * Routes for the wizards module
  */
 @NgModule({
   imports: [

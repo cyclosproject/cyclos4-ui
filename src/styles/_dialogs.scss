@@ -77,10 +77,8 @@ alert .close {
   }
 }
 
-.lt-md {
-  .alert {
-    margin: 1rem;
-  }
+.modal-dialog .lt-md .alert {
+  margin: 1rem;
 }
 
 .dropdown-toggle::after {

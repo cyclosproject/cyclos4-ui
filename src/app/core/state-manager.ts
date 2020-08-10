@@ -16,6 +16,7 @@ export class StateManager {
 
   private state = new Map<string, any>();
   private subscriptions: Subscription[] = [];
+  private global = new Map<string, any>();
 
   constructor(
     dataForUiHolder: DataForUiHolder,
@@ -59,6 +60,27 @@ export class StateManager {
     }
     const k = key + '@' + this.router.url;
     this.state.set(k, cloneDeep(value));
+  }
+
+  /**
+   * Stores a global shared value
+   */
+  setGlobal(key: string, value: any): void {
+    this.global.set(key, value);
+  }
+
+  /**
+   * Returns a global shared value
+   */
+  getGlobal(key: string): any {
+    return this.global.get(key);
+  }
+
+  /**
+   * Deletes a global shared value
+   */
+  deleteGlobal(key: string): any {
+    return this.global.delete(key);
   }
 
   /**

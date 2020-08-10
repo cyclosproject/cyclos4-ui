@@ -16,6 +16,7 @@ import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { empty, words } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
 import { BehaviorSubject } from 'rxjs';
+import { WizardHelperService } from 'app/core/wizard-helper.service';
 
 export const MAX_SIZE_SHORT_NAME = 25;
 
@@ -33,8 +34,9 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     injector: Injector,
     private usersService: UsersService,
     private contactsService: ContactsService,
-    private operationsHelper: OperationHelperService,
-    private recordsHelper: RecordHelperService,
+    private operationHelper: OperationHelperService,
+    private wizardHelper: WizardHelperService,
+    private recordHelper: RecordHelperService,
     public maps: MapsService,
     public userHelper: UserHelperService) {
     super(injector);
@@ -365,17 +367,23 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
         const type = record.type;
         const addTo = type.userProfileSection === UserProfileSectionEnum.BANKING
           ? this.bankingActions : this.managementActions;
-        const icon = this.recordsHelper.icon(type);
+        const icon = this.recordHelper.icon(type);
         addTo.push(new HeadingAction(icon, this.i18n.record.action(
           { type: type.pluralName, count: record.count }), () => {
-            this.router.navigateByUrl(this.recordsHelper.resolvePath(record, this.param));
+            this.router.navigateByUrl(this.recordHelper.resolvePath(record, this.param));
           }));
       }
       // Custom operations
       for (const operation of permissions.operations || []) {
         const addTo = operation.userProfileSection === UserProfileSectionEnum.BANKING
           ? this.bankingActions : this.managementActions;
-        addTo.push(this.operationsHelper.headingAction(operation, user.id));
+        addTo.push(this.operationHelper.headingAction(operation, user.id));
+      }
+      // Wizards
+      for (const wizard of permissions.wizards || []) {
+        const addTo = wizard.userProfileSection === UserProfileSectionEnum.BANKING
+          ? this.bankingActions : this.managementActions;
+        addTo.push(this.wizardHelper.headingAction(wizard, user.id));
       }
       if (!empty(actions) && actions.length < 6) {
         this.headingActions = actions;

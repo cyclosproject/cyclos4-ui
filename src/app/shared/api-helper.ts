@@ -1,7 +1,7 @@
 import {
   AccountWithOwner, AdminMenuEnum, Auth, DatePeriod, Entity,
   InternalNamedEntity, NamedEntity, Notification, NotificationEntityTypeEnum,
-  NotificationTypeEnum, Operation, OperationScopeEnum, UserMenuEnum
+  NotificationTypeEnum, Operation, UserMenuEnum, Wizard
 } from 'app/api/models';
 import { empty } from 'app/shared/helper';
 import { Menu, RootMenu } from 'app/shared/menu';
@@ -207,31 +207,37 @@ export class ApiHelper {
   }
 
   /**
+   * Returns, amongst the list of possible menus, the one whose root menu matches one of the given Cyclos menus
+   */
+  static matchingMenu(possible: Menu[], adminMenu: AdminMenuEnum, userMenu: UserMenuEnum): Menu {
+    for (const current of possible) {
+      if ((adminMenu && ApiHelper.adminMenuMatches(current.root, adminMenu)) ||
+        (userMenu && ApiHelper.userMenuMatches(current.root, userMenu))) {
+        return current;
+      }
+    }
+  }
+
+  /**
    * Returns the menu for running an own custom operation, according to the given operation type.
    * This works for both system-scoped operations or user-scoped operations for the current user.
    * @param operation The operation
    */
   static menuForOwnerOperation(operation: Operation): Menu {
     const possibleMenus = [
-      Menu.RUN_OPERATION_BANKING, Menu.RUN_OPERATION_MARKETPLACE, Menu.RUN_OPERATION_PERSONAL,
+      Menu.RUN_OPERATION_BANKING, Menu.RUN_OPERATION_MARKETPLACE, Menu.RUN_OPERATION_PERSONAL
     ];
-    let menu: Menu = Menu.RUN_OPERATION_BANKING; // Default to the most probable menu
-    if (operation.scope === OperationScopeEnum.SYSTEM) {
-      for (const current of possibleMenus) {
-        if (ApiHelper.adminMenuMatches(current.root, operation.adminMenu)) {
-          menu = current;
-          break;
-        }
-      }
-    } else {
-      for (const current of possibleMenus) {
-        if (ApiHelper.userMenuMatches(current.root, operation.userMenu)) {
-          menu = current;
-          break;
-        }
-      }
-    }
-    return menu;
+    return ApiHelper.matchingMenu(possibleMenus, operation.adminMenu, operation.userMenu);
+  }
+
+  /**
+   * Returns the menu for running a custom wizard
+   */
+  static menuForWizard(wizard: Wizard) {
+    const possibleMenus = [
+      Menu.RUN_WIZARD_BANKING, Menu.RUN_WIZARD_MARKETPLACE, Menu.RUN_WIZARD_PERSONAL
+    ];
+    return ApiHelper.matchingMenu(possibleMenus, wizard.adminMenu, wizard.userMenu);
   }
 
   /**
