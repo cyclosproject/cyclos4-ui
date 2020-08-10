@@ -307,7 +307,7 @@
     "personal.notificationSettings": "Ajustes de notificaciones",
     "personal.settings": "Ajustes",
     "personal.privacySettings": "Privacy settings",
-    "personal.references": "References",
+    "personal.references": "Referencias",
     "content": "Información"
   },
   "login": {
@@ -512,10 +512,10 @@
       "positiveLimit": "Límite de saldo positivo",
       "personalizedNegativeLimit": "Límite negativo personalizado",
       "personalizedPositiveLimit": "Límite positivo personalizado",
-      "fromNegativeLimit": "From negative limit",
-      "toNegativeLimit": "To negative limit",
-      "fromPositiveLimit": "From positive limit",
-      "toPositiveLimit": "To positive limit",
+      "fromNegativeLimit": "Desde límite negativo",
+      "toNegativeLimit": "A límite negativo",
+      "fromPositiveLimit": "Desde límite positivo",
+      "toPositiveLimit": "A límite positivo",
       "negative": "Negativo",
       "positive": "Positivo",
       "confirm": "Debe confirmar para aplicar los nuevos límites de saldo",
@@ -528,10 +528,10 @@
         "overview": "Account balance limits overview"
       },
       "mobileTitle": {
-        "list": "Balance limits",
-        "view": "Balance limits details",
-        "edit": "Balance limits details",
-        "history": "Balance limits history",
+        "list": "Límites de saldo",
+        "view": "Detalles de límites de saldo",
+        "edit": "Detalles de límites de saldo",
+        "history": "Historial de límites de saldo",
         "overview": "Balance limits overview"
       }
     },
@@ -544,14 +544,14 @@
       "personalizedDailyLimit": "Límite diario personalizado",
       "personalizedWeeklyLimit": "Límite semanal personalizado",
       "personalizedMonthlyLimit": "Límite mensual personalizado",
-      "fromPaymentLimit": "From payment limit",
-      "fromDailyLimit": "From daily limit",
-      "fromWeeklyLimit": "From weekly limit",
-      "fromMonthlyLimit": "From monthly limit",
-      "toPaymentLimit": "To payment limit",
-      "toDailyLimit": "To daily limit",
-      "toWeeklyLimit": "To weekly limit",
-      "toMonthlyLimit": "To monthly limit",
+      "fromPaymentLimit": "Desde límite del pago",
+      "fromDailyLimit": "Desde el límite diario",
+      "fromWeeklyLimit": "Desde el límite semanal",
+      "fromMonthlyLimit": "Desde el límite mensual",
+      "toPaymentLimit": "A límite de pago",
+      "toDailyLimit": "Al límite diario",
+      "toWeeklyLimit": "A límite semanal",
+      "toMonthlyLimit": "A límite mensual",
       "confirm": "You must confirm to apply the new payment limits",
       "saved": "The payment limits were saved",
       "title": {
@@ -563,9 +563,9 @@
       },
       "mobileTitle": {
         "list": "Límites de pagos",
-        "view": "Payment limits details",
-        "edit": "Payment limits details",
-        "history": "Payment limits history",
+        "view": "Detalle de límites de pago",
+        "edit": "Detalle de límites de pago",
+        "history": "Historial de límites de pago",
         "overview": "Payment limits overview"
       }
     }
@@ -2009,11 +2009,11 @@
   "product": {
     "title": {
       "list": "Assigned products",
-      "history": "Assigned products history"
+      "history": "Historial de productos asignados"
     },
     "mobileTitle": {
       "list": "Assigned products",
-      "history": "Assigned products history"
+      "history": "Historial de productos asignados"
     },
     "assigned": {
       "individual": "Products assigned individually to user",
