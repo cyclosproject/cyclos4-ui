@@ -47940,6 +47940,10 @@ components:
               type: array
               items:
                 type: string
+            hideDateOnList:
+              description: >-
+                Whether the date column should be hidden on result list.
+              type: boolean
             exportFormats:
               description: >-
                 The formats which the data can be exported

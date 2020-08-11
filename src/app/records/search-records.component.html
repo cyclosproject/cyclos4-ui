@@ -46,19 +46,21 @@
               [label]="i18n.record.createdBy"></user-field>
           </div>
           <!-- Force a new line to keep date range in same row -->
-          <div class="w-100"></div>
-          <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="beginDate"
-              [label]="i18n.general.beginDate" minDate="past100"
-              maxDate="todayEnd" fieldSize="full">
-            </date-field>
-          </div>
-          <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="endDate"
-              [label]="i18n.general.endDate" minDate="past100"
-              maxDate="todayEnd" fieldSize="full">
-            </date-field>
-          </div>
+          <ng-container *ngIf="!data.hideDateOnList">
+            <div class="w-100"></div>
+            <div class="col-12 col-md-6">
+              <date-field labelPosition="side" formControlName="beginDate"
+                [label]="i18n.general.beginDate" minDate="past100"
+                maxDate="todayEnd" fieldSize="full">
+              </date-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <date-field labelPosition="side" formControlName="endDate"
+                [label]="i18n.general.endDate" minDate="past100"
+                maxDate="todayEnd" fieldSize="full">
+              </date-field>
+            </div>
+          </ng-container>
           <div class="col-12 col-md-6" *ngFor="let cf of fieldsInSearch">
             <custom-field-filter labelPosition="side" [field]="cf"
               [formControl]="form.get('customValues').get(cf.internalName)">
@@ -87,8 +89,8 @@
       <mobile-result *mobileResult="let row">
         <div class="d-flex">
           <div>
-            <label-value [label]="i18n.general.creationDate"
-              labelPosition="above">
+            <label-value *ngIf="!data.hideDateOnList"
+              [label]="i18n.general.creationDate" labelPosition="above">
               {{ row.creationDate | dateTime }}
             </label-value>
             <label-value *ngIf="generalSearch" [label]="i18n.general.user"
@@ -120,7 +122,8 @@
 
       <table *resultTable class="table table-hover cursor-pointer">
         <thead>
-          <th>{{ i18n.general.creationDate }}</th>
+          <th *ngIf="!data.hideDateOnList">{{ i18n.general.creationDate }}
+          </th>
           <th *ngIf="generalSearch">{{ i18n.general.user }}</th>
           <th *ngFor="let field of fieldsInList">
             {{ fieldName(field.internalName) }}
@@ -130,7 +133,8 @@
         <tbody>
           <tr *ngFor="let row of (results$ | async)?.results"
             (click)="router.navigate(viewPath(row))">
-            <td>{{ row.creationDate | dateTime }}</td>
+            <td *ngIf="!data.hideDateOnList">{{ row.creationDate | dateTime }}
+            </td>
             <td *ngIf="generalSearch">{{ recordOwner(row) }}</td>
             <td *ngFor=" let field of fieldsInList">
               <format-field-value [fields]="data.customFields"

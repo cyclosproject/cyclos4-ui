@@ -43,13 +43,13 @@
   }
 
   .filters-form :host ::ng-deep .label-value-label {
-    padding-left: 0.5rem !important;
     padding-right: 1rem !important;
   }
 }
 
 @include media-breakpoint-up(sm) {
   .filters-form :host ::ng-deep .label-value-label {
+    padding-left: 0.5rem !important;
     justify-content: flex-end;
     text-align: right;
   }
