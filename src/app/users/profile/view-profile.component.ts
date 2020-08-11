@@ -132,12 +132,6 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       }
     } else {
       // For others, will have actions in sections
-      const manager = [
-        UserRelationshipEnum.ADMINISTRATOR,
-        UserRelationshipEnum.BROKER,
-        UserRelationshipEnum.OWNER,
-        UserRelationshipEnum.SAME_OWNER,
-      ].includes(user.relationship);
       for (const accountType of accountTypes) {
         this.bankingActions.push(new HeadingAction('account_balance', this.i18n.user.profile.viewAccount(accountType.name), () => {
           this.router.navigate(['/banking', this.param, 'account', ApiHelper.internalNameOrId(accountType)]);
@@ -286,29 +280,28 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/users', this.param, 'product-assignment']);
         }));
       }
-      const actions = manager ? this.managementActions : [];
       if (contact.add) {
-        actions.push(new HeadingAction('add_circle_outline', this.i18n.user.profile.addContact, () => {
+        this.managementActions.push(new HeadingAction('add_circle_outline', this.i18n.user.profile.addContact, () => {
           this.addContact();
         }));
       }
       if (contact.remove) {
-        actions.push(new HeadingAction('remove_circle_outline', this.i18n.user.profile.removeContact, () => {
+        this.managementActions.push(new HeadingAction('remove_circle_outline', this.i18n.user.profile.removeContact, () => {
           this.removeContact();
         }));
       }
       if (payment.userToUser) {
-        actions.push(new HeadingAction('payment', this.i18n.user.profile.pay, () => {
+        this.managementActions.push(new HeadingAction('payment', this.i18n.user.profile.pay, () => {
           this.router.navigate(['/banking', ApiHelper.SELF, 'payment', this.param]);
         }));
       }
       if (simpleAds.view) {
-        actions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewAds, () => {
+        this.managementActions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewAds, () => {
           this.router.navigate(['/marketplace', this.param, AdKind.SIMPLE, 'list']);
         }));
       }
       if (webshop.view) {
-        actions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewWebshop, () => {
+        this.managementActions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewWebshop, () => {
           this.router.navigate(['/marketplace', this.param, AdKind.WEBSHOP, 'list']);
         }));
       }
@@ -352,7 +345,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       }
       // References
       if (permissions.references?.view) {
-        actions.push(new HeadingAction('stars', this.i18n.user.profile.references, () => {
+        this.managementActions.push(new HeadingAction('stars', this.i18n.user.profile.references, () => {
           this.router.navigate(['/users', this.param, 'references', 'search']);
         }));
       }
@@ -385,10 +378,14 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           ? this.bankingActions : this.managementActions;
         addTo.push(this.wizardHelper.headingAction(wizard, user.id));
       }
-      if (!empty(actions) && actions.length < 6) {
-        this.headingActions = actions;
-      } else if (!empty(this.bankingActions) || !empty(this.managementActions)) {
-        this.updateHeadingActions();
+      let actionsCount = (empty(this.bankingActions) ? 0 : this.bankingActions.length);
+      actionsCount += empty(this.managementActions) ? 0 : this.managementActions.length;
+      if (actionsCount > 0) {
+        if (actionsCount < 6) {
+          this.headingActions = (this.bankingActions || []).concat(this.managementActions || []);
+        } else {
+          this.updateHeadingActions();
+        }
       }
     }
   }
