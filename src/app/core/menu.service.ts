@@ -690,6 +690,10 @@ export class MenuService {
         add(Menu.PAYMENT_REQUESTS_OVERVIEW, `/banking/payment-requests`, 'payment', this.i18n.menu.bankingPaymentRequestsOverview);
       }
 
+      if (banking.searchUsersWithBalances) {
+        add(Menu.USER_BALANCES_OVERVIEW, `/banking/user-balances-overview`, 'account_balance', this.i18n.menu.bankingUserBalancesOverview);
+      }
+
       if (vouchers.viewRedeemed) {
         add(Menu.SEARCH_REDEEMED, '/banking/' + ApiHelper.SELF + '/vouchers/redeemed', 'search',
           this.i18n.menu.bankingRedeemedVouchers);

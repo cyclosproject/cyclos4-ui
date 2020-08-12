@@ -73,6 +73,7 @@ export namespace Menu {
 
   // Banking
   export const ACCOUNT_HISTORY = new Menu(RootMenu.BANKING, 'ACCOUNT_HISTORY');
+  export const USER_BALANCES_OVERVIEW = new Menu(RootMenu.BANKING, 'USER_BALANCES_OVERVIEW');
   export const ADMIN_TRANSFERS_OVERVIEW = new Menu(RootMenu.BANKING, 'ADMIN_TRANSFERS_OVERVIEW');
   export const PAYMENT_TO_USER = new Menu(RootMenu.BANKING, 'PAYMENT_TO_USER');
   export const PAYMENT_TO_SELF = new Menu(RootMenu.BANKING, 'PAYMENT_TO_SELF');

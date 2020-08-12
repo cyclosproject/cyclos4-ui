@@ -1,0 +1,72 @@
+<div class="p-1">
+  <hr class="mt-0 mb-0">
+  <div class="row no-gutters pt-1">
+    <ng-container *ngIf="(hasYellowRange$ | async)">
+      <div class="col-12 col-sm-3">
+        {{ i18n.account.userBalances.balancesSum }}
+      </div>
+      <div class="col-12 col-sm-2 low">
+        {{ summary.low.sum | currency:currency }}
+      </div>
+      <div class="col-12 col-sm-2 medium">
+        {{ summary.medium.sum | currency:currency }}
+      </div>
+      <div class="col-12 col-sm-2 high">
+        {{ summary.high.sum | currency:currency }}
+      </div>
+      <div class="col-12 col-sm-3">
+        {{ totalSum(summary.total.sum | currency:currency) }}
+      </div>
+      <div class="col-12 col-sm-3">
+        {{ i18n.account.userBalances.balancesAverage }}
+      </div>
+      <div class="col-12 col-sm-2 low">
+        {{ summary.low.average | currency:currency }}
+      </div>
+      <div class="col-12 col-sm-2 medium">
+        {{ summary.medium.average | currency:currency }}
+      </div>
+      <div class="col-12 col-sm-2 high">
+        {{ summary.high.average | currency:currency }}
+      </div>
+      <div class="col-12 col-sm-3">
+        {{ totalSum(summary.total.average | currency:currency) }}
+      </div>
+      <div class="col-12 col-sm-3">
+        {{ i18n.account.userBalances.balancesCount }}
+      </div>
+      <div class="col-12 col-sm-2 low">
+        {{ summary.low.count }}
+      </div>
+      <div class="col-12 col-sm-2 medium">
+        {{ summary.medium.count }}
+      </div>
+      <div class="col-12 col-sm-2 high">
+        {{ summary.high.count }}
+      </div>
+      <div class="col-12 col-sm-3">
+        {{ totalSum(summary.total.count) }}
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!(hasYellowRange$ | async)">
+      <div class="col-6 col-sm-3">
+        {{ i18n.account.userBalances.balancesSum }}
+      </div>
+      <div class="col-6 col-sm-9">
+        {{ summary.total.sum | currency:currency }}
+      </div>
+      <div class="col-6 col-sm-3">
+        {{ i18n.account.userBalances.balancesAverage }}
+      </div>
+      <div class="col-6 col-sm-9">
+        {{ summary.total.average | currency:currency }}
+      </div>
+      <div class="col-6 col-sm-3">
+        {{ i18n.account.userBalances.balancesCount }}
+      </div>
+      <div class="col-6 col-sm-9">
+        {{ summary.total.count }}
+      </div>
+    </ng-container>
+  </div>
+</div>

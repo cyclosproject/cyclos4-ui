@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { AccountHistoryComponent } from 'app/banking/accounts/account-history.component';
+import { SearchUserBalancesComponent } from 'app/banking/accounts/search-user-balances.component';
+import { BalancesSummaryComponent } from 'app/banking/accounts/balances-summary.component';
 import { AccountStatusViewComponent } from 'app/banking/accounts/account-status-view.component';
 import { EditAccountBalanceLimitsComponent } from 'app/banking/balance-limits/edit-account-balance-limits.component';
 import { ListAccountsBalanceLimitsComponent } from 'app/banking/balance-limits/list-accounts-balance-limits.component';
@@ -60,6 +62,8 @@ import { ViewVoucherComponent } from './vouchers/view-voucher.component';
     TransferDetailsComponent,
     ViewAuthorizationHistoryComponent,
     SearchTransfersOverviewComponent,
+    SearchUserBalancesComponent,
+    BalancesSummaryComponent,
 
     SearchOwnerTransactionsComponent,
     SearchTransactionsOverviewComponent,

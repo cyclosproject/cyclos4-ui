@@ -70,6 +70,15 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
     this._negative = truthyAttr(show);
   }
 
+  /** If true the value will be negative */
+  private _allowNegative: boolean | string = false;
+  @Input() get allowNegative(): boolean | string {
+    return this._allowNegative;
+  }
+  set allowNegative(show: boolean | string) {
+    this._allowNegative = truthyAttr(show);
+  }
+
   @ViewChild('inputField') private inputRef: ElementRef;
 
   internalControl: FormControl;

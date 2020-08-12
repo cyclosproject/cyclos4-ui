@@ -28,6 +28,7 @@ import { SearchVouchersComponent } from 'app/banking/vouchers/search-vouchers.co
 import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { SearchInstallmentsComponent } from 'app/banking/transactions/search-installments.component';
+import { SearchUserBalancesComponent } from 'app/banking/accounts/search-user-balances.component';
 
 const bankingRoutes: Routes = [
   {
@@ -184,6 +185,10 @@ const bankingRoutes: Routes = [
       {
         path: 'account-payment-limits-overview',
         component: SearchPaymentLimitsOverviewComponent,
+      },
+      {
+        path: 'user-balances-overview',
+        component: SearchUserBalancesComponent,
       },
     ],
   },

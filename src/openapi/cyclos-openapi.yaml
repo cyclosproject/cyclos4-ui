@@ -15534,7 +15534,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: mediumBalanceRange
           in: query
           required: false
-          description: "An array with 2 elements, describing the lower and upper medium balance bounds. If not specified, the range defined in the account type will be used. If that one is also not defined, there will be no definitions for balance levels. Both bounds need to be set as 2 element in the array, or it won't be considered."
+          description: "An array with 2 elements, describing the lower and upper medium balance bounds. Both of them need to be set as 2 element in the array, or it won't be considered."
           schema:
             type: array
             items:
@@ -15830,7 +15830,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: mediumBalanceRange
           in: query
           required: false
-          description: "An array with 2 elements, describing the lower and upper medium balance bounds. If not specified, the range defined in the account type will be used. If that one is also not defined, there will be no definitions for balance levels. Both bounds need to be set as 2 element in the array, or it won't be considered."
+          description: "An array with 2 elements, describing the lower and upper medium balance bounds. Both of them need to be set as 2 element in the array, or it won't be considered."
           schema:
             type: array
             items:
@@ -16163,7 +16163,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: mediumBalanceRange
           in: query
           required: false
-          description: "An array with 2 elements, describing the lower and upper medium balance bounds. If not specified, the range defined in the account type will be used. If that one is also not defined, there will be no definitions for balance levels. Both bounds need to be set as 2 element in the array, or it won't be considered."
+          description: "An array with 2 elements, describing the lower and upper medium balance bounds. Both of them need to be set as 2 element in the array, or it won't be considered."
           schema:
             type: array
             items:
@@ -45349,6 +45349,22 @@ components:
             currency:
               $ref: '#/components/schemas/Currency'
 
+    AccountTypeWithDefaultMediumBalanceRange:
+      description: >-
+        A reference for the account type, together with its currency and its default
+        medium balance range
+      allOf:
+        - $ref: '#/components/schemas/AccountType'
+        - type: object
+          properties:
+            defaultMediumBalanceRange:
+              description: >-
+                The minimum and maximum default medium balance range specified in
+                the account type. If it is present, both values are not null.
+              allOf:
+                - $ref: '#/components/schemas/IntegerRange'
+
+
     AccountWithCurrency:
       description: >-
         Contains account data, plus currency reference
@@ -51409,7 +51425,7 @@ components:
                 The available account types for the search
               type: array
               items:
-                $ref: '#/components/schemas/AccountType'
+                $ref: '#/components/schemas/AccountTypeWithDefaultMediumBalanceRange'
             query:
               description: >-
                 Default query parameters
@@ -53752,6 +53768,21 @@ components:
               description: >-
                 Can the authenticated user settle this installment?
               type: boolean
+
+    IntegerRange:
+      description: >-
+        Represents a range of minimum / maximum integer values (both optional). In
+        general if both values are null the entire range is returned as null.
+      type: object
+      properties:
+        min:
+          description: >-
+            The minimum value
+          type: integer
+        max:
+          description: >-
+            The maximum value
+          type: integer
 
     InternalNamedEntity:
       description: >-
@@ -64020,10 +64051,8 @@ components:
             mediumBalanceRange:
               description: >-
                 An array with 2 elements, describing the lower and upper medium
-                balance bounds. If not specified, the range defined in the account
-                type will be used. If that one is also not defined, there will be no
-                definitions for balance levels. Both bounds need to be set as 2
-                element in the array, or it won't be considered.
+                balance bounds. Both of them need to be set as 2 element in the
+                array, or it won't be considered.
               type: array
               items:
                 type: integer

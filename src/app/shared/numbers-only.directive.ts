@@ -1,12 +1,13 @@
 import { Directive, HostListener, Input } from '@angular/core';
 import { FormatService } from 'app/core/format.service';
 import { truthyAttr } from 'app/shared/helper';
+import { __spreadArrays } from 'tslib';
 
 const ALLOWED = [
   'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
   'End', 'Home', 'Delete', 'Backspace', 'Tab',
   'Shift', 'Control', 'Alt', 'Super', 'Meta',
-  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
 ];
 
 /**
@@ -30,6 +31,21 @@ export class NumbersOnlyDirective {
     this._allowDecimalSeparator = truthyAttr(allow);
   }
 
+  private _allowNegative: boolean | string = false;
+  @Input() get allowNegative(): boolean | string {
+    return this._allowNegative;
+  }
+  set allowNegative(allow: boolean | string) {
+    this._allowNegative = truthyAttr(allow);
+  }
+
+  get allowedValues() {
+    if (this.allowNegative) {
+      return ['-'].concat(ALLOWED);
+    }
+    return ALLOWED;
+  }
+
   constructor(private format: FormatService) {
   }
 
@@ -50,7 +66,7 @@ export class NumbersOnlyDirective {
           }
           allowed = false;
         } else {
-          allowed = ALLOWED.includes(event.key);
+          allowed = this.allowedValues.includes(event.key);
         }
       }
       if (!allowed) {

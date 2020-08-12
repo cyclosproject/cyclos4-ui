@@ -178,13 +178,11 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
       return;
     }
 
-    const rows = this.rows;
-    if (rows.find(r => {
+    const rows = this.rows.filter(r => {
       const address = this.toAddress(r);
-      return address == null || !address.location;
-    })) {
-      // When there's at least one null address, it means the result type was updated but the rows are still
-      // the ones from a previous result type. In this case we can safely ignore.
+      return address != null && address.location;
+    });
+    if (empty(rows)) {
       return;
     }
 

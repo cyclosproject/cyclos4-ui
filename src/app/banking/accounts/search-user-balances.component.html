@@ -1,0 +1,279 @@
+<page-layout [ready]="(data$ | async)">
+  <ng-container *ngIf="data then content">
+  </ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content mode="filters" [heading]="i18n.account.userBalances.title"
+    [mobileHeading]="i18n.account.userBalances.mobileTitle"
+    [headingActions]="headingActions$ | async">
+    <form [formGroup]="form"
+      class="filters-form filters-form-separator border-bottom">
+      <div class="row filters-row">
+        <div class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            formControlName="accountType" [label]="i18n.account.account">
+            <field-option *ngFor="let accountType of data.accountTypes"
+              [id]="accountType.id" [value]="accountType.id"
+              [internalName]="accountType.internalName"
+              [text]="accountType.name">
+            </field-option>
+          </single-selection-field>
+        </div>
+        <ng-container *ngIf="(moreFilters$ | async)">
+          <!-- Force a new line to keep range in same row -->
+          <div class="w-100"></div>
+          <div class="col-12 col-md-6">
+            <decimal-field labelPosition="side" formControlName="minBalance"
+              [label]="i18n.account.userBalances.minBalance" fieldSize="full"
+              [scale]="0" allowNegative>
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <decimal-field labelPosition="side" formControlName="maxBalance"
+              [label]="i18n.account.userBalances.maxBalance" fieldSize="full"
+              [scale]="0" allowNegative>
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <decimal-field labelPosition="side"
+              formControlName="minMediumRange"
+              [label]="i18n.account.userBalances.fromYellowBalance"
+              fieldSize="full" [scale]="0">
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <decimal-field labelPosition="side"
+              formControlName="maxMediumRange"
+              [label]="i18n.account.userBalances.toYellowBalance"
+              fieldSize="full" [scale]="0">
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
+            <max-distance-field labelPosition="side"
+              [data]="data.searchByDistanceData"
+              formControlName="distanceFilter"
+              [label]="i18n.general.distanceFilter">
+            </max-distance-field>
+          </div>
+          <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
+            <multi-selection-field labelPosition="side"
+              hierarchyProperty="groupSet" formControlName="groups"
+              [emptyLabel]="i18n.general.notApplied"
+              [label]="i18n.user.groupFilter">
+              <field-option *ngFor="let group of data.groups"
+                [value]="ApiHelper.internalNameOrId(group)"
+                [internalName]="group.internalName" [id]="group.id"
+                [text]="group.name" [parent]="group.groupSet">
+              </field-option>
+            </multi-selection-field>
+          </div>
+          <div *ngIf="data.products?.length > 1" class="col-12 col-md-6">
+            <multi-selection-field labelPosition="side"
+              formControlName="products"
+              [emptyLabel]="i18n.general.notApplied"
+              [label]="i18n.account.userBalances.assignedProducts">
+              <field-option *ngFor="let prod of data.products"
+                [value]="ApiHelper.internalNameOrId(prod)"
+                [internalName]="prod.internalName" [id]="prod.id"
+                [text]="prod.name">
+              </field-option>
+            </multi-selection-field>
+          </div>
+          <div *ngIf="data.agreements?.length > 1" class="col-12 col-md-6">
+            <multi-selection-field labelPosition="side"
+              formControlName="acceptedAgreements"
+              [emptyLabel]="i18n.general.notApplied"
+              [label]="i18n.account.userBalances.acceptedAgreements">
+              <field-option *ngFor="let agr of data.agreements"
+                [value]="ApiHelper.internalNameOrId(agr)"
+                [internalName]="agr.internalName" [id]="agr.id"
+                [text]="agr.name">
+              </field-option>
+            </multi-selection-field>
+          </div>
+          <div *ngIf="data.agreements?.length > 1" class="col-12 col-md-6">
+            <multi-selection-field labelPosition="side"
+              formControlName="notAcceptedAgreements"
+              [emptyLabel]="i18n.general.notApplied"
+              [label]="i18n.account.userBalances.notAcceptedAgreements">
+              <field-option *ngFor="let agr of data.agreements"
+                [value]="ApiHelper.internalNameOrId(agr)"
+                [internalName]="agr.internalName" [id]="agr.id"
+                [text]="agr.name">
+              </field-option>
+            </multi-selection-field>
+          </div>
+          <!-- Creation date -->
+          <div class="row no-gutters col-12">
+            <div class="col-12 col-md-6">
+              <date-field labelPosition="side"
+                formControlName="beginCreationPeriod"
+                [label]="i18n.account.userBalances.beginUserCreationDate"
+                minDate="past100" maxDate="todayEnd" fieldSize="full" class>
+              </date-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <date-field labelPosition="side"
+                formControlName="endCreationPeriod"
+                [label]="i18n.account.userBalances.endUserCreationDate"
+                minDate="past100" maxDate="todayEnd" fieldSize="full">
+              </date-field>
+            </div>
+          </div>
+          <!-- Activation date -->
+          <div class="row no-gutters col-12">
+            <div class="col-12 col-md-6">
+              <date-field labelPosition="side"
+                formControlName="beginActivationPeriod"
+                [label]="i18n.account.userBalances.beginUserActivationDate"
+                minDate="past100" maxDate="todayEnd" fieldSize="full" class>
+              </date-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <date-field labelPosition="side"
+                formControlName="endActivationPeriod"
+                [label]="i18n.account.userBalances.endUserActivationDate"
+                minDate="past100" maxDate="todayEnd" fieldSize="full">
+              </date-field>
+            </div>
+          </div>
+          <!-- Last login date -->
+          <div class="row no-gutters col-12">
+            <div class="col-12 col-md-6">
+              <date-field labelPosition="side"
+                formControlName="beginLastLoginPeriod"
+                [label]="i18n.account.userBalances.beginLastLoginDate"
+                minDate="past100" maxDate="todayEnd" fieldSize="full" class>
+              </date-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <date-field labelPosition="side"
+                formControlName="endLastLoginPeriod"
+                [label]="i18n.account.userBalances.endLastLoginDate"
+                minDate="past100" maxDate="todayEnd" fieldSize="full">
+              </date-field>
+            </div>
+          </div>
+          <!-- Negative since -->
+          <div class="row no-gutters col-12">
+            <div class="col-12 col-md-6">
+              <date-field labelPosition="side"
+                formControlName="beginNegativeSincePeriod"
+                [label]="i18n.account.userBalances.beginNegativeSince"
+                minDate="past100" maxDate="todayEnd" fieldSize="full" class>
+              </date-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <date-field labelPosition="side"
+                formControlName="endNegativeSincePeriod"
+                [label]="i18n.account.userBalances.endNegativeSince"
+                minDate="past100" maxDate="todayEnd" fieldSize="full">
+              </date-field>
+            </div>
+          </div>
+          <div class="col-12 col-md-6" *ngFor="let f of data.basicFields">
+            <basic-profile-field-filter labelPosition="side" [field]="f"
+              [formControl]="form.get('profileFields').get(f.field)">
+            </basic-profile-field-filter>
+          </div>
+          <div class="col-12 col-md-6"
+            *ngFor="let cf of customFieldsInSearch">
+            <custom-field-filter labelPosition="side" [field]="cf"
+              [formControl]="form.get('profileFields').get(cf.internalName)">
+            </custom-field-filter>
+          </div>
+        </ng-container>
+      </div>
+    </form>
+    <div class="row filters-row">
+      <div class="col-12 col-md-9 col-xs-5 mb-1"
+        [ngClass]="{'mb-0': (layout.xs$ | async)}">
+        <result-type-field [allowedResultTypes]="allowedResultTypes$ | async"
+          [formControl]="resultTypeControl">
+        </result-type-field>
+      </div>
+      <div class="col-12 col-md-3 col-xs-7"
+        *ngIf="(resultType$ | async) !== 'map'">
+        <single-selection-field [formControl]="form.get('orderBy')"
+          [display]="i18n.general.orderBy">
+          <field-option value="alphabeticallyDesc"
+            [text]="i18n.account.userBalances.orderBy.alphabeticallyDesc">
+          </field-option>
+          <field-option value="alphabeticallyAsc"
+            [text]="i18n.account.userBalances.orderBy.alphabeticallyAsc">
+          </field-option>
+          <field-option value="balanceDesc"
+            [text]="i18n.account.userBalances.orderBy.balanceDesc">
+          </field-option>
+          <field-option value="balanceAsc"
+            [text]="i18n.account.userBalances.orderBy.balanceAsc">
+          </field-option>
+        </single-selection-field>
+      </div>
+
+    </div>
+    <!-- Account status -->
+    <ng-container>
+      <balances-summary *ngIf="(summary$ | async)" [summary$]="summary$"
+        [currency]="(currency$ | async)">
+      </balances-summary>
+      <spinner *ngIf="(summary$ | async) === null"></spinner>
+    </ng-container>
+  </page-content>
+
+  <results-layout [resultType]="resultType" [results]="results$ | async"
+    [toLink]="toLink" (update)="update($event)" [rendering$]="rendering$"
+    [toAddress]="toAddress">
+
+    <mobile-result *mobileResult="let row" [avatarImage]="row.image"
+      [avatarIcon]="'user'">
+      <div class="cell-text cell-main row">
+        <div class="col-6 align-text-start">
+          {{ row.name }}
+        </div>
+        <div class="col-6 align-text-end amount">
+          {{ row.balance | currency:findCurrency() }}
+        </div>
+      </div>
+    </mobile-result>
+
+    <table *resultTable class="table table-hover cursor-pointer">
+      <thead>
+        <th class="avatar"></th>
+        <th>{{ i18n.general.user }}</th>
+        <th>{{ i18n.account.number }}</th>
+        <th>{{ i18n.account.userBalances.negativeSince }}</th>
+        <th class="amount">{{ i18n.account.balance }}</th>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of (results$ | async)?.results">
+          <tr (click)="router.navigate(path(row))">
+            <td class="avatar">
+              <avatar [image]="row.image" [icon]="'user'"></avatar>
+            </td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.accountNumber }}</td>
+            <td>{{ row.negativeSince | date }}</td>
+            <td class="amount">
+              {{ row.balance | currency:findCurrency() }}
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+
+    <map-result *resultInfoWindow="let row" [image]="row.image"
+      [address]="row.address">
+      <div *ngIf="row.name" class="font-weight-bold"> {{ row.name }}</div>
+      <div *ngIf="row.username"> {{ row.username }}</div>
+      <div class="font-weight-bold">
+        {{ row.balance | currency:findCurrency() }}</div>
+    </map-result>
+
+  </results-layout>
+</ng-template>
+
+<ng-template #loadingIndicators>
+  <spinner class="p-3"></spinner>
+</ng-template>
