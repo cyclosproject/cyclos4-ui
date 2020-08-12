@@ -37,6 +37,7 @@ export class SearchOwnerTransactionsComponent
   transferFilters$ = new BehaviorSubject<TransferFilter[]>([]);
   currencies = new Map<string, Currency>();
   hasTransactionNumber: boolean;
+  usePreselectedPeriods = false;
   transactionNumberPattern: string;
 
   constructor(
@@ -58,6 +59,7 @@ export class SearchOwnerTransactionsComponent
       case 'authorized':
         this.heading = this.i18n.transaction.title.authorizations;
         this.mobileHeading = this.i18n.transaction.mobileTitle.authorizations;
+        this.usePreselectedPeriods = true;
         break;
       case 'payment-request':
         this.heading = this.i18n.transaction.title.paymentRequests;
@@ -69,7 +71,7 @@ export class SearchOwnerTransactionsComponent
     this.stateManager.cache('data',
       this.transactionsService.getTransactionsDataForSearch({
         owner: this.param,
-        fields: ['user', 'accountTypes', 'visibleKinds', 'transferFilters', 'preselectedPeriods', 'query'],
+        fields: ['user', 'accountTypes', 'visibleKinds', 'transferFilters', ...(this.usePreselectedPeriods ? ['preselectedPeriods'] : []), 'query'],
       }),
     ).subscribe(data => {
       this.bankingHelper.preProcessPreselectedPeriods(data, this.form);

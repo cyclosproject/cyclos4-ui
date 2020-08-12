@@ -53608,6 +53608,13 @@ components:
         - $ref: '#/components/schemas/BaseInstallmentDataForSearch'
         - type: object
           properties:
+            preselectedPeriods:
+              description: >-
+                Contains the pre-selected period filter ranges according to the Cyclos
+                configuration
+              type: array
+              items:
+                $ref: '#/components/schemas/PreselectedPeriod'
             query:
               description: >-
                 Default query filters for the general installments search

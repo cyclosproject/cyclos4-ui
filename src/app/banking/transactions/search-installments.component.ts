@@ -46,7 +46,7 @@ export class SearchInstallmentsComponent
     // Get the installments search data
     this.stateManager.cache('data',
       this.installmentsService.getInstallmentsOverviewDataForSearch({
-        fields: ['accountTypes', 'query'],
+        fields: ['accountTypes', 'preselectedPeriods', 'query'],
       }),
     ).subscribe(data => {
       this.bankingHelper.preProcessPreselectedPeriods(data, this.form);

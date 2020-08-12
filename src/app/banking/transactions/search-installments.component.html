@@ -52,20 +52,37 @@
               [label]="i18n.general.user">
             </user-field>
           </div>
-          <!-- Force a line break on sm and up -->
-          <div class="w-100 d-none d-sm-block"></div>
-          <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="periodBegin"
-              [label]="i18n.general.beginDate" minDate="past5"
-              maxDate="future5" fieldSize="full">
-            </date-field>
-          </div>
-          <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="periodEnd"
-              [label]="i18n.general.endDate" minDate="past5" maxDate="future5"
-              fieldSize="full">
-            </date-field>
-          </div>
+          <ng-container>
+            <div class="col-12 col-md-6"
+              *ngIf="data.preselectedPeriods?.length > 0">
+              <single-selection-field labelPosition="side"
+                formControlName="preselectedPeriod"
+                [label]="i18n.general.period">
+                <field-option *ngFor="let period of data.preselectedPeriods"
+                  [id]="period['id']" [value]="period" [text]="period.name">
+                </field-option>
+              </single-selection-field>
+            </div>
+            <ng-container
+              *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null">
+              <!-- Force a line break on sm and up -->
+              <div class="w-100 d-none d-sm-block"></div>
+              <div class="col-12 col-md-6">
+                <date-field labelPosition="side" formControlName="periodBegin"
+                  [label]="i18n.general.beginDate" minDate="past5"
+                  maxDate="today" fieldSize="full">
+                </date-field>
+              </div>
+            </ng-container>
+            <div
+              *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
+              class="col-12 col-md-6">
+              <date-field labelPosition="side" formControlName="periodEnd"
+                [label]="i18n.general.endDate" minDate="past5" maxDate="today"
+                fieldSize="full">
+              </date-field>
+            </div>
+          </ng-container>
         </ng-container>
       </div>
     </form>

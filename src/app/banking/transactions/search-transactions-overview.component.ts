@@ -28,7 +28,7 @@ export class SearchTransactionsOverviewComponent
   heading: string;
   mobileHeading: string;
   usePeriod = true;
-  usePreselectedPeriod = false;
+  usePreselectedPeriod = true;
   currenciesByKey = new Map<string, Currency>();
   currencies: Currency[];
   hasTransactionNumber: boolean;
