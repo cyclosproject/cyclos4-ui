@@ -258,7 +258,7 @@
     "banking.boughtVouchers": "Ver comprados",
     "banking.redeemVoucher": "Canjear cupón",
     "banking.redeemedVouchers": "Cupones canjeados",
-    "banking.transfersOverview": "Visión general de Transferencias",
+    "banking.transfersOverview": "Vista general de Transferencias",
     "operators": "Operadores",
     "operators.operators": "Operadores",
     "operators.register": "Registrar operador",
@@ -594,7 +594,7 @@
       "details.transfer": "Detalle de la transferencia",
       "parentTransfer": "Transferencia principal",
       "childTransfers": "Transferencias generadas",
-      "transfersOverview": "Visión general de Transferencias",
+      "transfersOverview": "Vista general de Transferencias",
       "receiveQrPayment": "Recibir pago de código QR"
     },
     "mobileTitle": {
@@ -621,7 +621,7 @@
       "details.transfer": "Transferencia",
       "parentTransfer": "Transferencia original",
       "childTransfers": "Transferencias generadas",
-      "transfersOverview": "Visión general de Transferencias",
+      "transfersOverview": "Vista general de Transferencias",
       "receiveQrPayment": "Pago de código QR"
     },
     "ticketShareTitle": "Invitación a realizar un pago",
