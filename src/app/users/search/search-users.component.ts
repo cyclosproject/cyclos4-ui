@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   Country, CustomFieldDetailed, RoleEnum, User, UserAddressResultEnum,
-  UserDataForMap, UserDataForSearch, UserQueryFilters
+  UserDataForMap, UserDataForSearch, UserQueryFilters, UserStatusEnum
 } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { UsersService } from 'app/api/services';
@@ -13,6 +13,8 @@ import { MaxDistance } from 'app/shared/max-distance';
 import { Menu } from 'app/shared/menu';
 import { ResultType } from 'app/shared/result-type';
 import { Observable } from 'rxjs';
+import { FieldOption } from 'app/shared/field-option';
+import { UserHelperService } from 'app/core/user-helper.service';
 
 export enum UserSearchKind {
   Public,
@@ -53,13 +55,16 @@ export class SearchUsersComponent
   constructor(
     injector: Injector,
     private usersService: UsersService,
+    private userHelper: UserHelperService,
     private countriesResolve: CountriesResolve,
   ) {
     super(injector);
   }
 
   protected getFormControlNames() {
-    return ['keywords', 'groups', 'customValues', 'distanceFilter', 'orderBy'];
+    return ['keywords', 'groups', 'customValues', 'distanceFilter', 'orderBy', 'statuses', 'beginActivationPeriod', 'endActivationPeriod',
+      'beginCreationPeriod', 'endCreationPeriod', 'beginLastLoginPeriod', 'endLastLoginPeriod', 'notAcceptedAgreements',
+      'acceptedAgreements', 'products', 'brokers'];
   }
 
   getInitialResultType() {
@@ -137,6 +142,11 @@ export class SearchUsersComponent
     this.onResultTypeChanged(this.resultType, null);
   }
 
+  get statusOptions(): FieldOption[] {
+    const statuses = Object.values(UserStatusEnum) as UserStatusEnum[];
+    return statuses.map(st => ({ value: st, text: this.userHelper.userStatus(st) }));
+  }
+
   /**
    * Never update automatically on result type change - we'll do it manually
    */
@@ -196,11 +206,19 @@ export class SearchUsersComponent
     }
   }
 
+  get isBrokeringSearch() {
+    return this.kind === UserSearchKind.Broker;
+  }
+
   protected toSearchParams(value: any): UserQueryFilters {
     const filters: UserQueryFilters = { ...value };
     if (this.kind === UserSearchKind.Broker) {
       filters.brokers = [this.param];
     }
+    filters.activationPeriod = ApiHelper.dateRangeFilter(value.beginActivationPeriod, value.endActivationPeriod);
+    filters.creationPeriod = ApiHelper.dateRangeFilter(value.beginCreationPeriod, value.endCreationPeriod);
+    filters.lastLoginPeriod = ApiHelper.dateRangeFilter(value.beginLastLoginPeriod, value.endLastLoginPeriod);
+
     filters.profileFields = this.fieldHelper.toProfileFieldsFilter(value.profileFields);
 
     const distanceFilter: MaxDistance = value.distanceFilter;
@@ -217,6 +235,10 @@ export class SearchUsersComponent
       filters.addressResult = UserAddressResultEnum.ALL;
     }
     return filters;
+  }
+
+  userSearchFilters(): UserQueryFilters {
+    return { roles: [RoleEnum.BROKER] };
   }
 
   doSearch(query: UserQueryFilters) {

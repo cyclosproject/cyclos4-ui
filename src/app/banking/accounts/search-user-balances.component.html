@@ -72,7 +72,7 @@
             <multi-selection-field labelPosition="side"
               formControlName="products"
               [emptyLabel]="i18n.general.notApplied"
-              [label]="i18n.account.userBalances.assignedProducts">
+              [label]="i18n.user.assignedProducts">
               <field-option *ngFor="let prod of data.products"
                 [value]="ApiHelper.internalNameOrId(prod)"
                 [internalName]="prod.internalName" [id]="prod.id"
@@ -84,7 +84,7 @@
             <multi-selection-field labelPosition="side"
               formControlName="acceptedAgreements"
               [emptyLabel]="i18n.general.notApplied"
-              [label]="i18n.account.userBalances.acceptedAgreements">
+              [label]="i18n.user.acceptedAgreements">
               <field-option *ngFor="let agr of data.agreements"
                 [value]="ApiHelper.internalNameOrId(agr)"
                 [internalName]="agr.internalName" [id]="agr.id"
@@ -96,7 +96,7 @@
             <multi-selection-field labelPosition="side"
               formControlName="notAcceptedAgreements"
               [emptyLabel]="i18n.general.notApplied"
-              [label]="i18n.account.userBalances.notAcceptedAgreements">
+              [label]="i18n.user.notAcceptedAgreements">
               <field-option *ngFor="let agr of data.agreements"
                 [value]="ApiHelper.internalNameOrId(agr)"
                 [internalName]="agr.internalName" [id]="agr.id"
@@ -109,15 +109,15 @@
             <div class="col-12 col-md-6">
               <date-field labelPosition="side"
                 formControlName="beginCreationPeriod"
-                [label]="i18n.account.userBalances.beginUserCreationDate"
-                minDate="past100" maxDate="todayEnd" fieldSize="full" class>
+                [label]="i18n.user.creationBegin" minDate="past100"
+                maxDate="todayEnd" fieldSize="full" class>
               </date-field>
             </div>
             <div class="col-12 col-md-6">
               <date-field labelPosition="side"
                 formControlName="endCreationPeriod"
-                [label]="i18n.account.userBalances.endUserCreationDate"
-                minDate="past100" maxDate="todayEnd" fieldSize="full">
+                [label]="i18n.user.creationEnd" minDate="past100"
+                maxDate="todayEnd" fieldSize="full">
               </date-field>
             </div>
           </div>
@@ -126,15 +126,15 @@
             <div class="col-12 col-md-6">
               <date-field labelPosition="side"
                 formControlName="beginActivationPeriod"
-                [label]="i18n.account.userBalances.beginUserActivationDate"
-                minDate="past100" maxDate="todayEnd" fieldSize="full" class>
+                [label]="i18n.user.beginUserActivationDate" minDate="past100"
+                maxDate="todayEnd" fieldSize="full" class>
               </date-field>
             </div>
             <div class="col-12 col-md-6">
               <date-field labelPosition="side"
                 formControlName="endActivationPeriod"
-                [label]="i18n.account.userBalances.endUserActivationDate"
-                minDate="past100" maxDate="todayEnd" fieldSize="full">
+                [label]="i18n.user.endUserActivationDate" minDate="past100"
+                maxDate="todayEnd" fieldSize="full">
               </date-field>
             </div>
           </div>
@@ -143,15 +143,15 @@
             <div class="col-12 col-md-6">
               <date-field labelPosition="side"
                 formControlName="beginLastLoginPeriod"
-                [label]="i18n.account.userBalances.beginLastLoginDate"
-                minDate="past100" maxDate="todayEnd" fieldSize="full" class>
+                [label]="i18n.user.beginLastLoginDate" minDate="past100"
+                maxDate="todayEnd" fieldSize="full" class>
               </date-field>
             </div>
             <div class="col-12 col-md-6">
               <date-field labelPosition="side"
                 formControlName="endLastLoginPeriod"
-                [label]="i18n.account.userBalances.endLastLoginDate"
-                minDate="past100" maxDate="todayEnd" fieldSize="full">
+                [label]="i18n.user.endLastLoginDate" minDate="past100"
+                maxDate="todayEnd" fieldSize="full">
               </date-field>
             </div>
           </div>
@@ -171,6 +171,12 @@
                 minDate="past100" maxDate="todayEnd" fieldSize="full">
               </date-field>
             </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <user-field labelPosition="side" formControlName="brokers"
+              [label]="i18n.general.usersOfBroker"
+              [filters]="userSearchFilters()">
+            </user-field>
           </div>
           <div class="col-12 col-md-6" *ngFor="let f of data.basicFields">
             <basic-profile-field-filter labelPosition="side" [field]="f"

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import {
   AccountTypeWithDefaultMediumBalanceRange, Currency,
   CustomFieldDetailed, DataForUserBalancesSearch,
-  UserAddressResultEnum, UsersWithBalanceQueryFilters, UsersWithBalanceSummary, UserWithBalanceResult
+  UserAddressResultEnum, UsersWithBalanceQueryFilters, UsersWithBalanceSummary, UserWithBalanceResult, UserQueryFilters, RoleEnum
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -44,8 +44,8 @@ export class SearchUserBalancesComponent
 
   getFormControlNames() {
     return [
-      'accountType', 'minMediumRange', 'maxMediumRange', 'minBalance', 'maxBalance', 'orderBy', 'groups', 'distanceFilter', 'customValues',
-      'beginActivationPeriod', 'endActivationPeriod', 'beginCreationPeriod', 'endCreationPeriod', 'beginLastLoginPeriod',
+      'accountType', 'minMediumRange', 'maxMediumRange', 'minBalance', 'maxBalance', 'orderBy', 'groups', 'distanceFilter', 'brokers',
+      'beginActivationPeriod', 'endActivationPeriod', 'beginCreationPeriod', 'endCreationPeriod', 'beginLastLoginPeriod', 'customValues',
       'endLastLoginPeriod', 'beginNegativeSincePeriod', 'endNegativeSincePeriod', 'notAcceptedAgreements', 'acceptedAgreements', 'products'
     ];
   }
@@ -97,6 +97,10 @@ export class SearchUserBalancesComponent
       this.form.controls.minMediumRange.patchValue(null);
       this.form.controls.maxMediumRange.patchValue(null);
     }
+  }
+
+  userSearchFilters(): UserQueryFilters {
+    return { roles: [RoleEnum.BROKER] };
   }
 
   mapBalance(balance: string) {

@@ -33,14 +33,116 @@
               </field-option>
             </multi-selection-field>
           </div>
-          <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
-            <max-distance-field labelPosition="side"
-              [data]="data.searchByDistanceData"
-              formControlName="distanceFilter"
-              [label]="i18n.general.distanceFilter">
-            </max-distance-field>
-          </div>
           <ng-container *ngIf="moreFilters$ | async">
+            <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
+              <max-distance-field labelPosition="side"
+                [data]="data.searchByDistanceData"
+                formControlName="distanceFilter"
+                [label]="i18n.general.distanceFilter">
+              </max-distance-field>
+            </div>
+            <div *ngIf="data.products?.length > 1" class="col-12 col-md-6">
+              <multi-selection-field labelPosition="side"
+                formControlName="products"
+                [emptyLabel]="i18n.general.notApplied"
+                [label]="i18n.user.assignedProducts">
+                <field-option *ngFor="let prod of data.products"
+                  [value]="ApiHelper.internalNameOrId(prod)"
+                  [internalName]="prod.internalName" [id]="prod.id"
+                  [text]="prod.name">
+                </field-option>
+              </multi-selection-field>
+            </div>
+            <div *ngIf="data.agreements?.length > 1" class="col-12 col-md-6">
+              <multi-selection-field labelPosition="side"
+                formControlName="acceptedAgreements"
+                [emptyLabel]="i18n.general.notApplied"
+                [label]="i18n.user.acceptedAgreements">
+                <field-option *ngFor="let agr of data.agreements"
+                  [value]="ApiHelper.internalNameOrId(agr)"
+                  [internalName]="agr.internalName" [id]="agr.id"
+                  [text]="agr.name">
+                </field-option>
+              </multi-selection-field>
+            </div>
+            <div *ngIf="data.agreements?.length > 1" class="col-12 col-md-6">
+              <multi-selection-field labelPosition="side"
+                formControlName="notAcceptedAgreements"
+                [emptyLabel]="i18n.general.notApplied"
+                [label]="i18n.user.notAcceptedAgreements">
+                <field-option *ngFor="let agr of data.agreements"
+                  [value]="ApiHelper.internalNameOrId(agr)"
+                  [internalName]="agr.internalName" [id]="agr.id"
+                  [text]="agr.name">
+                </field-option>
+              </multi-selection-field>
+            </div>
+            <!-- Statuses -->
+            <div class="col-12 col-md-6">
+              <multi-selection-field labelPosition="side"
+                formControlName="statuses" [label]="i18n.general.status"
+                [fieldOptions]="statusOptions"
+                [emptyLabel]="i18n.general.notApplied">
+              </multi-selection-field>
+            </div>
+            <!-- Creation date -->
+            <div class="row no-gutters col-12">
+              <div class="col-12 col-md-6">
+                <date-field labelPosition="side"
+                  formControlName="beginCreationPeriod"
+                  [label]="i18n.user.creationBegin" minDate="past100"
+                  maxDate="todayEnd" fieldSize="full" class>
+                </date-field>
+              </div>
+              <div class="col-12 col-md-6">
+                <date-field labelPosition="side"
+                  formControlName="endCreationPeriod"
+                  [label]="i18n.user.creationEnd" minDate="past100"
+                  maxDate="todayEnd" fieldSize="full">
+                </date-field>
+              </div>
+            </div>
+            <!-- Activation date -->
+            <div class="row no-gutters col-12">
+              <div class="col-12 col-md-6">
+                <date-field labelPosition="side"
+                  formControlName="beginActivationPeriod"
+                  [label]="i18n.user.beginUserActivationDate"
+                  minDate="past100" maxDate="todayEnd" fieldSize="full" class>
+                </date-field>
+              </div>
+              <div class="col-12 col-md-6">
+                <date-field labelPosition="side"
+                  formControlName="endActivationPeriod"
+                  [label]="i18n.user.endUserActivationDate" minDate="past100"
+                  maxDate="todayEnd" fieldSize="full">
+                </date-field>
+              </div>
+            </div>
+            <!-- Last login date -->
+            <div class="row no-gutters col-12">
+              <div class="col-12 col-md-6">
+                <date-field labelPosition="side"
+                  formControlName="beginLastLoginPeriod"
+                  [label]="i18n.user.beginLastLoginDate" minDate="past100"
+                  maxDate="todayEnd" fieldSize="full" class>
+                </date-field>
+              </div>
+              <div class="col-12 col-md-6">
+                <date-field labelPosition="side"
+                  formControlName="endLastLoginPeriod"
+                  [label]="i18n.user.endLastLoginDate" minDate="past100"
+                  maxDate="todayEnd" fieldSize="full">
+                </date-field>
+              </div>
+            </div>
+            <div *ngIf="!isBrokeringSearch" class="col-12 col-md-6">
+              <user-field labelPosition="side" formControlName="brokers"
+                [label]="i18n.general.usersOfBroker"
+                [filters]="userSearchFilters()" [allowContacts]="false">
+              </user-field>
+            </div>
+
             <div class="col-12 col-md-6" *ngFor="let f of data.basicFields">
               <basic-profile-field-filter labelPosition="side" [field]="f"
                 [formControl]="form.get('profileFields').get(f.field)">
