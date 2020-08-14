@@ -1,14 +1,13 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef,
-  EventEmitter, Injector, Input, OnDestroy, Output, ViewChild,
+  EventEmitter, Injector, Input, OnDestroy, Output, ViewChild
 } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { CustomField, Image, ImageKind, TempImageTargetEnum, UserImageKind } from 'app/api/models';
-import { ImagesService } from 'app/api/services';
-import { LoginService } from 'app/core/login.service';
+import { ImagesService } from 'app/api/services/images.service';
 import { NextRequestState } from 'app/core/next-request-state';
-import { AbstractComponent } from 'app/shared/abstract.component';
+import { BaseComponent } from 'app/shared/base.component';
 import { resizeImage, ResizeResult, truthyAttr } from 'app/shared/helper';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -50,7 +49,7 @@ export class ImageToUpload {
   templateUrl: 'image-upload.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ImageUploadComponent extends AbstractComponent implements OnDestroy {
+export class ImageUploadComponent extends BaseComponent implements OnDestroy {
 
   uploading$ = new BehaviorSubject(false);
 
@@ -79,7 +78,6 @@ export class ImageUploadComponent extends AbstractComponent implements OnDestroy
     injector: Injector,
     private http: HttpClient,
     private apiConfiguration: ApiConfiguration,
-    private login: LoginService,
     private imagesService: ImagesService,
     private changeDetector: ChangeDetectorRef,
     private nextRequestState: NextRequestState) {
@@ -208,7 +206,7 @@ export class ImageUploadComponent extends AbstractComponent implements OnDestroy
           // A temp image
           params = {
             target: this.target,
-            guestKey: this.login.guestKey,
+            guestKey: this.authHelper.guestKey,
             user: this.owner,
             customField: this.customField == null ? null : this.customField.id,
             customFieldKind: this.customField == null ? null : this.customField.kind,

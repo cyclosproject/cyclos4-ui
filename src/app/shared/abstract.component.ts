@@ -1,9 +1,10 @@
-import { ElementRef, Injector, OnDestroy, OnInit, Type, Directive } from '@angular/core';
+import { Directive, ElementRef, Injector, OnDestroy, OnInit, Type } from '@angular/core';
+import { ApiI18nService } from 'app/core/api-i18n.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
-import { Shortcut, ShortcutService } from 'app/shared/shortcut.service';
+import { Shortcut, ShortcutService } from 'app/core/shortcut.service';
 import { Subscription } from 'rxjs';
 
 /**
@@ -17,6 +18,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
 
   injector: Injector;
   i18n: I18n;
+  apiI18n: ApiI18nService;
   dataForUiHolder: DataForUiHolder;
   format: FormatService;
   shortcut: ShortcutService;
@@ -28,6 +30,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
   constructor(injector: Injector) {
     this.injector = injector;
     this.i18n = injector.get(I18n);
+    this.apiI18n = injector.get(ApiI18nService);
     this.dataForUiHolder = injector.get(DataForUiHolder);
     this.format = injector.get(FormatService);
     this.shortcut = injector.get(ShortcutService);

@@ -12,7 +12,7 @@ import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { CalendarComponent } from 'app/shared/calendar.component';
 import { DateConstraint, dateConstraintAsMoment } from 'app/shared/date-constraint';
 import { empty, truthyAttr } from 'app/shared/helper';
-import { LayoutService } from 'app/shared/layout.service';
+import { LayoutService } from 'app/core/layout.service';
 import { range } from 'lodash-es';
 import moment, { Moment } from 'moment-mini-ts';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';

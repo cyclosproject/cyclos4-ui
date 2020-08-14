@@ -9,7 +9,7 @@ import {
 import { CustomFieldSizeEnum } from 'app/api/models';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty, truthyAttr } from 'app/shared/helper';
-import { LayoutService } from 'app/shared/layout.service';
+import { LayoutService } from 'app/core/layout.service';
 import { BehaviorSubject } from 'rxjs';
 
 /**

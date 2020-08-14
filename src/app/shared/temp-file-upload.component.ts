@@ -1,15 +1,12 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef,
-  EventEmitter, Injector, Input, Output, ViewChild,
+  EventEmitter, Injector, Input, Output, ViewChild
 } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { CustomFieldDetailed, InputErrorCode, StoredFile } from 'app/api/models';
-import { FilesService } from 'app/api/services';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { ErrorHandlerService } from 'app/core/error-handler.service';
-import { LoginService } from 'app/core/login.service';
-import { AbstractComponent } from 'app/shared/abstract.component';
+import { FilesService } from 'app/api/services/files.service';
+import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
 
@@ -58,7 +55,7 @@ export class FileToUpload {
   templateUrl: 'temp-file-upload.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TempFileUploadComponent extends AbstractComponent {
+export class TempFileUploadComponent extends BaseComponent {
 
   uploading$ = new BehaviorSubject(false);
 
@@ -84,9 +81,6 @@ export class TempFileUploadComponent extends AbstractComponent {
     private http: HttpClient,
     private filesService: FilesService,
     private apiConfiguration: ApiConfiguration,
-    private errorHandler: ErrorHandlerService,
-    private login: LoginService,
-    private dataForUi: DataForUiHolder,
     private changeDetector: ChangeDetectorRef) {
     super(injector);
   }
@@ -122,7 +116,7 @@ export class TempFileUploadComponent extends AbstractComponent {
     this.files = [];
     const max = Math.min(this.max, fileList.length);
     const tooLarge = [];
-    const maxSize = this.dataForUi.dataForUi.maxUploadSize || Number.MAX_SAFE_INTEGER;
+    const maxSize = this.dataForUiHolder.dataForUi.maxUploadSize || Number.MAX_SAFE_INTEGER;
     for (let i = 0; i < max; i++) {
       const file = fileList.item(i);
       if (file.size > maxSize) {
@@ -166,7 +160,7 @@ export class TempFileUploadComponent extends AbstractComponent {
         reportProgress: true,
         responseType: 'text',
         params: {
-          guestKey: this.login.guestKey,
+          guestKey: this.authHelper.guestKey,
           customField: this.customField == null ? null : this.customField.id,
           customFieldKind: this.customField == null ? null : this.customField.kind,
         },

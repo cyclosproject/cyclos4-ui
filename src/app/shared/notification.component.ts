@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Optional } from '@angular/core';
-import { LayoutService } from 'app/shared/layout.service';
+import { LayoutService } from 'app/core/layout.service';
 import { NotificationType } from 'app/shared/notification-type';
-import { Enter, Escape, ShortcutService } from 'app/shared/shortcut.service';
+import { Enter, Escape, ShortcutService } from 'app/core/shortcut.service';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 

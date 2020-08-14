@@ -10,7 +10,8 @@ import {
   CreateDeviceConfirmation, DeviceConfirmationStatusEnum, DeviceConfirmationView,
   ImageSizeEnum, PasswordInput, PasswordModeEnum, PerformPayment,
 } from 'app/api/models';
-import { DeviceConfirmationsService, PosService } from 'app/api/services';
+import { DeviceConfirmationsService } from 'app/api/services/device-confirmations.service';
+import { PosService } from 'app/api/services/pos.service';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { BaseControlComponent } from 'app/shared/base-control.component';

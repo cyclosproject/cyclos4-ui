@@ -9,7 +9,7 @@ import { NotificationService } from 'app/core/notification.service';
 import { ActionWithIcon } from 'app/shared/action';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { truthyAttr } from 'app/shared/helper';
-import { LayoutService } from 'app/shared/layout.service';
+import { LayoutService } from 'app/core/layout.service';
 import { chunk } from 'lodash-es';
 
 /**

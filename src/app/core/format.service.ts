@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Currency, DataForUi, TimeFieldEnum, TimeInterval, WeekDayEnum } from 'app/api/models';
-import { Configuration } from 'app/configuration';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { I18n } from 'app/i18n/i18n';
 import { empty } from 'app/shared/helper';
@@ -175,27 +174,6 @@ export class FormatService {
     this.pluralTimeFieldNames.set(TimeFieldEnum.YEARS, this.i18n.general.timeField.plural.years);
 
     this._dataForUi = dataForUi;
-  }
-
-  /**
-   * Returns the application title
-   */
-  public get appTitle(): string {
-    return Configuration.appTitle;
-  }
-
-  /**
-   * Returns the application title for xs devices
-   */
-  public get appTitleSmall(): string {
-    return Configuration.appTitleSmall || Configuration.appTitle;
-  }
-
-  /**
-   * Returns the application title used inside the menu on small devices
-   */
-  public get appTitleMenu(): string {
-    return Configuration.appTitleMenu || this.appTitle;
   }
 
   /**

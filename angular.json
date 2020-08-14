@@ -3,11 +3,11 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "cyclos4-ui": {
+    "ui": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
-      "prefix": "app",
+      "prefix": "ui",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss",
@@ -37,16 +37,15 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "aot": true,
-            "outputPath": "dist",
-            "index": "src/index.html",
-            "main": "src/main.ts",
+            "outputPath": "dist/ui",
+            "index": "src/ui/index.html",
+            "main": "src/ui/main.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "tsConfig": "src/tsconfig.ui.json",
             "assets": [
               "src/images",
               "src/content",
-              "src/i18n",
-              "src/locale"
+              "src/i18n"
             ],
             "styles": [
               "src/styles.scss",
@@ -92,28 +91,126 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "cyclos4-ui:build"
+            "browserTarget": "ui:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "cyclos4-ui:build:production"
-            },
-            "pt-BR": {
-              "browserTarget": "cyclos4-ui:build:pt-BR"
+              "browserTarget": "ui:build:production"
             }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "cyclos4-ui:build"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.app.json"
+              "src/tsconfig.ui.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "pay": {
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "prefix": "pay",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss",
+          "skipTests": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:module": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "aot": true,
+            "outputPath": "dist/pay",
+            "index": "src/pay/index.html",
+            "main": "src/pay/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.pay.json",
+            "assets": [
+              "src/images",
+              "src/i18n"
+            ],
+            "styles": [
+              "src/styles.scss"
+            ],
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "hammerjs",
+              "downloadjs",
+              "autosize",
+              "rangy",
+              "@zxing/library",
+              "big.js",
+              "lscache"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "8kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "pay:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "pay:build:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.pay.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -123,5 +220,5 @@
       }
     }
   },
-  "defaultProject": "cyclos4-ui"
+  "defaultProject": "ui"
 }

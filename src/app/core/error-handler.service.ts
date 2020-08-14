@@ -1,24 +1,19 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import {
   BuyVoucherError, BuyVoucherErrorCode, ConflictError, ConflictErrorCode,
   ErrorKind, ForbiddenError, ForbiddenErrorCode, ForgottenPasswordError,
   ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError, NotFoundError,
   OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, RedeemVoucherError,
   RedeemVoucherErrorCode, ShoppingCartError, ShoppingCartErrorCode,
-  UnauthorizedError, UnauthorizedErrorCode,
+  UnauthorizedError, UnauthorizedErrorCode
 } from 'app/api/models';
-import { BankingHelperService } from 'app/core/banking-helper.service';
+import { ApiI18nService } from 'app/core/api-i18n.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
-import { LoginService } from 'app/core/login.service';
 import { NotificationService } from 'app/core/notification.service';
 import { I18n } from 'app/i18n/i18n';
-import { BasePageComponent } from 'app/shared/base-page.component';
-import { FormControlLocator } from 'app/shared/form-control-locator';
-import { empty, focusFirstInvalid } from 'app/shared/helper';
-import { LayoutService } from 'app/shared/layout.service';
+import { empty } from 'app/shared/helper';
 import { ErrorStatus } from './error-status';
 import { NextRequestState } from './next-request-state';
 
@@ -30,16 +25,17 @@ import { NextRequestState } from './next-request-state';
 })
 export class ErrorHandlerService {
 
+  goToLoginPageHandler: () => any;
+  validationErrorHandler: (error: InputError) => any;
+  nestedErrorHandler: (error: NestedError) => any;
+
   constructor(
-    private router: Router,
     private notification: NotificationService,
     private format: FormatService,
-    private layout: LayoutService,
     private nextRequestState: NextRequestState,
-    private login: LoginService,
     private dataForUiHolder: DataForUiHolder,
     private i18n: I18n,
-    private bankingHelper: BankingHelperService,
+    private apiI18n: ApiI18nService
   ) { }
 
   /**
@@ -135,16 +131,21 @@ export class ErrorHandlerService {
   }
 
   public handleUnauthorizedError(error: UnauthorizedError) {
+    const goToLogin = () => {
+      if (this.goToLoginPageHandler) {
+        this.goToLoginPageHandler();
+      } else {
+        this.notification.error(this.unauthorizedErrorMessage(error));
+      }
+    };
     if (error.code === UnauthorizedErrorCode.MISSING_AUTHORIZATION) {
       // Should be logged-in. Redirect to login page.
-      this.login.goToLoginPage(this.router.url);
+      goToLogin();
     } else if (error.code === UnauthorizedErrorCode.LOGGED_OUT) {
       // Was logged out. Fetch the DataForUi again (as guest) and go to the login page.
       this.nextRequestState.setSessionToken(null);
       this.dataForUiHolder.reload()
-        .subscribe(() => {
-          this.login.goToLoginPage(this.router.url);
-        });
+        .subscribe(() => goToLogin());
     } else {
       this.notification.error(this.unauthorizedErrorMessage(error));
     }
@@ -159,101 +160,10 @@ export class ErrorHandlerService {
   }
 
   public handleInputError(error: InputError) {
-    if ([InputErrorCode.VALIDATION, InputErrorCode.AGGREGATED].includes(error.code)) {
-      // Will resort on page mapping to FormControls. Unmapped errors will be shown as general.
-      const page = this.layout.currentPage;
-      const generalErrors: string[] = [];
-      this.collectInputErrors(page, generalErrors, error);
-
-      // Show in a notification the general errors
-      if (!empty(generalErrors)) {
-        const sub = this.notification.error(this.validationErrorMessage(generalErrors)).onClosed.subscribe(() => {
-          focusFirstInvalid();
-          sub.unsubscribe();
-        });
-      } else {
-        focusFirstInvalid();
-      }
+    if (this.validationErrorHandler && [InputErrorCode.VALIDATION, InputErrorCode.AGGREGATED].includes(error.code)) {
+      this.validationErrorHandler(error);
     } else {
       this.notification.error(this.inputErrorMessage(error));
-    }
-  }
-
-  private collectInputErrors(page: BasePageComponent<any>, generalErrors: string[],
-                             error: InputError, nestedProperty?: string, nestedIndex?: number) {
-    if (error == null || error.code == null) {
-      return;
-    }
-    if (error.code === InputErrorCode.VALIDATION) {
-      // Validation errors
-      if (!empty(error.generalErrors)) {
-        generalErrors.push.apply(generalErrors, error.generalErrors);
-      }
-
-      // Property errors
-      for (const key of error.properties || []) {
-        const errors = error.propertyErrors[key];
-        this.applyInputErrors(generalErrors, errors, page,
-          { property: key, nestedProperty, nestedIndex });
-      }
-
-      // Custom field errors
-      for (const key of error.customFields || []) {
-        const errors = error.customFieldErrors[key];
-        this.applyInputErrors(generalErrors, errors, page,
-          { customField: key, nestedProperty, nestedIndex });
-      }
-    } else if (error.code === InputErrorCode.AGGREGATED) {
-      // Aggregated errors
-      for (const key of Object.keys(error.errors || {})) {
-        const inputError = error.errors[key];
-        this.collectInputErrors(page, generalErrors, inputError, key);
-      }
-      // Aggregated errors with index
-      for (const key of Object.keys(error.indexedErrors || {})) {
-        const indexedErrors = error.indexedErrors[key];
-        for (let i = 0; i < indexedErrors.length; i++) {
-          const inputError = indexedErrors[i];
-          this.collectInputErrors(page, generalErrors, inputError, key, i);
-        }
-      }
-    } else {
-      // Handle other input errors as general errors
-      generalErrors.push(this.inputErrorMessage(error));
-    }
-  }
-
-  private applyInputErrors(generalErrors: string[], errors: string[], page: BasePageComponent<any>, locator: FormControlLocator) {
-    if (!empty(errors)) {
-      const control = page ? page.locateControl(locator) : null;
-      if (control) {
-        // A formControl is found - set its error
-        control.setErrors({
-          message: errors[0],
-        });
-      } else {
-        // No form control -> show as general errors
-        generalErrors.push.apply(generalErrors, errors);
-      }
-    }
-
-  }
-
-  public getAllErrors(error: InputError): string[] {
-    if (error.code === InputErrorCode.VALIDATION) {
-      const errors: string[] = [];
-      if (!empty(error.generalErrors)) {
-        errors.push.apply(errors, error.generalErrors);
-      }
-      for (const key of error.properties || []) {
-        errors.push.apply(errors, error.propertyErrors[key]);
-      }
-      for (const key of error.customFields || []) {
-        errors.push.apply(errors, error.customFieldErrors[key]);
-      }
-      return errors;
-    } else {
-      return [this.inputErrorMessage(error)];
     }
   }
 
@@ -301,7 +211,7 @@ export class ErrorHandlerService {
       case RedeemVoucherErrorCode.NOT_ALLOWED_FOR_USER:
         return this.i18n.voucher.error.redeem.user;
       case RedeemVoucherErrorCode.NOT_ALLOWED_FOR_VOUCHER:
-        return this.i18n.voucher.error.redeem.status(this.bankingHelper.voucherStatus(error.voucherStatus));
+        return this.i18n.voucher.error.redeem.status(this.apiI18n.voucherStatus(error.voucherStatus));
       case RedeemVoucherErrorCode.NOT_ALLOWED_TODAY:
         const allowedDays = error.allowedDays.map(day => this.format.weekDay(day)).join(', ');
         return this.i18n.voucher.error.redeem.notAllowedToday(allowedDays);
@@ -330,18 +240,10 @@ export class ErrorHandlerService {
   }
 
   public handleNestedError(error: NestedError) {
-    const message = this.nestedErrorMessage(error);
-    const page = this.layout.currentPage;
-    const control = page ? page.locateControl({ nestedProperty: error.property, nestedIndex: error.index }) : null;
-
-    if (control) {
-      // A formControl is found - set its error
-      control.setErrors({
-        message,
-      });
+    if (this.nestedErrorHandler) {
+      this.nestedErrorHandler(error);
     } else {
-      // No form control -> show as general errors
-      this.notification.error(message);
+      this.notification.error(this.nestedErrorMessage(error));
     }
   }
 
@@ -383,7 +285,7 @@ export class ErrorHandlerService {
     return this.i18n.error.validation;
   }
 
-  private validationErrorMessage(errors: string[]): string {
+  public validationErrorMessage(errors: string[]): string {
     if (empty(errors)) {
       return this.validation;
     } else if (errors.length === 1) {

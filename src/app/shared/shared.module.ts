@@ -2,19 +2,13 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HammerModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
-import { AcceptAgreementsComponent } from 'app/shared/accept-agreements.component';
 import { AccountPipe } from 'app/shared/account.pipe';
 import { ActionButtonComponent } from 'app/shared/action-button.component';
-import { ActionsToolbarComponent } from 'app/shared/actions-toolbar.component';
 import { ActionsComponent } from 'app/shared/actions.component';
-import { AddressDetailsComponent } from 'app/shared/address-details.component';
-import { AddressFormComponent } from 'app/shared/address-form.component';
-import { AgreementsContentDialogComponent } from 'app/shared/agreement-content-dialog.component';
-import { AgreementLinkComponent } from 'app/shared/agreement-link.component';
 import { AvatarComponent } from 'app/shared/avatar.component';
-import { BannerCardComponent } from 'app/shared/banner-card.component';
 import { BasicProfileFieldFilterComponent } from 'app/shared/basic-profile-field-filter.component';
 import { BooleanFieldComponent } from 'app/shared/boolean-field.component';
 import { BooleanPipe } from 'app/shared/boolean.pipe';
@@ -38,14 +32,10 @@ import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
 import { ExtraCellDirective } from 'app/shared/extra-cell.directive';
 import { FieldErrorsComponent } from 'app/shared/field-errors.component';
 import { FieldOptionDirective } from 'app/shared/field-option.directive';
-import { FieldPrivacyComponent } from 'app/shared/field-privacy.component';
 import { FileFieldComponent } from 'app/shared/file-field.component';
 import { FilesFieldComponent } from 'app/shared/files-field.component';
 import { FocusedDirective } from 'app/shared/focused.directive';
 import { FormatFieldValueComponent } from 'app/shared/format-field-value.component';
-import { HeadingActionButtonComponent } from 'app/shared/heading-action-button.component';
-import { HeadingActionsComponent } from 'app/shared/heading-actions.component';
-import { HeadingSubActionsComponent } from 'app/shared/heading-sub-actions.component';
 import { HtmlFieldComponent } from 'app/shared/html-field.component';
 import { IconWithCounterComponent } from 'app/shared/icon-with-counter.component';
 import { IconComponent } from 'app/shared/icon.component';
@@ -58,53 +48,30 @@ import { LabelValueComponent } from 'app/shared/label-value.component';
 import { LinkPropertiesDialogComponent } from 'app/shared/link-properties-dialog.component';
 import { ManageFilesComponent } from 'app/shared/manage-files.component';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
-import { MapResultComponent } from 'app/shared/map-result.component';
 import { MaskDirective } from 'app/shared/mask.directive';
-import { MaxDistanceFieldComponent } from 'app/shared/max-distance-field.component';
 import { MaybeLinkComponent } from 'app/shared/maybe-link.component';
-import { MobileResultComponent } from 'app/shared/mobile-result.component';
-import { MobileResultDirective } from 'app/shared/mobile-result.directive';
 import { MultiSelectionFieldComponent } from 'app/shared/multi-selection-field.component';
 import { MultipleUsersFieldComponent } from 'app/shared/multiple-users-field.component';
 import { NotFoundComponent } from 'app/shared/not-found.component';
 import { NotificationComponent } from 'app/shared/notification.component';
 import { NumberPipe } from 'app/shared/number.pipe';
 import { NumbersOnlyDirective } from 'app/shared/numbers-only.directive';
-import { PageContentComponent } from 'app/shared/page-content.component';
-import { PageLayoutComponent } from 'app/shared/page-layout.component';
-import { PaginatorComponent } from 'app/shared/paginator.component';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { PickContactComponent } from 'app/shared/pick-contact.component';
-import { ProfileAddressesComponent } from 'app/shared/profile-addresses.component';
-import { ProfileImagesComponent } from 'app/shared/profile-images.component';
 import { RadioGroupFieldComponent } from 'app/shared/radio-group-field.component';
-import { RatingStatsComponent } from 'app/shared/rating-stats.component';
-import { ResultCategoryDirective } from 'app/shared/result-category.directive';
-import { ResultInfoWindowDirective } from 'app/shared/result-info-window.directive';
-import { ResultTableDirective } from 'app/shared/result-table.directive';
-import { ResultTileDirective } from 'app/shared/result-tile.directive';
-import { ResultTypeFieldComponent } from 'app/shared/result-type-field.component';
-import { ResultsLayoutComponent } from 'app/shared/results-layout.component';
 import { RichTextContainerComponent } from 'app/shared/rich-text-container.component';
 import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
-import { ShowContentComponent } from 'app/shared/show-content.component';
-import { SideMenuComponent } from 'app/shared/side-menu.component';
 import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
 import { SpinnerComponent } from 'app/shared/spinner.component';
-import { StaticMapComponent } from 'app/shared/static-map.component';
 import { TempFileUploadComponent } from 'app/shared/temp-file-upload.component';
 import { TextDialogComponent } from 'app/shared/text-dialog.component';
 import { TextSelectionFieldComponent } from 'app/shared/text-selection-field.component';
 import { TextAreaFieldComponent } from 'app/shared/textarea-field.component';
-import { TiledResultComponent } from 'app/shared/tiled-result.component';
 import { TimeIntervalFieldComponent } from 'app/shared/time-interval-field.component';
 import { TimePipe } from 'app/shared/time.pipe';
 import { TrustPipe } from 'app/shared/trust.pipe';
 import { UrlFieldComponent } from 'app/shared/url-field.component';
 import { UserFieldComponent } from 'app/shared/user-field.component';
-import { UserInfoComponent } from 'app/shared/user-info.component';
-import { UserLinkComponent } from 'app/shared/user-link.component';
-import { NotificationTypeSettingComponent } from 'app/users/notification-settings/notification-type-setting.component';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -114,6 +81,7 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NgxGalleryModule } from 'ngx-gallery-9';
+
 
 export function initTooltipConfig(): TooltipConfig {
   const config = new TooltipConfig();
@@ -134,32 +102,13 @@ export function initTooltipConfig(): TooltipConfig {
     NotFoundComponent,
     NotificationComponent,
     ConfirmationComponent,
-    SideMenuComponent,
     IconComponent,
     MaybeLinkComponent,
     AvatarComponent,
     SpinnerComponent,
-    PageLayoutComponent,
-    PageContentComponent,
-    HeadingActionsComponent,
-    HeadingActionButtonComponent,
-    ActionsToolbarComponent,
-    BannerCardComponent,
-    ShowContentComponent,
-    ResultsLayoutComponent,
-    TiledResultComponent,
-    MapResultComponent,
-    MobileResultComponent,
-    StaticMapComponent,
-    ResultCategoryDirective,
-    ResultTableDirective,
-    MobileResultDirective,
-    ResultTileDirective,
-    ResultInfoWindowDirective,
     ActionsComponent,
     PasswordInputComponent,
     ConfirmationPasswordComponent,
-    PaginatorComponent,
     LabelValueComponent,
     ExtraCellDirective,
     RichTextContainerComponent,
@@ -180,7 +129,6 @@ export function initTooltipConfig(): TooltipConfig {
     MultiSelectionFieldComponent,
     CheckboxGroupFieldComponent,
     RadioGroupFieldComponent,
-    AddressFormComponent,
     CalendarComponent,
     DateFieldComponent,
     TimeIntervalFieldComponent,
@@ -188,8 +136,6 @@ export function initTooltipConfig(): TooltipConfig {
     CustomFieldInputComponent,
     CustomFieldFilterComponent,
     BasicProfileFieldFilterComponent,
-    FieldPrivacyComponent,
-    MaxDistanceFieldComponent,
     ImagesFieldComponent,
     ImageUploadComponent,
     ManageImagesComponent,
@@ -197,12 +143,6 @@ export function initTooltipConfig(): TooltipConfig {
     FilesFieldComponent,
     TempFileUploadComponent,
     ManageFilesComponent,
-    ResultTypeFieldComponent,
-    AddressDetailsComponent,
-    ProfileAddressesComponent,
-    ProfileImagesComponent,
-    UserLinkComponent,
-    UserInfoComponent,
     UserFieldComponent,
     MultipleUsersFieldComponent,
     TextSelectionFieldComponent,
@@ -212,15 +152,9 @@ export function initTooltipConfig(): TooltipConfig {
     CaptchaComponent,
     ScanQrCodeComponent,
     IconWithCounterComponent,
-    RatingStatsComponent,
     ButtonToggleComponent,
-    NotificationTypeSettingComponent,
-    AcceptAgreementsComponent,
-    AgreementLinkComponent,
-    AgreementsContentDialogComponent,
     CountdownButtonComponent,
     ActionButtonComponent,
-    HeadingSubActionsComponent,
 
     TrustPipe,
     DatePipe,
@@ -235,6 +169,7 @@ export function initTooltipConfig(): TooltipConfig {
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
+    HammerModule,
     AlertModule.forRoot(),
     ModalModule.forRoot(),
     ButtonsModule.forRoot(),
@@ -269,32 +204,13 @@ export function initTooltipConfig(): TooltipConfig {
     NotFoundComponent,
     NotificationComponent,
     ConfirmationComponent,
-    SideMenuComponent,
     IconComponent,
     MaybeLinkComponent,
     AvatarComponent,
     SpinnerComponent,
-    PageLayoutComponent,
-    PageContentComponent,
-    HeadingActionsComponent,
-    HeadingActionButtonComponent,
-    ActionsToolbarComponent,
-    BannerCardComponent,
-    ShowContentComponent,
-    ResultsLayoutComponent,
-    TiledResultComponent,
-    MapResultComponent,
-    MobileResultComponent,
-    StaticMapComponent,
-    ResultCategoryDirective,
-    ResultTableDirective,
-    MobileResultDirective,
-    ResultTileDirective,
-    ResultInfoWindowDirective,
     ActionsComponent,
     PasswordInputComponent,
     ConfirmationPasswordComponent,
-    PaginatorComponent,
     LabelValueComponent,
     ExtraCellDirective,
     RichTextContainerComponent,
@@ -314,7 +230,6 @@ export function initTooltipConfig(): TooltipConfig {
     MultiSelectionFieldComponent,
     CheckboxGroupFieldComponent,
     RadioGroupFieldComponent,
-    AddressFormComponent,
     CalendarComponent,
     DateFieldComponent,
     TimeIntervalFieldComponent,
@@ -322,8 +237,6 @@ export function initTooltipConfig(): TooltipConfig {
     CustomFieldInputComponent,
     CustomFieldFilterComponent,
     BasicProfileFieldFilterComponent,
-    FieldPrivacyComponent,
-    MaxDistanceFieldComponent,
     ImagesFieldComponent,
     ImageUploadComponent,
     ManageImagesComponent,
@@ -331,12 +244,6 @@ export function initTooltipConfig(): TooltipConfig {
     FilesFieldComponent,
     TempFileUploadComponent,
     ManageFilesComponent,
-    ResultTypeFieldComponent,
-    AddressDetailsComponent,
-    ProfileAddressesComponent,
-    ProfileImagesComponent,
-    UserLinkComponent,
-    UserInfoComponent,
     UserFieldComponent,
     MultipleUsersFieldComponent,
     TextSelectionFieldComponent,
@@ -346,16 +253,10 @@ export function initTooltipConfig(): TooltipConfig {
     CaptchaComponent,
     ScanQrCodeComponent,
     IconWithCounterComponent,
-    RatingStatsComponent,
 
     ButtonToggleComponent,
-    NotificationTypeSettingComponent,
-    AcceptAgreementsComponent,
-    AgreementLinkComponent,
-    AgreementsContentDialogComponent,
     CountdownButtonComponent,
     ActionButtonComponent,
-    HeadingSubActionsComponent,
 
     FocusedDirective,
     NumbersOnlyDirective,
@@ -384,7 +285,6 @@ export function initTooltipConfig(): TooltipConfig {
     LinkPropertiesDialogComponent,
     TextDialogComponent,
     ScanQrCodeComponent,
-    AgreementsContentDialogComponent,
   ],
 })
 export class SharedModule {

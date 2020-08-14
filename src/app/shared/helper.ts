@@ -3,15 +3,15 @@ import { ElementRef } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Image } from 'app/api/models';
 import { FormControlLocator } from 'app/shared/form-control-locator';
-import { LayoutService } from 'app/shared/layout.service';
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, End, Home, PageDown, PageUp } from 'app/shared/shortcut.service';
+import { LayoutService } from 'app/core/layout.service';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, End, Home, PageDown, PageUp } from 'app/core/shortcut.service';
 import download from 'downloadjs';
 import { NgxGalleryImage } from 'ngx-gallery-9';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
 
-const SmallThumbSize = [160, 100];
-const MediumThumbSize = [320, 200];
+export const SmallThumbSize = [160, 100];
+export const MediumThumbSize = [320, 200];
 
 /**
  * Sets whether the root spinner in the page is visible

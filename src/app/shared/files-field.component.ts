@@ -4,12 +4,12 @@ import {
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomField, StoredFile } from 'app/api/models';
-import { FilesService } from 'app/api/services';
+import { FilesService } from 'app/api/services/files.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
-import { LayoutService } from 'app/shared/layout.service';
+import { LayoutService } from 'app/core/layout.service';
 import { ManageFilesComponent } from 'app/shared/manage-files.component';
 import download from 'downloadjs';
 import { BsModalService } from 'ngx-bootstrap/modal';

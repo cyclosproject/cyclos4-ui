@@ -1,27 +1,31 @@
 <h1>{{ i18n.field.user.contactTitle }}</h1>
 
-<results-layout resultType="list" [results]="results$ | async"
-  (update)="update($event)" [onClick]="onClick" [rendering$]="rendering$"
-  [ngStyle]="{'min-height': '44vh'}">
-  <mobile-result *mobileResult="let row">
-    <div class="cell-text">
-      {{ row.contact.display }}</div>
-  </mobile-result>
-  <table *resultTable class="table table-hover cursor-pointer">
-    <thead>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let row of (results$ | async)?.results">
-        <tr (click)="emit(row)">
-          <td [ngClass]="{'text-muted': isExcluded(row)}"
-            [ngStyle]="{'text-decoration': isExcluded(row) ? 'line-through' : ''}">
-            {{ row.contact.display }}
-          </td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
-</results-layout>
+<spinner *ngIf="(results$ | async) === null; else results"></spinner>
+
+<ng-template #results>
+  <div>
+    <div class="mb-2" *ngFor="let row of (results$ | async)?.results">
+      <div *ngIf="isExcluded(row); else link" class="text-removed">
+        {{ row.contact.display }}
+      </div>
+      <ng-template #link>
+        <a (click)="emit(row); $event.preventDefault()" href="#">
+          {{ row.contact.display }}
+        </a>
+      </ng-template>
+    </div>
+  </div>
+  <actions forceRow>
+    <action-button *ngIf="results$.value.hasNext" (action)="update(1)" outline
+      [label]="i18n.general.next">
+    </action-button>
+    <span *ngIf="!results$.value.hasNext"></span>
+    <action-button *ngIf="currentPage > 0" (action)="update(-1)" outline
+      [label]="i18n.general.previous">
+    </action-button>
+  </actions>
+</ng-template>
+
 <actions>
   <action-button class="d-block w-100" (action)="modalRef.hide()"
     [label]="i18n.general.cancel">

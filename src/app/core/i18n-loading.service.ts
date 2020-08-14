@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
-import { Configuration } from 'app/configuration';
 import { CacheService } from 'app/core/cache.service';
 import { I18n } from 'app/i18n/i18n';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
@@ -26,10 +25,10 @@ export class I18nLoadingService {
   /**
    * Called just after the application setup. Basically checks for a static locale
    */
-  initialize() {
-    if (Configuration.staticLocale && Configuration.staticTranslations) {
+  initialize(staticLocale: string, staticTranslations: any) {
+    if (staticLocale && staticTranslations) {
       this.isStatic = true;
-      this.setLocale(Configuration.staticLocale, Configuration.staticTranslations);
+      this.setLocale(staticLocale, staticTranslations);
     }
     // If running in development mode, run the default translations first
     if (isDevMode()) {

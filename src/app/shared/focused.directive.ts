@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Directive, ElementRef, Inject, Input,
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFieldDirective } from 'app/shared/base-field.directive';
 import { focus, truthyAttr } from 'app/shared/helper';
-import { LayoutService } from 'app/shared/layout.service';
+import { LayoutService } from 'app/core/layout.service';
 
 /**
  * Input fields with this directive will receive an initial focus

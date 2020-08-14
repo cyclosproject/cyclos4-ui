@@ -3,8 +3,8 @@ import { ControlContainer } from '@angular/forms';
 import { BaseFormFieldWithOptionsComponent } from 'app/shared/base-form-field-with-options.component';
 import { FieldOption, fieldOptionMatches } from 'app/shared/field-option';
 import { empty, truthyAttr } from 'app/shared/helper';
-import { LayoutService } from 'app/shared/layout.service';
-import { Escape } from 'app/shared/shortcut.service';
+import { LayoutService } from 'app/core/layout.service';
+import { Escape } from 'app/core/shortcut.service';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BehaviorSubject, Subscription } from 'rxjs';
 

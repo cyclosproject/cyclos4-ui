@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Injector, Input, OnDestroy, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { CaptchaService } from 'app/api/services';
+import { CaptchaService } from 'app/api/services/captcha.service';
 import { AbstractComponent } from 'app/shared/abstract.component';
 import { switchMap, tap } from 'rxjs/operators';
 

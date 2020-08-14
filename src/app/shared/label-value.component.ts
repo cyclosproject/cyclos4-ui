@@ -6,7 +6,7 @@ import { CustomFieldSizeEnum } from 'app/api/models';
 import { BaseFormFieldComponent, FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { ExtraCellDirective } from 'app/shared/extra-cell.directive';
 import { truthyAttr } from 'app/shared/helper';
-import { Breakpoint as LayoutBreakpoint, LayoutService } from 'app/shared/layout.service';
+import { Breakpoint as LayoutBreakpoint, LayoutService } from 'app/core/layout.service';
 import { ValueFormat } from 'app/shared/value-format';
 import { Subscription } from 'rxjs';
 

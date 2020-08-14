@@ -3,19 +3,17 @@ import { FormBuilder, Validators } from '@angular/forms';
 import {
   AccountKind, AccountWithOwner, AvailabilityEnum, IdentityProvider,
   IdentityProviderCallbackResult, IdentityProviderRequestResult,
-  PasswordInput, PasswordModeEnum, RoleEnum, Transfer, User, UserRelationshipEnum,
+  PasswordInput, PasswordModeEnum, RoleEnum, User
 } from 'app/api/models';
-import { IdentityProvidersService, UsersService } from 'app/api/services';
-import { CacheService } from 'app/core/cache.service';
+import { IdentityProvidersService } from 'app/api/services';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { NextRequestState } from 'app/core/next-request-state';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
-import { empty, truthyAttr } from 'app/shared/helper';
-import { ActiveMenu, Menu } from 'app/shared/menu';
+import { empty } from 'app/shared/helper';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 
 /**
  * Helper service for authentication / password common functions
@@ -31,11 +29,25 @@ export class AuthHelperService {
     private i18n: I18n,
     private dataForUiHolder: DataForUiHolder,
     private formBuilder: FormBuilder,
-    private cache: CacheService,
-    private usersService: UsersService,
     private identityProvidersService: IdentityProvidersService,
     private pushNotifications: PushNotificationsService,
     private nextRequestState: NextRequestState) {
+  }
+
+  /**
+   * Returns a key used for guests to upload temporary images / files
+   */
+  get guestKey(): string {
+    if (this.dataForUiHolder.user != null) {
+      return '';
+    }
+    const name = 'GuestKey';
+    let key = localStorage.getItem(name);
+    if (empty(key)) {
+      key = `${new Date().getTime()}_${Math.random() * Number.MAX_SAFE_INTEGER}`;
+      localStorage.setItem(name, key);
+    }
+    return key;
   }
 
   /**
@@ -280,114 +292,6 @@ export class AuthHelperService {
       challenge: ['', Validators.required],
       response: ['', Validators.required],
     });
-  }
-
-  /**
-   * Returns the home menu, which is `Menu.HOME` for guests, or `Menu.DASHBOARD` for logged users.
-   */
-  homeMenu(): Menu {
-    return this.dataForUiHolder.user ? Menu.DASHBOARD : Menu.HOME;
-  }
-
-  /**
-   * Returns a menu according to the relation between the logged user and the given user (using `isSelfOrOwner`).
-   * If self, returns the `selfMenu`. Otherwise, returns the menu to search users.
-   * @param user The user being tested
-   * @param selfMenu The menu when the user is self
-   * @see #isSelfOrOwner
-   * @see #searchUsersMenu
-   */
-  userMenu(user: User, selfMenu: Menu | ActiveMenu): Menu | ActiveMenu | Observable<Menu | ActiveMenu> {
-    return this.isSelfOrOwner(user) ? selfMenu : this.searchUsersMenu(user);
-  }
-
-  /**
-   * Returns the menu the authenticated user is expected to use to find the given user / operator:
-   *
-   * - Guests use `Menu.PUBLIC_DIRECTORY`.
-   * - Own user use `Menu.MY_PROFILE`
-   * - Own operator use `Menu.MY_OPERATORS`
-   * - Members / admins always use `Menu.SEARCH_USERS`.
-   * - Brokers are problemmatic, as we need to know whether the logged user is a broker of the given user or not,
-   *   returning either `Menu.MY_BROKERED_USERS` or `Menu.SEARCH_USERS`.
-   * @param user The user to test
-   */
-  searchUsersMenu(user?: User): Menu | Observable<Menu> {
-    if (user) {
-      if (this.isSelf(user)) {
-        // Own user
-        return Menu.MY_PROFILE;
-      } else if (user.user) {
-        // The given user is an operator. Check if own or other.
-        if (this.isSelf(user.user)) {
-          return Menu.MY_OPERATORS;
-        }
-        // Keep on, considering the operator owner as user
-        user = user.user;
-      }
-    }
-
-    // Determine the relationship between the user and the logged user
-    const role = this.dataForUiHolder.role;
-    if (role == null) {
-      return Menu.PUBLIC_DIRECTORY;
-    } else if (role === RoleEnum.BROKER) {
-      if (!user) {
-        // We don't know the user. Assume as broker.
-        return Menu.MY_BROKERED_USERS;
-      }
-      // Broker is a problematic case, because the relation between the logged user may be either of manager or regular
-      return this.cache.get(`broker_${this.dataForUiHolder.user.id}_${user.id}`, () => {
-        return this.usersService
-          .viewUser({ user: user.id, fields: ['relationship'] })
-          .pipe(
-            map(v => {
-              return v.relationship === UserRelationshipEnum.BROKER;
-            }),
-          );
-      }).pipe(
-        map(isBroker =>
-          truthyAttr(isBroker) ? Menu.MY_BROKERED_USERS : Menu.SEARCH_USERS,
-        ),
-      );
-    } else {
-      // All other cases of non-self users are via search users
-      return Menu.SEARCH_USERS;
-    }
-  }
-
-  /**
-   * Returns the menu for the given transfer. Optionally receives an expected account.
-   */
-  transferMenu(transfer: Transfer, accountId?: string) {
-    if (accountId) {
-      const auth = this.dataForUiHolder.auth || {};
-      const permissions = auth.permissions || {};
-      const banking = permissions.banking || {};
-      const accounts = banking.accounts || [];
-      const account = accounts.map(a => a.account).find(a => a.id === accountId);
-      if (account) {
-        return new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType: account.type });
-      }
-    }
-    return this.accountMenu(transfer.from, transfer.to);
-  }
-
-  /**
-   * Returns the menu for one of the given accounts
-   */
-  accountMenu(from: AccountWithOwner, to: AccountWithOwner) {
-    const fromSelf = this.isSelf(from);
-    const toSelf = this.isSelf(to);
-    if (fromSelf || toSelf) {
-      // We have to assume we're viewing a self acount
-      return new ActiveMenu(Menu.ACCOUNT_HISTORY, {
-        accountType: fromSelf ? from.type : to.type,
-      });
-    } else {
-      // Either an admin or broker viewing other member's accounts
-      return this.searchUsersMenu();
-    }
   }
 
   /**

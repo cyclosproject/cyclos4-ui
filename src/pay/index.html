@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+
+<head>
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      min-height: 100%;
+      display: flex;
+      background-color: #f8f9fa;
+    }
+
+    body.dark {
+      background-color: #2a2a2a;
+    }
+
+    #rootSpinner,
+    #rootAlertContainer {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #rootSpinner img {
+      width: 64px;
+      height: 64px;
+    }
+
+    body.dark #rootSpinner img {
+      filter: invert(1);
+    }
+
+    noscript {
+      display: flex;
+      justify-content: center;
+      font-family: sans-serif;
+      font-size: 1rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      text-align: center;
+    }
+
+  </style>
+  <meta charset="utf-8">
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta id="themeColorMeta" name="theme-color" content="">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body
+  onload="self.cyclosLoaded === true ? null : document.getElementById('rootSpinner').style.display = ''">
+  <div id="rootSpinner">
+    <img src="images/spinner.svg" alt="loading">
+  </div>
+  <script>
+    var theme = localStorage ? localStorage.getItem('theme') : null;
+    if (theme == null || theme === '') {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      localStorage ? localStorage.setItem('theme', theme) : null;
+    } else {
+      theme = theme === 'dark' ? 'dark' : 'light';
+    }
+    document.body.classList.add(theme);
+  </script>
+  <div id="rootAlertContainer" style="display: none">
+    <div class="d-flex flex-column alert alert-danger p-4 text-center"
+      role="alert">
+      <div id="rootAlert"></div>
+      <button type="button" id="reloadButton" style="display:none"
+        class="btn btn-primary mt-4" onclick="location.reload()"></button>
+    </div>
+  </div>
+  <pay-root class="d-flex flex-column flex-grow-1"></pay-root>
+  <noscript>
+    This application requires JavaScript, but your browser either doesn't
+    support it or has disabled it.
+    <br><br>
+    Please, enable JavaScript if possible, or use another browser.
+  </noscript>
+</body>
+
+</html>

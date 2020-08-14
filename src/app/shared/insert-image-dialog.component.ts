@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Image, ImageKind, ImagesListData, RoleEnum, SystemImagesListData, UserImageKind } from 'app/api/models';
-import { ImagesService } from 'app/api/services';
+import { ImagesService } from 'app/api/services/images.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
 import { BsModalRef } from 'ngx-bootstrap/modal';

@@ -3,8 +3,6 @@ import { Injectable, Injector } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Auth, DataForUi, RoleEnum, UiKind, User } from 'app/api/models';
 import { AuthService, UiService } from 'app/api/services';
-import { Configuration } from 'app/configuration';
-import { ContentService } from 'app/core/content.service';
 import { ErrorStatus } from 'app/core/error-status';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { NextRequestState } from 'app/core/next-request-state';
@@ -22,6 +20,7 @@ import { catchError, first, map, switchMap } from 'rxjs/operators';
 })
 export class DataForUiHolder {
 
+  onInitializing: (dataForUi: DataForUi) => Observable<DataForUi>;
   private dataForUi$ = new BehaviorSubject<DataForUi>(null);
   private timeDiff: number;
 
@@ -39,13 +38,6 @@ export class DataForUiHolder {
    * Returns a cold observer for initializing the `DataForUi` instance
    */
   initialize(): Observable<DataForUi> {
-    const nextRequestState = this.nextRequestState;
-
-    if (Configuration.redirectGuests && !nextRequestState.hasSession) {
-      // Guests aren't handled at all in this frontend. Redirect them.
-      location.assign(Configuration.redirectGuests);
-      return of(null);
-    }
     return this.reload();
   }
 
@@ -63,21 +55,11 @@ export class DataForUiHolder {
           nextRequestState.setSessionToken(null);
         }
 
-        // Prepare the content pages before initializing
-        let contentPages = Configuration.contentPages ? Configuration.contentPages.contentPages(this.injector) : null;
-        if (!contentPages) {
-          contentPages = [];
+        // When there's an extra function for initialize, call it
+        if (this.onInitializing) {
+          return this.onInitializing(dataForUi);
         }
-        if (contentPages instanceof Array) {
-          // The pages are already available
-          contentPages = of(contentPages);
-        }
-
-        // Actually get the content pages
-        return contentPages.pipe(map(pages => {
-          this.injector.get(ContentService).setContentPages(pages.filter(p => !!p));
-          return dataForUi;
-        }));
+        return of(dataForUi);
       }),
       catchError((resp: HttpErrorResponse) => {
         // Maybe we're using an old session data. In that case, we have to clear the session and try again

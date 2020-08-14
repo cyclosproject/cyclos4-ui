@@ -131,7 +131,7 @@ Once you have the configuration set, you can build the user interface by typing:
 npm run build
 ```
 
-After the build process (which can take a few minutes) you will have the `dist` directory containing the resources that should be deployed to your web server (Apache, Nginx, etc). The same process applies when updating to a new version of the frontend: just update your local copy, for example, with a `git pull` command, build again and re-deploy. Make sure that the folder is completely replaced, so no stale files are left.
+After the build process (which can take a few minutes) you will have the `dist/ui` directory (for version 3.0 or up), or `dist` (for previous versions) containing the resources that should be deployed to your web server (Apache, Nginx, etc). The same process applies when updating to a new version of the frontend: just update your local copy, for example, with a `git pull` command, build again and re-deploy. Make sure that the folder is completely replaced, so no stale files are left.
 
 Angular assumes the application is deployed in the root path of your domain. For example, this is the case for `https://account.example.org`. If this is not the case, such as `https://www.example.org/path` you need to pass in the path name to Angular at compilation time, like:
 
@@ -817,7 +817,7 @@ If you're serving the application in a subpath, adjust the URLs accordingly:
 }
 ```
 
-You will also have to resize your logo to these pixel sizes, and copy them to the `dist/images` folder.
+You will also have to resize your logo to these pixel sizes, and copy them to the `dist/ui/images` folder (or `dist/images` if running versions previous than 3.0).
 
 Either a physical phone running KaiOS, or the [KaiOS simulator](https://developer.kaiostech.com/getting-started/env-setup/simulator) can be used to test the application. Be aware that the simulator has several known issues (such as only accepting text using the physical PC keyboard) - see the release notes for more details.
 

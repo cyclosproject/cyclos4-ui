@@ -4,8 +4,8 @@ import { User } from 'app/api/models';
 import { UsersService } from 'app/api/services';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { ErrorStatus } from 'app/core/error-status';
-import { LoginState } from 'app/core/login-state';
 import { Observable, of } from 'rxjs';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 /**
  * Contains a cache for `User` models by id / principal
@@ -21,11 +21,16 @@ export class UserCacheService {
   constructor(
     private usersService: UsersService,
     private errorHandler: ErrorHandlerService,
-    private loginState: LoginState) {
-    this.loginState.subscribeForLoggingOut(() => {
-      // Whenever the user logs out, clear the cache, as other users that could login in the same browser can have different permissions
-      this.cache.clear();
-      this.invalidKeys.clear();
+    dataForUiHolder: DataForUiHolder) {
+
+    dataForUiHolder.subscribe(dataForUi => {
+      const auth = (dataForUi || {}).auth;
+      const user = (auth || {}).user;
+      if (!user) {
+        // Whenever the user logs out, clear the cache, as other users that could login in the same browser can have different permissions
+        this.cache.clear();
+        this.invalidKeys.clear();
+      }
     });
   }
 

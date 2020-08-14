@@ -3,7 +3,7 @@ import { ControlContainer, FormControl } from '@angular/forms';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { blank, empty } from 'app/shared/helper';
-import { LayoutService } from 'app/shared/layout.service';
+import { LayoutService } from 'app/core/layout.service';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';

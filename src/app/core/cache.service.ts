@@ -1,8 +1,12 @@
 import { Injectable, isDevMode } from '@angular/core';
-import { DEFAULT_CACHE_SECONDS } from 'app/content/content';
 import lscache from 'lscache';
 import { EMPTY, Observable, of } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
+
+/**
+ * The default number of seconds to cache content (1 hour)
+ */
+const DEFAULT_CACHE_SECONDS = 60 * 60;
 
 /**
  * Service used to manage the persistent cache

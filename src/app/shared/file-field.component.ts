@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Host, Injector, Input, Optional, SkipSelf
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty } from 'app/shared/helper';
-import { LayoutService } from 'app/shared/layout.service';
+import { LayoutService } from 'app/core/layout.service';
 
 /**
  * Component used to select one or more native browser files

@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { ContactResult, User } from 'app/api/models';
-import { ContactsService } from 'app/api/services';
+import { ContactsService } from 'app/api/services/contacts.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
-import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
@@ -18,13 +17,12 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class PickContactComponent extends BaseComponent implements OnInit {
 
-  private pageSize = 6;
+  currentPage = 0;
 
   @Input() exclude: string[];
   @Output() select = new EventEmitter<User>();
 
   results$ = new BehaviorSubject<PagedResults<ContactResult>>(null);
-  rendering$ = new BehaviorSubject(false);
 
   constructor(
     injector: Injector,
@@ -42,15 +40,14 @@ export class PickContactComponent extends BaseComponent implements OnInit {
   /**
    * Updates the search results
    */
-  update(pageData?: PageData) {
-    const data: any = pageData || {};
-    this.rendering = true;
+  update(delta = 0) {
+    this.currentPage += delta;
     this.results = null;
     this.addSub(this.contactsService.searchContactList$Response({
       user: ApiHelper.SELF,
       fields: ['contact'],
-      pageSize: data.pageSize || this.pageSize,
-      page: data.page
+      pageSize: this.layout.ltmd ? 6 : this.layout.md ? 10 : 20,
+      page: this.currentPage
     }).subscribe(response => this.results = PagedResults.from(response)));
   }
 
@@ -74,13 +71,6 @@ export class PickContactComponent extends BaseComponent implements OnInit {
   }
   set results(results: PagedResults<ContactResult>) {
     this.results$.next(results);
-  }
-
-  get rendering(): boolean {
-    return this.rendering$.value;
-  }
-  set rendering(rendering: boolean) {
-    this.rendering$.next(rendering);
   }
 
 }

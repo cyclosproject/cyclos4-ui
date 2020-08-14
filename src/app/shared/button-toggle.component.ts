@@ -4,7 +4,7 @@ import {
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { IconComponent } from 'app/shared/icon.component';
-import { LayoutService } from 'app/shared/layout.service';
+import { LayoutService } from 'app/core/layout.service';
 import { TooltipDirective } from 'ngx-bootstrap/tooltip';
 import { BehaviorSubject } from 'rxjs';
 
@@ -35,8 +35,8 @@ export class ButtonToggleComponent extends BaseControlComponent<boolean> {
   state: boolean;
 
   constructor(injector: Injector,
-              @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-              private layout: LayoutService) {
+    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
+    private layout: LayoutService) {
     super(injector, controlContainer);
   }
 

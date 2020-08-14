@@ -4,9 +4,7 @@ import {
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PrincipalType, RoleEnum, User, UserQueryFilters } from 'app/api/models';
-import { UsersService } from 'app/api/services';
-import { Configuration } from 'app/configuration';
-import { LoginService } from 'app/core/login.service';
+import { UsersService } from 'app/api/services/users.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { UserCacheService } from 'app/core/user-cache.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -17,6 +15,8 @@ import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, of, Subscription } from 'rxjs';
 import { distinctUntilChanged, first } from 'rxjs/operators';
+
+const PageSize = 10;
 
 /**
  * Field used to select a user
@@ -57,7 +57,6 @@ export class UserFieldComponent
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private userCache: UserCacheService,
     private usersService: UsersService,
-    private login: LoginService,
     private nextRequestState: NextRequestState,
     private modal: BsModalService) {
     super(injector, controlContainer);
@@ -79,7 +78,7 @@ export class UserFieldComponent
       }
     }
 
-    const permissions = this.login.auth.permissions || {};
+    const permissions = (this.dataForUiHolder.auth || {}).permissions || {};
 
     // When the user has no permissions for search, disable the option
     const users = permissions.users || {};
@@ -125,8 +124,8 @@ export class UserFieldComponent
 
     const role = this.dataForUiHolder.role;
     const filters: UserQueryFilters = this.filters ? { ...this.filters } : {};
-    filters.ignoreProfileFieldsInList = true,
-      filters.pageSize = Configuration.quickSearchPageSize;
+    filters.ignoreProfileFieldsInList = true;
+    filters.pageSize = PageSize;
     filters.keywords = text;
     if ([RoleEnum.MEMBER, RoleEnum.BROKER].includes(role)) {
       filters.usersToExclude = [...(filters.usersToExclude || []), ApiHelper.SELF];

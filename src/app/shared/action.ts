@@ -1,4 +1,4 @@
-import { Breakpoint } from 'app/shared/layout.service';
+import { Breakpoint } from 'app/core/layout.service';
 
 /**
  * A custom action descriptor

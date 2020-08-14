@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { CustomField, CustomFieldValue } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
-import { LayoutService } from 'app/shared/layout.service';
+import { LayoutService } from 'app/core/layout.service';
 
 /**
  * Component used to display a custom field value as a `<label-value>`

@@ -1,0 +1,221 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content mode="filters" [heading]="heading"
+    [mobileHeading]="mobileHeading"
+    [headingActions]="headingActions$ | async">
+    <form [formGroup]="form" class="filters-form">
+      <div class="row">
+        <div *ngIf="statusOptions?.length > 0" class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            formControlName="status" [label]="i18n.general.status"
+            [fieldOptions]="statusOptions"
+            [emptyOption]="i18n.general.notApplied">
+          </single-selection-field>
+        </div>
+        <div *ngIf="!isMyAuth() && currencies?.length > 1"
+          class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            formControlName="currency" [label]="i18n.general.currency"
+            [emptyOption]="i18n.general.notApplied">
+            <field-option *ngFor="let currency of currencies"
+              [value]="currency.id" [text]="currency.name"></field-option>
+          </single-selection-field>
+        </div>
+        <ng-container *ngIf="(moreFilters$ | async)">
+          <ng-container
+            *ngIf="(isAuthorized() || isPaymentRequest()) && data.accountTypes?.length > 1">
+            <!-- Force a line break on sm and up -->
+            <div class="w-100 d-none d-sm-block"></div>
+            <div class="col-12 col-md-6">
+              <single-selection-field labelPosition="side"
+                formControlName="fromAccountTypes"
+                [emptyOption]="i18n.general.notApplied"
+                [label]="i18n.transaction.fromAccount">
+                <field-option *ngFor="let at of accountTypes()"
+                  [value]="at.id" [internalName]="at.internalName"
+                  [id]="at.id" [text]="at.name">
+                </field-option>
+              </single-selection-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <single-selection-field labelPosition="side"
+                formControlName="toAccountTypes"
+                [emptyOption]="i18n.general.notApplied"
+                [label]="i18n.transaction.toAccount">
+                <field-option *ngFor="let at of accountTypes()"
+                  [value]="at.id" [internalName]="at.internalName"
+                  [id]="at.id" [text]="at.name">
+                </field-option>
+              </single-selection-field>
+            </div>
+          </ng-container>
+          <div *ngIf="!isMyAuth() && hasTransactionNumber"
+            class="col-12 col-md-6">
+            <input-field labelPosition="side"
+              formControlName="transactionNumber"
+              [mask]="transactionNumberPattern"
+              [label]="i18n.transaction.number"></input-field>
+          </div>
+          <ng-container *ngIf="usePeriod">
+            <div class="col-12 col-md-6"
+              *ngIf="usePreselectedPeriod && data.preselectedPeriods?.length > 0">
+              <single-selection-field labelPosition="side"
+                formControlName="preselectedPeriod"
+                [label]="i18n.general.period">
+                <field-option *ngFor="let period of data.preselectedPeriods"
+                  [id]="period['id']" [value]="period" [text]="period.name">
+                </field-option>
+              </single-selection-field>
+            </div>
+            <ng-container
+              *ngIf="!usePreselectedPeriod || (form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null">
+              <!-- Force a line break on sm and up -->
+              <div class="w-100 d-none d-sm-block"></div>
+              <div class="col-12 col-md-6">
+                <date-field labelPosition="side" formControlName="periodBegin"
+                  [label]="i18n.general.beginDate" minDate="past5"
+                  maxDate="today" fieldSize="full">
+                </date-field>
+              </div>
+            </ng-container>
+            <div
+              *ngIf="!usePreselectedPeriod || (form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
+              class="col-12 col-md-6">
+              <date-field labelPosition="side" formControlName="periodEnd"
+                [label]="i18n.general.endDate" minDate="past5" maxDate="today"
+                fieldSize="full">
+              </date-field>
+            </div>
+          </ng-container>
+          <div *ngIf="isMyAuth() && data.authorizablePaymentTypes?.length > 0"
+            class="col-12 col-md-6">
+            <multi-selection-field labelPosition="side"
+              formControlName="transferTypes"
+              [emptyLabel]="i18n.general.notApplied"
+              [label]="i18n.account.transferFilter">
+              <field-option
+                *ngFor="let transferType of data.authorizablePaymentTypes"
+                [value]="transferType.id"
+                [internalName]="transferType.internalName"
+                [id]="transferType.id" [text]="transferType.name"
+                [category]="transferType.from.name">
+              </field-option>
+            </multi-selection-field>
+          </div>
+          <ng-container *ngIf="isPaymentRequest()">
+            <div class="col-12 col-md-6">
+              <date-field labelPosition="side"
+                formControlName="expirationBegin"
+                [label]="i18n.general.expirationBeginDate" minDate="past100"
+                maxDate="future100" fieldSize="full">
+              </date-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <date-field labelPosition="side" formControlName="expirationEnd"
+                [label]="i18n.general.expirationEndDate" minDate="past100"
+                maxDate="future100" fieldSize="full">
+              </date-field>
+            </div>
+          </ng-container>
+          <div class="col-12 col-md-6">
+            <user-field labelPosition="side" formControlName="user"
+              [label]="i18n.general.user">
+            </user-field>
+          </div>
+          <div *ngIf="isAuthorized()" class="col-12 col-md-6">
+            <user-field labelPosition="side"
+              formControlName="authorizationPerformedBy"
+              [label]="i18n.transaction.actionPerformedBy">
+            </user-field>
+          </div>
+        </ng-container>
+      </div>
+    </form>
+  </page-content>
+
+  <results-layout resultType="list" [results]="results$ | async"
+    (update)="update($event)" [toLink]="toLink" [rendering$]="rendering$">
+
+    <mobile-result *mobileResult="let row" [date]="row.date"
+      [amount]="row.amount" [currency]="currenciesByKey.get(row.currency)">
+      <div class="cell-text cell-main">
+        {{ i18n.transaction.fromToText({
+          from: bankingHelper.subjectName(isPaymentRequest() ? row.to : row.from),
+          to: bankingHelper.subjectName(isPaymentRequest() ? row.from : row.to)
+        }) }}
+      </div>
+    </mobile-result>
+
+    <table *resultTable class="table table-hover cursor-pointer">
+      <thead>
+        <th>{{ i18n.general.date }}</th>
+        <ng-container *ngIf="!isPaymentRequest()">
+          <th>{{ i18n.transaction.from }}</th>
+          <th>{{ i18n.transaction.to }}</th>
+          <th>{{ i18n.transaction.scheduling }}</th>
+        </ng-container>
+        <ng-container *ngIf="isPaymentRequest()">
+          <th>{{ i18n.transaction.number }}</th>
+          <th>{{ i18n.transaction.sender }}</th>
+          <th>{{ i18n.transaction.receiver }}</th>
+          <th>{{ i18n.general.status }}</th>
+          <th>{{ i18n.general.expirationDate }}</th>
+        </ng-container>
+        <th class="amount">{{ i18n.transaction.amount }}</th>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of (results$ | async)?.results">
+          <tr (click)="router.navigate(bankingHelper.transactionPath(row))">
+            <td>
+              <a [routerLink]="bankingHelper.transactionPath(row)">
+                {{ row.date | date }}
+              </a>
+            </td>
+            <td *ngIf="isPaymentRequest()">
+              <a [routerLink]="bankingHelper.transactionPath(row)">
+                {{ row.transactionNumber }}
+              </a>
+            </td>
+            <td>
+              <a [routerLink]="bankingHelper.transactionPath(row)">
+                {{ bankingHelper.subjectName( isPaymentRequest() ? row.to : row.from) }}
+              </a>
+            </td>
+            <td>
+              <a [routerLink]="bankingHelper.transactionPath(row)">
+                {{ bankingHelper.subjectName(  isPaymentRequest() ? row.from : row.to) }}
+              </a>
+            </td>
+            <ng-container *ngIf="isPaymentRequest()">
+              <td>
+                <a class="d-inline-block"
+                  [routerLink]="bankingHelper.transactionPath(row)">
+                  {{ apiI18n.transactionStatus(row) }}
+                </a>
+              </td>
+              <td>
+                <a [routerLink]="bankingHelper.transactionPath(row)">
+                  {{ row.expirationDate | date }}
+                </a>
+              </td>
+            </ng-container>
+            <td *ngIf="!isPaymentRequest()">
+              <a class="d-inline-block"
+                [routerLink]="bankingHelper.transactionPath(row)">
+                {{ bankingHelper.scheduling(row) }}
+              </a>
+            </td>
+            <td class="amount" [ngClass]="{'pb-0': layout.xxs$ | async}">
+              <a [routerLink]="bankingHelper.transactionPath(row)">
+                {{ row.amount | currency:currenciesByKey.get(row.currency) }}
+              </a>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </results-layout>
+</ng-template>

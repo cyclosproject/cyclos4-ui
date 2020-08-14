@@ -9,7 +9,7 @@ import { I18n } from 'app/i18n/i18n';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { blank, empty, validateBeforeSubmit } from 'app/shared/helper';
-import { ShortcutService } from 'app/shared/shortcut.service';
+import { ShortcutService } from 'app/core/shortcut.service';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 

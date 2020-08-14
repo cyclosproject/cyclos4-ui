@@ -3,7 +3,8 @@ import {
   CustomField, CustomFieldDetailed, CustomFieldTypeEnum, CustomFieldValue,
   Image, LinkedEntityTypeEnum, StoredFile,
 } from 'app/api/models';
-import { FilesService, ImagesService } from 'app/api/services';
+import { FilesService } from 'app/api/services/files.service';
+import { ImagesService } from 'app/api/services/images.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { I18n } from 'app/i18n/i18n';
