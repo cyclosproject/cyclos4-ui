@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AccountBalanceLimitsData, AccountPaymentLimitsData } from 'app/api/models';
-import { PaymentLimitsService } from 'app/api/services';
+import { PaymentLimitsService } from 'app/api/services/payment-limits.service';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { BehaviorSubject } from 'rxjs';

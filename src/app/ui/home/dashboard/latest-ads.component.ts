@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { AdAddressResultEnum, AdOrderByEnum, AdResult } from 'app/api/models';
-import { MarketplaceService } from 'app/api/services';
+import { MarketplaceService } from 'app/api/services/marketplace.service';
 import { HeadingAction } from 'app/shared/action';
 import { MenuService } from 'app/ui/core/menu.service';
 import { BaseDashboardComponent } from 'app/ui/home/dashboard/base-dashboard.component';

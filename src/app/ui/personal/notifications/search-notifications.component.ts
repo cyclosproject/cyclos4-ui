@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { Notification, QueryFilters } from 'app/api/models';
-import { NotificationsService } from 'app/api/services';
+import { NotificationsService } from 'app/api/services/notifications.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';

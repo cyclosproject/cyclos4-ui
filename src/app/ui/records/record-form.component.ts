@@ -4,7 +4,7 @@ import {
   RecordCustomField, RecordCustomFieldDetailed, RecordDataForEdit, RecordDataForNew,
   RecordLayoutEnum, RecordSection,
 } from 'app/api/models';
-import { RecordsService } from 'app/api/services';
+import { RecordsService } from 'app/api/services/records.service';
 import { RecordHelperService } from 'app/ui/core/records-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';

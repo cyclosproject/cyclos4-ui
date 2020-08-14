@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from 'app/api/models';
-import { UsersService } from 'app/api/services';
+import { UsersService } from 'app/api/services/users.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { ErrorStatus } from 'app/core/error-status';
 import { Observable, of } from 'rxjs';

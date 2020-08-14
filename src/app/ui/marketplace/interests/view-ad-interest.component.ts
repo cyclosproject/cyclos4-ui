@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AdInterestView, AdKind } from 'app/api/models';
-import { AdInterestsService } from 'app/api/services';
+import { AdInterestsService } from 'app/api/services/ad-interests.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { empty } from 'app/shared/helper';

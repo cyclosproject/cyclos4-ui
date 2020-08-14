@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { CustomFieldTypeEnum, PhysicalTokenTypeEnum, RoleEnum, TokenResult, TokenStatusEnum, UserTokensListData } from 'app/api/models';
-import { TokensService } from 'app/api/services';
+import { TokensService } from 'app/api/services/tokens.service';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';

@@ -59,5 +59,6 @@
     "PaymentRequests"
   ],
   "enumStyle": "upper",
-  "skipJsonSuffix": true
+  "skipJsonSuffix": true,
+  "serviceIndex": false
 }

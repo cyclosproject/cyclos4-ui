@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { NotificationLevelEnum, RunOperationResult } from 'app/api/models';
-import { OperationsService } from 'app/api/services';
+import { OperationsService } from 'app/api/services/operations.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 

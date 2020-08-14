@@ -4,7 +4,7 @@ import {
   CreateDeviceConfirmation, CustomFieldDetailed, CustomFieldTypeEnum, DeviceConfirmationTypeEnum, ImageSizeEnum, Transaction,
   TransactionAuthorizationStatusEnum, VoucherActionEnum, VoucherCancelActionEnum, VoucherView,
 } from 'app/api/models';
-import { VouchersService } from 'app/api/services';
+import { VouchersService } from 'app/api/services/vouchers.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';

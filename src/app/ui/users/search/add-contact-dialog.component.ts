@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { User } from 'app/api/models';
-import { ContactsService } from 'app/api/services';
+import { ContactsService } from 'app/api/services/contacts.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { validateBeforeSubmit } from 'app/shared/helper';

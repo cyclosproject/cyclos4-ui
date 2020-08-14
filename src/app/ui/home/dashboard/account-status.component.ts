@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { Account, AccountBalanceHistoryResult, AccountHistoryResult, Currency, TimeFieldEnum, TransferDirectionEnum } from 'app/api/models';
-import { AccountsService } from 'app/api/services';
+import { AccountsService } from 'app/api/services/accounts.service';
 import { ISO_DATE } from 'app/core/format.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';

@@ -2,7 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { DocumentDataForSearch, DocumentKind, DocumentQueryFilters, DocumentResult, EntityReference } from 'app/api/models';
 import { Document } from 'app/api/models/document';
-import { DocumentsService } from 'app/api/services';
+import { DocumentsService } from 'app/api/services/documents.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { downloadResponse } from 'app/shared/helper';

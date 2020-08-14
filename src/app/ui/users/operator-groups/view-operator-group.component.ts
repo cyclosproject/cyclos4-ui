@@ -3,7 +3,7 @@ import {
   OperatorGroupAccountAccessEnum, OperatorGroupAccountView, OperatorGroupPaymentView,
   OperatorGroupView, TransferTypeWithCurrency,
 } from 'app/api/models';
-import { OperatorGroupsService } from 'app/api/services';
+import { OperatorGroupsService } from 'app/api/services/operator-groups.service';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';

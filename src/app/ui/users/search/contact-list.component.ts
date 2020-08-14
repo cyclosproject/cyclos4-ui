@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { ContactListDataForSearch, ContactListQueryFilters, ContactResult } from 'app/api/models';
-import { ContactsService } from 'app/api/services';
+import { ContactsService } from 'app/api/services/contacts.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';

@@ -4,7 +4,7 @@ import {
   AdResult, Currency, CustomFieldDetailed, MarketplacePermissions, RoleEnum,
 } from 'app/api/models';
 import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
-import { MarketplaceService } from 'app/api/services';
+import { MarketplaceService } from 'app/api/services/marketplace.service';
 import { LoginService } from 'app/ui/core/login.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';

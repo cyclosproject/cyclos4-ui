@@ -6,7 +6,7 @@ import {
   PaymentRequestSchedulingEnum, PaymentSchedulingEnum,
   SendPaymentRequest, Transaction, TransactionTypeData, TransferType
 } from 'app/api/models';
-import { PaymentRequestsService } from 'app/api/services';
+import { PaymentRequestsService } from 'app/api/services/payment-requests.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';

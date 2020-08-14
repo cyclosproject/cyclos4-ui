@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { RecordCustomFieldValue, RecordSection, RecordView } from 'app/api/models';
-import { RecordsService } from 'app/api/services';
+import { RecordsService } from 'app/api/services/records.service';
 import { OperationHelperService } from 'app/ui/core/operation-helper.service';
 import { RecordHelperService } from 'app/ui/core/records-helper.service';
 import { HeadingAction } from 'app/shared/action';

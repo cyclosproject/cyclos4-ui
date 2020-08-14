@@ -5,7 +5,7 @@ import {
   ReferenceLevelEnum, ReferencePeriodStatistics, ReferenceStatistics, UserReferenceDataForSearch,
   UserReferenceQueryFilters, UserReferenceResult
 } from 'app/api/models';
-import { ReferencesService } from 'app/api/services';
+import { ReferencesService } from 'app/api/services/references.service';
 import { ISO_DATE } from 'app/core/format.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';

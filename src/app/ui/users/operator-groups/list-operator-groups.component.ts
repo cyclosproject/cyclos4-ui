@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { EntityReference, UserOperatorGroupsListData } from 'app/api/models';
-import { OperatorGroupsService } from 'app/api/services';
+import { OperatorGroupsService } from 'app/api/services/operator-groups.service';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';

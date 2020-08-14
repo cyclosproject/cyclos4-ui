@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { PrivacySettingsData } from 'app/api/models';
-import { PrivacySettingsService } from 'app/api/services';
+import { PrivacySettingsService } from 'app/api/services/privacy-settings.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';

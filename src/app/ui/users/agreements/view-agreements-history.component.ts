@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AgreementLog, UserAgreementsData } from 'app/api/models';
-import { AgreementsService } from 'app/api/services';
+import { AgreementsService } from 'app/api/services/agreements.service';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { AgreementsContentDialogComponent } from 'app/ui/shared/agreement-content-dialog.component';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';

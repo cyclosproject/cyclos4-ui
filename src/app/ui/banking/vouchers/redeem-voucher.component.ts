@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { VoucherDataForRedeem, VoucherInitialDataForRedeem } from 'app/api/models';
-import { VouchersService } from 'app/api/services';
+import { VouchersService } from 'app/api/services/vouchers.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { focus, validateBeforeSubmit } from 'app/shared/helper';
 import { InputFieldComponent } from 'app/shared/input-field.component';

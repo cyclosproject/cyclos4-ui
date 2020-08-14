@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { Brokering, UserBrokersData } from 'app/api/models';
-import { BrokeringService } from 'app/api/services';
+import { BrokeringService } from 'app/api/services/brokering.service';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AvailabilityEnum, CustomField, GeographicalCoordinate, Image, StoredFile, UserDataForNew } from 'app/api/models';
-import { ImagesService } from 'app/api/services';
+import { ImagesService } from 'app/api/services/images.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { MapsService } from 'app/ui/core/maps.service';
 import { UserHelperService } from 'app/ui/core/user-helper.service';

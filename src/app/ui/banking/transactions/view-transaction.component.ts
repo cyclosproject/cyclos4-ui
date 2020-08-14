@@ -5,7 +5,10 @@ import {
   PaymentRequestActionEnum, RecurringPaymentActionEnum,
   ScheduledPaymentActionEnum, TransactionKind, TransactionView
 } from 'app/api/models';
-import { InstallmentsService, PaymentRequestsService, TransactionsService, TransfersService } from 'app/api/services';
+import { InstallmentsService } from 'app/api/services/installments.service';
+import { PaymentRequestsService } from 'app/api/services/payment-requests.service';
+import { TransactionsService } from 'app/api/services/transactions.service';
+import { TransfersService } from 'app/api/services/transfers.service';
 import { PendingPaymentsService } from 'app/api/services/pending-payments.service';
 import { RecurringPaymentsService } from 'app/api/services/recurring-payments.service';
 import { ScheduledPaymentsService } from 'app/api/services/scheduled-payments.service';

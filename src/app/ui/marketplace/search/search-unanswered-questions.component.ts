@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AdKind, AdQuestion, AdQuestionResult, QueryFilters } from 'app/api/models';
-import { AdQuestionsService } from 'app/api/services';
+import { AdQuestionsService } from 'app/api/services/ad-questions.service';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { Observable } from 'rxjs';

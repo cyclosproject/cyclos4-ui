@@ -4,7 +4,7 @@ import {
   UserDataForMap, UserDataForSearch, UserQueryFilters, UserStatusEnum
 } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
-import { UsersService } from 'app/api/services';
+import { UsersService } from 'app/api/services/users.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DocumentDataForEdit, DocumentDataForNew, DocumentEdit, DocumentManage } from 'app/api/models';
-import { DocumentsService } from 'app/api/services';
+import { DocumentsService } from 'app/api/services/documents.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { downloadResponse, validateBeforeSubmit } from 'app/shared/helper';
 import { cloneDeep } from 'lodash-es';

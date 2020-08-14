@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { CustomFieldDetailed, DataForDynamicDocument } from 'app/api/models';
-import { DocumentsService } from 'app/api/services';
+import { DocumentsService } from 'app/api/services/documents.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';

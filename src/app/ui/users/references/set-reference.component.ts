@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ReferenceDataForSet, ReferenceLevelEnum } from 'app/api/models';
-import { ReferencesService } from 'app/api/services';
+import { ReferencesService } from 'app/api/services/references.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';

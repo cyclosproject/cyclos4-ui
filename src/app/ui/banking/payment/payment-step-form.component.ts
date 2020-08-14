@@ -5,7 +5,8 @@ import {
   AccountWithStatus, Currency, CustomFieldDetailed, DataForTransaction,
   NotFoundError, TransactionTypeData, TransferType, User,
 } from 'app/api/models';
-import { PaymentsService, PosService } from 'app/api/services';
+import { PaymentsService } from 'app/api/services/payments.service';
+import { PosService } from 'app/api/services/pos.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { ErrorStatus } from 'app/core/error-status';
 import { ApiHelper } from 'app/shared/api-helper';

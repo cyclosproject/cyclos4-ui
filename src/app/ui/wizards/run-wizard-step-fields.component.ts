@@ -4,7 +4,8 @@ import {
   AvailabilityEnum, CustomFieldDetailed, GeographicalCoordinate,
   Image, SendMediumEnum, StoredFile, TempImageTargetEnum, WizardExecutionData, WizardKind, WizardStepDetailed
 } from 'app/api/models';
-import { ImagesService, WizardsService } from 'app/api/services';
+import { ImagesService } from 'app/api/services/images.service';
+import { WizardsService } from 'app/api/services/wizards.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { CountdownButtonComponent } from 'app/shared/countdown-button.component';
 import { empty, focusFirstInvalid, mergeValidity, validateBeforeSubmit } from 'app/shared/helper';

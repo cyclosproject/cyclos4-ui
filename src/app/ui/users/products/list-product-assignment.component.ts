@@ -3,7 +3,7 @@ import {
   CustomFieldControlEnum, CustomFieldTypeEnum, ProductKind,
   ProductWithUserAccount, UserProductAssignmentData
 } from 'app/api/models';
-import { ProductAssignmentService } from 'app/api/services';
+import { ProductAssignmentService } from 'app/api/services/product-assignment.service';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { empty } from 'app/shared/helper';

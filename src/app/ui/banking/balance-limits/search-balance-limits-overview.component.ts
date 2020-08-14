@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import {
   Currency, DataForBalanceLimitsSearch, GeneralAccountBalanceLimitsResult, QueryFilters, RoleEnum, UserQueryFilters, AccountType
 } from 'app/api/models';
-import { BalanceLimitsService } from 'app/api/services';
+import { BalanceLimitsService } from 'app/api/services/balance-limits.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { FieldOption } from 'app/shared/field-option';

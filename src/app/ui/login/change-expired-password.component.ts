@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { PasswordModeEnum, PasswordStatusAndActions } from 'app/api/models';
-import { PasswordsService } from 'app/api/services';
+import { PasswordsService } from 'app/api/services/passwords.service';
 import { LoginState } from 'app/ui/core/login-state';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';

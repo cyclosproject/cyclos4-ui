@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AdKind, AdResult, RoleEnum, UserAdsDataForSearch, UserAdsQueryFilters } from 'app/api/models';
-import { MarketplaceService } from 'app/api/services';
+import { MarketplaceService } from 'app/api/services/marketplace.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { words } from 'app/shared/helper';

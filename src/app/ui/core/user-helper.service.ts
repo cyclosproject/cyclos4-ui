@@ -5,7 +5,7 @@ import {
   OperatorGroupAccountAccessEnum, ProfileFieldActions, TokenStatusEnum, User,
   UserBasicData, UserDataForNew, UserStatusEnum, UserRegistrationResult, UserRegistrationStatusEnum
 } from 'app/api/models';
-import { UsersService } from 'app/api/services';
+import { UsersService } from 'app/api/services/users.service';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { LoginService } from 'app/ui/core/login.service';

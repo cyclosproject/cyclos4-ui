@@ -5,15 +5,16 @@ import {
   IdentityProvider, IdentityProviderCallbackStatusEnum, Image, PhoneNew, RoleEnum,
   StoredFile, UserDataForNew, UserNew, UserRegistrationResult, Wizard
 } from 'app/api/models';
-import { ImagesService, UsersService } from 'app/api/services';
+import { ImagesService } from 'app/api/services/images.service';
+import { UsersService } from 'app/api/services/users.service';
 import { NextRequestState } from 'app/core/next-request-state';
-import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import {
   blank, copyProperties, empty, focusFirstField, focusFirstInvalid,
   mergeValidity, scrollTop, setRootSpinnerVisible, validateBeforeSubmit
 } from 'app/shared/helper';
+import { UserHelperService } from 'app/ui/core/user-helper.service';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';

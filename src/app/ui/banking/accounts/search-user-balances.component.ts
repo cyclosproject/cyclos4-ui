@@ -4,7 +4,7 @@ import {
   CustomFieldDetailed, DataForUserBalancesSearch,
   UserAddressResultEnum, UsersWithBalanceQueryFilters, UsersWithBalanceSummary, UserWithBalanceResult, UserQueryFilters, RoleEnum
 } from 'app/api/models';
-import { AccountsService } from 'app/api/services';
+import { AccountsService } from 'app/api/services/accounts.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';

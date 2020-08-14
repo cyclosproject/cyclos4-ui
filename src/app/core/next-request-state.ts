@@ -2,7 +2,7 @@ import { HttpRequest } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
 import { Params } from '@angular/router';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { AuthService } from 'app/api/services';
+import { AuthService } from 'app/api/services/auth.service';
 import { empty, isSameOrigin } from 'app/shared/helper';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';

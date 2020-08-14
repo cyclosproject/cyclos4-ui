@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { CreateDeviceConfirmation, DeviceConfirmationTypeEnum, TransferView } from 'app/api/models';
-import { TransfersService } from 'app/api/services';
+import { TransfersService } from 'app/api/services/transfers.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { OperationHelperService } from 'app/ui/core/operation-helper.service';
 import { HeadingAction } from 'app/shared/action';

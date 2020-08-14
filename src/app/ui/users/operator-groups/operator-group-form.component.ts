@@ -4,7 +4,7 @@ import {
   AccountType, OperatorGroupAccountAccessEnum, OperatorGroupDataForEdit,
   OperatorGroupDataForNew, TransferTypeWithCurrency, User,
 } from 'app/api/models';
-import { OperatorGroupsService } from 'app/api/services';
+import { OperatorGroupsService } from 'app/api/services/operator-groups.service';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { FieldOption } from 'app/shared/field-option';

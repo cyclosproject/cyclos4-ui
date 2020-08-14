@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { Address, AdResult, DeliveryMethod, OrderDataForEdit, OrderDataForNew, OrderDeliveryMethod, OrderItem } from 'app/api/models';
-import { OrdersService } from 'app/api/services';
+import { OrdersService } from 'app/api/services/orders.service';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { SearchProductsComponent } from 'app/ui/marketplace/search/search-products.component';

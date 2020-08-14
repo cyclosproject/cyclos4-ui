@@ -4,7 +4,7 @@ import {
   PaymentRequestStatusEnum, TransactionAuthorizationStatusEnum, TransactionDataForSearch,
   TransactionKind, TransactionQueryFilters, TransactionResult, TransferFilter
 } from 'app/api/models';
-import { TransactionsService } from 'app/api/services';
+import { TransactionsService } from 'app/api/services/transactions.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { FieldOption } from 'app/shared/field-option';

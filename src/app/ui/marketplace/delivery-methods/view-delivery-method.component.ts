@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { DeliveryMethodChargeTypeEnum, DeliveryMethodView } from 'app/api/models';
-import { DeliveryMethodsService } from 'app/api/services';
+import { DeliveryMethodsService } from 'app/api/services/delivery-methods.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { Menu } from 'app/ui/shared/menu';

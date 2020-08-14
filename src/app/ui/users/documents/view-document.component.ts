@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { DocumentKind, DocumentView, RoleEnum } from 'app/api/models';
-import { DocumentsService } from 'app/api/services';
+import { DocumentsService } from 'app/api/services/documents.service';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { downloadResponse } from 'app/shared/helper';

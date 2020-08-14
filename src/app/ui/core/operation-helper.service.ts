@@ -5,7 +5,7 @@ import {
   ExportFormat, NotificationLevelEnum, Operation, OperationDataForRun,
   OperationResultTypeEnum, OperationScopeEnum, RunOperation, RunOperationResult
 } from 'app/api/models';
-import { OperationsService } from 'app/api/services';
+import { OperationsService } from 'app/api/services/operations.service';
 import { Configuration } from 'app/ui/configuration';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';

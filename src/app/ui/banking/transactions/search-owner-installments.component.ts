@@ -2,7 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { Currency, InstallmentDataForSearch, InstallmentResult, InstallmentStatusEnum, TransactionDataForSearch } from 'app/api/models';
 import { InstallmentQueryFilters } from 'app/api/models/installment-query-filters';
-import { InstallmentsService } from 'app/api/services';
+import { InstallmentsService } from 'app/api/services/installments.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';

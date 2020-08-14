@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { ShoppingCartResult } from 'app/api/models';
-import { ShoppingCartsService } from 'app/api/services';
+import { ShoppingCartsService } from 'app/api/services/shopping-carts.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 

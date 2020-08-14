@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Currency, VoucherTypeDetailed } from 'app/api/models';
 import { VoucherDataForBuy } from 'app/api/models/voucher-data-for-buy';
-import { VouchersService } from 'app/api/services';
+import { VouchersService } from 'app/api/services/vouchers.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';

@@ -5,7 +5,7 @@ import {
   IdentityProviderCallbackResult, IdentityProviderRequestResult,
   PasswordInput, PasswordModeEnum, RoleEnum, User
 } from 'app/api/models';
-import { IdentityProvidersService } from 'app/api/services';
+import { IdentityProvidersService } from 'app/api/services/identity-providers.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { NextRequestState } from 'app/core/next-request-state';
 import { PushNotificationsService } from 'app/core/push-notifications.service';

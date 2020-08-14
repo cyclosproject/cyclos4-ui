@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CreateDeviceConfirmation, CustomFieldDetailed, NotificationsStatus, PasswordInput } from 'app/api/models';
-import { NotificationsService } from 'app/api/services';
+import { NotificationsService } from 'app/api/services/notifications.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { NextRequestState } from 'app/core/next-request-state';
 import { PushNotificationProvider } from 'app/core/push-notification-provider';

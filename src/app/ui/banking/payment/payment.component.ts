@@ -5,7 +5,7 @@ import {
   DataForTransaction, PaymentPreview, PaymentSchedulingEnum, PerformPayment,
   Transaction, TransactionAuthorizationStatusEnum, TransactionTypeData, TransferType,
 } from 'app/api/models';
-import { PaymentsService } from 'app/api/services';
+import { PaymentsService } from 'app/api/services/payments.service';
 import { PosService } from 'app/api/services/pos.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';

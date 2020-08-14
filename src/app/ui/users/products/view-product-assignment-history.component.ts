@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { UserProductAssignmentData, ProductAssignmentActionEnum } from 'app/api/models';
-import { ProductAssignmentService } from 'app/api/services';
+import { ProductAssignmentService } from 'app/api/services/product-assignment.service';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 
 @Component({

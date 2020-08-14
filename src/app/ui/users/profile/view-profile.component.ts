@@ -4,7 +4,8 @@ import {
   AdKind, BasicProfileFieldEnum, PhoneKind, PhoneView, RoleEnum,
   UserProfileSectionEnum, UserRelationshipEnum, UserView
 } from 'app/api/models';
-import { ContactsService, UsersService } from 'app/api/services';
+import { ContactsService } from 'app/api/services/contacts.service';
+import { UsersService } from 'app/api/services/users.service';
 import { ErrorStatus } from 'app/core/error-status';
 import { MapsService } from 'app/ui/core/maps.service';
 import { OperationHelperService } from 'app/ui/core/operation-helper.service';

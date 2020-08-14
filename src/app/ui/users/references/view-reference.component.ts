@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { ReferenceView } from 'app/api/models';
-import { ReferencesService } from 'app/api/services';
+import { ReferencesService } from 'app/api/services/references.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { Menu } from 'app/ui/shared/menu';

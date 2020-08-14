@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { OrderStatusEnum, OrderView } from 'app/api/models';
-import { OrdersService } from 'app/api/services';
+import { OrdersService } from 'app/api/services/orders.service';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { Menu } from 'app/ui/shared/menu';

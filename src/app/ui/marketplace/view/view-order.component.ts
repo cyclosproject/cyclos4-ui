@@ -5,7 +5,7 @@ import {
   CustomFieldTypeEnum, DeviceConfirmationTypeEnum, OrderDataForAcceptByBuyer,
   OrderItem, OrderStatusEnum, OrderView, SetDeliveryMethod,
 } from 'app/api/models';
-import { OrdersService } from 'app/api/services';
+import { OrdersService } from 'app/api/services/orders.service';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { SetDeliveryMethodComponent } from 'app/ui/marketplace/delivery-methods/set-delivery-method.component';

@@ -2,7 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { UserVouchersDataForSearch, VoucherRelationEnum, VoucherResult, VoucherStatusEnum } from 'app/api/models';
 import { UserVouchersQueryFilters } from 'app/api/models/user-vouchers-query-filters';
-import { VouchersService } from 'app/api/services';
+import { VouchersService } from 'app/api/services/vouchers.service';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { FieldOption } from 'app/shared/field-option';
 import { Menu } from 'app/ui/shared/menu';

@@ -5,7 +5,7 @@ import {
   UserQueryFilters,
   AccountType
 } from 'app/api/models';
-import { PaymentLimitsService } from 'app/api/services';
+import { PaymentLimitsService } from 'app/api/services/payment-limits.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { FieldOption } from 'app/shared/field-option';

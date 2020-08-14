@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Agreement } from 'app/api/models';
-import { AgreementsService } from 'app/api/services';
+import { AgreementsService } from 'app/api/services/agreements.service';
 import { LoginState } from 'app/ui/core/login-state';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';

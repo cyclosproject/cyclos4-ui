@@ -5,7 +5,9 @@ import {
   CustomField, CustomFieldDetailed, CustomFieldValue, DataForEditFullProfile,
   DeviceConfirmationTypeEnum, FullProfileEdit, Image, PhoneEditWithId, PhoneKind, PhoneManage
 } from 'app/api/models';
-import { ImagesService, PhonesService, UsersService } from 'app/api/services';
+import { ImagesService } from 'app/api/services/images.service';
+import { PhonesService } from 'app/api/services/phones.service';
+import { UsersService } from 'app/api/services/users.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';

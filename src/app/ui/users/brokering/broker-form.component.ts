@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { BrokerDataForAdd, RoleEnum } from 'app/api/models';
-import { BrokeringService } from 'app/api/services';
+import { BrokeringService } from 'app/api/services/brokering.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 

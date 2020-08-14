@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { VoucherResult, VouchersDataForSearch, VouchersQueryFilters, VoucherStatusEnum } from 'app/api/models';
-import { VouchersService } from 'app/api/services';
+import { VouchersService } from 'app/api/services/vouchers.service';
 import { FieldOption } from 'app/shared/field-option';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { Menu } from 'app/ui/shared/menu';

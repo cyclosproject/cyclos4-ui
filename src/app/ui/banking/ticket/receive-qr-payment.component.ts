@@ -4,7 +4,7 @@ import {
   AvailabilityEnum, DataForTransaction, ImageSizeEnum, Transaction,
   TransactionTypeData, TransactionView, TransferType
 } from 'app/api/models';
-import { TicketsService } from 'app/api/services';
+import { TicketsService } from 'app/api/services/tickets.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';

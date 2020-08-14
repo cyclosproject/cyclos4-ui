@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Country } from 'app/api/models/country';
-import { AddressesService } from 'app/api/services';
+import { AddressesService } from 'app/api/services/addresses.service';
 import { SingletonResolve } from 'app/ui/singleton.resolve';
 import { Observable } from 'rxjs';
 

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { TransactionAuthorization, TransactionView } from 'app/api/models';
-import { TransactionsService } from 'app/api/services';
+import { TransactionsService } from 'app/api/services/transactions.service';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 
 /**

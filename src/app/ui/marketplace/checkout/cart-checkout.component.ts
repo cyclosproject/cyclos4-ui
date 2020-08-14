@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Address, DeliveryMethod, DeviceConfirmationTypeEnum, ShoppingCartCheckout, ShoppingCartDataForCheckout } from 'app/api/models';
-import { ShoppingCartsService } from 'app/api/services';
+import { ShoppingCartsService } from 'app/api/services/shopping-carts.service';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';

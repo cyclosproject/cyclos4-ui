@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { ValidationService } from 'app/api/services';
+import { ValidationService } from 'app/api/services/validation.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 
 /**

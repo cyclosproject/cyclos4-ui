@@ -7,7 +7,7 @@ import {
   PhoneNew, UserNew, WizardActionEnum, WizardExecutionData, WizardKind,
   WizardResultTypeEnum, WizardStepKind, WizardStepTransition
 } from 'app/api/models';
-import { WizardsService } from 'app/api/services';
+import { WizardsService } from 'app/api/services/wizards.service';
 import { empty, focusFirstInvalid, mergeValidity, validateBeforeSubmit } from 'app/shared/helper';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';

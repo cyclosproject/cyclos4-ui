@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { AdInterestBasicData, AdInterestDataForEdit, AdInterestDataForNew, AdInterestEdit, Currency } from 'app/api/models';
-import { AdInterestsService } from 'app/api/services';
+import { AdInterestsService } from 'app/api/services/ad-interests.service';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { HierarchyItem } from 'app/ui/marketplace/hierarchy-item.component';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';

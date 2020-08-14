@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { UserAddressResultEnum, UserOrderByEnum, UserResult } from 'app/api/models';
-import { UsersService } from 'app/api/services';
+import { UsersService } from 'app/api/services/users.service';
 import { BaseDashboardComponent } from 'app/ui/home/dashboard/base-dashboard.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';

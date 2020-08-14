@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AdInterest, UserAdInterestsListData } from 'app/api/models';
-import { AdInterestsService } from 'app/api/services';
+import { AdInterestsService } from 'app/api/services/ad-interests.service';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';

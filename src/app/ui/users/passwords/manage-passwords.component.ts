@@ -4,7 +4,7 @@ import {
   CreateDeviceConfirmation, DataForUserPasswords, DeviceConfirmationTypeEnum,
   PasswordStatusAndActions, PasswordStatusEnum,
 } from 'app/api/models';
-import { PasswordsService } from 'app/api/services';
+import { PasswordsService } from 'app/api/services/passwords.service';
 import { Action } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';

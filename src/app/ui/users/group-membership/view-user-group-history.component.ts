@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { GroupMembershipData } from 'app/api/models';
-import { GroupMembershipService } from 'app/api/services';
+import { GroupMembershipService } from 'app/api/services/group-membership.service';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 

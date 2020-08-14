@@ -5,7 +5,7 @@ import {
   RecordLayoutEnum, RecordPermissions, RecordType, RoleEnum, Transfer, User,
   UserMenuEnum, UserRelationshipEnum, VouchersPermissions, Wizard
 } from 'app/api/models';
-import { UsersService } from 'app/api/services';
+import { UsersService } from 'app/api/services/users.service';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { CacheService } from 'app/core/cache.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';

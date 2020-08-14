@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { DataForUserPasswords, PasswordModeEnum, PasswordStatusAndActions, PasswordStatusEnum } from 'app/api/models';
-import { PasswordsService } from 'app/api/services';
+import { PasswordsService } from 'app/api/services/passwords.service';
 import { Configuration } from 'app/ui/configuration';
 import { ContentPage } from 'app/ui/content/content-page';
 import { handleFullWidthLayout } from 'app/ui/content/content-with-layout';

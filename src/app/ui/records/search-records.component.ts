@@ -5,7 +5,7 @@ import {
   GeneralRecordsQueryFilters, Group, RecordDataForSearch, RecordLayoutEnum,
   RecordQueryFilters, RecordResult, RecordWithOwnerResult
 } from 'app/api/models';
-import { RecordsService } from 'app/api/services';
+import { RecordsService } from 'app/api/services/records.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { RecordHelperService } from 'app/ui/core/records-helper.service';

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ChangePassword, PasswordType, User } from 'app/api/models';
-import { PasswordsService } from 'app/api/services';
+import { PasswordsService } from 'app/api/services/passwords.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalRef } from 'ngx-bootstrap/modal';

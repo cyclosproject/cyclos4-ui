@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AdQuestionView } from 'app/api/models';
-import { AdQuestionsService } from 'app/api/services';
+import { AdQuestionsService } from 'app/api/services/ad-questions.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';

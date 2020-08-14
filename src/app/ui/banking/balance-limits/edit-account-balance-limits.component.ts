@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { AccountBalanceLimitsData, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, SetAccountBalanceLimits } from 'app/api/models';
-import { BalanceLimitsService } from 'app/api/services';
+import { BalanceLimitsService } from 'app/api/services/balance-limits.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { FieldOption } from 'app/shared/field-option';
 import { validateBeforeSubmit } from 'app/shared/helper';

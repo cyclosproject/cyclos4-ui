@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { OperatorResult, User } from 'app/api/models';
-import { OperatorsService, TokensService } from 'app/api/services';
+import { OperatorsService } from 'app/api/services/operators.service';
+import { TokensService } from 'app/api/services/tokens.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { cloneDeep } from 'lodash-es';

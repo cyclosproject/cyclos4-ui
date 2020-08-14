@@ -4,7 +4,7 @@ import {
   AccountWithHistoryStatus, Currency, DataForAccountHistory,
   EntityReference, Image, PreselectedPeriod, TransferFilter
 } from 'app/api/models';
-import { AccountsService } from 'app/api/services';
+import { AccountsService } from 'app/api/services/accounts.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';

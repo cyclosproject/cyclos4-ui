@@ -2,7 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AdKind, AdResult, AdStatusEnum, Currency } from 'app/api/models';
-import { MarketplaceService } from 'app/api/services';
+import { MarketplaceService } from 'app/api/services/marketplace.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { PageData } from 'app/ui/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';

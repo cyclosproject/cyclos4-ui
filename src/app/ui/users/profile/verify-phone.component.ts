@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { CodeVerificationStatusEnum, PhoneEditWithId } from 'app/api/models';
-import { PhonesService } from 'app/api/services';
+import { PhonesService } from 'app/api/services/phones.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { InputFieldComponent } from 'app/shared/input-field.component';

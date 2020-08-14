@@ -3,7 +3,7 @@ import {
   AccountType, Currency, PreselectedPeriod, RoleEnum,
   TransferDataForSearch, TransferFilter, TransferKind, TransferQueryFilters, TransferResult, TransOrderByEnum, UserQueryFilters
 } from 'app/api/models';
-import { TransfersService } from 'app/api/services';
+import { TransfersService } from 'app/api/services/transfers.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';

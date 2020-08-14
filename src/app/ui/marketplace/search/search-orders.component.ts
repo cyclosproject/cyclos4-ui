@@ -5,7 +5,7 @@ import {
   LinkedEntityTypeEnum, OrderDataForSearch, OrderResult, OrderStatusEnum, QueryFilters,
 } from 'app/api/models';
 import { UserOrderResult } from 'app/api/models/user-order-result';
-import { OrdersService } from 'app/api/services';
+import { OrdersService } from 'app/api/services/orders.service';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';

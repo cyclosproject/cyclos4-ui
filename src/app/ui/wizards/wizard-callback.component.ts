@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { WizardExecutionData } from 'app/api/models';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
-import { WizardsService } from 'app/api/services';
+import { WizardsService } from 'app/api/services/wizards.service';
 
 /**
  * Callback invoked after running an external redirect wizard step

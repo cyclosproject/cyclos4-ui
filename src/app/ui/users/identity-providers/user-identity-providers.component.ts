@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UserIdentityProvider, UserIdentityProvidersListData, UserIdentityProviderStatusEnum } from 'app/api/models';
-import { IdentityProvidersService } from 'app/api/services';
+import { IdentityProvidersService } from 'app/api/services/identity-providers.service';
 import { Action } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';

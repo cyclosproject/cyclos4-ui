@@ -4,7 +4,7 @@ import {
   CustomFieldTypeEnum, ShoppingCartItemAvailabilityEnum, ShoppingCartItemDetailed,
   ShoppingCartItemQuantityAdjustmentEnum, ShoppingCartView,
 } from 'app/api/models';
-import { ShoppingCartsService } from 'app/api/services';
+import { ShoppingCartsService } from 'app/api/services/shopping-carts.service';
 import { ErrorStatus } from 'app/core/error-status';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { HeadingAction } from 'app/shared/action';

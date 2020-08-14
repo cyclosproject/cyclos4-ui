@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { PhysicalTokenTypeEnum, TokenDataForSearch, TokenQueryFilters, TokenResult, TokenStatusEnum } from 'app/api/models';
-import { TokensService } from 'app/api/services';
+import { TokensService } from 'app/api/services/tokens.service';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';

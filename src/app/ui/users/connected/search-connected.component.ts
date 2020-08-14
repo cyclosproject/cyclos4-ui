@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { RoleEnum, SessionDataForSearch, SessionQueryFilters, SessionResult } from 'app/api/models';
-import { SessionsService } from 'app/api/services';
+import { SessionsService } from 'app/api/services/sessions.service';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { Observable } from 'rxjs';
 

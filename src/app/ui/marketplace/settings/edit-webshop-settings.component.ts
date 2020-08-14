@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { WebshopSettingsView } from 'app/api/models';
-import { WebshopSettingsService } from 'app/api/services';
+import { WebshopSettingsService } from 'app/api/services/webshop-settings.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';

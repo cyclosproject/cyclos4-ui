@@ -4,7 +4,7 @@ import {
   Currency, DeliveryMethodBasicData,
   DeliveryMethodChargeTypeEnum, DeliveryMethodDataForEdit, DeliveryMethodDataForNew, DeliveryMethodEdit,
 } from 'app/api/models';
-import { DeliveryMethodsService } from 'app/api/services';
+import { DeliveryMethodsService } from 'app/api/services/delivery-methods.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';

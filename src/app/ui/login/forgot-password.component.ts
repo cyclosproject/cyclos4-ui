@@ -4,7 +4,7 @@ import {
   ChangeForgottenPassword, DataForChangeForgottenPassword, DataForLogin,
   ForgottenPasswordRequest, PasswordModeEnum, SendMediumEnum,
 } from 'app/api/models';
-import { AuthService } from 'app/api/services';
+import { AuthService } from 'app/api/services/auth.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
