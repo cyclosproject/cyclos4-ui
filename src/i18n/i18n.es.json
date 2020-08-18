@@ -621,7 +621,7 @@
     "dueAmount": "Monto adeudado",
     "dueDate": "Fecha de procesado",
     "processDate": "Fecha de procesamiento",
-    "processDateTooltip": "Select this option to schedule processing",
+    "processDateTooltip": "Seleccione esta opción para programar el procesamiento",
     "nextOccurrence": "Siguiente ocurrencia",
     "channel": "Canal",
     "receivedBy": "Recibido por",
@@ -629,7 +629,7 @@
     "chargebackOf": "Devolución de",
     "chargedBackBy": "Devuelto por",
     "authorizationComments": "Comentarios",
-    "actionPerformedBy": "Action performed by",
+    "actionPerformedBy": "Acción realizada por",
     "accountBalance": "Saldo",
     "installments": "Cuotas",
     "installmentNumber": "Número",
@@ -819,8 +819,8 @@
     "reschedulePaymentRequest": "Reagendar este pago recurrente",
     "reschedulePaymentRequest.done": "La solicitud de pago fue reagendada",
     "confirmPaymentRequest": "¿Está seguro de enviar la solicitud de pago?",
-    "firstOccurrenceIsImmediate": "First occurrence is immediate",
-    "firstInstallmentIsImmediate": "First installment is immediate",
+    "firstOccurrenceIsImmediate": "La primera ocurrencia es inmediata",
+    "firstInstallmentIsImmediate": "La primera cuota es inmediata",
     "error": {
       "minTime": "Un plazo mínimo de tiempo debe ser aguardado para poder realizar un pago de este tipo.",
       "balance": "Saldo insuficiente para realizar esta operación",
@@ -1137,7 +1137,7 @@
     "creationEnd": "Registrado antes de",
     "acceptedAgreements": "Acuerdos aceptados",
     "notAcceptedAgreements": "Acuerdos no aceptados",
-    "assignedProducts": "Assigned products",
+    "assignedProducts": "Productos asignados",
     "beginUserActivationDate": "Activados desde",
     "endUserActivationDate": "Activados hasta",
     "beginLastLoginDate": "Último acceso desde",
@@ -1851,7 +1851,7 @@
     }
   },
   "wizard": {
-    "alreadyExecuted": "This step was already executed",
+    "alreadyExecuted": "Este paso ya fue ejecutado",
     "emailVerificationCode": "Código de verificación por e-mail",
     "smsVerificationCode": "Código de verificación por SMS",
     "codeSent.countdown": "Código enviado ({remaining} seg.)"
@@ -1868,8 +1868,8 @@
     "mobileTitle": "Ajustes de privacidad",
     "enableControl": "Activar control de privacidad",
     "controlsSection": "Departamentos con acceso a datos privados ",
-    "information": "In this page it is possible to set whether access to those fields is restricted, and how those fields may be used.",
-    "dataSubjectToControls": "Personal data subject to privacy control:",
+    "information": "En esta página es posible establecer si el acceso a los campos está restringido y cómo se pueden utilizar dichos campos.",
+    "dataSubjectToControls": "Datos personales sujetos al control de privacidad:",
     "saved": "Los ajustes de privacidad se han guardado"
   },
   "record": {
