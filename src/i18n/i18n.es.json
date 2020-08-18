@@ -256,8 +256,8 @@
     "banking.payUser": "Pago a usuario",
     "banking.paySystem": "Pago al sistema",
     "banking.paySelf": "Auto pago",
-    "banking.requestPaymentFromUser": "Request payment from user",
-    "banking.requestPaymentFromSystem": "Request payment from system",
+    "banking.requestPaymentFromUser": "Solicitar pago de usuario",
+    "banking.requestPaymentFromSystem": "Solicitar pago del sistema",
     "banking.pos": "Recibir pago",
     "banking.receiveQrPayment": "Recibir código QR",
     "banking.scheduledPayments": "Pagos agendados",
@@ -265,7 +265,7 @@
     "banking.pendingMyAuth": "Esperando mi autorización",
     "banking.authorizations": "Pagos con autorización",
     "banking.paymentRequests": "Solicitud de pago",
-    "banking.paymentRequestsOverview": "Payment requests overview",
+    "banking.paymentRequestsOverview": "Vista general de solicitudes de pago",
     "banking.searchVouchers": "Buscar cupones",
     "banking.buyVouchers": "Comprar cupones",
     "banking.boughtVouchers": "Ver comprados",
@@ -507,7 +507,7 @@
       "amountDesc": "Monto (de mayor a menor)"
     },
     "userBalances": {
-      "negativeSince": "Negative since",
+      "negativeSince": "Negativo desde",
       "title": "Saldos de usuarios",
       "mobileTitle": "Saldos de usuarios",
       "minBalance": "Desde saldo",
@@ -518,7 +518,7 @@
       "total": "Total ",
       "fromYellowBalance": "From yellow balance",
       "toYellowBalance": "To yellow balance",
-      "beginNegativeSince": "Negative after",
+      "beginNegativeSince": "Negativo después de",
       "endNegativeSince": "Negative before",
       "orderBy": {
         "alphabeticallyDesc": "Nombre (A - Z)",
@@ -731,7 +731,7 @@
       "paymentRequestToSystem": "Solicitud de pago de sistema",
       "paymentRequestToUser": "Solicitud de pago de usuario",
       "paymentRequests": "Solicitudes de pago",
-      "paymentRequestsOverview": "Payment requests overview"
+      "paymentRequestsOverview": "Vista general de solicitudes de pago"
     },
     "mobileTitle": {
       "pos": "Recibir pago",
@@ -764,7 +764,7 @@
       "paymentRequestToSystem": "Solicitud de pago",
       "paymentRequestToUser": "Solicitud de pago",
       "paymentRequests": "Solicitudes de pago",
-      "paymentRequestsOverview": "Payment requests overview"
+      "paymentRequestsOverview": "Vista general de solicitudes de pago"
     },
     "ticketShareTitle": "Invitación a realizar un pago",
     "ticketShareText": "{user} le ha invitado a realizar un pago de {amount}",
@@ -813,11 +813,11 @@
     "cancelPaymentRequest": "Cancelar la solicitud de pago",
     "cancelPaymentRequest.done": "La solicitud de pago fue cancelada",
     "rejectPaymentRequest": "Denegar la solicitud de pago",
-    "rejectPaymentRequest.done": "The payment request was denied",
+    "rejectPaymentRequest.done": "La solicitud de pago fue rechazada",
     "changePaymentRequestExpiration": "Cambiar fecha de vencimiento",
     "changePaymentRequestExpiration.done": "La fecha de vencimiento de la solicitud de pago fue cambiada ",
     "reschedulePaymentRequest": "Reschedule this recurring payment",
-    "reschedulePaymentRequest.done": "The payment request was reschedule",
+    "reschedulePaymentRequest.done": "La solicitud de pago fue reagendada",
     "confirmPaymentRequest": "Are you sure to send this payment request?",
     "firstOccurrenceIsImmediate": "First occurrence is immediate",
     "firstInstallmentIsImmediate": "First installment is immediate",
