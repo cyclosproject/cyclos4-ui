@@ -311,7 +311,7 @@
     "personal.notifications": "Notificaciones",
     "personal.notificationSettings": "Ajustes de notificaciones",
     "personal.settings": "Ajustes",
-    "personal.privacySettings": "Configuración de privacidad",
+    "personal.privacySettings": "Ajuste de privacidad",
     "personal.references": "Referencias",
     "content": "Información"
   },
@@ -519,12 +519,12 @@
       "fromYellowBalance": "From yellow balance",
       "toYellowBalance": "To yellow balance",
       "beginNegativeSince": "Negativo después de",
-      "endNegativeSince": "Negative before",
+      "endNegativeSince": "Negativo hasta",
       "orderBy": {
         "alphabeticallyDesc": "Nombre (A - Z)",
         "alphabeticallyAsc": "Nombre (Z - A)",
-        "balanceAsc": "Balance (lowest first)",
-        "balanceDesc": "Balance (highest first)"
+        "balanceAsc": "Saldo (de menor a mayor)",
+        "balanceDesc": "Saldo (de mayor a menor)"
       }
     },
     "limits": {
@@ -551,14 +551,14 @@
         "view": "Detalles de límites de saldo de la cuenta",
         "edit": "Detalles de límites de saldo de la cuenta",
         "history": "Historial de límites de saldo de cuenta",
-        "overview": "Account balance limits overview"
+        "overview": "Vista general de límites de saldo de cuenta"
       },
       "mobileTitle": {
         "list": "Límites de saldo",
         "view": "Detalles de límites de saldo",
         "edit": "Detalles de límites de saldo",
         "history": "Historial de límites de saldo",
-        "overview": "Balance limits overview"
+        "overview": "Vista general de límites de saldo"
       }
     },
     "paymentLimits": {
@@ -625,7 +625,7 @@
     "nextOccurrence": "Siguiente ocurrencia",
     "channel": "Canal",
     "receivedBy": "Recibido por",
-    "chargedBack": "Charged back",
+    "chargedBack": "Devuelta",
     "chargebackOf": "Devolución de",
     "chargedBackBy": "Devuelto por",
     "authorizationComments": "Comentarios",
@@ -638,15 +638,15 @@
     "noAccounts": "No posee ninguna cuenta para poder realizar el pago",
     "noTypes": "No hay tipos de transacción posibles",
     "noTypesSelection": "No hay tipos de transacción posibles desde esta cuenta al usuario seleccionado",
-    "transferKinds": "Transfer kinds",
+    "transferKinds": "Tipo de transferencia",
     "transferkind": {
-      "accountFee": "Account fee",
-      "chargeback": "Chargeback",
+      "accountFee": "Cargo de cuenta",
+      "chargeback": "Devolución",
       "import": "Importar",
       "initialCredit": "Crédito inicial",
       "installment": "Cuota",
       "payment": "Pago",
-      "transferFee": "Transfer fee"
+      "transferFee": "Cargo de transferencia"
     },
     "scheduling": "Agendado",
     "scheduling.direct": "No agendar (pagar de inmediato)",
@@ -901,7 +901,7 @@
     },
     "buyerGroups": "Grupos de compradores",
     "redeemerGroups": "Grupos que canjean",
-    "creationType": "Creation type",
+    "creationType": "Tipo de creación",
     "cancel": {
       "done": "El cupón ha sido cancelado.",
       "packConfirmation": "Hay otros cupones pertenecientes al mismo paquete, que también serán cancelados. ¿Estás seguro de continuar?",
@@ -1135,13 +1135,13 @@
     "contact": "Contacto",
     "creationBegin": "Registrado después de",
     "creationEnd": "Registrado antes de",
-    "acceptedAgreements": "Accepted agreements",
-    "notAcceptedAgreements": "Not accepted agreements",
+    "acceptedAgreements": "Acuerdos aceptados",
+    "notAcceptedAgreements": "Acuerdos no aceptados",
     "assignedProducts": "Assigned products",
-    "beginUserActivationDate": "Activated after",
-    "endUserActivationDate": "Activated before",
-    "beginLastLoginDate": "Last login after",
-    "endLastLoginDate": "Last login before",
+    "beginUserActivationDate": "Activados desde",
+    "endUserActivationDate": "Activados hasta",
+    "beginLastLoginDate": "Último acceso desde",
+    "endLastLoginDate": "Último acceso hasta",
     "profile": {
       "noPermission": "No posee permisos suficientes para ver el perfil de este usuario",
       "showActions": "Mostrar acciones",
@@ -1191,8 +1191,8 @@
       "products": "Productos",
       "accountsBalanceLimits": "Límites de saldo de cuenta",
       "accountsPaymentLimits": "Límites de pago de la cuenta",
-      "privacySettings": "Privacy settings",
-      "references": "References"
+      "privacySettings": "Ajuste de privacidad",
+      "references": "Referencias"
     },
     "registration": {
       "group.public": "Elija el grupo en el que desea registrarse",
@@ -1852,9 +1852,9 @@
   },
   "wizard": {
     "alreadyExecuted": "This step was already executed",
-    "emailVerificationCode": "E-mail verification code",
-    "smsVerificationCode": "SMS verification code",
-    "codeSent.countdown": "Code sent ({remaining} sec)"
+    "emailVerificationCode": "Código de verificación por e-mail",
+    "smsVerificationCode": "Código de verificación por SMS",
+    "codeSent.countdown": "Código enviado ({remaining} seg.)"
   },
   "setting": {
     "title": "Ajustes",
@@ -1864,13 +1864,13 @@
     "theme.dark": "Oscuro"
   },
   "privacySettings": {
-    "title": "Privacy settings",
-    "mobileTitle": "Privacy settings",
-    "enableControl": "Enable privacy control",
-    "controlsSection": "Departments allowed to access private data",
+    "title": "Ajustes de privacidad",
+    "mobileTitle": "Ajustes de privacidad",
+    "enableControl": "Activar control de privacidad",
+    "controlsSection": "Departamentos con acceso a datos privados ",
     "information": "In this page it is possible to set whether access to those fields is restricted, and how those fields may be used.",
     "dataSubjectToControls": "Personal data subject to privacy control:",
-    "saved": "The privacy settings were saved"
+    "saved": "Los ajustes de privacidad se han guardado"
   },
   "record": {
     "createdBy": "Creado por",
@@ -2003,23 +2003,23 @@
     "unassigned": "Sin asignar"
   },
   "reference": {
-    "set": "Set reference",
-    "referenceSet": "The reference has been given successfully",
+    "set": "Dar referencia",
+    "referenceSet": "La referencia se ha dado con éxito",
     "count": {
-      "single": "(1 reference)",
-      "multi": "({count} references)"
+      "single": "(1 referencia)",
+      "multi": "({count} referencias)"
     },
     "title": {
-      "search": "References",
-      "view": "Reference details",
-      "set": "Set new reference",
-      "edit": "Edit given reference"
+      "search": "Referencias",
+      "view": "Detalles de referencia",
+      "set": "Dar nueva referencia",
+      "edit": "Editar referencia dada"
     },
     "mobileTitle": {
-      "search": "References",
-      "view": "Reference details",
-      "set": "Set new reference",
-      "edit": "Edit given reference"
+      "search": "Referencias",
+      "view": "Detalles de referencia",
+      "set": "Dar nueva referencia",
+      "edit": "Editar la referencia dada"
     },
     "direction": {
       "direction": "Dirección",
@@ -2038,7 +2038,7 @@
     "to": "A",
     "notGiven": "No se ha dado aún",
     "value": "Valor",
-    "allTime": "All time",
+    "allTime": "Todo",
     "last30Days": "Últimos 30 días",
     "total": "Total",
     "percentagePositive": "Porcentaje positivo"
@@ -2055,7 +2055,7 @@
     "assigned": {
       "individual": "Productos asignados individualmente al usuario",
       "group": "Productos asignados al grupo de usuarios",
-      "groupSet": "Products assigned to group set"
+      "groupSet": "Productos asignados al conjunto de grupos"
     },
     "assign": "Asignar",
     "unassign": "Desasignar",
