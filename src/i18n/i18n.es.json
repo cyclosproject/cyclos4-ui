@@ -578,21 +578,21 @@
       "toDailyLimit": "Al límite diario",
       "toWeeklyLimit": "A límite semanal",
       "toMonthlyLimit": "A límite mensual",
-      "confirm": "You must confirm to apply the new payment limits",
-      "saved": "The payment limits were saved",
+      "confirm": "Debe confirmar la aplicación de los nuevos límites de pago.",
+      "saved": "Los límites de pago se han guardados",
       "title": {
         "list": "Límites de pago de las cuentas",
         "view": "Detalles de límites de pago de la cuenta",
         "edit": "Detalles de límites de pago de la cuenta",
-        "history": "Account payment limits history",
-        "overview": "Account payment limits overview"
+        "history": "Historial de límites de pago de la cuenta",
+        "overview": "Vista general de límites de pago de la cuenta"
       },
       "mobileTitle": {
         "list": "Límites de pagos",
         "view": "Detalle de límites de pago",
         "edit": "Detalle de límites de pago",
         "history": "Historial de límites de pago",
-        "overview": "Payment limits overview"
+        "overview": "Vista general de límites de pago"
       }
     }
   },
@@ -604,9 +604,9 @@
     "fromTo.text": "{from} a {to}",
     "from": "De",
     "to": "Para",
-    "sender": "Sender",
-    "receiver": "Receiver",
-    "senderOrReceiver": "Sender or receiver",
+    "sender": "Emisor",
+    "receiver": "Receptor",
+    "senderOrReceiver": "Emisor o receptor",
     "sent": "Enviada",
     "received": "Recibida",
     "direction": "Dirección",
@@ -620,7 +620,7 @@
     "totalAmount": "Monto total",
     "dueAmount": "Monto adeudado",
     "dueDate": "Fecha de procesado",
-    "processDate": "Process date",
+    "processDate": "Fecha de procesamiento",
     "processDateTooltip": "Select this option to schedule processing",
     "nextOccurrence": "Siguiente ocurrencia",
     "channel": "Canal",
@@ -642,7 +642,7 @@
     "transferkind": {
       "accountFee": "Account fee",
       "chargeback": "Chargeback",
-      "import": "Import",
+      "import": "Importar",
       "initialCredit": "Crédito inicial",
       "installment": "Cuota",
       "payment": "Pago",
@@ -1190,7 +1190,7 @@
       "notificationSettings": "Ajustes de notificaciones",
       "products": "Productos",
       "accountsBalanceLimits": "Límites de saldo de cuenta",
-      "accountsPaymentLimits": "Account payment limits",
+      "accountsPaymentLimits": "Límites de pago de la cuenta",
       "privacySettings": "Privacy settings",
       "references": "References"
     },
