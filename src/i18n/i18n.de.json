@@ -13,7 +13,7 @@
     "performedBy": "Durchgeführt von",
     "status": "Status",
     "comments": "Kommentare",
-    "futureDate": "Datum in der Zukunft",
+    "futureDate": "zukünftiges Datum ",
     "beginDate": "Anfangsdatum",
     "endDate": "Enddatum",
     "creationDate": "Erstellungsdatum",
@@ -114,7 +114,7 @@
         "mar": "Mär",
         "apr": "Apr",
         "may": "Mai",
-        "jun": "Juni",
+        "jun": "Jun",
         "jul": "Jul",
         "aug": "Aug",
         "sep": "Sep",
@@ -141,7 +141,7 @@
         "milli": "Millisekunde",
         "minute": "Minute",
         "month": "Monat",
-        "second": "Zweiter",
+        "second": "Sekunde",
         "week": "Woche",
         "year": "Jahr"
       }
@@ -310,7 +310,7 @@
     "confirmationMessage": "Geben Sie Ihren {passwordType} an, um diesen Vorgang zu bestätigen",
     "confirm.noPassword": "Um zu bestätigen, brauchen Sie einen {passwordType}, aber Sie haben keinen",
     "confirm.mode": "Bestätigen mit",
-    "confirm.mode.device": "Smartphone",
+    "confirm.mode.device": "Mobiltelefon",
     "confirm.mode.password": "Passwort",
     "confirm.device.active": "Um zu bestätigen, scannen Sie diesen QR-Code mit Ihrem Smartphone ein",
     "confirm.device.none": "Um zu bestätigen, müssen Sie ein vertrauenswürdiges Mobiltelefon haben, aber Sie haben keines",
@@ -321,7 +321,7 @@
     "confirm.deviceOrOtp.request": "Um zu bestätigen, scannen Sie entweder diesen QR-Code mit Ihrem Smartphone oder fordern Sie unten ein Passwort an",
     "confirm.otp.noMediums": "Um zu bestätigen, benötigen Sie ein Passwort, aber es gibt keine Empfangsmöglichkeiten.<br>Bitte kontaktieren Sie die Administration.",
     "confirm.otp.active": "Sie können das zuvor gesendete Passwort verwenden oder ein neues anfordern",
-    "confirm.otp.request": "Bitte fordern Sie unten ein Passwort an, um es zu bestätigen",
+    "confirm.otp.request": "Bitte fordern Sie unten ein Passwort an, um zu bestätigen",
     "otp.sent": "Das Passwort wurde an {dest} gesendet",
     "otp.receiveBy": "Erhalten durch {medium}",
     "otp.receiveBy.countdown": "{medium} gesendet ({remaining} Sek)",
@@ -410,11 +410,11 @@
   },
   "pendingAgreements": {
     "title": {
-      "previouslyAccepted": "Vereinbarung aktualisiert",
+      "previouslyAccepted": "Aktualisierte Vereinbarung ",
       "firstTime": "Registrierungsvereinbarung"
     },
     "mobileTitle": {
-      "previouslyAccepted": "Vereinbarung aktualisiert",
+      "previouslyAccepted": "Aktualisierte Vereinbarung ",
       "firstTime": "Registrierungsvereinbarung"
     },
     "message.previouslyAccepted": "Die Registrierungsvereinbarung wurde aktualisiert.<br><br>Um fortzufahren, müssen Sie den neuen Bedingungen zustimmen.",
@@ -1210,9 +1210,9 @@
     "verified": "Verifiziert",
     "error": {
       "verify": {
-        "expired": "Der Bestätigungscode wurde nicht gesendet oder ist abgelaufen.<br> Bitte senden Sie den Code erneut an Ihr Smartphone und starten Sie den Prozess neu.",
+        "expired": "Der Bestätigungscode wurde nicht gesendet oder ist abgelaufen.<br> Bitte senden Sie den Code erneut an Ihr Mobiltelefon und starten Sie den Prozess neu.",
         "invalid": "Ungültiger Bestätigungscode",
-        "maxAttempts": "Sie haben die Anzahl der erlaubten Versuche überschritten.<br>Bitte senden Sie den Code erneut an Ihr Smartphone und starten Sie den Prozess neu."
+        "maxAttempts": "Sie haben die Anzahl der erlaubten Versuche überschritten.<br>Bitte senden Sie den Code erneut an Ihr Mobiltelefon und starten Sie den Prozess neu."
       }
     },
     "verify": {
