@@ -173,7 +173,7 @@ export class RunWizardStepFieldsComponent
   }
 
   get codeSentMessage() {
-    return (remaining: number) => this.i18n.wizard.codeSentCountdown(remaining);
+    return () => this.i18n.wizard.codeSent;
   }
 
   private doSendCode(button: CountdownButtonComponent, control: AbstractControl, medium: SendMediumEnum) {

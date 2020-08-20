@@ -167,7 +167,7 @@ export class PasswordInputComponent
   }
 
   otpDisableMessageFunction(medium: string): (remaining: number) => string {
-    return (remaining: number) => this.i18n.password.otpReceiveByCountdown({ medium, remaining });
+    return () => this.i18n.password.otpReceiveBySent(medium);
   }
 
   registerOnValidatorChange() {

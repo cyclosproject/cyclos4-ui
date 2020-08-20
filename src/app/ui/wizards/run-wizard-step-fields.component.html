@@ -39,7 +39,7 @@
           </div>
           <div class="col-6 col-md-8 pl-2">
             <countdown-button #emailCode [label]="i18n.general.sendCode"
-              [disabledSeconds]="30" [disabledKey]="codeSentMessage"
+              [disabledSeconds]="5" [disabledKey]="codeSentMessage"
               (action)="sendEmailCode(emailCode)">
             </countdown-button>
           </div>
