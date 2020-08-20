@@ -871,9 +871,9 @@
     "verified": "Verifiziert",
     "error": {
       "verify": {
-        "expired": "Der Bestätigungscode wurde nicht gesendet oder ist abgelaufen.<br> Bitte senden Sie den Code erneut an Ihr Smartphone und starten Sie den Prozess neu.",
+        "expired": "Der Bestätigungscode wurde nicht gesendet oder ist abgelaufen.<br> Bitte senden Sie den Code erneut an Ihr Mobiltelefon und starten Sie den Prozess neu.",
         "invalid": "Ungültiger Bestätigungscode",
-        "maxAttempts": "Sie haben die Anzahl der erlaubten Versuche überschritten.<br>Bitte senden Sie den Code erneut an Ihr Smartphone und starten Sie den Prozess neu."
+        "maxAttempts": "Sie haben die Anzahl der erlaubten Versuche überschritten.<br>Bitte senden Sie den Code erneut an Ihr Mobiltelefon und starten Sie den Prozess neu."
       }
     },
     "verify": {
