@@ -342,7 +342,7 @@
     "confirm.otp.request": "Por favor, solicite uma senha de confirmação para poder confirmar",
     "otp.sent": "A senha foi enviada para {dest}",
     "otp.receiveBy": "Obter via {medium}",
-    "otp.receiveBy.countdown": "{medium} sent ({remaining} sec)",
+    "otp.receiveBy.sent": "{medium} sent",
     "oldPassword": "Senha antiga",
     "newPassword": "Nova senha",
     "passwordConfirmation": "Confirmação da senha",
@@ -1854,7 +1854,7 @@
     "alreadyExecuted": "This step was already executed",
     "emailVerificationCode": "E-mail verification code",
     "smsVerificationCode": "SMS verification code",
-    "codeSent.countdown": "Code sent ({remaining} sec)"
+    "codeSent": "Code sent"
   },
   "setting": {
     "title": "Definições",
