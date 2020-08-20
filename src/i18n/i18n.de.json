@@ -342,7 +342,7 @@
     "confirm.otp.request": "Bitte fordern Sie unten ein Passwort an, um es zu bestätigen",
     "otp.sent": "Das Passwort wurde an {dest} gesendet",
     "otp.receiveBy": "Erhalten durch {medium}",
-    "otp.receiveBy.countdown": "{medium} sent ({remaining} sec)",
+    "otp.receiveBy.sent": "{medium} sent",
     "oldPassword": "Altes Passwort",
     "newPassword": "Neues Passwort",
     "passwordConfirmation": "Bestätigung des Passworts",
@@ -1382,9 +1382,9 @@
     "verified": "Verifiziert",
     "error": {
       "verify": {
-        "expired": "Der Bestätigungscode wurde nicht gesendet oder ist abgelaufen.<br> Bitte senden Sie den Code erneut an Ihr Smartphone und starten Sie den Prozess neu.",
+        "expired": "Der Bestätigungscode wurde nicht gesendet oder ist abgelaufen.<br> Bitte senden Sie den Code erneut an Ihr Mobiltelefon und starten Sie den Prozess neu.",
         "invalid": "Ungültiger Bestätigungscode",
-        "maxAttempts": "Sie haben die Anzahl der erlaubten Versuche überschritten.<br>Bitte senden Sie den Code erneut an Ihr Smartphone und starten Sie den Prozess neu."
+        "maxAttempts": "Sie haben die Anzahl der erlaubten Versuche überschritten.<br>Bitte senden Sie den Code erneut an Ihr Mobiltelefon und starten Sie den Prozess neu."
       }
     },
     "verify": {
@@ -1854,7 +1854,7 @@
     "alreadyExecuted": "This step was already executed",
     "emailVerificationCode": "E-mail verification code",
     "smsVerificationCode": "SMS verification code",
-    "codeSent.countdown": "Code sent ({remaining} sec)"
+    "codeSent": "Code sent"
   },
   "setting": {
     "title": "Einstellungen",
