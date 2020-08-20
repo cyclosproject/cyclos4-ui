@@ -66,12 +66,13 @@ table.table {
   justify-content: center;
   position: relative;
   height: auto;
-  padding: 0.5rem 0;
+  padding: 0.7rem 0;
+  border-radius: $input-border-radius;
 
   img {
     max-width: 1.6rem;
     position: absolute;
-    left: 0.5rem;
+    left: 0.7rem;
   }
 
   span {
@@ -81,7 +82,6 @@ table.table {
 }
 
 .centered-button {
-  display: block !important;
   width: 100%;
   margin-top: 1rem;
 }
