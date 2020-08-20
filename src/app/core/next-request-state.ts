@@ -101,12 +101,12 @@ export class NextRequestState {
     // Append the resulting request in the pending list
     this.pending$.next([result, ...this.pending$.value]);
 
-    // Just as a fallback, after 7 seconds, remove the request from the pending list
+    // Just as a fallback, after a few seconds, remove the request from the pending list
     setTimeout(() => {
       if (this.pending$.value.includes(result)) {
         this.pending$.next(this.pending$.value.filter(r => r !== result));
       }
-    }, 7000);
+    }, 12000);
 
     return result;
   }
