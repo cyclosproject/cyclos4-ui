@@ -267,6 +267,7 @@
     "banking.paymentRequests": "Payment requests",
     "banking.paymentRequestsOverview": "Payment requests overview",
     "banking.searchVouchers": "Search vouchers",
+    "banking.generateVouchers": "Generate vouchers",
     "banking.buyVouchers": "Buy vouchers",
     "banking.boughtVouchers": "View bought vouchers",
     "banking.redeemVoucher": "Redeem voucher",
@@ -876,7 +877,9 @@
       "bought": "Bought vouchers",
       "redeem": "Redeem voucher",
       "redeemed": "Redeemed vouchers",
-      "search": "Search vouchers"
+      "search": "Search vouchers",
+      "generate": "Generate vouchers",
+      "generateConfirmation": "Generate confirmation"
     },
     "title": {
       "buy": "Buy vouchers",
@@ -884,7 +887,9 @@
       "searchBought": "Search bought vouchers",
       "redeem": "Redeem voucher",
       "redeemed": "Redeemed vouchers",
-      "search": "Search vouchers"
+      "search": "Search vouchers",
+      "generate": "Generate vouchers",
+      "generateConfirmation": "Generate confirmation"
     },
     "boughtType": "Bought",
     "generatedType": "Generated",
@@ -894,11 +899,14 @@
       "done": "The voucher(s) has been bought.",
       "minTimeToRedeem": "Can be redeemed",
       "minTimeToRedeem.afterBuy": "{interval} after buying",
-      "numberOfVouchers": "Number of vouchers",
-      "amountPerVoucher": "Amount per voucher",
-      "originAccount": "Origin account",
       "payment": "Buy payment"
     },
+    "generate": {
+      "done": "The voucher(s) has been generated."
+    },
+    "originAccount": "Origin account",
+    "numberOfVouchers": "Number of vouchers",
+    "amountPerVoucher": "Amount per voucher",
     "buyerGroups": "Buyer groups",
     "redeemerGroups": "Redeemer groups",
     "creationType": "Creation type",
