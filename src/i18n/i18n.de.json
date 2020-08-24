@@ -592,7 +592,7 @@
       "details.ticket": "Ticket Details",
       "details.external": "Externe Zahlung Details",
       "details.transfer": "Überweisungsdetails",
-      "parentTransfer": "Übertragen, die dieses generiert hat",
+      "parentTransfer": "Übertragung, die dieses generiert hat",
       "childTransfers": "Übertragungen, die von diesem generiert wurden",
       "transfersOverview": "Überweisungsübersicht",
       "receiveQrPayment": "QR-Code Zahlung erhalten"
@@ -637,7 +637,7 @@
     "cancelAuthorization": "Autorisierungsprozess abbrechen",
     "cancelAuthorization.done": "Die Zahlungsautorisierung wurde abgebrochen",
     "blockScheduling": "Terminplanung blockieren",
-    "blockScheduling.message": "Dies wird verhindern, dass geplante Ratenzahlungen automatisch verarbeitet werden",
+    "blockScheduling.message": "Dies wird verhindert, dass geplante Ratenzahlungen automatisch verarbeitet werden",
     "blockScheduling.done": "Diese geplante Zahlung wird nicht mehr automatisch verarbeitet",
     "unblockScheduling": "Zeitplan entsperren",
     "unblockScheduling.message": "Dies wird die automatische Verarbeitung für geplante Ratenzahlungen fortsetzen",
@@ -705,7 +705,7 @@
       "confirm": "Die Details des Gutscheins sind unten angegeben. Bitte überprüfen Sie sie unten und bestätigen Sie diese Aktion.",
       "done": "Der Gutschein wurde erfolgreich eingelöst.",
       "date": "Einlösungsdatum",
-      "redeemer": "Einlöser",
+      "redeemer": "Einlösende*r",
       "payment": "Zahlung einlösen"
     },
     "status": {
@@ -736,7 +736,7 @@
     "buy": {
       "amountRange": "Betragsbereich",
       "buyer": "Käufer",
-      "done": "Der Gutschein(e) wurde(n) gekauft.",
+      "done": "Der/die Gutschein(e) wurde(n) gekauft.",
       "minTimeToRedeem": "Kann eingelöst werden",
       "minTimeToRedeem.afterBuy": "{interval} nach dem Kauf",
       "numberOfVouchers": "Anzahl der Gutscheine",
@@ -745,7 +745,7 @@
       "payment": "Einkaufsbuchung"
     },
     "buyerGroups": "Käufergruppen",
-    "redeemerGroups": "Erlösergruppen",
+    "redeemerGroups": "Einlösergruppen",
     "creationType": "Erstellungsart",
     "cancel": {
       "done": "Dieser Gutschein wurde storniert.",
@@ -789,7 +789,7 @@
       "manage": "Bilder neu anordnen oder entfernen",
       "remove": "Dieses Bild entfernen",
       "manageMessage": "Sie können Bilder ziehen / loslassen um Sie neu zu sortieren.",
-      "manageAfterConfirm": "Nach der Bestätigung stellen Sie sicher, dass Sie auf die Schaltfläche Speichern klicken, damit die Änderungen angewendet werden können."
+      "manageAfterConfirm": "Nach der Bestätigung stellen Sie sicher, dass Sie auf die Schaltfläche \"Speichern\" klicken, damit die Änderungen angewendet werden können."
     },
     "file": {
       "noFile": "Keine Datei",
@@ -895,7 +895,7 @@
       "image": "Profilbild",
       "images": "Profilbilder",
       "fields": "Profilfelder",
-      "phones": "Smartphones",
+      "phones": "Telefone",
       "addresses": "Adressen",
       "contactInfos": "Zusätzliche Kontakte",
       "confirmation": "Bestätigung",
@@ -919,7 +919,7 @@
       "image": "Profilbild",
       "images": "Profilbilder",
       "fields": "Profilfelder",
-      "phones": "Smartphone",
+      "phones": "Telefone",
       "addresses": "Adressen",
       "contactInfos": "Zusätzliche Kontakte",
       "confirmation": "Bestätigung",
@@ -961,7 +961,7 @@
     "address.remove": "Diese Adresse entfernen",
     "address.none": "Es gibt derzeit keine Adressen",
     "phone.add": "Telefon hinzufügen",
-    "phone.add.mobile": "Smartphone hinzufügen",
+    "phone.add.mobile": "Mobiltelefon hinzufügen",
     "phone.add.landLine": "Festnetztelefon hinzufügen",
     "phone.remove": "Dieses Telefon entfernen",
     "phone.none": "Derzeit gibt es keine Telefone",
