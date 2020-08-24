@@ -267,6 +267,7 @@
     "banking.paymentRequests": "Solicitações de pagamento",
     "banking.paymentRequestsOverview": "Payment requests overview",
     "banking.searchVouchers": "Busca de cupons",
+    "banking.generateVouchers": "Generate vouchers",
     "banking.buyVouchers": "Comprar cupons",
     "banking.boughtVouchers": "Ver comprados",
     "banking.redeemVoucher": "Resgatar cupons",
@@ -876,7 +877,9 @@
       "bought": "Cupons comprados",
       "redeem": "Resgatar cupom",
       "redeemed": "Cupons resgatados",
-      "search": "Busca de cupons"
+      "search": "Busca de cupons",
+      "generate": "Generate vouchers",
+      "generateConfirmation": "Generate confirmation"
     },
     "title": {
       "buy": "Comprar cupons",
@@ -884,7 +887,9 @@
       "searchBought": "Pesquisar cupons comprados",
       "redeem": "Resgatar cupom",
       "redeemed": "Cupons resgatados",
-      "search": "Busca de cupons"
+      "search": "Busca de cupons",
+      "generate": "Generate vouchers",
+      "generateConfirmation": "Generate confirmation"
     },
     "boughtType": "Comprado",
     "generatedType": "Gerado",
@@ -894,11 +899,14 @@
       "done": "O cupom(s) foi comprado.",
       "minTimeToRedeem": "Pode ser resgatado",
       "minTimeToRedeem.afterBuy": "{interval} após comprar",
-      "numberOfVouchers": "Número de cupons",
-      "amountPerVoucher": "Valor por cupom",
-      "originAccount": "Conta de origem",
       "payment": "Transação de compra"
     },
+    "generate": {
+      "done": "The voucher(s) has been generated."
+    },
+    "originAccount": "Conta de origem",
+    "numberOfVouchers": "Número de cupons",
+    "amountPerVoucher": "Valor por cupom",
     "buyerGroups": "Grupos do comprador",
     "redeemerGroups": "Grupos do resgatante",
     "creationType": "Creation type",
