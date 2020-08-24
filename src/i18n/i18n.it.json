@@ -267,6 +267,7 @@
     "banking.paymentRequests": "Payment requests",
     "banking.paymentRequestsOverview": "Payment requests overview",
     "banking.searchVouchers": "Cerca voucher",
+    "banking.generateVouchers": "Generate vouchers",
     "banking.buyVouchers": "Acquista voucher",
     "banking.boughtVouchers": "Visualizza acquisti",
     "banking.redeemVoucher": "Riscatta voucher",
@@ -876,7 +877,9 @@
       "bought": "Voucher acquistati",
       "redeem": "Riscatta voucher",
       "redeemed": "Voucher riscattati",
-      "search": "Cerca voucher"
+      "search": "Cerca voucher",
+      "generate": "Generate vouchers",
+      "generateConfirmation": "Generate confirmation"
     },
     "title": {
       "buy": "Acquista voucher",
@@ -884,7 +887,9 @@
       "searchBought": "Cerca buoni acquistati",
       "redeem": "Riscatta voucher",
       "redeemed": "Voucher riscattati",
-      "search": "Cerca voucher"
+      "search": "Cerca voucher",
+      "generate": "Generate vouchers",
+      "generateConfirmation": "Generate confirmation"
     },
     "boughtType": "Acquistato",
     "generatedType": "Generato",
@@ -894,11 +899,14 @@
       "done": "Il voucher(i) è stato acquistato.",
       "minTimeToRedeem": "Può essere riscattato",
       "minTimeToRedeem.afterBuy": "{interval} dopo l'acquisto",
-      "numberOfVouchers": "Numero voucher",
-      "amountPerVoucher": "Importo per voucher",
-      "originAccount": "Conto di origine",
       "payment": "Pagamento per acquisto"
     },
+    "generate": {
+      "done": "The voucher(s) has been generated."
+    },
+    "originAccount": "Conto di origine",
+    "numberOfVouchers": "Numero voucher",
+    "amountPerVoucher": "Importo per voucher",
     "buyerGroups": "Gruppi acquirenti",
     "redeemerGroups": "Gruppi accettatori",
     "creationType": "Creation type",
