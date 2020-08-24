@@ -267,6 +267,7 @@
     "banking.paymentRequests": "Zahlungsaufforderungen",
     "banking.paymentRequestsOverview": "Payment requests overview",
     "banking.searchVouchers": "Gutscheine suchen",
+    "banking.generateVouchers": "Generate vouchers",
     "banking.buyVouchers": "Gutscheine kaufen",
     "banking.boughtVouchers": "Gekaufte Gutscheine ansehen",
     "banking.redeemVoucher": "Gutschein einlösen",
@@ -876,7 +877,9 @@
       "bought": "Gekaufte Gutscheine",
       "redeem": "Gutschein einlösen",
       "redeemed": "Eingelöste Gutscheine",
-      "search": "Gutscheine suchen"
+      "search": "Gutscheine suchen",
+      "generate": "Generate vouchers",
+      "generateConfirmation": "Generate confirmation"
     },
     "title": {
       "buy": "Gutscheine kaufen",
@@ -884,7 +887,9 @@
       "searchBought": "Gekaufte Gutscheine suchen",
       "redeem": "Gutschein einlösen",
       "redeemed": "Eingelöste Gutscheine",
-      "search": "Gutscheine suchen"
+      "search": "Gutscheine suchen",
+      "generate": "Generate vouchers",
+      "generateConfirmation": "Generate confirmation"
     },
     "boughtType": "Gekauft",
     "generatedType": "Generiert",
@@ -894,11 +899,14 @@
       "done": "Der Gutschein(e) wurde(n) gekauft.",
       "minTimeToRedeem": "Kann eingelöst werden",
       "minTimeToRedeem.afterBuy": "{interval} nach dem Kauf",
-      "numberOfVouchers": "Anzahl der Gutscheine",
-      "amountPerVoucher": "Betrag pro Gutschein",
-      "originAccount": "Ursprungskonto",
       "payment": "Einkaufsbuchung"
     },
+    "generate": {
+      "done": "The voucher(s) has been generated."
+    },
+    "originAccount": "Ursprungskonto",
+    "numberOfVouchers": "Anzahl der Gutscheine",
+    "amountPerVoucher": "Betrag pro Gutschein",
     "buyerGroups": "Käufergruppen",
     "redeemerGroups": "Erlösergruppen",
     "creationType": "Creation type",
