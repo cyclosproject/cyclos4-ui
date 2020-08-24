@@ -14510,6 +14510,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
               description: ''
               type: string
               format: date-time
+        - name: description
+          in: query
+          required: false
+          description: "The description to search for."
+          schema:
+            type: string
         - name: direction
           in: query
           required: false
@@ -14810,6 +14816,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
               description: ''
               type: string
               format: date-time
+        - name: description
+          in: query
+          required: false
+          description: "The description to search for."
+          schema:
+            type: string
         - name: direction
           in: query
           required: false
@@ -15088,6 +15100,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
               description: ''
               type: string
               format: date-time
+        - name: description
+          in: query
+          required: false
+          description: "The description to search for."
+          schema:
+            type: string
         - name: direction
           in: query
           required: false
@@ -15633,6 +15651,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
           schema:
             type: boolean
+        - name: statuses
+          in: query
+          required: false
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/UserStatusEnum'
         - name: usersToExclude
           in: query
           required: false
@@ -15934,6 +15960,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
           schema:
             type: boolean
+        - name: statuses
+          in: query
+          required: false
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/UserStatusEnum'
         - name: usersToExclude
           in: query
           required: false
@@ -16267,6 +16301,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
           schema:
             type: boolean
+        - name: statuses
+          in: query
+          required: false
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/UserStatusEnum'
         - name: usersToExclude
           in: query
           required: false
@@ -26079,6 +26121,135 @@ Reference to the broker of users involved in transfers. Is only taken into accou
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+  /vouchers/data-for-generate:
+    get:
+      operationId: getVoucherDataForGenerate
+      summary: >-
+        Returns data for generate vouchers of a specified type or the list of
+        types to generate.
+      description: >-
+        If a type is passed it returns the data for generate vouchers, otherwise
+        it returns the list of types the authenticated user can generate. If a
+        user is passed it return its data
+      tags:
+        - Vouchers
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: user
+          in: query
+          schema:
+            type: string
+          description: >-
+            A user identification value, such as id, username, e-mail, phone, etc.
+            Id is always allowed, others depend on Cyclos configuration. Note that
+            a valid numeric value is always considered as id. For example, when
+            using another identification method that can be numeric only, prefix\
+            the value with a single quote (like in Excel spreadsheets);
+        - name: type
+          description: >-
+            Either the `id` or `internalName` of the voucher type. Left empty to
+            get the list of available types for generate.
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The data for generate vouchers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoucherDataForGenerate'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vouchers/generate:
+    post:
+      operationId: generateVouchers
+      summary: >-
+        Generate one or more vouchers.
+      description: >-
+        Generate vouchers. If a user is passed it will be the vouchers' owner.
+      tags:
+        - Vouchers
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/confirmationPassword'
+      responses:
+        '200':
+          description: >-
+            The identifiers of all generated vouchers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      requestBody:
+        description: >-
+          The generate voucher parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateVoucher'
 
   /vouchers/{key}:
     get:
@@ -43046,11 +43217,14 @@ components:
 
         Possible values are:
 
+        - `errorSendingEmail`: An error has occurred trying to send the OTP through email.
+
         - `errorSendingSms`: An error has occurred trying to send the OTP through SMS.
 
         - `unexpected`: An unexpected error has occurred.
       type: string
       enum:
+        - errorSendingEmail
         - errorSendingSms
         - unexpected
 
@@ -44934,6 +45108,12 @@ components:
                 `customFields=dynamic:'business'`.
             direction:
               $ref: '#/components/schemas/TransferDirectionEnum'
+            description:
+              description: >-
+                The description to search for.
+              type:
+                string
+
 
     AccountHistoryResult:
       description: >-
@@ -48888,6 +49068,10 @@ components:
                 group sets, will return the `groupSet` property on users.
             addressResult:
               $ref: '#/components/schemas/UserAddressResultEnum'
+            statuses:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserStatusEnum'
 
     BrokerDataForAdd:
       description: >-
@@ -48980,28 +49164,18 @@ components:
     BuyVoucher:
       description: >-
         Parameters for buying vouchers
-      type: object
-      properties:
-        count:
-          description: >-
-            The number of vouchers to buy. Defaults to 1.
-          type: integer
-        amount:
-          description: >-
-            The amount per voucher
-          type: string
-          format: number
-        type:
-          description: >-
-            Either the `id` or `internalName` of the voucher type
-          type: string
-        customValues:
-          type: object
-          description: >-
-            Holds the payment custom field values, keyed by field internal name or
-            id. The format of the value depends on the custom field type.
-          additionalProperties:
-            type: string
+      allOf:
+        - $ref: '#/components/schemas/CreateVoucher'
+        - type: object
+          properties:
+            customValues:
+              type: object
+              description: >-
+                Holds the payment custom field values, keyed by field internal name or
+                id. The format of the value depends on the custom field type.
+              additionalProperties:
+                type: string
+
 
     BuyVoucherError:
       description: >-
@@ -50234,6 +50408,25 @@ components:
             value before send when the user choose to login with PIN.
           type: string
 
+
+    CreateVoucher:
+      description: >-
+        Parameters for create vouchers
+      type: object
+      properties:
+        count:
+          description: >-
+            The number of vouchers to create. Defaults to 1.
+          type: integer
+        amount:
+          description: >-
+            The amount per voucher
+          type: string
+          format: number
+        type:
+          description: >-
+            Either the `id` or `internalName` of the voucher type
+          type: string
 
     Currency:
       description: >-
@@ -52859,6 +53052,22 @@ components:
             user:
               description: Either the id or identifier of the record owner
               type: string
+
+    GenerateVoucher:
+      description: >-
+        Parameters for generate vouchers
+      allOf:
+        - $ref: '#/components/schemas/CreateVoucher'
+        - type: object
+          properties:
+            user:
+              description: >-
+                The vouchers owner. If not given, the vouchers are generated without
+                owner.
+              type:
+                string
+
+
 
     GeographicalCoordinate:
       description: >-
@@ -63327,10 +63536,6 @@ components:
                 When set to true the search will be restricted to those groups defined for the user search menu, if false
                 then for those defined in the 'Search users on groups' product setting (or in the configuration in case of
                 guests).
-            statuses:
-              type: array
-              items:
-                $ref: '#/components/schemas/UserStatusEnum'
             roles:
               type: array
               items:
@@ -64251,6 +64456,47 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/VoucherTypeDetailed'
+
+    VoucherDataForGenerate:
+      description: >-
+        Returns the data to generate vouchers. If a type is not specified when
+        requesting this data only the given user data and the list of types the
+        authenticated user can generate is returned.
+      type: object
+      properties:
+        account:
+          description: >-
+            The account which will have the balance reserved for the voucher
+            redeeming.
+          allOf:
+            - $ref: '#/components/schemas/AccountWithStatus'
+        type:
+          $ref: '#/components/schemas/VoucherTypeDetailed'
+        generateVoucher:
+          description: >-
+            The object that can be altered and posted back to generate the
+            vouchers
+          allOf:
+            - $ref: '#/components/schemas/GenerateVoucher'
+        types:
+          description: >-
+            The list of voucher types the authenticated user can generate. Only if
+            no type parameter is given.
+          type: array
+          items:
+            $ref: '#/components/schemas/VoucherTypeDetailed'
+        user:
+          $ref: '#/components/schemas/User'
+        confirmationPasswordInput:
+          description: >-
+            If a confirmation password is used, contains the definitions on how to
+            request that password from the user. This confirmation password is required
+            when performing sensible actions. Sometimes this is dynamic, for example,
+            the confirmation might be configured to be used only once per session, or
+            operations like payments may have a limit per day to be without confirmation
+            (pinless).
+          allOf:
+            - $ref: '#/components/schemas/PasswordInput'
 
     VoucherDataForRedeem:
       description: >-

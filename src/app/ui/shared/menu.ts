@@ -90,6 +90,7 @@ export namespace Menu {
   export const REDEEM_VOUCHER = new Menu(RootMenu.BANKING, 'REDEEM_VOUCHER');
   export const SEARCH_REDEEMED = new Menu(RootMenu.BANKING, 'SEARCH_REDEEMED');
   export const SEARCH_VOUCHERS = new Menu(RootMenu.BANKING, 'SEARCH_VOUCHERS');
+  export const GENERATE_VOUCHER = new Menu(RootMenu.BANKING, 'GENERATE_VOUCHER');
   export const PAYMENT_REQUEST_TO_USER = new Menu(RootMenu.BANKING, 'PAYMENT_REQUEST_TO_USER');
   export const PAYMENT_REQUEST_TO_SYSTEM = new Menu(RootMenu.BANKING, 'PAYMENT_REQUEST_TO_SYSTEM');
 

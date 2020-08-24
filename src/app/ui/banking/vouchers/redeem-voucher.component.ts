@@ -70,7 +70,7 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
       const params = { user: this.userId, token: this.token.value, body: { customValues: this.form.value } };
       this.addSub(this.voucherService.redeemVoucher(params)
         .subscribe(data => {
-          this.router.navigate(['banking', 'vouchers', data.voucherId]);
+          this.router.navigate(['banking', 'vouchers', 'view', data.voucherId]);
           this.notification.info(this.i18n.voucher.redeem.done);
         }));
     }

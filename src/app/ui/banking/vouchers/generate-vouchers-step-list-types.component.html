@@ -1,0 +1,36 @@
+<page-content [mode]="'empty'" [heading]="i18n.voucher.title.generate"
+  [mobileHeading]="i18n.voucher.mobileTitle.generate">
+</page-content>
+
+<results-layout resultType="list" [results]="types" [onClick]="selectType">
+  <mobile-result *mobileResult="let row" [avatarImage]="row.image"
+    avatarRoundBorders="false" avatarIcon="user">
+    <div class="cell-text cell-main">
+      {{ row.voucherTitle }}
+    </div>
+  </mobile-result>
+
+  <table *resultTable class="table table-hover cursor-pointer">
+    <tbody>
+      <ng-container *ngFor="let type of types">
+        <tr (click)="selectType(type)">
+          <td class="avatar">
+            <avatar [image]="type.image" icon="shopping_cart" size="xlarge"
+              roundBorders="false">
+            </avatar>
+          </td>
+          <td>
+            <div>
+              <a (click)="selectType(type)" ngClass="font-weight-bold">
+                {{ type.voucherTitle }}
+              </a>
+              <div>
+                {{ type.voucherDescription }}
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</results-layout>

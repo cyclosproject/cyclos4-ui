@@ -1,70 +1,58 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Currency, VoucherTypeDetailed } from 'app/api/models';
-import { VoucherDataForBuy } from 'app/api/models/voucher-data-for-buy';
+import { Currency, VoucherDataForGenerate, VoucherTypeDetailed } from 'app/api/models';
 import { VouchersService } from 'app/api/services/vouchers.service';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 
-export type BuyVouchersStep = 'select-type' | 'form' | 'confirm';
+export type GenerateVouchersStep = 'select-type' | 'form' | 'confirm';
 
 /**
- * Component used to buy vouchers.
+ * Component used to generate vouchers.
  * The data requested for the first time is to get all possible voucher types.
  */
 @Component({
-  selector: 'buy-vouchers',
-  templateUrl: 'buy-vouchers.component.html',
+  selector: 'generate-vouchers',
+  templateUrl: 'generate-vouchers.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
+export class GenerateVouchersComponent extends BasePageComponent<VoucherDataForGenerate>
   implements OnInit {
 
   ConfirmationMode = ConfirmationMode;
 
-  step$ = new BehaviorSubject<BuyVouchersStep>(null);
+  step$ = new BehaviorSubject<GenerateVouchersStep>(null);
 
   singleType = false;
-  user: string;
   form: FormGroup;
 
   confirmationPassword: FormControl;
   confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
 
-  customFieldControlsMap: Map<string, FormControl>;
-
   // The data for a specific voucher type
-  dataTypeForBuy: VoucherDataForBuy;
+  dataTypeForGenerate: VoucherDataForGenerate;
   canConfirm: boolean;
 
   constructor(injector: Injector, private voucherService: VouchersService) {
     super(injector);
   }
 
-  get step(): BuyVouchersStep {
+  get step(): GenerateVouchersStep {
     return this.step$.value;
   }
-  set step(step: BuyVouchersStep) {
+  set step(step: GenerateVouchersStep) {
     this.step$.next(step);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    const params = this.route.snapshot.params;
-    this.user = this.authHelper.isSelf(params.user)
-      ? this.ApiHelper.SELF
-      : params.user;
-
-    this.addSub(
-      this.voucherService.getVoucherDataForBuy({ user: this.user })
-        .subscribe(data => this.data = data),
-    );
+    this.addSub(this.voucherService.getVoucherDataForGenerate().subscribe(data => this.data = data));
   }
 
-  onDataInitialized(data: VoucherDataForBuy) {
+  onDataInitialized(data: VoucherDataForGenerate) {
     const types = data.types || [];
     if (types.length === 1) {
       this.singleType = true;
@@ -75,13 +63,13 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
   }
 
   get currency(): Currency {
-    return this.dataTypeForBuy.account.currency;
+    return this.dataTypeForGenerate.account.currency;
   }
 
   /**
-   * Final action: buy the vouchers
+   * Final action: generate the vouchers
    */
-  buy(confirmationPassword?: string) {
+  generate(confirmationPassword?: string) {
     if (confirmationPassword) {
       this.confirmationPassword.setValue(confirmationPassword);
     }
@@ -91,21 +79,17 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
     }
 
     const body = this.form.value;
-    body.type = this.dataTypeForBuy.type.id;
+    body.type = this.dataTypeForGenerate.type.id;
+    delete body.userData;
     const params = {
-      user: this.user,
       confirmationPassword: this.confirmationPasswordInput ? this.confirmationPassword.value : null,
       body,
     };
     this.addSub(
-      this.voucherService.buyVouchers(params)
-        .subscribe((ids: string[]) => {
-          if (ids.length === 1) {
-            this.router.navigate(['banking', 'vouchers', 'view', ids[0]]);
-          } else {
-            this.router.navigate(['banking', this.user, 'vouchers', 'bought']);
-          }
-          this.notification.snackBar(this.i18n.voucher.buy.done);
+      this.voucherService.generateVouchers(params)
+        .subscribe(() => {
+          this.reload();
+          this.notification.snackBar(this.i18n.voucher.generate.done);
         }),
     );
   }
@@ -122,9 +106,9 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
    * Go to second step
    */
   toForm(type: VoucherTypeDetailed): void {
-    this.addSub(this.voucherService.getVoucherDataForBuy({ user: this.user, type: type.id })
+    this.addSub(this.voucherService.getVoucherDataForGenerate({ type: type.id })
       .subscribe(data => {
-        this.dataTypeForBuy = data;
+        this.dataTypeForGenerate = data;
         this.buildForm();
         this.step = 'form';
       }),
@@ -156,32 +140,25 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
   }
 
   private get confirmationPasswordInput() {
-    return this.dataTypeForBuy.confirmationPasswordInput;
+    return this.dataTypeForGenerate.confirmationPasswordInput;
   }
 
   private buildForm(): void {
     if (this.form) {
       this.form.reset(); // clear previous values (if any)
     } else {
-      this.customFieldControlsMap = this.fieldHelper.customValuesFormControlMap(this.dataTypeForBuy.customFields);
       this.form = this.formBuilder.group({
         count: new FormControl(''),
         amount: new FormControl(''),
+        user: new FormControl(''),
+        userData: new FormControl('') // Used to get the user info in the confirmation page
       });
-      if (this.customFieldControlsMap.size > 0) {
-        const fieldValues = new FormGroup({});
-        for (const c of this.customFieldControlsMap) {
-          fieldValues.addControl(c[0], c[1]);
-        }
-        this.form.setControl('customValues', fieldValues);
-      }
     }
 
     this.form.get('count').setValue(1);
   }
 
-  resolveMenu(data: VoucherDataForBuy) {
-    return this.menu.userMenu(data.user, Menu.BUY_VOUCHER);
+  resolveMenu() {
+    return Menu.GENERATE_VOUCHER;
   }
-
 }

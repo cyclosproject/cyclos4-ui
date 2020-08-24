@@ -73,7 +73,7 @@ export class SearchVouchersComponent
   }
 
   path(row: VoucherResult): string[] {
-    return ['/banking/vouchers/', row.id];
+    return ['/banking/vouchers/view/', row.id];
   }
 
   showMoreFiltersLabel() {

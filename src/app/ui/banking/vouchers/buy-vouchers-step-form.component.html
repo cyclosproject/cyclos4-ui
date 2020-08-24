@@ -2,7 +2,7 @@
   <user-info *ngIf="data.user && !authHelper.isSelf(data.user)"
     [user]="data.user"></user-info>
   <!-- description + image -->
-  <label-value [label]="i18n.voucher.buy.originAccount" kind="fieldView">
+  <label-value [label]="i18n.voucher.originAccount" kind="fieldView">
     {{ data.account.type.name }}
   </label-value>
   <label-value [label]="i18n.account.availableBalance" kind="fieldView">
@@ -13,10 +13,10 @@
     {{ i18n.voucher.buy.minTimeToRedeemAfterBuy(format.formatTimeInterval(data.minimumTimeToRedeem)) }}
   </label-value>
   <input-field type="number" formControlName="count" required
-    fieldSize="small" [label]="i18n.voucher.buy.numberOfVouchers">
+    fieldSize="small" [label]="i18n.voucher.numberOfVouchers">
   </input-field>
   <decimal-field formControlName="amount" required
-    [label]="i18n.voucher.buy.amountPerVoucher" [prefix]="currency.prefix"
+    [label]="i18n.voucher.amountPerVoucher" [prefix]="currency.prefix"
     [suffix]="currency.suffix" [scale]="currency.decimalDigits">
   </decimal-field>
   <label-value kind="fieldView"

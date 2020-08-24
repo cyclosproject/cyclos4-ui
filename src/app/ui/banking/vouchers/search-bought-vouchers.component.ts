@@ -68,7 +68,7 @@ export class SearchBoughtVouchersComponent
   }
 
   path(row: VoucherResult): string[] {
-    return ['/banking/vouchers/', row.id];
+    return ['/banking/vouchers/view/', row.id];
   }
 
   voucherStatus(status: VoucherStatusEnum): string {

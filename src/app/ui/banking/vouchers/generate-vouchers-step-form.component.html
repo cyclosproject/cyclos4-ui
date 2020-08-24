@@ -1,0 +1,18 @@
+<ng-container [formGroup]="form">
+  <label-value [label]="i18n.voucher.originAccount" kind="fieldView">
+    {{ data.account.type.name }}
+  </label-value>
+  <label-value *ngIf="data.account.status.availableBalance"
+    [label]="i18n.account.availableBalance" kind="fieldView">
+    {{ data.account.status.availableBalance | currency:currency }}
+  </label-value>
+  <input-field type="number" formControlName="count" required
+    fieldSize="small" [label]="i18n.voucher.numberOfVouchers">
+  </input-field>
+  <decimal-field formControlName="amount" required
+    [label]="i18n.voucher.amountPerVoucher" [prefix]="currency.prefix"
+    [suffix]="currency.suffix" [scale]="currency.decimalDigits">
+  </decimal-field>
+  <user-field #user formControlName='user' [label]="i18n.general.user"
+    [allowContacts]="false"></user-field>
+</ng-container>

@@ -29,6 +29,7 @@ import { ViewVoucherComponent } from 'app/ui/banking/vouchers/view-voucher.compo
 import { LoggedUserGuard } from 'app/ui/logged-user-guard';
 import { SearchInstallmentsComponent } from 'app/ui/banking/transactions/search-installments.component';
 import { SearchUserBalancesComponent } from 'app/ui/banking/accounts/search-user-balances.component';
+import { GenerateVouchersComponent } from 'app/ui/banking/vouchers/generate-vouchers.component';
 
 const bankingRoutes: Routes = [
   {
@@ -147,7 +148,7 @@ const bankingRoutes: Routes = [
         component: SearchBoughtVouchersComponent,
       },
       {
-        path: 'vouchers/:key',
+        path: 'vouchers/view/:key',
         component: ViewVoucherComponent,
       },
       {
@@ -189,6 +190,10 @@ const bankingRoutes: Routes = [
       {
         path: 'user-balances-overview',
         component: SearchUserBalancesComponent,
+      },
+      {
+        path: 'vouchers/generate',
+        component: GenerateVouchersComponent,
       },
     ],
   },

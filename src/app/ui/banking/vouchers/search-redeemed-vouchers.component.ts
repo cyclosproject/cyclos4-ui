@@ -61,7 +61,7 @@ export class SearchRedeemedVouchersComponent
   }
 
   path(row: VoucherResult): string[] {
-    return ['/banking/vouchers/', row.id];
+    return ['/banking/vouchers/view/', row.id];
   }
 
   resolveMenu(data: UserVouchersDataForSearch) {

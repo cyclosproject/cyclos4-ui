@@ -927,6 +927,9 @@ export class MenuService {
       if (vouchers.view) {
         add(Menu.SEARCH_VOUCHERS, '/banking/vouchers', 'search', this.i18n.menu.bankingSearchVouchers);
       }
+      if (vouchers.generate) {
+        add(Menu.GENERATE_VOUCHER, `/banking/vouchers/generate`, 'confirmation_number', this.i18n.menu.bankingGenerateVouchers);
+      }
 
       if (banking.searchGeneralBalanceLimits) {
         add(Menu.ACCOUNT_BALANCE_LIMITS_OVERVIEW, '/banking/account-balance-limits-overview', 'swap_vert',

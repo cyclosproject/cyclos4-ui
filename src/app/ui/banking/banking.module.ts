@@ -38,6 +38,10 @@ import { BuyVouchersStepConfirmComponent } from 'app/ui/banking/vouchers/buy-vou
 import { BuyVouchersStepFormComponent } from 'app/ui/banking/vouchers/buy-vouchers-step-form.component';
 import { BuyVouchersStepListTypesComponent } from 'app/ui/banking/vouchers/buy-vouchers-step-list-types.component';
 import { BuyVouchersComponent } from 'app/ui/banking/vouchers/buy-vouchers.component';
+import { GenerateVouchersStepConfirmComponent } from 'app/ui/banking/vouchers/generate-vouchers-step-confirm.component';
+import { GenerateVouchersStepFormComponent } from 'app/ui/banking/vouchers/generate-vouchers-step-form.component';
+import { GenerateVouchersStepListTypesComponent } from 'app/ui/banking/vouchers/generate-vouchers-step-list-types.component';
+import { GenerateVouchersComponent } from 'app/ui/banking/vouchers/generate-vouchers.component';
 import { SearchBoughtVouchersComponent } from 'app/ui/banking/vouchers/search-bought-vouchers.component';
 import { SearchVouchersComponent } from 'app/ui/banking/vouchers/search-vouchers.component';
 import { VoucherFiltersComponent } from 'app/ui/banking/vouchers/voucher-filters.component';
@@ -91,6 +95,10 @@ import { ViewVoucherComponent } from './vouchers/view-voucher.component';
     SearchRedeemedVouchersComponent,
     SearchVouchersComponent,
     VoucherFiltersComponent,
+    GenerateVouchersComponent,
+    GenerateVouchersStepListTypesComponent,
+    GenerateVouchersStepFormComponent,
+    GenerateVouchersStepConfirmComponent,
 
     ViewAccountBalanceLimitsComponent,
     EditAccountBalanceLimitsComponent,
