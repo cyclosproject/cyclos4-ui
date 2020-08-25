@@ -12,7 +12,6 @@ import { I18n } from 'app/i18n/i18n';
 @Component({
   selector: 'field-errors',
   templateUrl: 'field-errors.component.html',
-  styleUrls: ['field-errors.component.scss'],
 })
 export class FieldErrorsComponent {
   @Input() control: FormControl;

@@ -82,3 +82,98 @@ body.dark {
     color: $tiled-results-icon-color-dark;
   }
 }
+
+///////////////////////////////////////////////////////////
+
+avatar {
+  & {
+    display: inline-flex;
+    line-height: 0;
+    position: relative;
+  }
+  &.card-img-top {
+    border-bottom: 1px solid $card-border-color;
+  }
+  .avatar-container {
+    position: relative;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    background-repeat: no-repeat;
+
+    img, icon {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      left: 50%;
+    }
+  }
+  .avatar-container.full-size {
+    width: 100%;
+    height: auto;
+    padding-top: 100%;
+  }
+  .avatar-container.round-borders {
+    border-radius: 50%;
+  }
+  .avatar-container.with-lightbox {
+    cursor: pointer;
+    -webkit-transition: all ease-out 0.4s;
+    transition: all ease-out 0.4s;
+  }
+  .avatar-container.with-lightbox:hover {
+    -webkit-filter: brightness(90%);
+    filter: brightness(90%);
+  }
+  &.management icon {
+    color: $management-icon-color;
+  }
+}
+body.dark {
+  avatar {
+    &.card-img-top {
+      border-color: $card-border-color-dark;
+    }
+    &.management icon {
+      color: $management-icon-color-dark;
+    }
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+icon {
+  fill: currentColor;
+  position: relative;
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+icon-with-counter {
+  display: inline-block;
+  position: relative;
+
+  .counter {
+    border-radius: 100%;
+    color: $icon-with-counter-color;
+    background-color: $icon-with-counter-bg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -0.2rem;
+    right: -0.2rem;
+    font-size: 0.7rem;
+    height: 0.9rem;
+    width: 0.9rem;
+    z-index: 1;
+    padding-top: 2px;
+  }
+}

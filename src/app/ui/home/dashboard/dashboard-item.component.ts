@@ -11,7 +11,6 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'dashboard-item',
   templateUrl: 'dashboard-item.component.html',
-  styleUrls: ['dashboard-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardItemComponent extends BaseComponent implements OnInit {

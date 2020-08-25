@@ -10,7 +10,6 @@ import { Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'operation-callback',
   templateUrl: 'operation-callback.component.html',
-  styleUrls: ['operation-callback.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OperationCallbackComponent

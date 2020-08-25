@@ -16,7 +16,6 @@ import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 @Component({
   selector: 'account-status',
   templateUrl: 'account-status.component.html',
-  styleUrls: ['account-status.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountStatusComponent extends BaseDashboardComponent implements OnInit {

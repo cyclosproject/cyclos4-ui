@@ -12,7 +12,6 @@ import { Subscription } from 'rxjs';
   // tslint:disable-next-line:component-selector
   selector: 'notification',
   templateUrl: 'notification.component.html',
-  styleUrls: ['notification.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotificationComponent implements OnInit, OnDestroy {

@@ -9,7 +9,6 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'balances-summary',
   templateUrl: 'balances-summary.component.html',
-  styleUrls: ['balances-summary.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BalancesSummaryComponent extends BaseComponent implements OnInit {

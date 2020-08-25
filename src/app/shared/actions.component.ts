@@ -5,7 +5,6 @@ import { truthyAttr } from 'app/shared/helper';
   // tslint:disable-next-line:component-selector
   selector: 'actions',
   templateUrl: 'actions.component.html',
-  styleUrls: ['actions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActionsComponent implements OnInit {

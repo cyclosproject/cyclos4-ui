@@ -12,7 +12,6 @@ import autosize from 'autosize';
 @Component({
   selector: 'textarea-field',
   templateUrl: 'textarea-field.component.html',
-  styleUrls: ['textarea-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: TextAreaFieldComponent, multi: true },

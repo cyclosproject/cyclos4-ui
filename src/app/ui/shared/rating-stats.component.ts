@@ -8,7 +8,6 @@ import { ReferenceHelperService } from 'app/ui/users/references/reference-helper
 @Component({
   selector: 'rating-stats',
   templateUrl: 'rating-stats.component.html',
-  styleUrls: ['rating-stats.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RatingStatsComponent {

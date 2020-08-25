@@ -9,7 +9,6 @@ import { blurIfClick, nextId } from 'app/shared/helper';
 @Component({
   selector: 'heading-action-button',
   templateUrl: 'heading-action-button.component.html',
-  styleUrls: ['heading-action-button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeadingActionButtonComponent {

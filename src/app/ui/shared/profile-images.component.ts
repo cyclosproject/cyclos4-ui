@@ -34,7 +34,6 @@ const SingleProfileGalleryOptions: NgxGalleryOptions[] = [{
 @Component({
   selector: 'profile-images',
   templateUrl: 'profile-images.component.html',
-  styleUrls: ['profile-images.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileImagesComponent extends BaseComponent implements OnInit {

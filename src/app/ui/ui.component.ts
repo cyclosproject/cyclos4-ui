@@ -20,7 +20,6 @@ import { UiErrorHandlerService } from 'app/ui/core/ui-error-handler.service';
 @Component({
   selector: 'ui-root',
   templateUrl: './ui.component.html',
-  styleUrls: ['./ui.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UiComponent implements OnInit {

@@ -11,7 +11,6 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'actions-toolbar',
   templateUrl: 'actions-toolbar.component.html',
-  styleUrls: ['actions-toolbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActionsToolbarComponent extends BaseComponent implements OnInit {

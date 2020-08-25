@@ -24,7 +24,6 @@ const MONTHS_PER_ROW = 2;
   // tslint:disable-next-line:component-selector
   selector: 'calendar',
   templateUrl: 'calendar.component.html',
-  styleUrls: ['calendar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: CalendarComponent, multi: true },

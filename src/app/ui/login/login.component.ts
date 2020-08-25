@@ -19,7 +19,6 @@ import { first } from 'rxjs/operators';
   // tslint:disable-next-line:component-selector
   selector: 'login',
   templateUrl: 'login.component.html',
-  styleUrls: ['login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent

@@ -16,7 +16,6 @@ import { CountriesResolve } from 'app/ui/countries.resolve';
 @Component({
   selector: 'profile-addresses',
   templateUrl: 'profile-addresses.component.html',
-  styleUrls: ['profile-addresses.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileAddressesComponent extends BaseComponent implements OnInit, AfterViewInit {

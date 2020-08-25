@@ -17,7 +17,6 @@ export interface StatusIndicator {
 @Component({
   selector: 'account-status-view',
   templateUrl: 'account-status-view.component.html',
-  styleUrls: ['account-status-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountStatusViewComponent extends BaseComponent implements OnInit, OnChanges {

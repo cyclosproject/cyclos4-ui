@@ -14,7 +14,6 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
  */
 @Component({
   selector: 'image-properties-dialog',
-  styleUrls: ['image-properties-dialog.component.scss'],
   templateUrl: 'image-properties-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -93,12 +93,6 @@ table.table {
   }
 }
 
-actions.minimal {
-  button, .button{
-    min-width: 0 !important;
-  }
-}
-
 body.dark {
   .btn-primary {
     @include button-variant($button-color-dark, $button-border-color-dark);
@@ -109,5 +103,141 @@ body.dark {
   .btn-icon {
     @include button-variant($button-icon-bg-dark, $button-icon-border-color-dark);
     color: $button-icon-color-dark;
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+actions {
+  margin-top: 2rem;
+
+  &.minimal {
+    button, .button {
+      min-width: 0 !important;
+    }
+  }
+
+  button + button, button + .button, .button + button, .button + .button {
+    margin-top: 1rem;
+  }
+}
+@include media-breakpoint-up(xs) {
+  actions.force-row {
+    button, .button, a, input[type=button], input[type=submit] {
+      min-width: 7rem;
+    }
+
+    button + button, button + .button, .button + button, .button + .button {
+      margin-top: 0;
+    }
+  }
+}
+@include media-breakpoint-up(sm) {
+  actions {
+    button, .button, a, input[type=button], input[type=submit] {
+      min-width: 10rem;
+    }
+
+    button + button, button + .button, .button + button, .button + .button {
+      margin-top: 0;
+    }
+  }
+}
+@media print {
+  actions {
+    display: none;
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+actions-toolbar {
+  .actions-toolbar-container {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 1px solid $border-color;
+    padding-bottom: 0.55rem;
+  }
+
+  .actions-toolbar-item-right {
+    flex-grow: 1;
+    text-align: end;
+  }
+
+  heading-action-button {
+    margin-left: 0.75rem;
+    margin-top: 0.6rem;
+  }
+}
+body.dark actions-toolbar {
+  .actions-toolbar-container {
+    border-bottom: 1px solid $border-color-dark;
+  }
+}
+@media print {
+  actions-toolbar {
+    display: none;
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+heading-action-button {
+  display: inline-block;
+
+  .btn {
+    max-width: 100%; // Makes text ellipis work
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: calc(#{$input-height} - 3px);
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: calc(#{$btn-padding-x} - 2px);
+    box-shadow: none;
+
+    color: $toolbar-button-color;
+    background-color: $toolbar-button-bg;
+    border-color: $toolbar-button-border-color;
+
+    icon {
+      position: relative;
+      top: -1px;
+      color: $toolbar-button-icon-color;
+    }
+
+    &:active, &.focus, &:hover {
+      color: $toolbar-button-hover-color;
+      background-color: $toolbar-button-hover-bg;
+      border-color: $toolbar-button-hover-border-color;
+    }
+
+    & > div {
+      padding-left: 0.5rem;
+      text-align: start;
+      @include text-truncate();
+    }
+  }
+
+  .dropdown-menu {
+    display: flex;
+    flex-direction: column;
+  }
+}
+body.dark heading-action-button {
+  .btn {
+    color: $toolbar-button-color-dark;
+    background-color: $toolbar-button-bg-dark;
+    border-color: $toolbar-button-border-color-dark;
+
+    icon {
+      color: $toolbar-button-icon-color-dark;
+    }
+
+    &:active, &.focus, &:hover {
+      color: $toolbar-button-hover-color-dark;
+      background-color: $toolbar-button-hover-bg-dark;
+      border-color: $toolbar-button-hover-border-color-dark;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Injector, Input, OnInit } from '@angular/core';
 import { AdAddressResultEnum, AdOrderByEnum, AdResult } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services/marketplace.service';
 import { HeadingAction } from 'app/shared/action';
@@ -13,10 +13,11 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'latest-ads',
   templateUrl: 'latest-ads.component.html',
-  styleUrls: ['latest-ads.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LatestAdsComponent extends BaseDashboardComponent implements OnInit {
+
+  @HostBinding('class-dashboard-icon-result') classIconResult = true;
 
   @Input() groups: string[];
   @Input() max: number;

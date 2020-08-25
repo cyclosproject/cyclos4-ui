@@ -17,7 +17,6 @@ const HeadingActionsMenu = 'heading-actions-menu';
 @Component({
   selector: 'heading-actions',
   templateUrl: 'heading-actions.component.html',
-  styleUrls: ['heading-actions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeadingActionsComponent extends BaseComponent implements OnInit {

@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { FormatService } from 'app/core/format.service';
+import { ActionsLeft, ActionsRight, ArrowsVertical, ShortcutService } from 'app/core/shortcut.service';
 import { I18n } from 'app/i18n/i18n';
 import { handleKeyboardFocus } from 'app/shared/helper';
-import { ActionsLeft, ActionsRight, ArrowsVertical, ShortcutService } from 'app/core/shortcut.service';
 import { LoginService } from 'app/ui/core/login.service';
 import { MenuService } from 'app/ui/core/menu.service';
 import { UiLayoutService } from 'app/ui/core/ui-layout.service';
@@ -16,10 +16,11 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
   // tslint:disable-next-line:component-selector
   selector: 'sidenav',
   templateUrl: 'sidenav.component.html',
-  styleUrls: ['sidenav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidenavComponent implements OnInit {
+
+  @HostBinding('class.has-top-bar') hasTopBar = true;
 
   @ViewChild('sidenavMenu', { static: true }) sidenavMenu: ElementRef;
 

@@ -8,7 +8,6 @@ import { Image } from 'app/api/models';
   // tslint:disable-next-line:component-selector
   selector: 'chip',
   templateUrl: 'chip.component.html',
-  styleUrls: ['chip.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChipComponent {

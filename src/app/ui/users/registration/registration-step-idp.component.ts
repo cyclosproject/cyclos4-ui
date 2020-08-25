@@ -9,7 +9,6 @@ import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 @Component({
   selector: 'registration-step-idp',
   templateUrl: 'registration-step-idp.component.html',
-  styleUrls: ['registration-step-idp.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationStepIdPComponent extends BaseComponent implements OnInit {

@@ -13,7 +13,6 @@ import { empty } from 'app/shared/helper';
   selector: 'single-selection-field',
   templateUrl: 'single-selection-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['single-selection-field.component.scss'],
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: SingleSelectionFieldComponent, multi: true },
     { provide: FORM_FIELD_WITH_OPTIONS, useExisting: SingleSelectionFieldComponent },

@@ -7,7 +7,6 @@ import { blurIfClick, htmlCollectionToArray, truthyAttr } from 'app/shared/helpe
 @Component({
   selector: 'rich-text-container',
   templateUrl: 'rich-text-container.component.html',
-  styleUrls: ['rich-text-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RichTextContainerComponent implements AfterViewInit {

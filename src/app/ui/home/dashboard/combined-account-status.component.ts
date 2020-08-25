@@ -13,7 +13,6 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'combined-account-status',
   templateUrl: 'combined-account-status.component.html',
-  styleUrls: ['combined-account-status.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CombinedAccountStatusComponent extends BaseDashboardComponent implements OnInit {

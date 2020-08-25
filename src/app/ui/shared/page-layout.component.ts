@@ -17,7 +17,6 @@ import { first } from 'rxjs/operators';
 @Component({
   selector: 'page-layout',
   templateUrl: 'page-layout.component.html',
-  styleUrls: ['page-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageLayoutComponent implements OnInit, OnDestroy {

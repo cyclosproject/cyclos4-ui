@@ -28,7 +28,6 @@ export function menuAnchorId(entry: BaseMenuEntry) {
   // tslint:disable-next-line:component-selector
   selector: 'menus',
   templateUrl: 'menus.component.html',
-  styleUrls: ['menus.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenusComponent extends AbstractComponent implements OnInit {

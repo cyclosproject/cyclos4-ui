@@ -30,7 +30,6 @@ export const SIZES: { [key: string]: number } = {
   // tslint:disable-next-line:component-selector
   selector: 'avatar',
   templateUrl: 'avatar.component.html',
-  styleUrls: ['avatar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {

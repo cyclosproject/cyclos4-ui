@@ -9,7 +9,6 @@ import { ICON_CONTENTS, ICON_NAMES } from 'app/shared/icon';
   // tslint:disable-next-line:component-selector
   selector: 'icon',
   templateUrl: 'icon.component.html',
-  styleUrls: ['icon.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconComponent {

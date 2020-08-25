@@ -29,7 +29,6 @@ export type LabelValueKind = 'view' | 'field' | 'fieldView';
 @Component({
   selector: 'label-value',
   templateUrl: 'label-value.component.html',
-  styleUrls: ['label-value.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {

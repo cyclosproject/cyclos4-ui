@@ -10,6 +10,16 @@
   color: $negative-color !important;
 }
 
+.low-balance {
+  color: $low-balance-color;
+}
+.medium-balance {
+  color: $medium-balance-color;
+}
+.high-balance {
+  color: $high-balance-color;
+}
+
 .totalAmount .label-value-value {
   color: $total-amount-color !important;
   font-size: 1.2rem;
@@ -44,6 +54,15 @@ body.dark {
   .negative {
     color: $negative-color-dark !important;
   }
+  .low-balance {
+    color: $low-balance-color-dark !important;
+  }
+  .medium-balance {
+    color: $medium-balance-color-dark !important;
+  }
+  .high-balance {
+    color: $high-balance-color-dark !important;
+  }
   .totalAmount {
     color: $total-amount-color-dark !important;
 
@@ -52,9 +71,73 @@ body.dark {
     }
     .label-value-label {
       color: $label-color-dark;
-    }    
+    }
   }
   .promo-price {
     color: $text-muted-dark;
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+account-status-view {
+  .status-label, .status-value {
+    font-weight: $font-weight-bold;
+    white-space: nowrap;
+    margin: 0;
+    line-height: 1em;
+    min-height: 1.4rem;
+    display: flex;
+    align-items: center;
+  }
+  .status-label:not(.status-label-last),
+  .status-value:not(.status-value-last) {
+    margin-bottom: 0.2rem;
+  }
+
+  .status-label {
+    color: $label-color;
+  }
+  .status-value {
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  hr {
+    margin-top: 0.8rem;
+    margin-bottom: 0.9rem;
+  }
+
+  @include media-breakpoint-up(xs) {
+    .status-label {
+      padding-left: 0.4rem;
+    }
+    .status-label:not(.status-label-last),
+    .status-value:not(.status-value-last) {
+      margin-bottom: 0.4rem;
+    }
+  }
+
+  @include media-breakpoint-up(sm) {
+    .container {
+      padding: 1em 0;
+    }
+    .status-label, .status-label-last:not(.status-label-last),
+    .status-value, .status-value:not(.status-value-last) {
+      padding: 0;
+    }
+    .status-value {
+      justify-content: flex-start;
+    }
+  }
+
+  body.dark & {
+    .status-label {
+      color: $label-color-dark;
+    }
   }
 }

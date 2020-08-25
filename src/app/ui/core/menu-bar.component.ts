@@ -8,8 +8,8 @@ import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 import { ActiveMenu, MenuType, RootMenuEntry } from 'app/ui/shared/menu';
 import { Observable } from 'rxjs';
 
-const MenuThesholdLarge = 5;
-const MenuThesholdExtraLarge = 6;
+const MenuThresholdLarge = 5;
+const MenuThersholdExtraLarge = 6;
 
 /**
  * A bar displayed on large layouts with the root menu items
@@ -17,7 +17,6 @@ const MenuThesholdExtraLarge = 6;
 @Component({
   selector: 'menu-bar',
   templateUrl: 'menu-bar.component.html',
-  styleUrls: ['menu-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuBarComponent extends AbstractComponent implements OnInit {
@@ -43,7 +42,7 @@ export class MenuBarComponent extends AbstractComponent implements OnInit {
   }
 
   density(roots: RootMenuEntry[], breakpoints: Set<Breakpoint>): MenuDensity {
-    const threshold = breakpoints.has('xl') ? MenuThesholdExtraLarge : MenuThesholdLarge;
+    const threshold = breakpoints.has('xl') ? MenuThersholdExtraLarge : MenuThresholdLarge;
     return roots.length > threshold ? MenuDensity.Dense : MenuDensity.Medium;
   }
 

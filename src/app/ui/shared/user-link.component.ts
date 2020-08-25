@@ -11,7 +11,6 @@ import { truthyAttr } from 'app/shared/helper';
 @Component({
   selector: 'user-link',
   templateUrl: 'user-link.component.html',
-  styleUrls: ['user-link.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserLinkComponent extends BaseComponent implements OnInit {

@@ -28,7 +28,6 @@ import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 @Component({
   selector: 'results-layout',
   templateUrl: 'results-layout.component.html',
-  styleUrls: ['results-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResultsLayoutComponent<C, R> extends BaseComponent implements AfterViewInit, OnChanges {
