@@ -15,7 +15,6 @@ import { first } from 'rxjs/operators';
 @Component({
   selector: 'push-notifications',
   templateUrl: 'push-notifications.component.html',
-  styleUrls: ['push-notifications.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PushNotificationsComponent implements OnInit, PushNotificationProvider {

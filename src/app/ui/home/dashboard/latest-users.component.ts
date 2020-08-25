@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Injector, Input, OnInit } from '@angular/core';
 import { UserAddressResultEnum, UserOrderByEnum, UserResult } from 'app/api/models';
 import { UsersService } from 'app/api/services/users.service';
+import { MenuService } from 'app/ui/core/menu.service';
 import { BaseDashboardComponent } from 'app/ui/home/dashboard/base-dashboard.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
-import { MenuService } from 'app/ui/core/menu.service';
 
 /**
  * Displays the latest users
@@ -12,11 +12,11 @@ import { MenuService } from 'app/ui/core/menu.service';
 @Component({
   selector: 'latest-users',
   templateUrl: 'latest-users.component.html',
-  // As this component looks A LOT to latest ads, use its same stylesheet
-  styleUrls: ['latest-ads.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LatestUsersComponent extends BaseDashboardComponent implements OnInit {
+
+  @HostBinding('class-dashboard-icon-result') classIconResult = true;
 
   @Input() groups: string[];
   @Input() max: number;

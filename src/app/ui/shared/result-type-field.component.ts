@@ -14,7 +14,6 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'result-type-field',
   templateUrl: 'result-type-field.component.html',
-  styleUrls: ['result-type-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: ResultTypeFieldComponent, multi: true },

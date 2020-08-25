@@ -23,7 +23,6 @@ export const PasswordStatusNeedingAttention = [
   // tslint:disable-next-line:component-selector
   selector: 'home',
   templateUrl: 'home.component.html',
-  styleUrls: ['home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent extends BasePageComponent<void> implements OnInit {

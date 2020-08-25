@@ -9,7 +9,6 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'scan-qrcode',
   templateUrl: 'scan-qrcode.component.html',
-  styleUrls: ['scan-qrcode.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScanQrCodeComponent extends BaseComponent {

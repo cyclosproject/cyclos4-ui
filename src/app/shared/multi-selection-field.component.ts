@@ -14,7 +14,6 @@ import { blank, empty, getValueAsArray, preprocessValueWithSeparator } from 'app
 @Component({
   selector: 'multi-selection-field',
   templateUrl: 'multi-selection-field.component.html',
-  styleUrls: ['multi-selection-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: MultiSelectionFieldComponent, multi: true },

@@ -13,7 +13,6 @@ import { truthyAttr } from 'app/shared/helper';
 @Component({
   selector: 'boolean-field',
   templateUrl: 'boolean-field.component.html',
-  styleUrls: ['boolean-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: BooleanFieldComponent, multi: true },

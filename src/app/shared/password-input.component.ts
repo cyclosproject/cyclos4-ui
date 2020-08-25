@@ -18,7 +18,6 @@ import { chunk } from 'lodash-es';
 @Component({
   selector: 'password-input',
   templateUrl: 'password-input.component.html',
-  styleUrls: ['password-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: PasswordInputComponent, multi: true },

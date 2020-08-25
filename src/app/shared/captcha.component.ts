@@ -8,7 +8,6 @@ import { switchMap, tap } from 'rxjs/operators';
   // tslint:disable-next-line:component-selector
   selector: 'captcha',
   templateUrl: 'captcha.component.html',
-  styleUrls: ['captcha.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CaptchaComponent extends AbstractComponent implements AfterViewInit, OnDestroy {

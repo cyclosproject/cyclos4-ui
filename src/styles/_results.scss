@@ -325,3 +325,53 @@ body.dark {
     }
   }
 }
+
+///////////////////////////////////////////////////////////
+
+body.dark paginator {
+  .page-link {
+    color: $pagination-color-dark;
+    background-color: $pagination-bg-dark;
+    border-color: $pagination-border-color-dark;
+
+    &:hover {
+      color: $pagination-hover-color-dark;
+      background-color: $pagination-hover-bg-dark;
+      border-color: $pagination-hover-border-color-dark;
+    }
+  }
+
+  .page-item {
+    &.active .page-link {
+      color: $pagination-active-color-dark;
+      background-color: $pagination-active-bg-dark;
+      border-color: $pagination-active-border-color-dark;
+    }
+    &.disabled .page-link {
+      color: $pagination-disabled-color-dark;
+      background-color: $pagination-disabled-bg-dark;
+      border-color: $pagination-disabled-border-color-dark;
+    }
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+results-layout {
+  display: flex;
+  flex-grow: 1;
+}
+@include media-breakpoint-up(sm) {
+  results-layout {
+    margin-top: 0;
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+static-map {
+  display: block;
+  flex-grow: 1;
+  width: 100%;
+  min-width: 1px;
+}

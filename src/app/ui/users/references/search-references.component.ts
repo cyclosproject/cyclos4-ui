@@ -23,7 +23,6 @@ type SearchReferencesParams = UserReferenceQueryFilters & {
 @Component({
   selector: 'search-references',
   templateUrl: 'search-references.component.html',
-  styleUrls: ['search-references.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchReferencesComponent

@@ -9,7 +9,6 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'snack-bar',
   templateUrl: 'snack-bar.component.html',
-  styleUrls: ['snack-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SnackBarComponent implements OnInit, SnackBarProvider {

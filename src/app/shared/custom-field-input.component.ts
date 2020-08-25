@@ -35,7 +35,6 @@ const ENUMERATED = [CustomFieldTypeEnum.SINGLE_SELECTION, CustomFieldTypeEnum.MU
 @Component({
   selector: 'custom-field-input',
   templateUrl: 'custom-field-input.component.html',
-  styleUrls: ['custom-field-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: CustomFieldInputComponent, multi: true },

@@ -27,7 +27,6 @@ import { first } from 'rxjs/operators';
 @Component({
   selector: 'confirmation-password',
   templateUrl: 'confirmation-password.component.html',
-  styleUrls: ['confirmation-password.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: ConfirmationPasswordComponent, multi: true },

@@ -13,7 +13,6 @@ import { htmlCollectionToArray } from 'app/shared/helper';
 @Component({
   selector: 'static-map',
   templateUrl: 'static-map.component.html',
-  styleUrls: ['static-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StaticMapComponent implements OnInit, OnChanges {

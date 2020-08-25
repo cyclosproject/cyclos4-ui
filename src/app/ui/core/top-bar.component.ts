@@ -33,10 +33,12 @@ const ProfileMenus = [Menu.MY_PROFILE, Menu.EDIT_MY_PROFILE];
 @Component({
   selector: 'top-bar',
   templateUrl: 'top-bar.component.html',
-  styleUrls: ['top-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopBarComponent extends AbstractComponent implements OnInit, OnChanges {
+
+  @HostBinding('class.has-top-bar') hasTopBar = true;
+
   // Export to template
   RootMenu = RootMenu;
   Menu = Menu;

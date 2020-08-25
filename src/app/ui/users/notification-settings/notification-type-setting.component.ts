@@ -11,7 +11,6 @@ import { FieldOption } from 'app/shared/field-option';
 @Component({
   selector: 'notification-type-setting',
   templateUrl: 'notification-type-setting.component.html',
-  styleUrls: ['notification-type-setting.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotificationTypeSettingComponent extends BaseComponent implements OnInit {

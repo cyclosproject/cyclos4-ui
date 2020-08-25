@@ -17,7 +17,6 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'insert-image-dialog',
   templateUrl: 'insert-image-dialog.component.html',
-  styleUrls: ['insert-image-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InsertImageDialogComponent

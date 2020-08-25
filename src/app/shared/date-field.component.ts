@@ -23,7 +23,6 @@ import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 @Component({
   selector: 'date-field',
   templateUrl: 'date-field.component.html',
-  styleUrls: ['date-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: DateFieldComponent, multi: true },

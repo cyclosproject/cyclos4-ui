@@ -34,7 +34,6 @@ const DIRECT_TYPES = [
 @Component({
   selector: 'format-field-value',
   templateUrl: 'format-field-value.component.html',
-  styleUrls: ['format-field-value.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormatFieldValueComponent extends AbstractComponent implements OnInit {

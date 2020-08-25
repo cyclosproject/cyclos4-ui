@@ -170,3 +170,125 @@ body.dark {
     }
   }
 }
+
+///////////////////////////////////////////////////////////
+
+notification {
+  display: block;
+
+  .alert {
+    margin: 0rem !important;
+    padding: 0.4rem;
+  }
+  icon {
+    margin-bottom: 0.4rem;
+  }
+  .close {
+    width: auto;
+  }
+
+  .notification-message {
+    margin: 0 1rem;
+    text-align: center;
+    text-align: start;
+  }
+}
+@include media-breakpoint-up(xs) {
+  notification {
+    .alert {
+      padding: 0.75rem 1.25rem;
+    }
+    icon {
+      margin-bottom: 0;
+    }
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+push-notification {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  a {
+    color: $body-color;
+  }
+  .subject {
+    font-weight: $font-weight-bold;
+    flex-grow: 1;
+    padding: 0 0.5rem;
+  }
+  .toast {
+    max-width: 100%;
+  }
+  .toast-body {
+    display: none;
+  }
+  .close {
+    cursor: pointer;
+  }
+}
+@include media-breakpoint-up(sm) {
+  push-notification {
+    max-width: 20rem;
+    .toast-body {
+      max-height: 6rem;
+      overflow: auto;
+      display: block;
+    }
+  }
+}
+body.dark push-notification {
+  a {
+    color: $body-color-dark;
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+push-notifications {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  z-index: $zindex-tooltip;
+}
+@include media-breakpoint-up(sm) {
+  push-notifications {
+    left: unset;
+    right: 0.5rem;
+    width: auto;
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+snack-bar {
+  opacity: 0;
+  min-width: 10rem;
+  width: 90%;
+  background-color: $snack-bar-bg;
+  color: $snack-bar-color;
+  text-align: center;
+  border-top-left-radius: 0.2rem;
+  border-top-right-radius: 0.2rem;
+  padding: 1rem 2rem;
+  position: fixed;
+  z-index: 9999; /* Ensure it's always at front (e.g modal dialog uses z-index:1050 */
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 100%);
+  transition: transform 0.3s, opacity 0.3s;
+  cursor: pointer;
+}
+@include media-breakpoint-up(sm) {
+  snack-bar {
+    width: auto;
+  }
+}
+body.dark snack-bar {
+  background-color: $snack-bar-bg-dark;
+  color: $snack-bar-color-dark;
+}

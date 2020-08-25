@@ -18,7 +18,6 @@ const TimeoutMillis = 6000;
 @Component({
   selector: 'push-notification',
   templateUrl: 'push-notification.component.html',
-  styleUrls: ['push-notification.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PushNotificationComponent {

@@ -97,7 +97,6 @@ class CustomButton extends Action {
 @Component({
   selector: 'html-field',
   templateUrl: 'html-field.component.html',
-  styleUrls: ['html-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: HtmlFieldComponent, multi: true },

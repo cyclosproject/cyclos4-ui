@@ -14,7 +14,6 @@ import { ArrowsHorizontal } from 'app/core/shortcut.service';
   // tslint:disable-next-line:component-selector
   selector: 'paginator',
   templateUrl: 'paginator.component.html',
-  styleUrls: ['paginator.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginatorComponent<T> extends BaseComponent implements OnInit {
