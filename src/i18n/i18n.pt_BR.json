@@ -508,24 +508,24 @@
       "amountDesc": "Valor (maior primeiro)"
     },
     "userBalances": {
-      "negativeSince": "Negative since",
-      "title": "User balances",
-      "mobileTitle": "User balances",
-      "minBalance": "From balance",
-      "maxBalance": "To balance",
-      "balancesSum": "Balances sum",
-      "balancesAverage": "Balances average",
-      "balancesCount": "Balances count",
+      "negativeSince": "Negativo desde",
+      "title": "Saldos de usuários",
+      "mobileTitle": "Saldos de usuários",
+      "minBalance": "Do saldo",
+      "maxBalance": "Para saldo",
+      "balancesSum": "Soma dos saldos",
+      "balancesAverage": "Média dos saldos",
+      "balancesCount": "Contagem de saldos",
       "total": "Total",
-      "fromYellowBalance": "From yellow balance",
-      "toYellowBalance": "To yellow balance",
-      "beginNegativeSince": "Negative after",
-      "endNegativeSince": "Negative before",
+      "fromYellowBalance": "De saldo amarelo",
+      "toYellowBalance": "Para saldo amarelo",
+      "beginNegativeSince": "Negativo após",
+      "endNegativeSince": "Negativo antes",
       "orderBy": {
-        "alphabeticallyDesc": "Name (A-Z)",
-        "alphabeticallyAsc": "Name (Z-A)",
-        "balanceAsc": "Balance (lowest first)",
-        "balanceDesc": "Balance (highest first)"
+        "alphabeticallyDesc": "Nome (A-Z)",
+        "alphabeticallyAsc": "Nome (Z-A)",
+        "balanceAsc": "Saldo (menor primeiro)",
+        "balanceDesc": "Saldo (maior primeiro)"
       }
     },
     "limits": {
@@ -626,11 +626,11 @@
     "nextOccurrence": "Próxima ocorrência",
     "channel": "Canal",
     "receivedBy": "Recebido por",
-    "chargedBack": "Charged back",
+    "chargedBack": "Estornado",
     "chargebackOf": "Estorno de",
     "chargedBackBy": "Estornado por",
     "authorizationComments": "Comentários da autorização",
-    "actionPerformedBy": "Action performed by",
+    "actionPerformedBy": "Ação executada por",
     "accountBalance": "Saldo de conta",
     "installments": "Parcelas",
     "installmentNumber": "Número",
@@ -639,15 +639,15 @@
     "noAccounts": "Você não tem nenhuma conta para realizar o pagamento",
     "noTypes": "Não existem tipos de pagamento possíveis",
     "noTypesSelection": "Não existe tipos de pagamento possíveis a partir dessa conta para o usuário selecionado",
-    "transferKinds": "Transfer kinds",
+    "transferKinds": "Natureza da transação",
     "transferkind": {
-      "accountFee": "Account fee",
-      "chargeback": "Chargeback",
-      "import": "Import",
-      "initialCredit": "Initial credit",
-      "installment": "Installment",
-      "payment": "Payment",
-      "transferFee": "Transfer fee"
+      "accountFee": "Taxa de conta",
+      "chargeback": "Estorno",
+      "import": "Importar",
+      "initialCredit": "Crédito inicial",
+      "installment": "Parcela",
+      "payment": "Pagamento",
+      "transferFee": "Taxa de transação"
     },
     "scheduling": "Agendamento",
     "scheduling.direct": "Pagar agora",
@@ -878,8 +878,8 @@
       "redeem": "Resgatar cupom",
       "redeemed": "Cupons resgatados",
       "search": "Busca de cupons",
-      "generate": "Generate vouchers",
-      "generateConfirmation": "Generate confirmation"
+      "generate": "Gerar cupons",
+      "generateConfirmation": "Confirmação da geração"
     },
     "title": {
       "buy": "Comprar cupons",
@@ -888,8 +888,8 @@
       "redeem": "Resgatar cupom",
       "redeemed": "Cupons resgatados",
       "search": "Busca de cupons",
-      "generate": "Generate vouchers",
-      "generateConfirmation": "Generate confirmation"
+      "generate": "Gerar cupons",
+      "generateConfirmation": "Confirmação da geração"
     },
     "boughtType": "Comprado",
     "generatedType": "Gerado",
@@ -902,14 +902,14 @@
       "payment": "Transação de compra"
     },
     "generate": {
-      "done": "The voucher(s) has been generated."
+      "done": "O(s) cupom(s) foi(ram) gerado(s)."
     },
     "originAccount": "Conta de origem",
     "numberOfVouchers": "Número de cupons",
     "amountPerVoucher": "Valor por cupom",
     "buyerGroups": "Grupos do comprador",
     "redeemerGroups": "Grupos do resgatante",
-    "creationType": "Creation type",
+    "creationType": "Tipo de criação",
     "cancel": {
       "done": "Este cupom foi cancelado.",
       "packConfirmation": "Existem outros cupons pertencentes ao mesmo pacote que também serão cancelados. Deseja continuar?",
@@ -1143,13 +1143,13 @@
     "contact": "Contato",
     "creationBegin": "Registro após",
     "creationEnd": "Registro anterior a",
-    "acceptedAgreements": "Accepted agreements",
-    "notAcceptedAgreements": "Not accepted agreements",
-    "assignedProducts": "Assigned products",
-    "beginUserActivationDate": "Activated after",
-    "endUserActivationDate": "Activated before",
-    "beginLastLoginDate": "Last login after",
-    "endLastLoginDate": "Last login before",
+    "acceptedAgreements": "Termos de adesão aceitos",
+    "notAcceptedAgreements": "Termos de adesão não aceitos",
+    "assignedProducts": "Produtos atribuídos",
+    "beginUserActivationDate": "Ativado após",
+    "endUserActivationDate": "Ativado antes",
+    "beginLastLoginDate": "Último acesso após",
+    "endLastLoginDate": "Último acesso antes",
     "profile": {
       "noPermission": "Você não tem permissão para ver o perfil deste usuário",
       "showActions": "Mostrar ações",
@@ -1859,10 +1859,10 @@
     }
   },
   "wizard": {
-    "alreadyExecuted": "This step was already executed",
-    "emailVerificationCode": "E-mail verification code",
-    "smsVerificationCode": "SMS verification code",
-    "codeSent": "Code sent"
+    "alreadyExecuted": "Esta etapa já foi executada",
+    "emailVerificationCode": "Código de verificação por e-mail",
+    "smsVerificationCode": "Código de verificação por SMS",
+    "codeSent": "Código enviado"
   },
   "setting": {
     "title": "Definições",
