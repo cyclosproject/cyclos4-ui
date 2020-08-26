@@ -80,11 +80,8 @@ export class AccountHistoryComponent
 
   getFormControlNames() {
     return [
-      'transferFilters', 'preselectedPeriod',
-      'periodBegin', 'periodEnd',
-      'minAmount', 'maxAmount',
-      'transactionNumber', 'direction',
-      'user', 'by', 'orderBy', 'groups', 'channels'
+      'transferFilters', 'preselectedPeriod', 'periodBegin', 'periodEnd', 'minAmount', 'maxAmount', 'transactionNumber', 'direction',
+      'user', 'by', 'orderBy', 'groups', 'channels', 'description'
     ];
   }
 

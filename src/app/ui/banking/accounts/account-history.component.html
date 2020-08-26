@@ -76,6 +76,11 @@
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
+            <input-field type="text" [label]="i18n.general.description"
+              formControlName="description">
+            </input-field>
+          </div>
+          <div class="col-12 col-md-6">
             <single-selection-field labelPosition="side"
               formControlName="direction" [label]="i18n.account.direction"
               [emptyOption]="i18n.general.notApplied">
