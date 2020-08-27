@@ -149,20 +149,20 @@
         "milli": "Millisekunde",
         "minute": "Minute",
         "month": "Monat",
-        "second": "Zweiter",
+        "second": "Sekunde",
         "week": "Woche",
         "year": "Jahr"
       }
     },
     "weekday": {
       "min": {
-        "sun": "Son",
-        "mon": "Mon",
+        "sun": "So",
+        "mon": "Mo",
         "tue": "Die",
-        "wed": "Mit",
-        "thu": "Don",
-        "fri": "Fre",
-        "sat": "Sam"
+        "wed": "Mi",
+        "thu": "Do",
+        "fri": "Fr",
+        "sat": "Sa"
       },
       "long": {
         "sun": "Sonntag",
@@ -227,7 +227,7 @@
       "invalid": "Die angegebene Sicherheitsantwort ist ungültig",
       "disabled": "Durch Überschreiten der Anzahl der Sicherheitsfragen wurde diese Anfrage abgebrochen. Bitte kontaktieren Sie die Administration"
     },
-    "illegalAction": "Die Aktion, die Sie versucht haben durchzuführen ist ungültig",
+    "illegalAction": "Die Aktion, die Sie versucht haben durchzuführen, ist ungültig",
     "field": {
       "invalid": "Dieses Feld ist ungültig",
       "required": "Dieses Feld ist erforderlich",
@@ -236,7 +236,7 @@
       "number": "Ungültiger Zahlenwert",
       "date": "Ungültiges Datum",
       "minDate": "Sollte {min} oder später sein",
-      "maxDate": "Sollte {max} oder vor sein"
+      "maxDate": "Sollte {max} oder vorher sein"
     },
     "geolocation": {
       "denied": "Keine Berechtigung, den aktuellen Standort zu erhalten. Bitte erteilen Sie diese Berechtigung in Ihrem Browser.",
@@ -261,19 +261,19 @@
     "banking.pos": "Zahlung erhalten",
     "banking.receiveQrPayment": "QR-Code erhalten",
     "banking.scheduledPayments": "Geplante Zahlungen",
-    "banking.scheduledPaymentsOverview": "Scheduled payments overview",
+    "banking.scheduledPaymentsOverview": "Übersicht geplante Zahlungen",
     "banking.pendingMyAuth": "Warte auf meine Erlaubnis",
     "banking.authorizations": "Zahlungsberechtigungen",
     "banking.paymentRequests": "Zahlungsaufforderungen",
-    "banking.paymentRequestsOverview": "Payment requests overview",
+    "banking.paymentRequestsOverview": "Übersicht Zahlungsaufforderungen",
     "banking.searchVouchers": "Gutscheine suchen",
-    "banking.generateVouchers": "Generate vouchers",
+    "banking.generateVouchers": "Gutscheine erstellen",
     "banking.buyVouchers": "Gutscheine kaufen",
     "banking.boughtVouchers": "Gekaufte Gutscheine ansehen",
     "banking.redeemVoucher": "Gutschein einlösen",
     "banking.redeemedVouchers": "Eingelöste Gutscheine anzeigen",
     "banking.transfersOverview": "Überweisungsübersicht",
-    "banking.userBalancesOverview": "User balances overview",
+    "banking.userBalancesOverview": "Überblick Kontostand Benutzer",
     "banking.accountBalanceLimits": "Kontolimits",
     "banking.accountPaymentLimits": "Zahlungsbeschränkungen",
     "operators": "Operatoren",
@@ -329,7 +329,7 @@
     "confirmationMessage": "Geben Sie Ihren {passwordType} an, um diesen Vorgang zu bestätigen",
     "confirm.noPassword": "Um zu bestätigen, brauchen Sie einen {passwordType}, aber Sie haben keinen",
     "confirm.mode": "Bestätigen mit",
-    "confirm.mode.device": "Smartphone",
+    "confirm.mode.device": "Mobiltelefon",
     "confirm.mode.password": "Passwort",
     "confirm.device.active": "Um zu bestätigen, scannen Sie diesen QR-Code mit Ihrem Smartphone ein",
     "confirm.device.none": "Um zu bestätigen, müssen Sie ein vertrauenswürdiges Mobiltelefon haben, aber Sie haben keines",
@@ -343,7 +343,7 @@
     "confirm.otp.request": "Bitte fordern Sie unten ein Passwort an, um es zu bestätigen",
     "otp.sent": "Das Passwort wurde an {dest} gesendet",
     "otp.receiveBy": "Erhalten durch {medium}",
-    "otp.receiveBy.sent": "{medium} sent",
+    "otp.receiveBy.sent": "{medium} gesendet",
     "oldPassword": "Altes Passwort",
     "newPassword": "Neues Passwort",
     "passwordConfirmation": "Bestätigung des Passworts",
@@ -442,7 +442,7 @@
     "preface": "Hiermit erkläre ich, dass ich Folgendes gelesen und akzeptiert habe:"
   },
   "securityQuestion": {
-    "message": "Die Sicherheitsfrage wird benötigt, falls Sie Ihr Passwort zurücksetzen müssen. Einmal festgelegt, wenn Sie es ändern müssen, kontaktieren Sie die Administration.",
+    "message": "Die Sicherheitsfrage wird benötigt, falls Sie Ihr Passwort zurücksetzen müssen. Einmal festgelegt, kontaktieren Sie bei Änderungswünschen die Administration.",
     "question": "Sicherheitsfrage",
     "answer": "Ihre Antwort",
     "set": "Ihre Sicherheitsantwort wurde festgelegt"
@@ -494,7 +494,7 @@
     "availableBalance": "Verfügbares Guthaben",
     "negativeLimit": "Negatives Limit",
     "positiveLimit": "Positives Limit",
-    "balanceOn": "Kontostand an {date}",
+    "balanceOn": "Kontostand am {date}",
     "totalIncome": "Gesamt empfangen",
     "totalOutflow": "Gesamt bezahlt",
     "netInflow": "Nettoeinnahmen",
@@ -508,7 +508,7 @@
       "amountDesc": "Betrag (höchste zuerst)"
     },
     "userBalances": {
-      "negativeSince": "Negative since",
+      "negativeSince": "Negativ seit",
       "title": "User balances",
       "mobileTitle": "User balances",
       "minBalance": "From balance",
