@@ -1859,10 +1859,10 @@
     }
   },
   "wizard": {
-    "alreadyExecuted": "This step was already executed",
-    "emailVerificationCode": "E-mail verification code",
-    "smsVerificationCode": "SMS verification code",
-    "codeSent": "Code sent"
+    "alreadyExecuted": "Dieser Schritt wurde bereits ausgeführt",
+    "emailVerificationCode": "E-Mail Bestätigungscode",
+    "smsVerificationCode": "SMS-Bestätigungscode",
+    "codeSent": "Code gesendet"
   },
   "setting": {
     "title": "Einstellungen",
