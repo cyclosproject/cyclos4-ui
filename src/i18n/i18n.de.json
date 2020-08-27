@@ -509,23 +509,23 @@
     },
     "userBalances": {
       "negativeSince": "Negativ seit",
-      "title": "User balances",
-      "mobileTitle": "User balances",
-      "minBalance": "From balance",
-      "maxBalance": "To balance",
-      "balancesSum": "Balances sum",
-      "balancesAverage": "Balances average",
-      "balancesCount": "Balances count",
-      "total": "Total",
-      "fromYellowBalance": "From yellow balance",
-      "toYellowBalance": "To yellow balance",
-      "beginNegativeSince": "Negative after",
-      "endNegativeSince": "Negative before",
+      "title": "Kontostand Nutzer*in",
+      "mobileTitle": "Kontostand Nutzer*in",
+      "minBalance": "Von Kontostand",
+      "maxBalance": "An Kontostand",
+      "balancesSum": "Summe Kontostand",
+      "balancesAverage": "Kontostand Durchschnitt",
+      "balancesCount": "Kontostand Zählung",
+      "total": "Gesamt",
+      "fromYellowBalance": "Von gelben Kontostand",
+      "toYellowBalance": "An gelben Kontostand",
+      "beginNegativeSince": "Negativ nach",
+      "endNegativeSince": "Negativ vor",
       "orderBy": {
         "alphabeticallyDesc": "Name (A-Z)",
         "alphabeticallyAsc": "Name (Z-A)",
-        "balanceAsc": "Balance (lowest first)",
-        "balanceDesc": "Balance (highest first)"
+        "balanceAsc": "Kontostand (niedrigstes zuerst)",
+        "balanceDesc": "Kontostand (höchstes zuerst)"
       }
     },
     "limits": {
@@ -557,8 +557,8 @@
       "mobileTitle": {
         "list": "Bilanz Limits",
         "view": "Bilanz Limits Details",
-        "edit": "Bilanz Llimits Details",
-        "history": "Bilanz Llimits Verlauf",
+        "edit": "Bilanz Limits Details",
+        "history": "Bilanz Limits Verlauf",
         "overview": "Bilanz Limits Übersicht"
       }
     },
