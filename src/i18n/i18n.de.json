@@ -820,7 +820,7 @@
     "reschedulePaymentRequest": "Diese wiederkehrende Zahlung verschieben",
     "reschedulePaymentRequest.done": "Die Zahlungsaufforderung wurde verschoben",
     "confirmPaymentRequest": "Sind Sie sicher, dass Sie diese Zahlungsaufforderung senden wollen?",
-    "firstOccurrenceIsImmediate": "Erstes Vorkommen ist sofort",
+    "firstOccurrenceIsImmediate": "Erster Vorgang ist sofort",
     "firstInstallmentIsImmediate": "Erste Rate ist sofort",
     "error": {
       "minTime": "Für eine Zahlung dieser Art sollte ein minimaler Zeitraum erwartet werden.",
@@ -847,7 +847,7 @@
         "user": "Der aktuelle Nutzende kann Gutscheine dieses Typs nicht einlösen.",
         "notAllowedYet": "Dieser Gutschein kann nicht vor dem {beginDate} eingelöst werden.",
         "notAllowedToday": "Dieser Gutschein kann heute nicht eingelöst werden. Die einlösbaren Tage sind: {allowedDays}.",
-        "userBlocked": "Sie wurden durch Überschreitung der Anzahl erlaubter Versuche blockiert."
+        "userBlocked": "Sie wurden wegen Überschreitung der Anzahl erlaubter Versuche blockiert."
       }
     },
     "redeem": {
@@ -878,8 +878,8 @@
       "redeem": "Gutschein einlösen",
       "redeemed": "Eingelöste Gutscheine",
       "search": "Gutscheine suchen",
-      "generate": "Generate vouchers",
-      "generateConfirmation": "Generate confirmation"
+      "generate": "Gutscheine erstellen",
+      "generateConfirmation": "Bestätigung erstellen"
     },
     "title": {
       "buy": "Gutscheine kaufen",
@@ -888,28 +888,28 @@
       "redeem": "Gutschein einlösen",
       "redeemed": "Eingelöste Gutscheine",
       "search": "Gutscheine suchen",
-      "generate": "Generate vouchers",
-      "generateConfirmation": "Generate confirmation"
+      "generate": "Gutscheine erstellen",
+      "generateConfirmation": "Bestätigung erstellen"
     },
     "boughtType": "Gekauft",
     "generatedType": "Generiert",
     "buy": {
       "amountRange": "Betragsbereich",
       "buyer": "Käufer",
-      "done": "Der Gutschein(e) wurde(n) gekauft.",
+      "done": "Der/die Gutschein(e) wurde(n) gekauft.",
       "minTimeToRedeem": "Kann eingelöst werden",
       "minTimeToRedeem.afterBuy": "{interval} nach dem Kauf",
       "payment": "Einkaufsbuchung"
     },
     "generate": {
-      "done": "The voucher(s) has been generated."
+      "done": "Der/die Gutschein(e) wurde(n) generiert."
     },
     "originAccount": "Ursprungskonto",
     "numberOfVouchers": "Anzahl der Gutscheine",
     "amountPerVoucher": "Betrag pro Gutschein",
     "buyerGroups": "Käufergruppen",
     "redeemerGroups": "Erlösergruppen",
-    "creationType": "Creation type",
+    "creationType": "Erstellungstyp",
     "cancel": {
       "done": "Dieser Gutschein wurde storniert.",
       "packConfirmation": "Es gibt andere Gutscheine, die zum selben Paket gehören, die ebenfalls storniert werden. Sind Sie sicher, dass Sie fortfahren möchten?",
