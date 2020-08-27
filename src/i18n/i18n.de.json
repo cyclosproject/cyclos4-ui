@@ -639,15 +639,15 @@
     "noAccounts": "Sie haben keine Konten zum Ausführen der Zahlung",
     "noTypes": "Es gibt keine möglichen Zahlungsarten",
     "noTypesSelection": "Es gibt keine möglichen Zahlungsarten für dieses Konto und Nutzende",
-    "transferKinds": "Transfer kinds",
+    "transferKinds": "Überweisungsarten",
     "transferkind": {
-      "accountFee": "Account fee",
-      "chargeback": "Chargeback",
+      "accountFee": "Kontogebühr",
+      "chargeback": "Rückbuchung",
       "import": "Import",
-      "initialCredit": "Initial credit",
-      "installment": "Installment",
-      "payment": "Payment",
-      "transferFee": "Transfer fee"
+      "initialCredit": "Startguthaben",
+      "installment": "Rate",
+      "payment": "Bezahlung",
+      "transferFee": "Überweisungsgebühr"
     },
     "scheduling": "Terminplanung",
     "scheduling.direct": "Jetzt bezahlen",
@@ -656,7 +656,7 @@
     "scheduling.recurring": "Monatlich wiederholen",
     "schedulingStatus": {
       "direct": "Direkte Zahlung",
-      "scheduledToDate": "Geplant an {date}",
+      "scheduledToDate": "Geplant am {date}",
       "openInstallments": "{count} Raten, nächste am {dueDate}",
       "closedInstallments": "{count} Raten",
       "closedRecurring": "Wiederkehrende Zahlung geschlossen",
