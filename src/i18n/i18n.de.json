@@ -81,7 +81,7 @@
     "removeItemDone": "Das Element wurde entfernt",
     "currency": "Währung",
     "images": "Bilder",
-    "usersOfBroker": "Anwender des Brokers",
+    "usersOfBroker": "Nutzende des Brokers",
     "sendMedium": {
       "email": "E-Mail",
       "sms": "SMS"
@@ -509,8 +509,8 @@
     },
     "userBalances": {
       "negativeSince": "Negativ seit",
-      "title": "Kontostand Nutzer*in",
-      "mobileTitle": "Kontostand Nutzer*in",
+      "title": "Nutzer-Salden",
+      "mobileTitle": "Nutzer-Salden",
       "minBalance": "Von Kontostand",
       "maxBalance": "An Kontostand",
       "balancesSum": "Summe Kontostand",
