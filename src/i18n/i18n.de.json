@@ -1375,9 +1375,9 @@
     }
   },
   "phone": {
-    "mobile": "Smartphone",
+    "mobile": "Mobiltelefon",
     "landLine": "Festnetztelefon",
-    "name.mobile": "Smartphone Name",
+    "name.mobile": "Name Mobiltelefon",
     "name.landLine": "Festnetztelefon Name",
     "number": "Nummer",
     "number.mobile": "Smartphone Nummer",
