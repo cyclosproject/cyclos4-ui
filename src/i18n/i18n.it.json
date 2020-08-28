@@ -1,6 +1,7 @@
 {
   "general": {
     "by": "da",
+    "changedBy": "Changed by",
     "type": "Tipo",
     "code": "Codice",
     "period": "Periodo",
@@ -18,6 +19,8 @@
     "endDate": "Data fine",
     "creationDate": "Data di creazione",
     "expirationDate": "Data di scadenza",
+    "expirationBeginDate": "Expiration begin date",
+    "expirationEndDate": "Expiration end date",
     "newExpirationDate": "Nuova data di scadenza",
     "notApplied": "Non applicato",
     "notAppliedSelect": "Non applicato (selezionare per applicare)",
@@ -51,12 +54,14 @@
     "previous": "Precedente",
     "next": "Prossimo",
     "view": "Mostra",
+    "skip": "Skip",
     "viewHistory": "Visualizza cronologia",
     "edit": "Modifica",
     "confirm": "Conferma",
     "cancel": "Annulla",
     "close": "Chiudi",
     "submit": "Invia",
+    "finish": "Finish",
     "remove": "Rimuovi",
     "remove.confirm": "Sei sicuro di voler rimuovere l'elemento {item}?",
     "remove.done": "L'elemento {item} è stato rimosso",
@@ -76,10 +81,13 @@
     "removeItemDone": "L'elemento è stato rimosso",
     "currency": "Valuta",
     "images": "Immagini",
+    "usersOfBroker": "Users of the broker",
     "sendMedium": {
       "email": "E-mail",
       "sms": "SMS"
     },
+    "sendCode": "Send code",
+    "sentCodeTo": "The verification code was sent to {to}",
     "reloadPage": "Aggiorna",
     "sessionExpired": {
       "title": "Sessione scaduta",
@@ -248,17 +256,26 @@
     "banking.payUser": "Pagamento utente",
     "banking.paySystem": "Pagamento sistema",
     "banking.paySelf": "Auto-pagamento",
+    "banking.requestPaymentFromUser": "Request payment from user",
+    "banking.requestPaymentFromSystem": "Request payment from system",
     "banking.pos": "Addebita carta",
     "banking.receiveQrPayment": "Receive QR-code",
     "banking.scheduledPayments": "Pagamenti pianificati",
+    "banking.scheduledPaymentsOverview": "Scheduled payments overview",
     "banking.pendingMyAuth": "Awaiting my authorization",
     "banking.authorizations": "Autorizzazioni di pagamento",
+    "banking.paymentRequests": "Payment requests",
+    "banking.paymentRequestsOverview": "Payment requests overview",
     "banking.searchVouchers": "Cerca voucher",
+    "banking.generateVouchers": "Generate vouchers",
     "banking.buyVouchers": "Acquista voucher",
     "banking.boughtVouchers": "Visualizza acquisti",
     "banking.redeemVoucher": "Riscatta voucher",
     "banking.redeemedVouchers": "Mostra voucher riscattati",
     "banking.transfersOverview": "Panoramica operazioni",
+    "banking.userBalancesOverview": "User balances overview",
+    "banking.accountBalanceLimits": "Account balance limits",
+    "banking.accountPaymentLimits": "Account payment limits",
     "operators": "Operatori",
     "operators.operators": "Operatori",
     "operators.register": "Iscrivi operatore",
@@ -295,6 +312,8 @@
     "personal.notifications": "Notifiche",
     "personal.notificationSettings": "Impostazioni di notifica",
     "personal.settings": "Impostazioni",
+    "personal.privacySettings": "Privacy settings",
+    "personal.references": "References",
     "content": "Informazioni"
   },
   "login": {
@@ -324,7 +343,7 @@
     "confirm.otp.request": "Per favore, richiedi una password di conferma qui sotto per confermare",
     "otp.sent": "La password è stata inviata a {dest}",
     "otp.receiveBy": "Ricevi via {medium}",
-    "otp.receiveBy.countdown": "{medium} sent({remaining} sec)",
+    "otp.receiveBy.sent": "{medium} sent",
     "oldPassword": "Vecchia password",
     "newPassword": "Nuova password",
     "passwordConfirmation": "Conferma password",
@@ -444,8 +463,7 @@
       "password": "Password",
       "passwords": "Password",
       "switchTheme": "Cambia tema",
-      "connectedUsers": "Utenti connessi",
-      "receiveQRPayment": "Receive QR payment"
+      "connectedUsers": "Utenti connessi"
     },
     "accounts": "Accounts",
     "accountStatus": "Stato conto",
@@ -460,8 +478,7 @@
       "neverCreated": "Il tuo {type} deve essere impostato.",
       "securityAnswer": "Dovresti impostare la domanda di sicurezza, che sarà necessaria nel caso in cui dovrai reimpostare la password.",
       "proceed": "Clicca qui per procedere"
-    },
-    "accounts": "Accounts"
+    }
   },
   "account": {
     "account": "Conto",
@@ -489,6 +506,95 @@
       "dateAsc": "Data (dalla meno recente)",
       "amountAsc": "Importo (crescente)",
       "amountDesc": "Importo (decrescente)"
+    },
+    "userBalances": {
+      "negativeSince": "Negative since",
+      "title": "User balances",
+      "mobileTitle": "User balances",
+      "minBalance": "From balance",
+      "maxBalance": "To balance",
+      "balancesSum": "Balances sum",
+      "balancesAverage": "Balances average",
+      "balancesCount": "Balances count",
+      "total": "Total",
+      "fromYellowBalance": "From yellow balance",
+      "toYellowBalance": "To yellow balance",
+      "beginNegativeSince": "Negative after",
+      "endNegativeSince": "Negative before",
+      "orderBy": {
+        "alphabeticallyDesc": "Name (A-Z)",
+        "alphabeticallyAsc": "Name (Z-A)",
+        "balanceAsc": "Balance (lowest first)",
+        "balanceDesc": "Balance (highest first)"
+      }
+    },
+    "limits": {
+      "unlimited": "Unlimited",
+      "mode": "Mode",
+      "personalized": "Personalized",
+      "productDefault": "Product default"
+    },
+    "balanceLimits": {
+      "negativeLimit": "Negative balance limit",
+      "positiveLimit": "Positive balance limit",
+      "personalizedNegativeLimit": "Personalized negative limit",
+      "personalizedPositiveLimit": "Personalized positive limit",
+      "fromNegativeLimit": "From negative limit",
+      "toNegativeLimit": "To negative limit",
+      "fromPositiveLimit": "From positive limit",
+      "toPositiveLimit": "To positive limit",
+      "negative": "Negative",
+      "positive": "Positive",
+      "confirm": "You must confirm to apply the new balance limits",
+      "saved": "The balance limits were saved",
+      "title": {
+        "list": "Account balance limits",
+        "view": "Account balance limits details",
+        "edit": "Account balance limits details",
+        "history": "Account balance limits history",
+        "overview": "Account balance limits overview"
+      },
+      "mobileTitle": {
+        "list": "Balance limits",
+        "view": "Balance limits details",
+        "edit": "Balance limits details",
+        "history": "Balance limits history",
+        "overview": "Balance limits overview"
+      }
+    },
+    "paymentLimits": {
+      "paymentLimit": "Payment limit",
+      "dailyLimit": "Daily limit",
+      "weeklyLimit": "Weekly limit",
+      "monthlyLimit": "Monthly limit",
+      "personalizedPaymentLimit": "Personalized payment limit",
+      "personalizedDailyLimit": "Personalized daily limit",
+      "personalizedWeeklyLimit": "Personalized weekly limit",
+      "personalizedMonthlyLimit": "Personalized monthly limit",
+      "fromPaymentLimit": "From payment limit",
+      "fromDailyLimit": "From daily limit",
+      "fromWeeklyLimit": "From weekly limit",
+      "fromMonthlyLimit": "From monthly limit",
+      "toPaymentLimit": "To payment limit",
+      "toDailyLimit": "To daily limit",
+      "toWeeklyLimit": "To weekly limit",
+      "toMonthlyLimit": "To monthly limit",
+      "confirm": "You must confirm to apply the new payment limits",
+      "saved": "The payment limits were saved",
+      "title": {
+        "list": "Accounts payment limits",
+        "view": "Account payment limits details",
+        "edit": "Account payment limits details",
+        "history": "Account payment limits history",
+        "overview": "Account payment limits overview"
+      },
+      "mobileTitle": {
+        "list": "Payment limits",
+        "view": "Payment limits details",
+        "edit": "Payment limits details",
+        "history": "Payment limits history",
+        "overview": "Payment limits overview"
+      }
     }
   },
   "transaction": {
@@ -499,6 +605,12 @@
     "fromTo.text": "{from} a {to}",
     "from": "Da",
     "to": "A",
+    "sender": "Sender",
+    "receiver": "Receiver",
+    "senderOrReceiver": "Sender or receiver",
+    "sent": "Sent",
+    "received": "Received",
+    "direction": "Direction",
     "account": "Conto",
     "fromAccount": "Dal conto",
     "fromUser": "Da utente",
@@ -509,12 +621,16 @@
     "totalAmount": "Importo totale",
     "dueAmount": "Importo dovuto",
     "dueDate": "Data scadenza",
+    "processDate": "Process date",
+    "processDateTooltip": "Select this option to schedule processing",
     "nextOccurrence": "Prossima ricorrenza",
     "channel": "Canale",
     "receivedBy": "Ricevuto da",
+    "chargedBack": "Charged back",
     "chargebackOf": "Storno di",
     "chargedBackBy": "Stornato da",
     "authorizationComments": "Commenti di autorizzazione",
+    "actionPerformedBy": "Action performed by",
     "accountBalance": "Saldo del conto",
     "installments": "Rate",
     "installmentNumber": "Numero",
@@ -523,6 +639,16 @@
     "noAccounts": "Non hai nessun conto per eseguire il pagamento",
     "noTypes": "Non ci sono tipi di pagamento possibili",
     "noTypesSelection": "Non ci sono tipi di pagamento possibili da questo conto all'utente selezionato",
+    "transferKinds": "Transfer kinds",
+    "transferkind": {
+      "accountFee": "Account fee",
+      "chargeback": "Chargeback",
+      "import": "Import",
+      "initialCredit": "Initial credit",
+      "installment": "Installment",
+      "payment": "Payment",
+      "transferFee": "Transfer fee"
+    },
     "scheduling": "Pianificazione",
     "scheduling.direct": "Paga ora",
     "scheduling.single": "Pianificato",
@@ -555,6 +681,9 @@
     "processed.withNumber": "Il pagamento con il numero di transazione {number} è stato elaborato con successo",
     "pending": "Il pagamento è stato inviato per ulteriore autorizzazione",
     "pending.withNumber": "Il pagamento con il numero di transazione {number} è stato inviato per ulteriore autorizzazione",
+    "processedPaymentRequest": "The payment request was successfully processed",
+    "processedPaymentRequest.withNumber": "The payment request with transaction number {number} was successfully processed",
+    "acceptedScheduledPaymentRequest": "The payment request was accepted and scheduled to be processed on {processDate}",
     "done.view": "Vedi pagamento",
     "done.new": "Nuovo pagamento",
     "status": {
@@ -597,7 +726,13 @@
       "parentTransfer": "Trasferimento che ha generato questo",
       "childTransfers": "Trasferimenti generati da questo",
       "transfersOverview": "Panoramica operazioni",
-      "receiveQrPayment": "Receive QR-code payment"
+      "receiveQrPayment": "Receive QR-code payment",
+      "paymentRequestSent": "Payment request sent",
+      "paymentRequestSystemToUser": "Payment request from user",
+      "paymentRequestToSystem": "Payment request from system",
+      "paymentRequestToUser": "Payment request from user",
+      "paymentRequests": "Payment requests",
+      "paymentRequestsOverview": "Payment requests overview"
     },
     "mobileTitle": {
       "pos": "Addebita carta",
@@ -624,7 +759,13 @@
       "parentTransfer": "Trasferimento originale",
       "childTransfers": "Trasferimenti originali",
       "transfersOverview": "Panoramica operazioni",
-      "receiveQrPayment": "QR-code payment"
+      "receiveQrPayment": "QR-code payment",
+      "paymentRequestSent": "Payment request sent",
+      "paymentRequestSystemToUser": "Payment request",
+      "paymentRequestToSystem": "Payment request",
+      "paymentRequestToUser": "Payment request",
+      "paymentRequests": "Payment requests",
+      "paymentRequestsOverview": "Payment requests overview"
     },
     "ticketShareTitle": "Invitation to perform a payment",
     "ticketShareText": "{user} has invited you to pay {amount}",
@@ -668,6 +809,19 @@
     "processFailedOccurrence": "Elabora questa occorrenza fallita",
     "processFailedOccurrence.message": "Sei sicuro di voler processare ora l'occorrenza numero {number}?",
     "processFailedOccurrence.done": "L'occorrenza è stata elaborata",
+    "acceptPaymentRequest": "Accept this payment request",
+    "acceptPaymentRequest.done": "The payment request was accepted",
+    "cancelPaymentRequest": "Cancel this payment request",
+    "cancelPaymentRequest.done": "The payment request was canceled",
+    "rejectPaymentRequest": "Deny this payment request",
+    "rejectPaymentRequest.done": "The payment request was denied",
+    "changePaymentRequestExpiration": "Change expiration date",
+    "changePaymentRequestExpiration.done": "The payment request expiration date was changed",
+    "reschedulePaymentRequest": "Reschedule this recurring payment",
+    "reschedulePaymentRequest.done": "The payment request was reschedule",
+    "confirmPaymentRequest": "Are you sure to send this payment request?",
+    "firstOccurrenceIsImmediate": "First occurrence is immediate",
+    "firstInstallmentIsImmediate": "First installment is immediate",
     "error": {
       "minTime": "Si dovrebbe attendere un periodo minimo di tempo per effettuare un pagamento di questo tipo.",
       "balance": "Saldo insufficiente per eseguire questa operazione",
@@ -678,8 +832,7 @@
       "weekly.count": "Il numero massimo di pagamenti consentito per settimana è {count}",
       "monthly.amount": "La quantità massima mensile di {amount} è stata superata",
       "monthly.count": "Il numero massimo di pagamenti consentiti al mese è {count}"
-    },
-    "installmentNumberOfTotal": "{number} of {total}"
+    }
   },
   "voucher": {
     "error": {
@@ -724,7 +877,9 @@
       "bought": "Voucher acquistati",
       "redeem": "Riscatta voucher",
       "redeemed": "Voucher riscattati",
-      "search": "Cerca voucher"
+      "search": "Cerca voucher",
+      "generate": "Generate vouchers",
+      "generateConfirmation": "Generate confirmation"
     },
     "title": {
       "buy": "Acquista voucher",
@@ -732,7 +887,9 @@
       "searchBought": "Cerca buoni acquistati",
       "redeem": "Riscatta voucher",
       "redeemed": "Voucher riscattati",
-      "search": "Cerca voucher"
+      "search": "Cerca voucher",
+      "generate": "Generate vouchers",
+      "generateConfirmation": "Generate confirmation"
     },
     "boughtType": "Acquistato",
     "generatedType": "Generato",
@@ -742,14 +899,17 @@
       "done": "Il voucher(i) è stato acquistato.",
       "minTimeToRedeem": "Può essere riscattato",
       "minTimeToRedeem.afterBuy": "{interval} dopo l'acquisto",
-      "numberOfVouchers": "Numero voucher",
-      "amountPerVoucher": "Importo per voucher",
-      "originAccount": "Conto di origine",
       "payment": "Pagamento per acquisto"
     },
+    "generate": {
+      "done": "The voucher(s) has been generated."
+    },
+    "originAccount": "Conto di origine",
+    "numberOfVouchers": "Numero voucher",
+    "amountPerVoucher": "Importo per voucher",
     "buyerGroups": "Gruppi acquirenti",
     "redeemerGroups": "Gruppi accettatori",
-    "creationType": "Tipo di creazione",
+    "creationType": "Creation type",
     "cancel": {
       "done": "Questo voucher è stato annullato.",
       "packConfirmation": "Ci sono altri buoni appartenenti allo stesso pacchetto che saranno cancellati. Sei sicuro di continuare?",
@@ -983,6 +1143,13 @@
     "contact": "Contatto",
     "creationBegin": "Registrato dopo",
     "creationEnd": "Registrato prima",
+    "acceptedAgreements": "Accepted agreements",
+    "notAcceptedAgreements": "Not accepted agreements",
+    "assignedProducts": "Assigned products",
+    "beginUserActivationDate": "Activated after",
+    "endUserActivationDate": "Activated before",
+    "beginLastLoginDate": "Last login after",
+    "endLastLoginDate": "Last login before",
     "profile": {
       "noPermission": "Non hai i permessi per visualizzare il profilo di questo utente",
       "showActions": "Mostra azioni",
@@ -1001,11 +1168,16 @@
       "payAsUserToSystem": "Pagamenti da utente a sistema",
       "payAsUserToUser": "Pagamenti P2P",
       "payAsUserToSelf": "Auto-pagamento",
+      "requestPaymentAsUserFromUser": "Request payment from user to user",
+      "requestPaymentFromUser": "Request payment from user",
+      "requestPaymentAsUserFromSystem": "Request payment from system to user",
+      "requestPaymentFromSystem": "Request payment from system",
       "purchases": "Acquisti",
       "sales": "Vendite",
       "viewAccount": "Mostra {account}",
       "viewScheduledPayments": "Visualizza pagamenti pianificati",
       "viewAuthorizedPayments": "Visualizza le autorizzazioni di pagamento",
+      "viewPaymentRequests": "View payment requests",
       "viewAds": "Visualizza annunci",
       "viewBrokerings": "Visualizza membri assegnati",
       "viewBrokers": "Vedi broker",
@@ -1023,7 +1195,12 @@
       "redeemVoucher": "Riscatta voucher",
       "viewBoughtVouchers": "Vedi voucher acquistati",
       "buyVouchers": "Acquista voucher",
-      "notificationSettings": "Impostazioni di notifica"
+      "notificationSettings": "Impostazioni di notifica",
+      "products": "Products",
+      "accountsBalanceLimits": "Account balance limits",
+      "accountsPaymentLimits": "Account payment limits",
+      "privacySettings": "Privacy settings",
+      "references": "References"
     },
     "registration": {
       "group.public": "Scegliere il gruppo a cui si desidera partecipare",
@@ -1650,8 +1827,6 @@
     "login.noMatch": "Nessun utente trovato con l'email {email}. Dovrai effettuare il login con il tuo normale utente e password. Dopo il login, il tuo account {app} verrà automaticamente collegato, così la prossima volta, la funzionalità 'Continua con {provider}' funzionerà direttamente.",
     "login.noEmail": "Impossibile leggere l'indirizzo e-mail dal tuo account {provider} . Dovrai effettuare il login con il tuo utente normale e la password. Dopo il login, il tuo account {app} verrà automaticamente collegato, così la prossima volta, la funzionalità 'Continua con {provider}' funzionerà direttamente.",
     "registration": "Registrati più velocemente con il tuo identity provider:",
-    "registration.or": "o",
-    "registration.fillForm": "Compila il modulo di registrazione",
     "registration.disclaimer": "<b>Avviso:</b> Nessuno dei tuoi dati {app} sarà condiviso con questi fornitori, e l'unico scopo di leggere i tuoi dati personali è quello di compilare il modulo di registrazione e di accedere dopo la registrazione.",
     "disclaimer": "<b>Avviso</b>: nessuno dei tuoi dati {app} sarà condiviso con qualsiasi provider. Gli unici dati letti dai provider sono il nome visualizzato e l'e-mail, con l'unico scopo di accedere più velocemente su {app}.",
     "noResults": "There are not identity providers added yet.",
@@ -1683,12 +1858,27 @@
       "result": "Risultato"
     }
   },
+  "wizard": {
+    "alreadyExecuted": "This step was already executed",
+    "emailVerificationCode": "E-mail verification code",
+    "smsVerificationCode": "SMS verification code",
+    "codeSent": "Code sent"
+  },
   "setting": {
     "title": "Impostazioni",
     "mobileTitle": "Impostazioni",
     "theme": "Tema",
     "theme.light": "Chiaro",
     "theme.dark": "Scuro"
+  },
+  "privacySettings": {
+    "title": "Privacy settings",
+    "mobileTitle": "Privacy settings",
+    "enableControl": "Enable privacy control",
+    "controlsSection": "Departments allowed to access private data",
+    "information": "In this page it is possible to set whether access to those fields is restricted, and how those fields may be used.",
+    "dataSubjectToControls": "Personal data subject to privacy control:",
+    "saved": "The privacy settings were saved"
   },
   "record": {
     "createdBy": "Creato da",
@@ -1819,5 +2009,73 @@
     "expiryBeginDate": "Expiry begin date",
     "expiryEndDate": "Expiry end date",
     "unassigned": "Unassigned"
+  },
+  "reference": {
+    "set": "Set reference",
+    "referenceSet": "The reference has been given successfully",
+    "count": {
+      "single": "(1 reference)",
+      "multi": "({count} references)"
+    },
+    "title": {
+      "search": "References",
+      "view": "Reference details",
+      "set": "Set new reference",
+      "edit": "Edit given reference"
+    },
+    "mobileTitle": {
+      "search": "References",
+      "view": "Reference details",
+      "set": "Set new reference",
+      "edit": "Edit given reference"
+    },
+    "direction": {
+      "direction": "Direction",
+      "received": "Received",
+      "given": "Given"
+    },
+    "level": {
+      "level": "Level",
+      "bad": "Bad",
+      "veryBad": "Very bad",
+      "good": "Good",
+      "veryGood": "Very good",
+      "neutral": "Neutral"
+    },
+    "from": "From",
+    "to": "To",
+    "notGiven": "Not given yet",
+    "value": "Value",
+    "allTime": "All time",
+    "last30Days": "Last 30 days",
+    "total": "Total",
+    "percentagePositive": "Percentage positive"
+  },
+  "product": {
+    "title": {
+      "list": "Assigned products",
+      "history": "Assigned products history"
+    },
+    "mobileTitle": {
+      "list": "Assigned products",
+      "history": "Assigned products history"
+    },
+    "assigned": {
+      "individual": "Products assigned individually to user",
+      "group": "Products assigned to user's group",
+      "groupSet": "Products assigned to group set"
+    },
+    "assign": "Assign",
+    "unassign": "Unassign",
+    "assignIndividualProduct": "Assign individual product",
+    "userAccount": "User account",
+    "product": "Product",
+    "action": "Action",
+    "productAssigned": "The product was assigned to the user",
+    "kind": {
+      "administrator": "Administrator",
+      "broker": "Broker",
+      "member": "Member"
+    }
   }
 }
