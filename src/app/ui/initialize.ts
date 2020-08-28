@@ -13,6 +13,7 @@ import { empty } from 'app/shared/helper';
 import { ALL_BREAKPOINTS } from 'app/core/layout.service';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * Sets the default values on the global configuration
@@ -26,6 +27,8 @@ function setupConfigurationDefaults() {
   Configuration.searchPageSizeXxs = 10;
   Configuration.searchPageSizeXs = 20;
   Configuration.searchPageSize = 40;
+  Configuration.translationLocales = I18n.locales();
+  Configuration.cacheTranslations = true;
   Configuration.menuBar = false;
   Configuration.homePage = {
     content: ContentGetter.url('content/home.html'),

@@ -4,6 +4,7 @@ import { CacheService } from 'app/core/cache.service';
 import { I18n } from 'app/i18n/i18n';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Configuration } from 'app/ui/configuration';
 
 /**
  * Handles loading of translation keys
@@ -47,7 +48,7 @@ export class I18nLoadingService {
     }
 
     // Figure out the locale to use, according to the available ones
-    const locales = I18n.locales();
+    const locales = Configuration.translationLocales;
     let locale: string;
     const withCountry = `${language}_${country}`;
     if (locales.includes(withCountry)) {
@@ -57,31 +58,43 @@ export class I18nLoadingService {
     } else {
       locale = 'en';
     }
-
-    // Get the translations file name and content hash for the actual locale
-    const fileName = I18n.fileName(locale);
-    const hash = I18n.contentHash(locale);
-
-    // Check the cached version
     const hashKey = `locale_hash_${locale}`;
-    const lastHash = this.cache.current(hashKey);
     const valuesKey = `locale_${locale}`;
-    if (lastHash === hash) {
-      // The cached value is ok
-      const cachedValue = this.cache.current(valuesKey);
-      this.setLocale(locale, cachedValue);
-      return of(this.i18n);
-    } else {
-      // We need to fetch the value
+
+    const doRequest = () => {
+      const url = typeof Configuration.translationUrl === 'string'
+        ? Configuration.translationUrl
+        : typeof Configuration.translationUrl === 'function'
+          ? Configuration.translationUrl(locale)
+          : `i18n/${I18n.fileName(locale)}?h=${I18n.contentHash(locale)}`;
       this.i18n.initialized$.next(false);
-      return this.http.get(`i18n/${fileName}?h=${hash}`).pipe(
+      return this.http.get(url).pipe(
         map(values => {
-          this.cache.set(hashKey, hash);
-          this.cache.set(valuesKey, values);
+          if (Configuration.cacheTranslations) {
+            this.cache.set(hashKey, I18n.contentHash(locale));
+            this.cache.set(valuesKey, values);
+          }
           this.setLocale(locale, values);
           return this.i18n;
         }),
       );
+    };
+
+    if (Configuration.cacheTranslations) {
+      // Check the cached version
+      const lastHash = this.cache.current(hashKey);
+      if (lastHash === I18n.contentHash(locale)) {
+        // The cached value is ok
+        const cachedValue = this.cache.current(valuesKey);
+        this.setLocale(locale, cachedValue);
+        return of(this.i18n);
+      } else {
+        // We need to fetch the value
+        return doRequest();
+      }
+    } else {
+      // No local cache is used
+      return doRequest();
     }
   }
 

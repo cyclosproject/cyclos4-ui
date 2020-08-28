@@ -78,6 +78,22 @@ export interface ConfigurationDefinitions {
   staticTranslations: any;
 
   /**
+   * Either a fixed URL or a function that returns the URL that should be used to load the
+   * translations of a given locale
+   */
+  translationUrl: string | ((locale: string) => string);
+
+  /**
+   * Locales available for translations
+   */
+  translationLocales: string[];
+
+  /**
+   * Whether translations should be cached on the local storage based on the compile-time hash
+   */
+  cacheTranslations: boolean;
+
+  /**
    * Some systems use an external site to login users, then redirect the client with
    * the session token to Cyclos. When that is the case, this is the URL which contains
    * the external login form.
