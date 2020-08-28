@@ -39,6 +39,7 @@ export interface BannerCard {
   /**
    * Custom class / classes to be added to the card.
    * Bootstrap 4 is used. Here are some examples:
+   * - 'plain-banner': No border, background, shadow and padding
    * - 'border-0': Disable border
    * - 'p-0': No padding
    * - 'background-dark': Dark background

@@ -11,9 +11,10 @@ import { NextRequestState } from 'app/core/next-request-state';
 import { setup } from 'app/ui/setup';
 import { empty } from 'app/shared/helper';
 import { ALL_BREAKPOINTS } from 'app/core/layout.service';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { I18n } from 'app/i18n/i18n';
+import { ContentPage } from 'app/ui/content/content-page';
 
 /**
  * Sets the default values on the global configuration
@@ -115,7 +116,12 @@ export function initialize(
 
     dataForUiHolder.onInitializing = dataForUi => {
       // Prepare the content pages before initializing
-      let contentPages = Configuration.contentPages ? Configuration.contentPages.contentPages(injector) : null;
+      let contentPages: ContentPage[] | Observable<ContentPage[]>;
+      if (Configuration.contentPages instanceof Array) {
+        contentPages = Configuration.contentPages;
+      } else if (Configuration.contentPages) {
+        contentPages = Configuration.contentPages.contentPages(injector);
+      }
       if (!contentPages) {
         contentPages = [];
       }

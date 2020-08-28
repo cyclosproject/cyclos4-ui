@@ -41,6 +41,13 @@
   }
 }
 
+.plain-banner {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  padding: 0;
+}
+
 .custom-content-container {
   display: flex;
   flex-direction: column;

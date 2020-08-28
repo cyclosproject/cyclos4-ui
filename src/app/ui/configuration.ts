@@ -9,6 +9,8 @@ import { WizardConfiguration } from 'app/ui/content/wizard-configuration';
 import { RecordConfiguration } from 'app/ui/content/record-configuration';
 import { ShortcutIconConfiguration } from 'app/ui/content/shortcut-icon-configuration';
 import { Breakpoint } from 'app/core/layout.service';
+import { BannerCard } from 'app/ui/content/banner-card';
+import { ContentPage } from 'app/ui/content/content-page';
 
 /**
  * The global configuration
@@ -125,12 +127,12 @@ export interface ConfigurationDefinitions {
   /**
    * The resolver for content pages
    */
-  contentPages: ContentPagesResolver;
+  contentPages: ContentPage[] | ContentPagesResolver;
 
   /**
    * The resolver for banners
    */
-  banners: BannerCardsResolver;
+  banners: BannerCard[] | BannerCardsResolver;
 
   /**
    * The absolute URL for the main map marker icon.

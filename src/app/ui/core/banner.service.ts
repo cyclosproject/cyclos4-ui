@@ -1,10 +1,10 @@
 import { Injectable, Injector } from '@angular/core';
+import { blank, empty as isEmpty } from 'app/shared/helper';
 import { Configuration } from 'app/ui/configuration';
 import { Banner } from 'app/ui/content/banner';
 import { BannerCard } from 'app/ui/content/banner-card';
 import { LoginService } from 'app/ui/core/login.service';
 import { MenuService } from 'app/ui/core/menu.service';
-import { blank, empty as isEmpty } from 'app/shared/helper';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject, EMPTY, forkJoin, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
@@ -39,8 +39,12 @@ export class BannerService {
   }
 
   initialize() {
-    const resolver = Configuration.banners;
-    const cards = resolver == null ? null : resolver.bannerCards(this.injector);
+    let cards: BannerCard[] | Observable<BannerCard[]>;
+    if (Configuration.banners instanceof Array) {
+      cards = Configuration.banners;
+    } else if (Configuration.banners) {
+      cards = Configuration.banners.bannerCards(this.injector);
+    }
     if (cards == null) {
       this.doInitialize([]);
     } else if (cards instanceof Array) {
