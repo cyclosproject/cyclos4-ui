@@ -19,22 +19,26 @@ A demo of the frontend can be seen at: https://demo-ui.cyclos.org/
 
 This frontend implements end-user functionality, as well as basic user administration / brokering and operator functionality. System administration functionality will always be performed in Cyclos' default web interface.
 
-As of version 1.2, this frontend implements the following functionality:
+As of version 2.0, this frontend implements the following functionality:
 
 - User access: login, logout, forgot password, login with expired password, login with pending agreements (no support for secondary access password / login confirmation);
 - Integration with a login form in an external system: receives a pre-created session token and is able to use external URLs for login page and after logout redirect;
+- Login / register with identity providers;
 - Account history, transfer details by own user, admin and broker;
 - Perform payment both to user and system, supports direct, scheduled and recurring payments, by own user, admin and broker;
 - Receive payment (POS);
-- Search scheduled / recurring / authorized payments, by own user, admin and broker;
+- Search scheduled payments, by own user, admin and broker;
+- Search payments awaiting my authorization and payment authorizations;
 - Search users (called business directory, as most systems only allow searching businesses);
 - View user profile, with actions;
 - Contact list;
 - Manage passwords (change, generate new, unblock, disable / enable and set the security answer) by own user, admin and broker;
 - Edit user / operator profile (images, basic / custom fields, phones, addresses and additional contact information) by own user, admin and broker;
 - User registration - public, by admin and by broker;
-- Search advertisements, advertisement details (no shopping cart or publish advertisements so far);
-- Access notifications, and receive push notifications;
+- Search / manage advertisements;
+- Webshop, ad questions, shopping cart, webshop settings, delivery methods;
+- Access notifications, settings and receive push notifications;
+- Voucher buying, redeeming, search;
 - Run custom operations (self, advertisements and transfers);
 - Settings (currently only for choosing the theme);
 - Access the broker's list of registered users by own broker and admin;
@@ -42,7 +46,14 @@ As of version 1.2, this frontend implements the following functionality:
 - Operators groups (list, create, edit and remove) by own user, admin and broker;
 - Change user / operator group by admin and broker;
 - Change user / operator status by admin and broker;
-- Overview of transfers, either by admin and broker.
+- Overview of transfers, either by admin and broker;
+- User alerts;
+- Manage user brokers (add / remove / set main / list brokers);
+- Connected users search / disconnect;
+- Manage tokens (user / operator) (list / block / unblock / assign / activate);
+- View shared / individual / process dynamic documents;
+- Receive QR payment;
+- User records.
 
 More functionality will be added in future versions.
 
@@ -56,6 +67,7 @@ More functionality will be added in future versions.
 
 The required Cyclos version depends on the frontend version:
 
+- Frontend 2.0 requires Cyclos 4.13 or up;
 - Frontend 1.1 / 1.2 requires Cyclos 4.12.1 or up;
 - Frontend 1.0 requires Cyclos 4.11.2 or up
 
@@ -90,10 +102,10 @@ The most important settings are the following:
 
 ```typescript
 export function setup() {
-  Configuration.apiRoot = 'api';
-  Configuration.appTitle = 'Cyclos';
-  Configuration.appTitleSmall = 'Cyclos frontend';
-  Configuration.appTitleMenu = 'Cyclos menu';
+  Configuration.apiRoot = "api";
+  Configuration.appTitle = "Cyclos";
+  Configuration.appTitleSmall = "Cyclos frontend";
+  Configuration.appTitleMenu = "Cyclos menu";
 }
 ```
 
@@ -106,6 +118,7 @@ There are plenty of configurations that can be set. Most of them are covered thr
 Before running the development server, edit the `proxy.json` file. The `/api` entry should point to your Cyclos backend server. It is not required to setup CORS in this case, as the development server will proxy requests.
 
 To start the development server, with hot reload, which should be accessible at http://localhost:4200/, run the following command:
+
 ```bash
 npm start
 ```
@@ -113,6 +126,7 @@ npm start
 ## Building
 
 Once you have the configuration set, you can build the user interface by typing:
+
 ```bash
 npm run build
 ```
@@ -120,6 +134,7 @@ npm run build
 After the build process (which can take a few minutes) you will have the `dist` directory containing the resources that should be deployed to your web server (Apache, Nginx, etc). The same process applies when updating to a new version of the frontend: just update your local copy, for example, with a `git pull` command, build again and re-deploy. Make sure that the folder is completely replaced, so no stale files are left.
 
 Angular assumes the application is deployed in the root path of your domain. For example, this is the case for `https://account.example.org`. If this is not the case, such as `https://www.example.org/path` you need to pass in the path name to Angular at compilation time, like:
+
 ```bash
 # Replace /path/ with your base path. Don't forget both leading and trailing slashes.
 npm run build -- --base-href /path/
@@ -132,7 +147,7 @@ Don't deploy code directly from the master branch to production, unless you know
 
 ---
 
-Angular, by default, uses `HTML5`'s [history.pushState](https://developer.mozilla.org/en-US/docs/Web/API/History_API#The_pushState()_method) method, which produces URLs with paths which are undistinguishable from regular nested paths, but without producing a new request. Besides producing natural URLs, this method allows future expansions, such as using [server-side rendering](https://angular.io/guide/universal).
+Angular, by default, uses `HTML5`'s [history.pushState](<https://developer.mozilla.org/en-US/docs/Web/API/History_API#The_pushState()_method>) method, which produces URLs with paths which are undistinguishable from regular nested paths, but without producing a new request. Besides producing natural URLs, this method allows future expansions, such as using [server-side rendering](https://angular.io/guide/universal).
 
 In order to correctly support the application, the server must also respond to deep links, even if they don't physically exist on the server. For example, if the frontend is deployed on `https://account.example.org`, and the user clicks on the pay user menu, he will see the URL `https://account.example.org/banking/payment`. However, there is no `banking/payment` directory in the generated folder (`dist`). Without specific configuration, clicking directly on that link, or refreshing the browser page while in this URL would present a `404` error page.
 
@@ -282,7 +297,7 @@ By default, the application logo is served from `src/images/logo.png`. You can e
 
 ```typescript
 export function setup() {
-  Configuration.logoUrl = 'https://www.example.com/images/logo.png';
+  Configuration.logoUrl = "https://www.example.com/images/logo.png";
 }
 ```
 
@@ -294,7 +309,9 @@ Here is an example for having a single shortcut icon:
 
 ```typescript
 export function setup() {
-  Configuration.shortcutIcons = [{ url: 'https://www.example.com/images/icon.png' }];
+  Configuration.shortcutIcons = [
+    { url: "https://www.example.com/images/icon.png" },
+  ];
 }
 ```
 
@@ -303,20 +320,32 @@ And here is a more complete example, with multiple icons:
 ```typescript
 export function setup() {
   Configuration.shortcutIcons = [
-    { size: 32, url: 'https://www.example.com/images/icon-32.png' },
-    { size: 64, url: 'https://www.example.com/images/icon-64.png' },
-    { size: 192, url: 'https://www.example.com/images/icon-192.png' },
-    { size: 512, url: 'https://www.example.com/images/icon-512.png' },
-    { size: 120, rel: 'apple-touch-icon', url: 'https://www.example.com/images/icon-120.png' },
-    { size: 152, rel: 'apple-touch-icon', url: 'https://www.example.com/images/icon-152.png' },
-    { size: 180, rel: 'apple-touch-icon', url: 'https://www.example.com/images/icon-180.png' }
+    { size: 32, url: "https://www.example.com/images/icon-32.png" },
+    { size: 64, url: "https://www.example.com/images/icon-64.png" },
+    { size: 192, url: "https://www.example.com/images/icon-192.png" },
+    { size: 512, url: "https://www.example.com/images/icon-512.png" },
+    {
+      size: 120,
+      rel: "apple-touch-icon",
+      url: "https://www.example.com/images/icon-120.png",
+    },
+    {
+      size: 152,
+      rel: "apple-touch-icon",
+      url: "https://www.example.com/images/icon-152.png",
+    },
+    {
+      size: 180,
+      rel: "apple-touch-icon",
+      url: "https://www.example.com/images/icon-180.png",
+    },
   ];
 }
 ```
 
 ### Layout breakpoints
 
-Cyclos uses [Bootstrap breakpoints](https://getbootstrap.com/docs/4.3/layout/overview/) with an additional one: 
+Cyclos uses [Bootstrap breakpoints](https://getbootstrap.com/docs/4.3/layout/overview/) with an additional one:
 
 - `xxs` for extra small devices, such as KaiOS's feature phones;
 - `xs` for portrait smart phones;
@@ -347,12 +376,13 @@ Overridding these values can be done in `src/app/setup.ts` file. It is guarantee
 ```typescript
 export function setup() {
   // Always show a small logo and start with the login page for mobile
-  Configuration.breakpoints['lt-md'] = {
-    logoUrl: 'https://www.example.com/images/logo-small.png',
-    landingPage: 'login'
+  Configuration.breakpoints["lt-md"] = {
+    logoUrl: "https://www.example.com/images/logo-small.png",
+    landingPage: "login",
   };
   // Also use a different logo for large desktops
-  Configuration.breakpoints['xl'].logoUrl = 'https://www.example.com/images/logo-large.png';
+  Configuration.breakpoints["xl"].logoUrl =
+    "https://www.example.com/images/logo-large.png";
 }
 ```
 
@@ -361,9 +391,9 @@ If your logo is already the full name of your project, you could also never show
 ```typescript
 export function setup() {
   // Always show the logo and no title
-  Configuration.breakpoints['gt-xxs'] = {
+  Configuration.breakpoints["gt-xxs"] = {
     logoUrl: Configuration.logoUrl,
-    title: 'none'
+    title: "none",
   };
 }
 ```
@@ -410,14 +440,14 @@ It is possible to customize the advertisements category icons and colors, which 
 export function setup() {
   // The key is the ad category internal name, the value defines the icon and color
   Configuration.adCategories = {
-    'community': { icon: 'people', color: '#2196f3' },
-    'food': { icon: 'restaurant', color: '#f04d4e' },
-    'goods': { icon: 'pages', color: '#ff9700' },
-    'housing': { icon: 'location_city', color: '#029487' },
-    'jobs': { icon: 'work', color: '#8062b3' },
-    'labor': { icon: 'business', color: '#de3eaa' },
-    'leisure': { icon: 'mood', color: '#687ebd' },
-    'services': { icon: 'room_service', color: '#8ec63f' }
+    community: { icon: "people", color: "#2196f3" },
+    food: { icon: "restaurant", color: "#f04d4e" },
+    goods: { icon: "pages", color: "#ff9700" },
+    housing: { icon: "location_city", color: "#029487" },
+    jobs: { icon: "work", color: "#8062b3" },
+    labor: { icon: "business", color: "#de3eaa" },
+    leisure: { icon: "mood", color: "#687ebd" },
+    services: { icon: "room_service", color: "#8ec63f" },
   };
 }
 ```
@@ -430,11 +460,11 @@ Similarly to advertisement categories, it is also possible to set a custom icon 
 export function setup() {
   // The key is the custom operation internal name, the value defines the icon
   Configuration.operations = {
-    operation1: { icon: 'format_paint' },
-    operation2: { icon: 'get_app' }
+    operation1: { icon: "format_paint" },
+    operation2: { icon: "get_app" },
   };
   // It is also possible to assign directly
-  Configuration.records.recordType1 = { icon: 'account_balance_wallet' };
+  Configuration.records.recordType1 = { icon: "account_balance_wallet" };
 }
 ```
 
@@ -443,7 +473,7 @@ export function setup() {
 The Cyclos frontend supports several kinds of content that can be customized:
 
 - The home page, shown for guests;
-- What is displayed  in the dashboard, which is the initial page for logged users;
+- What is displayed in the dashboard, which is the initial page for logged users;
 - Content pages, which are custom pages that show up in the menu;
 - Banners, shown on desktop layout.
 
@@ -469,7 +499,9 @@ Here is an example to setup the home page for guests pointing to a content page 
 export function setup() {
   // This example uses the full URL, assuming the Cyclos server has CORS enabled
   Configuration.homePage = {
-    content: ContentGetter.cyclosPage('https://my-cyclos-instance/web-rpc/menuEntry/menuItemDetails/124356723644')
+    content: ContentGetter.cyclosPage(
+      "https://my-cyclos-instance/web-rpc/menuEntry/menuItemDetails/124356723644"
+    ),
   };
 }
 ```
@@ -483,7 +515,7 @@ Custom content pages can be very useful for projects that want to add a manual, 
 To enable content pages you must create an implementation of the `ContentPagesResolver` interface, defined in `src/app/content/content-pages-resolver.ts`. It has a single method called `contentPages`, receiving the Angular injector reference (used to obtain shared services) and must return either a `ContentPage[]` or an observable of it. Then, in the `app/setup.ts` file, instantiate that class, like this:
 
 ```typescript
-import { ExampleContentPagesResolver } from 'app/content/example-content-pages-resolver';
+import { ExampleContentPagesResolver } from "app/content/example-content-pages-resolver";
 
 export function setup() {
   Configuration.contentPages = new ExampleContentPagesResolver();
@@ -508,7 +540,7 @@ Banners are shown in cards (boxes) below the left menu in the large layout. No b
 To use banners you must create an implementation of the `BannerCardsResolver` interface, defined in `src/app/content/banner-cards-resolver.ts`. It has a single method called `bannerCards`, receiving the Angular injector reference (used to obtain shared services) and must return either a `BannerCard[]` or an observable of it. Then, in the `app/setup.ts` file, create an instance of that class, like this:
 
 ```typescript
-import { ExampleBannerCardsResolver } from 'app/content/example-banner-cards-resolver';
+import { ExampleBannerCardsResolver } from "app/content/example-banner-cards-resolver";
 
 export function setup() {
   Configuration.banners = new ExampleBannerCardsResolver();
@@ -558,7 +590,7 @@ Generally projects need to customize a few aspects of the default dashboard, suc
 It is also possible to do a completely different dashboard, skipping the `DefaultDashboardResolver` class entirely. Finally, set your custom `DashboardResolver` instance like this:
 
 ```typescript
-import { CustomDashboardResolver } from 'app/custom-dashboard-resolver';
+import { CustomDashboardResolver } from "app/custom-dashboard-resolver";
 
 export function setup() {
   Configuration.dashboard = new CustomDashboardResolver();
@@ -605,10 +637,10 @@ For pages that are included within iframes using `ContentGetter.iframe(url)`, a 
 Then, the corresponding style:
 
 ```css
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,500');
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,500");
 
 body {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-size: 0.875rem;
   color: #333333;
   background-color: white;
@@ -625,7 +657,8 @@ body.dark {
   padding: 0;
 }
 
-a:link, a:visited {
+a:link,
+a:visited {
   color: #1e88e5;
   text-decoration: none;
 }
@@ -633,10 +666,12 @@ a:hover {
   text-decoration: underline;
 }
 
-h1, h2, h3, b {
+h1,
+h2,
+h3,
+b {
   font-weight: 500;
 }
-
 ```
 
 ### Creating links to other pages
@@ -658,10 +693,10 @@ This application doesn't uses [Angular's built-in I18N](https://angular.io/guide
 Most systems are single language. In that case, it is recommended to set the translations value statically, so a separated request to fetch the translations is not needed. This is configured in `src/app/setup.ts`. Here is an example for the English translation:
 
 ```typescript
-import TranslationValues from 'i18n/i18n.json';
+import TranslationValues from "i18n/i18n.json";
 
 export function setup() {
-  Configuration.staticLocale = 'en';
+  Configuration.staticLocale = "en";
   Configuration.staticTranslations = TranslationValues;
 }
 ```
@@ -669,10 +704,10 @@ export function setup() {
 And here is an example for the Brazilian Portuguese translation:
 
 ```typescript
-import TranslationValues from 'i18n/i18n.pt_BR.json';
+import TranslationValues from "i18n/i18n.pt_BR.json";
 
 export function setup() {
-  Configuration.staticLocale = 'pt_BR';
+  Configuration.staticLocale = "pt_BR";
   Configuration.staticTranslations = TranslationValues;
 }
 ```
@@ -695,9 +730,9 @@ These aspects are configured in the `src/app/setup.ts` file, like in this exampl
 
 ```typescript
 export function setup() {
-  const externalRoot = 'https://www.mysystem.com';
+  const externalRoot = "https://www.mysystem.com";
   Configuration.externalLoginUrl = `${externalRoot}/login`;
-  Configuration.externalLoginParam = 'page';
+  Configuration.externalLoginParam = "page";
   Configuration.afterLogoutUrl = externalRoot;
   Configuration.redirectGuests = externalRoot;
 }
@@ -726,16 +761,13 @@ A KaiOS application is just a web page that also has a manifest, that is, a desc
     "name": "STRO - Social Trade Organisation",
     "url": "https://www.socialtrade.org"
   },
-  "installs_allowed_from": [
-    "*"
-  ],
-  "orientation": [
-    "landscape-primary"
-  ]
+  "installs_allowed_from": ["*"],
+  "orientation": ["landscape-primary"]
 }
 ```
 
 If you're serving the application in a subpath, adjust the URLs accordingly:
+
 ```json
 {
   "launch_path": "/ui/",
