@@ -193,7 +193,7 @@
     "banking.pos": "Recibir pago",
     "banking.scheduledPayments": "Pagos agendados",
     "banking.authorizations": "Pagos con autorización",
-    "banking.transfersOverview": "Visión general de Transferencias",
+    "banking.transfersOverview": "Vista general de Transferencias",
     "operators": "Operadores",
     "operators.operators": "Operadores",
     "operators.register": "Registrar operador",
@@ -498,7 +498,7 @@
       "details.transfer": "Detalle de la transferencia",
       "parentTransfer": "Transferencia principal",
       "childTransfers": "Transferencias generadas",
-      "transfersOverview": "Visión general de Transferencias"
+      "transfersOverview": "Vista general de Transferencias"
     },
     "mobileTitle": {
       "pos": "Recibir pago",
@@ -523,7 +523,7 @@
       "details.transfer": "Transferencia",
       "parentTransfer": "Transferencia original",
       "childTransfers": "Transferencias generadas",
-      "transfersOverview": "Visión general de Transferencias"
+      "transfersOverview": "Vista general de Transferencias"
     },
     "viewAuthorizations": "Ver autorizaciones",
     "viewThisTransfer": "Ver transferencia",
