@@ -90,7 +90,7 @@
         "mar": "Mär",
         "apr": "Apr",
         "may": "Mai",
-        "jun": "Juni",
+        "jun": "Jun",
         "jul": "Jul",
         "aug": "Aug",
         "sep": "Sep",
@@ -101,13 +101,13 @@
     },
     "weekday": {
       "min": {
-        "sun": "Son",
-        "mon": "Mon",
+        "sun": "So",
+        "mon": "Mo",
         "tue": "Die",
-        "wed": "Mit",
-        "thu": "Don",
-        "fri": "Fre",
-        "sat": "Sam"
+        "wed": "Mi",
+        "thu": "Do",
+        "fri": "Fr",
+        "sat": "Sa"
       }
     },
     "range": {
@@ -162,7 +162,7 @@
       "invalid": "Die angegebene Sicherheitsantwort ist ungültig",
       "disabled": "Durch Überschreiten der Anzahl der Sicherheitsfragen wurde diese Anfrage abgebrochen. Bitte kontaktieren Sie die Administration"
     },
-    "illegalAction": "Die Aktion, die Sie versucht haben durchzuführen ist ungültig",
+    "illegalAction": "Die Aktion, die Sie versucht haben durchzuführen, ist ungültig",
     "field": {
       "invalid": "Dieses Feld ist ungültig",
       "required": "Dieses Feld ist erforderlich",
@@ -171,7 +171,7 @@
       "number": "Ungültiger Zahlenwert",
       "date": "Ungültiges Datum",
       "minDate": "Sollte {min} oder später sein",
-      "maxDate": "Sollte {max} oder vor sein"
+      "maxDate": "Sollte {max} oder vorher sein"
     },
     "geolocation": {
       "denied": "Keine Berechtigung, den aktuellen Standort zu erhalten. Bitte erteilen Sie diese Berechtigung in Ihrem Browser.",
@@ -231,7 +231,7 @@
     "confirmationMessage": "Geben Sie Ihren {passwordType} an, um diesen Vorgang zu bestätigen",
     "confirm.noPassword": "Um zu bestätigen, brauchen Sie einen {passwordType}, aber Sie haben keinen",
     "confirm.mode": "Bestätigen mit",
-    "confirm.mode.device": "Smartphone",
+    "confirm.mode.device": "Mobiltelefon",
     "confirm.mode.password": "Passwort",
     "confirm.device.active": "Um zu bestätigen, scannen Sie diesen QR-Code mit Ihrem Smartphone ein",
     "confirm.device.none": "Um zu bestätigen, müssen Sie ein vertrauenswürdiges Mobiltelefon haben, aber Sie haben keines",
@@ -380,7 +380,7 @@
     "availableBalance": "Verfügbares Guthaben",
     "negativeLimit": "Negatives Limit",
     "positiveLimit": "Positives Limit",
-    "balanceOn": "Kontostand an {date}",
+    "balanceOn": "Kontostand am {date}",
     "totalIncome": "Gesamt empfangen",
     "totalOutflow": "Gesamt bezahlt",
     "netInflow": "Nettoeinnahmen",
@@ -433,7 +433,7 @@
     "scheduling.recurring": "Monatlich wiederholen",
     "schedulingStatus": {
       "direct": "Direkte Zahlung",
-      "scheduledToDate": "Geplant an {date}",
+      "scheduledToDate": "Geplant am {date}",
       "openInstallments": "{count} Raten, nächste am {dueDate}",
       "closedInstallments": "{count} Raten",
       "closedRecurring": "Wiederkehrende Zahlung geschlossen",
@@ -611,7 +611,7 @@
       "image": "Profilbild",
       "images": "Profilbilder",
       "fields": "Profilfelder",
-      "phones": "Smartphones",
+      "phones": "Telefone",
       "addresses": "Adressen",
       "contactInfos": "Zusätzliche Kontakte",
       "confirmation": "Bestätigung",
@@ -635,7 +635,7 @@
       "image": "Profilbild",
       "images": "Profilbilder",
       "fields": "Profilfelder",
-      "phones": "Smartphone",
+      "phones": "Telefone",
       "addresses": "Adressen",
       "contactInfos": "Zusätzliche Kontakte",
       "confirmation": "Bestätigung",
@@ -674,7 +674,7 @@
     "address.remove": "Diese Adresse entfernen",
     "address.none": "Es gibt derzeit keine Adressen",
     "phone.add": "Telefon hinzufügen",
-    "phone.add.mobile": "Smartphone hinzufügen",
+    "phone.add.mobile": "Mobiltelefon hinzufügen",
     "phone.add.landLine": "Festnetztelefon hinzufügen",
     "phone.remove": "Dieses Telefon entfernen",
     "phone.none": "Derzeit gibt es keine Telefone",
@@ -694,14 +694,14 @@
     "creationBegin": "Registriert nach",
     "creationEnd": "Registriert vor",
     "profile": {
-      "noPermission": "Sie haben keine Berechtigung, das Profil dieses Nutzenden anzuzeigen",
+      "noPermission": "Sie haben keine Berechtigung, das Profil dieses Nutzenden zu sehen",
       "showActions": "Aktionen anzeigen",
       "hideActions": "Aktionen ausblenden",
       "banking": "Bankwesen",
       "management": "Management",
       "edit": "Profil bearbeiten",
       "managePasswords": "Passwörter verwalten",
-      "addContact": "Zu meinen Kontakte hinzufügen",
+      "addContact": "Zu meinen Kontakten hinzufügen",
       "addContact.done": "{user} wurde zu Ihrer Kontaktliste hinzugefügt",
       "removeContact": "Aus meinen Kontakten entfernen",
       "removeContact.done": "{user} wurde aus Ihrer Kontaktliste entfernt",
@@ -728,7 +728,7 @@
       "password.assign": "Passwort zuweisen",
       "password.forceChange": "Nutzende zum Ändern zwingen",
       "active.public": "Sie wurden erfolgreich registriert, Ihr Konto ist jetzt aktiv.",
-      "inactive.public": "Ihr Konto wurde erfolgreich erstellt.<br>Sie müssen jedoch von der Administration aktiviert werden.<br>Sie werden benachrichtigt, wenn Ihr Konto aktiv ist.",
+      "inactive.public": "Ihr Konto wurde erfolgreich erstellt.<br>Sie müssen jedoch noch von der Administration aktiviert werden.<br>Sie werden benachrichtigt, wenn Ihr Konto aktiv ist.",
       "pending.public": "Ihre Registrierung wurde abgeschickt und muss überprüft werden.<br>Sie sollten in Kürze eine E-Mail mit Anweisungen zur Aktivierung Ihres Kontos erhalten.<br>Wenn Sie die E-Mail nicht erhalten, überprüfen Sie Ihren Spam-/Junk-Ordner.",
       "active.manager": "Das Nutzerkonto für {user} wurde aktiviert.",
       "inactive.manager": "Der Nutzende {user} wurde registriert, muss jedoch noch durch die Administration aktiviert werden.",
@@ -856,12 +856,12 @@
     }
   },
   "phone": {
-    "mobile": "Smartphone",
+    "mobile": "Mobiltelefon",
     "landLine": "Festnetztelefon",
-    "name.mobile": "Smartphone Name",
+    "name.mobile": "Name Mobiltelefon",
     "name.landLine": "Festnetztelefon Name",
     "number": "Nummer",
-    "number.mobile": "Smartphone Nummer",
+    "number.mobile": "Mobiltelefon Nummer",
     "number.landLine": "Festnetztelefon Nummer",
     "phoneNumber": "Telefonnummer",
     "extension": "Festnetz Durchwahl",
