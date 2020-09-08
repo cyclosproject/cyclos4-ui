@@ -267,7 +267,7 @@
     "banking.paymentRequests": "Solicitud de pago",
     "banking.paymentRequestsOverview": "Vista general de solicitudes de pago",
     "banking.searchVouchers": "Buscar cupones",
-    "banking.generateVouchers": "Generate vouchers",
+    "banking.generateVouchers": "Generar cupones",
     "banking.buyVouchers": "Comprar cupones",
     "banking.boughtVouchers": "Ver comprados",
     "banking.redeemVoucher": "Canjear cupón",
@@ -878,8 +878,8 @@
       "redeem": "Canjear cupón",
       "redeemed": "Cupones canjeados",
       "search": "Buscar cupones",
-      "generate": "Generate vouchers",
-      "generateConfirmation": "Generate confirmation"
+      "generate": "Generar cupones",
+      "generateConfirmation": "Generar confirmación"
     },
     "title": {
       "buy": "Comprar cupones",
@@ -888,8 +888,8 @@
       "redeem": "Canjear cupón",
       "redeemed": "Cupones canjeados",
       "search": "Buscar cupones",
-      "generate": "Generate vouchers",
-      "generateConfirmation": "Generate confirmation"
+      "generate": "Generar cupones",
+      "generateConfirmation": "Generar confirmación"
     },
     "boughtType": "Comprado",
     "generatedType": "Generado",
@@ -902,7 +902,7 @@
       "payment": "Transacción de compra"
     },
     "generate": {
-      "done": "The voucher(s) has been generated."
+      "done": "Los cupones han sido generados"
     },
     "originAccount": "Cuenta de origen",
     "numberOfVouchers": "Cantidad de cupones",
@@ -1862,7 +1862,7 @@
     "alreadyExecuted": "Este paso ya fue ejecutado",
     "emailVerificationCode": "Código de verificación por e-mail",
     "smsVerificationCode": "Código de verificación por SMS",
-    "codeSent": "Code sent"
+    "codeSent": "Código enviado"
   },
   "setting": {
     "title": "Ajustes",
