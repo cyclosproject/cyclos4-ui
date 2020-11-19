@@ -1,26 +1,31 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import {
-  AccountType, AccountWithOwner, AdminMenuEnum, Auth, DataForUi, Operation,
+  AccountType, AccountWithOwner, AdminMenuEnum, DataForFrontend,
+
+  FrontendMenuEnum, Operation,
   RecordLayoutEnum, RecordPermissions, RecordType, RoleEnum, Transfer, User,
+  UserLocale,
   UserMenuEnum, UserRelationshipEnum, VouchersPermissions, Wizard
 } from 'app/api/models';
 import { UsersService } from 'app/api/services/users.service';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { CacheService } from 'app/core/cache.service';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
+import { NextRequestState } from 'app/core/next-request-state';
 import { StateManager } from 'app/core/state-manager';
+import { SvgIcon } from 'app/core/svg-icon';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
-import { toFullUrl, truthyAttr } from 'app/shared/helper';
-import { Configuration } from 'app/ui/configuration';
+import { empty, toFullUrl, truthyAttr } from 'app/shared/helper';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
-import { ContentService } from 'app/ui/core/content.service';
 import { LoginService } from 'app/ui/core/login.service';
 import { OperationHelperService } from 'app/ui/core/operation-helper.service';
 import { RecordHelperService } from 'app/ui/core/records-helper.service';
+import { TokenHelperService } from 'app/ui/core/token-helper.service';
+import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 import { WizardHelperService } from 'app/ui/core/wizard-helper.service';
 import { ActiveMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/ui/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -29,6 +34,7 @@ import { filter, map } from 'rxjs/operators';
 enum NavigateAction {
   Url,
   Logout,
+  Locale
 }
 
 /**
@@ -80,40 +86,33 @@ export class MenuService {
 
   constructor(
     private i18n: I18n,
-    private injector: Injector,
-    private dataForUiHolder: DataForUiHolder,
+    private dataForFrontendHolder: DataForFrontendHolder,
     i18nLoading: I18nLoadingService,
     private router: Router,
     private login: LoginService,
     private breadcrumb: BreadcrumbService,
     private stateManager: StateManager,
     private bankingHelper: BankingHelperService,
-    private content: ContentService,
     private operationHelper: OperationHelperService,
     private wizardHelper: WizardHelperService,
     private recordHelper: RecordHelperService,
     private authHelper: AuthHelperService,
+    private tokenHelper: TokenHelperService,
     private cache: CacheService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private uiLayout: UiLayoutService,
+    private nextRequestState: NextRequestState
   ) {
-    const initialDataForUi = this.dataForUiHolder.dataForUi;
-    const initialAuth = (initialDataForUi || {}).auth;
 
-    // If initially with a DataForUi instance and using static locale
-    if (initialDataForUi != null && i18nLoading.isStatic) {
-      this._fullMenu.next(this.buildFullMenu(initialAuth));
-    }
-
-    // Whenever the authenticated user changes, reload the menu
-    const buildMenu = (dataForUi: DataForUi) => {
+    // Whenever the authenticated user, translations or content pages changes, reload the menu
+    const buildMenu = (dataForFrontend: DataForFrontend) => {
       if (this.i18n.initialized$.value) {
-        const auth = (dataForUi || {}).auth;
-        this._fullMenu.next(this.buildFullMenu(auth));
+        this._fullMenu.next(this.buildFullMenu((dataForFrontend || {})));
         this._activeMenu.next(null);
       }
     };
-    dataForUiHolder.subscribe(buildMenu);
-    i18nLoading.subscribeForLocale(() => buildMenu(dataForUiHolder.dataForUi));
+    dataForFrontendHolder.subscribe(buildMenu);
+    i18nLoading.subscribeForLocale(() => buildMenu(dataForFrontendHolder.dataForFrontend));
 
     // Whenever we navigate back to home, update the active menu to match
     router.events.pipe(
@@ -146,11 +145,17 @@ export class MenuService {
    */
   navigate(params: NavigateParams) {
     let action = NavigateAction.Url;
+    let locale: UserLocale;
     let url: string;
 
     if ((params.menu && params.menu.menu === Menu.LOGOUT)
       || params.entry && params.entry.menu === Menu.LOGOUT) {
+      // Logout
       action = NavigateAction.Logout;
+    } else if (params.entry?.locale) {
+      // Switch locale
+      action = NavigateAction.Locale;
+      locale = params.entry.locale;
     } else if (params.url) {
       // An URL was given. Attempt to find a matching entry
       url = toFullUrl(params.url);
@@ -193,6 +198,8 @@ export class MenuService {
     // Perform the action
     if (action === NavigateAction.Logout) {
       this.login.logout();
+    } else if (action === NavigateAction.Locale) {
+      this.authHelper.setLocale(locale);
     } else if (url && url.startsWith('http')) {
       // An absolute URL
       const absoluteRoot = toFullUrl('/');
@@ -202,6 +209,7 @@ export class MenuService {
         this.router.navigateByUrl(url, { replaceUrl: !!params.replaceUrl });
       } else {
         // Is an external link - all we can do is assign the location
+        this.nextRequestState.willExternalRedirect();
         location.assign(url);
       }
     } else if (url) {
@@ -246,11 +254,17 @@ export class MenuService {
       menu = new ActiveMenu(Menu.HOME);
     }
     this._activeMenu.next(menu);
+
+    // Update the visible banners as well
+    const activeMenu = menu;
+    this.uiLayout.banners = this.dataForFrontendHolder.banners.filter(b => empty(b.menus)
+      || b.menus.find(m => this.menuMatchesEnum(activeMenu.menu, m)));
+
   }
 
   private updateBodyClasses(menu: Menu) {
     const classes = document.body.classList;
-    RootMenu.values().forEach(root => {
+    Object.values(RootMenu).forEach(root => {
       const current = `${root}-menu`;
       if (menu && menu.root === root) {
         if (!classes.contains(current)) {
@@ -501,7 +515,7 @@ export class MenuService {
    * Returns the home menu, which is `Menu.HOME` for guests, or `Menu.DASHBOARD` for logged users.
    */
   homeMenu(): Menu {
-    return this.dataForUiHolder.user ? Menu.DASHBOARD : Menu.HOME;
+    return this.dataForFrontendHolder.user ? Menu.DASHBOARD : Menu.HOME;
   }
 
   /**
@@ -543,7 +557,7 @@ export class MenuService {
     }
 
     // Determine the relationship between the user and the logged user
-    const role = this.dataForUiHolder.role;
+    const role = this.dataForFrontendHolder.role;
     if (role == null) {
       return Menu.PUBLIC_DIRECTORY;
     } else if (role === RoleEnum.BROKER) {
@@ -552,7 +566,7 @@ export class MenuService {
         return Menu.MY_BROKERED_USERS;
       }
       // Broker is a problematic case, because the relation between the logged user may be either of manager or regular
-      return this.cache.get(`broker_${this.dataForUiHolder.user.id}_${user.id}`, () => {
+      return this.cache.get(`broker_${this.dataForFrontendHolder.user.id}_${user.id}`, () => {
         return this.usersService
           .viewUser({ user: user.id, fields: ['relationship'] })
           .pipe(
@@ -576,7 +590,7 @@ export class MenuService {
    */
   transferMenu(transfer: Transfer, accountId?: string) {
     if (accountId) {
-      const auth = this.dataForUiHolder.auth || {};
+      const auth = this.dataForFrontendHolder.auth || {};
       const permissions = auth.permissions || {};
       const banking = permissions.banking || {};
       const accounts = banking.accounts || [];
@@ -623,8 +637,7 @@ export class MenuService {
     let menu: Menu;
     if (general) {
       // General records search
-      const dataForUi = this.dataForUiHolder.dataForUi;
-      const auth = dataForUi.auth || {};
+      const auth = this.dataForFrontendHolder.auth || {};
       menu = auth.role === RoleEnum.BROKER ? Menu.SEARCH_RECORDS_BROKERING : Menu.SEARCH_RECORDS_MARKETPLACE;
     } else if (type.adminMenu) {
       // System record type
@@ -651,16 +664,60 @@ export class MenuService {
   }
 
   /**
+   * Returns whethere a given frontend menu matches the API menu enum
+   */
+  menuMatchesEnum(menu: Menu, menuEnum: FrontendMenuEnum) {
+    if (menuEnum === FrontendMenuEnum.USERS) {
+      // Special case: match the user-related pages in the marketplace root menu
+      return menu === Menu.SEARCH_USERS;
+    }
+    return this.rootMenuForEnum(menuEnum) === menu.root;
+  }
+
+  /**
+   * Returns the RootMenu for a given FrontendMenu
+   */
+  rootMenuForEnum(menu: FrontendMenuEnum) {
+    switch (menu) {
+      case FrontendMenuEnum.BANKING:
+        return RootMenu.BANKING;
+      case FrontendMenuEnum.BROKERING:
+        return RootMenu.BROKERING;
+      case FrontendMenuEnum.CONTENT:
+        return RootMenu.CONTENT;
+      case FrontendMenuEnum.DASHBOARD:
+        return RootMenu.DASHBOARD;
+      case FrontendMenuEnum.HOME:
+        return RootMenu.HOME;
+      case FrontendMenuEnum.LOGIN:
+        return RootMenu.LOGIN;
+      case FrontendMenuEnum.MARKETPLACE:
+      case FrontendMenuEnum.USERS:
+        return RootMenu.MARKETPLACE;
+      case FrontendMenuEnum.OPERATORS:
+        return RootMenu.OPERATORS;
+      case FrontendMenuEnum.PERSONAL:
+        return RootMenu.PERSONAL;
+      case FrontendMenuEnum.PUBLIC_DIRECTORY:
+        return RootMenu.PUBLIC_DIRECTORY;
+      case FrontendMenuEnum.PUBLIC_MARKETPLACE:
+        return RootMenu.PUBLIC_MARKETPLACE;
+      case FrontendMenuEnum.REGISTRATION:
+        return RootMenu.REGISTRATION;
+    }
+  }
+
+  /**
    * Build the full menu structure from the given authentication
    */
-  private buildFullMenu(maybeNullAuth: Auth): RootMenuEntry[] {
-    const contentPages = this.content.contentPages;
+  private buildFullMenu(data: DataForFrontend): RootMenuEntry[] {
+    const contentPages = data.pages || [];
 
-    const auth = maybeNullAuth || {};
+    const auth = data.dataForUi.auth || {};
     const role = auth == null ? null : auth.role;
     const permissions = auth.permissions || {};
     const user = auth.user;
-    const restrictedAccess = auth.expiredPassword || auth.pendingAgreements;
+    const restrictedAccess = this.authHelper.restrictedAccess;
     const users = permissions.users || {};
     const marketplace = permissions.marketplace || {};
     const operations = permissions.operations || {};
@@ -670,29 +727,29 @@ export class MenuService {
 
     const roots = new Map<RootMenu, RootMenuEntry>();
     // Lambda that adds a root menu
-    const addRoot = (root: RootMenu, icon: string, label: string, title: string = null, showIn: MenuType[] = null) => {
+    const addRoot = (root: RootMenu, icon: SvgIcon | string, label: string, title: string = null, showIn: MenuType[] = null) => {
       const entry = new RootMenuEntry(root, icon, label, title, showIn);
       roots.set(root, entry);
       return entry;
     };
     // Create the root menu entries
-    const home = addRoot(RootMenu.HOME, 'home', this.i18n.menu.home, null);
-    const dashboard = addRoot(RootMenu.DASHBOARD, 'dashboard', this.i18n.menu.dashboard, null);
-    const publicDirectory = addRoot(RootMenu.PUBLIC_DIRECTORY, 'group', this.i18n.menu.marketplaceDirectory);
-    const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE, 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
-    addRoot(RootMenu.BANKING, 'account_balance', this.i18n.menu.banking);
-    addRoot(RootMenu.OPERATORS, 'supervisor_account', this.i18n.menu.operators);
-    addRoot(RootMenu.BROKERING, 'assignment_ind', this.i18n.menu.brokering);
-    const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.i18n.menu.marketplace);
-    const content = addRoot(RootMenu.CONTENT, 'information', this.i18n.menu.content);
-    addRoot(RootMenu.PERSONAL, 'account_box', this.i18n.menu.personal, null, [MenuType.SIDENAV, MenuType.BAR, MenuType.SIDE]);
-    const register = addRoot(RootMenu.REGISTRATION, 'registration', this.i18n.menu.register, null, [MenuType.SIDENAV]);
-    const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.i18n.menu.login, null, [MenuType.SIDENAV]);
-    const logout = addRoot(RootMenu.LOGOUT, 'logout', this.i18n.menu.logout, null, []);
+    const home = addRoot(RootMenu.HOME, SvgIcon.HouseDoor, this.i18n.menu.home, null);
+    const dashboard = addRoot(RootMenu.DASHBOARD, SvgIcon.Grid, this.i18n.menu.dashboard, null);
+    const publicDirectory = addRoot(RootMenu.PUBLIC_DIRECTORY, SvgIcon.People, this.i18n.menu.marketplaceDirectory);
+    const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE, SvgIcon.Shop, this.i18n.menu.marketplaceAdvertisements);
+    addRoot(RootMenu.BANKING, SvgIcon.Wallet2, this.i18n.menu.banking);
+    addRoot(RootMenu.OPERATORS, SvgIcon.PersonCircleOutline, this.i18n.menu.operators);
+    addRoot(RootMenu.BROKERING, SvgIcon.PersonSquareOutline, this.i18n.menu.brokering);
+    const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, SvgIcon.Shop, this.i18n.menu.marketplace);
+    const content = addRoot(RootMenu.CONTENT, SvgIcon.FileText, this.i18n.menu.content);
+    addRoot(RootMenu.PERSONAL, SvgIcon.Person, this.i18n.menu.personal, null, [MenuType.SIDENAV, MenuType.BAR, MenuType.SIDE]);
+    const register = addRoot(RootMenu.REGISTRATION, SvgIcon.PersonPlus, this.i18n.menu.register, null, [MenuType.SIDENAV]);
+    const login = addRoot(RootMenu.LOGIN, SvgIcon.BoxArrowInRight, this.i18n.menu.login, null, [MenuType.SIDENAV]);
+    const logout = addRoot(RootMenu.LOGOUT, SvgIcon.BoxArrowRight, this.i18n.menu.logout, null, []);
 
     // Lambda that adds a submenu to a root menu
     const add = (
-      menu: Menu | ActiveMenu, url: string, icon: string, label: string,
+      menu: Menu | ActiveMenu, url: string, icon: SvgIcon | string, label: string,
       showIn: MenuType[] = null, urlHandler: () => string = null): MenuEntry => {
       const entry = new MenuEntry(menu, url, icon, label, showIn, urlHandler);
       const root = roots.get(entry.menu.root);
@@ -706,13 +763,14 @@ export class MenuService {
         return;
       }
       const pages = (contentPages || []).filter(p => {
-        return p.rootMenu === menu.root && p.isVisible(auth, this.injector);
+        return this.rootMenuForEnum(p.menu) === menu.root;
       });
       for (const page of pages) {
+        const slug = ApiHelper.internalNameOrId(page);
         const activeMenu = new ActiveMenu(menu, {
-          contentPage: page.slug,
+          contentPage: slug,
         });
-        add(activeMenu, `/page/${page.slug}`, page.icon, page.label);
+        add(activeMenu, `/page/${slug}`, page.svgIcon || SvgIcon.FileText, page.name);
       }
       return pages;
     };
@@ -822,21 +880,32 @@ export class MenuService {
       // No menus in restricted access
     } else if (user == null) {
       // Guest
-      add(Menu.HOME, '/', home.icon, home.label);
+      add(Menu.HOME, '/', SvgIcon.HouseDoor, home.label);
       if (users.search || users.map) {
-        add(Menu.PUBLIC_DIRECTORY, '/users/search', publicDirectory.icon, publicDirectory.label);
+        add(Menu.PUBLIC_DIRECTORY, '/users/search', SvgIcon.People, publicDirectory.label);
       }
       if (marketplace.userSimple.view || marketplace.userWebshop.view) {
-        add(Menu.PUBLIC_MARKETPLACE, '/marketplace/search', publicMarketplace.icon, publicMarketplace.label);
+        add(Menu.PUBLIC_MARKETPLACE, '/marketplace/search', SvgIcon.Shop, publicMarketplace.label);
       }
-      const registrationGroups = (this.dataForUiHolder.dataForUi || {}).publicRegistrationGroups || [];
+      const locales = data.dataForUi.allowedLocales || [];
+      if (locales.length > 1) {
+        // Add a language switcher
+        const languages = addRoot(RootMenu.LANGUAGE, SvgIcon.ChatText, this.i18n.menu.language);
+        locales.forEach(locale => {
+          const switchLocale = add(Menu.LANGUAGE, '', null, locale.name);
+          switchLocale.locale = locale;
+        });
+        languages.dropdown = true;
+      }
+      const registrationGroups = data.dataForUi.publicRegistrationGroups || [];
       if (registrationGroups.length > 0) {
-        add(Menu.PUBLIC_REGISTRATION, '/users/registration', register.icon, register.label);
+        add(Menu.PUBLIC_REGISTRATION, '/users/registration', SvgIcon.PersonPlus, register.label);
       }
-      add(Menu.LOGIN, Configuration.externalLoginUrl || '/login', login.icon, login.label);
+      const externalLoginUrl = this.dataForFrontendHolder.dataForFrontend.externalLoginUrl;
+      add(Menu.LOGIN, externalLoginUrl || '/login', SvgIcon.BoxArrowInRight, login.label);
     } else {
       // Logged user
-      add(Menu.DASHBOARD, '/', dashboard.icon, dashboard.label);
+      add(Menu.DASHBOARD, '/', SvgIcon.Grid, dashboard.label);
 
       const banking = permissions.banking || {};
       const contacts = permissions.contacts || {};
@@ -845,100 +914,105 @@ export class MenuService {
       // Banking
       const owner = role === RoleEnum.ADMINISTRATOR ? ApiHelper.SYSTEM : ApiHelper.SELF;
       const accountTypes = this.bankingHelper.ownerAccountTypes();
-      if (accountTypes.length > 0) {
+      if (accountTypes.length >= ApiHelper.MIN_ACCOUNTS_FOR_SUMMARY) {
+        add(Menu.ACCOUNTS_SUMMARY, `/banking/${owner}/accounts-summary`, SvgIcon.Wallet2, this.i18n.menu.bankingAccountsSummary);
+      } else if (accountTypes.length > 0) {
         for (const type of accountTypes) {
           const activeMenu = new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType: type });
-          const label = auth.role !== RoleEnum.ADMINISTRATOR && accountTypes.length === 1 ? this.i18n.menu.bankingAccount : type.name;
-          add(activeMenu, `/banking/${owner}/account/${ApiHelper.internalNameOrId(type)}`, 'account_balance', label);
+          add(activeMenu, `/banking/${owner}/account/${ApiHelper.internalNameOrId(type)}`, SvgIcon.Wallet2, type.name);
         }
       }
       const payments = banking.payments || {};
       if (payments.user) {
-        add(Menu.PAYMENT_TO_USER, `/banking/${owner}/payment`, 'account_balance_wallet', this.i18n.menu.bankingPayUser);
+        add(Menu.PAYMENT_TO_USER, `/banking/${owner}/payment`, SvgIcon.Wallet2ArrowRight, this.i18n.menu.bankingPayUser);
       }
       if (payments.self) {
-        add(Menu.PAYMENT_TO_SELF, `/banking/${owner}/payment/self`, 'account_balance_wallet', this.i18n.menu.bankingPaySelf);
+        add(Menu.PAYMENT_TO_SELF, `/banking/${owner}/payment/self`, SvgIcon.Wallet2ArrowRight, this.i18n.menu.bankingPaySelf);
       }
       if (payments.system) {
-        add(Menu.PAYMENT_TO_SYSTEM, `/banking/${owner}/payment/system`, 'account_balance_wallet', this.i18n.menu.bankingPaySystem);
-      }
-      if (payments.pos) {
-        add(Menu.POS, `/banking/pos`, 'payment', this.i18n.menu.bankingPos);
-      }
-      const paymentRequests = banking.paymentRequests || {};
-      if (paymentRequests.sendToUser) {
-        add(Menu.PAYMENT_REQUEST_TO_USER, `/banking/${owner}/payment-request`, 'account_balance_wallet',
-          this.i18n.menu.bankingRequestPaymentFromUser);
-      }
-      if (paymentRequests.sendToSystem) {
-        add(Menu.PAYMENT_REQUEST_TO_SYSTEM, `/banking/${owner}/payment-request/system`, 'account_balance_wallet',
-          this.i18n.menu.bankingRequestPaymentFromSystem);
+        add(Menu.PAYMENT_TO_SYSTEM, `/banking/${owner}/payment/system`, SvgIcon.Wallet2ArrowRight, this.i18n.menu.bankingPaySystem);
       }
       const tickets = banking.tickets || {};
       if (tickets.create) {
-        add(Menu.RECEIVE_QR_PAYMENT, `/banking/qr`, 'scan_qr_code', this.i18n.menu.bankingReceiveQrPayment);
+        add(Menu.RECEIVE_QR_PAYMENT, `/banking/qr`, SvgIcon.QrcodeScan, this.i18n.menu.bankingReceiveQrPayment);
+      }
+      if (payments.pos) {
+        add(Menu.POS, `/banking/pos`, SvgIcon.CreditCard, this.i18n.menu.bankingPos);
+      }
+      const paymentRequests = banking.paymentRequests || {};
+      if (paymentRequests.sendToUser) {
+        add(Menu.PAYMENT_REQUEST_TO_USER, `/banking/${owner}/payment-request`, SvgIcon.Wallet2ArrowLeft,
+          this.i18n.menu.bankingRequestPaymentFromUser);
+      }
+      if (paymentRequests.sendToSystem) {
+        add(Menu.PAYMENT_REQUEST_TO_SYSTEM, `/banking/${owner}/payment-request/system`, SvgIcon.Wallet2ArrowLeft,
+          this.i18n.menu.bankingRequestPaymentFromSystem);
       }
       if ((banking.scheduledPayments || {}).view) {
         add(Menu.SCHEDULED_PAYMENTS, `/banking/${owner}/installments`,
-          'schedule', this.i18n.menu.bankingScheduledPayments);
+          SvgIcon.CalendarEvent, this.i18n.menu.bankingScheduledPayments);
       }
       if (paymentRequests.view) {
-        add(Menu.PAYMENT_REQUESTS, `/banking/${owner}/payment-requests`, 'payment', this.i18n.menu.bankingPaymentRequests);
+        add(Menu.PAYMENT_REQUESTS, `/banking/${owner}/payment-requests`, SvgIcon.Wallet2ArrowLeft, this.i18n.menu.bankingPaymentRequests);
       }
       const authorizations = (banking.authorizations || {});
       if (authorizations.authorize) {
         add(Menu.PENDING_MY_AUTHORIZATION, `/banking/pending-my-authorization`,
-          'assignment_late', this.i18n.menu.bankingPendingMyAuth);
+          SvgIcon.Wallet2Check, this.i18n.menu.bankingPendingMyAuth);
       }
       if (authorizations.view) {
         if (role === RoleEnum.ADMINISTRATOR && banking.searchGeneralAuthorizedPayments) {
           add(Menu.AUTHORIZED_PAYMENTS_OVERVIEW, `/banking/authorized-payments`,
-            'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
+            SvgIcon.Wallet2Check, this.i18n.menu.bankingAuthorizations);
         } else {
           add(Menu.AUTHORIZED_PAYMENTS, `/banking/${owner}/authorized-payments`,
-            'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
+            SvgIcon.Wallet2Check, this.i18n.menu.bankingAuthorizations);
         }
       }
       if (banking.searchGeneralTransfers) {
         add(Menu.ADMIN_TRANSFERS_OVERVIEW, `/banking/transfers-overview`,
-          'compare_arrows', this.i18n.menu.bankingTransfersOverview);
+          SvgIcon.ArrowLeftRight, this.i18n.menu.bankingTransfersOverview);
       }
 
       if ((banking.scheduledPayments || {}).view && banking.searchGeneralScheduledPayments) {
         add(Menu.SCHEDULED_PAYMENTS_OVERVIEW, `/banking/installments-overview`,
-          'schedule', this.i18n.menu.bankingScheduledPaymentsOverview);
+          SvgIcon.CalendarEvent, this.i18n.menu.bankingScheduledPaymentsOverview);
       }
 
       if (paymentRequests.view && role === RoleEnum.ADMINISTRATOR && banking.searchGeneralPaymentRequests) {
-        add(Menu.PAYMENT_REQUESTS_OVERVIEW, `/banking/payment-requests`, 'payment', this.i18n.menu.bankingPaymentRequestsOverview);
+        add(Menu.PAYMENT_REQUESTS_OVERVIEW, `/banking/payment-requests`,
+          SvgIcon.Wallet2ArrowLeft, this.i18n.menu.bankingPaymentRequestsOverview);
       }
 
       if (banking.searchUsersWithBalances) {
-        add(Menu.USER_BALANCES_OVERVIEW, `/banking/user-balances-overview`, 'account_balance', this.i18n.menu.bankingUserBalancesOverview);
+        add(Menu.USER_BALANCES_OVERVIEW, `/banking/user-balances-overview`,
+          SvgIcon.Wallet2Person, this.i18n.menu.bankingUserBalancesOverview);
       }
 
       if (vouchers.viewRedeemed) {
-        add(Menu.SEARCH_REDEEMED, '/banking/' + ApiHelper.SELF + '/vouchers/redeemed', 'search',
-          this.i18n.menu.bankingRedeemedVouchers);
+        add(Menu.SEARCH_REDEEMED, '/banking/' + ApiHelper.SELF + '/vouchers/redeemed',
+          SvgIcon.Ticket, this.i18n.menu.bankingRedeemedVouchers);
       }
       if (vouchers.redeem && role !== RoleEnum.ADMINISTRATOR) {
-        add(Menu.REDEEM_VOUCHER, '/banking/' + ApiHelper.SELF + '/vouchers/redeem', 'payment', this.i18n.menu.bankingRedeemVoucher);
+        add(Menu.REDEEM_VOUCHER, '/banking/' + ApiHelper.SELF + '/vouchers/redeem',
+          SvgIcon.Ticket, this.i18n.menu.bankingRedeemVoucher);
       }
       if (vouchers.view) {
-        add(Menu.SEARCH_VOUCHERS, '/banking/vouchers', 'search', this.i18n.menu.bankingSearchVouchers);
+        add(Menu.SEARCH_VOUCHERS, '/banking/vouchers',
+          SvgIcon.Ticket, this.i18n.menu.bankingSearchVouchers);
       }
       if (vouchers.generate) {
-        add(Menu.GENERATE_VOUCHER, `/banking/vouchers/generate`, 'confirmation_number', this.i18n.menu.bankingGenerateVouchers);
+        add(Menu.GENERATE_VOUCHER, `/banking/vouchers/generate`, SvgIcon.Ticket, this.i18n.menu.bankingGenerateVouchers);
       }
 
       if (banking.searchGeneralBalanceLimits) {
-        add(Menu.ACCOUNT_BALANCE_LIMITS_OVERVIEW, '/banking/account-balance-limits-overview', 'swap_vert',
-          this.i18n.menu.bankingAccountBalanceLimits);
+        add(Menu.ACCOUNT_BALANCE_LIMITS_OVERVIEW, '/banking/account-balance-limits-overview',
+          SvgIcon.ArrowDownUp, this.i18n.menu.bankingAccountBalanceLimits);
       }
 
       if (banking.searchGeneralPaymentLimits) {
-        add(Menu.ACCOUNT_PAYMENT_LIMITS_OVERVIEW, '/banking/account-payment-limits-overview', 'swap_vert',
-          this.i18n.menu.bankingAccountPaymentLimits);
+        add(Menu.ACCOUNT_PAYMENT_LIMITS_OVERVIEW, '/banking/account-payment-limits-overview',
+          SvgIcon.ArrowDownUp, this.i18n.menu.bankingAccountPaymentLimits);
       }
 
       addRecords(RootMenu.BANKING);
@@ -948,83 +1022,83 @@ export class MenuService {
 
       // Operators
       if (operators.enable) {
-        add(Menu.MY_OPERATORS, '/users/self/operators', 'supervisor_account', this.i18n.menu.operatorsOperators);
-        add(Menu.REGISTER_OPERATOR, '/users/self/operators/registration', 'registration', this.i18n.menu.operatorsRegister);
-        add(Menu.OPERATOR_GROUPS, '/users/self/operator-groups', 'supervised_user_circle', this.i18n.menu.operatorsGroups);
+        add(Menu.MY_OPERATORS, '/users/self/operators', SvgIcon.PersonCircleOutline, this.i18n.menu.operatorsOperators);
+        add(Menu.REGISTER_OPERATOR, '/users/self/operators/registration', SvgIcon.PersonPlus, this.i18n.menu.operatorsRegister);
+        add(Menu.OPERATOR_GROUPS, '/users/self/operator-groups', SvgIcon.People, this.i18n.menu.operatorsGroups);
       }
 
       // Brokering
       if (auth.role === RoleEnum.BROKER) {
-        add(Menu.MY_BROKERED_USERS, '/users/brokerings', 'supervisor_account', this.i18n.menu.brokeringUsers);
+        add(Menu.MY_BROKERED_USERS, '/users/brokerings', SvgIcon.PersonSquareOutline, this.i18n.menu.brokeringUsers);
         if (users.registerAsBroker) {
-          add(Menu.BROKER_REGISTRATION, '/users/registration', 'registration', this.i18n.menu.brokeringRegister);
+          add(Menu.BROKER_REGISTRATION, '/users/registration', SvgIcon.PersonPlus, this.i18n.menu.brokeringRegister);
         }
         if (banking.searchGeneralTransfers) {
           add(Menu.BROKER_TRANSFERS_OVERVIEW, `/banking/transfers-overview`,
-            'compare_arrows', this.i18n.menu.bankingTransfersOverview);
+            SvgIcon.Wallet2ArrowLeftRight, this.i18n.menu.bankingTransfersOverview);
         }
         if (banking.searchGeneralAuthorizedPayments) {
           add(Menu.BROKER_AUTHORIZED_PAYMENTS_OVERVIEW, `/banking/authorized-payments`,
-            'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
+            SvgIcon.Wallet2Check, this.i18n.menu.bankingAuthorizations);
         }
       }
 
       // Users
       if (users.search || users.map) {
-        add(Menu.SEARCH_USERS, '/users/search', 'group', role === RoleEnum.ADMINISTRATOR
-          ? this.i18n.menu.marketplaceUserSearch : this.i18n.menu.marketplaceBusinessDirectory);
+        add(Menu.SEARCH_USERS, '/users/search', SvgIcon.People,
+          role === RoleEnum.ADMINISTRATOR ? this.i18n.menu.marketplaceUserSearch : this.i18n.menu.marketplaceBusinessDirectory);
       }
       if (users.registerAsAdmin) {
-        add(Menu.ADMIN_REGISTRATION, '/users/registration', 'registration', this.i18n.menu.marketplaceRegister);
+        add(Menu.ADMIN_REGISTRATION, '/users/registration', SvgIcon.PersonPlus, this.i18n.menu.marketplaceRegister);
       }
       const sessions = permissions.sessions || {};
       if (sessions.view) {
-        add(Menu.CONNECTED_USERS, '/users/connected', 'record_voice_over', this.i18n.menu.marketplaceConnectedUsers);
+        add(Menu.CONNECTED_USERS, '/users/connected', SvgIcon.BoxArrowInRight, this.i18n.menu.marketplaceConnectedUsers);
       }
 
       // Marketplace
       const alerts = permissions.alerts || {};
       if (alerts.view) {
-        add(Menu.USER_ALERTS, '/users/alerts', 'notification_important', this.i18n.menu.marketplaceUserAlerts);
+        add(Menu.USER_ALERTS, '/users/alerts', SvgIcon.ExclamationDiamond, this.i18n.menu.marketplaceUserAlerts);
       }
 
       if (marketplace.userSimple.view || marketplace.userWebshop.view) {
-        add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
+        add(Menu.SEARCH_ADS, '/marketplace/search', SvgIcon.Basket, this.i18n.menu.marketplaceAdvertisements);
       }
 
       if (marketplace.userWebshop.purchase) {
-        add(Menu.SHOPPING_CART, '/marketplace/shopping-cart', 'shopping_cart', this.i18n.menu.shoppingCart);
+        add(Menu.SHOPPING_CART, '/marketplace/shopping-cart', SvgIcon.Cart3, this.i18n.menu.shoppingCart);
       }
 
       if (marketplace.interests) {
-        add(Menu.AD_INTERESTS, 'marketplace/self/ad-interests', 'star', this.i18n.menu.marketplaceAdInterests);
+        add(Menu.AD_INTERESTS, 'marketplace/self/ad-interests', SvgIcon.Star, this.i18n.menu.marketplaceAdInterests);
       }
 
       const simple = marketplace.mySimple || {};
       if (simple.enable) {
-        add(Menu.SEARCH_USER_ADS, 'marketplace/self/simple/list', 'shop', this.i18n.menu.marketplaceMyAdvertisements);
+        add(Menu.SEARCH_USER_ADS, 'marketplace/self/simple/list', SvgIcon.Basket, this.i18n.menu.marketplaceMyAdvertisements);
       }
       if (marketplace.userWebshop.purchase) {
-        add(Menu.PURCHASES, 'marketplace/self/purchases', 'shop_two', this.i18n.menu.marketplaceMyPurchases);
+        add(Menu.PURCHASES, 'marketplace/self/purchases', SvgIcon.Cart3, this.i18n.menu.marketplaceMyPurchases);
       }
       const webshop = marketplace.myWebshop || {};
       if (webshop.enable) {
-        add(Menu.SEARCH_USER_WEBSHOP, 'marketplace/self/webshop/list', 'shopping_basket', this.i18n.menu.marketplaceMyWebshop);
-        add(Menu.SALES, 'marketplace/self/sales', 'local_offer', this.i18n.menu.marketplaceMySales);
-        add(Menu.DELIVERY_METHODS, 'marketplace/self/delivery-methods', 'local_shipping', this.i18n.menu.marketplaceDeliveryMethods);
-        add(Menu.WEBSHOP_SETTINGS, 'marketplace/self/webshop-settings/edit', 'store', this.i18n.menu.marketplaceWebshopSettings);
+        add(Menu.SEARCH_USER_WEBSHOP, 'marketplace/self/webshop/list', SvgIcon.Basket, this.i18n.menu.marketplaceMyWebshop);
+        add(Menu.SALES, 'marketplace/self/sales', SvgIcon.Receipt, this.i18n.menu.marketplaceMySales);
+        add(Menu.DELIVERY_METHODS, 'marketplace/self/delivery-methods', SvgIcon.Truck, this.i18n.menu.marketplaceDeliveryMethods);
+        add(Menu.WEBSHOP_SETTINGS, 'marketplace/self/webshop-settings/edit', SvgIcon.Gear, this.i18n.menu.marketplaceWebshopSettings);
       }
 
       if (simple.questions || webshop.questions) {
         add(Menu.UNANSWERED_QUESTIONS, 'marketplace/unanswered-questions',
-          'question_answer', this.i18n.menu.marketplaceUnansweredQuestions);
+          SvgIcon.ChatLeft, this.i18n.menu.marketplaceUnansweredQuestions);
       }
 
       if (vouchers.buy && role !== RoleEnum.ADMINISTRATOR) {
-        add(Menu.BUY_VOUCHER, '/banking/self/vouchers/buy', 'confirmation_number', this.i18n.menu.bankingBuyVouchers);
+        add(Menu.BUY_VOUCHER, '/banking/self/vouchers/buy', SvgIcon.Ticket, this.i18n.menu.bankingBuyVouchers);
       }
       if (vouchers.viewBought) {
-        add(Menu.SEARCH_BOUGHT_VOUCHERS, '/banking/self/vouchers/bought', 'local_play',
+        add(Menu.SEARCH_BOUGHT_VOUCHERS, '/banking/self/vouchers/bought', SvgIcon.Ticket,
           this.i18n.menu.bankingBoughtVouchers);
       }
       addRecords(RootMenu.MARKETPLACE);
@@ -1034,29 +1108,29 @@ export class MenuService {
 
       if (role === RoleEnum.ADMINISTRATOR) {
         // For admins, show the marketplace menu as users
-        marketplaceRoot.icon = 'supervisor_account';
+        marketplaceRoot.icon = SvgIcon.People;
         marketplaceRoot.label = this.i18n.menu.marketplaceUsers;
         marketplaceRoot.title = this.i18n.menu.marketplaceUsers;
       } else if (marketplaceRoot.entries.length === 1 && marketplaceRoot.entries[0].menu === Menu.SEARCH_USERS) {
         // As the search ads won't be visible, show as user directory instead
-        marketplaceRoot.icon = publicDirectory.icon;
+        marketplaceRoot.icon = SvgIcon.People;
         marketplaceRoot.label = publicDirectory.label;
         marketplaceRoot.title = publicDirectory.label;
       }
       if (auth.role === RoleEnum.ADMINISTRATOR) {
         for (const token of permissions.tokens?.user) {
           const activeMenu = new ActiveMenu(Menu.USER_TOKENS, { tokenType: token.type });
-          add(activeMenu, `/users/tokens/search/${token.type.id}`, 'vpn_key', token.type.pluralName);
+          add(activeMenu, `/users/tokens/search/${token.type.id}`, SvgIcon.CreditCard, token.type.pluralName);
         }
       }
       // Personal
       const myProfile = permissions.myProfile || {};
-      add(Menu.MY_PROFILE, '/users/self/profile', 'account_box', this.i18n.menu.personalViewProfile);
+      add(Menu.MY_PROFILE, '/users/self/profile', SvgIcon.Person, this.i18n.menu.personalViewProfile);
       if (myProfile.editProfile) {
-        add(Menu.EDIT_MY_PROFILE, '/users/self/profile/edit', 'account_box', this.i18n.menu.personalEditProfile, [MenuType.SIDENAV]);
+        add(Menu.EDIT_MY_PROFILE, '/users/self/profile/edit', SvgIcon.PersonCheck, this.i18n.menu.personalEditProfile, [MenuType.SIDENAV]);
       }
       if (contacts.enable) {
-        add(Menu.CONTACTS, '/users/contacts', 'import_contacts', this.i18n.menu.personalContacts);
+        add(Menu.CONTACTS, '/users/contacts', SvgIcon.Book, this.i18n.menu.personalContacts);
       }
       if ((permissions.passwords || {}).manage) {
         let passwordsLabel: string;
@@ -1065,35 +1139,35 @@ export class MenuService {
         } else {
           passwordsLabel = this.i18n.menu.personalPasswords;
         }
-        add(Menu.PASSWORDS, '/users/self/passwords', 'vpn_key', passwordsLabel);
+        add(Menu.PASSWORDS, '/users/self/passwords', SvgIcon.Key, passwordsLabel);
       }
       if ((permissions.identityProviders || {}).enabled) {
-        add(Menu.IDENTITY_PROVIDERS, '/users/self/identity-providers', 'perm_identity', this.i18n.menu.personalIdentityProviders);
+        add(Menu.IDENTITY_PROVIDERS, '/users/self/identity-providers', SvgIcon.PersonBadge, this.i18n.menu.personalIdentityProviders);
       }
       if ((permissions.agreements || {}).view) {
-        add(Menu.AGREEMENTS, '/users/self/agreements', 'ballot', this.i18n.menu.personalAgreements);
+        add(Menu.AGREEMENTS, '/users/self/agreements', SvgIcon.UiChecks, this.i18n.menu.personalAgreements);
       }
       if (permissions.documents.viewIndividual || permissions.documents.viewShared?.length > 0) {
-        add(Menu.MY_DOCUMENTS, '/users/documents', 'library_books', this.i18n.menu.personalDocuments);
+        add(Menu.MY_DOCUMENTS, '/users/documents', SvgIcon.FileEarmarkText, this.i18n.menu.personalDocuments);
       }
       for (const token of permissions.tokens?.my) {
         const activeMenu = new ActiveMenu(Menu.MY_TOKENS, { tokenType: token.type });
-        add(activeMenu, `/users/self/tokens/${token.type.id}`, 'vpn_key', token.type.pluralName);
+        add(activeMenu, `/users/self/tokens/${token.type.id}`, this.tokenHelper.icon(token.type), token.type.pluralName);
       }
       if ((permissions.notifications || {}).enable) {
-        add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);
+        add(Menu.NOTIFICATIONS, '/personal/notifications', SvgIcon.Bell, this.i18n.menu.personalNotifications);
       }
       if ((permissions.notificationSettings || {}).enable) {
         add(Menu.NOTIFICATIONS_SETTINGS, `/users/${ApiHelper.SELF}/notification-settings`,
-          'notifications_off', this.i18n.menu.personalNotificationSettings);
+          SvgIcon.BellSlash, this.i18n.menu.personalNotificationSettings);
       }
-      add(Menu.SETTINGS, '/personal/settings', 'settings', this.i18n.menu.personalSettings);
+      add(Menu.SETTINGS, '/personal/settings', SvgIcon.Gear, this.i18n.menu.personalSettings);
       if ((permissions.privacySettings || {}).view) {
-        add(Menu.PRIVACY_SETTINGS, '/users/self/privacy-settings', 'settings', this.i18n.menu.personalPrivacySettings);
+        add(Menu.PRIVACY_SETTINGS, '/users/self/privacy-settings', SvgIcon.EyeSlash, this.i18n.menu.personalPrivacySettings);
       }
 
       if ((permissions.references || {}).view) {
-        add(Menu.REFERENCES, '/users/self/references/search', 'stars', this.i18n.menu.personalReferences);
+        add(Menu.REFERENCES, '/users/self/references/search', SvgIcon.Star, this.i18n.menu.personalReferences);
       }
       addRecords(RootMenu.PERSONAL);
       addOperations(RootMenu.PERSONAL);
@@ -1101,7 +1175,7 @@ export class MenuService {
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);
 
       // Add the logout
-      add(Menu.LOGOUT, null, logout.icon, logout.label, logout.showIn);
+      add(Menu.LOGOUT, null, SvgIcon.BoxArrowRight, logout.label, logout.showIn);
     }
 
     // Content pages in the content root menu
@@ -1113,7 +1187,7 @@ export class MenuService {
 
     // Populate the menu in the root declaration order
     const rootMenus: RootMenuEntry[] = [];
-    for (const root of RootMenu.values()) {
+    for (const root of Object.values(RootMenu)) {
       const rootEntry = roots.get(root);
       if (rootEntry && rootEntry.entries.length > 0) {
         rootMenus.push(rootEntry);

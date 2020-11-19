@@ -3,10 +3,11 @@ import { FormBuilder, Validators } from '@angular/forms';
 import {
   AccountKind, AccountWithOwner, AvailabilityEnum, IdentityProvider,
   IdentityProviderCallbackResult, IdentityProviderRequestResult,
-  PasswordInput, PasswordModeEnum, RoleEnum, User
+  PasswordInput, PasswordModeEnum, RoleEnum, User, UserLocale
 } from 'app/api/models';
 import { IdentityProvidersService } from 'app/api/services/identity-providers.service';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { LocalizationService } from 'app/api/services/localization.service';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { NextRequestState } from 'app/core/next-request-state';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { I18n } from 'app/i18n/i18n';
@@ -14,6 +15,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { empty } from 'app/shared/helper';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { PreferredLocale } from 'app/core/next-request-state';
 
 /**
  * Helper service for authentication / password common functions
@@ -27,10 +29,11 @@ export class AuthHelperService {
 
   constructor(
     private i18n: I18n,
-    private dataForUiHolder: DataForUiHolder,
+    private dataForFrontendHolder: DataForFrontendHolder,
     private formBuilder: FormBuilder,
     private identityProvidersService: IdentityProvidersService,
     private pushNotifications: PushNotificationsService,
+    private localizationService: LocalizationService,
     private nextRequestState: NextRequestState) {
   }
 
@@ -38,7 +41,7 @@ export class AuthHelperService {
    * Returns a key used for guests to upload temporary images / files
    */
   get guestKey(): string {
-    if (this.dataForUiHolder.user != null) {
+    if (this.dataForFrontendHolder.user != null) {
       return '';
     }
     const name = 'GuestKey';
@@ -51,6 +54,14 @@ export class AuthHelperService {
   }
 
   /**
+   * Indicates whether the usr session operates in restricted access mode, that means,
+   * there is some urgent situation that needs to be resolved before using the system.
+   */
+  get restrictedAccess(): boolean {
+    return ApiHelper.isRestrictedAccess(this.dataForFrontendHolder.dataForFrontend);
+  }
+
+  /**
    * Returns whether the given URL key / user / account represents the logged user
    * @param key The key / user
    */
@@ -60,9 +71,9 @@ export class AuthHelperService {
     }
     if (key === ApiHelper.SYSTEM) {
       // System is self only for admins
-      return this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR;
+      return this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR;
     }
-    const user = this.dataForUiHolder.user;
+    const user = this.dataForFrontendHolder.user;
     if (user) {
       if (typeof key === 'string') {
         return user.id === key;
@@ -72,7 +83,7 @@ export class AuthHelperService {
           // key is an AccountWithOwner
           if (key['kind'] === AccountKind.SYSTEM) {
             // System account is self only for admins
-            return this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR;
+            return this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR;
           } else {
             // User account is self if the id matches the logged user id
             return key.user.id === user.id;
@@ -96,7 +107,7 @@ export class AuthHelperService {
     if (!user) {
       return true;
     }
-    const loggedUser = this.dataForUiHolder.user;
+    const loggedUser = this.dataForFrontendHolder.user;
     const possibleIds = [];
     if (user.id) {
       possibleIds.push(user.id);
@@ -117,7 +128,7 @@ export class AuthHelperService {
     if (key === ApiHelper.SYSTEM) {
       return true;
     }
-    return this.isSelf(key) && this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR;
+    return this.isSelf(key) && this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR;
   }
 
   /**
@@ -331,7 +342,7 @@ export class AuthHelperService {
     }
     request.pipe(first()).subscribe(result => {
       // We got the response and need to observe changes. For logged user it will be already registered. For guests, we need a new one.
-      const guest = !this.dataForUiHolder.user;
+      const guest = !this.dataForFrontendHolder.user;
       if (guest) {
         this.pushNotifications.openForIdentityProviderCallback(result.requestId);
       }
@@ -356,6 +367,26 @@ export class AuthHelperService {
       win.location.assign(result.url);
     });
     return observable;
+  }
+
+  /**
+   * Sets the user locale
+   */
+  setLocale(locale: UserLocale | string) {
+    const code = typeof locale === 'string' ? locale : locale.code;
+    localStorage.setItem(PreferredLocale, code);
+    if (this.dataForFrontendHolder.user) {
+      // Save the user locale, then refresh
+      this.localizationService.saveLocalizationSettings({
+        body: { locale: code }
+      }).subscribe(() => {
+        // Need to refresh the page to reload the correct translations
+        window.location.reload();
+      });
+    } else {
+      // Need to refresh the page to reload the correct translations
+      window.location.reload();
+    }
   }
 
 }

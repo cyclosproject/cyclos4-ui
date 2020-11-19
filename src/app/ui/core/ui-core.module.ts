@@ -1,8 +1,6 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
-import { BannerService } from 'app/ui/core/banner.service';
-import { ContentService } from 'app/ui/core/content.service';
 import { ExportHelperService } from 'app/ui/core/export-helper.service';
 import { LoginState } from 'app/ui/core/login-state';
 import { LoginService } from 'app/ui/core/login.service';
@@ -18,6 +16,7 @@ import { TopBarComponent } from 'app/ui/core/top-bar.component';
 import { UiErrorHandlerService } from 'app/ui/core/ui-error-handler.service';
 import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
+import { TokenHelperService } from 'app/ui/core/token-helper.service';
 import { WizardHelperService } from 'app/ui/core/wizard-helper.service';
 import { CountriesResolve } from 'app/ui/countries.resolve';
 import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
@@ -49,8 +48,6 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
     UiLayoutService,
     UiErrorHandlerService,
     MapsService,
-    ContentService,
-    BannerService,
     LoginService,
     LoginState,
     MenuService,
@@ -61,6 +58,7 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
     ExportHelperService,
     OperationHelperService,
     WizardHelperService,
+    TokenHelperService,
   ],
   entryComponents: [
     PushNotificationComponent

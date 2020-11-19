@@ -4,6 +4,7 @@ import { AdBasicData, AdDataForEdit, AdDataForNew, AdEdit, AdKind, AdManage, Cur
 import { ImagesService } from 'app/api/services/images.service';
 import { MarketplaceService } from 'app/api/services/marketplace.service';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
+import { ImageUploadComponent } from 'app/shared/image-upload.component';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { HierarchyItem } from 'app/ui/marketplace/hierarchy-item.component';
@@ -349,6 +350,13 @@ export class EditAdComponent
     this.images = ([...this.images, ...images]);
     this.uploadedImages = [...(this.uploadedImages || []), ...images];
     this.changeDetector.detectChanges();
+  }
+
+  /**
+   * Opens a dialog to capture an image from camera
+   */
+  captureCamera(upload: ImageUploadComponent) {
+    this.notification.captureCamera(file => upload.uploadFile(file));
   }
 
   get canUploadImages(): boolean {

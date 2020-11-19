@@ -5,6 +5,7 @@ import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { empty } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Displays the information about an ad interest
@@ -40,7 +41,7 @@ export class ViewAdInterestComponent extends BaseViewPageComponent<AdInterestVie
     const actions = [];
     if (data.canEdit) {
       actions.push(
-        new HeadingAction('edit', this.i18n.general.edit, () =>
+        new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () =>
           this.router.navigate(['/marketplace', 'ad-interests', 'edit', this.id]), true,
         ));
     }

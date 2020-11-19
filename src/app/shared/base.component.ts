@@ -1,16 +1,16 @@
-import { Injector, Directive } from '@angular/core';
+import { Directive, Injector } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { AuthHelperService } from 'app/core/auth-helper.service';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
+import { LayoutService } from 'app/core/layout.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { NotificationService } from 'app/core/notification.service';
 import { AbstractComponent } from 'app/shared/abstract.component';
-import { LayoutService } from 'app/core/layout.service';
 import { Observable } from 'rxjs';
 import { StateManager } from '../core/state-manager';
-import { AuthHelperService } from 'app/core/auth-helper.service';
 
 /**
  * Base class to meant to be inherited by other components.
@@ -22,7 +22,7 @@ import { AuthHelperService } from 'app/core/auth-helper.service';
 export abstract class BaseComponent
   extends AbstractComponent {
 
-  dataForUiHolder: DataForUiHolder;
+  dataForFrontendHolder: DataForFrontendHolder;
   errorHandler: ErrorHandlerService;
   notification: NotificationService;
   layout: LayoutService;
@@ -36,7 +36,7 @@ export abstract class BaseComponent
 
   constructor(injector: Injector) {
     super(injector);
-    this.dataForUiHolder = injector.get(DataForUiHolder);
+    this.dataForFrontendHolder = injector.get(DataForFrontendHolder);
     this.errorHandler = injector.get(ErrorHandlerService);
     this.notification = injector.get(NotificationService);
     this.layout = injector.get(LayoutService);

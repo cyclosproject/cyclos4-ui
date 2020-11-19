@@ -1,0 +1,27 @@
+<page-layout [ready]="data$ | async" size="small" hideMenu>
+  <page-content *ngIf="passwordInput" layout="centered"
+    [heading]="i18n.login.titleConfirmation"
+    [mobileHeading]="i18n.login.mobileTitleConfirmation">
+    <alert type="info">
+      {{ i18n.login.confirmationText }}
+    </alert>
+    <confirmation-password focused [formControl]="control"
+      [passwordInput]="passwordInput"
+      [createDeviceConfirmation]="createDeviceConfirmation"
+      (confirmationModeChanged)="confirmationMode$.next($event)"
+      (confirmed)="submit($event)">
+    </confirmation-password>
+
+    <actions forceRow>
+      <action-button
+        *ngIf="(confirmationMode$ | async) !== ConfirmationMode.Device; else blank"
+        [disabled]="!canConfirm || (requesting$ | async)" (action)="submit()"
+        [label]="i18n.general.submit">
+      </action-button>
+      <ng-template #blank>&nbsp;</ng-template>
+      <action-button outline (action)="cancel()"
+        [label]="i18n.general.cancel">
+      </action-button>
+    </actions>
+  </page-content>
+</page-layout>

@@ -30,9 +30,6 @@ export class FieldHelperService {
    * Some types, such as date and decimal are always shown as small, except if they have a values list.
    */
   fieldSize(field: CustomFieldDetailed): CustomFieldSizeEnum {
-    if (field.hasValuesList) {
-      return CustomFieldSizeEnum.FULL;
-    }
     if (field.type === CustomFieldTypeEnum.DATE) {
       return CustomFieldSizeEnum.MEDIUM;
     } else if ([CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.DECIMAL].includes(field.type)) {

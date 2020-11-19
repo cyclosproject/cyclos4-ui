@@ -7,6 +7,10 @@ button[disabled], button[disabled]:hover {
 .btn {
   min-height: $input-height;
   width: 100%;
+  icon {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
 }
 @include media-breakpoint-up(xs) {
   .btn {
@@ -39,6 +43,7 @@ button[disabled], button[disabled]:hover {
   justify-content: center;
   align-items: center;
   width: 2.6rem;
+  padding: 0;
   height: $input-height;
   @include button-variant($button-icon-bg, $button-icon-border-color);
   color: $button-icon-color;
@@ -46,17 +51,8 @@ button[disabled], button[disabled]:hover {
 
 table.table {
   .btn-icon {
-    display: flex;
-    justify-content: center;
-    padding: 0.3rem;
-    height: auto;
     min-height: unset;
-    width: auto;
   }
-}
-
-.actions-multiple .btn-icon {
-  display: inline-block !important;
 }
 
 .identity-provider {
@@ -79,6 +75,10 @@ table.table {
     position: relative;
     top: 1px;
   }
+}
+
+.dropdown-menu button {
+  width: 100%;
 }
 
 .centered-button {
@@ -156,7 +156,7 @@ actions-toolbar {
     display: flex;
     flex-wrap: wrap;
     border-bottom: 1px solid $border-color;
-    padding-bottom: 0.55rem;
+    padding: 0.55rem 0;
   }
 
   .actions-toolbar-item-right {
@@ -166,7 +166,7 @@ actions-toolbar {
 
   heading-action-button {
     margin-left: 0.75rem;
-    margin-top: 0.6rem;
+    margin-top: 0.1rem;
   }
 }
 body.dark actions-toolbar {

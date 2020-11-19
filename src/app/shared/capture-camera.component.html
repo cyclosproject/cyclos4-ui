@@ -1,0 +1,15 @@
+<h1>{{ i18n.field.camera.titleCapture }}</h1>
+
+<div #container class="camera-container">
+  <webcam *ngIf="dimensions$ | async as dim" [trigger]="trigger$"
+    [allowCameraSwitch]="true" (initError)="handleInitError($event)"
+    (imageCapture)="emit($event)" [width]="dim[0]" [height]="dim[1]"></webcam>
+</div>
+<actions>
+  <action-button (action)="trigger$.next(true)"
+    [label]="i18n.field.camera.capture">
+  </action-button>
+  <action-button outline (action)="modalRef.hide()"
+    [label]="i18n.general.cancel">
+  </action-button>
+</actions>

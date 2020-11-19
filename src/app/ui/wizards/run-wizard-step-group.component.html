@@ -9,7 +9,7 @@
       <div class="custom-control custom-radio">
         <input type="radio" [formControl]="control"
           class="custom-control-input" [id]="'group_' + group.id"
-          [value]="group.id">
+          [value]="group.internalName || group.id">
         <label class="custom-control-label" [for]="'group_' + group.id">
           <div class="ml-1">
             {{ group.name }}

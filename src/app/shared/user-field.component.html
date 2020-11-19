@@ -9,8 +9,8 @@
         dropdown #dropdown="bs-dropdown" [autoClose]="false"
         [insideClick]="false" (onShown)="onShown()" (onHidden)="onHidden()">
 
-        <chip *ngIf="selection$ | async" [image]="user.image" icon="user"
-          (close)="select(null)">
+        <chip *ngIf="selection$ | async" [image]="user.image"
+          [icon]="SvgIcon.Person" (close)="select(null)">
           {{ user.display }}
         </chip>
 
@@ -37,12 +37,12 @@
       <button class="btn btn-icon ml-2" *ngIf="allowContacts"
         #contactListButton [tooltip]="i18n.field.user.contactTooltip"
         (click)="showContactList()">
-        <icon icon="import_contacts"></icon>
+        <icon [icon]="SvgIcon.Book"></icon>
       </button>
       <button class="btn btn-icon ml-2" *ngIf="allowQrCode" #scanQrCodeButton
         [tooltip]="i18n.field.user.scanQrCodeTooltip"
         (click)="showScanQrCode()">
-        <icon icon="scan_qr_code"></icon>
+        <icon [icon]="SvgIcon.QrcodeScan"></icon>
       </button>
     </div>
   </div>

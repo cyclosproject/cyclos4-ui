@@ -47,8 +47,8 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
 
   ngOnInit() {
     super.ngOnInit();
-    const dataForUi = this.dataForUiHolder.dataForUi;
-    if (dataForUi.auth.user != null) {
+    const dataForUi = this.dataForFrontendHolder.dataForUi || {};
+    if ((dataForUi.auth || {}).user != null) {
       this.router.navigateByUrl('');
     } else {
       this.data = dataForUi.dataForLogin;

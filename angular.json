@@ -37,6 +37,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "aot": true,
+            "outputHashing": "all",
             "outputPath": "dist/ui",
             "index": "src/ui/index.html",
             "main": "src/ui/main.ts",
@@ -44,8 +45,8 @@
             "tsConfig": "src/tsconfig.ui.json",
             "assets": [
               "src/images",
-              "src/content",
-              "src/i18n"
+              "src/i18n",
+              "src/svg"
             ],
             "styles": [
               "src/styles.scss"
@@ -53,6 +54,7 @@
             "scripts": [],
             "allowedCommonJsDependencies": [
               "hammerjs",
+              "b64-to-blob",
               "downloadjs",
               "autosize",
               "rangy",
@@ -76,7 +78,6 @@
                 }
               ],
               "optimization": true,
-              "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": true,
@@ -146,13 +147,15 @@
           "options": {
             "aot": true,
             "outputPath": "dist/pay",
+            "outputHashing": "all",
             "index": "src/pay/index.html",
             "main": "src/pay/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.pay.json",
             "assets": [
               "src/images",
-              "src/i18n"
+              "src/i18n",
+              "src/svg"
             ],
             "styles": [
               "src/styles.scss"
@@ -160,6 +163,7 @@
             "scripts": [],
             "allowedCommonJsDependencies": [
               "hammerjs",
+              "b64-to-blob",
               "downloadjs",
               "autosize",
               "rangy",
@@ -183,7 +187,6 @@
                 }
               ],
               "optimization": true,
-              "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": true,

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CreateDeviceConfirmation, CustomFieldDetailed, NotificationsStatus, PasswordInput } from 'app/api/models';
 import { NotificationsService } from 'app/api/services/notifications.service';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { NextRequestState } from 'app/core/next-request-state';
 import { PushNotificationProvider } from 'app/core/push-notification-provider';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
@@ -13,6 +13,7 @@ import { NotificationComponent } from 'app/shared/notification.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { CaptureCameraComponent } from 'app/shared/capture-camera.component';
 
 /**
  * Reference to a notification
@@ -84,7 +85,7 @@ export class NotificationService {
     nextRequestState: NextRequestState,
     pushNotifications: PushNotificationsService,
     notificationsService: NotificationsService,
-    dataForUiHolder: DataForUiHolder,
+    dataForFrontendHolder: DataForFrontendHolder,
   ) {
     this.modal.onHidden.subscribe(() => {
       if (this.currentNotification) {
@@ -93,8 +94,9 @@ export class NotificationService {
       }
     });
     // Subscribe for user changes: update the notification status
-    dataForUiHolder.subscribe(dataForUi => {
-      const auth = (dataForUi ? dataForUi.auth : null) || {};
+    dataForFrontendHolder.subscribe(dataForFrontend => {
+      const dataForUi = (dataForFrontend || {}).dataForUi;
+      const auth = (dataForUi || {}).auth || {};
       if (auth.user && ((auth.permissions || {}).notifications || {}).enable) {
         nextRequestState.ignoreNextError = true;
         notificationsService.notificationsStatus().pipe(first()).subscribe(status => {
@@ -216,6 +218,20 @@ export class NotificationService {
     if (this.currentNotification) {
       this.currentNotification.close();
     }
+  }
+
+  /**
+   * Opens a dialog to capture an image from the device camera
+   */
+  captureCamera(callback: (file: File) => any) {
+    const ref = this.modal.show(CaptureCameraComponent, {
+      class: 'modal-form',
+      initialState: {
+        errorHandler: (msg: string) => this.error(msg)
+      }
+    });
+    const component = ref.content as CaptureCameraComponent;
+    component.select.pipe(first()).subscribe(callback);
   }
 
 }

@@ -6,6 +6,7 @@ import { RecordHelperService } from 'app/ui/core/records-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { empty as isEmpty } from 'app/shared/helper';
+import { SvgIcon } from 'app/core/svg-icon';
 
 @Component({
   selector: 'view-record',
@@ -50,7 +51,7 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
     });
     if (record.canEdit) {
       this.headingActions.push(
-        new HeadingAction('edit', this.i18n.general.edit, () => {
+        new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => {
           this.router.navigate(['/records', 'edit', record.id]);
         }, true),
       );

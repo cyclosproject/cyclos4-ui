@@ -6,11 +6,11 @@
     <ng-container *ngIf="(loggingOut$ | async) === false">
       <side-menu *ngIf="(login.user$ | async) && (menu.activeMenu$ | async)">
       </side-menu>
-      <banner-card
-        *ngFor="let card of bannerCards$ | async; let first = first"
-        [card]="card"
-        [firstInLayout]="first && (leftMenuVisible$ | async) === false"
-        [ngClass]="card.ngClass" [ngStyle]="card.ngStyle"></banner-card>
+      <banner
+        *ngFor="let banner of uiLayout.banners$ | async; let first = first"
+        [banner]="banner"
+        [firstInLayout]="first && (leftMenuVisible$ | async) === false">
+      </banner>
     </ng-container>
   </div>
 

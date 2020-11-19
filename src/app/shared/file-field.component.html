@@ -10,7 +10,7 @@
     <button *ngIf="!disabled"
       class="btn btn-icon d-flex align-content-center flex-grow-0 mr-3"
       [tooltip]="i18n.field.file.upload" (click)="inputField.click()">
-      <icon icon="cloud_upload"></icon>
+      <icon [icon]="SvgIcon.Upload"></icon>
     </button>
     <div *ngFor="let file of files"
       class="flex-grow-0 mr-3 d-flex align-items-center">

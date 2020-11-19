@@ -28,7 +28,6 @@ const operationRoutes: Routes = [
       {
         path: 'action/:operation',
         component: RunOperationComponent,
-        canActivate: [LoggedUserGuard],
         data: {
           runScope: OperationRunScope.Standalone,
         },
@@ -63,6 +62,13 @@ const operationRoutes: Routes = [
         canActivate: [LoggedUserGuard],
         data: {
           runScope: OperationRunScope.Transfer,
+        },
+      },
+      {
+        path: 'menu/:menu/:operation',
+        component: RunOperationComponent,
+        data: {
+          runScope: OperationRunScope.Menu,
         },
       },
       {

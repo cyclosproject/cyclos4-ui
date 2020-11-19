@@ -13,6 +13,7 @@ import { Menu } from 'app/ui/shared/menu';
 import { ResultType } from 'app/ui/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { PagedResults } from 'app/shared/paged-results';
 
 type UserBalancesSearchParams = UsersWithBalanceQueryFilters & {
   fields?: Array<string>;
@@ -33,6 +34,9 @@ export class SearchUserBalancesComponent
   summary$ = new BehaviorSubject<UsersWithBalanceSummary>(null);
   currency$ = new BehaviorSubject<Currency>(null);
   customFieldsInSearch: CustomFieldDetailed[];
+
+  showAccountNumber$ = new BehaviorSubject(false);
+  showNegativeSince$ = new BehaviorSubject(false);
 
   constructor(
     injector: Injector,
@@ -84,6 +88,12 @@ export class SearchUserBalancesComponent
     this.updateYellowRange(type);
   }
 
+  onBeforeRender(results: PagedResults<UserWithBalanceResult>) {
+    const items = results?.results || [];
+    this.showAccountNumber$.next(!!items.find(u => u.accountNumber));
+    this.showNegativeSince$.next(!!items.find(u => u.negativeSince));
+  }
+
   protected onResultTypeChanged(resultType: ResultType, previousResultType: ResultType) {
     super.onResultTypeChanged(resultType, previousResultType);
     this.resetPage();
@@ -117,6 +127,7 @@ export class SearchUserBalancesComponent
 
   toSearchParams(value: any): UserBalancesSearchParams {
     const query: UserBalancesSearchParams = value;
+    query.ignoreProfileFieldsInList = true;
     query.activationPeriod = ApiHelper.dateRangeFilter(value.beginActivationPeriod, value.endActivationPeriod);
     query.creationPeriod = ApiHelper.dateRangeFilter(value.beginCreationPeriod, value.endCreationPeriod);
     query.lastLoginPeriod = ApiHelper.dateRangeFilter(value.beginLastLoginPeriod, value.endLastLoginPeriod);
@@ -150,9 +161,9 @@ export class SearchUserBalancesComponent
   }
 
   findCurrency(): Currency {
-    const accountId = this.form.controls.accountType.value;
-    if (accountId) {
-      return this.data.accountTypes.find(at => at.id === accountId).currency;
+    const account = this.form.controls.accountType.value;
+    if (account) {
+      return this.data.accountTypes.find(at => at.id === account || at.internalName === account).currency;
     }
     return this.currency$.value;
   }

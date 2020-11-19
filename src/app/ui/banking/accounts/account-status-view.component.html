@@ -1,7 +1,8 @@
 <div class="container mw-100 px-0" *ngIf="(indicators$ | async)?.length > 0">
   <hr class="mt-0" *ngIf="showSeparator">
   <div class="row no-gutters">
-    <div *ngIf="showAccount" class="status-label col-12">
+    <div *ngIf="showAccount" class="status-label col-12"
+      [ngClass]="{'status-label-last': !account.user || !showUser}">
       {{ account.type.name }}
     </div>
     <ng-container *ngIf="account.user && showUser">

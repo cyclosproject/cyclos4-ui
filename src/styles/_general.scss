@@ -60,7 +60,6 @@ b, strong {
   white-space: pre-wrap;
 }
 
-
 hr {
   width: 100%;
   display: block;
@@ -79,10 +78,13 @@ hr {
   transition: opacity 0.3s;
 }
 
-.ellipsis {
+.ellipsis, .single-line {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+.single-line {
+  max-height: 1.4em;
 }
 .ellipsis-clamp-2 {
   display: -webkit-box;

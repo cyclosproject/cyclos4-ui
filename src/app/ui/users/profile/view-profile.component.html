@@ -32,7 +32,7 @@
     <div class="d-flex flex-row-reverse">
       <profile-images *ngIf="imageEnabled && (layout.gtxs$ | async)"
         [image]="user.image" [additionalImages]="user.additionalImages"
-        icon="user">
+        [icon]="SvgIcon.PersonCircle">
       </profile-images>
       <div class="d-flex flex-grow-1 flex-column">
         <label-value *ngIf="showOperatorOwner"
@@ -57,34 +57,34 @@
           [value]="user.activationDate | date"></label-value>
         <label-value *ngIf="user.email" [label]="i18n.user.email">
           <a [href]="'mailto:' + user.email" class="link-with-icon">
-            <icon icon="email"></icon>
+            <icon [icon]="SvgIcon.Envelope"></icon>
             <span>{{ user.email }}</span>
           </a>
         </label-value>
         <label-value *ngIf="mobilePhone" [label]="i18n.phone.mobile">
           <a [href]="'tel:' + mobilePhone.normalizedNumber"
             class="link-with-icon">
-            <icon icon="smartphone"></icon>
+            <icon [icon]="SvgIcon.Phone"></icon>
             <span>{{ mobilePhone.number }}</span>
           </a>
         </label-value>
         <label-value *ngFor="let phone of mobilePhones" [label]="phone.name">
           <a [href]="'tel:' + phone.normalizedNumber" class="link-with-icon">
-            <icon icon="smartphone"></icon>
+            <icon [icon]="SvgIcon.Phone"></icon>
             <span>{{ phone.number }}</span>
           </a>
         </label-value>
         <label-value *ngIf="landLinePhone" [label]="i18n.phone.landLine">
           <a [href]="'tel:' + landLinePhone.normalizedNumber"
             class="link-with-icon">
-            <icon icon="phone"></icon>
+            <icon [icon]="SvgIcon.Telephone"></icon>
             <span>{{ landLinePhone.number }}</span>
           </a>
         </label-value>
         <label-value *ngFor="let phone of landLinePhones"
           [label]="phone.name">
           <a [href]="'tel:' + phone.normalizedNumber" class="link-with-icon">
-            <icon icon="phone"></icon>
+            <icon [icon]="SvgIcon.Telephone"></icon>
             <span>{{ phone.number }}</span>
           </a>
         </label-value>
@@ -110,7 +110,7 @@
       <!-- Contact infos -->
       <ng-container *ngIf="user.contactInfos?.length > 0">
         <h2 class="mt-3">{{ i18n.user.contactInfo }}</h2>
-        <div class="row no-gutters">
+        <div class="additional-contacts row no-gutters">
           <div class="text-center col-12 col-sm-6 col-md-4 col-lg-3 pb-3"
             *ngFor="let contactInfo of user.contactInfos; let first=first">
             <avatar size="140" useLightbox [image]="contactInfo.image"

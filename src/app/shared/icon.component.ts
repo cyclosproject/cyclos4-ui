@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input } from '@angular/core';
+import { IconLoadingService } from 'app/core/icon-loading.service';
 import { empty } from 'app/shared/helper';
-import { ICON_CONTENTS, ICON_NAMES } from 'app/shared/icon';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
- * Shows either an SVG icon or a glyph from the material icon font
+ * Shows an SVG icon
  */
 @Component({
   // tslint:disable-next-line:component-selector
@@ -12,17 +13,8 @@ import { ICON_CONTENTS, ICON_NAMES } from 'app/shared/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconComponent {
-  @Input() set icon(icon: string) {
-    const element = this.element;
-    if (ICON_NAMES.includes(icon)) {
-      // An SVG icon
-      element.classList.remove('material-icons');
-      this.element.innerHTML = ICON_CONTENTS[icon];
-    } else {
-      // A font icon
-      element.classList.add('material-icons');
-      this.element.innerHTML = icon;
-    }
+  @Input() set icon(icon: SvgIcon | string) {
+    this.element.innerHTML = this.iconLoader.svg(icon);
   }
 
   private _size: string;
@@ -38,17 +30,16 @@ export class IconComponent {
       this._size = size;
     }
     const style = this.element.style;
-    style.fontSize = this._size;
     style.height = this._size;
     style.width = this._size;
-    style.lineHeight = this._size;
   }
 
   private get element(): HTMLElement {
     return this.elementRef.nativeElement as HTMLElement;
   }
 
-  constructor(private elementRef: ElementRef) {
-    this.size = null;
+  constructor(
+    private elementRef: ElementRef,
+    private iconLoader: IconLoadingService) {
   }
 }

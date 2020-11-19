@@ -1,5 +1,5 @@
 <page-layout [ready]="data$ | async" size="small" hideMenu>
-  <page-content *ngIf="data"
+  <page-content *ngIf="data" hideBack
     [layout]="(layout.ltmd$ | async) ? 'normal' : 'centered'" mode="tight"
     last [heading]="i18n.login.title" [mobileHeading]="i18n.login.mobileTitle"
     [ngClass]="{'with-left-area': uiLayout.leftAreaVisible$ | async}">
@@ -19,7 +19,7 @@
         <div class="input-group login-margin-bottom">
           <div class="input-group-prepend">
             <span class="input-group-text input-group-icon">
-              <icon size="1.3rem" icon="user"></icon>
+              <icon size="1.3rem" [icon]="SvgIcon.Person"></icon>
             </span>
           </div>
           <input #principal type="text" formControlName="principal"

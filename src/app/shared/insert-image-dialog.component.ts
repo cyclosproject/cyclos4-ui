@@ -48,7 +48,7 @@ export class InsertImageDialogComponent
 
   ngOnInit() {
     super.ngOnInit();
-    const auth = this.dataForUiHolder.auth;
+    const auth = this.dataForFrontendHolder.auth;
     if (auth.role === RoleEnum.ADMINISTRATOR) {
       this.allowUrl = true;
       this.uploadKind = ImageKind.SYSTEM_CUSTOM;

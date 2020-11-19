@@ -8,6 +8,7 @@ import {
   WizardResultTypeEnum, WizardStepKind, WizardStepTransition
 } from 'app/api/models';
 import { WizardsService } from 'app/api/services/wizards.service';
+import { NextRequestState } from 'app/core/next-request-state';
 import { empty, focusFirstInvalid, mergeValidity, validateBeforeSubmit } from 'app/shared/helper';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
@@ -61,8 +62,7 @@ export class RunWizardComponent
   constructor(
     injector: Injector,
     private userHelper: UserHelperService,
-    // private fieldsHelper: FieldHelperService,
-    // private nextRequestState: NextRequestState,
+    private nextRequestState: NextRequestState,
     private wizardsService: WizardsService) {
     super(injector);
   }
@@ -72,6 +72,7 @@ export class RunWizardComponent
     const route = this.route.snapshot;
     const key = route.params.key;
     const user = route.params.user;
+    const menu = route.params.menu;
     const wizard = route.params.wizard;
     let request: Observable<WizardExecutionData>;
     if (key) {
@@ -88,6 +89,8 @@ export class RunWizardComponent
       // Start a new execution
       if (user) {
         request = this.wizardsService.startUserWizard({ user, key: wizard });
+      } else if (menu) {
+        request = this.wizardsService.startMenuWizard({ menu, key: wizard });
       } else {
         request = this.wizardsService.startWizard({ key: wizard });
       }
@@ -102,6 +105,7 @@ export class RunWizardComponent
     const route = this.route.snapshot;
     if (route.params.key !== data.key) {
       // Redirect to the execution with the current key
+      this.breadcrumb.pop();
       this.router.navigate(['wizards', 'run', data.key], { replaceUrl: true });
       return;
     }
@@ -232,7 +236,7 @@ export class RunWizardComponent
 
             // Agreements
             if (!empty(dataForNew.agreements)) {
-              this.user.setControl('acceptAgreements', this.formBuilder.control(user.acceptAgreement));
+              this.user.setControl('acceptAgreements', this.formBuilder.control(user.acceptAgreements));
             }
 
             // Captcha
@@ -260,6 +264,9 @@ export class RunWizardComponent
       case WizardKind.USER:
         return this.menu.userMenu(data.user,
           new ActiveMenu(this.menu.menuForWizard(wizard), { wizard }));
+      case WizardKind.MENU:
+        const menu = this.ApiHelper.internalNameOrId(data.menuItem);
+        return this.menu.contentPageEntry(menu)?.activeMenu;
     }
   }
 
@@ -282,7 +289,8 @@ export class RunWizardComponent
         key: this.key,
         body: this.data.params
       }).subscribe(url => {
-        console.log(`redirect to ${url}`);
+        // Indicate that we will redirect
+        this.nextRequestState.willExternalRedirect();
         window.location.assign(url);
       })));
   }

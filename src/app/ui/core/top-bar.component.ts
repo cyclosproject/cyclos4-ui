@@ -1,29 +1,30 @@
 import {
-  ChangeDetectionStrategy, Component, EventEmitter, HostBinding,
-  Injector, Input, OnChanges, OnInit, Output, SimpleChanges,
+  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding,
+  Injector, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild
 } from '@angular/core';
 import { Event, Router } from '@angular/router';
 import { User } from 'app/api/models';
-import { Configuration } from 'app/ui/configuration';
+import { AuthHelperService } from 'app/core/auth-helper.service';
+import { Breakpoint, LayoutService } from 'app/core/layout.service';
+import { NotificationService } from 'app/core/notification.service';
+import { SvgIcon } from 'app/core/svg-icon';
+import { I18n } from 'app/i18n/i18n';
+import { AbstractComponent } from 'app/shared/abstract.component';
+import { HeadingAction } from 'app/shared/action';
+import { blurIfClick, empty, words } from 'app/shared/helper';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
 import { LoginService } from 'app/ui/core/login.service';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { MenuDensity } from 'app/ui/core/menu-density';
 import { MenuService } from 'app/ui/core/menu.service';
 import { menuAnchorId } from 'app/ui/core/menus.component';
-import { NotificationService } from 'app/core/notification.service';
-import { I18n } from 'app/i18n/i18n';
-import { AbstractComponent } from 'app/shared/abstract.component';
-import { HeadingAction } from 'app/shared/action';
-import { blurIfClick, empty, words } from 'app/shared/helper';
-import { Breakpoint } from 'app/core/layout.service';
+import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 import { ActiveMenu, Menu, MenuType, RootMenu, RootMenuEntry } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
-import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 
 const MaxUserDisplaySize = 30;
 const MaxUserDisplaySizeMenu = 15;
-const MenuThesholdLarge = 4;
+const MenuThesholdLarge = 3;
 const MenuThesholdExtraLarge = 5;
 const ProfileMenus = [Menu.MY_PROFILE, Menu.EDIT_MY_PROFILE];
 
@@ -35,9 +36,17 @@ const ProfileMenus = [Menu.MY_PROFILE, Menu.EDIT_MY_PROFILE];
   templateUrl: 'top-bar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TopBarComponent extends AbstractComponent implements OnInit, OnChanges {
+export class TopBarComponent extends AbstractComponent implements OnInit, OnDestroy, OnChanges {
 
   @HostBinding('class.has-top-bar') hasTopBar = true;
+  @HostBinding('class.has-menu') hasMenu = false;
+  @HostBinding('class.has-user') @Input() user: User;
+
+  @ViewChild('brand') brand: ElementRef<HTMLElement>;
+  @ViewChild('menuContainer') menuContainer: ElementRef<HTMLElement>;
+  @ViewChild('sidenavTrigger') sidenavTrigger: ElementRef<HTMLElement>;
+
+  resizeListener: any;
 
   // Export to template
   RootMenu = RootMenu;
@@ -54,12 +63,15 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
     return this.roots$.value;
   }
 
-  @HostBinding('class.has-menu') hasMenu = false;
   @Input() activeMenu: ActiveMenu;
+  @Input() breakpoints: Set<Breakpoint>;
+  @Output() toggleSidenav = new EventEmitter<void>();
 
   constructor(
     injector: Injector,
-    public layout: UiLayoutService,
+    public authHelper: AuthHelperService,
+    public layout: LayoutService,
+    public uiLayout: UiLayoutService,
     public i18n: I18n,
     public notification: NotificationService,
     public menu: MenuService,
@@ -70,26 +82,33 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
     super(injector);
   }
 
-  @HostBinding('class.has-user') @Input() user: User;
-  @Input() breakpoints: Set<Breakpoint>;
-  @Output() toggleSidenav = new EventEmitter<void>();
-
   ngOnInit() {
     super.ngOnInit();
 
-    if (!Configuration.menuBar) {
+    if (!this.dataForFrontendHolder.dataForFrontend.menuBar) {
       this.hasMenu = true;
       this.addSub(this.menu.menu(MenuType.BAR).subscribe(roots => {
         this.roots$.next(roots.filter(r => r.rootMenu !== RootMenu.PERSONAL));
+        this.updateTitle();
       }));
     }
     const maxDisplaySize = this.hasMenu ? MaxUserDisplaySizeMenu : MaxUserDisplaySize;
-    this.login.user$.subscribe(user => {
+    this.addSub(this.login.user$.subscribe(user => {
       this.userName = user == null ? '' : words(user.display, maxDisplaySize);
-      const marketplace = this.dataForUiHolder.auth.permissions.marketplace || {};
+      const marketplace = this.dataForFrontendHolder.auth.permissions.marketplace || {};
       this.shoppingCart = marketplace.userWebshop.purchase;
-    });
+      this.updateTitle();
+    }));
+    this.addSub(this.uiLayout.currentPage$.subscribe(() => this.updateTitle()));
+    this.resizeListener = () => this.updateTitle();
+    window.addEventListener('resize', this.resizeListener, false);
   }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    window.removeEventListener('resize', this.resizeListener);
+  }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.activeMenu) {
@@ -105,51 +124,10 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
     return this.activeMenu == null ? null : this.activeMenu.menu.root;
   }
 
-  logoUrl(breakpoints: Set<Breakpoint>): string {
-    const forBreakpoint = this.layout.getBreakpointConfiguration('logoUrl', breakpoints);
-    if (forBreakpoint != null) {
-      // empty means no logo
-      return forBreakpoint === '' ? null : forBreakpoint;
-    }
-    // No specific breakpoint configuration. Return the default (no logo on mobile / small), default logo otherwise.
-    return breakpoints.has('lt-md') ? null : Configuration.logoUrl;
-  }
-
-  appTitle(breakpoints: Set<Breakpoint>, pageTitle: string): string {
-    // xxs is a special case
-    if (breakpoints.has('xxs')) {
-      return empty(pageTitle) ? Configuration.appTitleSmall : pageTitle;
-    }
-
-    // Look for a customized title
-    const forBreakpoint = this.layout.getBreakpointConfiguration('title', breakpoints);
-    if (forBreakpoint != null) {
-      // Something is customized
-      switch (forBreakpoint) {
-        case 'large':
-          return this.density === MenuDensity.Dense ? Configuration.appTitleSmall : Configuration.appTitle;
-        case 'small':
-          return Configuration.appTitleSmall;
-        case 'none':
-        case '':
-          return null;
-        default:
-          return forBreakpoint;
-      }
-    }
-
-    // Return the default, which depends on the active breakpoints and density
-    if (breakpoints.has('xs') || this.density === MenuDensity.Dense) {
-      return Configuration.appTitleSmall;
-    } else {
-      return Configuration.appTitle;
-    }
-  }
-
   xxsActions(defaultActions: HeadingAction[], _routerEvent: Event, user: User): HeadingAction[] {
     const actions: HeadingAction[] = [];
 
-    const addAction = (icon: string, label: string, onClick: ActiveMenu | Menu | (() => any)) => {
+    const addAction = (id: string, icon: SvgIcon, label: string, onClick: ActiveMenu | Menu | (() => any)) => {
       if (onClick instanceof Menu || onClick instanceof ActiveMenu) {
         const activeMenu = onClick instanceof Menu ? new ActiveMenu(onClick) : onClick;
         onClick = () => {
@@ -159,6 +137,7 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
         };
       }
       const action = new HeadingAction(icon, label, onClick, true);
+      action.id = id;
       action.breakpoint = 'xxs';
       actions.push(action);
     };
@@ -167,17 +146,17 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
     if (isHome) {
       // User is on home. Show either the login or logout action
       if (user) {
-        addAction('logout', this.i18n.menu.logout, Menu.LOGOUT);
+        addAction('logout', SvgIcon.BoxArrowRight, this.i18n.menu.logout, Menu.LOGOUT);
       } else {
-        addAction('exit_to_app', this.i18n.menu.login, Menu.LOGIN);
+        addAction('login', SvgIcon.BoxArrowInRight, this.i18n.menu.login, Menu.LOGIN);
       }
     } else {
       // If there's a breadcrumb, show the back action, otherwise, home
       const home = user ? Menu.DASHBOARD : Menu.HOME;
       if (this.breadcrumb.empty) {
-        addAction('home', this.i18n.menu.home, home);
+        addAction('home', SvgIcon.HouseDoor, this.i18n.menu.home, home);
       } else {
-        addAction('arrow_back', this.i18n.general.back, () => {
+        addAction('back', SvgIcon.ArrowLeft, this.i18n.general.back, () => {
           if (!this.breadcrumb.back()) {
             this.menu.navigate({
               menu: new ActiveMenu(home),
@@ -188,7 +167,11 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
     }
     // Now show the other actions
     if (!empty(defaultActions)) {
-      Array.prototype.push.apply(actions, defaultActions);
+      for (const action of defaultActions) {
+        if (action.id && !actions.find(a => a.id === action.id)) {
+          actions.push(action);
+        }
+      }
     }
     return actions;
   }
@@ -239,6 +222,22 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
         width = 0;
       }
       menuText.style.width = `${width}px`;
+    }
+
+    this.updateTitle();
+  }
+
+  private updateTitle() {
+    const brand = this.brand?.nativeElement;
+    const menuContainer = this.menuContainer?.nativeElement;
+    if (brand && menuContainer) {
+      const sidenavTrigger = this.sidenavTrigger?.nativeElement;
+      brand.style.display = 'none';
+      const parentDim = brand.parentElement.getBoundingClientRect();
+      const menuDim = this.layout.xxs ? { width: 22 } : menuContainer.getBoundingClientRect();
+      const sidenavDim = sidenavTrigger ? sidenavTrigger.getBoundingClientRect() : { width: 0 };
+      brand.style.maxWidth = `${parentDim.width - menuDim.width - sidenavDim.width - 10}px`;
+      brand.style.display = '';
     }
   }
 

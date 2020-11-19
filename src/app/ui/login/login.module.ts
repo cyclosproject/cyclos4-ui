@@ -6,6 +6,7 @@ import { ForgotPasswordStepChangeComponent } from 'app/ui/login/forgot-password-
 import { ForgotPasswordStepCodeComponent } from 'app/ui/login/forgot-password-step-code.component';
 import { ForgotPasswordStepRequestComponent } from 'app/ui/login/forgot-password-step-request.component';
 import { ForgotPasswordComponent } from 'app/ui/login/forgot-password.component';
+import { LoginConfirmationComponent } from 'app/ui/login/login-confirmation.component';
 import { LoginComponent } from 'app/ui/login/login.component';
 import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
 
@@ -15,6 +16,7 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
 @NgModule({
   declarations: [
     LoginComponent,
+    LoginConfirmationComponent,
     ForgotPasswordComponent,
     ForgotPasswordStepRequestComponent,
     ForgotPasswordStepCodeComponent,

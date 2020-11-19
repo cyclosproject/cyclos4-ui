@@ -16,6 +16,6 @@
   <div class="w-100">{{ ticket.approveUrl }}</div>
   <button *extraCell class="btn btn-icon" type="button" (click)="copyUrl()"
     [tooltip]="i18n.general.copyToClipboard">
-    <icon icon="link"></icon>
+    <icon [icon]="SvgIcon.Share"></icon>
   </button>
 </label-value>

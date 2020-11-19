@@ -15,7 +15,8 @@
         [label]="dataForNew.nameLabel"></input-field>
     </ng-container>
 
-    <ng-container *ngIf="dataForNew.profileFieldActions?.username?.edit">
+    <ng-container
+      *ngIf="dataForNew.profileFieldActions?.username?.edit && !dataForNew.generatedUsername">
       <input-field [formControl]="user.controls.username" required
         [label]="i18n.user.username"></input-field>
     </ng-container>

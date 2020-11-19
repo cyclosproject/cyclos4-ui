@@ -139,8 +139,10 @@ input[type=number] {
 }
 
 .custom-control-label {
-  padding-top: 0 !important;
   padding-left: 0.2rem;
+  padding-top: 0.05rem;
+  font-weight: $font-weight-normal;
+
   &::before, &::after {
     top: 0.1rem !important;
   }
@@ -158,6 +160,9 @@ input[type=number] {
 @include media-breakpoint-up(sm) {
   .custom-select, .form-control, .custom-select option {
     padding: $input-padding-y $input-padding-x;
+  }
+  .custom-select {
+    padding-right: 1.75rem;
   }
 }
 
@@ -184,11 +189,17 @@ input[type=number] {
   &::before {
     width: 2.25rem;
     height: 1.25rem;
+    left: 0;
   }
   &::after {
     width: 1rem;
+    left: 2px;
     height: 1rem;
-    left: 2px !important;
+    top: 3px !important;
+  }
+}
+@include media-breakpoint-up(lg) {
+  .custom-switch .custom-control-label::after {
     top: 4px !important;
   }
 }
@@ -243,10 +254,6 @@ $spaced-label-values: (
   margin-top: 0 !important;
 }
 
-.custom-control-label {
-  padding-top: 0.15rem;
-  font-weight: $font-weight-normal;
-}
 .notice {
   font-size: 0.9rem;
   font-weight: $font-weight-normal;
@@ -319,17 +326,53 @@ $spaced-label-values: (
 .virtual-keyboard {
   display: flex;
   flex-direction: column;
+  align-items: center;
+
+  .virtual-keyboard-display,
+  .virtual-keyboard-buttons {
+    display: flex;
+    width: 75%;
+  }
+
+  .virtual-keyboard-display button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .virtual-keyboard-buttons {
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+  }
+
+  .virtual-keyboard-buttons-row {
+    display: flex;
+    flex-direction: row;
+    margin-left: -0.5rem;
+  }
+
+  .virtual-keyboard-buttons-row:first-child {
+    margin-top: -0.5rem;
+  }
+
+  .virtual-keyboard-button {
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+    font-family: $font-family-monospace;
+  }
 }
 
 zxing-scanner {
   display: inline-flex;
-}
-zxing-scanner, spinner {
-  height: 70vh;
+
+  spinner {
+    height: 70vh;
+  }
 }
 
 @include media-breakpoint-up(md) {
-  zxing-scanner, spinner {
+  zxing-scanner spinner {
     height: 20rem;
   }
 }
@@ -353,7 +396,7 @@ body.dark {
       box-shadow: $input-focus-box-shadow-dark;
     }
     &:not(:disabled):active ~ .custom-control-label::before {
-      color: color-yiq($button-color-dark);
+      color: color-yiq($button-color-dark, $yiq-dark-text-dark, $yiq-dark-text-light);
       background-color: rgba($button-color-dark, .5);
       border-color: $button-border-color-dark;
       @include box-shadow($input-focus-box-shadow-dark);
@@ -363,7 +406,7 @@ body.dark {
       border-color: $button-border-color-dark;
     }
     &:checked ~ .custom-control-label::after {
-      color: color-yiq($button-color-dark);
+      color: color-yiq($button-color-dark, $yiq-dark-text-dark, $yiq-dark-text-light);
     }
   }
   .required-marker {
@@ -421,7 +464,7 @@ body.dark {
     background-color: $input-bg-dark;
   }
   .select-option.selected {
-    color: color-yiq($button-color-dark) !important;
+    color: color-yiq($button-color-dark, $yiq-dark-text-dark, $yiq-dark-text-light) !important;
     background-color: $button-color-dark !important;
   }
   .select-option:hover, .select-option:focus {
@@ -439,6 +482,9 @@ boolean-field {
     &::before, &::after {
       left: 0;
     }
+  }
+  .custom-switch .custom-control-label {
+    padding-left: 2.25rem;
   }
 }
 
@@ -655,6 +701,9 @@ date-field {
 
   .calendar-toggle {
     display: none;
+    icon {
+      transform: translateY(2px);
+    }
   }
 
   .calendar-dropdown-menu.show {
@@ -688,10 +737,7 @@ body.lt-sm date-field .calendar-dropdown-menu.show {
   date-field {
     .calendar-toggle {
       margin-left: 0.25rem;
-      display: block;
-      icon {
-        transform: translateX(-2px);
-      }
+      display: unset;
     }
     .field-year {
       width: 3.8rem;
@@ -933,11 +979,6 @@ html-field {
     z-index: 1;
   }
 
-  select {
-    padding: 0 0.75rem 0 0.2rem;
-    background-position: right 0.25rem center !important;
-  }
-
   textarea.source {
     font-family: $font-family-monospace;
     height: $editor-height;
@@ -1096,10 +1137,17 @@ single-selection-field {
 ///////////////////////////////////////////////////////////
 
 rating-stats {
+  display: inline-flex;
+  align-items: center;
+
   .stars {
-    display: inline-block;
-    position: relative;
-    vertical-align: middle;
+    display: inline-flex;
+    justify-content: flex-end;
+    margin-left: -0.1rem;
+    flex-grow: 1;
+    icon {
+      margin-left: 0.1rem;
+    }
   }
   .red {
     color: rgb(255, 96, 90);
@@ -1121,11 +1169,6 @@ rating-stats {
     color: rgb(57, 181, 74);
     text-shadow: 0 1px 0 #266300;
   }
-  span {
-    vertical-align: middle;
-    width: 90px;
-    display: inline-block;
-  }
 }
 
 ///////////////////////////////////////////////////////////
@@ -1144,6 +1187,14 @@ result-type-field {
   .btn:focus {
     -webkit-filter: brightness(80%);
     filter: brightness(80%);
+  }
+  .btn-group {
+    .btn {
+      margin: 0 0 0 -1px;
+    }
+    .btn:first-of-type {
+      margin-left: 0;
+    }
   }
 }
 
@@ -1222,6 +1273,22 @@ body.dark user-link .has-link icon {
   user-link {
     avatar {
       display: none;
+    }
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+files-field {
+  .file-item {
+    @include text-truncate();
+    max-width: 7rem;
+  }
+}
+@include media-breakpoint-up(md) {
+  files-field {
+    .file-item {
+      max-width: 20rem;
     }
   }
 }

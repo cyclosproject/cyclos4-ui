@@ -233,10 +233,10 @@
     [toAddress]="toAddress">
 
     <mobile-result *mobileResult="let row" [avatarImage]="row.image"
-      [avatarIcon]="'user'">
+      [avatarIcon]="SvgIcon.Person">
       <div class="cell-text cell-main row">
         <div class="col-6 align-text-start">
-          {{ row.name }}
+          {{ row.display }}
         </div>
         <div class="col-6 align-text-end amount">
           {{ row.balance | currency:findCurrency() }}
@@ -248,19 +248,22 @@
       <thead>
         <th class="avatar"></th>
         <th>{{ i18n.general.user }}</th>
-        <th>{{ i18n.account.number }}</th>
-        <th>{{ i18n.account.userBalances.negativeSince }}</th>
+        <th *ngIf="showAccountNumber$ | async">{{ i18n.account.number }}</th>
+        <th *ngIf="showNegativeSince$ | async">
+          {{ i18n.account.userBalances.negativeSince }}</th>
         <th class="amount">{{ i18n.account.balance }}</th>
       </thead>
       <tbody>
         <ng-container *ngFor="let row of (results$ | async)?.results">
           <tr (click)="router.navigate(path(row))">
             <td class="avatar">
-              <avatar [image]="row.image" [icon]="'user'"></avatar>
+              <avatar [image]="row.image" [icon]="SvgIcon.Person"></avatar>
             </td>
-            <td>{{ row.name }}</td>
-            <td>{{ row.accountNumber }}</td>
-            <td>{{ row.negativeSince | date }}</td>
+            <td>{{ row.display }}</td>
+            <td *ngIf="showAccountNumber$ | async">{{ row.accountNumber }}
+            </td>
+            <td *ngIf="showNegativeSince$ | async">
+              {{ row.negativeSince | date }}</td>
             <td class="amount">
               {{ row.balance | currency:findCurrency() }}
             </td>
@@ -271,8 +274,7 @@
 
     <map-result *resultInfoWindow="let row" [image]="row.image"
       [address]="row.address">
-      <div *ngIf="row.name" class="font-weight-bold"> {{ row.name }}</div>
-      <div *ngIf="row.username"> {{ row.username }}</div>
+      <div class="font-weight-bold"> {{ row.display }}</div>
       <div class="font-weight-bold">
         {{ row.balance | currency:findCurrency() }}</div>
     </map-result>

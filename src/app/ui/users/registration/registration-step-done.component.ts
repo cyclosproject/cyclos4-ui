@@ -30,7 +30,7 @@ export class RegistrationStepDoneComponent
 
   ngOnInit() {
     super.ngOnInit();
-    const manager = !!this.dataForUiHolder.user;
+    const manager = !!this.dataForFrontendHolder.user;
     this.messageHtml = this.userHelper.registrationMessageHtml(this.result, manager);
     this.principalsHtml = this.userHelper.registrationPrincipalsHtml(this.result);
     this.passwordsMessage = this.userHelper.registrationPasswordsMessage(this.result);

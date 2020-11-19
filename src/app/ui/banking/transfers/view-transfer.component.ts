@@ -6,6 +6,7 @@ import { OperationHelperService } from 'app/ui/core/operation-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { empty } from 'app/shared/helper';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Displays a transfer details
@@ -50,14 +51,13 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
       }));
     const transaction = transfer.transaction || {};
     if (!empty(transaction.authorizations)) {
-      actions.push(new HeadingAction('check_circle_outline', this.i18n.transaction.viewAuthorizations, () => {
+      actions.push(new HeadingAction(SvgIcon.CheckCircle, this.i18n.transaction.viewAuthorizations, () => {
         this.router.navigate(['banking', 'transaction', this.bankingHelper.transactionNumberOrId(transaction), 'authorization-history']);
       }));
     }
     if (transfer.canChargeback) {
-      actions.push(new HeadingAction('undo', this.i18n.transaction.chargebackTransfer, () => {
-        this.chargeback();
-      }));
+      actions.push(new HeadingAction(SvgIcon.ArrowCounterclockwise, this.i18n.transaction.chargebackTransfer,
+        () => this.chargeback()));
     }
     for (const operation of transfer.operations || []) {
       actions.push(this.operationHelper.headingAction(operation, transfer.id));

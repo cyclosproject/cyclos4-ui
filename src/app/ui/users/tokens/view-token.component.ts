@@ -8,6 +8,8 @@ import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { AssignTokenComponent } from 'app/ui/users/tokens/assign-token.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
+import { SvgIcon } from 'app/core/svg-icon';
+import { TokenHelperService } from 'app/ui/core/token-helper.service';
 
 /**
  * Displays a token details
@@ -26,6 +28,7 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
     injector: Injector,
     private userHelper: UserHelperService,
     private modal: BsModalService,
+    private tokenHelper: TokenHelperService,
     private tokenService: TokensService) {
     super(injector);
   }
@@ -47,7 +50,7 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
     const headingActions: HeadingAction[] = [];
     // Assign
     if (token.assign) {
-      headingActions.push(new HeadingAction('account_box', this.i18n.token.action.assign, () => {
+      headingActions.push(new HeadingAction(SvgIcon.PersonPlus, this.i18n.token.action.assign, () => {
         if (token.status === TokenStatusEnum.UNASSIGNED) {
           this.modal.show(AssignTokenComponent, {
             class: 'modal-form',
@@ -58,7 +61,7 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
     }
     // Set activation deadline
     if (token.setActivationDeadline) {
-      headingActions.push(new HeadingAction('calendar_today', this.i18n.token.action.changeDeadline, () => {
+      headingActions.push(new HeadingAction(SvgIcon.CalendarEvent, this.i18n.token.action.changeDeadline, () => {
         this.notification.confirm({
           title: this.i18n.token.action.changeDeadline,
           customFields: [{
@@ -75,7 +78,7 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
     }
     // Set expiry date
     if (token.setExpiryDate) {
-      headingActions.push(new HeadingAction('calendar_today', this.i18n.token.action.changeExpiry, () => {
+      headingActions.push(new HeadingAction(SvgIcon.CalendarEvent, this.i18n.token.action.changeExpiry, () => {
         this.notification.confirm({
           title: this.i18n.token.action.changeExpiry,
           customFields: [{
@@ -92,26 +95,26 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
     }
     // Block
     if (token.block) {
-      headingActions.push(new HeadingAction('lock', this.i18n.token.action.block, () => {
+      headingActions.push(new HeadingAction(SvgIcon.Lock, this.i18n.token.action.block, () => {
         this.tokenService.blockToken({ id: this.id }).subscribe(() => this.notifyDoneAndReload(this.i18n.token.action.done.blocked));
       }));
     }
     // Unblock
     if (token.unblock) {
-      headingActions.push(new HeadingAction('lock_open', this.i18n.token.action.unblock, () => {
+      headingActions.push(new HeadingAction(SvgIcon.Unlock, this.i18n.token.action.unblock, () => {
         this.tokenService.unblockToken({ id: this.id }).subscribe(() => this.notifyDoneAndReload(this.i18n.token.action.done.unblocked));
       }));
     }
     // Activate
     if (token.activate) {
-      headingActions.push(new HeadingAction('how_to_reg', this.i18n.token.action.activate, () => {
+      headingActions.push(new HeadingAction(this.tokenHelper.icon(token.type), this.i18n.token.action.activate, () => {
         this.tokenService.activatePendingToken({ id: this.id })
           .subscribe(() => this.notifyDoneAndReload(this.i18n.token.action.done.activated));
       }));
     }
     // Cancel
     if (token.cancel) {
-      headingActions.push(new HeadingAction('cancel', this.i18n.token.action.cancel, () => {
+      headingActions.push(new HeadingAction(SvgIcon.XCircle, this.i18n.token.action.cancel, () => {
         this.notification.confirm({
           title: this.i18n.token.action.cancel,
           message: this.i18n.token.action.message.cancel,
@@ -154,7 +157,7 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
   }
 
   resolveMenu(view: TokenView) {
-    if (this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR) {
+    if (this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR) {
       return new ActiveMenu(Menu.USER_TOKENS, { tokenType: view.type });
     }
     if (this.authHelper.isSelf(view.user)) {
@@ -163,7 +166,7 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
     if (view.user.user && this.authHelper.isSelf(view.user.user)) {
       return Menu.MY_OPERATORS;
     }
-    if (this.dataForUiHolder.role === RoleEnum.BROKER) {
+    if (this.dataForFrontendHolder.role === RoleEnum.BROKER) {
       return Menu.MY_BROKERED_USERS;
     }
     return Menu.SEARCH_USERS;

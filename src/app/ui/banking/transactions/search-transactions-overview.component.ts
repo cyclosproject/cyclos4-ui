@@ -86,7 +86,7 @@ export class SearchTransactionsOverviewComponent
       .reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], []);
     this.hasTransactionNumber = transactionNumberPatterns.length > 0;
     this.transactionNumberPattern = transactionNumberPatterns.length === 1 ? transactionNumberPatterns[0] : null;
-    this.headingActions = [this.moreFiltersAction];
+    this.headingActions = this.isMyAuth ? [] : [this.moreFiltersAction];
     this.exportHelper.headingActions(data.exportFormats,
       f => this.transactionsService.exportTransactionsOverview$Response({
         format: f.internalName,
@@ -207,7 +207,7 @@ export class SearchTransactionsOverviewComponent
     let menu: Menu;
     switch (this.kind) {
       case 'authorized':
-        if (this.dataForUiHolder.role === RoleEnum.BROKER) {
+        if (this.dataForFrontendHolder.role === RoleEnum.BROKER) {
           menu = Menu.BROKER_AUTHORIZED_PAYMENTS_OVERVIEW;
         } else {
           menu = Menu.AUTHORIZED_PAYMENTS_OVERVIEW;

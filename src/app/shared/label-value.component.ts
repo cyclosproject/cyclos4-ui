@@ -266,12 +266,12 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
         case 'xxs':
           // On xxs use 6 cols
           return this.maximizeLabel
-            ? this.extraCell ? 9 : 10
+            ? this.extraCell ? 8 : 9
             : 6;
         case 'xs':
           // On xs use 5 cols
           return this.maximizeLabel
-            ? this.extraCell ? 10 : 11
+            ? this.extraCell ? 9 : 10
             : 5;
         default:
           // On larger resolutions, always use 4 cols for labels

@@ -1,10 +1,11 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, Host, Injector, Input, Optional, SkipSelf, ViewChild,
+  ChangeDetectionStrategy, Component, ElementRef, Host, Injector, Input, Optional, SkipSelf, ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { LayoutService } from 'app/core/layout.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { IconComponent } from 'app/shared/icon.component';
-import { LayoutService } from 'app/core/layout.service';
 import { TooltipDirective } from 'ngx-bootstrap/tooltip';
 import { BehaviorSubject } from 'rxjs';
 
@@ -23,8 +24,8 @@ export class ButtonToggleComponent extends BaseControlComponent<boolean> {
 
   icon$ = new BehaviorSubject<string>(null);
 
-  @Input() onIcon: string;
-  @Input() offIcon: string;
+  @Input() onIcon: SvgIcon | string;
+  @Input() offIcon: SvgIcon | string;
   @Input() iconTooltip: string;
   @Input() readOnly: boolean;
 
@@ -34,7 +35,8 @@ export class ButtonToggleComponent extends BaseControlComponent<boolean> {
 
   state: boolean;
 
-  constructor(injector: Injector,
+  constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private layout: LayoutService) {
     super(injector, controlContainer);
@@ -60,7 +62,7 @@ export class ButtonToggleComponent extends BaseControlComponent<boolean> {
     }
   }
 
-  get icon(): string {
+  get icon(): SvgIcon | string {
     return this.state ? this.onIcon : this.offIcon;
   }
 

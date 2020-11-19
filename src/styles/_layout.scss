@@ -31,6 +31,11 @@ body.lt-md ui-root .main-container {
 
 // Both top-bar and sidenav
 .has-top-bar {
+  icon, icon-with-counter {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+
   nav {
     transition: background-color ease-in-out 0.3s, color ease-in-out 0.4s;
   }
@@ -40,6 +45,13 @@ body.lt-md ui-root .main-container {
   }
   .menu-container {
     height: 100%;
+  }
+
+  .profile-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1rem;
   }
 
   .navbar {
@@ -83,7 +95,9 @@ body.lt-md ui-root .main-container {
   }
   .top-title {
     font-size: 1rem;
-    line-height: 1em;
+    line-height: 2rem;
+    width: 100%;
+    @include text-truncate();
   }
 
   .logo {
@@ -95,7 +109,6 @@ body.lt-md ui-root .main-container {
     display: flex;
     flex-direction: row;
     align-items: center;
-    flex-grow: 1;
   }
   .menu-separator {
     opacity: 0.3;
@@ -168,10 +181,13 @@ body.lt-md ui-root .main-container {
 
   .personal-label {
     margin-left: 0.5rem;
+    @include text-truncate();
   }
   &.has-menu .personal-label {
-    @include text-truncate();
     max-width: 7rem;
+  }
+  &:not(.has-menu) .personal-label {
+    max-width: 12rem;
   }
 
   .custom-menus {
@@ -190,10 +206,6 @@ body.lt-md ui-root .main-container {
   }
 
   &.has-menu nav {
-    .navbar-brand {
-      flex-grow: 0;
-    }
-
     .dropdown-menu {
       color: $top-bar-color;
       background-color: $top-bar-bg;
@@ -206,8 +218,7 @@ body.lt-md ui-root .main-container {
     }
     .sub-menu-item {
       white-space: nowrap;
-      padding-top: 0.7rem !important;
-      padding-bottom: 0.7rem !important;
+      padding: 0.7rem 1rem !important;
     }
     .sub-menu-item {
       border-bottom: 1px solid $top-bar-popup-separator-color;
@@ -269,7 +280,7 @@ body.lt-md ui-root .main-container {
 @include media-breakpoint-up(xs) {
   .has-top-bar {
     .top-title {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
     .navbar {
       height: $top-bar-height-xs;
@@ -330,6 +341,10 @@ top-bar.has-top-bar {
   position: sticky;
   z-index: $zindex-sticky;
   top: 0;
+
+  .dropdown-menu {
+    max-height: 20rem;
+  }
 }
 @include media-breakpoint-up(lg) {
   top-bar.has-top-bar {
@@ -352,8 +367,8 @@ top-bar.has-top-bar {
         background-color: $top-bar-color;
         transition: opacity ease-in-out 0.4s;
         opacity: 0;
-        left: calc(#{$top-bar-item-spacing-spacious} + 0.1rem);
-        width: calc(100% - #{2 * $top-bar-item-spacing-spacious} - 0.15rem);
+        left: $top-bar-item-spacing-spacious;
+        width: calc(100% - #{2 * $top-bar-item-spacing-spacious});
       }
 
       &.density-medium::before {
@@ -625,15 +640,15 @@ menu-bar {
     height: $menu-bar-height;
   }
 
-  nav {
+  .navbar {
     background-color: $menu-bar-bg;
-    padding: 0 0.7rem;
+    padding: 0;
     border-bottom: 1px solid $menu-bar-line-color;
     flex-grow: 1;
     display: flex;
     align-items: stretch;
   }
-  nav.full-width {
+  .navbar.full-width {
     box-shadow: none;
     border-bottom: 1px solid transparent;
   }
@@ -667,7 +682,7 @@ menu-bar {
       padding: 0.7rem calc(#{$lg-padding} + 0.2rem) 0.7rem $lg-padding;
     }
     .menu-text, .sub-menu-text {
-      font-size: 1.2em;
+      font-size: 1.1em;
       line-height: 1em;
       white-space: nowrap;
     }
@@ -917,10 +932,19 @@ page-content {
     padding: $layout-spacer-xxs;
   }
   .back-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     width: auto;
     height: 100%;
-    padding: 0 $layout-spacer-xxs;
+    padding: 0;
+    padding-left: $layout-spacer-xxs;
     color: $button-icon-color;
+
+    icon {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
   }
   .back-button:focus, .back-button:active {
     box-shadow: none !important;
@@ -1012,7 +1036,7 @@ page-content {
       padding-bottom: 0;
     }
     .back-button {
-      padding: 0 $layout-spacer-xs;
+      padding-left: $layout-spacer-xs;
     }
     .heading-action {
       padding-right: 0;
@@ -1042,7 +1066,7 @@ page-content {
       }
     }
     .back-button {
-      padding: 0 $layout-spacer;
+      padding-left: $layout-spacer;
     }
   }
 }
@@ -1198,6 +1222,12 @@ page-layout {
     margin-right: $section-margin;
     display: flex;
     flex-direction: column;
+
+    .navbar icon {
+      width: 1.2rem;
+      height: 1.2rem;
+      transform: translateY(-1px);
+    }
   }
   .content-area {
     flex: 1;
@@ -1276,6 +1306,12 @@ body.dark.lt-md page-layout {
   }
 }
 
+body.xxs #heading-action-toggle {
+  position: absolute;
+  right: 0;
+  top: 2px;
+}
+
 ///////////////////////////////////////////////////////////
 
 side-menu {
@@ -1294,20 +1330,26 @@ side-menu {
     align-items: center;
     justify-content: center;
     line-height: 1em;
-    margin-top: 0.6rem;
+    margin-top: 0.2rem;
     padding: 0rem;
     padding-bottom: 0.7rem;
   }
   .side-menu-icon {
     border-radius: 50%;
     background-color: $side-menu-icon-bg;
-    width: 4.4rem;
-    height: 4.4rem;
-    margin: 2rem auto 0;
+    width: 5rem;
+    height: 5rem;
+    margin: 1.8rem auto 0;
     color: $side-menu-icon-color;
+    border: 2px solid $side-menu-icon-border-color;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    icon {
+      width: 2.2rem;
+      height: 2.2rem;
+    }
   }
   .card {
     background-color: $side-menu-bg;
@@ -1325,7 +1367,7 @@ side-menu {
       box-shadow: none;
     }
     .nav-item-text {
-      margin-left: 0.8rem;
+      margin-left: 0.7rem;
       flex-grow: 1;
       line-height: 1em;
     }
@@ -1369,6 +1411,7 @@ body.dark {
     .side-menu-icon {
       background-color: $side-menu-icon-bg-dark;
       color: $side-menu-icon-color-dark;
+      border-color: $side-menu-icon-border-color-dark;
     }
     .card {
       background-color: $side-menu-bg-dark;
@@ -1401,4 +1444,11 @@ body.dark {
       }
     }
   }
+}
+
+///////////////////////////////////////////////////////////
+
+banner {
+  margin-top: $layout-spacer;
+  box-shadow: $box-shadow-sm;
 }

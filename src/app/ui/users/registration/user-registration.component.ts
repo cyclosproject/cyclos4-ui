@@ -82,7 +82,7 @@ export class UserRegistrationComponent
     const role = auth.role;
 
     if (role == null) {
-      const dataForUi = this.dataForUiHolder.dataForUi;
+      const dataForUi = this.dataForFrontendHolder.dataForUi;
 
       // Maybe a wizard should be used instead of the regular registration form?
       let wizard: Wizard;
@@ -101,7 +101,7 @@ export class UserRegistrationComponent
         return;
       }
 
-      // When guest, the possible groups are obtained from DataForUi
+      // When guest, the possible groups are obtained from DataForFrontend
       this.initializeGroups(dataForUi.publicRegistrationGroups);
     } else {
       // When admin / broker, fetch the possible registration groups from data, as they are more complete
@@ -177,10 +177,10 @@ export class UserRegistrationComponent
             // Already registered and logged-in
             this.nextRequestState.replaceSession(callback.sessionToken).pipe(first()).subscribe(() => {
               setRootSpinnerVisible(true);
-              this.dataForUiHolder.initialize().subscribe(auth => {
+              this.dataForFrontendHolder.initialize().pipe(first()).subscribe(data => {
                 setRootSpinnerVisible(false);
                 // Redirect to the home URL
-                if (!ApiHelper.isRestrictedAccess(auth)) {
+                if (!ApiHelper.isRestrictedAccess(data)) {
                   this.router.navigateByUrl('');
                 }
               });
@@ -399,7 +399,7 @@ export class UserRegistrationComponent
   }
 
   resolveMenu() {
-    switch (this.dataForUiHolder.role) {
+    switch (this.dataForFrontendHolder.role) {
       case RoleEnum.ADMINISTRATOR:
         return Menu.ADMIN_REGISTRATION;
       case RoleEnum.BROKER:

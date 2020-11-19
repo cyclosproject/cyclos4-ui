@@ -1,10 +1,10 @@
 <div *ngIf="allowedResultTypes?.length > 0" class="btn-group" btnRadioGroup
   [formControl]="formControl">
-  <label #button class="btn btn-icon m-0"
+  <label #button class="btn btn-icon"
     [ngClass]="['focusable', 'resultType-' + resultType]"
     *ngFor="let resultType of allowedResultTypes"
     (focus)="addShortcuts(resultType)" (blur)="removeShortcuts(resultType)"
     [btnRadio]="resultType" tabindex="0" role="button">
-    <icon size="1.4rem" [icon]="icon(resultType)"></icon>
+    <icon size="1.2rem" [icon]="icon(resultType)"></icon>
   </label>
 </div>

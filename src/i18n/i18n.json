@@ -203,6 +203,7 @@
     "general": "There was an unexpected error while processing your request",
     "serverOffline": "The server couldn't be contacted.<br>Please, try again later.",
     "invalidRequest": "It is not possible to connect to the server.<br>Please make sure you are connected to the Internet and try again in a few seconds.",
+    "networkInaccessible": "This network is not accessible by the specified user",
     "queryParse": "Invalid keywords",
     "uploadSizeExceeded": "The uploaded file exceeds the maximum allowed size of {size}",
     "maxItems": "Cannot add more than {max} elements",
@@ -246,13 +247,14 @@
   },
   "menu": {
     "login": "Login",
+    "language": "Language",
     "register": "Register",
     "logout": "Logout",
     "shoppingCart": "Shopping cart",
     "home": "Home",
     "dashboard": "Dashboard",
     "banking": "Banking",
-    "banking.account": "Account",
+    "banking.accountsSummary": "Accounts summary",
     "banking.payUser": "Payment to user",
     "banking.paySystem": "Payment to system",
     "banking.paySelf": "Payment to self",
@@ -319,11 +321,35 @@
   "login": {
     "title": "Login",
     "mobileTitle": "Login",
+    "title.confirmation": "Login confirmation",
+    "mobileTitle.confirmation": "Login confirmation",
     "message": "You can login with your username and password",
     "disconnected": "You have been disconnected.<br>Please, login again in order to view the requested page.",
     "principal": "User",
     "forgotPassword": "Forgot your password?",
-    "register": "Not a user yet? Register here."
+    "register": "Not a user yet? Register here.",
+    "confirmation.text": "You have successfully logged-in, but your session must to be confirmed in order to proceed.",
+    "error": {
+      "invalid": "Sign in failed. The given user / password are incorrect. Please, try again.",
+      "remoteAddressBlocked": "Sign in failed. Your IP address has been temporarily blocked. Please, contact the administration.",
+      "user": {
+        "blocked": "Sign in failed. Your user account has been blocked. Please, contact the administration.",
+        "disabled": "Sign in failed. Your user account has been disabled. Please, contact the administration.",
+        "pending": "Sign in failed. Your user account is pending for activation. You should have received an email with instructions to activate your account. If not, please, contact the administration."
+      },
+      "password": {
+        "expired": "Sign in failed. Your password has expired. Please, contact the administration.",
+        "disabled": "Sign in failed. Your password was disabled. Please, contact the administration.",
+        "reset": "Sign in failed. Your password has been reset. Please, contact the administration.",
+        "indefinitelyBlocked": "Sign in failed. Your login password has been disabled by exceeding the maximum tries. Please, contact the administration.",
+        "temporarilyBlocked": "Your password is temporarily blocked by exceeding the maximum tries"
+      },
+      "confirmation": {
+        "missingDevice": "Sign in failed. You are required to confirm your login with a trusted mobile device, but you have none. Please, install the mobile app and activate is a trusted device first.",
+        "missingPassword": "Sign in failed. You are required to confirm the login with your {0} but you do not it active. Please, contact the administration.",
+        "missingBoth": "Sign in failed. You are required to confirm your login with either your {0} or a trusted mobile device, but you have none. Please, install the mobile app and activate is a trusted device first, or contact the administration."
+      }
+    }
   },
   "password": {
     "confirmationMessage": "Supply your {passwordType} to confirm this operation",
@@ -452,6 +478,7 @@
     "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
       "account": "Account",
+      "accounts": "Accounts",
       "payUser": "Pay user",
       "paySystem": "Pay system",
       "pos": "Receive payment",
@@ -463,12 +490,12 @@
       "password": "Password",
       "passwords": "Passwords",
       "switchTheme": "Switch theme",
-      "connectedUsers": "Connected users"
+      "classicFrontend": "Use classic frontend"
     },
     "accounts": "Accounts",
     "accountStatus": "Account status",
-    "lastIncomingPayments": "Last incoming payments",
-    "noIncomingPayments": "No incoming payments",
+    "lastPayments": "Last payments",
+    "noPayments": "No payments",
     "latestAds": "Latest advertisements",
     "latestUsers": "Latest users",
     "passwords": {
@@ -500,7 +527,13 @@
     "netInflow": "Net income",
     "noAccounts": "You have no accounts",
     "system": "System account",
-    "mobileTitle": "Account",
+    "mobileTitle": {
+      "account": "Account",
+      "accountsSummary": "Accounts summary"
+    },
+    "title": {
+      "accountsSummary": "Accounts summary"
+    },
     "orderBy": {
       "dateDesc": "Date (newest first)",
       "dateAsc": "Date (oldest first)",
@@ -946,17 +979,14 @@
       "public.tooltip": "This field is visible by others. Click to make it private."
     },
     "image": {
-      "noImage": "No image",
-      "noImages": "No images",
       "upload": "Upload a new image",
+      "camera": "Capture from camera",
       "manage": "Reorder or remove images",
       "remove": "Remove this image",
       "manageMessage": "You can drag / drop images to reorder them",
       "manageAfterConfirm": "After confirmation, please make sure to click the Save button in order for the changes to be applied."
     },
     "file": {
-      "noFile": "No file",
-      "noFiles": "No files",
       "upload": "Upload a new file",
       "manage": "Reorder or remove files",
       "remove": "Remove this file",
@@ -970,10 +1000,13 @@
       "contact.empty": "Your contact list is empty",
       "scanQrCode.tooltip": "Scan a QR-code with your camera"
     },
-    "scanQr": {
-      "title": "Scan QR-code",
+    "camera": {
+      "title.capture": "Capture image from your camera",
+      "title.qrCode": "Scan QR-code",
+      "fileName": "Camera {timestamp}.jpeg",
+      "capture": "Capture",
       "noCameras": "No cameras found on this device.",
-      "noPermission": "In order to scan a QR-code, please, grant permission for the application to access your camera."
+      "noPermission": "In order use this functionality, please, grant permission for the application to access your camera."
     },
     "html": {
       "undo": "Undo",
@@ -1151,6 +1184,7 @@
     "beginLastLoginDate": "Last login after",
     "endLastLoginDate": "Last login before",
     "profile": {
+      "accountsSummary": "Accounts summary",
       "noPermission": "You don't have permission to view the profile of this user",
       "showActions": "Show actions",
       "hideActions": "Hide actions",
@@ -1168,6 +1202,7 @@
       "payAsUserToSystem": "Payment user to system",
       "payAsUserToUser": "Payment user to user",
       "payAsUserToSelf": "Payment user to self",
+      "requestPayment": "Request payment",
       "requestPaymentAsUserFromUser": "Request payment from user to user",
       "requestPaymentFromUser": "Request payment from user",
       "requestPaymentAsUserFromSystem": "Request payment from system to user",
@@ -1475,6 +1510,7 @@
     "deliveryMethodSaved": "The delivery method was saved",
     "fixed": "Fixed",
     "hasImages": "With images",
+    "noImages": "No images for this advertisement",
     "item": "Item",
     "items": "Items",
     "itemsNone": "There are currently no products",
@@ -1862,14 +1898,17 @@
     "alreadyExecuted": "This step was already executed",
     "emailVerificationCode": "E-mail verification code",
     "smsVerificationCode": "SMS verification code",
-    "codeSent": "Code sent"
+    "codeSent": "Code sent",
+    "currentStep": "Step {current} of {total}"
   },
   "setting": {
     "title": "Settings",
     "mobileTitle": "Settings",
     "theme": "Theme",
     "theme.light": "Light",
-    "theme.dark": "Dark"
+    "theme.dark": "Dark",
+    "locale": "Set language",
+    "useClassicFrontend": "Use classic frontend"
   },
   "privacySettings": {
     "title": "Privacy settings",

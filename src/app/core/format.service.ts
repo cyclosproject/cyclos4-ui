@@ -1,34 +1,34 @@
 import { Injectable } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { Currency, DataForUi, TimeFieldEnum, TimeInterval, WeekDayEnum } from 'app/api/models';
+import { Currency, DataForFrontend, TimeFieldEnum, TimeInterval, WeekDayEnum } from 'app/api/models';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { I18n } from 'app/i18n/i18n';
 import { empty } from 'app/shared/helper';
 import Big from 'big.js';
 import moment from 'moment-mini-ts';
-import { DataForUiHolder } from './data-for-ui-holder';
+import { DataForFrontendHolder } from './data-for-frontend-holder';
 
 export const ISO_DATE = 'YYYY-MM-DD';
 
 /**
- * Holds a shared instance of DataForUi and knows how to format dates and numbers
+ * Holds a shared instance of DataForFrontend and knows how to format dates and numbers
  */
 @Injectable({
   providedIn: 'root',
 })
 export class FormatService {
   constructor(
-    dataForUiHolder: DataForUiHolder,
+    dataForFrontendHolder: DataForFrontendHolder,
     i18nLoading: I18nLoadingService,
     private apiConfiguration: ApiConfiguration,
     private i18n: I18n) {
-    dataForUiHolder.subscribe(dataForUi => this.initialize(dataForUi));
+    dataForFrontendHolder.subscribe(dataForFrontend => this.initialize(dataForFrontend));
     // If already loaded, initialize right away
-    if (dataForUiHolder.dataForUi) {
-      this.initialize(dataForUiHolder.dataForUi);
+    if (dataForFrontendHolder.dataForFrontend) {
+      this.initialize(dataForFrontendHolder.dataForFrontend);
     }
     i18nLoading.subscribeForLocale(() => {
-      this.initialize(dataForUiHolder.dataForUi);
+      this.initialize(dataForFrontendHolder.dataForFrontend);
     });
   }
 
@@ -68,7 +68,7 @@ export class FormatService {
   /** Time field in plural form. Eg. days */
   pluralTimeFieldNames: Map<TimeFieldEnum, string>;
 
-  private _dataForUi: DataForUi;
+  private _dataForFrontend: DataForFrontend;
 
   /**
    * Sorts the given array according to the current date fields order.
@@ -91,10 +91,11 @@ export class FormatService {
     });
   }
 
-  initialize(dataForUi: DataForUi): void {
-    if (dataForUi == null) {
+  initialize(dataForFrontend: DataForFrontend): void {
+    if (dataForFrontend == null) {
       return;
     }
+    const dataForUi = dataForFrontend.dataForUi;
     // Cyclos uses Java format, such as dd/MM/yyyy. Moment uses all uppercase for those.
     this.dateFormat = (dataForUi.dateFormat || ISO_DATE).toUpperCase();
     let arr = /(\w+)(.)(\w+)(.)(\w+)/.exec(this.dateFormat);
@@ -173,7 +174,7 @@ export class FormatService {
     this.pluralTimeFieldNames.set(TimeFieldEnum.WEEKS, this.i18n.general.timeField.plural.weeks);
     this.pluralTimeFieldNames.set(TimeFieldEnum.YEARS, this.i18n.general.timeField.plural.years);
 
-    this._dataForUi = dataForUi;
+    this._dataForFrontend = dataForFrontend;
   }
 
   /**
@@ -182,7 +183,7 @@ export class FormatService {
   getLogoUrl(id: string): string {
     return this.apiConfiguration.rootUrl
       + '/../content/images/currentConfiguration/'
-      + id + '?' + this._dataForUi.resourceCacheKey;
+      + id + '?' + this._dataForFrontend.dataForUi.resourceCacheKey;
   }
 
   /**

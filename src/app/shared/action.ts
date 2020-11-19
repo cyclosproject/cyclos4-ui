@@ -1,9 +1,12 @@
 import { Breakpoint } from 'app/core/layout.service';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * A custom action descriptor
  */
 export class Action {
+  public id: string;
+
   constructor(
     public label: string,
     public onClick: (param?: any) => void,
@@ -16,7 +19,7 @@ export class Action {
  */
 export class ActionWithIcon extends Action {
   constructor(
-    public icon: string,
+    public icon: SvgIcon | string,
     label: string,
     onClick: (param?: any) => void,
   ) {
@@ -46,7 +49,7 @@ export class HeadingAction extends ActionWithIcon {
   subActions: Action[];
 
   constructor(
-    icon: string,
+    icon: SvgIcon | string,
     label: string,
     onClick: (param?: any) => void,
     public maybeRoot = false,

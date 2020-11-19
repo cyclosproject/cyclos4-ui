@@ -203,6 +203,7 @@
     "general": "Ocorreu um erro inesperado durante o processamento da sua solicitação",
     "serverOffline": "O servidor não pôde ser contatado.<br>por Favor, tente novamente mais tarde.",
     "invalidRequest": "Não é possível conectar ao servidor.<br>Por favor, verifique se você está conectado à Internet e tente novamente dentro de alguns segundos.",
+    "networkInaccessible": "Esta rede não é acessível pelo usuário especificado",
     "queryParse": "Palavra-chave inválida",
     "uploadSizeExceeded": "O upload do arquivo excede o tamanho máximo permitido de {size}",
     "maxItems": "Não é possível adicionar mais do que {max} elementos",
@@ -246,13 +247,14 @@
   },
   "menu": {
     "login": "Acessar",
+    "language": "Idioma",
     "register": "Registrar",
     "logout": "Sair",
     "shoppingCart": "Carrinho de compras",
     "home": "Início",
     "dashboard": "Painel",
     "banking": "Finanças",
-    "banking.account": "Conta",
+    "banking.accountsSummary": "Resumo de contas",
     "banking.payUser": "Pagamento para usuário",
     "banking.paySystem": "Pagamento para sistema",
     "banking.paySelf": "Pagamento entre contas",
@@ -319,11 +321,35 @@
   "login": {
     "title": "Acessar",
     "mobileTitle": "Acessar",
+    "title.confirmation": "Confirmação de login",
+    "mobileTitle.confirmation": "Confirmação de login",
     "message": "Você pode acessar com seu nome de usuário e senha",
     "disconnected": "Você foi desconectado.<br>Por Favor, faça o login novamente, para exibir a página solicitada.",
     "principal": "Usuário",
     "forgotPassword": "Esqueceu sua senha?",
-    "register": "Não é um usuário ainda? Registre-se aqui."
+    "register": "Não é um usuário ainda? Registre-se aqui.",
+    "confirmation.text": "Você entrou com sucesso, mas sua sessão deve ser confirmada para continuar.",
+    "error": {
+      "invalid": "Falha ao acessar. O usuário / senha informado está incorreto. Por favor, tente novamente.",
+      "remoteAddressBlocked": "Falha ao acessar. Seu endereço de IP foi temporariamente bloqueado. Por favor, entre em contato com a administração.",
+      "user": {
+        "blocked": "Falha ao acessar. Sua conta de usuário foi bloqueada. Por favor, entre em contato com a administração.",
+        "disabled": "Falha ao acessar. Sua conta de usuário foi desativada. Por favor, entre em contato com a administração.",
+        "pending": "Falha ao acessar. Sua conta está pendente de ativação. Você deve ter recebido um e-mail com instruções para ativar sua conta. Se não, por favor, contate a administração."
+      },
+      "password": {
+        "expired": "Falha ao acessar. Sua senha expirou. Por favor, entre em contato com a administração.",
+        "disabled": "Falha ao acessar. Sua senha foi desativada. Por favor, entre em contato com a administração.",
+        "reset": "Falha ao acessar.  Sua senha foi redefinida. Por favor, contacte a administração.",
+        "indefinitelyBlocked": "Falha ao acessar. Sua senha de acesso foi desabilitada por exceder o número máximo de tentativas. Por favor, entre em contato com a administração.",
+        "temporarilyBlocked": "Sua senha está temporariamente bloqueada por exceder o máximo de tentativas"
+      },
+      "confirmation": {
+        "missingDevice": "Falha ao acessar. Você é obrigado a confirmar seu acesso com um dispositivo móvel confiável, mas você não tem nenhum. Por favor, instale o aplicativo móvel e ative um dispositivo confiável primeiro.",
+        "missingPassword": "Falha ao acessar. Você é obrigado a confirmar o acesso com seu {0} mas você não o ativou. Por favor, entre em contato com a administração.",
+        "missingBoth": "Falha ao acessar. Você é obrigado a confirmar seu acesso com seu {0} ou um dispositivo móvel confiável, mas você não tem nenhum. Por favor, instale o aplicativo móvel e ative um dispositivo confiável primeiro ou contate a administração."
+      }
+    }
   },
   "password": {
     "confirmationMessage": "Forneça seu {passwordType} para confirmar esta operação",
@@ -463,12 +489,12 @@
       "password": "Senha",
       "passwords": "Senhas",
       "switchTheme": "Mudar tema",
-      "connectedUsers": "Usuários conectados"
+      "classicFrontend": "Usar frontend clássico"
     },
     "accounts": "Contas",
     "accountStatus": "Status da conta",
-    "lastIncomingPayments": "Últimos pagamentos recebidos",
-    "noIncomingPayments": "Nenhum pagamento recebido",
+    "lastPayments": "Últimos pagamentos",
+    "noPayments": "Nenhum pagamento",
     "latestAds": "Anúncios mais recentes",
     "latestUsers": "Usuários mais recentes",
     "passwords": {
@@ -500,7 +526,13 @@
     "netInflow": "Receita líquida",
     "noAccounts": "Você não tem contas",
     "system": "Conta de sistema",
-    "mobileTitle": "Conta",
+    "mobileTitle": {
+      "account": "Conta",
+      "accountsSummary": "Resumo de contas"
+    },
+    "title": {
+      "accountsSummary": "Resumo de contas"
+    },
     "orderBy": {
       "dateDesc": "Data (mais recente primeiro)",
       "dateAsc": "Data (mais antigo primeiro)",
@@ -946,17 +978,14 @@
       "public.tooltip": "Este campo é visível por outras pessoas. Clique para torná-lo privado."
     },
     "image": {
-      "noImage": "Sem imagem",
-      "noImages": "Sem imagens",
       "upload": "Enviar uma nova imagem",
+      "camera": "Capturar da câmera",
       "manage": "Reordenar ou remover imagens",
       "remove": "Remover esta imagem",
       "manageMessage": "Você pode arrastar e soltar imagens para reordená-las",
       "manageAfterConfirm": "Após a confirmação, por favor, certifique-se de clicar no botão salvar para que as alterações sejam aplicadas."
     },
     "file": {
-      "noFile": "Sem arquivo",
-      "noFiles": "Sem arquivos",
       "upload": "Enviar um novo arquivo",
       "manage": "Reordenar ou remover arquivos",
       "remove": "Remover este arquivo",
@@ -970,10 +999,13 @@
       "contact.empty": "Sua lista de contatos está vazia",
       "scanQrCode.tooltip": "Leia um código QR com sua câmera"
     },
-    "scanQr": {
-      "title": "Ler código QR",
+    "camera": {
+      "title.capture": "Capturar imagem de sua câmera",
+      "title.qrCode": "Ler código QR",
+      "fileName": "Câmera {timestamp}.jpeg",
+      "capture": "Capturar",
       "noCameras": "Nenhuma câmera encontrada neste dispositivo.",
-      "noPermission": "Para ler um código QR, por favor, conceda permissão para o aplicativo acessar sua câmera."
+      "noPermission": "Para usar essa funcionalidade, por favor, conceda permissão para o aplicativo acessar a sua câmera."
     },
     "html": {
       "undo": "Desfazer",
@@ -1151,6 +1183,7 @@
     "beginLastLoginDate": "Último acesso após",
     "endLastLoginDate": "Último acesso antes",
     "profile": {
+      "accountsSummary": "Resumo de contas",
       "noPermission": "Você não tem permissão para ver o perfil deste usuário",
       "showActions": "Mostrar ações",
       "hideActions": "Ocultar ações",
@@ -1168,6 +1201,7 @@
       "payAsUserToSystem": "Pagamento de usuário para sistema",
       "payAsUserToUser": "Pagamento de usuário para usuário",
       "payAsUserToSelf": "Pagamento entre contas",
+      "requestPayment": "Solicitar pagamento",
       "requestPaymentAsUserFromUser": "Solicitar pagamento de usuário para usuário",
       "requestPaymentFromUser": "Solicitar pagamento de usuário",
       "requestPaymentAsUserFromSystem": "Solicitar pagamento de sistema para o usuário",
@@ -1475,6 +1509,7 @@
     "deliveryMethodSaved": "O método de entrega foi salvo",
     "fixed": "Fixo",
     "hasImages": "Com imagens",
+    "noImages": "Nenhuma imagem para este anúncio",
     "item": "Item",
     "items": "Itens",
     "itemsNone": "Atualmente não existem produtos",
@@ -1862,14 +1897,17 @@
     "alreadyExecuted": "Esta etapa já foi executada",
     "emailVerificationCode": "Código de verificação por e-mail",
     "smsVerificationCode": "Código de verificação por SMS",
-    "codeSent": "Código enviado"
+    "codeSent": "Código enviado",
+    "currentStep": "Passo {current} de {total}"
   },
   "setting": {
     "title": "Definições",
     "mobileTitle": "Configurações",
     "theme": "Tema",
     "theme.light": "Claro",
-    "theme.dark": "Escuro"
+    "theme.dark": "Escuro",
+    "locale": "Definir Idioma",
+    "useClassicFrontend": "Usar frontend clássico"
   },
   "privacySettings": {
     "title": "Configurações de privacidade",

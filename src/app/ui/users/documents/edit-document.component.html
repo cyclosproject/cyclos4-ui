@@ -31,7 +31,7 @@
           <span> {{ fileName$ | async }} </span>
           <button [tooltip]="i18n.general.download" class="btn btn-icon ml-2"
             (click)="download(); $event.stopPropagation()">
-            <icon icon="save_alt"></icon>
+            <icon [icon]="SvgIcon.Download"></icon>
           </button>
         </div>
       </label-value>

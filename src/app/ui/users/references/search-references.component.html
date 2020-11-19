@@ -39,7 +39,8 @@
         <tbody>
           <tr *ngFor="let entry of levels">
             <td>
-              <rating-stats [level]="entry.level" [textLeft]="entry.text">
+              <rating-stats class="w-100" [level]="entry.level"
+                [textLeft]="entry.text">
               </rating-stats>
             </td>
             <td (click)="filter(entry.level, true)"
@@ -113,7 +114,7 @@
               <td class="actions actions-multiple">
                 <button *ngIf="data.manage" [tooltip]="i18n.general.remove"
                   class="btn btn-icon" (click)="remove(row)">
-                  <icon icon="clear"></icon>
+                  <icon [icon]="SvgIcon.Trash"></icon>
                 </button>
               </td>
             </tr>

@@ -70,7 +70,7 @@
     "save": "Guardar",
     "addNew": "Agregar",
     "yes": "Si",
-    "no": "No",
+    "no": "No modif",
     "notSet": "Sin definir",
     "share": "Compartir",
     "map": "Mapa",
@@ -203,6 +203,7 @@
     "general": "Ha ocurrido un error inesperado durante el procesamiento de su solicitud",
     "serverOffline": "No es posible conectarse al servidor.\nPor favor, intente nuevamente más tarde.",
     "invalidRequest": "No se pudo establecer comunicación con el servidor. \nPor favor asegúrese que posee conexión a Internet e intente nuevamente después de unos segundos.",
+    "networkInaccessible": "El usuario especificado no puede acceder a esta red",
     "queryParse": "Palabra clave no válida",
     "uploadSizeExceeded": "El archivo cargado excede el tamaño máximo de archivo permitido ({size})",
     "maxItems": "No puede agregar más de {max} elementos",
@@ -246,13 +247,14 @@
   },
   "menu": {
     "login": "Acceder",
+    "language": "Idioma",
     "register": "Registrarse",
     "logout": "Salir",
     "shoppingCart": "Carrito de compras",
     "home": "Inicio",
     "dashboard": "Panel de acciones",
     "banking": "Banca",
-    "banking.account": "Cuenta",
+    "banking.accountsSummary": "Información de cuentas",
     "banking.payUser": "Pago a usuario",
     "banking.paySystem": "Pago al sistema",
     "banking.paySelf": "Auto pago",
@@ -267,7 +269,7 @@
     "banking.paymentRequests": "Solicitud de pago",
     "banking.paymentRequestsOverview": "Vista general de solicitudes de pago",
     "banking.searchVouchers": "Buscar cupones",
-    "banking.generateVouchers": "Generate vouchers",
+    "banking.generateVouchers": "Generar cupones",
     "banking.buyVouchers": "Comprar cupones",
     "banking.boughtVouchers": "Ver comprados",
     "banking.redeemVoucher": "Canjear cupón",
@@ -319,11 +321,35 @@
   "login": {
     "title": "Acceso",
     "mobileTitle": "Acceso",
+    "title.confirmation": "Confirmación de acceso",
+    "mobileTitle.confirmation": "Confirmación de acceso",
     "message": "Para acceder al sistema, utilice su nombre de usuario y contraseña",
     "disconnected": "Usted ha sido desconectado. \nPor favor, acceda nuevamente para ver la página solicitada.",
     "principal": "Usuario",
     "forgotPassword": "Olvidó su contraseña?",
-    "register": "Aun no posee un usuario? Regístrese aquí."
+    "register": "Aun no posee un usuario? Regístrese aquí.",
+    "confirmation.text": "Ha logrado acceder con éxito, pero su sesión debe ser confirmada para poder continuar.",
+    "error": {
+      "invalid": "Error de acceso. El usuario o la contraseña no es válida. Por favor, verifique los datos e inténtelo nuevamente.",
+      "remoteAddressBlocked": "Error de acceso. Su dirección IP ha sido bloqueada temporalmente. Por favor, contacte a la administración.",
+      "user": {
+        "blocked": "Error al iniciar sesión. Su cuenta de usuario ha sido bloqueada. Por favor, contacte a la administración.",
+        "disabled": "Error de acceso. Su cuenta de usuario ha sido deshabilitada. Por favor, contacte a la administración.",
+        "pending": "Error de acceso. Su cuenta de usuario se encuentra pendiente de activación. Ha de recibir  un correo electrónico con instrucciones para activar su cuenta. De lo contrario, por favor, contacte a la administración."
+      },
+      "password": {
+        "expired": "Error de acceso. Su contraseña ha expirado. Por favor,  contacte a la administración.",
+        "disabled": "Error de acceso. Su contraseña ha sido deshabilitada. Por favor, contacte a la administración.",
+        "reset": "Error de acceso. Su contraseña ha sido restablecida. Por favor, contacte a la administración.",
+        "indefinitelyBlocked": "Error de acceso. Su contraseña de acceso ha sido desactivada por exceder el máximo de intentos permitidos. Por favor, contacte a la administración.",
+        "temporarilyBlocked": "Su contraseña ha sido bloqueada temporalmente, por haber excedido el número máximo de intentos incorrectos permitidos."
+      },
+      "confirmation": {
+        "missingDevice": "Error de acceso. Necesita confirmar su acceso con un dispositivo móvil de confianza, pero no posee ninguno. Por favor, primeramente instale la aplicación móvil y defina su dispositivo como confiable.",
+        "missingPassword": "Error de acceso. Necesita confirmar su acceso con su {0}, pero este no se encuentra activo. Por favor, contacte a la administración.",
+        "missingBoth": "Error de acceso. Necesita confirmar su acceso con su {0}, o con un dispositivo móvil de confianza, pero no posee ninguno de ellos. Por favor, primeramente instale la aplicación móvil y defina su dispositivo como confiable, o contacte a la administración."
+      }
+    }
   },
   "password": {
     "confirmationMessage": "Ingrese su {passwordType} para confirmar la operación",
@@ -343,7 +369,7 @@
     "confirm.otp.request": "Por favor, solicite una contraseña de confirmación a continuación, para confirmar",
     "otp.sent": "La contraseña fue enviada a su {dest}",
     "otp.receiveBy": "Obtener mediante {medium}",
-    "otp.receiveBy.sent": "{medium} sent",
+    "otp.receiveBy.sent": "{medium} enviado",
     "oldPassword": "Contraseña actual",
     "newPassword": "Nueva contraseña",
     "passwordConfirmation": "Confirmación de contraseña",
@@ -463,12 +489,12 @@
       "password": "Contraseña",
       "passwords": "Contraseñas",
       "switchTheme": "Cambiar tema",
-      "connectedUsers": "Usuarios conectados"
+      "classicFrontend": "Usar la interfaz clásica"
     },
     "accounts": "Cuentas",
     "accountStatus": "Estado de cuenta",
-    "lastIncomingPayments": "Ultimos pagos recibidos",
-    "noIncomingPayments": "No hay pagos recibidos",
+    "lastPayments": "Últimos pagos",
+    "noPayments": "No hay pagos",
     "latestAds": "Últimos anuncios",
     "latestUsers": "Ultimos usuarios",
     "passwords": {
@@ -494,13 +520,19 @@
     "availableBalance": "Saldo disponible",
     "negativeLimit": "Límite negativo",
     "positiveLimit": "Límite positivo",
-    "balanceOn": "Balance al {date}",
+    "balanceOn": "Saldo al {date}",
     "totalIncome": "Total recibido",
     "totalOutflow": "Total pagado",
     "netInflow": "Ingresos Netos",
     "noAccounts": "Usted no posee cuentas",
     "system": "Cuenta de sistema",
-    "mobileTitle": "Cuenta",
+    "mobileTitle": {
+      "account": "Cuenta",
+      "accountsSummary": "Información de cuentas"
+    },
+    "title": {
+      "accountsSummary": "Información de cuentas"
+    },
     "orderBy": {
       "dateDesc": "Fecha (más nuevo primero)",
       "dateAsc": "Fecha (más antiguo primero)",
@@ -517,8 +549,8 @@
       "balancesAverage": "Promedio de saldos",
       "balancesCount": "Cuenta de saldos",
       "total": "Total ",
-      "fromYellowBalance": "From yellow balance",
-      "toYellowBalance": "To yellow balance",
+      "fromYellowBalance": "Saldo en amarillo desde",
+      "toYellowBalance": "Saldo en amarillo hasta",
       "beginNegativeSince": "Negativo después de",
       "endNegativeSince": "Negativo hasta",
       "orderBy": {
@@ -878,8 +910,8 @@
       "redeem": "Canjear cupón",
       "redeemed": "Cupones canjeados",
       "search": "Buscar cupones",
-      "generate": "Generate vouchers",
-      "generateConfirmation": "Generate confirmation"
+      "generate": "Generar cupones",
+      "generateConfirmation": "Generar confirmación"
     },
     "title": {
       "buy": "Comprar cupones",
@@ -888,8 +920,8 @@
       "redeem": "Canjear cupón",
       "redeemed": "Cupones canjeados",
       "search": "Buscar cupones",
-      "generate": "Generate vouchers",
-      "generateConfirmation": "Generate confirmation"
+      "generate": "Generar cupones",
+      "generateConfirmation": "Generar confirmación"
     },
     "boughtType": "Comprado",
     "generatedType": "Generado",
@@ -902,7 +934,7 @@
       "payment": "Transacción de compra"
     },
     "generate": {
-      "done": "The voucher(s) has been generated."
+      "done": "Los cupones han sido generados"
     },
     "originAccount": "Cuenta de origen",
     "numberOfVouchers": "Cantidad de cupones",
@@ -946,17 +978,14 @@
       "public.tooltip": "El campo es visible para otros usuarios. Haga click para hacerlo en privado."
     },
     "image": {
-      "noImage": "Sin imagen cargada",
-      "noImages": "Sin imágenes cargadas",
       "upload": "Cargar una imagen",
+      "camera": "Capturar con la cámara",
       "manage": "Reordenar o eliminar imágenes",
       "remove": "Eliminar esta imagen",
       "manageMessage": "Puede arrastrar y soltar las imágenes para reordenarlas",
       "manageAfterConfirm": "Después de la confirmación, por favor asegúrese de hacer clic en el botón Guardar para que los cambios sean aplicados."
     },
     "file": {
-      "noFile": "Sin archivo cargado",
-      "noFiles": "Sin archivos cargados",
       "upload": "Cargar un archivo",
       "manage": "Reordenar o eliminar archivos",
       "remove": "Eliminar archivo",
@@ -970,10 +999,13 @@
       "contact.empty": "Su lista de contactos se encuentra vacía",
       "scanQrCode.tooltip": "Leer un código QR con su cámara"
     },
-    "scanQr": {
-      "title": "Leer código QR",
-      "noCameras": "No se encontraron cámaras en este dispositivo",
-      "noPermission": "Para leer un código QR, por favor, permita a la aplicación acceder a su cámara."
+    "camera": {
+      "title.capture": "Capturar imagen con su cámara",
+      "title.qrCode": "Leer código QR",
+      "fileName": "Cámara {timestamp}.jpeg",
+      "capture": "Capturar",
+      "noCameras": "No se encontraron cámaras en este dispositivo.",
+      "noPermission": "Para poder utilizar esta funcionalidad, por favor, conceda permiso a la aplicación para acceder a su cámara."
     },
     "html": {
       "undo": "Deshacer",
@@ -1151,6 +1183,7 @@
     "beginLastLoginDate": "Último acceso desde",
     "endLastLoginDate": "Último acceso hasta",
     "profile": {
+      "accountsSummary": "Información de cuentas",
       "noPermission": "No posee permisos suficientes para ver el perfil de este usuario",
       "showActions": "Mostrar acciones",
       "hideActions": "Ocultar acciones",
@@ -1168,6 +1201,7 @@
       "payAsUserToSystem": "Pagos de usuario a sistema",
       "payAsUserToUser": "Pagos de usuario a usuario",
       "payAsUserToSelf": "Pago a sí mismo",
+      "requestPayment": "Solicitar pago",
       "requestPaymentAsUserFromUser": "Solicitar pago de usuario a usuario",
       "requestPaymentFromUser": "Solicitar pago de usuario",
       "requestPaymentAsUserFromSystem": "Solicitar pago del sistema al usuario",
@@ -1475,6 +1509,7 @@
     "deliveryMethodSaved": "El método de entrega se ha guardado",
     "fixed": "Fijo",
     "hasImages": "Con imágenes",
+    "noImages": "No hay imágenes para este anuncio",
     "item": "Producto",
     "items": "Productos",
     "itemsNone": "Actualmente, no hay productos",
@@ -1862,14 +1897,17 @@
     "alreadyExecuted": "Este paso ya fue ejecutado",
     "emailVerificationCode": "Código de verificación por e-mail",
     "smsVerificationCode": "Código de verificación por SMS",
-    "codeSent": "Code sent"
+    "codeSent": "Código enviado",
+    "currentStep": "Paso {current} de {total}"
   },
   "setting": {
     "title": "Ajustes",
     "mobileTitle": "Ajustes",
     "theme": "Tema",
     "theme.light": "Claro",
-    "theme.dark": "Oscuro"
+    "theme.dark": "Oscuro",
+    "locale": "Definir idioma",
+    "useClassicFrontend": "Usar la interfaz clásica"
   },
   "privacySettings": {
     "title": "Ajustes de privacidad",
@@ -2040,7 +2078,7 @@
       "veryBad": "Muy malo",
       "good": "Bueno",
       "veryGood": "Muy bueno",
-      "neutral": "Neutral"
+      "neutral": "Neutro"
     },
     "from": "Desde",
     "to": "A",

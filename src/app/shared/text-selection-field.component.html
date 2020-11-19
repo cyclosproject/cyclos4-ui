@@ -11,12 +11,12 @@
     <div class="d-flex ml-2">
       <button class="btn btn-icon" [tooltip]="i18n.general.add"
         (click)="add()">
-        <icon icon="add_circle"></icon>
+        <icon [icon]="SvgIcon.PlusCircle"></icon>
       </button>
     </div>
   </div>
   <div *ngIf="value.length > 0" class="d-flex mw-100 w-100 flex-wrap">
-    <chip icon="search" *ngFor="let str of value" class="mt-2 mr-2"
+    <chip [icon]="SvgIcon.Search" *ngFor="let str of value" class="mt-2 mr-2"
       (close)="remove(str)">
       {{ str }}
     </chip>

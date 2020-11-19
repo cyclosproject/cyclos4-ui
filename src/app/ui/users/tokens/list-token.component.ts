@@ -7,6 +7,7 @@ import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { CreateTokenComponent } from 'app/ui/users/tokens/create-token.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * List a user tokens
@@ -43,7 +44,7 @@ export class ListTokenComponent
     super.onDataInitialized(data);
     this.self = this.authHelper.isSelf(data.user);
     if (this.canCreate() && data.type.physicalType !== PhysicalTokenTypeEnum.NFC_TAG) {
-      this.headingActions = [new HeadingAction('add', this.i18n.general.add, () => {
+      this.headingActions = [new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.add, () => {
         this.modal.show(CreateTokenComponent, {
           class: 'modal-form',
           initialState: { type: data.type, user: data.user, required: true, updateAction: () => this.reload() },
@@ -52,7 +53,7 @@ export class ListTokenComponent
     }
 
     if (this.canActivate()) {
-      this.headingActions = [new HeadingAction('how_to_reg', this.i18n.token.action.activate, () => {
+      this.headingActions = [new HeadingAction(SvgIcon.CheckCircle, this.i18n.token.action.activate, () => {
         this.notification.confirm({
           title: this.i18n.token.action.activate,
           customFields: [{
@@ -79,14 +80,14 @@ export class ListTokenComponent
 
   canCreate(): boolean {
     if (!this.self) {
-      return this.dataForUiHolder.auth.permissions.tokens.user.find(p => p.type.id === this.type)?.create;
+      return this.dataForFrontendHolder.auth.permissions.tokens.user.find(p => p.type.id === this.type)?.create;
     }
     return false;
   }
 
   canActivate(): boolean {
     if (this.self) {
-      return this.dataForUiHolder.auth.permissions.tokens.my.find(p => p.type.id === this.type)?.activate;
+      return this.dataForFrontendHolder.auth.permissions.tokens.my.find(p => p.type.id === this.type)?.activate;
     }
     return false;
   }
@@ -106,7 +107,7 @@ export class ListTokenComponent
     if (data.user.user && this.authHelper.isSelf(data.user.user)) {
       return Menu.MY_OPERATORS;
     }
-    if (this.dataForUiHolder.role === RoleEnum.BROKER) {
+    if (this.dataForFrontendHolder.role === RoleEnum.BROKER) {
       return Menu.MY_BROKERED_USERS;
     }
     return Menu.SEARCH_USERS;

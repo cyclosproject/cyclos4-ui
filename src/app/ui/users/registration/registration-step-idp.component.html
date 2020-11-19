@@ -1,6 +1,6 @@
 <div class="text-center">{{ i18n.identityProvider.registration}}</div>
 <button *ngFor="let idp of identityProviders" type="button"
-  class="identity-provider" [ngStyle]="{
+  class="identity-provider centered-button" [ngStyle]="{
       border: '1px solid ' + idp.borderColor,
       background: idp.backgroundColor,
       color: idp.textColor
@@ -11,5 +11,5 @@
 </button>
 
 <div class="text-muted text-justify my-3"
-  [innerHTML]="i18n.identityProvider.registrationDisclaimer(uiLayout.appTitleSmall) | trust">
+  [innerHTML]="i18n.identityProvider.registrationDisclaimer(dataForFrontendHolder.dataForFrontend.title) | trust">
 </div>

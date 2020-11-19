@@ -1,7 +1,7 @@
 <div class="card mx-auto shadow-sm" *ngIf="(entries$ | async) as entries">
   <div *ngIf="entries.title" class="side-menu-header">
     <div class="side-menu-icon">
-      <icon [icon]="entries.icon" size="2.8rem"></icon>
+      <icon [icon]="entries.icon"></icon>
     </div>
     <div class="side-menu-title">
       {{ entries.title }}
@@ -13,7 +13,7 @@
       [routerLink]="entry.url"
       [ngClass]="{active: (menu.activeMenu$ | async)?.matches(entry)}"
       (click)="navigate(entry, $event); blurIfClick(anchor, $event);">
-      <icon size="1.4rem" [icon]="entry.icon"></icon>
+      <icon [icon]="entry.icon"></icon>
       <div class="nav-item-text">{{ entry.label }}</div>
     </a>
   </nav>

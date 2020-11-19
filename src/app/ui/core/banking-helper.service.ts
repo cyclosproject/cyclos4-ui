@@ -5,8 +5,9 @@ import {
   BaseTransferDataForSearch, Image, PreselectedPeriod, RecurringPaymentStatusEnum,
   Transaction, TransactionDataForSearch, TransactionKind, TransactionResult, Transfer
 } from 'app/api/models';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { FormatService } from 'app/core/format.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { blank, empty } from 'app/shared/helper';
@@ -20,7 +21,7 @@ import { blank, empty } from 'app/shared/helper';
 export class BankingHelperService {
 
   constructor(
-    private dataForUiHolder: DataForUiHolder,
+    private dataForFrontendHolder: DataForFrontendHolder,
     private format: FormatService,
     private i18n: I18n,
   ) { }
@@ -30,8 +31,7 @@ export class BankingHelperService {
    * @param visible When true (default) returns only visible account. When false, returns all accounts.
    */
   ownerAccountTypes(visible = true): AccountType[] {
-    const dataForUi = this.dataForUiHolder.dataForUi;
-    const auth = dataForUi.auth || {};
+    const auth = this.dataForFrontendHolder.auth;
     const permissions = auth.permissions || {};
     const banking = permissions.banking || {};
     const accounts = banking.accounts || [];
@@ -115,8 +115,8 @@ export class BankingHelperService {
   /**
    * Returns the avatar icon for the given account
    */
-  avatarIcon(account: AccountWithOwner): string {
-    return account.kind === 'user' ? 'user' : 'account_balance_circle';
+  avatarIcon(account: AccountWithOwner): SvgIcon {
+    return account.kind === 'user' ? SvgIcon.Person : SvgIcon.Briefcase;
   }
 
   /**

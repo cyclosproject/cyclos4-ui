@@ -47,10 +47,6 @@ export class SearchAdsComponent
   }
 
   getInitialResultType() {
-    const fromConfig = this.uiLayout.getBreakpointConfiguration('defaultAdsResultType') as ResultType;
-    if (fromConfig && this.allowedResultTypes.includes(fromConfig)) {
-      return fromConfig;
-    }
     return (this.layout.xxs ? ResultType.LIST : ResultType.CATEGORIES);
   }
 
@@ -76,7 +72,7 @@ export class SearchAdsComponent
   }
 
   onDataInitialized(data: AdDataForSearch) {
-    const auth = this.dataForUiHolder.auth || {};
+    const auth = this.dataForFrontendHolder.auth || {};
     const permissions = auth.permissions || {};
     this.marketplacePermissions = permissions.marketplace || {};
 
@@ -186,8 +182,8 @@ export class SearchAdsComponent
    * Returns if the current user is a manager to enable specific filters
    */
   get manager(): boolean {
-    return this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR ||
-      (this.dataForUiHolder.role === RoleEnum.BROKER &&
+    return this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR ||
+      (this.dataForFrontendHolder.role === RoleEnum.BROKER &&
         !empty(this.data.query.brokers));
   }
 

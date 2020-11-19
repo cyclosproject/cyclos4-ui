@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { DeliveryMethod, DeliveryMethodChargeTypeEnum, UserDeliveryMethodsListData } from 'app/api/models';
 import { DeliveryMethodsService } from 'app/api/services/delivery-methods.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
@@ -41,7 +42,7 @@ export class ListDeliveryMethodsComponent
 
     if (data.canCreate) {
       this.headingActions = [
-        new HeadingAction('add', this.i18n.general.addNew, () => {
+        new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () => {
           this.router.navigate(['/marketplace', this.param, 'delivery-methods', 'new']);
         }, true),
       ];

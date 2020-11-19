@@ -109,12 +109,12 @@
             <button *ngIf="data.edit" [tooltip]="i18n.general.edit"
               class="btn btn-icon"
               (click)="router.navigate(editPath(row)); $event.stopPropagation(); $event.preventDefault()">
-              <icon icon="edit"></icon>
+              <icon [icon]="SvgIcon.Pencil"></icon>
             </button>
             <button *ngIf="data.remove" [tooltip]="i18n.general.remove"
               class="btn btn-icon" [ngClass]="{'mt-2': data.edit}"
               (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
-              <icon icon="clear"></icon>
+              <icon [icon]="SvgIcon.Trash"></icon>
             </button>
           </div>
         </div>
@@ -146,12 +146,12 @@
               <button *ngIf="data.edit" [tooltip]="i18n.general.edit"
                 class="btn btn-icon"
                 (click)="router.navigate(editPath(row)); $event.stopPropagation()">
-                <icon icon="edit"></icon>
+                <icon [icon]="SvgIcon.Pencil"></icon>
               </button>
               <button *ngIf="data.remove" [tooltip]="i18n.general.remove"
                 class="btn btn-icon" [ngClass]="data.edit ? 'ml-3' : ''"
                 (click)="remove(row); $event.stopPropagation()">
-                <icon icon="clear"></icon>
+                <icon [icon]="SvgIcon.Trash"></icon>
               </button>
             </td>
           </tr>

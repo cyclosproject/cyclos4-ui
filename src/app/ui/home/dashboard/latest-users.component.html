@@ -1,8 +1,8 @@
-<page-content [heading]="i18n.dashboard.latestUsers" hideBack [last]="last"
-  [ngStyle]="{minHeight: minHeight}">
-  <div *ngIf="(users$ | async) != null; else spinner" class="container">
+<page-content [heading]="i18n.dashboard.latestUsers" hideBack
+  [headingActions]="headingActions$ | async">
+  <div class="container">
     <div class="row">
-      <ng-container *ngFor="let user of users$.value">
+      <ng-container *ngFor="let user of users">
         <div class="col-12 col-xs-6 col-lg-4">
           <a class="d-flex flex-column undecorated" [routerLink]="path(user)"
             (click)="navigate(user, $event)">
@@ -20,7 +20,4 @@
       </ng-container>
     </div>
   </div>
-  <ng-template #spinner>
-    <spinner class="flex-grow-1"></spinner>
-  </ng-template>
 </page-content>

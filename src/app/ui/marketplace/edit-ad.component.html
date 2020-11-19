@@ -7,14 +7,7 @@
         <ng-container *ngIf="data.maxImages > 0">
           <h2
             class="border-0 d-flex mb-3 flex-column flex-xs-row justify-content-between mt-2 mt-md-0">
-            <div class="mb-2 mb-xs-0">
-              {{ i18n.general.images }}
-            </div>
-            <action-button
-              *ngIf="canUploadImages && (multiUpload.uploading$ | async) === false"
-              outline (action)="multiUpload.perform()"
-              [label]="i18n.field.image.upload">
-            </action-button>
+            {{ i18n.general.images }}
           </h2>
           <div class="row no-gutters">
             <div
@@ -25,16 +18,25 @@
               </avatar>
             </div>
             <ng-container *ngIf="images.length === 0">
-              <div class="col-12">
-                {{ i18n.field.image.noImages }}
+              <div class="col-12 mb-2">
+                {{ i18n.ad.noImages }}
               </div>
             </ng-container>
           </div>
-          <div *ngIf="images.length > 0" class="d-flex justify-content-end">
-            <action-button outline (action)="manageImages()"
-              [label]="i18n.field.image.manage">
+          <actions class="mt-2" reverseRow>
+            <ng-container
+              *ngIf="canUploadImages && (multiUpload.uploading$ | async) === false">
+              <action-button outline (action)="multiUpload.perform()"
+                [label]="i18n.field.image.upload">
+              </action-button>
+              <action-button outline (action)="captureCamera(multiUpload)"
+                [label]="i18n.field.image.camera">
+              </action-button>
+            </ng-container>
+            <action-button *ngIf="images.length > 0" outline
+              (action)="manageImages()" [label]="i18n.field.image.manage">
             </action-button>
-          </div>
+          </actions>
           <image-upload #multiUpload target="marketplace"
             [max]="data.maxImages" (uploadDone)="onUploadDone($event)"
             [owner]="id" [user]="data.owner.id">

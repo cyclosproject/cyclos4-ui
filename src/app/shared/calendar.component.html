@@ -1,7 +1,7 @@
 <div class="calendar-header">
   <button tabindex="0" class="calendar-nav" (click)="previous()"
     [disabled]="previousDisabled">
-    <icon icon="navigate_before"></icon>
+    <icon [icon]="SvgIcon.ChevronLeft"></icon>
   </button>
   <div class="flex-grow-1"></div>
   <ng-container *ngIf="type === 'month'">
@@ -21,7 +21,7 @@
   <div class="flex-grow-1"></div>
   <button tabindex="0" class="calendar-nav" (click)="next()"
     [disabled]="nextDisabled">
-    <icon icon="navigate_next"></icon>
+    <icon [icon]="SvgIcon.ChevronRight"></icon>
   </button>
 </div>
 <div class="calendar-body">

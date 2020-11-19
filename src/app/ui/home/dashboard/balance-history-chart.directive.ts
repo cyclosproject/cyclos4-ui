@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { AccountBalanceHistoryResult } from 'app/api/models';
+import { FrontendDashboardAccount } from 'app/api/models';
 import { FormatService } from 'app/core/format.service';
 import { LayoutService } from 'app/core/layout.service';
 import { Chart } from 'chart.js';
@@ -13,7 +13,7 @@ import moment from 'moment-mini-ts';
 })
 export class BalanceHistoryChartDirective implements OnInit, OnChanges {
 
-  @Input() history: AccountBalanceHistoryResult;
+  @Input() account: FrontendDashboardAccount;
 
   // This is actually used to force change detection when dark theme changes
   @Input() darkTheme: boolean;
@@ -41,9 +41,10 @@ export class BalanceHistoryChartDirective implements OnInit, OnChanges {
 
   private initialize() {
     const canvas: HTMLCanvasElement = this.element.nativeElement;
-    this.amounts = this.history.balances.map(b => parseFloat(b.amount));
+    const balances = this.account.balances;
+    this.amounts = balances.map(b => parseFloat(b.amount));
     const hasNegative = this.amounts.find(a => a < 0);
-    const currency = this.history.account.currency;
+    const currency = this.account.account.currency;
     this.chart = new Chart(canvas.getContext('2d'), {
       type: 'line',
       data: {
@@ -66,8 +67,7 @@ export class BalanceHistoryChartDirective implements OnInit, OnChanges {
           callbacks: {
             title: item => {
               return item.map(i => {
-                const balance = this.history.balances[i.index];
-                return this.format.formatAsDate(balance.date);
+                return this.format.formatAsDate(balances[i.index].date);
               });
             },
             label: n => this.format.formatAsCurrency(currency, this.amounts[n.index]),
@@ -114,7 +114,7 @@ export class BalanceHistoryChartDirective implements OnInit, OnChanges {
   }
 
   private labels(): string[] {
-    return this.history.balances.map(b => this.format.shortMonthName(moment(b.date).month()));
+    return this.account.balances.map(b => this.format.shortMonthName(moment(b.date).month()));
   }
 
 }

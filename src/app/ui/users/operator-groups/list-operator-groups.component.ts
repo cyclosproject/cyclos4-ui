@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { EntityReference, UserOperatorGroupsListData } from 'app/api/models';
 import { OperatorGroupsService } from 'app/api/services/operator-groups.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
@@ -41,7 +42,7 @@ export class ListOperatorGroupsComponent
     this.groups = data.operatorGroups;
     if (data.canCreate) {
       this.headingActions = [
-        new HeadingAction('add', this.i18n.general.addNew, () => {
+        new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () => {
           this.router.navigate(['/users', this.param, 'operator-groups', 'new']);
         }, true),
       ];

@@ -56,7 +56,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
-    const auth = this.dataForUiHolder.dataForUi.auth || {};
+    const auth = this.dataForFrontendHolder.auth || {};
     const permissions = auth.permissions || {};
     const users = (permissions.users || {});
     this.canViewProfile = users.viewProfile === true;

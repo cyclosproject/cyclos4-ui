@@ -40,7 +40,7 @@
               'border-0': layout.xxs$ | async
             }">
             <avatar [image]="row.broker?.image"
-              [tooltip]="row.broker?.display" icon="user"></avatar>
+              [tooltip]="row.broker?.display"></avatar>
           <td>{{ row.broker.shortDisplay }}</td>
           <td>{{ row.date | date }}</td>
           <td>{{ showActionLabel(row) }}</td>

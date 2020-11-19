@@ -6,9 +6,8 @@ import {
   OperationResultTypeEnum, OperationScopeEnum, RunOperation, RunOperationResult
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services/operations.service';
-import { Configuration } from 'app/ui/configuration';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { NextRequestState } from 'app/core/next-request-state';
 import { NotificationService } from 'app/core/notification.service';
 import { HeadingAction } from 'app/shared/action';
@@ -17,6 +16,7 @@ import { downloadResponse, empty } from 'app/shared/helper';
 import { PageData } from 'app/ui/shared/page-data';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Types which can run actions directly without going to the run page
@@ -38,15 +38,18 @@ export class OperationHelperService {
   private registry = new Map<string, Operation>();
 
   constructor(
-    private dataForUiHolder: DataForUiHolder,
+    private dataForFrontendHolder: DataForFrontendHolder,
     private notification: NotificationService,
     private breadcrumb: BreadcrumbService,
     private router: Router,
     private operationsService: OperationsService,
     private nextRequestState: NextRequestState) {
-    dataForUiHolder.subscribe(dataForUi => {
+    dataForFrontendHolder.subscribe(dataForFrontend => {
       // Store all custom operations in the registry
-      const operations = ((((dataForUi || {}).auth || {}).permissions || {}).operations || {});
+      const dataForUi = (dataForFrontend || {}).dataForUi;
+      const auth = (dataForUi || {}).auth;
+      const permissions = (auth || {}).permissions;
+      const operations = permissions.operations || {};
       (operations.system || []).forEach(o => this.register(o.operation));
       (operations.user || []).forEach(o => this.register(o.operation));
     });
@@ -78,7 +81,7 @@ export class OperationHelperService {
    * @param scopeId The id of the scoping entity, such as user, advertisement, etc
    */
   run(operation: Operation, scopeId?: string, formParameters?: { [key: string]: string }) {
-    const loggedUser = ((this.dataForUiHolder.dataForUi || {}).auth || {}).user;
+    const loggedUser = this.dataForFrontendHolder.user;
     if (!loggedUser) {
       return;
     }
@@ -190,6 +193,13 @@ export class OperationHelperService {
           ? this.operationsService.runTransferOperationWithUpload$Any$Response(params)
           : this.operationsService.runTransferOperationWithUpload$Response(params);
 
+      case OperationScopeEnum.MENU:
+        // Over a menu item
+        params.menu = scopeId;
+        return asDownload
+          ? this.operationsService.runMenuOperationWithUpload$Any$Response(params)
+          : this.operationsService.runMenuOperationWithUpload$Response(params);
+
       default:
         // No additional context (system, internal action, ...)
         return asDownload
@@ -227,10 +237,8 @@ export class OperationHelperService {
   /**
    * Returns the icon name that should be used for the given operation
    */
-  icon(operation: Operation): string {
-    const config = (Configuration.operations || {})[operation.internalName || '#'];
-    const customIcon = (config || {}).icon;
-    return customIcon || 'play_circle_outline';
+  icon(operation: Operation): SvgIcon | string {
+    return operation.svgIcon || SvgIcon.FilePlay;
   }
 
   /**

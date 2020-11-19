@@ -11,6 +11,7 @@ import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
+import { SvgIcon } from 'app/core/svg-icon';
 
 @Component({
   selector: 'app-view-voucher',
@@ -66,7 +67,7 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
     if (voucher.cancelAction) {
       const label = voucher.cancelAction === VoucherCancelActionEnum.CANCEL_AND_REFUND ?
         this.i18n.voucher.cancelAndRefund : this.i18n.general.cancel;
-      actions.push(new HeadingAction('cancel', label, () => {
+      actions.push(new HeadingAction(SvgIcon.XCircle, label, () => {
         // Handle the case that the confirmation password cannot be used
         if (!this.canConfirm) {
           this.notification.warning(this.authHelper.getConfirmationMessage(voucher.confirmationPasswordInput));
@@ -81,7 +82,7 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
       }));
     }
     if (voucher.canChangeExpirationDate) {
-      actions.push(new HeadingAction('update', this.i18n.voucher.changeExpirationDate, () => {
+      actions.push(new HeadingAction(SvgIcon.CalendarEvent, this.i18n.voucher.changeExpirationDate, () => {
         // Handle the case that the confirmation password cannot be used
         if (!this.canConfirm) {
           this.notification.warning(this.authHelper.getConfirmationMessage(voucher.confirmationPasswordInput));

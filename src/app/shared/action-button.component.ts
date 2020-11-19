@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, Injector, Input, OnChanges, Output, SimpleChanges, ViewChild
 } from '@angular/core';
+import { SvgIcon } from 'app/core/svg-icon';
 import { BaseComponent } from 'app/shared/base.component';
 import { truthyAttr } from 'app/shared/helper';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -28,8 +29,16 @@ export class ActionButtonComponent extends BaseComponent implements OnChanges {
 
   @Input() disabled: boolean;
   @Input() label: string;
-  @Input() icon: string;
+  @Input() icon: SvgIcon | string;
   @Output() action = new EventEmitter<any>();
+
+  _disableSpinner: boolean | string = false;
+  @Input() get disableSpinner(): boolean | string {
+    return this._disableSpinner;
+  }
+  set disableSpinner(flag: boolean | string) {
+    this._disableSpinner = truthyAttr(flag);
+  }
 
   @ViewChild('button') button: ElementRef<HTMLButtonElement>;
 
@@ -48,7 +57,9 @@ export class ActionButtonComponent extends BaseComponent implements OnChanges {
   }
 
   onClick(event: any) {
-    this.showSpinner$.next(true);
+    if (!this.disableSpinner) {
+      this.showSpinner$.next(true);
+    }
     this.action.emit(event);
   }
 

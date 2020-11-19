@@ -16,7 +16,7 @@
           <div class="col-4 col-xs-3 col-md-2">
             <avatar *ngIf="layout.gtxxs$ | async" class="ml-2 mr-5 management"
               [size]="64" iconSize="64px" [image]="uip.identityProvider.image"
-              icon="perm_identity">
+              [icon]="SvgIcon.PersonBadge">
             </avatar>
           </div>
           <div class="col-8 col-xs-9 col-md-7">

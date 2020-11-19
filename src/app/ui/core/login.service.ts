@@ -1,18 +1,16 @@
-import { Injectable, isDevMode } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiConfiguration } from 'app/api/api-configuration';
-import { Auth, Permissions, User } from 'app/api/models';
+import { Auth, DataForFrontend, Permissions, User } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
-import { Configuration } from 'app/ui/configuration';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { LoginState } from 'app/ui/core/login-state';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { NextRequestState } from 'app/core/next-request-state';
 import { NotificationService } from 'app/core/notification.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { I18n } from 'app/i18n/i18n';
-import { empty, isSameOrigin } from 'app/shared/helper';
+import { empty } from 'app/shared/helper';
+import { LoginState } from 'app/ui/core/login-state';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { first, map, switchMap } from 'rxjs/operators';
+import { first, switchMap } from 'rxjs/operators';
 
 /**
  * Service used to manage the login status
@@ -25,18 +23,18 @@ export class LoginService {
   auth$ = new BehaviorSubject<Auth>(null);
 
   constructor(
-    private dataForUiHolder: DataForUiHolder,
+    private dataForFrontendHolder: DataForFrontendHolder,
     private nextRequestState: NextRequestState,
     private authService: AuthService,
     private loginState: LoginState,
     private router: Router,
     private i18n: I18n,
     private notification: NotificationService,
-    private pushNotifications: PushNotificationsService,
-    private apiConfiguration: ApiConfiguration) {
+    private pushNotifications: PushNotificationsService) {
 
     // Whenever the data for ui changes, update the current status
-    dataForUiHolder.subscribe(dataForUi => {
+    dataForFrontendHolder.subscribe(dataForFrontend => {
+      const dataForUi = (dataForFrontend || {}).dataForUi;
       const auth = (dataForUi || {}).auth;
       const user = (auth || {}).user;
       this.auth$.next(auth);
@@ -68,10 +66,9 @@ export class LoginService {
     });
 
     // Reload the data for UI whenever the permissions change
-    pushNotifications.permissionsChanged$.subscribe(() => {
-      this.dataForUiHolder.reload().pipe(first()).subscribe(() =>
-        this.router.navigateByUrl(this.router.url));
-    });
+    pushNotifications.permissionsChanged$.subscribe(() =>
+      this.dataForFrontendHolder.reload().pipe(first()).subscribe(() => this.router.navigateByUrl(this.router.url))
+    );
   }
 
   private loggedOutConfirmation() {
@@ -97,17 +94,19 @@ export class LoginService {
    * @param redirectUrl Where to go after logging in
    */
   goToLoginPage(redirectUrl: string) {
-    if (Configuration.externalLoginUrl) {
+    const externalLoginUrl = this.dataForFrontendHolder.dataForFrontend.externalLoginUrl;
+    if (externalLoginUrl) {
       // Login is handled in an external frontend
-      let url = Configuration.externalLoginUrl;
+      let url = externalLoginUrl;
       if (!empty(redirectUrl)) {
         // Also send the path to return to after logging-in
         url += (url.includes('?') ? '&' : '?') + 'returnTo=' + encodeURIComponent(redirectUrl);
       }
+      this.nextRequestState.willExternalRedirect();
       location.assign(url);
     } else {
       // Go to the login page
-      this.dataForUiHolder.reload().pipe(first()).subscribe(() => {
+      this.dataForFrontendHolder.reload().pipe(first()).subscribe(() => {
         this.loginState.redirectUrl = redirectUrl;
         this.router.navigateByUrl('/login');
       });
@@ -136,29 +135,21 @@ export class LoginService {
    * @param password The user password
    * @param identityProviderRequestId The requestId from the last identity provider callback, when there was no match.
    */
-  login(principal: string, password: string, identityProviderRequestId?: string): Observable<Auth> {
+  login(principal: string, password: string, identityProviderRequestId?: string): Observable<DataForFrontend> {
     // Setup the basic authentication for the login request
     this.nextRequestState.nextAsBasic(principal, password);
-    const useCookie = isSameOrigin(this.apiConfiguration.rootUrl) && !isDevMode();
 
     return this.authService.login({
-      cookie: useCookie,
+      cookie: this.nextRequestState.useCookie,
       identityProviderRequestId,
       fields: ['sessionToken'],
     }).pipe(
       switchMap(auth => {
         // Store the session token
-        this.nextRequestState.setSessionToken(auth.sessionToken, useCookie);
+        this.nextRequestState.setSessionToken(auth.sessionToken);
 
-        if (auth.pendingSecondaryPassword) {
-          this.notification.error(`This session is pending secondary password,
-            but this front-end doesn't support it yet.`);
-        }
-
-        // Then reload the DataForUi instance (as user)
-        return this.dataForUiHolder.reload().pipe(
-          map(dataForUi => dataForUi.auth),
-        );
+        // Then reload the DataForFrontend instance (as user)
+        return this.dataForFrontendHolder.reload();
       }));
   }
 
@@ -182,20 +173,22 @@ export class LoginService {
     this.loginState.loggingOut = true;
     this.nextRequestState.ignoreNextError = true;
     const handler = () => {
-      if (Configuration.afterLogoutUrl) {
-        location.assign(Configuration.afterLogoutUrl);
+      const afterLogoutUrl = this.dataForFrontendHolder.dataForFrontend.afterLogoutUrl;
+      if (afterLogoutUrl) {
+        this.nextRequestState.willExternalRedirect();
+        location.assign(afterLogoutUrl);
       } else {
         this.clear();
 
-        // Then reload the DataForUi instance (as guest)
-        return this.dataForUiHolder.reload().subscribe(() => {
+        // Then reload the DataForFrontend instance (as guest)
+        return this.dataForFrontendHolder.reload().subscribe(() => {
           this.loginState.loggingOut = false;
           this.router.navigateByUrl(redirectUrl || '/');
         });
       }
     };
     this.authService.logout({
-      cookie: isSameOrigin(this.apiConfiguration.rootUrl),
+      cookie: this.nextRequestState.useCookie,
     }).subscribe(handler, handler);
   }
 }

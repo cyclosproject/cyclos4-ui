@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { cloneDeep } from 'lodash-es';
 import { BehaviorSubject, Observable, of as observableOf, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -19,9 +19,9 @@ export class StateManager {
   private global = new Map<string, any>();
 
   constructor(
-    dataForUiHolder: DataForUiHolder,
+    dataForFrontendHolder: DataForFrontendHolder,
     private router: Router) {
-    dataForUiHolder.subscribe(() => this.clear());
+    dataForFrontendHolder.subscribe(() => this.clear());
   }
 
   /**

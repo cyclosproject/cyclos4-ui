@@ -5,7 +5,7 @@
 
 <ng-template #content>
   <page-content mode="filters" [heading]="title"
-    [mobileHeading]="i18n.account.mobileTitle"
+    [mobileHeading]="(layout.xxs$ | async) ? i18n.account.mobileTitle.account : title"
     [headingActions]="headingActions$ | async">
     <form *ngIf="showForm$ | async" [formGroup]="form" class="filters-form"
       [ngClass]="{ 'border-0': noStatus$ | async }">
@@ -156,7 +156,7 @@
         [account]="status$.value"
         [mode]="(moreFilters$ | async) ? 'period' : 'current'"
         [showSeparator]="showForm$ | async"
-        [showAccount]="(layout.ltsm$ | async) && multipleAccounts"
+        [showAccount]="(layout.xxs$ | async) && multipleAccounts"
         [showUser]="!self && (showForm$ | async) === false">
       </account-status-view>
       <spinner *ngIf="(status$ | async) === null"></spinner>

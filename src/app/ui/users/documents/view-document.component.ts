@@ -5,6 +5,7 @@ import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { downloadResponse } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * View the details of a document. Only for managers
@@ -34,9 +35,9 @@ export class ViewDocumentComponent
 
   onDataInitialized(data: DocumentView) {
     super.onDataInitialized(data);
-    if (this.dataForUiHolder.auth.role !== RoleEnum.BROKER || data.brokerManageable) {
-      const headingActions = [new HeadingAction('edit', this.i18n.general.edit, () => this.navigateToEdit(), true)];
-      headingActions.push(new HeadingAction('clear', this.i18n.general.remove, () => this.remove(), true));
+    if (this.dataForFrontendHolder.auth.role !== RoleEnum.BROKER || data.brokerManageable) {
+      const headingActions = [new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => this.navigateToEdit(), true)];
+      headingActions.push(new HeadingAction(SvgIcon.Trash, this.i18n.general.remove, () => this.remove(), true));
       this.headingActions = headingActions;
     }
   }

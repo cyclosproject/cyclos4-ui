@@ -7,6 +7,7 @@ import { ProductAssignmentService } from 'app/api/services/product-assignment.se
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { empty } from 'app/shared/helper';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Displays the products of an owner including self, group and group set assignments.
@@ -37,11 +38,11 @@ export class ListProductAssignmentComponent extends BasePageComponent<UserProduc
     const headingActions: HeadingAction[] = [];
 
     if (data.assignable) {
-      headingActions.push(new HeadingAction('add', this.i18n.product.assignIndividualProduct, () => this.assign()));
+      headingActions.push(new HeadingAction(SvgIcon.PlusCircle, this.i18n.product.assignIndividualProduct, () => this.assign()));
     }
 
     if (data.history) {
-      headingActions.push(new HeadingAction('history', this.i18n.general.viewHistory, () =>
+      headingActions.push(new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
         this.router.navigate(['/users', this.user, 'product-assignment', 'history'])));
     }
 

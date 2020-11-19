@@ -11,7 +11,7 @@
   </div>
   <div *ngIf="users.length > 0" class="d-flex mw-100 w-100 flex-wrap">
     <chip *ngFor="let user of users" class="mt-2 mr-2" [image]="user.image"
-      icon="user" (close)="remove(user)">
+      [icon]="SvgIcon.Person" (close)="remove(user)">
       {{ user.display }}
     </chip>
   </div>

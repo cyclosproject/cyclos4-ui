@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { ContactListDataForSearch, ContactListQueryFilters, ContactResult } from 'app/api/models';
 import { ContactsService } from 'app/api/services/contacts.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
@@ -78,7 +79,7 @@ export class ContactListComponent
     // If can search other users, allow the add contacts dialog
     if (users.search) {
       this.headingActions = [
-        new HeadingAction('add', this.i18n.general.addNew, () => this.addNew(), true),
+        new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () => this.addNew(), true),
       ];
     }
   }

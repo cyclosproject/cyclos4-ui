@@ -2,15 +2,18 @@
   <div class="navbar-container">
     <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
       (click)="toggle(); $event.preventDefault()">
-      <icon class="top-icon" icon="close"></icon>
+      <icon [icon]="SvgIcon.XCircle"></icon>
     </a>
-    <span class="navbar-brand flex-grow-1">
-      <span class="top-title">{{ layout.appTitleMenu }}</span>
-    </span>
+    <div class="navbar-brand flex-grow-1">
+      <div class="top-title">{{
+        dataForFrontend.dataForFrontend.mobileMenuTitle
+      }}</div>
+    </div>
     <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
       (click)="loginOrLogout($event)">
-      <icon class="top-icon"
-        [icon]="(login.user$ | async) ? 'logout' : 'exit_to_app'"></icon>
+      <icon
+        [icon]="(login.user$ | async) ? SvgIcon.BoxArrowRight : SvgIcon.BoxArrowInRight">
+      </icon>
     </a>
   </div>
 </nav>
@@ -46,7 +49,7 @@
   <a [routerLink]="entry.url" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
     (click)="navigate(entry, $event); close()"
     class="menu-item d-flex align-items-center">
-    <icon size="1.4rem" [icon]="icon(entry)"></icon>
+    <icon [icon]="icon(entry)"></icon>
     <span class="menu-text">{{ label(entry) }}</span>
   </a>
 </ng-template>

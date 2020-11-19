@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { Image } from 'app/api/models';
+import { SvgIcon } from 'app/core/svg-icon';
 import { BaseComponent } from 'app/shared/base.component';
 import { galleryImage } from 'app/shared/helper';
 import { NgxGalleryAnimation, NgxGalleryComponent, NgxGalleryImage, NgxGalleryImageSize, NgxGalleryOptions } from 'ngx-gallery-9';
@@ -41,7 +42,7 @@ export class ProfileImagesComponent extends BaseComponent implements OnInit {
     super(injector);
   }
 
-  @Input() icon: string;
+  @Input() icon: SvgIcon | string;
   @Input() image: Image;
   @Input() additionalImages: Image[];
 

@@ -7,7 +7,7 @@
       'is-invalid': (form.get('response').statusChanges | async) === 'INVALID' && form.get('response').touched
     }">
     <button class="btn btn-icon" (click)="newCaptcha()">
-      <icon icon="refresh"></icon>
+      <icon [icon]="SvgIcon.ArrowCounterclockwise"></icon>
     </button>
   </div>
   <field-errors [control]="form.get('response')"></field-errors>

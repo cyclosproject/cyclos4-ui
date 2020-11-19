@@ -23,6 +23,10 @@ const wizardRoutes: Routes = [
         canActivate: [LoggedUserGuard]
       },
       {
+        path: 'menu/:menu/:wizard',
+        component: RunWizardComponent
+      },
+      {
         path: 'run/:key',
         component: RunWizardComponent
       },

@@ -17,7 +17,7 @@
           <button *ngIf="action.widget === 'button'" [id]="action.fieldId"
             class="btn btn-icon" (click)="run(action)"
             [tooltip]="action.tooltip">
-            <i class="fa" [ngClass]="action.icon"></i>
+            <icon [icon]="action.icon"></icon>
           </button>
         </ng-container>
       </div>
@@ -25,7 +25,7 @@
         <button [id]="id + '_toggleSource'" class="btn btn-icon"
           [ngClass]="{'active': source$ | async}" (click)="toggleSource()"
           [tooltip]="i18n.field.html.source">
-          <i class="fa fa-code"></i>
+          <icon [icon]="SvgIcon.Code"></icon>
         </button>
       </div>
     </div>

@@ -6,7 +6,6 @@ import {
   ElementRef, EventEmitter, Injector, Input, OnChanges, Output, QueryList, SimpleChanges, TemplateRef, ViewChild, ViewChildren,
 } from '@angular/core';
 import { Address } from 'app/api/models';
-import { Configuration } from 'app/ui/configuration';
 import { MapsService } from 'app/ui/core/maps.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
@@ -31,9 +30,6 @@ import { UiLayoutService } from 'app/ui/core/ui-layout.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResultsLayoutComponent<C, R> extends BaseComponent implements AfterViewInit, OnChanges {
-
-  mainMarker = Configuration.mainMapMarker;
-  altMarker = Configuration.altMapMarker;
 
   @Input() resultType: ResultType = ResultType.LIST;
   @Input() categories: C[];
@@ -213,6 +209,8 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
       return this.format.formatAsNumber(pos.lat(), 5)
         + '|' + this.format.formatAsNumber(pos.lng(), 5);
     };
+    const mainMarker = this.dataForFrontendHolder.dataForFrontend.mapMarkerUrl;
+    const altMarker = this.dataForFrontendHolder.dataForFrontend.altMapMarkerUrl;
     rows.forEach(r => {
       const address = this.toAddress(r);
       const location = address == null ? null : address.location;
@@ -220,7 +218,7 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
       if (location) {
         const marker = new google.maps.Marker({
           title,
-          icon: Configuration.mainMapMarker,
+          icon: mainMarker,
           position: new google.maps.LatLng(location.latitude, location.longitude),
         });
         marker['row'] = r;
@@ -266,7 +264,7 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
       this.referenceMarker = new google.maps.Marker({
         position: new google.maps.LatLng(this.referencePoint.latitude, this.referencePoint.longitude),
         title: this.referencePoint.name,
-        icon: Configuration.altMapMarker,
+        icon: altMarker,
       });
       if (this.referencePoint.name) {
         this.referenceMarker.addListener('click', () => {

@@ -13,7 +13,7 @@
             <button *extraCell class="btn btn-icon" #scanQrCodeButton
               [tooltip]="i18n.field.user.scanQrCodeTooltip"
               (click)="showScanQrCode()">
-              <icon icon="scan_qr_code"></icon>
+              <icon [icon]="SvgIcon.QrcodeScan"></icon>
             </button>
           </label-value>
         </div>

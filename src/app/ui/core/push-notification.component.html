@@ -1,7 +1,7 @@
 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true"
   style="opacity: 1">
   <div class="toast-header">
-    <avatar [image]="notification.relatedUser?.image" icon="notifications">
+    <avatar [image]="notification.relatedUser?.image" [icon]="SvgIcon.Bell">
     </avatar>
     <div class="subject">
       <maybe-link [link]="path" (click)="navigate()">

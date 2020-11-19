@@ -19,10 +19,13 @@
         </div>
         <image-upload #singleUpload containerClass="mt-3" target="profile"
           [owner]="param" (uploadDone)="onUploadDone($event)"></image-upload>
-        <actions class="mt-3" forceRow
+        <actions class="mt-3" reverseRow
           *ngIf="canEdit('image') && (singleUpload.uploading$ | async) === false">
           <action-button outline (action)="singleUpload.perform()"
             [label]="i18n.field.image.upload">
+          </action-button>
+          <action-button outline (action)="captureCamera(singleUpload)"
+            [label]="i18n.field.image.camera">
           </action-button>
           <action-button *ngIf="images.length > 0" outline
             (action)="removeAllImages()" [label]="i18n.field.image.remove">
@@ -35,11 +38,6 @@
           <div class="mb-2 mb-xs-0">
             {{ i18n.user.title.images }}
           </div>
-          <action-button
-            *ngIf="canUploadImages && (multiUpload.uploading$ | async) === false"
-            outline (action)="multiUpload.perform()"
-            [label]="i18n.field.image.upload">
-          </action-button>
         </h2>
         <div class="row no-gutters">
           <div
@@ -56,12 +54,20 @@
             </div>
           </ng-container>
         </div>
-        <div *ngIf="canEdit('image') && images.length > 0"
-          class="d-flex justify-content-end">
-          <action-button outline (action)="manageImages()"
-            [label]="i18n.field.image.manage">
+        <actions *ngIf="canEdit('image')" class="mt-2" reverseRow>
+          <ng-container
+            *ngIf="canUploadImages && (multiUpload.uploading$ | async) === false">
+            <action-button outline (action)="multiUpload.perform()"
+              [label]="i18n.field.image.upload">
+            </action-button>
+            <action-button outline (action)="captureCamera(multiUpload)"
+              [label]="i18n.field.image.camera">
+            </action-button>
+          </ng-container>
+          <action-button *ngIf="images.length > 0" outline
+            (action)="manageImages()" [label]="i18n.field.image.manage">
           </action-button>
-        </div>
+        </actions>
         <image-upload #multiUpload target="profile" [owner]="param"
           [max]="data.imageConfiguration.maxImages"
           (uploadDone)="onUploadDone($event)"></image-upload>

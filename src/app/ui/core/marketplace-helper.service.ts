@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AdCategoryWithChildren, AdStatusEnum, OrderStatusEnum, ShoppingCartItemDetailed } from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { FormatService } from 'app/core/format.service';
 import { I18n } from 'app/i18n/i18n';
 import { HierarchyItem } from 'app/ui/marketplace/hierarchy-item.component';
@@ -21,13 +21,14 @@ export class MarketplaceHelperService {
   constructor(
     private i18n: I18n,
     protected authHelper: AuthHelperService,
-    protected dataForUiHolder: DataForUiHolder,
+    protected dataForFrontendHolder: DataForFrontendHolder,
     protected format: FormatService,
   ) {
 
     // Subscribe for cart items count on UI initialization
-    dataForUiHolder.subscribe(dataForUi => {
-      this.cartItems = dataForUi ? dataForUi.shoppingCartWebShopCount : 0;
+    dataForFrontendHolder.subscribe(dataForFrontend => {
+      const dataForUi = (dataForFrontend || {}).dataForUi || {};
+      this.cartItems = dataForUi.shoppingCartWebShopCount || 0;
     });
   }
 

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { Brokering, UserBrokersData } from 'app/api/models';
 import { BrokeringService } from 'app/api/services/brokering.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 
@@ -42,11 +43,11 @@ export class ListUserBrokersComponent
     this.brokers = data.brokers;
     this.headingActions = [];
     if (data.editable) {
-      this.headingActions.push(new HeadingAction('registration', this.i18n.general.addNew, () =>
+      this.headingActions.push(new HeadingAction(SvgIcon.PersonPlus, this.i18n.general.addNew, () =>
         this.router.navigate(['/users', this.param, 'brokers', 'new']), true));
     }
     if (data.history) {
-      this.headingActions.push(new HeadingAction('history', this.i18n.general.viewHistory, () =>
+      this.headingActions.push(new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
         this.router.navigate(['/users', this.param, 'brokers', 'history']), true));
     }
   }

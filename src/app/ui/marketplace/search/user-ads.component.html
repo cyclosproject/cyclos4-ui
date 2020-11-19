@@ -46,7 +46,8 @@
             [emptyLabel]="i18n.general.all">
             <field-option value="active" [text]="i18n.ad.status.active">
             </field-option>
-            <field-option value="disabled" [text]="i18n.ad.status.disabled">
+            <field-option *ngIf="isManager" value="disabled"
+              [text]="i18n.ad.status.disabled">
             </field-option>
             <field-option *ngIf="canViewDraft" value="draft"
               [text]="i18n.ad.status.draft">

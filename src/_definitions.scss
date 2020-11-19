@@ -1,10 +1,10 @@
 @import 'styles/custom-definitions';
 
 // Base colors
-$primary: #329bce !default;
-$accent: #138bbd !default;
-$primary-dark: #334758 !default;
-$accent-dark: #329bce !default;
+$primary: #2795c4 !default;
+$accent: #2795c4 !default;
+$primary-dark: #133f52 !default;
+$accent-dark: #2795c4 !default;
 
 // Make sure the font import URL and the font family (sans serif) are in sync
 $font-import-url: "https://fonts.googleapis.com/css?family=Roboto:400,500" !default;
@@ -66,7 +66,10 @@ $dark:          $gray-800 !default;
 
 $yiq-contrasted-threshold:  150 !default;
 $yiq-text-dark:             $gray-900 !default;
-$yiq-text-light:            $white !default;
+$yiq-text-light:            white !default;
+$yiq-dark-text-dark:             black !default;
+$yiq-dark-text-light:            #f0f0f0 !default;
+
 
 // Import the basic Bootstrap definitions
 @import 'styles/custom-definitions';
@@ -79,18 +82,19 @@ $layout-spacer: 1.25rem !default;
 $section-margin: 1.5rem !default;
 $side-area-width: 18rem !default;
 $body-bg: $gray-100 !default;
-$body-color: $gray-900 !default;
+$body-color: $yiq-text-dark !default;
 $border-color: $gray-300 !default;
 $link-color: $accent !default;
 $link-hover-color: darken($link-color, 15%) !default;
 $alert-border-level: 1 !default;
+$alert-color-level: 8 !default;
 $text-muted: #757575 !default;
 $theme-color: darken($primary, 10%) !default;
 $info: lighten($primary, 30%) !default;
 
 // Global layout for dark background
 $body-bg-dark: #2a2a2a !default;
-$body-color-dark: #f0f0f0 !default;
+$body-color-dark: $yiq-dark-text-light !default;
 $border-color-dark: #171717 !default;
 $link-color-dark: $accent-dark !default;
 $link-hover-color-dark: lighten($link-color-dark, 15%) !default;
@@ -126,9 +130,9 @@ $top-bar-height-xs: 3.4rem !default;
 $top-icon-size-xxs: 1.4rem !default;
 $top-icon-size-xs: 1.6rem !default;
 $top-icon-size: 1.4rem !default;
-// Height when using a dedicated menu bar (Configuration.menuBar = true in setup.ts)
+// Height when using a dedicated menu bar
 $top-bar-height: 3.25rem !default;
-// Height when the menu is in the pop bar (Configuration.menuBar = false in setup.ts)
+// Height when the menu is in the top bar
 $top-bar-with-menu-height: 3.6rem !default;
 $top-bar-popup-separator-color: darken($top-bar-bg, 10%) !default;
 $top-bar-item-focus-bg: darken($top-bar-bg, 5%) !default;
@@ -144,10 +148,10 @@ $top-bar-sub-item-hover-icon-color: $top-bar-sub-item-hover-color !default;
 
 // Top bar on dark background
 $top-bar-bg-dark: $primary-dark !default;
-$top-bar-color-dark: rgba(color-yiq($top-bar-bg-dark), 0.95) !default;
+$top-bar-color-dark: color-yiq($top-bar-bg-dark, $yiq-dark-text-dark, $yiq-dark-text-light) !default;
 $top-bar-popup-separator-color-dark: darken($top-bar-bg-dark, 10%) !default;
 $top-bar-item-focus-bg-dark: darken($top-bar-bg-dark, 5%) !default;
-$top-bar-item-focus-color-dark: color-yiq($top-bar-item-focus-bg-dark) !default;;
+$top-bar-item-focus-color-dark: color-yiq($top-bar-item-focus-bg-dark, $yiq-dark-text-dark, $yiq-dark-text-light) !default;;
 $top-bar-sub-item-hover-bg-dark: darken($top-bar-bg-dark, 5%) !default;
 $top-bar-sub-item-hover-color-dark: $top-bar-color-dark !default;
 $top-bar-sub-item-hover-icon-color-dark: $top-bar-sub-item-hover-color-dark !default;
@@ -170,7 +174,7 @@ $menu-bar-line-color: $border-color !default;
 
 // Menu bar with dark background
 $menu-bar-bg-dark: $card-bg-dark !default;
-$menu-bar-inactive-color-dark: rgba($body-color-dark, 0.95) !default;
+$menu-bar-inactive-color-dark: $body-color-dark !default;
 $menu-bar-inactive-icon-color-dark: $accent-dark !default;
 $menu-bar-inactive-bg-dark: $menu-bar-bg-dark !default;
 $menu-bar-inactive-hover-color-dark: $menu-bar-inactive-color-dark !default;
@@ -182,42 +186,6 @@ $menu-bar-active-hover-color-dark: $menu-bar-active-color-dark !default;
 $menu-bar-active-hover-bg-dark: $menu-bar-inactive-hover-bg-dark !default;
 $menu-bar-line-color-dark: $border-color-dark !default;
 $menu-bar-active-border-color-dark: $menu-bar-active-color-dark;
-
-// Side menu (second-level menu on desktop)
-$side-menu-title-bg: $menu-bar-bg !default;
-$side-menu-title-color: $body-color !default;
-$side-menu-icon-bg: fade-out($menu-bar-active-color, 0.2) !default;
-$side-menu-icon-color: $top-bar-color !default;
-$side-menu-border-color: $border-color !default;
-$side-menu-bg: $menu-bar-bg !default;
-$side-menu-active-bg: $menu-bar-active-bg !default;
-$side-menu-active-color: $menu-bar-active-color !default;
-$side-menu-active-icon-color: $side-menu-active-color !default;
-$side-menu-active-hover-color: $menu-bar-active-hover-color !default;
-$side-menu-active-hover-bg: $menu-bar-active-hover-bg !default;
-$side-menu-inactive-color: $menu-bar-inactive-color !default;
-$side-menu-inactive-bg: $side-menu-active-bg !default;
-$side-menu-inactive-icon-color: $menu-bar-active-icon-color !default;
-$side-menu-inactive-hover-bg: $menu-bar-inactive-hover-bg !default;
-$side-menu-inactive-hover-color: $menu-bar-inactive-hover-color !default;
-
-// Side menu with dark background
-$side-menu-title-bg-dark: $menu-bar-bg-dark !default;
-$side-menu-title-color-dark: $body-color-dark !default;
-$side-menu-icon-bg-dark: fade-out($menu-bar-active-color-dark, 0.2) !default;
-$side-menu-icon-color-dark: $side-menu-title-bg-dark !default;
-$side-menu-border-color-dark: $border-color-dark !default;
-$side-menu-bg-dark: $menu-bar-bg-dark !default;
-$side-menu-active-bg-dark: $menu-bar-bg-dark !default;
-$side-menu-active-color-dark: $menu-bar-active-color-dark !default;
-$side-menu-active-icon-color-dark: $side-menu-active-color-dark !default;
-$side-menu-active-hover-color-dark: $menu-bar-active-hover-color-dark !default;
-$side-menu-active-hover-bg-dark: $menu-bar-active-hover-bg-dark !default;
-$side-menu-inactive-color-dark: $menu-bar-inactive-color-dark !default;
-$side-menu-inactive-bg-dark: $side-menu-active-bg-dark !default;
-$side-menu-inactive-icon-color-dark: $menu-bar-inactive-icon-color-dark !default;
-$side-menu-inactive-hover-bg-dark: $menu-bar-inactive-hover-bg-dark !default;
-$side-menu-inactive-hover-color-dark: $menu-bar-inactive-hover-color-dark !default;
 
 // Quick access (icons in the dashboard)
 $quick-access-bg: $menu-bar-inactive-hover-bg !default;
@@ -234,6 +202,44 @@ $quick-access-icon-color-dark: $accent-dark !default;
 $quick-access-hover-bg-dark: darken($menu-bar-inactive-hover-bg-dark, 5%) !default;
 $quick-access-hover-color-dark: $body-color-dark !default;
 $quick-access-hover-icon-color-dark: $accent-dark !default;
+
+// Side menu (second-level menu on desktop)
+$side-menu-title-bg: $menu-bar-bg !default;
+$side-menu-title-color: $body-color !default;
+$side-menu-icon-bg: $quick-access-bg !default;
+$side-menu-icon-color: $quick-access-icon-color !default;
+$side-menu-icon-border-color: $quick-access-bg !default;
+$side-menu-border-color: $border-color !default;
+$side-menu-bg: $menu-bar-bg !default;
+$side-menu-active-bg: $menu-bar-active-bg !default;
+$side-menu-active-color: $menu-bar-active-color !default;
+$side-menu-active-icon-color: $side-menu-active-color !default;
+$side-menu-active-hover-color: $menu-bar-active-hover-color !default;
+$side-menu-active-hover-bg: $menu-bar-active-hover-bg !default;
+$side-menu-inactive-color: $menu-bar-inactive-color !default;
+$side-menu-inactive-bg: $side-menu-active-bg !default;
+$side-menu-inactive-icon-color: $menu-bar-active-icon-color !default;
+$side-menu-inactive-hover-bg: $menu-bar-inactive-hover-bg !default;
+$side-menu-inactive-hover-color: $menu-bar-inactive-hover-color !default;
+
+// Side menu with dark background
+$side-menu-title-bg-dark: $menu-bar-bg-dark !default;
+$side-menu-title-color-dark: $body-color-dark !default;
+$side-menu-icon-bg-dark: $quick-access-bg-dark !default;
+$side-menu-icon-color-dark: $quick-access-icon-color-dark !default;
+$side-menu-icon-border-color-dark: $quick-access-bg-dark !default;
+$side-menu-border-color-dark: $border-color-dark !default;
+$side-menu-bg-dark: $menu-bar-bg-dark !default;
+$side-menu-active-bg-dark: $menu-bar-bg-dark !default;
+$side-menu-active-color-dark: $menu-bar-active-color-dark !default;
+$side-menu-active-icon-color-dark: $side-menu-active-color-dark !default;
+$side-menu-active-hover-color-dark: $menu-bar-active-hover-color-dark !default;
+$side-menu-active-hover-bg-dark: $menu-bar-active-hover-bg-dark !default;
+$side-menu-inactive-color-dark: $menu-bar-inactive-color-dark !default;
+$side-menu-inactive-bg-dark: $side-menu-active-bg-dark !default;
+$side-menu-inactive-icon-color-dark: $menu-bar-inactive-icon-color-dark !default;
+$side-menu-inactive-hover-bg-dark: $menu-bar-inactive-hover-bg-dark !default;
+$side-menu-inactive-hover-color-dark: $menu-bar-inactive-hover-color-dark !default;
 
 // Sidenav (menu revealed on the left for mobiles / tablets)
 $sidenav-bar-bg: $top-bar-bg !default;
@@ -319,7 +325,7 @@ $snack-bar-color: color-yiq($snack-bar-bg) !default;
 
 // Snack bars on dark background
 $snack-bar-bg-dark: $black !default;
-$snack-bar-color-dark: color-yiq($snack-bar-bg-dark) !default;
+$snack-bar-color-dark: color-yiq($snack-bar-bg-dark, $yiq-dark-text-dark, $yiq-dark-text-light) !default;
 
 // Page title
 $title-bg: $menu-bar-bg !default;
@@ -349,17 +355,17 @@ $title-plain-button-active-bg: $title-plain-button-bg !default;
 $title-bg-dark: $menu-bar-bg-dark !default;
 $title-color-dark: $body-color-dark !default;
 $title-button-bg-dark: darken($title-bg-dark, 3%) !default;
-$title-button-color-dark: color-yiq($title-button-bg-dark) !default;
+$title-button-color-dark: color-yiq($title-button-bg-dark, $yiq-dark-text-dark, $yiq-dark-text-light) !default;
 $title-button-border-color-dark: $border-color-dark !default;
 $title-button-icon-color-dark: $text-muted-dark !default;
 $title-button-active-border-color-dark: darken($title-button-border-color-dark, 5%) !default;
 $title-button-active-color-dark: $title-button-color-dark !default;
 $title-button-active-bg-dark: $title-button-bg-dark !default;
 $title-button-option-hover-bg-dark: darken($title-button-bg-dark, 5%) !default;
-$title-button-option-hover-color-dark: color-yiq($title-button-option-hover-bg-dark) !default;
+$title-button-option-hover-color-dark: color-yiq($title-button-option-hover-bg-dark, $yiq-dark-text-dark, $yiq-dark-text-light) !default;
 $title-button-option-hover-icon-color-dark: $title-button-icon-color-dark !default;
 $title-plain-button-bg-dark: $side-menu-active-hover-bg-dark !default;
-$title-plain-button-color-dark: color-yiq($title-plain-button-bg-dark) !default;
+$title-plain-button-color-dark: color-yiq($title-plain-button-bg-dark, $yiq-dark-text-dark, $yiq-dark-text-light) !default;
 $title-plain-button-border-color-dark: $title-plain-button-bg-dark !default;
 $title-plain-button-icon-color-dark: $menu-bar-active-icon-color-dark !default;
 $title-plain-button-active-border-color-dark: $menu-bar-active-border-color-dark !default;
@@ -438,7 +444,7 @@ $mobile-results-bg-dark: $table-bg-dark !default;
 $mobile-results-border-color-dark: $table-border-color-dark !default;
 $mobile-results-icon-color-dark: $table-icon-color-dark !default;
 $mobile-results-focus-bg-dark: rgba($accent-dark, 0.4) !default;
-$mobile-results-focus-color-dark: color-yiq($mobile-results-focus-bg-dark) !default;
+$mobile-results-focus-color-dark: color-yiq($mobile-results-focus-bg-dark, $yiq-dark-text-dark, $yiq-dark-text-light) !default;
 $mobile-results-focus-icon-color-dark: $mobile-results-focus-color-dark !default;
 
 // Date-picker calendar
@@ -460,12 +466,12 @@ $calendar-year-width: 4rem;
 
 // Date-picker calendar on dark background
 $calendar-header-bg-dark: $accent-dark !default;
-$calendar-header-color-dark: color-yiq($calendar-header-bg-dark) !default;
+$calendar-header-color-dark: color-yiq($calendar-header-bg-dark, $yiq-dark-text-dark, $yiq-dark-text-light) !default;
 $calendar-hover-bg-dark: $table-hover-bg-dark !default;
-$calendar-hover-color-dark: color-yiq($calendar-hover-bg-dark) !default;
+$calendar-hover-color-dark: color-yiq($calendar-hover-bg-dark, $yiq-dark-text-dark, $yiq-dark-text-light) !default;
 $calendar-today-border-color-dark: $accent-dark !default;
 $calendar-selected-bg-dark: $accent-dark !default;
-$calendar-selected-color-dark: color-yiq($calendar-selected-bg-dark) !default;
+$calendar-selected-color-dark: color-yiq($calendar-selected-bg-dark, $yiq-dark-text-dark, $yiq-dark-text-light) !default;
 $calendar-disabled-color-dark: $text-muted-dark !default;
 $calendar-disabled-bg-dark: transparent !default;
 
@@ -524,7 +530,7 @@ $dropdown-link-color-dark: $body-color-dark !default;
 $dropdown-link-hover-color-dark: $body-color-dark !default;
 $dropdown-link-hover-bg-dark: darken($input-bg-dark, 5%) !default;
 $dropdown-link-active-bg-dark: $accent-dark !default;
-$dropdown-link-active-color-dark: color-yiq($dropdown-link-active-bg) !default;
+$dropdown-link-active-color-dark: color-yiq($dropdown-link-active-bg, $yiq-dark-text-dark, $yiq-dark-text-light) !default;
 
 // Pagination
 $pagination-color: $link-color !default;
@@ -548,7 +554,7 @@ $pagination-hover-color-dark: $input-color-dark !default;
 $pagination-hover-bg-dark: $menu-bar-inactive-hover-bg-dark !default;
 $pagination-hover-border-color-dark: $input-border-color-dark !default;
 $pagination-active-bg-dark: $accent-dark !default;
-$pagination-active-color-dark: color-yiq($pagination-active-bg-dark) !default;
+$pagination-active-color-dark: color-yiq($pagination-active-bg-dark, $yiq-dark-text-dark, $yiq-dark-text-light) !default;
 $pagination-active-border-color-dark: $pagination-active-bg-dark !default;
 $pagination-disabled-color-dark: $card-color-dark !default;
 $pagination-disabled-bg-dark: $card-bg-dark !default;

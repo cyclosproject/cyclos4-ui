@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { SvgIcon } from 'app/core/svg-icon';
 import { I18n } from 'app/i18n/i18n';
 import { truthyAttr } from 'app/shared/helper';
 import { TooltipDirective } from 'ngx-bootstrap/tooltip';
@@ -53,8 +54,8 @@ export class FieldPrivacyComponent implements OnInit {
     }
   }
 
-  get icon(): string {
-    return this.hidden ? 'lock' : 'public';
+  get icon(): SvgIcon {
+    return this.hidden ? SvgIcon.EyeSlash : SvgIcon.Eye;
   }
 
   toggle() {

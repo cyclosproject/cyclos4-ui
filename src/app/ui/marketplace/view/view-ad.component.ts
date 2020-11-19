@@ -6,6 +6,7 @@ import {
 import { AdQuestionsService } from 'app/api/services/ad-questions.service';
 import { MarketplaceService } from 'app/api/services/marketplace.service';
 import { ShoppingCartsService } from 'app/api/services/shopping-carts.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { empty, words } from 'app/shared/helper';
 import { TextDialogComponent } from 'app/shared/text-dialog.component';
@@ -76,9 +77,9 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     this.addSub(request.subscribe(() => {
       this.notification.snackBar(message);
       if (checkRole &&
-        (this.dataForUiHolder.role === RoleEnum.BROKER &&
+        (this.dataForFrontendHolder.role === RoleEnum.BROKER &&
           !this.authHelper.isSelfOrOwner(this.data.user)) ||
-        this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR) {
+        this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR) {
         // A broker or admin cannot view the ad after perform
         // some actions (e.g set it to draft, reject), so go
         // back to the ad list
@@ -108,48 +109,48 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   onDataInitialized(ad: AdView) {
     this.webshop = ad.kind === AdKind.WEBSHOP;
     this.hasStatus = !this.guest && (this.authHelper.isSelfOrOwner(ad.user) ||
-      (this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR ||
-        this.dataForUiHolder.role === RoleEnum.BROKER));
+      (this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR ||
+        this.dataForFrontendHolder.role === RoleEnum.BROKER));
 
     const headingActions: HeadingAction[] = [];
     if (ad.canEdit) {
-      const edit = new HeadingAction('edit', this.i18n.general.edit, () => {
+      const edit = new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => {
         this.router.navigate(['/marketplace', 'edit', this.id]);
       }, true);
       headingActions.push(edit);
     }
     if (ad.canBuy) {
       headingActions.push(
-        new HeadingAction('add_shopping_cart', this.i18n.ad.addToCart, () => this.addToCart()));
+        new HeadingAction(SvgIcon.CartPlus, this.i18n.ad.addToCart, () => this.addToCart()));
     }
     if (ad.canAsk) {
       headingActions.push(
-        new HeadingAction('chat', this.i18n.ad.askQuestion, () => this.ask()));
+        new HeadingAction(SvgIcon.ChatLeft, this.i18n.ad.askQuestion, () => this.ask()));
     }
     if (ad.canHide) {
       headingActions.push(
-        new HeadingAction('lock', this.i18n.ad.hide, () => this.updateStatus(
+        new HeadingAction(SvgIcon.EyeSlash, this.i18n.ad.hide, () => this.updateStatus(
           this.marketplaceService.hideAd({ ad: this.id }),
           this.i18n.ad.adHidden,
         )));
     }
     if (ad.canUnhide) {
       headingActions.push(
-        new HeadingAction('public', this.i18n.ad.unhide, () => this.updateStatus(
+        new HeadingAction(SvgIcon.Eye, this.i18n.ad.unhide, () => this.updateStatus(
           this.marketplaceService.unhideAd({ ad: this.id }),
           this.i18n.ad.adUnhidden,
         )));
     }
     if (ad.canRequestAuthorization) {
       headingActions.push(
-        new HeadingAction('gavel', this.i18n.ad.submitForAuthorization, () => this.updateStatus(
+        new HeadingAction(SvgIcon.FileEarmarkCheck, this.i18n.ad.submitForAuthorization, () => this.updateStatus(
           this.marketplaceService.submitAdForAuthorization({ ad: this.id }),
           this.i18n.ad.pendingForAuth,
         )));
     }
     if (ad.canSetAsDraft) {
       headingActions.push(
-        new HeadingAction('edit', this.i18n.ad.setAsDraft, () => this.updateStatus(
+        new HeadingAction(SvgIcon.Pencil, this.i18n.ad.setAsDraft, () => this.updateStatus(
           this.marketplaceService.setAdAsDraft({ ad: this.id }),
           this.i18n.ad.backToDraft,
           true,
@@ -157,18 +158,18 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     }
     if (ad.canApprove) {
       headingActions.push(
-        new HeadingAction('thumb_up_alt', this.i18n.ad.authorize, () => this.updateStatus(
+        new HeadingAction(SvgIcon.HandThumbsUp, this.i18n.ad.authorize, () => this.updateStatus(
           this.marketplaceService.approveAd({ ad: this.id }),
           this.i18n.ad.authorized,
         )));
     }
     if (ad.canReject) {
       headingActions.push(
-        new HeadingAction('thumb_down_alt', this.i18n.ad.reject, () => this.reject()));
+        new HeadingAction(SvgIcon.HandThumbsDown, this.i18n.ad.reject, () => this.reject()));
     }
     if (ad.canRemove) {
       headingActions.push(
-        new HeadingAction('clear', this.i18n.general.remove, () => {
+        new HeadingAction(SvgIcon.Trash, this.i18n.general.remove, () => {
           this.notification.confirm({
             message: this.i18n.general.removeConfirm(this.ad.name),
             callback: () => this.doRemove(),
@@ -246,11 +247,11 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   canRemoveQuestion(question: AdQuestionView) {
     if (this.guest) {
       return false;
-    } else if (this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR) {
+    } else if (this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR) {
       return this.data.canEdit;
-    } else if (this.dataForUiHolder.role === RoleEnum.BROKER ||
+    } else if (this.dataForFrontendHolder.role === RoleEnum.BROKER ||
       this.authHelper.isSelfOrOwner(this.data.user) ||
-      (this.authHelper.isSelfOrOwner(question.user) && this.dataForUiHolder.role !== RoleEnum.OPERATOR)) {
+      (this.authHelper.isSelfOrOwner(question.user) && this.dataForFrontendHolder.role !== RoleEnum.OPERATOR)) {
       return this.data.canEdit && empty(question.answer);
     }
     return false;

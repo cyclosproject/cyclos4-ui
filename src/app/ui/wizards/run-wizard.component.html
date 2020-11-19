@@ -30,11 +30,13 @@
           [address]="address" [customValues]="customValues">
         </run-wizard-step-fields>
 
-        <action-button *ngFor="let t of transitions" type="button"
-          class="centered-button" (action)="transition(t)"
-          [disabled]="requesting$ | async" [label]="t.label">
-        </action-button>
-
+        <div *ngIf="transitions?.length > 0"
+          class="d-flex flex-column mt-3 mt-md-4">
+          <action-button *ngFor="let t of transitions" type="button"
+            class="centered-button" (action)="transition(t)"
+            [disabled]="requesting$ | async" [label]="t.label">
+          </action-button>
+        </div>
       </div>
       <actions [ngSwitch]="data.action" forceRow>
         <action-button *ngSwitchCase="WizardActionEnum.FINISH"
@@ -52,9 +54,19 @@
           </action-button>
           <span *ngIf="!singleTransition"></span>
         </ng-container>
-        <action-button *ngIf="showBack" (action)="back()" outline
+        <div *ngIf="data.stepCount != null"
+          class="d-flex align-items-center justify-content-center py-2">
+          {{ i18n.wizard.currentStep({
+            current: data.stepNumber,
+            total: data.stepCount
+          }) }}
+        </div>
+        <action-button *ngIf="showBack; else noBack" (action)="back()" outline
           [disabled]="requesting$ | async" [label]="i18n.general.back">
         </action-button>
+        <ng-template #noBack>
+          <div></div>
+        </ng-template>
       </actions>
     </ng-container>
   </page-content>

@@ -1,17 +1,17 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { blank, ElementReference, empty, htmlCollectionToArray } from 'app/shared/helper';
 import { Escape, ShortcutService } from 'app/core/shortcut.service';
 import { isEqual, trim } from 'lodash-es';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
+import { FrontendScreenSizeEnum } from 'app/api/models';
 
 export type Theme = 'light' | 'dark';
 export const Themes: Theme[] = ['light', 'dark'];
 const ThemeKey = 'theme';
 
-const DarkTheme = 'darkTheme';
 const ColorVariables = [
   'primary', 'theme-color', 'chart-color',
   'body-color', 'border-color', 'text-muted',
@@ -86,13 +86,8 @@ export class LayoutService {
   constructor(
     private observer: BreakpointObserver,
     private shortcut: ShortcutService,
-    dataForUiHolder: DataForUiHolder) {
+    dataForFrontendHolder: DataForFrontendHolder) {
 
-    // Legacy storage for DarkTheme
-    if (localStorage.getItem(DarkTheme) === 'dark') {
-      localStorage.removeItem(DarkTheme);
-      localStorage.setItem(ThemeKey, 'dark');
-    }
     // Initialize the theme from the local storage
     const theme = (localStorage.getItem(ThemeKey) || 'light') as Theme;
     this.setTheme(theme, false);
@@ -126,7 +121,7 @@ export class LayoutService {
     window.addEventListener('resize', () => this.updateWindowWidth(), false);
     setTimeout(() => this.updateWindowWidth(), 1);
 
-    dataForUiHolder.subscribe(() => {
+    dataForFrontendHolder.subscribe(() => {
       this.applyThemeColor();
     });
   }
@@ -460,6 +455,21 @@ export class LayoutService {
     }
     this.applyFontImport();
     this.applyThemeColor();
+  }
+
+  /**
+   * Returns the current API `FrontendScreenSizeEnum`.
+   */
+  get screenSize(): FrontendScreenSizeEnum {
+    if (this.xxs) {
+      return FrontendScreenSizeEnum.FEATURE;
+    } else if (this.xs) {
+      return FrontendScreenSizeEnum.MOBILE;
+    } else if (this.md) {
+      return FrontendScreenSizeEnum.TABLET;
+    } else {
+      return FrontendScreenSizeEnum.DESKTOP;
+    }
   }
 
   /**

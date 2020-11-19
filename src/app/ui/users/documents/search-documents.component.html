@@ -40,22 +40,22 @@
             <button *ngIf="isStatic(row.kind)" [tooltip]="i18n.general.view"
               class="btn btn-icon"
               (click)="navigateToView(row); $event.stopPropagation(); $event.preventDefault()">
-              <icon icon="edit"></icon>
+              <icon [icon]="SvgIcon.Pencil"></icon>
             </button>
             <button *ngIf="isStatic(row.kind)"
               [tooltip]="i18n.general.download" class="btn btn-icon mt-2"
               (click)="download(row); $event.stopPropagation()">
-              <icon icon="save_alt"></icon>
+              <icon [icon]="SvgIcon.Download"></icon>
             </button>
             <button *ngIf="!isStatic(row.kind)"
               [tooltip]="i18n.document.process" class="btn btn-icon"
               (click)="router.navigate(process(row)); $event.stopPropagation(); $event.preventDefault()">
-              <icon icon="edit"></icon>
+              <icon [icon]="SvgIcon.FileEarmarkText"></icon>
             </button>
             <button *ngIf="isUserKind(row)" [tooltip]="i18n.general.remove"
               class="btn btn-icon mt-2"
               (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
-              <icon icon="clear"></icon>
+              <icon [icon]="SvgIcon.Trash"></icon>
             </button>
           </div>
         </div>
@@ -76,17 +76,17 @@
               <button *ngIf="isStatic(row.kind)"
                 [tooltip]="i18n.general.download" class="btn btn-icon"
                 (click)="download(row); $event.stopPropagation()">
-                <icon icon="save_alt"></icon>
+                <icon [icon]="SvgIcon.Download"></icon>
               </button>
               <button *ngIf="!isStatic(row.kind)"
                 [tooltip]="i18n.document.process" class="btn btn-icon"
                 (click)="router.navigate(process(row)); $event.stopPropagation(); $event.preventDefault()">
-                <icon icon="edit"></icon>
+                <icon [icon]="SvgIcon.FileEarmarkText"></icon>
               </button>
               <button *ngIf="data.canManageIndividual && isUserKind(row)"
                 [tooltip]="i18n.general.remove" class="btn btn-icon ml-2"
                 (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
-                <icon icon="clear"></icon>
+                <icon [icon]="SvgIcon.Trash"></icon>
               </button>
             </td>
           </tr>

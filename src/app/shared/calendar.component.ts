@@ -145,7 +145,7 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
   }
 
   onValueInitialized(value: string) {
-    const val = value ? moment(value, ISO_DATE) : this.dataForUiHolder.now();
+    const val = value ? moment(value, ISO_DATE) : this.dataForFrontendHolder.now();
     this.month = val.month();
     this.year = val.year();
     this.updateDays();
@@ -160,7 +160,7 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
   }
 
   prepare() {
-    this.now = this.dataForUiHolder.now();
+    this.now = this.dataForFrontendHolder.now();
     const selected = this.valueAsMoment || this.now;
     this.month = selected.month();
     this.year = selected.year();

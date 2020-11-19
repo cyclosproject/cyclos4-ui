@@ -2,6 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { Notification, QueryFilters } from 'app/api/models';
 import { NotificationsService } from 'app/api/services/notifications.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
@@ -41,7 +42,7 @@ export class SearchNotificationsComponent
       // And then immediately update the current notifications status
       const status$ = this.notification.notificationsStatus$;
       const status = { ...status$.value };
-      status.lastViewDate = this.dataForUiHolder.now().toISOString();
+      status.lastViewDate = this.dataForFrontendHolder.now().toISOString();
       status.newNotifications = 0;
       status$.next(status);
       // Whenever a new notification arrives, update the list
@@ -55,10 +56,10 @@ export class SearchNotificationsComponent
       const notifications = ((results ? results.results : null) || []);
       const unread = notifications.filter(n => !n.read);
       if (unread.length > 0) {
-        headingActions.push(new HeadingAction('done_all', this.i18n.notification.actions.markAllRead, () => this.markAllRead()));
+        headingActions.push(new HeadingAction(SvgIcon.Check2All, this.i18n.notification.actions.markAllRead, () => this.markAllRead()));
       }
       if (notifications.length > 0) {
-        headingActions.push(new HeadingAction('clear', this.i18n.notification.actions.removeAll, () => this.removeAll()));
+        headingActions.push(new HeadingAction(SvgIcon.Trash, this.i18n.notification.actions.removeAll, () => this.removeAll()));
       }
       this.headingActions = headingActions;
     }));

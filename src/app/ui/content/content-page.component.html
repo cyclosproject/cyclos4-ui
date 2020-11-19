@@ -1,2 +1,12 @@
-<show-content *ngIf="data$ | async" [content]="page">
-</show-content>
+<ng-container *ngIf="data$ | async">
+  <ng-container *ngIf="page.layout === FrontendContentLayoutEnum.FULL">
+    <div class="d-flex flex-grow-1" [innerHTML]="page.content | trust"></div>
+  </ng-container>
+  <page-layout *ngIf="page.layout !== FrontendContentLayoutEnum.FULL">
+    <page-content [heading]="page.title || page.name"
+      [mobileHeading]="page.name" last [mode]="cardMode">
+      <div class="custom-content-container"
+        [innerHTML]="page.content | trust"></div>
+    </page-content>
+  </page-layout>
+</ng-container>

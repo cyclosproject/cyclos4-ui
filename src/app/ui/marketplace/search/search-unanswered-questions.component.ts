@@ -36,7 +36,7 @@ export class SearchUnansweredQuestionsComponent
   ngOnInit() {
     super.ngOnInit();
 
-    const auth = this.dataForUiHolder.auth || {};
+    const auth = this.dataForFrontendHolder.auth || {};
     const permissions = auth.permissions || {};
     const marketplace = permissions.marketplace || {};
     const webshop = marketplace.myWebshop || {};

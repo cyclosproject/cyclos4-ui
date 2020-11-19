@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Shows an icon and a counter
@@ -10,7 +11,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class IconWithCounterComponent {
 
-  @Input() icon: string;
+  @Input() icon: SvgIcon | string;
   private _count: string | number = 0;
   @Input() get count(): string | number {
     return this._count;

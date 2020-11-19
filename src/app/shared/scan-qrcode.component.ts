@@ -38,13 +38,13 @@ export class ScanQrCodeComponent extends BaseComponent {
   }
 
   noCameras() {
-    this.notification.error(this.i18n.field.scanQr.noCameras);
+    this.notification.error(this.i18n.field.camera.noCameras);
     this.close();
   }
 
   permissionResponse(granted: boolean | null) {
     if (granted === false) {
-      this.notification.error(this.i18n.field.scanQr.noPermission);
+      this.notification.error(this.i18n.field.camera.noPermission);
       this.close();
     }
   }

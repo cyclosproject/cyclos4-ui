@@ -3,6 +3,7 @@ import { Transaction, TransactionAuthorizationStatusEnum, TransactionKind } from
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { Enter } from 'app/core/shortcut.service';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Send and accept payment request final step
@@ -16,7 +17,7 @@ export class RequestPaymentStepDoneComponent extends BaseComponent implements On
 
   @Input() performed: Transaction;
   @Input() processDate: string;
-  icon: string;
+  icon: SvgIcon;
   message: string;
 
   constructor(
@@ -29,23 +30,23 @@ export class RequestPaymentStepDoneComponent extends BaseComponent implements On
     super.ngOnInit();
     let addShortcut = true;
     if (this.performed?.kind === TransactionKind.PAYMENT_REQUEST) {
-      this.icon = 'done';
+      this.icon = SvgIcon.Check2;
       this.message = this.performed.kind
         ? this.i18n.transaction.processedPaymentRequestWithNumber(this.performed.transactionNumber)
         : this.i18n.transaction.processedPaymentRequest;
     } else {
       if (this.performed?.authorizationStatus === TransactionAuthorizationStatusEnum.PENDING) {
-        this.icon = 'scheduled';
+        this.icon = SvgIcon.CalendarEvent;
         this.message = this.performed.transactionNumber
           ? this.i18n.transaction.pendingWithNumber(this.performed.transactionNumber)
           : this.i18n.transaction.pending;
       } else if (this.performed) {
-        this.icon = 'done';
+        this.icon = SvgIcon.Check2;
         this.message = this.performed.transactionNumber
           ? this.i18n.transaction.processedWithNumber(this.performed.transactionNumber)
           : this.i18n.transaction.processed;
       } else {
-        this.icon = 'scheduled';
+        this.icon = SvgIcon.CalendarEvent;
         this.message = this.i18n.transaction.acceptedScheduledPaymentRequest(this.processDate);
         addShortcut = false;
       }

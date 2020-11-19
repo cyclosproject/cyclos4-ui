@@ -50,7 +50,7 @@
           <div class="ml-auto">
             <button *ngIf="canDisconnect(row)" class="btn btn-icon"
               (click)="disconnect(row); $event.stopPropagation(); $event.preventDefault()">
-              <icon icon="clear"></icon>
+              <icon [icon]="SvgIcon.BoxArrowRight"></icon>
             </button>
           </div>
         </div>
@@ -73,7 +73,7 @@
               'border-0': layout.xxs$ | async
             }">
                 <avatar [image]="row.user?.image"
-                  [tooltip]="row.user?.display" icon="user"></avatar>
+                  [tooltip]="row.user?.display"></avatar>
               </td>
               <td>{{ row.user.shortDisplay }}</td>
               <td>{{ row.channel.name }}</td>
@@ -84,7 +84,7 @@
                   [tooltip]="i18n.connectedUser.disconnect"
                   class="btn btn-icon"
                   (click)="disconnect(row); $event.stopPropagation()">
-                  <icon icon="clear"></icon>
+                  <icon [icon]="SvgIcon.BoxArrowRight"></icon>
                 </button>
               </td>
             </tr>

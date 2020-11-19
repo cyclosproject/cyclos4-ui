@@ -7,6 +7,7 @@ import {
 } from 'app/api/models';
 import { ReferencesService } from 'app/api/services/references.service';
 import { ISO_DATE } from 'app/core/format.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { Menu } from 'app/ui/shared/menu';
@@ -65,7 +66,7 @@ export class SearchReferencesComponent
 
     if (data.set && !this.isOwner) {
       this.headingActions = [
-        new HeadingAction('military_tech', this.i18n.reference.set,
+        new HeadingAction(SvgIcon.Star, this.i18n.reference.set,
           () => {
             if (data.current) {
               this.router.navigate(['users', 'references', 'edit', data.current.id]);
@@ -102,7 +103,7 @@ export class SearchReferencesComponent
   filter(level?: ReferenceLevelEnum, allTime?: boolean) {
     this.form.patchValue({
       levels: level ? [level] : null,
-      period: allTime ? null : [this.dataForUiHolder.now().clone().subtract(30, 'day').startOf('day').format(ISO_DATE), null]
+      period: allTime ? null : [this.dataForFrontendHolder.now().clone().subtract(30, 'day').startOf('day').format(ISO_DATE), null]
     });
   }
 

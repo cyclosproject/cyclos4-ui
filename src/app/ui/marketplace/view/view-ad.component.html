@@ -9,7 +9,7 @@
 
     <div class="d-flex flex-row-reverse">
       <profile-images *ngIf="ad.image && (layout.gtxs$ | async)"
-        icon="shopping_basket" [image]="ad.image"
+        [icon]="SvgIcon.Basket" [image]="ad.image"
         [additionalImages]="ad.additionalImages">
       </profile-images>
 
@@ -115,7 +115,7 @@
       <ng-container *ngFor="let q of data.questions; let last = last">
         <div class="d-flex flex-row pb-1">
           <div class="d-flex">
-            <icon size="1rem" icon="chat"></icon>
+            <icon size="1rem" [icon]="SvgIcon.ChatLeft"></icon>
           </div>
           <div class="pl-2" style="line-height: 1rem">
             <span class="font-weight-bold">{{ q.question }}</span>
@@ -126,13 +126,13 @@
             style="margin-left: auto">
             <a href="#" class="icon" [tooltip]="i18n.ad.removeQuestion"
               (click)="removeQuestion(q.id); $event.preventDefault()">
-              <icon size="1rem" icon="delete"></icon>
+              <icon size="1rem" [icon]="SvgIcon.Trash"></icon>
             </a>
           </div>
         </div>
         <div *ngIf="q.answer" class="d-flex flex-row pb-1 pt-1">
           <div class="d-flex">
-            <icon size="1rem" icon="comment"></icon>
+            <icon size="1rem" [icon]="SvgIcon.ChatRight"></icon>
           </div>
           <div class="pl-2" style="line-height: 1rem">
             {{ q.answer}}

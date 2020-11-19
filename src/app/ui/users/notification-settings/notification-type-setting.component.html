@@ -11,17 +11,19 @@
     [disabled]="disabled">
   </multi-selection-field>
   <div *ngIf="adminType" class="d-xs-none"></div>
-  <button-toggle *ngIf="!adminType" onIcon="notifications_active"
-    offIcon="notifications_off"
+  <button-toggle *ngIf="!adminType" [onIcon]="SvgIcon.Bell"
+    [offIcon]="SvgIcon.BellSlash"
     [iconTooltip]="i18n.notificationSettings.internalNotification"
     formControlName="internal" [readOnly]="disabled">
   </button-toggle>
-  <button-toggle *ngIf="setting.email != null" onIcon="mail" offIcon="drafts"
+  <button-toggle *ngIf="setting.email != null" [onIcon]="SvgIcon.Envelope"
+    [offIcon]="SvgIcon.EnvelopeSlash"
     [iconTooltip]="i18n.general.sendMedium.email" formControlName="email"
-    class="form-field" [readOnly]="disabled">
+    [readOnly]="disabled">
   </button-toggle>
-  <button-toggle *ngIf="setting.sms != null" onIcon="speaker_notes"
-    offIcon="speaker_notes_off" [iconTooltip]="i18n.general.sendMedium.sms"
-    formControlName="sms" class="form-field" [readOnly]="disabled">
+  <button-toggle *ngIf="setting.sms != null" [onIcon]="SvgIcon.ChatLeftText"
+    [offIcon]="SvgIcon.ChatLeftTextSlash"
+    [iconTooltip]="i18n.general.sendMedium.sms" formControlName="sms"
+    [readOnly]="disabled">
   </button-toggle>
 </div>

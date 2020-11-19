@@ -8,5 +8,22 @@
       <field-option [value]="true" [text]="i18n.setting.themeDark">
       </field-option>
     </radio-group-field>
+
+    <ng-container *ngIf="localeControl">
+      <radio-group-field [label]="i18n.setting.locale"
+        [formControl]="localeControl" *ngIf="localeOptions.length <= 3"
+        [fieldOptions]="localeOptions">
+      </radio-group-field>
+      <single-selection-field [label]="i18n.setting.locale"
+        [formControl]="localeControl" *ngIf="localeOptions.length > 3"
+        [fieldOptions]="localeOptions">
+      </single-selection-field>
+    </ng-container>
+
+    <actions *ngIf="canSwitchFrontend">
+      <span></span>
+      <action-button [label]="i18n.setting.useClassicFrontend" outline
+        (action)="switchFrontend()"></action-button>
+    </actions>
   </page-content>
 </page-layout>

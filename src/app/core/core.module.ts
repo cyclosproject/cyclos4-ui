@@ -5,21 +5,23 @@ import { ApiI18nService } from 'app/core/api-i18n.service';
 import { ApiInterceptor } from 'app/core/api.interceptor';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { CacheService } from 'app/core/cache.service';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { FormatService } from 'app/core/format.service';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
+import { IconLoadingService } from 'app/core/icon-loading.service';
 import { LayoutService } from 'app/core/layout.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { NotificationService } from 'app/core/notification.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
+import { ScriptLoaderService } from 'app/core/script-loader.service';
+import { ShortcutService } from 'app/core/shortcut.service';
 import { SnackBarComponent } from 'app/core/snack-bar.component';
 import { StateManager } from 'app/core/state-manager';
 import { UserCacheService } from 'app/core/user-cache.service';
 import { I18n } from 'app/i18n/i18n';
 import { SharedModule } from 'app/shared/shared.module';
-import { ShortcutService } from 'app/core/shortcut.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
@@ -47,8 +49,9 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     I18n,
     ApiI18nService,
     I18nLoadingService,
+    IconLoadingService,
     BreakpointObserver,
-    DataForUiHolder,
+    DataForFrontendHolder,
     ErrorHandlerService,
     FormatService,
     LayoutService,
@@ -57,6 +60,7 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     StateManager,
     CacheService,
     PushNotificationsService,
+    ScriptLoaderService,
     UserCacheService,
     AuthHelperService,
     FieldHelperService,

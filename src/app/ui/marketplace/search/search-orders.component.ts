@@ -12,6 +12,7 @@ import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.componen
 import { empty } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { SvgIcon } from 'app/core/svg-icon';
 
 type SearchUserOrdersParams = QueryFilters & {
   user: string,
@@ -83,7 +84,7 @@ export class SearchOrdersComponent
   protected initActions(data: OrderDataForSearch) {
     const actions: HeadingAction[] = [];
     if (this.sales && data.canCreateNew) {
-      const newAction = new HeadingAction('add', this.i18n.general.addNew, () => this.addNew(), true);
+      const newAction = new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () => this.addNew(), true);
       actions.push(newAction);
     }
     if (this.layout.ltsm) {

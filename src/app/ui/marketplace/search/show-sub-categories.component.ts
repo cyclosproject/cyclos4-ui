@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, Output } from '@angular/core';
-
 import { AdCategoryWithChildren, Image } from 'app/api/models';
+import { SvgIcon } from 'app/core/svg-icon';
 import { BaseComponent } from 'app/shared/base.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+
 
 /**
  * A component to be shown in a dialog, displaying all sub-categories of a category
@@ -16,7 +17,7 @@ export class ShowSubCategoriesComponent extends BaseComponent {
 
   @Input() category: AdCategoryWithChildren;
   @Input() image: Image;
-  @Input() icon: string;
+  @Input() icon: SvgIcon | string;
   @Input() color: string;
   @Output() select = new EventEmitter<AdCategoryWithChildren>();
 

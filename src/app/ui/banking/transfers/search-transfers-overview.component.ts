@@ -221,7 +221,7 @@ export class SearchTransfersOverviewComponent
   }
 
   resolveMenu() {
-    return this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR
+    return this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR
       ? Menu.ADMIN_TRANSFERS_OVERVIEW : Menu.BROKER_TRANSFERS_OVERVIEW;
   }
 

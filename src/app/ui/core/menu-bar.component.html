@@ -1,6 +1,6 @@
 <ng-container *ngIf="roots$ | async as roots">
   <ng-container
-    *ngIf="density(roots, uiLayout.breakpointChanges$ | async) as dens">
+    *ngIf="density(roots, layout.breakpointChanges$ | async) as dens">
     <nav class="navbar shadow-sm" [ngClass]="{
         'full-width': uiLayout.fullWidth$ | async,
         'dense': dens === 'dense'

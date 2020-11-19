@@ -6,6 +6,7 @@ import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Displays the currently accepted user agreements and allows users to change the optional agreements
@@ -55,7 +56,7 @@ export class ViewUserAgreementsComponent extends BaseViewPageComponent<UserAgree
     }
     if (!this.noAgreements) {
       this.headingActions = [
-        new HeadingAction('history', this.i18n.general.viewHistory, () =>
+        new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
           this.router.navigate(['users', this.param, 'agreements', 'history']), true),
       ];
     }

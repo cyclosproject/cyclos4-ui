@@ -1,4 +1,5 @@
-import { AccountType, Operation, RecordType, TokenType, Wizard } from 'app/api/models';
+import { AccountType, FrontendPage, Operation, RecordType, TokenType, UserLocale, Wizard } from 'app/api/models';
+import { SvgIcon } from 'app/core/svg-icon';
 import { empty } from 'app/shared/helper';
 
 /** The types of menus in the application */
@@ -18,31 +19,21 @@ export enum MenuType {
 }
 
 /** Contains the top-level (root) menus */
-export type RootMenu =
-  'dashboard' | 'banking' | 'operators' | 'brokering' | 'marketplace' |
-  'home' | 'publicDirectory' | 'publicMarketplace' | 'content' |
-  'personal' | 'registration' | 'login' | 'logout';
-export namespace RootMenu {
-  export const DASHBOARD: RootMenu = 'dashboard';
-  export const BANKING: RootMenu = 'banking';
-  export const OPERATORS: RootMenu = 'operators';
-  export const BROKERING: RootMenu = 'brokering';
-  export const MARKETPLACE: RootMenu = 'marketplace';
-  export const HOME: RootMenu = 'home';
-  export const PUBLIC_DIRECTORY: RootMenu = 'publicDirectory';
-  export const PUBLIC_MARKETPLACE: RootMenu = 'publicMarketplace';
-  export const CONTENT: RootMenu = 'content';
-  export const PERSONAL: RootMenu = 'personal';
-  export const REGISTRATION: RootMenu = 'registration';
-  export const LOGIN: RootMenu = 'login';
-  export const LOGOUT: RootMenu = 'logout';
-  export function values(): RootMenu[] {
-    return [
-      DASHBOARD, BANKING, OPERATORS, BROKERING, MARKETPLACE,
-      HOME, PUBLIC_DIRECTORY, PUBLIC_MARKETPLACE,
-      CONTENT, PERSONAL, REGISTRATION, LOGIN, LOGOUT,
-    ];
-  }
+export enum RootMenu {
+  DASHBOARD = 'dashboard',
+  BANKING = 'banking',
+  OPERATORS = 'operators',
+  BROKERING = 'brokering',
+  MARKETPLACE = 'marketplace',
+  HOME = 'home',
+  PUBLIC_DIRECTORY = 'publicDirectory',
+  PUBLIC_MARKETPLACE = 'publicMarketplace',
+  LANGUAGE = 'language',
+  CONTENT = 'content',
+  PERSONAL = 'personal',
+  REGISTRATION = 'registration',
+  LOGIN = 'login',
+  LOGOUT = 'logout'
 }
 
 /** Represents an available menu item */
@@ -68,11 +59,13 @@ export namespace Menu {
   export const PUBLIC_DIRECTORY = new Menu(RootMenu.PUBLIC_DIRECTORY, 'PUBLIC_DIRECTORY');
   export const PUBLIC_MARKETPLACE = new Menu(RootMenu.PUBLIC_MARKETPLACE, 'PUBLIC_MARKETPLACE');
   export const PUBLIC_REGISTRATION = new Menu(RootMenu.REGISTRATION, 'PUBLIC_REGISTRATION');
+  export const LANGUAGE = new Menu(RootMenu.LANGUAGE, 'LANGUAGE');
   export const LOGIN = new Menu(RootMenu.LOGIN, 'LOGIN');
   export const LOGOUT = new Menu(RootMenu.LOGOUT, 'LOGOUT');
 
   // Banking
   export const ACCOUNT_HISTORY = new Menu(RootMenu.BANKING, 'ACCOUNT_HISTORY');
+  export const ACCOUNTS_SUMMARY = new Menu(RootMenu.BANKING, 'ACCOUNTS_SUMMARY');
   export const USER_BALANCES_OVERVIEW = new Menu(RootMenu.BANKING, 'USER_BALANCES_OVERVIEW');
   export const ADMIN_TRANSFERS_OVERVIEW = new Menu(RootMenu.BANKING, 'ADMIN_TRANSFERS_OVERVIEW');
   export const PAYMENT_TO_USER = new Menu(RootMenu.BANKING, 'PAYMENT_TO_USER');
@@ -199,6 +192,7 @@ export interface ActiveMenuData {
   wizard?: Wizard;
   recordType?: RecordType;
   tokenType?: TokenType;
+  menuItem?: FrontendPage;
 }
 
 /**
@@ -253,7 +247,7 @@ export class ActiveMenu {
 export class SideMenuEntries {
   constructor(
     public title: string,
-    public icon: string,
+    public icon: SvgIcon | string,
     public entries: MenuEntry[],
   ) {
   }
@@ -262,7 +256,7 @@ export class SideMenuEntries {
 /** Base class for a resolved menu entry */
 export abstract class BaseMenuEntry {
   constructor(
-    public icon: string,
+    public icon: SvgIcon | string,
     public label: string,
     public showIn: MenuType[],
   ) { }
@@ -271,7 +265,7 @@ export abstract class BaseMenuEntry {
 export class RootMenuEntry extends BaseMenuEntry {
   constructor(
     public rootMenu: RootMenu,
-    icon: string,
+    icon: SvgIcon | string,
     label: string,
     public title: string = null,
     showIn: MenuType[] = null,
@@ -293,11 +287,12 @@ export class RootMenuEntry extends BaseMenuEntry {
 export class MenuEntry extends BaseMenuEntry {
   public menu: Menu;
   public activeMenu: ActiveMenu;
+  public locale?: UserLocale;
 
   constructor(
     menu: Menu | ActiveMenu,
     private _url: string,
-    icon: string,
+    icon: SvgIcon | string,
     label: string,
     showIn: MenuType[] = null,
     private urlHandler: () => string,

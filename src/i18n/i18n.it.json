@@ -1,7 +1,6 @@
 {
   "general": {
     "by": "da",
-    "changedBy": "Changed by",
     "type": "Tipo",
     "code": "Codice",
     "period": "Periodo",
@@ -19,8 +18,6 @@
     "endDate": "Data fine",
     "creationDate": "Data di creazione",
     "expirationDate": "Data di scadenza",
-    "expirationBeginDate": "Expiration begin date",
-    "expirationEndDate": "Expiration end date",
     "newExpirationDate": "Nuova data di scadenza",
     "notApplied": "Non applicato",
     "notAppliedSelect": "Non applicato (selezionare per applicare)",
@@ -30,8 +27,6 @@
     "to": "a",
     "description": "Descrizione",
     "details": "Dettagli",
-    "download": "Download",
-    "downloadAs": "Download as {format}",
     "image": "Immagine",
     "keywords": "Parole Chiave",
     "distanceFilter": "Distanza",
@@ -40,8 +35,6 @@
     "print": "Stampa",
     "printed": "Stampato",
     "all": "Tutti",
-    "copyToClipboard": "Copy to clipboard",
-    "copyToClipboard.done": "Copied!",
     "showFilters": "Mostra filtri",
     "hideFilters": "Nascondi filtri",
     "moreFilters": "Più filtri",
@@ -54,25 +47,20 @@
     "previous": "Precedente",
     "next": "Prossimo",
     "view": "Mostra",
-    "skip": "Skip",
     "viewHistory": "Visualizza cronologia",
     "edit": "Modifica",
     "confirm": "Conferma",
     "cancel": "Annulla",
     "close": "Chiudi",
     "submit": "Invia",
-    "finish": "Finish",
     "remove": "Rimuovi",
     "remove.confirm": "Sei sicuro di voler rimuovere l'elemento {item}?",
     "remove.done": "L'elemento {item} è stato rimosso",
     "remove.tooltip": "Rimuovi {item}",
-    "remoteAddress": "IP address",
     "save": "Salva",
     "addNew": "Aggiungi nuovo",
     "yes": "Sì",
-    "no": "No",
     "notSet": "Non impostato",
-    "share": "Share",
     "map": "Mappa",
     "map.view": "Mostra mappa",
     "noOptionsSelected": "Nessuna opzione selezionata",
@@ -81,13 +69,6 @@
     "removeItemDone": "L'elemento è stato rimosso",
     "currency": "Valuta",
     "images": "Immagini",
-    "usersOfBroker": "Users of the broker",
-    "sendMedium": {
-      "email": "E-mail",
-      "sms": "SMS"
-    },
-    "sendCode": "Send code",
-    "sentCodeTo": "The verification code was sent to {to}",
     "reloadPage": "Aggiorna",
     "sessionExpired": {
       "title": "Sessione scaduta",
@@ -118,21 +99,16 @@
       },
       "short": {
         "jan": "Gen",
-        "feb": "Feb",
-        "mar": "Mar",
-        "apr": "Apr",
         "may": "Mag",
         "jun": "Giu",
         "jul": "Lug",
         "aug": "Ago",
         "sep": "Set",
         "oct": "Ott",
-        "nov": "Nov",
         "dec": "Dic"
       }
     },
     "timeField": {
-      "pattern": "{amount} {field}",
       "plural": {
         "days": "Giorni",
         "hours": "Ore",
@@ -161,8 +137,7 @@
         "tue": "M",
         "wed": "Me",
         "thu": "G",
-        "fri": "V",
-        "sat": "S"
+        "fri": "V"
       },
       "long": {
         "sun": "Domenica",
@@ -179,11 +154,8 @@
       "from": "Da {min}",
       "to": "Fino a {max}"
     },
-    "rangeTo": "to",
     "fileSize": {
-      "b": "{n} byte",
-      "k": "{n}KB",
-      "m": "{n}MB"
+      "b": "{n} byte"
     },
     "results": {
       "withTotal": "Mostra da {first} - a {last} di {total} risultati",
@@ -249,41 +221,26 @@
     "register": "Iscriviti",
     "logout": "Esci",
     "shoppingCart": "Carrello",
-    "home": "Home",
     "dashboard": "Cruscotto",
     "banking": "Conti",
-    "banking.account": "Conto",
     "banking.payUser": "Pagamento utente",
     "banking.paySystem": "Pagamento sistema",
     "banking.paySelf": "Auto-pagamento",
-    "banking.requestPaymentFromUser": "Request payment from user",
-    "banking.requestPaymentFromSystem": "Request payment from system",
     "banking.pos": "Addebita carta",
-    "banking.receiveQrPayment": "Receive QR-code",
     "banking.scheduledPayments": "Pagamenti pianificati",
-    "banking.scheduledPaymentsOverview": "Scheduled payments overview",
-    "banking.pendingMyAuth": "Awaiting my authorization",
     "banking.authorizations": "Autorizzazioni di pagamento",
-    "banking.paymentRequests": "Payment requests",
-    "banking.paymentRequestsOverview": "Payment requests overview",
     "banking.searchVouchers": "Cerca voucher",
-    "banking.generateVouchers": "Generate vouchers",
     "banking.buyVouchers": "Acquista voucher",
     "banking.boughtVouchers": "Visualizza acquisti",
     "banking.redeemVoucher": "Riscatta voucher",
     "banking.redeemedVouchers": "Mostra voucher riscattati",
     "banking.transfersOverview": "Panoramica operazioni",
-    "banking.userBalancesOverview": "User balances overview",
-    "banking.accountBalanceLimits": "Account balance limits",
-    "banking.accountPaymentLimits": "Account payment limits",
     "operators": "Operatori",
     "operators.operators": "Operatori",
     "operators.register": "Iscrivi operatore",
     "operators.groups": "Gruppi operatore",
-    "brokering": "Brokering",
     "brokering.users": "Utenti",
     "brokering.register": "Iscrivi utente",
-    "marketplace": "Marketplace",
     "marketplace.users": "Utenti",
     "marketplace.register": "Iscrivi utente",
     "marketplace.directory": "Elenco",
@@ -301,24 +258,17 @@
     "marketplace.connectedUsers": "Utenti connessi",
     "marketplace.userAlerts": "Avvisi utente",
     "personal": "Personale",
-    "personal.documents": "Documents",
     "personal.viewProfile": "Profilo",
     "personal.editProfile": "Modifica profilo",
     "personal.contacts": "Contatti",
-    "personal.password": "Password",
     "personal.passwords": "Password",
     "personal.identityProviders": "I provider di identità",
-    "personal.agreements": "Agreements",
     "personal.notifications": "Notifiche",
     "personal.notificationSettings": "Impostazioni di notifica",
     "personal.settings": "Impostazioni",
-    "personal.privacySettings": "Privacy settings",
-    "personal.references": "References",
     "content": "Informazioni"
   },
   "login": {
-    "title": "Login",
-    "mobileTitle": "Login",
     "message": "Puoi accedere con il tuo nome utente e password",
     "disconnected": "Sei stato disconnesso.<br>Per favore, accedi di nuovo per visualizzare la pagina richiesta.",
     "principal": "Utente",
@@ -330,7 +280,6 @@
     "confirm.noPassword": "Per confermare hai bisogno di un {passwordType}, ma non ne hai",
     "confirm.mode": "Conferma con",
     "confirm.mode.device": "Cellulare",
-    "confirm.mode.password": "Password",
     "confirm.device.active": "Per confermare, scansiona questo codice QR con il tuo telefono cellulare",
     "confirm.device.none": "Per confermare che devi avere un cellulare verificato. Il tuo non è ancora verificato",
     "confirm.deviceOrPassword.active": "Per confermare, scansionare questo codice QR con il tuo cellulare o inserisci la tua {password}",
@@ -343,7 +292,6 @@
     "confirm.otp.request": "Per favore, richiedi una password di conferma qui sotto per confermare",
     "otp.sent": "La password è stata inviata a {dest}",
     "otp.receiveBy": "Ricevi via {medium}",
-    "otp.receiveBy.sent": "{medium} sent",
     "oldPassword": "Vecchia password",
     "newPassword": "Nuova password",
     "passwordConfirmation": "Conferma password",
@@ -370,7 +318,6 @@
       "change.self": "Modifica password",
       "change.user": "Modifica password",
       "forgotten": "Recupero utente / password",
-      "manage.single.self": "Password",
       "manage.multiple.self": "Password",
       "manage.single.user": "Password utente",
       "manage.multiple.user": "Password utente",
@@ -438,8 +385,7 @@
     },
     "message.previouslyAccepted": "I termini e condizioni sono stati aggiornati.<br><br>Per continuare, devi accettare i nuovi termini e condizioni.",
     "message.firstTime": "Per completare la registrazione, è necessario accettare termini e condizioni.",
-    "agree": "Accetto i seguenti termini e condizioni: {agreements}",
-    "preface": "I hereby declare that I have read and agree with the following:"
+    "agree": "Accetto i seguenti termini e condizioni: {agreements}"
   },
   "securityQuestion": {
     "message": "La domanda di sicurezza è richiesta nel caso in cui sia necessario reimpostare la password. Una volta impostata, se si vuole modificare, contattare l'amministrazione.",
@@ -449,26 +395,18 @@
   },
   "dashboard": {
     "quickAccess": "Accesso rapido",
-    "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
       "account": "Conto",
       "payUser": "Paga utente",
       "paySystem": "Paga sistema",
       "pos": "Addebita carta",
-      "receiveQRPayment": "Receive QR payment",
       "contacts": "Contatti",
       "directory": "Elenco",
-      "advertisements": "Marketplace",
       "editProfile": "Modifica profilo",
-      "password": "Password",
       "passwords": "Password",
-      "switchTheme": "Cambia tema",
-      "connectedUsers": "Utenti connessi"
+      "switchTheme": "Cambia tema"
     },
-    "accounts": "Accounts",
     "accountStatus": "Stato conto",
-    "lastIncomingPayments": "Ultimi pagamenti in arrivo",
-    "noIncomingPayments": "Nessun pagamento in arrivo",
     "latestAds": "Ultimi annunci",
     "latestUsers": "Ultimi utenti",
     "passwords": {
@@ -500,101 +438,11 @@
     "netInflow": "Saldo entrate/uscite",
     "noAccounts": "Non hai alcun conto",
     "system": "Conto di sistema",
-    "mobileTitle": "Conto",
     "orderBy": {
       "dateDesc": "Data (dalla più recente)",
       "dateAsc": "Data (dalla meno recente)",
       "amountAsc": "Importo (crescente)",
       "amountDesc": "Importo (decrescente)"
-    },
-    "userBalances": {
-      "negativeSince": "Negative since",
-      "title": "User balances",
-      "mobileTitle": "User balances",
-      "minBalance": "From balance",
-      "maxBalance": "To balance",
-      "balancesSum": "Balances sum",
-      "balancesAverage": "Balances average",
-      "balancesCount": "Balances count",
-      "total": "Total",
-      "fromYellowBalance": "From yellow balance",
-      "toYellowBalance": "To yellow balance",
-      "beginNegativeSince": "Negative after",
-      "endNegativeSince": "Negative before",
-      "orderBy": {
-        "alphabeticallyDesc": "Name (A-Z)",
-        "alphabeticallyAsc": "Name (Z-A)",
-        "balanceAsc": "Balance (lowest first)",
-        "balanceDesc": "Balance (highest first)"
-      }
-    },
-    "limits": {
-      "unlimited": "Unlimited",
-      "mode": "Mode",
-      "personalized": "Personalized",
-      "productDefault": "Product default"
-    },
-    "balanceLimits": {
-      "negativeLimit": "Negative balance limit",
-      "positiveLimit": "Positive balance limit",
-      "personalizedNegativeLimit": "Personalized negative limit",
-      "personalizedPositiveLimit": "Personalized positive limit",
-      "fromNegativeLimit": "From negative limit",
-      "toNegativeLimit": "To negative limit",
-      "fromPositiveLimit": "From positive limit",
-      "toPositiveLimit": "To positive limit",
-      "negative": "Negative",
-      "positive": "Positive",
-      "confirm": "You must confirm to apply the new balance limits",
-      "saved": "The balance limits were saved",
-      "title": {
-        "list": "Account balance limits",
-        "view": "Account balance limits details",
-        "edit": "Account balance limits details",
-        "history": "Account balance limits history",
-        "overview": "Account balance limits overview"
-      },
-      "mobileTitle": {
-        "list": "Balance limits",
-        "view": "Balance limits details",
-        "edit": "Balance limits details",
-        "history": "Balance limits history",
-        "overview": "Balance limits overview"
-      }
-    },
-    "paymentLimits": {
-      "paymentLimit": "Payment limit",
-      "dailyLimit": "Daily limit",
-      "weeklyLimit": "Weekly limit",
-      "monthlyLimit": "Monthly limit",
-      "personalizedPaymentLimit": "Personalized payment limit",
-      "personalizedDailyLimit": "Personalized daily limit",
-      "personalizedWeeklyLimit": "Personalized weekly limit",
-      "personalizedMonthlyLimit": "Personalized monthly limit",
-      "fromPaymentLimit": "From payment limit",
-      "fromDailyLimit": "From daily limit",
-      "fromWeeklyLimit": "From weekly limit",
-      "fromMonthlyLimit": "From monthly limit",
-      "toPaymentLimit": "To payment limit",
-      "toDailyLimit": "To daily limit",
-      "toWeeklyLimit": "To weekly limit",
-      "toMonthlyLimit": "To monthly limit",
-      "confirm": "You must confirm to apply the new payment limits",
-      "saved": "The payment limits were saved",
-      "title": {
-        "list": "Accounts payment limits",
-        "view": "Account payment limits details",
-        "edit": "Account payment limits details",
-        "history": "Account payment limits history",
-        "overview": "Account payment limits overview"
-      },
-      "mobileTitle": {
-        "list": "Payment limits",
-        "view": "Payment limits details",
-        "edit": "Payment limits details",
-        "history": "Payment limits history",
-        "overview": "Payment limits overview"
-      }
     }
   },
   "transaction": {
@@ -605,12 +453,6 @@
     "fromTo.text": "{from} a {to}",
     "from": "Da",
     "to": "A",
-    "sender": "Sender",
-    "receiver": "Receiver",
-    "senderOrReceiver": "Sender or receiver",
-    "sent": "Sent",
-    "received": "Received",
-    "direction": "Direction",
     "account": "Conto",
     "fromAccount": "Dal conto",
     "fromUser": "Da utente",
@@ -621,34 +463,19 @@
     "totalAmount": "Importo totale",
     "dueAmount": "Importo dovuto",
     "dueDate": "Data scadenza",
-    "processDate": "Process date",
-    "processDateTooltip": "Select this option to schedule processing",
     "nextOccurrence": "Prossima ricorrenza",
     "channel": "Canale",
     "receivedBy": "Ricevuto da",
-    "chargedBack": "Charged back",
     "chargebackOf": "Storno di",
     "chargedBackBy": "Stornato da",
     "authorizationComments": "Commenti di autorizzazione",
-    "actionPerformedBy": "Action performed by",
     "accountBalance": "Saldo del conto",
     "installments": "Rate",
     "installmentNumber": "Numero",
-    "installmentNumberOfTotal": "{number} of {total}",
     "occurrences": "Occorrenze",
     "noAccounts": "Non hai nessun conto per eseguire il pagamento",
     "noTypes": "Non ci sono tipi di pagamento possibili",
     "noTypesSelection": "Non ci sono tipi di pagamento possibili da questo conto all'utente selezionato",
-    "transferKinds": "Transfer kinds",
-    "transferkind": {
-      "accountFee": "Account fee",
-      "chargeback": "Chargeback",
-      "import": "Import",
-      "initialCredit": "Initial credit",
-      "installment": "Installment",
-      "payment": "Payment",
-      "transferFee": "Transfer fee"
-    },
     "scheduling": "Pianificazione",
     "scheduling.direct": "Paga ora",
     "scheduling.single": "Pianificato",
@@ -681,9 +508,6 @@
     "processed.withNumber": "Il pagamento con il numero di transazione {number} è stato elaborato con successo",
     "pending": "Il pagamento è stato inviato per ulteriore autorizzazione",
     "pending.withNumber": "Il pagamento con il numero di transazione {number} è stato inviato per ulteriore autorizzazione",
-    "processedPaymentRequest": "The payment request was successfully processed",
-    "processedPaymentRequest.withNumber": "The payment request with transaction number {number} was successfully processed",
-    "acceptedScheduledPaymentRequest": "The payment request was accepted and scheduled to be processed on {processDate}",
     "done.view": "Vedi pagamento",
     "done.new": "Nuovo pagamento",
     "status": {
@@ -711,7 +535,6 @@
       "paymentConfirmation": "Conferma pagamento",
       "pendingPayment": "Pagamento inviato per autorizzazione",
       "processedPayment": "Pagamento eseguito",
-      "pendingMyAuthorization": "Pending my authorization",
       "authorizations": "Autorizzazioni di pagamento",
       "authorizationHistory": "Storico autorizzazioni",
       "scheduled": "Pagamenti pianificati",
@@ -725,14 +548,7 @@
       "details.transfer": "Dettagli trasferimento",
       "parentTransfer": "Trasferimento che ha generato questo",
       "childTransfers": "Trasferimenti generati da questo",
-      "transfersOverview": "Panoramica operazioni",
-      "receiveQrPayment": "Receive QR-code payment",
-      "paymentRequestSent": "Payment request sent",
-      "paymentRequestSystemToUser": "Payment request from user",
-      "paymentRequestToSystem": "Payment request from system",
-      "paymentRequestToUser": "Payment request from user",
-      "paymentRequests": "Payment requests",
-      "paymentRequestsOverview": "Payment requests overview"
+      "transfersOverview": "Panoramica operazioni"
     },
     "mobileTitle": {
       "pos": "Addebita carta",
@@ -744,7 +560,6 @@
       "paymentConfirmation": "Conferma",
       "pendingPayment": "Autorizzazione in sospeso",
       "processedPayment": "Pagamento effettuato",
-      "pendingMyAuthorization": "To authorize",
       "authorizations": "Autorizzazioni",
       "authorizationHistory": "Storico",
       "scheduled": "Pagamenti pianificati",
@@ -758,18 +573,8 @@
       "details.transfer": "Trasferimento",
       "parentTransfer": "Trasferimento originale",
       "childTransfers": "Trasferimenti originali",
-      "transfersOverview": "Panoramica operazioni",
-      "receiveQrPayment": "QR-code payment",
-      "paymentRequestSent": "Payment request sent",
-      "paymentRequestSystemToUser": "Payment request",
-      "paymentRequestToSystem": "Payment request",
-      "paymentRequestToUser": "Payment request",
-      "paymentRequests": "Payment requests",
-      "paymentRequestsOverview": "Payment requests overview"
+      "transfersOverview": "Panoramica operazioni"
     },
-    "ticketShareTitle": "Invitation to perform a payment",
-    "ticketShareText": "{user} has invited you to pay {amount}",
-    "ticketShareUrl": "URL to share",
     "viewAuthorizations": "Mostra autorizzazioni",
     "viewThisTransfer": "Mostra operazione",
     "authorizePending": "Autorizza il pagamento in sospeso",
@@ -791,9 +596,6 @@
     "settleScheduled": "Salda il pagamento previsto",
     "settleScheduled.message": "Questo contrassegna permanentemente tutte le rate rimanenti come risolte",
     "settleScheduled.done": "Questo pagamento pianificato è stato completato",
-    "processScheduled": "Process this scheduled payment",
-    "processScheduled.message": "Are you sure to process now this scheduled payment?",
-    "processScheduled.done": "This scheduled payment was processed",
     "cancelRecurring": "Annulla questo pagamento ricorrente",
     "cancelRecurring.message": "Questo cancellerà definitivamente il pagamento ricorrente e impedirà qualsiasi evento futuro",
     "cancelRecurring.done": "Questo pagamento ricorrente è stato annullato",
@@ -809,19 +611,6 @@
     "processFailedOccurrence": "Elabora questa occorrenza fallita",
     "processFailedOccurrence.message": "Sei sicuro di voler processare ora l'occorrenza numero {number}?",
     "processFailedOccurrence.done": "L'occorrenza è stata elaborata",
-    "acceptPaymentRequest": "Accept this payment request",
-    "acceptPaymentRequest.done": "The payment request was accepted",
-    "cancelPaymentRequest": "Cancel this payment request",
-    "cancelPaymentRequest.done": "The payment request was canceled",
-    "rejectPaymentRequest": "Deny this payment request",
-    "rejectPaymentRequest.done": "The payment request was denied",
-    "changePaymentRequestExpiration": "Change expiration date",
-    "changePaymentRequestExpiration.done": "The payment request expiration date was changed",
-    "reschedulePaymentRequest": "Reschedule this recurring payment",
-    "reschedulePaymentRequest.done": "The payment request was reschedule",
-    "confirmPaymentRequest": "Are you sure to send this payment request?",
-    "firstOccurrenceIsImmediate": "First occurrence is immediate",
-    "firstInstallmentIsImmediate": "First installment is immediate",
     "error": {
       "minTime": "Si dovrebbe attendere un periodo minimo di tempo per effettuare un pagamento di questo tipo.",
       "balance": "Saldo insufficiente per eseguire questa operazione",
@@ -877,9 +666,7 @@
       "bought": "Voucher acquistati",
       "redeem": "Riscatta voucher",
       "redeemed": "Voucher riscattati",
-      "search": "Cerca voucher",
-      "generate": "Generate vouchers",
-      "generateConfirmation": "Generate confirmation"
+      "search": "Cerca voucher"
     },
     "title": {
       "buy": "Acquista voucher",
@@ -887,9 +674,7 @@
       "searchBought": "Cerca buoni acquistati",
       "redeem": "Riscatta voucher",
       "redeemed": "Voucher riscattati",
-      "search": "Cerca voucher",
-      "generate": "Generate vouchers",
-      "generateConfirmation": "Generate confirmation"
+      "search": "Cerca voucher"
     },
     "boughtType": "Acquistato",
     "generatedType": "Generato",
@@ -901,15 +686,11 @@
       "minTimeToRedeem.afterBuy": "{interval} dopo l'acquisto",
       "payment": "Pagamento per acquisto"
     },
-    "generate": {
-      "done": "The voucher(s) has been generated."
-    },
     "originAccount": "Conto di origine",
     "numberOfVouchers": "Numero voucher",
     "amountPerVoucher": "Importo per voucher",
     "buyerGroups": "Gruppi acquirenti",
     "redeemerGroups": "Gruppi accettatori",
-    "creationType": "Creation type",
     "cancel": {
       "done": "Questo voucher è stato annullato.",
       "packConfirmation": "Ci sono altri buoni appartenenti allo stesso pacchetto che saranno cancellati. Sei sicuro di continuare?",
@@ -936,18 +717,11 @@
     "refundDate": "Data di rimborso"
   },
   "field": {
-    "date": {
-      "clear": "Clear",
-      "today": "Today"
-    },
     "privacy": {
-      "name": "Privacy",
       "private.tooltip": "Questo campo è privato. Clicca per consentire ad altri di vederlo.",
       "public.tooltip": "Questo campo è visibile da altri. Clicca per renderlo privato."
     },
     "image": {
-      "noImage": "Nessuna immagine",
-      "noImages": "Nessuna immagine",
       "upload": "Carica nuova immagine",
       "manage": "Riordina o rimuovi immagini",
       "remove": "Rimuovi questa immagine",
@@ -955,8 +729,6 @@
       "manageAfterConfirm": "Dopo la conferma, assicurati di fare clic sul pulsante Salva per applicare le modifiche."
     },
     "file": {
-      "noFile": "Nessun file",
-      "noFiles": "Nessun file",
       "upload": "Carica un nuovo file",
       "manage": "Riordina o rimuovi file",
       "remove": "Rimuovi questo file",
@@ -969,86 +741,6 @@
       "contact.title": "Seleziona un contatto",
       "contact.empty": "La tua lista di contatti è vuota",
       "scanQrCode.tooltip": "Scansiona il codice QR con la tua fotocamera"
-    },
-    "scanQr": {
-      "title": "Scansiona codice QR",
-      "noCameras": "Nessuna telecamera trovata su questo dispositivo.",
-      "noPermission": "Per eseguire la scansione di un codice QR, si prega di concedere l'autorizzazione per l'accesso dell'applicazione alla fotocamera."
-    },
-    "html": {
-      "undo": "Undo",
-      "redo": "Redo",
-      "font": "Font",
-      "font.default": "Default font",
-      "font.sansSerif": "Sans serif",
-      "font.serif": "Serif",
-      "font.monospace": "Monospace",
-      "size": "Size",
-      "size.1": "Tiny",
-      "size.2": "Small",
-      "size.3": "Medium",
-      "size.4": "Medium-larger",
-      "size.5": "Large",
-      "size.6": "Huge",
-      "size.7": "Maximum",
-      "block": "Formatting",
-      "block.h1": "Title 1",
-      "block.h2": "Title 2",
-      "block.h3": "Title 3",
-      "block.h4": "Title 4",
-      "block.h5": "Title 5",
-      "block.h6": "Title 6",
-      "block.p": "Paragraph",
-      "block.pre": "Preformatted",
-      "color": "Font color",
-      "backgroundColor": "Background color",
-      "align.left": "Left",
-      "align.right": "Right",
-      "align.center": "Center",
-      "align.justify": "Justify",
-      "bold": "Bold",
-      "italic": "Italic",
-      "underline": "Underline",
-      "strikethrough": "Strikethrough",
-      "subscript": "Subscript",
-      "superscript": "Superscript",
-      "removeFormat": "Remove format",
-      "list.bulleted": "Bulleted list",
-      "list.numbered": "Numbered list",
-      "indent.less": "Decrease indentation",
-      "indent.more": "Increase indentation",
-      "source": "Edit the HTML source",
-      "link": {
-        "tooltip": "Insert hyperlink",
-        "title": "Hyperlink properties",
-        "href": "Hyperlink location",
-        "text": "Displayed text"
-      },
-      "unlink": "Remove hyperlink",
-      "image": {
-        "tooltip": "Insert image",
-        "title.insert": "Select the image to insert",
-        "title.properties": "Image properties",
-        "source.url": "Insert the image from the Internet",
-        "url": "Image URL",
-        "category": "Category",
-        "source.existing": "Select a previously uploaded image",
-        "noImages": "There are no existing images",
-        "upload": "Upload new",
-        "width": "Width",
-        "height": "Height",
-        "contrain": "Keep aspect ratio",
-        "float": "Align",
-        "floatNone": "None",
-        "floatLeft": "Left",
-        "floatRight": "Right",
-        "marginTop": "Top margin",
-        "marginBottom": "Bottom margin",
-        "marginLeft": "Left margin",
-        "marginRight": "Right margin",
-        "border": "Border",
-        "textExample": "This is an example text. It shows how the image will be positioned when there is text besides the image."
-      }
     }
   },
   "user": {
@@ -1100,16 +792,12 @@
       "userBrokerings": "Membri del Broker"
     },
     "group": "Gruppo",
-    "broker": "Broker",
-    "brokers": "Brokers",
-    "groups": "Groups",
     "groupSet": "Supergruppo",
     "group.filter": "Gruppi",
     "registrationDate": "Data di registrazione",
     "activationDate": "Data di attivazione",
     "name": "Nome Completo",
     "username": "Id/Username",
-    "email": "E-mail",
     "email.pending": "E-mail in attesa di convalida",
     "operator.owner": "Proprietario Operatore",
     "operator.noGroup": "Nessun gruppo (ha tutti i permessi)",
@@ -1143,13 +831,6 @@
     "contact": "Contatto",
     "creationBegin": "Registrato dopo",
     "creationEnd": "Registrato prima",
-    "acceptedAgreements": "Accepted agreements",
-    "notAcceptedAgreements": "Not accepted agreements",
-    "assignedProducts": "Assigned products",
-    "beginUserActivationDate": "Activated after",
-    "endUserActivationDate": "Activated before",
-    "beginLastLoginDate": "Last login after",
-    "endLastLoginDate": "Last login before",
     "profile": {
       "noPermission": "Non hai i permessi per visualizzare il profilo di questo utente",
       "showActions": "Mostra azioni",
@@ -1168,16 +849,11 @@
       "payAsUserToSystem": "Pagamenti da utente a sistema",
       "payAsUserToUser": "Pagamenti P2P",
       "payAsUserToSelf": "Auto-pagamento",
-      "requestPaymentAsUserFromUser": "Request payment from user to user",
-      "requestPaymentFromUser": "Request payment from user",
-      "requestPaymentAsUserFromSystem": "Request payment from system to user",
-      "requestPaymentFromSystem": "Request payment from system",
       "purchases": "Acquisti",
       "sales": "Vendite",
       "viewAccount": "Mostra {account}",
       "viewScheduledPayments": "Visualizza pagamenti pianificati",
       "viewAuthorizedPayments": "Visualizza le autorizzazioni di pagamento",
-      "viewPaymentRequests": "View payment requests",
       "viewAds": "Visualizza annunci",
       "viewBrokerings": "Visualizza membri assegnati",
       "viewBrokers": "Vedi broker",
@@ -1190,17 +866,11 @@
       "status.operator": "Stato operatore",
       "group.user": "Gruppo utente",
       "group.operator": "Gruppo Operatore",
-      "agreements": "Agreements",
       "viewRedeemedVouchers": "Mostra voucher riscattati",
       "redeemVoucher": "Riscatta voucher",
       "viewBoughtVouchers": "Vedi voucher acquistati",
       "buyVouchers": "Acquista voucher",
-      "notificationSettings": "Impostazioni di notifica",
-      "products": "Products",
-      "accountsBalanceLimits": "Account balance limits",
-      "accountsPaymentLimits": "Account payment limits",
-      "privacySettings": "Privacy settings",
-      "references": "References"
+      "notificationSettings": "Impostazioni di notifica"
     },
     "registration": {
       "group.public": "Scegliere il gruppo a cui si desidera partecipare",
@@ -1312,22 +982,6 @@
     "purged": "Rimozione totale (tutti i dati privati sono cancellati)",
     "removed": "Rimozione parziale (nessun dato privato è stato eliminato)"
   },
-  "agreements": {
-    "agreement": "Agreement",
-    "required": "Required agreements",
-    "optional": "Optional agreements",
-    "optional.saved": "The selected agreements have been saved",
-    "accepted": "Accepted",
-    "noAccepted": "No accepted agreements",
-    "title": {
-      "accepted": "Accepted agreements",
-      "history": "Agreements history"
-    },
-    "mobileTitle": {
-      "accepted": "Agreements",
-      "history": "Agreements history"
-    }
-  },
   "groupMembership": {
     "current": "Gruppo attuale",
     "new": "Nuovo gruppo",
@@ -1354,18 +1008,15 @@
   },
   "brokers": {
     "title": {
-      "list": "Brokers",
       "new": "Aggiungi broker",
       "history": "Cronologia Brokers"
     },
     "mobileTitle": {
-      "list": "Brokers",
       "new": "Aggiungi broker",
       "history": "Cronologia Brokers"
     },
     "mainBroker": "Broker principale",
     "setMain": "Imposta principale",
-    "broker": "Broker",
     "brokerAdded": "Il broker è stato aggiunto con successo",
     "administration": "Amministrazione",
     "action": {
@@ -1531,7 +1182,6 @@
     "setPromotionalPeriod": "Imposta periodo promozionale",
     "submitForAuthorization": "Invia per l'autorizzazione",
     "submitToBuyer": "Invia all'acquirente",
-    "submitToBuyerConfirmation": "Are you sure to submit this order to the buyer? After this step, no further changes will be allowed in this order, and it will be awaiting for buyer's approval.",
     "subtotal": "Subtotale",
     "stockType": "Tipo di magazzino",
     "pendingForAuth": "L'annuncio è stato sottoposto a una ulteriore autorizzazione",
@@ -1541,7 +1191,6 @@
     "lowStockNotification": "Notifiche quando lo stock è scarso",
     "stockQuantity": "Quantità in magazzino",
     "unlimitedStock": "Stock illimitato",
-    "unlimited": "Unlimited",
     "unitPrice": "Prezzo unitario",
     "minAllowedInCart": "Minimo consentito nel carrello",
     "maxAllowedInCart": "Massimo consentito nel carrello",
@@ -1592,16 +1241,11 @@
     "requiringMyConfirmation": "Richiede la mia conferma",
     "buyer": "Acquirente",
     "seller": "Venditore",
-    "stock": "Stock",
     "waitingForBuyersApproval": "In attesa di approvazione - acquirente",
     "waitingForSellersApproval": "In attesa di approvazione - venditore",
     "remarks": "Note",
     "title": {
       "search": "Ricerca annunci",
-      "myAdvertisements": "My advertisements",
-      "myWebshop": "My web shop",
-      "viewAdvertisements": "View advertisements",
-      "viewWebshop": "View web shop",
       "new": "Nuovo annuncio",
       "edit": "Modifica annuncio",
       "purchases": "Acquisti",
@@ -1625,10 +1269,6 @@
     },
     "mobileTitle": {
       "search": "Annunci",
-      "myAdvertisements": "My advertisements",
-      "myWebshop": "My web shop",
-      "viewAdvertisements": "View advertisements",
-      "viewWebshop": "View web shop",
       "details": "Annuncio",
       "new": "Nuovo annuncio",
       "edit": "Modifica annuncio",
@@ -1829,7 +1469,6 @@
     "registration": "Registrati più velocemente con il tuo identity provider:",
     "registration.disclaimer": "<b>Avviso:</b> Nessuno dei tuoi dati {app} sarà condiviso con questi fornitori, e l'unico scopo di leggere i tuoi dati personali è quello di compilare il modulo di registrazione e di accedere dopo la registrazione.",
     "disclaimer": "<b>Avviso</b>: nessuno dei tuoi dati {app} sarà condiviso con qualsiasi provider. Gli unici dati letti dai provider sono il nome visualizzato e l'e-mail, con l'unico scopo di accedere più velocemente su {app}.",
-    "noResults": "There are not identity providers added yet.",
     "title": {
       "manage.self": "Gestisci i tuoi identity provider",
       "manage.user": "Gestisci gli identity provider utente"
@@ -1858,12 +1497,6 @@
       "result": "Risultato"
     }
   },
-  "wizard": {
-    "alreadyExecuted": "This step was already executed",
-    "emailVerificationCode": "E-mail verification code",
-    "smsVerificationCode": "SMS verification code",
-    "codeSent": "Code sent"
-  },
   "setting": {
     "title": "Impostazioni",
     "mobileTitle": "Impostazioni",
@@ -1871,20 +1504,10 @@
     "theme.light": "Chiaro",
     "theme.dark": "Scuro"
   },
-  "privacySettings": {
-    "title": "Privacy settings",
-    "mobileTitle": "Privacy settings",
-    "enableControl": "Enable privacy control",
-    "controlsSection": "Departments allowed to access private data",
-    "information": "In this page it is possible to set whether access to those fields is restricted, and how those fields may be used.",
-    "dataSubjectToControls": "Personal data subject to privacy control:",
-    "saved": "The privacy settings were saved"
-  },
   "record": {
     "createdBy": "Creato da",
     "lastModifiedBy": "Ultima modifica da",
     "lastModificationDate": "Ultima modifica il",
-    "action": "{type} ({count})",
     "fields": "Campi",
     "title": {
       "details": "{name} dettagli",
@@ -1931,151 +1554,15 @@
     }
   },
   "document": {
-    "title": {
-      "new": "Create new document",
-      "view": "Document details",
-      "edit": "Document details",
-      "list": "Documents",
-      "search": "Documents"
-    },
-    "mobileTitle": {
-      "new": "Create new document",
-      "view": "Document details",
-      "edit": "Document details",
-      "list": "Documents",
-      "search": "Documents"
-    },
-    "enable": "Abilita",
-    "userVisible": "Visible for members",
-    "brokerVisible": "Visible for brokers",
-    "brokerManageable": "Manageable by broker",
-    "replaceDocument": "Replace document",
-    "newDocument": "New document",
-    "document": "Document",
-    "savedSuccessfully": "Saved successfully",
-    "process": "Process dynamic document",
-    "category": "Category"
+    "enable": "Abilita"
   },
   "token": {
-    "title": {
-      "new": "{0} details",
-      "view": "{0} details",
-      "assign": "Assign"
-    },
-    "mobileTitle": {
-      "view": "{0} details"
-    },
     "action": {
       "activate": "Attiva",
-      "assign": "Assign",
-      "block": "Block",
-      "cancel": "Cancel",
-      "changeDeadline": "Change deadline",
-      "changeExpiry": "Change expiry",
-      "unblock": "Sblocca",
-      "done": {
-        "activated": "The token was activated",
-        "assigned": "The token was assigned",
-        "blocked": "The token was blocked",
-        "canceled": "The token was canceled",
-        "created": "The token was created",
-        "deadlineChanged": "The token deadline was changed",
-        "expiryChanged": "The token expiry was changed",
-        "unblocked": "The token was unblocked"
-      },
-      "message": {
-        "cancel": "You are about to cancel the token. Be aware that this is a permanent action. Are you sure you want to change the token status to canceled?"
-      }
+      "unblock": "Sblocca"
     },
     "status": {
-      "activationExpired": "Activation expired",
-      "active": "Attivo",
-      "blocked": "Blocked",
-      "canceled": "Canceled",
-      "expired": "Expired",
-      "pending": "Pending activation",
-      "unassigned": "Unassigned"
-    },
-    "value": "Value",
-    "label": "Label",
-    "activationDeadline": "Activation deadline",
-    "noDeadline": "No deadline",
-    "expiryDate": "Expiry date",
-    "noExpiryDate": "Without expiry",
-    "activationDate": "Activation date",
-    "creationDate": "Creation date",
-    "activationBeginDate": "Activation begin date",
-    "activationEndDate": "Activation end date",
-    "expiryBeginDate": "Expiry begin date",
-    "expiryEndDate": "Expiry end date",
-    "unassigned": "Unassigned"
-  },
-  "reference": {
-    "set": "Set reference",
-    "referenceSet": "The reference has been given successfully",
-    "count": {
-      "single": "(1 reference)",
-      "multi": "({count} references)"
-    },
-    "title": {
-      "search": "References",
-      "view": "Reference details",
-      "set": "Set new reference",
-      "edit": "Edit given reference"
-    },
-    "mobileTitle": {
-      "search": "References",
-      "view": "Reference details",
-      "set": "Set new reference",
-      "edit": "Edit given reference"
-    },
-    "direction": {
-      "direction": "Direction",
-      "received": "Received",
-      "given": "Given"
-    },
-    "level": {
-      "level": "Level",
-      "bad": "Bad",
-      "veryBad": "Very bad",
-      "good": "Good",
-      "veryGood": "Very good",
-      "neutral": "Neutral"
-    },
-    "from": "From",
-    "to": "To",
-    "notGiven": "Not given yet",
-    "value": "Value",
-    "allTime": "All time",
-    "last30Days": "Last 30 days",
-    "total": "Total",
-    "percentagePositive": "Percentage positive"
-  },
-  "product": {
-    "title": {
-      "list": "Assigned products",
-      "history": "Assigned products history"
-    },
-    "mobileTitle": {
-      "list": "Assigned products",
-      "history": "Assigned products history"
-    },
-    "assigned": {
-      "individual": "Products assigned individually to user",
-      "group": "Products assigned to user's group",
-      "groupSet": "Products assigned to group set"
-    },
-    "assign": "Assign",
-    "unassign": "Unassign",
-    "assignIndividualProduct": "Assign individual product",
-    "userAccount": "User account",
-    "product": "Product",
-    "action": "Action",
-    "productAssigned": "The product was assigned to the user",
-    "kind": {
-      "administrator": "Administrator",
-      "broker": "Broker",
-      "member": "Member"
+      "active": "Attivo"
     }
   }
 }

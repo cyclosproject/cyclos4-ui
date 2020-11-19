@@ -1,14 +1,12 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { LayoutService } from 'app/core/layout.service';
 import { empty, truthyAttr } from 'app/shared/helper';
-import { BannerCard } from 'app/ui/content/banner-card';
-import { BannerService } from 'app/ui/core/banner.service';
 import { LoginState } from 'app/ui/core/login-state';
 import { LoginService } from 'app/ui/core/login.service';
 import { MenuService } from 'app/ui/core/menu.service';
 import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 import { MenuType } from 'app/ui/shared/menu';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
 
 /**
  * The page layout, which may show a menu on the left,
@@ -47,33 +45,32 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
   }
 
   loggingOut$ = new BehaviorSubject(false);
-  bannerCards$ = new BehaviorSubject<BannerCard[]>(null);
 
   constructor(
-    public layout: UiLayoutService,
+    public layout: LayoutService,
     public login: LoginService,
     private loginState: LoginState,
     public menu: MenuService,
-    public banner: BannerService) { }
+    public uiLayout: UiLayoutService) { }
 
   ngOnInit() {
-    this.layout.currentPageLayout = this;
+    this.uiLayout.currentPageLayout = this;
 
     // There are several factors that influence whether the left menu is visible
     const updateLeftMenuVisible = () => {
       const gtmd = this.layout.gtmd;
-      const fullWidth = this.layout.fullWidth;
+      const fullWidth = this.uiLayout.fullWidth;
       const loggedIn = this.login.user != null;
       const activeMenu = this.menu.activeMenu;
       let hasMenu = gtmd && !fullWidth && loggedIn && !this.hideMenu && !!activeMenu;
       const root = this.menu.rootEntry();
-      if (hasMenu && (root == null || (root.entries || []).length <= 1)) {
+      if (hasMenu && (root == null || empty(root.entries))) {
         hasMenu = false;
       }
       this.leftMenuVisible$.next(hasMenu);
     };
     this.subs.push(this.layout.gtmd$.subscribe(updateLeftMenuVisible));
-    this.subs.push(this.layout.fullWidth$.subscribe(updateLeftMenuVisible));
+    this.subs.push(this.uiLayout.fullWidth$.subscribe(updateLeftMenuVisible));
     this.subs.push(this.login.user$.subscribe(updateLeftMenuVisible));
     this.subs.push(this.menu.activeMenu$.subscribe(updateLeftMenuVisible));
     this.subs.push(this.menu.menu(MenuType.SIDE).subscribe(updateLeftMenuVisible));
@@ -81,19 +78,15 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
     // The left area is visible if not in full-width layout and there's either the left menu or banners
     const updateLeftAreaVisible = () => {
       const gtmd = this.layout.gtmd;
-      const fullWidth = this.layout.fullWidth;
+      const fullWidth = this.uiLayout.fullWidth;
       const hasLeftMenu = this.leftMenuVisible;
-      const hasCards = !empty(this.bannerCards$.value);
-      this.leftAreaVisible$.next(!this.hideMenu && gtmd && !fullWidth && (hasLeftMenu || hasCards));
+      const hasBanners = !empty(this.uiLayout.banners);
+      this.leftAreaVisible$.next(!this.hideMenu && gtmd && !fullWidth && (hasLeftMenu || hasBanners));
     };
     this.subs.push(this.layout.gtmd$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.leftMenuVisible$.subscribe(updateLeftAreaVisible));
-    this.subs.push(this.layout.fullWidth$.subscribe(updateLeftAreaVisible));
-    this.subs.push(this.banner.cards$.subscribe(updateLeftAreaVisible));
-    this.subs.push(this.banner.cards$.pipe(first()).subscribe(cards => {
-      this.bannerCards$.next(cards);
-      updateLeftAreaVisible();
-    }));
+    this.subs.push(this.uiLayout.fullWidth$.subscribe(updateLeftAreaVisible));
+    this.subs.push(this.uiLayout.banners$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.loginState.subscribeForLoggingOut(flag => {
       this.loggingOut$.next(flag);
     }));
@@ -102,8 +95,8 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.layout.currentPageLayout = null;
-    this.layout.headingActions = [];
+    this.uiLayout.currentPageLayout = null;
+    this.uiLayout.headingActions = [];
     this.subs.forEach(s => s.unsubscribe());
   }
 

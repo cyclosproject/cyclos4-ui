@@ -131,14 +131,14 @@
               [tooltip]="i18n.transaction.processInstallment"
               class="btn btn-icon align-items-center"
               (click)="processInstallment(installment)">
-              <icon icon="play_circle_outline"></icon>
+              <icon [icon]="SvgIcon.Play"></icon>
             </button>
             <button *ngIf="installment.canSettle"
               [tooltip]="i18n.transaction.settleInstallment"
               class="btn btn-icon align-items-center"
               [ngClass]="{'ml-2': installment.canProcess}"
               (click)="settleInstallment(installment)">
-              <icon icon="thumb_up"></icon>
+              <icon [icon]="SvgIcon.Check2"></icon>
             </button>
           </td>
         </tr>
@@ -187,7 +187,7 @@
               [tooltip]="i18n.transaction.processFailedOccurrence"
               class="btn btn-icon align-items-center"
               (click)="processOccurrence(occurrence)">
-              <icon icon="play_circle_outline"></icon>
+              <icon [icon]="SvgIcon.Play"></icon>
             </button>
           </td>
         </tr>

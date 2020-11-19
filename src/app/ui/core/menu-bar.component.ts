@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { Breakpoint } from 'app/core/layout.service';
+import { Breakpoint, LayoutService } from 'app/core/layout.service';
 import { AbstractComponent } from 'app/shared/abstract.component';
 import { LoginService } from 'app/ui/core/login.service';
 import { MenuDensity } from 'app/ui/core/menu-density';
@@ -28,6 +28,7 @@ export class MenuBarComponent extends AbstractComponent implements OnInit {
 
   constructor(
     injector: Injector,
+    public layout: LayoutService,
     public uiLayout: UiLayoutService,
     public login: LoginService,
     private menu: MenuService) {

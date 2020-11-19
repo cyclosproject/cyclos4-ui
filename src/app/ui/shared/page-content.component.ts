@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { LayoutService } from 'app/core/layout.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { I18n } from 'app/i18n/i18n';
 import { HeadingAction } from 'app/shared/action';
 import { blank, truthyAttr } from 'app/shared/helper';
@@ -16,6 +18,8 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageContentComponent implements OnInit, OnChanges {
+
+  SvgIcon = SvgIcon;
 
   @Input() heading: string;
   @Input() mobileHeading: string;
@@ -50,6 +54,7 @@ export class PageContentComponent implements OnInit, OnChanges {
   }
 
   constructor(
+    public layoutService: LayoutService,
     public uiLayout: UiLayoutService,
     public breadcrumb: BreadcrumbService,
     public i18n: I18n,
@@ -66,7 +71,7 @@ export class PageContentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.heading) {
+    if (changes.heading || changes.mobileHeading) {
       this.maybeUpdateTitle();
     }
     if (changes.headingActions) {
@@ -79,7 +84,7 @@ export class PageContentComponent implements OnInit, OnChanges {
     if (!page || page.updateTitleFrom() !== 'content') {
       return;
     }
-    const heading = this.uiLayout.gtxs ? this.heading : this.mobileHeading || this.heading;
+    const heading = this.layoutService.gtxs ? this.heading : this.mobileHeading || this.heading;
     if (!blank(heading)) {
       this.uiLayout.title = heading;
     }

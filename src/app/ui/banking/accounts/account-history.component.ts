@@ -13,6 +13,7 @@ import { empty } from 'app/shared/helper';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { SvgIcon } from 'app/core/svg-icon';
 
 type AccountHistorySearchParams = AccountHistoryQueryFilters & {
   owner: string;
@@ -72,7 +73,7 @@ export class AccountHistoryComponent
   get title(): string {
     const type = this.type;
     if (type == null) {
-      return null;
+      return this.i18n.account.mobileTitle.account;
     }
     const accountNumber = this.layout.ltsm ? null : this.number;
     return accountNumber == null ? type.name : type.name + ' - ' + accountNumber;
@@ -181,8 +182,8 @@ export class AccountHistoryComponent
    * Returns the icon used on the given row's avatar
    * @param row The row
    */
-  avatarIcon(row: AccountHistoryResult): string {
-    return row.relatedAccount.kind === 'user' ? 'user' : 'account_balance_circle';
+  avatarIcon(row: AccountHistoryResult): SvgIcon {
+    return row.relatedAccount.kind === 'user' ? SvgIcon.PersonCircle : SvgIcon.Briefcase;
   }
 
   /**

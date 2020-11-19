@@ -4,6 +4,7 @@ import {
   SimpleChanges, ViewChild,
 } from '@angular/core';
 import { Image } from 'app/api/models';
+import { SvgIcon } from 'app/core/svg-icon';
 import { galleryImage, truthyAttr } from 'app/shared/helper';
 import { NgxGalleryComponent, NgxGalleryImage, NgxGalleryOptions } from 'ngx-gallery-9';
 
@@ -37,7 +38,7 @@ export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
   /**
    * The icon show when no image is available
    */
-  @Input() icon = 'user';
+  @Input() icon: SvgIcon | string = SvgIcon.Person;
 
   @Input() iconColor: string;
 
@@ -77,7 +78,7 @@ export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
       this._size = null;
     } else if (typeof size === 'number') {
       this._size = size;
-      this.iconSize = `${size}px`;
+      this.iconSize = `${size * 0.9}px`;
     } else {
       const pixelSize = parseInt(size, 10);
       if (isNaN(pixelSize)) {
@@ -87,7 +88,7 @@ export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
         throw new Error(`Invalid avatar size: ${originalSize}`);
       }
       this._size = Number(size);
-      this.iconSize = `${this._size}px`;
+      this.iconSize = `${this._size * 0.9}px`;
     }
   }
 

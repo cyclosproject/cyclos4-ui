@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AccountBalanceLimitsData, AccountPaymentLimitsData } from 'app/api/models';
 import { PaymentLimitsService } from 'app/api/services/payment-limits.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { BehaviorSubject } from 'rxjs';
@@ -48,14 +49,18 @@ export class ViewAccountPaymentLimitsComponent
 
   onDataInitialized(data: AccountBalanceLimitsData) {
     super.onDataInitialized(data);
-    this.detailsHeadingActions =
-      data.editable ? [new HeadingAction('edit', this.i18n.general.edit, () => this.navigateToEdit())] : [];
-    this.detailsHeadingActions.push(new HeadingAction('history', this.i18n.general.viewHistory, () => this.showHistory()));
+    this.detailsHeadingActions = [];
+    if (data.editable) {
+      this.detailsHeadingActions.push(new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => this.navigateToEdit()));
+    }
+    this.detailsHeadingActions.push(new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () => this.showHistory()));
     this.headingActions = this.detailsHeadingActions;
 
-    this.historyHeadingActions =
-      data.editable ? [new HeadingAction('edit', this.i18n.general.edit, () => this.navigateToEdit())] : [];
-    this.historyHeadingActions.push(new HeadingAction('arrow_back', this.i18n.general.details, () => this.showView()));
+    this.historyHeadingActions = [];
+    if (data.editable) {
+      this.historyHeadingActions.push(new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => this.navigateToEdit()));
+    }
+    this.historyHeadingActions.push(new HeadingAction(SvgIcon.ArrowLeft, this.i18n.general.details, () => this.showView()));
   }
 
   limitMode(custom: boolean): string {

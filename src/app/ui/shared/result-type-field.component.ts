@@ -7,6 +7,7 @@ import { LayoutService } from 'app/core/layout.service';
 import { ResultType } from 'app/ui/shared/result-type';
 import { ArrowLeft, ArrowsHorizontal } from 'app/core/shortcut.service';
 import { Subscription } from 'rxjs';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Renders a widget for a result type field
@@ -55,16 +56,16 @@ export class ResultTypeFieldComponent
     }
   }
 
-  icon(resultType: ResultType): string {
+  icon(resultType: ResultType): SvgIcon {
     switch (resultType) {
       case ResultType.CATEGORIES:
-        return 'view_column';
+        return SvgIcon.LayoutThreeColumns;
       case ResultType.TILES:
-        return 'view_module';
+        return SvgIcon.Grid;
       case ResultType.LIST:
-        return 'view_list';
+        return SvgIcon.GridList;
       case ResultType.MAP:
-        return 'place';
+        return SvgIcon.GeoAlt;
     }
   }
 

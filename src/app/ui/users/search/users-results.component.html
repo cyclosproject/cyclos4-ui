@@ -4,7 +4,7 @@
   [toLink]="canViewProfile ? toLink : null">
 
   <mobile-result *mobileResult="let row" [avatarImage]="user(row).image"
-    [avatarIcon]="resultKind === 'operator' ? null : 'user'">
+    [avatarIcon]="resultKind === 'operator' ? null : SvgIcon.Person">
     <ng-container *ngFor="let field of fieldsInTile; let first = first">
       <div [ngClass]="{
         'cell-main': first,
@@ -43,8 +43,8 @@
     </tbody>
   </table>
 
-  <tiled-result *resultTile="let row" [image]="user(row).image" icon="user"
-    zoom>
+  <tiled-result *resultTile="let row" [image]="user(row).image"
+    [icon]="SvgIcon.PersonCircle" zoom>
     <div *ngFor="let field of fieldsInTile; let first = first"
       [ngClass]="first ? 'card-title' : 'card-text'">
       <format-field-value class="d-block text-truncate"

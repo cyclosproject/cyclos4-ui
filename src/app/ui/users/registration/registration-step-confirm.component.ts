@@ -70,7 +70,7 @@ export class RegistrationStepConfirmComponent
   }
 
   get group(): GroupForRegistration {
-    const groups = this.dataForUiHolder.dataForUi.publicRegistrationGroups || [];
+    const groups = this.dataForFrontendHolder.dataForUi.publicRegistrationGroups || [];
     if (groups.length === 1) {
       return null;
     }

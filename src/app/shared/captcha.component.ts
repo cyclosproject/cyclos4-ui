@@ -32,7 +32,12 @@ export class CaptchaComponent extends AbstractComponent implements AfterViewInit
   }
 
   ngAfterViewInit() {
-    this.newCaptcha();
+    if (this.form.value.challenge) {
+      // Has an initial value
+      this.addSub(this.loadImage().subscribe());
+    } else {
+      this.newCaptcha();
+    }
   }
 
   ngOnDestroy() {
@@ -58,16 +63,21 @@ export class CaptchaComponent extends AbstractComponent implements AfterViewInit
           challenge: id,
           response: '',
         });
-        return this.captchaService.getCaptchaContent({ id, group: this.group }).pipe(tap(blob => {
-          this.revokeCurrent();
-          this.currentUrl = URL.createObjectURL(blob);
-          this.image.nativeElement.style.display = 'none';
-          const tempImage = new Image();
-          tempImage.onload = () => this.updateImage(tempImage);
-          tempImage.onerror = () => setTimeout(() => this.newCaptcha(), 1000);
-          tempImage.src = this.currentUrl;
-        }));
+        return this.loadImage();
       })).subscribe());
+  }
+
+  private loadImage() {
+    const id = this.form.value.challenge;
+    return this.captchaService.getCaptchaContent({ id, group: this.group }).pipe(tap(blob => {
+      this.revokeCurrent();
+      this.currentUrl = URL.createObjectURL(blob);
+      this.image.nativeElement.style.display = 'none';
+      const tempImage = new Image();
+      tempImage.onload = () => this.updateImage(tempImage);
+      tempImage.onerror = () => setTimeout(() => this.newCaptcha(), 1000);
+      tempImage.src = this.currentUrl;
+    }));
   }
 
   updateImage(tempImage: HTMLImageElement) {

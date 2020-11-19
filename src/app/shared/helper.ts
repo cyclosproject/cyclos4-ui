@@ -14,6 +14,13 @@ export const SmallThumbSize = [160, 100];
 export const MediumThumbSize = [320, 200];
 
 /**
+ * Returns whether we're running in the development server
+ */
+export function isDevServer() {
+  return window.location.port === '4200';
+}
+
+/**
  * Sets whether the root spinner in the page is visible
  */
 export function setRootSpinnerVisible(visible: boolean): void {

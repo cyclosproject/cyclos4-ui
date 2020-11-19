@@ -5,6 +5,7 @@ import { BalancesSummaryComponent } from 'app/ui/banking/accounts/balances-summa
 import { AccountStatusViewComponent } from 'app/ui/banking/accounts/account-status-view.component';
 import { EditAccountBalanceLimitsComponent } from 'app/ui/banking/balance-limits/edit-account-balance-limits.component';
 import { ListAccountsBalanceLimitsComponent } from 'app/ui/banking/balance-limits/list-accounts-balance-limits.component';
+import { ListAccountsComponent } from 'app/ui/banking/accounts/list-accounts.component';
 import { SearchBalanceLimitsOverviewComponent } from 'app/ui/banking/balance-limits/search-balance-limits-overview.component';
 import { ViewAccountBalanceLimitsComponent } from 'app/ui/banking/balance-limits/view-account-balance-limits.component';
 import { BankingRoutingModule } from 'app/ui/banking/banking-routing.module';
@@ -68,6 +69,7 @@ import { ViewVoucherComponent } from './vouchers/view-voucher.component';
     SearchTransfersOverviewComponent,
     SearchUserBalancesComponent,
     BalancesSummaryComponent,
+    ListAccountsComponent,
 
     SearchOwnerTransactionsComponent,
     SearchTransactionsOverviewComponent,

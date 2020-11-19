@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ReferenceLevelEnum } from 'app/api/models';
+import { SvgIcon } from 'app/core/svg-icon';
 import { ReferenceHelperService } from 'app/ui/users/references/reference-helper.service';
 
 /**
@@ -82,13 +83,13 @@ export class RatingStatsComponent {
   /**
    * Resolves the icon for the current level which can be a full, half or empty star
    */
-  resolveIcon(level: number): string {
+  resolveIcon(level: number): SvgIcon {
     if (level <= this._score) {
-      return 'star';
+      return SvgIcon.StarFill;
     } else if (this._score < level && this._score > level - 1) {
-      return 'star_half';
+      return SvgIcon.StarHalf;
     } else {
-      return 'star_outline';
+      return SvgIcon.Star;
     }
   }
 

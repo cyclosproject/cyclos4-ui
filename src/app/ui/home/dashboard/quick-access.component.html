@@ -1,10 +1,8 @@
-<page-content [heading]="i18n.dashboard.quickAccess" hideBack [last]="last"
-  [mode]="(layout.xxs$ | async) ? 'fullHeightTight' : 'tight'"
-  [ngStyle]="{minHeight: minHeight}">
+<page-content [heading]="i18n.dashboard.quickAccess" hideBack
+  [mode]="(layout.xxs$ | async) ? 'fullHeightTight' : 'tight'">
   <div class="row no-gutters flex-grow-1 quick-access-container">
     <ng-container *ngFor="let action of actions">
-      <div
-        *ngIf="action.entry && layout.visible(action.breakpoints, layout.breakpointChanges$ | async)"
+      <div *ngIf="action.entry"
         class="col-6 col-sm-4 justify-content-center align-items-center p-1">
         <a #anchor [href]="action.entry.url" class="quick-access-item"
           (click)="navigate(action, $event); blurIfClick(anchor, $event);">

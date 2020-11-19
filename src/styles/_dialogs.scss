@@ -187,6 +187,10 @@ notification {
     width: auto;
   }
 
+  .notification-icon {
+    display: flex;
+  }
+
   .notification-message {
     margin: 0 1rem;
     text-align: center;
@@ -291,4 +295,14 @@ snack-bar {
 body.dark snack-bar {
   background-color: $snack-bar-bg-dark;
   color: $snack-bar-color-dark;
+}
+
+///////////////////////////////////////////////////////////
+
+capture-camera {
+  .camera-container {
+    flex-grow: 1;
+    width: 100%;
+    min-height: 20rem;
+  }
 }

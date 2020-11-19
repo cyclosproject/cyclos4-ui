@@ -6,6 +6,6 @@
   </div>
   <a *ngIf="closeable" class="close-link ml-2" href="#"
     (click)="$event.preventDefault(); close.emit(null)">
-    <icon icon="clear"></icon>
+    <icon [icon]="SvgIcon.X"></icon>
   </a>
 </div>

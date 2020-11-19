@@ -10,6 +10,7 @@ import { AcceptPendingAgreementsComponent } from 'app/ui/login/accept-pending-ag
 import { ChangeExpiredPasswordComponent } from 'app/ui/login/change-expired-password.component';
 import { ChangeForgottenPasswordComponent } from 'app/ui/login/change-forgotten-password.component';
 import { ForgotPasswordComponent } from 'app/ui/login/forgot-password.component';
+import { LoginConfirmationComponent } from 'app/ui/login/login-confirmation.component';
 import { LoginComponent } from 'app/ui/login/login.component';
 import { RedirectToLocationComponent } from 'app/ui/redirect-to-location-component';
 import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
@@ -29,6 +30,10 @@ const rootRoutes: Routes = [
     component: LoginComponent,
   },
   {
+    path: 'login-confirmation',
+    component: LoginConfirmationComponent
+  },
+  {
     path: 'forgot-password',
     component: ForgotPasswordComponent,
   },
@@ -46,6 +51,11 @@ const rootRoutes: Routes = [
     canActivate: [LoggedUserGuard],
     component: ChangeExpiredPasswordComponent,
   },
+  // {
+  //   path: 'login-confirmation',
+  //   canActivate: [LoggedUserGuard],
+  //   component: LoginConfirmationComponent,
+  // },
   {
     path: 'page/:slug',
     component: ContentPageComponent,

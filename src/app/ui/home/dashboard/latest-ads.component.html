@@ -1,8 +1,8 @@
-<page-content [heading]="i18n.dashboard.latestAds" hideBack [last]="last"
-  [ngStyle]="{minHeight: minHeight}" [headingActions]="headingActions">
-  <div *ngIf="(ads$ | async) != null; else spinner" class="container">
+<page-content [heading]="i18n.dashboard.latestAds" hideBack
+  [headingActions]="headingActions$ | async">
+  <div class="container">
     <div class="row">
-      <ng-container *ngFor="let ad of ads$.value">
+      <ng-container *ngFor="let ad of ads">
         <div class="col-12 col-xs-6 col-sm-4">
           <a class="d-flex flex-column undecorated" [routerLink]="path(ad)"
             (click)="navigate(ad, $event)">
@@ -10,10 +10,6 @@
               <div class="images">
                 <avatar [roundBorders]="false" class="main-image" size="huge"
                   [image]="ad.image"></avatar>
-                <avatar *ngIf="showOwner" class="owner-image solid-icon"
-                  icon="user_full" size="medium-large"
-                  [image]="ad.owner.image" [tooltip]="ad.owner.display"
-                  (click)="navigateToOwner(ad, $event)"></avatar>
               </div>
             </div>
             <div class="content-text" [title]="ad.name">
@@ -24,7 +20,4 @@
       </ng-container>
     </div>
   </div>
-  <ng-template #spinner>
-    <spinner class="flex-grow-1"></spinner>
-  </ng-template>
 </page-content>

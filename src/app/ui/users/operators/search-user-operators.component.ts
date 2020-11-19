@@ -10,6 +10,7 @@ import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { ResultType } from 'app/ui/shared/result-type';
+import { SvgIcon } from 'app/core/svg-icon';
 
 type UserOperatorsSearchParams = UserOperatorsQueryFilters & { user: string };
 /**
@@ -53,7 +54,7 @@ export class SearchUserOperatorsComponent
       this.statusOptions = this.userHelper.statusOptions();
       if (!this.self && data.canCreateNew) {
         this.headingActions = [
-          new HeadingAction('registration', this.i18n.general.addNew, () => {
+          new HeadingAction(SvgIcon.PersonPlus, this.i18n.general.addNew, () => {
             this.router.navigate(['/users', this.param, 'operators', 'registration']);
           }, true),
         ];

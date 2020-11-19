@@ -6,6 +6,7 @@ import {
   RecordQueryFilters, RecordResult, RecordWithOwnerResult
 } from 'app/api/models';
 import { RecordsService } from 'app/api/services/records.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { RecordHelperService } from 'app/ui/core/records-helper.service';
@@ -77,7 +78,7 @@ export class SearchRecordsComponent
 
     const headingActions: HeadingAction[] = [];
     if (!this.generalSearch && data.create) {
-      headingActions.push(new HeadingAction('add', this.i18n.general.addNew, () =>
+      headingActions.push(new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () =>
         this.router.navigate(['/records', this.param, this.type, 'new']), true));
     }
     this.exportHelper.headingActions(data.exportFormats,

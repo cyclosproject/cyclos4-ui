@@ -68,16 +68,10 @@ table.table {
   }
   td.avatar, th.avatar {
     width: 3.7rem;
-    $avatar-size: 42px;
+    $avatar-size: 34px;
     avatar {
       display: table-cell !important;
       icon {
-        width: $avatar-size !important;
-        height: $avatar-size !important;
-        font-size: $avatar-size !important;
-        line-height: $avatar-size !important;
-      }
-      svg path {
         width: $avatar-size !important;
         height: $avatar-size !important;
       }
@@ -92,6 +86,15 @@ table.table {
     padding-bottom: 0.2rem;
     white-space: nowrap;
   }
+}
+
+.table-no-header {
+  border-top-width: 1px;
+  border-top-style: solid;
+}
+
+.table-fixed {
+  table-layout: fixed;
 }
 
 .lt-md table.table {

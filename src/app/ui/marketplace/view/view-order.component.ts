@@ -14,6 +14,7 @@ import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { empty } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Displays an order with it's possible actions
@@ -57,20 +58,20 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
     const headingActions: HeadingAction[] = [];
 
     if (data.canAccept || data.canSetDeliveryInformation) {
-      headingActions.push(new HeadingAction('done',
+      headingActions.push(new HeadingAction(SvgIcon.HandThumbsUp,
         data.canSetDeliveryInformation ?
           this.i18n.ad.setDeliveryMethod : this.i18n.ad.accept, () =>
         this.accept()));
     }
 
     if (data.canReject) {
-      headingActions.push(new HeadingAction('clear',
+      headingActions.push(new HeadingAction(SvgIcon.HandThumbsDown,
         this.i18n.ad.reject, () =>
         this.reject()));
     }
 
     if (data.history) {
-      headingActions.push(new HeadingAction('history', this.i18n.general.viewHistory, () =>
+      headingActions.push(new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
         this.router.navigate(['/marketplace', 'order', this.id, 'history'])));
     }
 

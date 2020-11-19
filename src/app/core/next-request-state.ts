@@ -1,16 +1,16 @@
 import { HttpRequest } from '@angular/common/http';
-import { Injectable, isDevMode } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Params } from '@angular/router';
-import { ApiConfiguration } from 'app/api/api-configuration';
 import { AuthService } from 'app/api/services/auth.service';
-import { empty, isSameOrigin } from 'app/shared/helper';
+import { empty } from 'app/shared/helper';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
-const Channel = 'Channel';
-const Authorization = 'Authorization';
-const SessionToken = 'Session-Token';
-const SessionPrefix = 'Session-Prefix';
+export const Channel = 'Channel';
+export const Authorization = 'Authorization';
+export const SessionToken = 'Session-Token';
+export const SessionPrefix = 'Session-Prefix';
+export const PreferredLocale = 'Preferred-Locale';
 
 /**
  * Stores data which will be set in the next API request
@@ -40,11 +40,15 @@ export class NextRequestState {
    */
   queryParams: Params;
 
+  /**
+   * Whether to split the session token on authentication
+   */
+  useCookie: boolean;
+
   private pending$ = new BehaviorSubject<HttpRequest<any>[]>([]);
   private nextAuth: string;
 
   constructor(
-    private apiConfiguration: ApiConfiguration,
     private authService: AuthService) {
     this.requesting$ = this.pending$.asObservable().pipe(
       map(reqs => reqs.length > 0),
@@ -61,6 +65,12 @@ export class NextRequestState {
 
     // This front-end is presented as main channel
     headers[Channel] = 'main';
+
+    // Pass in the preferred locale
+    const locale = localStorage.getItem(PreferredLocale);
+    if (!empty(locale)) {
+      headers[PreferredLocale] = locale;
+    }
 
     // If the next request must be done as guest, don't modify the headers
     if (this.nextAuth !== 'GUEST') {
@@ -99,16 +109,20 @@ export class NextRequestState {
     }
 
     // Append the resulting request in the pending list
-    this.pending$.next([result, ...this.pending$.value]);
-
-    // Just as a fallback, after a few seconds, remove the request from the pending list
-    setTimeout(() => {
-      if (this.pending$.value.includes(result)) {
-        this.pending$.next(this.pending$.value.filter(r => r !== result));
-      }
-    }, 12000);
+    if (this.trackRequest(result)) {
+      this.pending$.next([result, ...this.pending$.value]);
+    }
 
     return result;
+  }
+
+  /**
+   * As a workaround to the issue https://github.com/angular/angular/issues/22324,
+   * we skip the fields validation request, which is used as async validation, and is
+   * likely to trigger the bug
+   */
+  trackRequest(request: HttpRequest<any>): boolean {
+    return !request.url.includes('/users/validate/');
   }
 
   /**
@@ -116,7 +130,9 @@ export class NextRequestState {
    * @param req The request
    */
   finish(req: HttpRequest<any>) {
-    this.pending$.next(this.pending$.value.filter(r => r !== req));
+    if (this.trackRequest(req)) {
+      this.pending$.next(this.pending$.value.filter(r => r !== req));
+    }
   }
 
   /**
@@ -139,11 +155,11 @@ export class NextRequestState {
   /**
    * Sets the value of the session token
    */
-  setSessionToken(sessionToken: string, useCookie = false) {
+  setSessionToken(sessionToken: string) {
     localStorage.removeItem(SessionToken);
     localStorage.removeItem(SessionPrefix);
     if (sessionToken) {
-      localStorage.setItem(useCookie ? SessionPrefix : SessionToken, sessionToken);
+      localStorage.setItem(this.useCookie ? SessionPrefix : SessionToken, sessionToken);
     }
   }
 
@@ -153,12 +169,11 @@ export class NextRequestState {
    */
   replaceSession(sessionToken: string): Observable<any> {
     this.nextAsGuest();
-    const useCookie = isSameOrigin(this.apiConfiguration.rootUrl) && !isDevMode();
     return this.authService.replaceSession({
       sessionToken,
-      cookie: useCookie,
+      cookie: this.useCookie,
     }).pipe(switchMap(newToken => {
-      this.setSessionToken(newToken, useCookie);
+      this.setSessionToken(newToken);
       return of(null);
     }));
   }
@@ -187,6 +202,14 @@ export class NextRequestState {
       return `${url}${sep}${SessionPrefix}=${encodeURIComponent(prefix)}`;
     }
     return url;
+  }
+
+  /**
+   * Indicates that there will be an external redirect.
+   * Will cause the `requesting$` `Observable` to emit `true`.
+   */
+  willExternalRedirect() {
+    this.pending$.next([null]);
   }
 
   /**

@@ -1,13 +1,24 @@
 import {
-  AccountWithOwner, Auth, DatePeriod, Entity, InternalNamedEntity, NamedEntity,
-  Notification, NotificationEntityTypeEnum, NotificationTypeEnum
+  AccountWithOwner,
+  DataForFrontend,
+  DatePeriod,
+  Entity,
+
+  FrontendEnum,
+
+  InternalNamedEntity,
+  NamedEntity,
+  Notification,
+  NotificationEntityTypeEnum,
+  NotificationTypeEnum
 } from 'app/api/models';
-import { empty } from 'app/shared/helper';
+import { empty, isDevServer } from 'app/shared/helper';
 
 /**
  * Helper methods for working with API model
  */
 export class ApiHelper {
+
   /** Value separator for custom fields */
   static VALUE_SEPARATOR = '|';
 
@@ -22,6 +33,9 @@ export class ApiHelper {
 
   /** Value used to mark a date as invalid */
   static INVALID_DATE = ' ';
+
+  /** The minimum number of accounts to show the account summary instead of individual accounts */
+  static MIN_ACCOUNTS_FOR_SUMMARY = 7;
 
   /**
    * Returns the entity internal name, if any, otherwise the id.
@@ -133,9 +147,6 @@ export class ApiHelper {
     switch (notification.entityType) {
       case NotificationEntityTypeEnum.USER:
         return `/users/${notification.entityId}/profile`;
-      case NotificationEntityTypeEnum.INSTALLMENT:
-      case NotificationEntityTypeEnum.OCCURRENCE:
-        return `/banking/transaction/${notification.entityId}`;
       case NotificationEntityTypeEnum.TRANSACTION:
         return `/banking/transaction/${notification.entityId}`;
       case NotificationEntityTypeEnum.TRANSFER:
@@ -143,8 +154,9 @@ export class ApiHelper {
       case NotificationEntityTypeEnum.MARKETPLACE:
         return `/marketplace/view/${notification.entityId}`;
       case NotificationEntityTypeEnum.AD_QUESTION:
-        return notification.type === NotificationTypeEnum.AD_QUESTION_ANSWERED ?
-          `/marketplace/view/${notification.entityId}` : `/marketplace/unanswered-questions/view/${notification.entityId}`;
+        return notification.type === NotificationTypeEnum.AD_QUESTION_ANSWERED
+          ? `/marketplace/view/${notification.entityId}`
+          : `/marketplace/unanswered-questions/view/${notification.entityId}`;
       case NotificationEntityTypeEnum.ORDER:
         return `/marketplace/order/${notification.entityId}`;
       case NotificationEntityTypeEnum.TOKEN:
@@ -228,20 +240,22 @@ export class ApiHelper {
   }
 
   /**
-   * Indicates whether the current access is restricted. The cases are:
+   * Indicates whether the given access is restricted. The cases are:
+   * - Should redirect to the classic frontend
    * - Expired access password
    * - Pending agreements
-   *
-   * Secondary access password (login confirmation) is not yet implemented in this
-   * front-end, hence, not returned as restricted access
-   * - Pending secondary password
+   * - Pending login confirmation
    * - Expired secondary password
    */
-  static isRestrictedAccess(auth: Auth): boolean {
-    if (auth) {
-      return auth.expiredPassword || auth.pendingAgreements;
+  static isRestrictedAccess(dataForFrontend: DataForFrontend): boolean {
+    if (dataForFrontend.frontend === FrontendEnum.CLASSIC && !isDevServer()) {
+      // Must redirect to the new frontend
+      return true;
     }
-    return false;
+    const dataForUi = (dataForFrontend || {}).dataForUi || {};
+    const auth = dataForUi.auth || {};
+    return auth.expiredPassword || auth.pendingAgreements
+      || auth.pendingSecondaryPassword || auth.expiredSecondaryPassword;
   }
 
   /**
@@ -251,8 +265,9 @@ export class ApiHelper {
     const left = (screen.width - width) / 2;
     const top = (screen.height - height) / 2;
 
-    const options = `top=${top},left=${left},width=${width},height=${height},`
-      + 'personalbar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes';
+    const options =
+      `top=${top},left=${left},width=${width},height=${height},` +
+      'personalbar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes';
 
     const style = getComputedStyle(document.body);
     const win = window.open('about:blank', 'identityProvider', options);

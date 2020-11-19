@@ -3,10 +3,10 @@ import {
   RecordCustomField, RecordLayoutEnum, RecordPermissions,
   RecordType, RecordTypeDetailed
 } from 'app/api/models';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { LayoutService } from 'app/core/layout.service';
 import { ApiHelper } from 'app/shared/api-helper';
-import { Configuration } from 'app/ui/configuration';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Helper service for records functions
@@ -20,7 +20,7 @@ export class RecordHelperService {
   static GENERAL_SEARCH = 'general';
 
   constructor(
-    private dataForUiHolder: DataForUiHolder,
+    private dataForFrontendHolder: DataForFrontendHolder,
     private layout: LayoutService
   ) { }
 
@@ -28,9 +28,8 @@ export class RecordHelperService {
    * Returns the record types within the according permissions for the logged user or system based on the given flag
    */
   recordPermissions(system?: boolean, management?: boolean): RecordPermissions[] {
-    const dataForUi = this.dataForUiHolder.dataForUi;
-    const auth = dataForUi.auth || {};
-    const permissions = auth.permissions || {};
+    const auth = this.dataForFrontendHolder.auth;
+    const permissions = (auth || {}).permissions || {};
     const records = permissions.records || {};
     if (system) {
       return records.system || [];
@@ -77,10 +76,8 @@ export class RecordHelperService {
   /**
    * Returns the icon name that should be used for the given record type
    */
-  icon(type: RecordType): string {
-    const config = (Configuration.records || {})[type.internalName || '#'];
-    const customIcon = (config || {}).icon;
-    return customIcon || 'library_books';
+  icon(type: RecordType): SvgIcon | string {
+    return type.svgIcon || SvgIcon.FileText;
   }
 
   /**

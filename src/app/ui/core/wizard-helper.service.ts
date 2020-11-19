@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  Operation,
-  Wizard
-} from 'app/api/models';
-import { Configuration } from 'app/ui/configuration';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { Operation, Wizard } from 'app/api/models';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Helper for custom wizards
@@ -20,10 +17,13 @@ export class WizardHelperService {
 
   constructor(
     private router: Router,
-    dataForUiHolder: DataForUiHolder) {
-    dataForUiHolder.subscribe(dataForUi => {
+    dataForFrontendHolder: DataForFrontendHolder) {
+    dataForFrontendHolder.subscribe(dataForFrontend => {
       // Store all custom operations in the registry
-      const wizards = ((((dataForUi || {}).auth || {}).permissions || {}).wizards || {});
+      const dataForUi = (dataForFrontend || {}).dataForUi;
+      const auth = (dataForUi || {}).auth;
+      const permissions = (auth || {}).permissions;
+      const wizards = (permissions || {}).wizards || {};
       (wizards.system || []).forEach(w => this.register(w.wizard));
       (wizards.my || []).forEach(w => this.register(w.wizard));
     });
@@ -51,10 +51,8 @@ export class WizardHelperService {
   /**
    * Returns the icon name that should be used for the given wizard
    */
-  icon(wizard: Wizard): string {
-    const config = (Configuration.wizards || {})[wizard.internalName || '#'];
-    const customIcon = (config || {}).icon;
-    return customIcon || 'play_circle_outline';
+  icon(wizard: Wizard): SvgIcon | string {
+    return wizard.svgIcon || SvgIcon.FilePlay;
   }
 
   /**

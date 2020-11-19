@@ -15,6 +15,7 @@ import { BooleanPipe } from 'app/shared/boolean.pipe';
 import { ButtonToggleComponent } from 'app/shared/button-toggle.component';
 import { CalendarComponent } from 'app/shared/calendar.component';
 import { CaptchaComponent } from 'app/shared/captcha.component';
+import { CaptureCameraComponent } from 'app/shared/capture-camera.component';
 import { CheckboxGroupFieldComponent } from 'app/shared/checkbox-group-field.component';
 import { ChipComponent } from 'app/shared/chip.component';
 import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.component';
@@ -81,6 +82,7 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NgxGalleryModule } from 'ngx-gallery-9';
+import { WebcamModule } from 'ngx-webcam';
 
 
 export function initTooltipConfig(): TooltipConfig {
@@ -151,6 +153,7 @@ export function initTooltipConfig(): TooltipConfig {
     ChipComponent,
     CaptchaComponent,
     ScanQrCodeComponent,
+    CaptureCameraComponent,
     IconWithCounterComponent,
     ButtonToggleComponent,
     CountdownButtonComponent,
@@ -180,6 +183,7 @@ export function initTooltipConfig(): TooltipConfig {
     BsDropdownModule.forRoot(),
     NgxGalleryModule,
     ZXingScannerModule,
+    WebcamModule,
 
     LayoutModule,
   ],
@@ -198,6 +202,7 @@ export function initTooltipConfig(): TooltipConfig {
     BsDropdownModule,
     NgxGalleryModule,
     ZXingScannerModule,
+    WebcamModule,
 
     LayoutModule,
 
@@ -252,6 +257,7 @@ export function initTooltipConfig(): TooltipConfig {
     ChipComponent,
     CaptchaComponent,
     ScanQrCodeComponent,
+    CaptureCameraComponent,
     IconWithCounterComponent,
 
     ButtonToggleComponent,
@@ -285,6 +291,7 @@ export function initTooltipConfig(): TooltipConfig {
     LinkPropertiesDialogComponent,
     TextDialogComponent,
     ScanQrCodeComponent,
+    CaptureCameraComponent
   ],
 })
 export class SharedModule {

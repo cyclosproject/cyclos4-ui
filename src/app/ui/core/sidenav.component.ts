@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
-import { FormatService } from 'app/core/format.service';
-import { ActionsLeft, ActionsRight, ArrowsVertical, ShortcutService } from 'app/core/shortcut.service';
-import { I18n } from 'app/i18n/i18n';
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Injector, OnInit, ViewChild } from '@angular/core';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
+import { LayoutService } from 'app/core/layout.service';
+import { ActionsLeft, ActionsRight, ArrowsVertical } from 'app/core/shortcut.service';
+import { SvgIcon } from 'app/core/svg-icon';
+import { AbstractComponent } from 'app/shared/abstract.component';
 import { handleKeyboardFocus } from 'app/shared/helper';
 import { LoginService } from 'app/ui/core/login.service';
 import { MenuService } from 'app/ui/core/menu.service';
-import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 import { ActiveMenu, BaseMenuEntry, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/ui/shared/menu';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
@@ -18,20 +19,20 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
   templateUrl: 'sidenav.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SidenavComponent implements OnInit {
+export class SidenavComponent extends AbstractComponent implements OnInit {
 
   @HostBinding('class.has-top-bar') hasTopBar = true;
 
   @ViewChild('sidenavMenu', { static: true }) sidenavMenu: ElementRef;
 
   constructor(
+    injector: Injector,
     private _element: ElementRef,
     public menu: MenuService,
     public login: LoginService,
-    public format: FormatService,
-    public layout: UiLayoutService,
-    private shortcut: ShortcutService,
-    private i18n: I18n) {
+    public dataForFrontend: DataForFrontendHolder,
+    public layout: LayoutService) {
+    super(injector);
   }
 
   roots$: Observable<RootMenuEntry[]>;
@@ -47,6 +48,7 @@ export class SidenavComponent implements OnInit {
   }
 
   ngOnInit() {
+    super.ngOnInit();
     this.roots$ = this.menu.menu(MenuType.SIDENAV);
     this.layout.gtsm$.subscribe(() => this.close());
 
@@ -131,7 +133,7 @@ export class SidenavComponent implements OnInit {
   icon(entry: BaseMenuEntry) {
     if (entry instanceof MenuEntry && entry.menu === Menu.DASHBOARD && this.layout.ltmd) {
       // For mobile, the dashboard is shown as home
-      return 'home';
+      return SvgIcon.HouseDoor;
     }
     return entry.icon;
   }

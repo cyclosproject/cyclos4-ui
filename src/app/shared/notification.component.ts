@@ -4,6 +4,7 @@ import { NotificationType } from 'app/shared/notification-type';
 import { Enter, Escape, ShortcutService } from 'app/core/shortcut.service';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Shows a notification message. May be in a popup or directly
@@ -21,7 +22,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
   @Input() allowClose = true;
 
   alertType: string;
-  icon: string;
+  icon: SvgIcon;
   private shortcutSub: Subscription;
 
   constructor(
@@ -37,16 +38,17 @@ export class NotificationComponent implements OnInit, OnDestroy {
     switch (this.type) {
       case 'info':
         this.alertType = 'success';
+        this.icon = SvgIcon.InfoCircle;
         break;
       case 'warning':
         this.alertType = 'warning';
+        this.icon = SvgIcon.ExclamationCircle;
         break;
       default:
         this.alertType = 'danger';
+        this.icon = SvgIcon.ExclamationTriangle;
         break;
     }
-    // The material icon ligatures matches the notification types we use
-    this.icon = this.type;
     if (this.allowClose) {
       this.shortcutSub = this.shortcut.subscribe([Enter, Escape], () => this.modalRef.hide());
     }

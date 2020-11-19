@@ -2,12 +2,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   CustomFieldTypeEnum, ShoppingCartItemAvailabilityEnum, ShoppingCartItemDetailed,
-  ShoppingCartItemQuantityAdjustmentEnum, ShoppingCartView,
+  ShoppingCartItemQuantityAdjustmentEnum, ShoppingCartView
 } from 'app/api/models';
 import { ShoppingCartsService } from 'app/api/services/shopping-carts.service';
 import { ErrorStatus } from 'app/core/error-status';
-import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
+import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
@@ -67,7 +68,7 @@ export class ViewCartComponent
 
   onDataInitialized(data: ShoppingCartView) {
     this.headingActions = [
-      new HeadingAction('local_mall', this.i18n.ad.checkout, () => this.checkout(), true),
+      new HeadingAction(SvgIcon.Bag, this.i18n.ad.checkout, () => this.checkout(), true),
     ];
 
     this.checkMessages(data);

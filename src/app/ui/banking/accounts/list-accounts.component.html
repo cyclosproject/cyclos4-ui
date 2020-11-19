@@ -1,0 +1,37 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [mode]="!self ? 'filters' : 'emptyFilters'"
+      [heading]="i18n.account.title.accountsSummary"
+      [mobileHeading]="i18n.account.mobileTitle.accountsSummary">
+      <user-info *ngIf="!self" [user]="data.user"></user-info>
+    </page-content>
+
+    <results-layout [results]="data.accounts" [toLink]="toLink">
+      <mobile-result *mobileResult="let row">
+        <div class="d-flex">
+          <div>
+            <div class="cell-main">{{ row.type.name }}</div>
+            <div class="cell-text">
+              {{ i18n.account.balance }}:
+              {{ row.status.balance | currency: row.currency }}</div>
+          </div>
+        </div>
+      </mobile-result>
+
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead>
+          <th>{{ i18n.account.account }}</th>
+          <th class="text-right">{{ i18n.account.balance }}</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of data.accounts"
+            (click)="router.navigate(path(row.type)); $event.stopPropagation()">
+            <td>{{ row.type.name }}</td>
+            <td class="text-right">
+              {{ row.status.balance | currency:row.currency }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>

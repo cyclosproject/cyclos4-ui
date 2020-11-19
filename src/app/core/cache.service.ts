@@ -17,7 +17,6 @@ const DEFAULT_CACHE_SECONDS = 60 * 60;
 export class CacheService {
 
   constructor() {
-    // This method is not in the current @types/lscache
     lscache.setExpiryMilliseconds(1000);
     lscache.flushExpired();
   }

@@ -12,6 +12,7 @@ import { ResultType } from 'app/ui/shared/result-type';
 import { isEqual } from 'lodash-es';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Base class implemented by search pages.
@@ -112,7 +113,11 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
     return this.results$.value;
   }
   set results(results: PagedResults<R>) {
+    this.onBeforeRender(results);
     this.results$.next(results);
+  }
+
+  protected onBeforeRender(_results: PagedResults<R>) {
   }
 
   get rendering(): boolean {
@@ -207,15 +212,15 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
   /**
    * Returns the icon for showing more filters action
    */
-  protected showMoreFiltersIcon(): string {
-    return 'filter_list';
+  protected showMoreFiltersIcon(): SvgIcon {
+    return SvgIcon.Funnel;
   }
 
   /**
    * Returns the icon for showing less filters action
    */
-  protected showLessFiltersIcon(): string {
-    return 'filter_list';
+  protected showLessFiltersIcon(): SvgIcon {
+    return SvgIcon.Funnel;
   }
 
   /**

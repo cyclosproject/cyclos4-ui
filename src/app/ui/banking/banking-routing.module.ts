@@ -30,6 +30,7 @@ import { LoggedUserGuard } from 'app/ui/logged-user-guard';
 import { SearchInstallmentsComponent } from 'app/ui/banking/transactions/search-installments.component';
 import { SearchUserBalancesComponent } from 'app/ui/banking/accounts/search-user-balances.component';
 import { GenerateVouchersComponent } from 'app/ui/banking/vouchers/generate-vouchers.component';
+import { ListAccountsComponent } from 'app/ui/banking/accounts/list-accounts.component';
 
 const bankingRoutes: Routes = [
   {
@@ -39,6 +40,10 @@ const bankingRoutes: Routes = [
       {
         path: ':owner/account/:type',
         component: AccountHistoryComponent,
+      },
+      {
+        path: ':owner/accounts-summary',
+        component: ListAccountsComponent,
       },
       {
         path: 'transfer/:key',

@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Configuration } from 'app/ui/configuration';
+import { LayoutService } from 'app/core/layout.service';
+import { AbstractComponent } from 'app/shared/abstract.component';
+import { blurIfClick } from 'app/shared/helper';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
 import { MenuDensity } from 'app/ui/core/menu-density';
 import { MenuService } from 'app/ui/core/menu.service';
-import { AbstractComponent } from 'app/shared/abstract.component';
-import { blurIfClick } from 'app/shared/helper';
-import { LayoutService } from 'app/core/layout.service';
 import { ActiveMenu, BaseMenuEntry, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/ui/shared/menu';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 
@@ -62,7 +61,7 @@ export class MenusComponent extends AbstractComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
-    this.onTop = !Configuration.menuBar;
+    this.onTop = !this.dataForFrontendHolder.dataForFrontend.menuBar;
   }
 
   ngClass(root: RootMenuEntry): string[] {

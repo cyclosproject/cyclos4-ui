@@ -115,6 +115,12 @@ export class RunOperationComponent
         request = this.operationsService.getTransferOperationDataForRun(params);
         break;
 
+      case OperationRunScope.Menu:
+        // A custom menu item
+        this.scopeId = params.menu = route.params.menu;
+        request = this.operationsService.getMenuOperationDataForRun(params);
+        break;
+
       default:
         // Standalone (system or internal action)
         request = this.operationsService.getOperationDataForRun(params);
@@ -342,6 +348,9 @@ export class RunOperationComponent
             this.menu.userMenu(data.user, Menu.SEARCH_USERS);
         case OperationRunScope.Transfer:
           return this.menu.transferMenu(data.transfer);
+        case OperationRunScope.Menu:
+          const entry = this.menu.contentPageEntry(ApiHelper.internalNameOrId(data.menuItem));
+          return entry?.activeMenu;
         case OperationRunScope.Standalone:
           // There's no info
           return null;

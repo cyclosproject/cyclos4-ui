@@ -78,7 +78,7 @@ export class DateFieldComponent
         // All parts are empty - set the value to null
         parts = null;
       } else if (hasEmpty) {
-        const now = this.dataForUiHolder.now();
+        const now = this.dataForFrontendHolder.now();
         const defaults = this.format.applyDateFields([now.year(), now.month() + 1, now.date()].map(String));
         parts = parts.map((p, i) => p || defaults[i]);
       }
@@ -123,7 +123,7 @@ export class DateFieldComponent
       this.i18n.general.datePart.long.month,
       this.i18n.general.datePart.long.day,
     ]);
-    const now = this.dataForUiHolder.now();
+    const now = this.dataForFrontendHolder.now();
     this.min = dateConstraintAsMoment(this.minDate, now);
     this.max = dateConstraintAsMoment(this.maxDate, now);
     this.fieldInitials = this.fieldNames.map(n => n.charAt(0));

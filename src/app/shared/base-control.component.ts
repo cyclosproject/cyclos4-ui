@@ -1,7 +1,6 @@
 import { Directive, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { ControlContainer, ControlValueAccessor, FormControl } from '@angular/forms';
 import { AbstractComponent } from 'app/shared/abstract.component';
-import { empty } from 'app/shared/helper';
 import { isEqual } from 'lodash-es';
 import { Observable } from 'rxjs';
 
@@ -24,7 +23,8 @@ export abstract class BaseControlComponent<T>
   protected touchedCallback = () => { };
   protected validatorChange = () => { };
 
-  constructor(injector: Injector,
+  constructor(
+    injector: Injector,
     protected controlContainer: ControlContainer) {
     super(injector);
   }
@@ -41,7 +41,7 @@ export abstract class BaseControlComponent<T>
       throw new Error(`No formControl could be resolved for ${this.constructor.name}`);
     }
     this.formControl.valueChanges.subscribe(value => {
-      if (this.value !== value && !empty(this.value) && !empty(value)) {
+      if (this.value !== value) {
         this.setValue(value, false);
       }
     });

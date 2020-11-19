@@ -6,7 +6,7 @@
     <button #toggleButton dropdownToggle [id]="id" type="button"
       class="btn custom-select w-100 pr-4"
       [attr.aria-controls]="dropdownMenuId">
-      <icon size="1.5rem" [icon]="action.icon"></icon>
+      <icon [icon]="action.icon"></icon>
       <div class="pr-1">{{ action.label }}</div>
     </button>
 
@@ -26,7 +26,7 @@
 <ng-template #plainAction>
   <button #actionButton type="button" class="btn"
     (click)="action.onClick(); blurIfClick(actionButton, $event);">
-    <icon size="1.5rem" [icon]="action.icon"></icon>
+    <icon [icon]="action.icon"></icon>
     <div>{{ action.label }}</div>
   </button>
 </ng-template>

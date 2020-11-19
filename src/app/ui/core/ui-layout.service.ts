@@ -1,15 +1,12 @@
 /// <reference types="@types/googlemaps" />
 
-import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { Breakpoint, LayoutService } from 'app/core/layout.service';
+import { FrontendBanner } from 'app/api/models';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
+import { LayoutService } from 'app/core/layout.service';
 import { HeadingAction } from 'app/shared/action';
 import { empty } from 'app/shared/helper';
-import { ShortcutService } from 'app/core/shortcut.service';
-import { Configuration } from 'app/ui/configuration';
-import { BreakpointConfiguration } from 'app/ui/content/breakpoint-configuration';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { DarkMapStyles, LightMapStyles } from 'app/ui/shared/google-map-styles';
 import { PageLayoutComponent } from 'app/ui/shared/page-layout.component';
@@ -22,7 +19,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class UiLayoutService extends LayoutService {
+export class UiLayoutService {
 
   currentPage$ = new BehaviorSubject<BasePageComponent<any>>(null);
   get currentPage(): BasePageComponent<any> {
@@ -69,13 +66,18 @@ export class UiLayoutService extends LayoutService {
 
   private leftAreaVisibleSub: Subscription;
 
-  constructor(
-    observer: BreakpointObserver,
-    private titleRef: Title,
-    shortcut: ShortcutService,
-    dataForUiHolder: DataForUiHolder) {
+  banners$ = new BehaviorSubject<FrontendBanner[]>([]);
+  get banners(): FrontendBanner[] {
+    return this.banners$.value;
+  }
+  set banners(banners: FrontendBanner[]) {
+    this.banners$.next(banners);
+  }
 
-    super(observer, shortcut, dataForUiHolder);
+  constructor(
+    private titleRef: Title,
+    private layout: LayoutService,
+    private dataForFrontendHolder: DataForFrontendHolder) {
 
     this.currentPageLayout$.subscribe(pageLayout => {
       if (this.leftAreaVisibleSub) {
@@ -98,32 +100,13 @@ export class UiLayoutService extends LayoutService {
 
   set title(title: string) {
     this.title$.next(title);
+    const data = this.dataForFrontendHolder.dataForFrontend;
+    const appTitle = (data || {}).title || '';
     if (title) {
-      this.titleRef.setTitle(`${title} - ${this.appTitle}`);
+      this.titleRef.setTitle(`${title} - ${appTitle}`);
     } else {
-      this.titleRef.setTitle(this.appTitle);
+      this.titleRef.setTitle(appTitle);
     }
-  }
-
-  /**
-   * Returns the application title
-   */
-  public get appTitle(): string {
-    return Configuration.appTitle;
-  }
-
-  /**
-   * Returns the application title for xs devices
-   */
-  public get appTitleSmall(): string {
-    return Configuration.appTitleSmall || Configuration.appTitle;
-  }
-
-  /**
-   * Returns the application title used inside the menu on small devices
-   */
-  public get appTitleMenu(): string {
-    return Configuration.appTitleMenu || this.appTitle;
   }
 
   get headingActions(): HeadingAction[] {
@@ -141,33 +124,18 @@ export class UiLayoutService extends LayoutService {
 
   /**
    * Returns a page size according to the current layout size.
-   * Either `Configuration.searchPageSizeXxs`, `Configuration.searchPageSizeXs` or `Configuration.searchPageSize`.
    */
   get searchPageSize(): number {
-    if (this.xxs) {
-      return Configuration.searchPageSizeXxs;
-    } else if (this.xs) {
-      return Configuration.searchPageSizeXs;
+    if (this.layout.xxs) {
+      return 10;
+    } else if (this.layout.ltmd) {
+      return 20;
     } else {
-      return Configuration.searchPageSize;
+      return 40;
     }
   }
 
   get googleMapStyles(): google.maps.MapTypeStyle[] {
-    return this.darkTheme ? DarkMapStyles : LightMapStyles;
-  }
-
-  /**
-   * Returns a breakpoint configuration according to the given breakpoints.
-   * If the set of breakpoints isn't passed in, assumes the currently active breakpoints.
-   */
-  getBreakpointConfiguration<K extends keyof BreakpointConfiguration>(key: K, breakpoints?: Set<Breakpoint>): BreakpointConfiguration[K] {
-    const configs = Configuration.breakpoints;
-    for (const bp of breakpoints || this.activeBreakpoints) {
-      const config = configs[bp];
-      if (config && config[key] != null) {
-        return config[key];
-      }
-    }
+    return this.layout.darkTheme ? DarkMapStyles : LightMapStyles;
   }
 }

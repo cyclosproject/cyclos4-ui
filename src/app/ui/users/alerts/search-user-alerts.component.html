@@ -93,8 +93,8 @@
               'pb-0': layout.xxs$ | async,
               'border-0': layout.xxs$ | async
             }">
-              <avatar [image]="row.user?.image" [tooltip]="row.user?.display"
-                icon="user"></avatar>
+              <avatar [image]="row.user?.image" [tooltip]="row.user?.display">
+              </avatar>
             </td>
             <td>{{ row.user.display }}</td>
             <td>{{ row.text }}</td>

@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Injector, Input, Output } from '@angular/core';
-import { AdCategoryWithChildren, AdResult, Currency, Image } from 'app/api/models';
+import { AdCategoryWithChildren, AdResult, Currency } from 'app/api/models';
 import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
-import { Configuration } from 'app/ui/configuration';
-import { AdCategoryConfiguration } from 'app/ui/content/ad-category-configuration';
 import { ShowSubCategoriesComponent } from 'app/ui/marketplace/search/show-sub-categories.component';
 import { BaseComponent } from 'app/shared/base.component';
 import { truthyAttr } from 'app/shared/helper';
@@ -109,44 +107,6 @@ export class AdsResultsComponent extends BaseComponent {
     this.categorySelected.emit(category);
   }
 
-  private categoryConfiguration(cat: AdCategoryWithChildren): AdCategoryConfiguration {
-    let config: AdCategoryConfiguration = null;
-    if (cat.internalName) {
-      config = (Configuration.adCategories || {})[cat.internalName];
-    }
-    if (cat == null) {
-      config = (Configuration.adCategories || {})[cat.id];
-    }
-    return config || {};
-  }
-
-  /**
-   * Returns the configured display color for the given category
-   * @param cat The category
-   */
-  categoryColor(cat: AdCategoryWithChildren): string {
-    return this.categoryConfiguration(cat).color;
-  }
-
-  /**
-   * Returns the configured icon for the given category
-   * @param cat The category
-   */
-  categoryIcon(cat: AdCategoryWithChildren): string {
-    return this.categoryConfiguration(cat).icon;
-  }
-
-  /**
-   * Returns the category image, but only if it doesn't have a specific icon
-   * @param cat The category
-   */
-  categoryImage(cat: AdCategoryWithChildren): Image {
-    if (this.categoryIcon(cat)) {
-      return null;
-    }
-    return cat.image;
-  }
-
   /**
    * Return a maximum of `MAX_CHILDREN` child categories
    * @param cat The category
@@ -174,9 +134,9 @@ export class AdsResultsComponent extends BaseComponent {
       class: 'modal-form modal-small',
       initialState: {
         category: cat,
-        image: this.categoryImage(cat),
-        icon: this.categoryIcon(cat),
-        color: this.categoryColor(cat),
+        image: cat.svgIcon ? null : cat.image,
+        icon: cat.svgIcon,
+        color: cat.svgIconColor,
       },
     });
     const comp = ref.content as ShowSubCategoriesComponent;

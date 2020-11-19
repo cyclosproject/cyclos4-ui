@@ -7,6 +7,7 @@ import { HeadingAction } from 'app/shared/action';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { downloadResponse } from 'app/shared/helper';
 import { Observable } from 'rxjs';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Search the documents of the given user as admin or broker
@@ -36,7 +37,7 @@ export class SearchDocumentsComponent
 
   onDataInitialized(data: DocumentDataForSearch) {
     super.onDataInitialized(data);
-    this.headingActions = [new HeadingAction('add', this.i18n.general.add, () => {
+    this.headingActions = [new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.add, () => {
       this.router.navigate(['/users', this.user, 'documents', 'new']);
     }, true)];
   }

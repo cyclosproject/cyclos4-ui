@@ -8,11 +8,13 @@ import {
 import { ImagesService } from 'app/api/services/images.service';
 import { PhonesService } from 'app/api/services/phones.service';
 import { UsersService } from 'app/api/services/users.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { empty, isTouched, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
+import { ImageUploadComponent } from 'app/shared/image-upload.component';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { MapsService } from 'app/ui/core/maps.service';
@@ -113,7 +115,7 @@ export class EditProfileComponent
     });
 
     this.headingActions = [
-      new HeadingAction('search', this.i18n.general.view, () =>
+      new HeadingAction(SvgIcon.Search, this.i18n.general.view, () =>
         this.router.navigate(['users', this.param, 'profile']),
         true),
     ];
@@ -307,7 +309,7 @@ export class EditProfileComponent
     // We just have to handle single phones / addresses, which can dynamically create / modify / remove models
 
     // Single mobile
-    if (this.mobileAvailability === 'single') {
+    if (this.singleMobile) {
       const phone = this.singleMobile.value;
       const id = phone.id;
       if (id) {
@@ -322,7 +324,7 @@ export class EditProfileComponent
     }
 
     // Single land-line
-    if (this.landLineAvailability === 'single') {
+    if (this.singleLandLine) {
       const phone = this.singleLandLine.value;
       const id = phone.id;
       if (id) {
@@ -337,7 +339,7 @@ export class EditProfileComponent
     }
 
     // Single address
-    if (this.addressAvailability === 'single') {
+    if (this.singleAddress) {
       const address = this.singleAddress.value;
       const id = address.id;
       const defined = this.defineSingleAddress.value;
@@ -402,10 +404,12 @@ export class EditProfileComponent
 
     // Prepare the mobile forms
     if (this.mobileAvailability === 'single') {
-      this.singleMobileManage = empty(data.mobilePhones)
-        ? data.phoneConfiguration.mobilePhone
-        : data.mobilePhones[0];
-      this.singleMobile = this.buildMobileForm(this.singleMobileManage);
+      if (this.canEdit('phone') || !empty(data.mobilePhones)) {
+        this.singleMobileManage = empty(data.mobilePhones)
+          ? data.phoneConfiguration.mobilePhone
+          : data.mobilePhones[0];
+        this.singleMobile = this.buildMobileForm(this.singleMobileManage);
+      }
     } else {
       (data.mobilePhones || []).forEach(p => {
         const form = this.buildMobileForm(p);
@@ -422,10 +426,12 @@ export class EditProfileComponent
 
     // Prepare the land-line forms
     if (this.landLineAvailability === 'single') {
-      this.singleLandLineManage = empty(data.landLinePhones)
-        ? data.phoneConfiguration.landLinePhone
-        : data.landLinePhones[0];
-      this.singleLandLine = this.buildLandLineForm(this.singleLandLineManage);
+      if (this.canEdit('phone') || !empty(data.landLinePhones)) {
+        this.singleLandLineManage = empty(data.landLinePhones)
+          ? data.phoneConfiguration.landLinePhone
+          : data.landLinePhones[0];
+        this.singleLandLine = this.buildLandLineForm(this.singleLandLineManage);
+      }
     } else {
       (data.landLinePhones || []).forEach(p => {
         const form = this.buildLandLineForm(p);
@@ -442,12 +448,14 @@ export class EditProfileComponent
 
     // Prepare the address forms
     if (this.addressAvailability === 'single') {
-      this.defineSingleAddress = this.formBuilder.control(
-        !empty(data.addresses) || data.addressConfiguration.availability === 'required');
-      this.singleAddressManage = empty(data.addresses)
-        ? data.addressConfiguration.address
-        : data.addresses[0];
-      this.singleAddress = this.buildAddressForm(this.singleAddressManage);
+      if (this.canEdit('address') || !empty(data.addresses)) {
+        this.defineSingleAddress = this.formBuilder.control(
+          !empty(data.addresses) || data.addressConfiguration.availability === 'required');
+        this.singleAddressManage = empty(data.addresses)
+          ? data.addressConfiguration.address
+          : data.addresses[0];
+        this.singleAddress = this.buildAddressForm(this.singleAddressManage);
+      }
     } else {
       (data.addresses || []).forEach(p => {
         const form = this.buildAddressForm(p);
@@ -829,8 +837,25 @@ export class EditProfileComponent
    * Updates images and displays a notification after the image was uploaded
    */
   onUploadDone(images: Image[]) {
-    this.images = ([...this.images, ...images]);
+    const single = this.data.imageConfiguration.maxImages === 1;
+    this.images = single ? [images[0]] : [...this.images, ...images];
     this.changeDetector.detectChanges();
+
+    if (self && single) {
+      // Update the image on the logged user
+      const current = this.login.user$.value;
+      this.login.user$.next({
+        ...current,
+        image: images[0]
+      });
+    }
+  }
+
+  /**
+   * Opens a dialog to capture an image from camera
+   */
+  captureCamera(upload: ImageUploadComponent) {
+    this.notification.captureCamera(file => upload.uploadFile(file));
   }
 
   /**
@@ -862,6 +887,16 @@ export class EditProfileComponent
         });
         this.addSub(this.imagesService.reorderProfileImages({ ids: result.order, user: this.param }).subscribe());
       }
+
+      if (self) {
+        // Update the image on the logged user
+        const current = this.login.user$.value;
+        this.login.user$.next({
+          ...current,
+          image: this.images[0]
+        });
+      }
+
       ref.hide();
     });
   }

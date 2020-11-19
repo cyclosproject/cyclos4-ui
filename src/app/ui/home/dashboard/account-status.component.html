@@ -1,62 +1,49 @@
-<page-content [heading]="title" [mobileHeading]="i18n.account.mobileTitle"
-  [headingActions]="headingActions" hideBack [last]="last"
-  [ngStyle]="{minHeight: minHeight}">
-  <ng-container *ngIf="history$ | async; else spinner">
-    <div class="balance">
-      <div class="balance-label">{{ i18n.account.balance }}</div>
-      <div class="balance-value" [ngClass]="{
-      negative: format.isNegative(balance),
-      positive: format.isPositive(balance)
-    }">
-        {{ balance | currency:currency }}
-      </div>
+<page-content [heading]="title"
+  [mobileHeading]="i18n.account.mobileTitle.account"
+  [headingActions]="headingActions" hideBack>
+  <div class="balance" *ngIf="balance">
+    <div class="balance-label">{{ i18n.account.balance }}</div>
+    <div class="balance-value" [ngClass]="{
+        negative: format.isNegative(balance),
+        positive: format.isPositive(balance)
+      }">
+      {{ balance | currency:currency }}
     </div>
+  </div>
 
-    <canvas balanceHistoryChart [history]="history$.value" width="400"
-      [darkTheme]="(layout.theme$ | async) === 'dark'" height="100"></canvas>
-    <ng-container *ngIf="maxTransfers > 0">
-      <ng-container *ngTemplateOutlet="transfersTpl"></ng-container>
-    </ng-container>
-  </ng-container>
+  <canvas balanceHistoryChart *ngIf="account.balances.length > 0"
+    [account]="account" width="400" class="mw-100"
+    [darkTheme]="(layout.theme$ | async) === 'dark'" height="100"></canvas>
+  <ng-container *ngTemplateOutlet="transfersTpl"></ng-container>
 </page-content>
-
-<ng-template #spinner>
-  <spinner class="flex-grow-1"></spinner>
-</ng-template>
 
 <ng-template #transfersTpl>
   <div class="flex-grow-1 d-flex flex-column justify-content-end">
-    <h3 class="last-transfers">{{
-      i18n.dashboard.lastIncomingPayments }}</h3>
-    <ng-container
-      *ngIf="(lastPayments$ | async) != null; else loadingTransfers">
-      <table class="table table-hover table-auto-height mb-0 cursor-pointer"
-        *ngIf="lastPayments$.value?.length > 0; else noTransfers">
-        <tr *ngFor="let transfer of lastPayments$.value; let last = last"
-          (click)="viewTransfer(transfer, $event)">
-          <td style="width:20%" class="text-left pl-0 text-muted"
-            [ngClass]="{'border-0': last}">
-            {{ transfer.date | date }}
-          </td>
-          <td style="width:45%" class="text-center text-muted"
-            [ngClass]="{'border-0': last}">
-            {{ subjectName(transfer) }}
-          </td>
-          <td style="width:35%" class="text-right" [ngClass]="{
-            negative: format.isNegative(transfer.amount),
-            positive: format.isPositive(transfer.amount),
-            'border-0': last
+    <h3 class="last-transfers">{{ i18n.dashboard.lastPayments }}</h3>
+    <table
+      class="table table-fixed table-hover table-auto-height mb-0 cursor-pointer"
+      *ngIf="account.lastTransfers.length > 0; else noTransfers">
+      <tr *ngFor="let transfer of account.lastTransfers; let last = last"
+        (click)="viewTransfer(transfer, $event)">
+        <td style="width:17%" class="text-left pl-0 text-muted"
+          [ngClass]="{'border-0': last}">
+          {{ transfer.date | date }}
+        </td>
+        <td style="width:58%" class="text-center text-muted"
+          [ngClass]="{'border-0': last}">
+          <div class="single-line">{{ subjectName(transfer) }}</div>
+        </td>
+        <td style="width:25%" class="text-right" [ngClass]="{
+          negative: format.isNegative(transfer.amount),
+          positive: format.isPositive(transfer.amount),
+          'border-0': last
           }">
-            {{ transfer.amount | currency: currency }}
-          </td>
-        </tr>
-      </table>
-      <ng-template #noTransfers>
-        {{ i18n.dashboard.noIncomingPayments }}
-      </ng-template>
-    </ng-container>
-    <ng-template #loadingTransfers>
-      <spinner></spinner>
+          {{ transfer.amount | currency: currency }}
+        </td>
+      </tr>
+    </table>
+    <ng-template #noTransfers>
+      {{ i18n.dashboard.noPayments }}
     </ng-template>
   </div>
 </ng-template>

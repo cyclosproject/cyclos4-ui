@@ -24,13 +24,12 @@ import { AddressDetailsComponent } from 'app/ui/shared/address-details.component
 import { AddressFormComponent } from 'app/ui/shared/address-form.component';
 import { AgreementsContentDialogComponent } from 'app/ui/shared/agreement-content-dialog.component';
 import { AgreementLinkComponent } from 'app/ui/shared/agreement-link.component';
-import { BannerCardComponent } from 'app/ui/shared/banner-card.component';
+import { BannerComponent } from 'app/ui/shared/banner.component';
 import { FieldPrivacyComponent } from 'app/ui/shared/field-privacy.component';
 import { PageLayoutComponent } from 'app/ui/shared/page-layout.component';
 import { ProfileAddressesComponent } from 'app/ui/shared/profile-addresses.component';
 import { ProfileImagesComponent } from 'app/ui/shared/profile-images.component';
 import { RatingStatsComponent } from 'app/ui/shared/rating-stats.component';
-import { ShowContentComponent } from 'app/ui/shared/show-content.component';
 import { UserInfoComponent } from 'app/ui/shared/user-info.component';
 import { UserLinkComponent } from 'app/ui/shared/user-link.component';
 import { NotificationTypeSettingComponent } from 'app/ui/users/notification-settings/notification-type-setting.component';
@@ -50,8 +49,7 @@ export function initTooltipConfig(): TooltipConfig {
  */
 @NgModule({
   declarations: [
-    BannerCardComponent,
-    ShowContentComponent,
+    BannerComponent,
     AddressDetailsComponent,
     AddressFormComponent,
     FieldPrivacyComponent,
@@ -91,8 +89,7 @@ export function initTooltipConfig(): TooltipConfig {
   exports: [
     SharedModule,
 
-    BannerCardComponent,
-    ShowContentComponent,
+    BannerComponent,
     AddressDetailsComponent,
     AddressFormComponent,
     FieldPrivacyComponent,

@@ -44,7 +44,7 @@
           <td class="actions">
             <button *ngIf="row.accepted" [tooltip]="i18n.general.view"
               class="btn btn-icon" (click)="showAgreement(row)">
-              <icon icon="search"></icon>
+              <icon [icon]="SvgIcon.Search"></icon>
             </button>
           </td>
         </tr>

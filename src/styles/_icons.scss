@@ -1,29 +1,5 @@
 @import 'src/definitions';
 
-.material-icons {
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  display: table-cell;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
-
-  /* Support for all WebKit browsers. */
-  -webkit-font-smoothing: antialiased;
-  /* Support for Safari and Chrome. */
-  text-rendering: optimizeLegibility;
-
-  /* Support for Firefox. */
-  -moz-osx-font-smoothing: grayscale;
-
-  /* Support for IE. */
-  font-feature-settings: 'liga';
-}
-
 .top-icon {
   height: $top-icon-size-xxs !important;
   width: $top-icon-size-xxs !important;
@@ -31,7 +7,7 @@
   line-height: $top-icon-size-xxs !important;
 }
 
-@include media-breakpoint-up(sm) {
+@include media-breakpoint-up(xs) {
   .top-icon {
     height: $top-icon-size-xs !important;
     width: $top-icon-size-xs !important;
@@ -142,13 +118,13 @@ body.dark {
 ///////////////////////////////////////////////////////////
 
 icon {
+  display: inline-flex;
   fill: currentColor;
   position: relative;
+  width: 1.5rem;
+  height: 1.5rem;
 
   svg {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
   }
@@ -157,8 +133,10 @@ icon {
 ///////////////////////////////////////////////////////////
 
 icon-with-counter {
-  display: inline-block;
+  display: inline-flex;
   position: relative;
+  align-items: center;
+  justify-content: center;
 
   .counter {
     border-radius: 100%;
@@ -170,10 +148,9 @@ icon-with-counter {
     position: absolute;
     top: -0.2rem;
     right: -0.2rem;
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     height: 0.9rem;
     width: 0.9rem;
     z-index: 1;
-    padding-top: 2px;
   }
 }

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
+import { SvgIcon } from 'app/core/svg-icon';
 import { truthyAttr } from 'app/shared/helper';
 import { BehaviorSubject, Observable, Subscription, timer } from 'rxjs';
 
@@ -27,7 +28,7 @@ export class CountdownButtonComponent implements OnInit {
   }
 
   @Input() label: string;
-  @Input() icon: string;
+  @Input() icon: SvgIcon | string;
   @Input() disabledSeconds: number;
   @Input() disabledKey: (remainingSeconds: number) => string;
   @Output() action = new EventEmitter<any>();

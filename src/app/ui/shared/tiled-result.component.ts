@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Image } from 'app/api/models';
+import { SvgIcon } from 'app/core/svg-icon';
 import { truthyAttr } from 'app/shared/helper';
 
 /**
@@ -13,7 +14,7 @@ import { truthyAttr } from 'app/shared/helper';
 export class TiledResultComponent {
 
   @Input() image: Image;
-  @Input() icon: string;
+  @Input() icon: SvgIcon | string;
 
   private _zoom: boolean | string = false;
   @Input() get zoom(): boolean | string {

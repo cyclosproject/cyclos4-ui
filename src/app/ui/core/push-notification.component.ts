@@ -3,10 +3,11 @@ import { Router } from '@angular/router';
 import { Notification } from 'app/api/models';
 import { NotificationsService } from 'app/api/services/notifications.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
-import { MenuService } from 'app/ui/core/menu.service';
+import { LayoutService } from 'app/core/layout.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
-import { LayoutService } from 'app/core/layout.service';
+import { MenuService } from 'app/ui/core/menu.service';
 import { ActiveMenu } from 'app/ui/shared/menu';
 import { first } from 'rxjs/operators';
 
@@ -21,6 +22,8 @@ const TimeoutMillis = 6000;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PushNotificationComponent {
+
+  SvgIcon = SvgIcon;
 
   @HostBinding('style.opacity') opacity: 1;
 

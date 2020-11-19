@@ -26,7 +26,7 @@
         <div *ngIf="!readOnly && canRemove(prod)" class="ml-auto text-right">
           <button [tooltip]="i18n.general.remove" class="btn btn-icon"
             (click)="remove(prod); $event.stopPropagation(); $event.preventDefault()">
-            <icon icon="clear"></icon>
+            <icon [icon]="SvgIcon.Trash"></icon>
           </button>
         </div>
       </div>
@@ -56,7 +56,7 @@
                 <button *ngIf="!readOnly && canRemove(prod)"
                   [tooltip]="i18n.general.remove" class="btn btn-icon"
                   (click)="remove(prod); $event.stopPropagation()">
-                  <icon icon="clear"></icon>
+                  <icon [icon]="SvgIcon.Trash"></icon>
                 </button>
               </td>
             </tr>

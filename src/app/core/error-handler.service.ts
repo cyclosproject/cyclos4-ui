@@ -6,14 +6,15 @@ import {
   ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError, NotFoundError,
   OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, RedeemVoucherError,
   RedeemVoucherErrorCode, ShoppingCartError, ShoppingCartErrorCode,
-  UnauthorizedError, UnauthorizedErrorCode
+  UnauthorizedError, UnauthorizedErrorCode, UserStatusEnum
 } from 'app/api/models';
 import { ApiI18nService } from 'app/core/api-i18n.service';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { FormatService } from 'app/core/format.service';
 import { NotificationService } from 'app/core/notification.service';
 import { I18n } from 'app/i18n/i18n';
 import { empty } from 'app/shared/helper';
+import { first } from 'rxjs/operators';
 import { ErrorStatus } from './error-status';
 import { NextRequestState } from './next-request-state';
 
@@ -33,7 +34,7 @@ export class ErrorHandlerService {
     private notification: NotificationService,
     private format: FormatService,
     private nextRequestState: NextRequestState,
-    private dataForUiHolder: DataForUiHolder,
+    private dataForFrontendHolder: DataForFrontendHolder,
     private i18n: I18n,
     private apiI18n: ApiI18nService
   ) { }
@@ -142,10 +143,9 @@ export class ErrorHandlerService {
       // Should be logged-in. Redirect to login page.
       goToLogin();
     } else if (error.code === UnauthorizedErrorCode.LOGGED_OUT) {
-      // Was logged out. Fetch the DataForUi again (as guest) and go to the login page.
+      // Was logged out. Fetch the DataForFrontend again (as guest) and go to the login page.
       this.nextRequestState.setSessionToken(null);
-      this.dataForUiHolder.reload()
-        .subscribe(() => goToLogin());
+      this.dataForFrontendHolder.reload().pipe(first()).subscribe(() => goToLogin());
     } else {
       this.notification.error(this.unauthorizedErrorMessage(error));
     }
@@ -348,26 +348,34 @@ export class ErrorHandlerService {
       case UnauthorizedErrorCode.LOGIN:
         switch (error.passwordStatus) {
           case PasswordStatusEnum.DISABLED:
-            return this.i18n.password.error.disabled;
+            return this.i18n.login.error.password.disabled;
           case PasswordStatusEnum.RESET:
-            return this.i18n.password.error.reset;
+            return this.i18n.login.error.password.reset;
           case PasswordStatusEnum.INDEFINITELY_BLOCKED:
-            return this.i18n.password.error.indefinitelyBlocked;
+            return this.i18n.login.error.password.indefinitelyBlocked;
           case PasswordStatusEnum.TEMPORARILY_BLOCKED:
-            return this.i18n.password.error.temporarilyBlocked;
+            return this.i18n.login.error.password.temporarilyBlocked;
           case PasswordStatusEnum.EXPIRED:
-            return this.i18n.password.error.expired;
-          case PasswordStatusEnum.PENDING:
-            return this.i18n.password.error.pending;
-          default:
-            return this.i18n.error.login;
+            return this.i18n.login.error.password.expired;
         }
+
+        switch (error.userStatus) {
+          case UserStatusEnum.BLOCKED:
+            return this.i18n.login.error.user.blocked;
+          case UserStatusEnum.DISABLED:
+            return this.i18n.login.error.user.disabled;
+          case UserStatusEnum.PENDING:
+            return this.i18n.login.error.user.pending;
+        }
+        return this.i18n.error.login;
       case UnauthorizedErrorCode.REMOTE_ADDRESS_BLOCKED:
         return this.i18n.error.remoteAddressBlocked;
       case UnauthorizedErrorCode.UNAUTHORIZED_ADDRESS:
         return this.i18n.error.unauthorized.address;
       case UnauthorizedErrorCode.UNAUTHORIZED_URL:
         return this.i18n.error.unauthorized.url;
+      case UnauthorizedErrorCode.INVALID_NETWORK:
+        return this.i18n.error.networkInaccessible;
       case UnauthorizedErrorCode.LOGGED_OUT:
         return this.i18n.error.loggedOut;
       default:

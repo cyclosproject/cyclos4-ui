@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { ReferenceView } from 'app/api/models';
 import { ReferencesService } from 'app/api/services/references.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { Menu } from 'app/ui/shared/menu';
@@ -40,7 +41,7 @@ export class ViewReferenceComponent extends BaseViewPageComponent<ReferenceView>
     const actions = [];
     if (data.canEdit) {
       actions.push(
-        new HeadingAction('edit', this.i18n.general.edit, () =>
+        new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () =>
           this.router.navigate(['/users', 'references', 'edit', this.id]), true,
         ));
     }

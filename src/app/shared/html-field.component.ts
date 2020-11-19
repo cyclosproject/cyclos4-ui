@@ -1,9 +1,10 @@
 import {
   AfterViewInit, ChangeDetectionStrategy, Component, ElementRef,
-  Host, Injector, OnInit, Optional, SkipSelf, ViewChild,
+  Host, Injector, OnInit, Optional, SkipSelf, ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { RoleEnum } from 'app/api/models';
+import { SvgIcon } from 'app/core/svg-icon';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty, focus, htmlCollectionToArray } from 'app/shared/helper';
 import { ImageProperties } from 'app/shared/image-properties';
@@ -70,7 +71,7 @@ class CommandButton extends Command {
     idPrefix: string,
     command: string,
     tooltip: string,
-    public icon: string,
+    public icon: SvgIcon,
   ) {
     super(idPrefix, 'button', command, tooltip);
   }
@@ -85,7 +86,7 @@ class CustomButton extends Action {
     fieldId: string,
     public callback: () => any,
     tooltip: string,
-    public icon: string,
+    public icon: SvgIcon,
   ) {
     super(fieldId, 'button', tooltip);
   }
@@ -124,8 +125,8 @@ export class HtmlFieldComponent
     super.ngOnInit();
     this.actions = [
       [
-        new CommandButton(this.id, 'undo', this.i18n.field.html.undo, 'fa-undo'),
-        new CommandButton(this.id, 'redo', this.i18n.field.html.redo, 'fa-undo fa-flip-horizontal'),
+        new CommandButton(this.id, 'undo', this.i18n.field.html.undo, SvgIcon.ArrowCounterclockwise),
+        new CommandButton(this.id, 'redo', this.i18n.field.html.redo, SvgIcon.ArrowClockwise),
       ],
       [
         new CommandSelect(this.id, 'formatblock', this.i18n.field.html.block, [
@@ -159,26 +160,26 @@ export class HtmlFieldComponent
         ]).expand(),
       ],
       [
-        new CommandButton(this.id, 'bold', this.i18n.field.html.bold, 'fa-bold').expand(),
-        new CommandButton(this.id, 'italic', this.i18n.field.html.italic, 'fa-italic').expand(),
-        new CommandButton(this.id, 'underline', this.i18n.field.html.underline, 'fa-underline').expand(),
-        new CommandButton(this.id, 'strikethrough', this.i18n.field.html.strikethrough, 'fa-strikethrough').expand(),
+        new CommandButton(this.id, 'bold', this.i18n.field.html.bold, SvgIcon.TypeBold).expand(),
+        new CommandButton(this.id, 'italic', this.i18n.field.html.italic, SvgIcon.TypeItalic).expand(),
+        new CommandButton(this.id, 'underline', this.i18n.field.html.underline, SvgIcon.TypeUnderline).expand(),
+        new CommandButton(this.id, 'strikethrough', this.i18n.field.html.strikethrough, SvgIcon.TypeStrikethrough).expand(),
       ],
       [
-        new CommandButton(this.id, 'justifyLeft', this.i18n.field.html.alignLeft, 'fa-align-left'),
-        new CommandButton(this.id, 'justifyCenter', this.i18n.field.html.alignCenter, 'fa-align-center'),
-        new CommandButton(this.id, 'justifyRight', this.i18n.field.html.alignRight, 'fa-align-right'),
-        new CommandButton(this.id, 'justifyFull', this.i18n.field.html.alignJustify, 'fa-align-justify'),
+        new CommandButton(this.id, 'justifyLeft', this.i18n.field.html.alignLeft, SvgIcon.TextLeft),
+        new CommandButton(this.id, 'justifyCenter', this.i18n.field.html.alignCenter, SvgIcon.TextCenter),
+        new CommandButton(this.id, 'justifyRight', this.i18n.field.html.alignRight, SvgIcon.TextRight),
+        new CommandButton(this.id, 'justifyFull', this.i18n.field.html.alignJustify, SvgIcon.Justify),
       ],
       [
-        new CommandButton(this.id, 'insertUnorderedList', this.i18n.field.html.listBulleted, 'fa-list-ul'),
-        new CommandButton(this.id, 'insertOrderedList', this.i18n.field.html.listNumbered, 'fa-list-ol'),
-        new CommandButton(this.id, 'outdent', this.i18n.field.html.indentLess, 'fa-indent'),
-        new CommandButton(this.id, 'indent', this.i18n.field.html.indentMore, 'fa-outdent'),
+        new CommandButton(this.id, 'insertUnorderedList', this.i18n.field.html.listBulleted, SvgIcon.ListUl),
+        new CommandButton(this.id, 'insertOrderedList', this.i18n.field.html.listNumbered, SvgIcon.ListOl),
+        new CommandButton(this.id, 'outdent', this.i18n.field.html.indentLess, SvgIcon.TextIndentRight),
+        new CommandButton(this.id, 'indent', this.i18n.field.html.indentMore, SvgIcon.TextIndentLeft),
       ],
       this.actionsWithImage,
       [
-        new CommandButton(this.id, 'removeformat', this.i18n.field.html.removeFormat, 'fa-remove').expand(),
+        new CommandButton(this.id, 'removeformat', this.i18n.field.html.removeFormat, SvgIcon.X).expand(),
       ],
     ].filter(a => !empty(a));
   }
@@ -186,17 +187,18 @@ export class HtmlFieldComponent
   private get actionsWithImage(): Action[] {
     const actions: Action[] = [];
 
-    const auth = this.dataForUiHolder.auth;
-    const permissions = this.dataForUiHolder.auth.permissions || {};
+    const auth = this.dataForFrontendHolder.auth;
+    const permissions = this.dataForFrontendHolder.auth.permissions || {};
     const imagePermissions = permissions.images || {};
     if (imagePermissions.myCustom || auth.role === RoleEnum.ADMINISTRATOR) {
       // Admins can link an external URL or use system images. Users can only use custom images.
       // However, this user don't have this permission, so we can't show the insert image button.
-      actions.push(new CustomButton(`${this.id}_insertImage`, () => this.insertImage(), this.i18n.field.html.image.tooltip, 'fa-image'));
+      actions.push(new CustomButton(`${this.id}_insertImage`, () => this.insertImage(), this.i18n.field.html.image.tooltip, SvgIcon.Image));
     }
 
-    actions.push(new CustomButton(`${this.id}_insertLink`, () => this.insertLink(), this.i18n.field.html.link.tooltip, 'fa-link').expand());
-    actions.push(new CustomButton(`${this.id}_removeLink`, () => this.unlink(), this.i18n.field.html.unlink, 'fa-unlink'));
+    actions.push(new CustomButton(`${this.id}_insertLink`, () => this.insertLink(), this.i18n.field.html.link.tooltip, SvgIcon.Link)
+      .expand());
+    actions.push(new CustomButton(`${this.id}_removeLink`, () => this.unlink(), this.i18n.field.html.unlink, SvgIcon.LinkSlash));
     return actions;
   }
 

@@ -10,7 +10,7 @@ import { NextRequestState } from 'app/core/next-request-state';
 import { BaseComponent } from 'app/shared/base.component';
 import { resizeImage, ResizeResult, truthyAttr } from 'app/shared/helper';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, switchMap } from 'rxjs/operators';
 
 /**
  * Represents an image file being uploaded
@@ -112,6 +112,25 @@ export class ImageUploadComponent extends BaseComponent implements OnDestroy {
     el.click();
   }
 
+  /**
+   * Uploads a blob as image
+   */
+  uploadFile(original: File): void {
+    const dataForUi = this.dataForFrontendHolder.dataForUi;
+    const maxWidth = (dataForUi || {}).maxImageWidth || 2000;
+    const maxHeight = (dataForUi || {}).maxImageHeight || 2000;
+
+    resizeImage(original, maxWidth, maxHeight).pipe(
+      first(),
+      switchMap((result: ResizeResult) => {
+        const toUpload = new ImageToUpload(original.name, result.width, result.height, result.content);
+        return this.doUpload(toUpload);
+      }))
+      .subscribe(image => {
+        this.uploadDone.emit([image]);
+      });
+  }
+
   filesSelected(fileList: FileList) {
     if (fileList.length === 0) {
       // No files were selected
@@ -121,7 +140,7 @@ export class ImageUploadComponent extends BaseComponent implements OnDestroy {
     // Upload each file
     this.uploading$.next(true);
 
-    const dataForUi = this.dataForUiHolder.dataForUi;
+    const dataForUi = this.dataForFrontendHolder.dataForUi;
     const maxWidth = (dataForUi || {}).maxImageWidth || 2000;
     const maxHeight = (dataForUi || {}).maxImageHeight || 2000;
 

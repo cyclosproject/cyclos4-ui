@@ -2,7 +2,7 @@
   <results-layout [results]="items" resultType="list"
     [toLink]="detailed ? toLink : null" [embedded]="true">
     <mobile-result *mobileResult="let row" [avatarImage]="row.product.image"
-      avatarIcon="shopping_basket" [title]="row.product.name">
+      avatarIcon="basket" [title]="row.product.name">
       <div class="d-flex">
         <div>
           <div class="cell-text">
@@ -23,11 +23,11 @@
         <div *ngIf="detailed" class="ml-auto text-right d-flex flex-column">
           <button [tooltip]="i18n.ad.changeQuantity" class="btn btn-icon"
             (click)="changeQuantity.emit([null, row, false]); $event.stopPropagation(); $event.preventDefault()">
-            <icon icon="edit"></icon>
+            <icon [icon]="SvgIcon.Pencil"></icon>
           </button>
           <button [tooltip]="i18n.general.remove" class="btn btn-icon mt-2"
             (click)="remove.emit(row); $event.stopPropagation(); $event.preventDefault()">
-            <icon icon="delete"></icon>
+            <icon [icon]="SvgIcon.Trash"></icon>
           </button>
         </div>
       </div>
@@ -55,7 +55,7 @@
               'border-bottom-0': last
             }">
           <avatar [image]="row.product.image" [tooltip]="row.product.name"
-            icon="shopping_basket"></avatar>
+            [icon]="SvgIcon.Basket"></avatar>
         <td width="30%"
           [ngClass]="{'link' : detailed, 'border-bottom-0': last}"
           [ngStyle]="{'text-decoration': !isAvailable(row) ? 'line-through' : ''}"
@@ -86,12 +86,12 @@
           <button *ngIf="!useForm(layout.gtsm$ | async) && isAvailable(row)"
             [tooltip]="i18n.ad.changeQuantity" class="btn btn-icon"
             (click)="changeQuantity.emit([null, row, false]); $event.stopPropagation()">
-            <icon icon="edit"></icon>
+            <icon [icon]="SvgIcon.Pencil"></icon>
           </button>
           <button [tooltip]="i18n.general.remove" class="btn btn-icon"
             [ngClass]="{'ml-3' : !useForm(layout.gtsm$ | async) && isAvailable(row)}"
             (click)="remove.emit(row); $event.stopPropagation()">
-            <icon icon="delete"></icon>
+            <icon [icon]="SvgIcon.Trash"></icon>
           </button>
         </td>
       </tr>

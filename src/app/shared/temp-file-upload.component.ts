@@ -116,7 +116,7 @@ export class TempFileUploadComponent extends BaseComponent {
     this.files = [];
     const max = Math.min(this.max, fileList.length);
     const tooLarge = [];
-    const maxSize = this.dataForUiHolder.dataForUi.maxUploadSize || Number.MAX_SAFE_INTEGER;
+    const maxSize = this.dataForFrontendHolder.dataForUi.maxUploadSize || Number.MAX_SAFE_INTEGER;
     for (let i = 0; i < max; i++) {
       const file = fileList.item(i);
       if (file.size > maxSize) {

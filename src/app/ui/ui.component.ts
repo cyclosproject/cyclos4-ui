@@ -1,21 +1,20 @@
 import { ChangeDetectionStrategy, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataForUi } from 'app/api/models';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { DataForFrontend } from 'app/api/models';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
+import { LayoutService } from 'app/core/layout.service';
+import { ArrowsVertical, ShortcutService } from 'app/core/shortcut.service';
 import { StateManager } from 'app/core/state-manager';
 import { I18n } from 'app/i18n/i18n';
 import { handleKeyboardFocus, setRootSpinnerVisible } from 'app/shared/helper';
-import { ArrowsVertical, ShortcutService } from 'app/core/shortcut.service';
-import { Configuration } from 'app/ui/configuration';
-import { BannerService } from 'app/ui/core/banner.service';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
 import { LoginState } from 'app/ui/core/login-state';
 import { LoginService } from 'app/ui/core/login.service';
 import { MenuService } from 'app/ui/core/menu.service';
 import { SidenavComponent } from 'app/ui/core/sidenav.component';
+import { UiErrorHandlerService } from 'app/ui/core/ui-error-handler.service';
 import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 import { BehaviorSubject } from 'rxjs';
-import { UiErrorHandlerService } from 'app/ui/core/ui-error-handler.service';
 
 @Component({
   selector: 'ui-root',
@@ -36,12 +35,12 @@ export class UiComponent implements OnInit {
   constructor(
     private ngZone: NgZone,
     private router: Router,
-    private dataForUiHolder: DataForUiHolder,
+    private dataForFrontendHolder: DataForFrontendHolder,
     public login: LoginService,
     public loginState: LoginState,
     public menu: MenuService,
-    public layout: UiLayoutService,
-    private banner: BannerService,
+    public layout: LayoutService,
+    public uiLayout: UiLayoutService,
     public i18n: I18n,
     private stateManager: StateManager,
     private breadcrumb: BreadcrumbService,
@@ -59,23 +58,21 @@ export class UiComponent implements OnInit {
         this.menu.navigate({ url, event });
       });
     };
-    this.menuBar = Configuration.menuBar;
-    this.banner.initialize();
     this.uiErrorHandler.initialize();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.dataForUiHolder.subscribe(dataForUi => {
-      if (dataForUi != null) {
-        this.doInitialize(dataForUi);
+    this.dataForFrontendHolder.subscribe(dataForFrontend => {
+      if (dataForFrontend != null) {
+        this.doInitialize(dataForFrontend);
       }
     });
-    if (this.dataForUiHolder.dataForUi) {
-      this.doInitialize(this.dataForUiHolder.dataForUi);
+    if (this.dataForFrontendHolder.dataForFrontend) {
+      this.doInitialize(this.dataForFrontendHolder.dataForFrontend);
     }
     this.loginState.subscribeForLoggingOut(flag => this.loggingOut$.next(flag));
 
     // Some browsers (like Firefox) show an outline on focused anchors.
     // After the page is loaded, blur the menus, so none will be outlined
-    this.layout.currentPage$.subscribe(() => {
+    this.uiLayout.currentPage$.subscribe(() => {
       const focused = document.activeElement as HTMLElement;
       if (focused.tagName === 'A') {
         try {
@@ -95,23 +92,28 @@ export class UiComponent implements OnInit {
       handleKeyboardFocus(this.layout, this.mainContainer.nativeElement, e));
   }
 
-  private doInitialize(dataForUi: DataForUi) {
+  private doInitialize(dataForFrontend: DataForFrontend) {
     this.initialized$.next(true);
 
-    // Handle redirects on urgent situations
+    this.menuBar = dataForFrontend.menuBar;
+    const dataForUi = (dataForFrontend || {}).dataForUi;
     const auth = (dataForUi || {}).auth || {};
+
+    // Handle redirects on urgent situations
     let redirect: string = null;
-    if (auth.expiredPassword) {
-      redirect = '/expired-password';
-    } else if (auth.pendingAgreements) {
+    if (auth.pendingAgreements) {
       redirect = '/pending-agreements';
+    } else if (auth.expiredPassword || auth.expiredSecondaryPassword) {
+      redirect = '/expired-password';
+    } else if (auth.pendingSecondaryPassword) {
+      redirect = '/login-confirmation';
     }
-    if (redirect && this.router.url !== redirect) {
-      setTimeout(() => {
+    setTimeout(() => {
+      if (redirect && this.router.url !== redirect) {
         this.breadcrumb.clear();
         this.stateManager.clear();
         this.router.navigateByUrl(redirect);
-      }, 1);
-    }
+      }
+    }, 1);
   }
 }

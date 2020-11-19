@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { WebshopSettingsView } from 'app/api/models';
 import { WebshopSettingsService } from 'app/api/services/webshop-settings.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { Menu } from 'app/ui/shared/menu';
@@ -37,7 +38,7 @@ export class ViewWebshopSettingsComponent extends BaseViewPageComponent<WebshopS
 
     if (data.canEdit) {
       actions.push(
-        new HeadingAction('edit', this.i18n.general.edit, () =>
+        new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () =>
           this.router.navigate(['/marketplace', this.user, 'webshop-settings', 'edit']), true,
         ));
 

@@ -1,6 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ExportFormat } from 'app/api/models';
+import { SvgIcon } from 'app/core/svg-icon';
 import { I18n } from 'app/i18n/i18n';
 import { Action, HeadingAction } from 'app/shared/action';
 import { downloadResponse, empty } from 'app/shared/helper';
@@ -30,13 +31,14 @@ export class ExportHelperService {
       const format = formats[0];
       // When there's a single export format, and is PDF, display as 'Print'
       if (format.internalName === 'pdf') {
-        return [new HeadingAction('print', this.i18n.general.print, this.downloadHandler(format, callback), true)];
+        return [new HeadingAction(SvgIcon.Printer, this.i18n.general.print, this.downloadHandler(format, callback), true)];
       } else {
-        return [new HeadingAction('save_alt', this.i18n.general.downloadAs(format.name), this.downloadHandler(format, callback), true)];
+        return [new HeadingAction(SvgIcon.Download, this.i18n.general.downloadAs(format.name),
+          this.downloadHandler(format, callback), true)];
       }
     } else {
       // When multiple export formats, handle them as sub-actions
-      const action = new HeadingAction('save_alt', this.i18n.general.download, () => null);
+      const action = new HeadingAction(SvgIcon.Download, this.i18n.general.download, () => null);
       action.subActions = formats.map(f => new Action(f.name, this.downloadHandler(f, callback)));
       return [action];
     }
@@ -52,6 +54,6 @@ export class ExportHelperService {
    * Returns a heading action that prints the current page
    */
   printAction() {
-    return new HeadingAction('print', this.i18n.general.print, () => self.print());
+    return new HeadingAction(SvgIcon.Printer, this.i18n.general.print, () => self.print());
   }
 }

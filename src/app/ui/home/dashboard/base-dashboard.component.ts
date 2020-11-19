@@ -1,22 +1,21 @@
-import { Directive, Injector, Input } from '@angular/core';
+import { Directive, HostBinding } from '@angular/core';
 import { HeadingAction } from 'app/shared/action';
 import { BaseComponent } from 'app/shared/base.component';
 import { BehaviorSubject } from 'rxjs';
 
 /**
- * Base class for components which are dashboard items
+ * Base class for dashboard items
  */
 @Directive()
-export class BaseDashboardComponent extends BaseComponent {
+export abstract class BaseDashboardComponent extends BaseComponent {
 
-  @Input() minHeight: string;
-  @Input() last: boolean;
+  @HostBinding('class.dashboard-item') classItem = true;
 
-  headingActions: HeadingAction[];
-
-  minHeight$ = new BehaviorSubject<string>(null);
-
-  constructor(injector: Injector) {
-    super(injector);
+  headingActions$ = new BehaviorSubject<HeadingAction[]>(null);
+  get headingActions(): HeadingAction[] {
+    return this.headingActions$.value;
+  }
+  set headingActions(headingActions: HeadingAction[]) {
+    this.headingActions$.next(headingActions);
   }
 }

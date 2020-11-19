@@ -68,10 +68,6 @@ export class SearchUsersComponent
   }
 
   getInitialResultType() {
-    const fromConfig = this.uiLayout.getBreakpointConfiguration('defaultUsersResultType') as ResultType;
-    if (fromConfig && this.allowedResultTypes.includes(fromConfig)) {
-      return fromConfig;
-    }
     return this.layout.xxs ? ResultType.LIST : ResultType.TILES;
   }
 

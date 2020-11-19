@@ -7,8 +7,9 @@
     <div class="category-title">
       <a class="category-title-text" href="#"
         (click)="$event.preventDefault(); selectCategory(cat)">
-        <avatar [image]="categoryImage(cat)" size="small"
-          [icon]="categoryIcon(cat)" [iconColor]="categoryColor(cat)">
+        <avatar [image]="cat.svgIcon ? null : cat.image" size="small"
+          [icon]="cat.svgIcon || SvgIcon.Basket"
+          [iconColor]="cat.svgIconColor">
         </avatar>
         {{ cat.name }}
       </a>
@@ -29,7 +30,7 @@
   </div>
 
   <mobile-result *mobileResult="let ad" [avatarImage]="ad.image"
-    avatarIcon="shopping_basket">
+    avatarIcon="basket">
     <div *ngIf="ad.price" class="cell-main">
       <span *ngIf="ad.promotionalPrice" class="promo-price">
         {{ ad.price | number:decimals(ad) }}
@@ -61,7 +62,7 @@
       <tr *ngFor="let ad of results?.results"
         (click)="router.navigate(path(ad))">
         <td class="avatar">
-          <avatar [image]="ad.image" icon="shopping_basket"></avatar>
+          <avatar [image]="ad.image" [icon]="SvgIcon.Basket"></avatar>
         </td>
         <td>
           {{ ad.name }}
@@ -93,11 +94,11 @@
   </table>
 
   <tiled-result *resultTile="let ad" [image]="ad.image" [zoom]="true"
-    icon="shopping_basket">
+    [icon]="SvgIcon.Basket">
     <ng-container *ngIf="!singleUser">
       <div class="tile-floating-avatar">
         <avatar class="solid-icon" [image]="ad.owner.image"
-          [tooltip]="ad.owner.display" icon="user_full" size="medium-large"
+          [tooltip]="ad.owner.display" size="medium-large"
           (click)="$event.preventDefault(); $event.stopPropagation; router.navigate(['users', ad.owner.id, 'profile'])">
         </avatar>
       </div>

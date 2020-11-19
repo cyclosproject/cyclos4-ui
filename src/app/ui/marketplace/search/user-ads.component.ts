@@ -9,6 +9,7 @@ import { Menu } from 'app/ui/shared/menu';
 import { ResultType } from 'app/ui/shared/result-type';
 import { MAX_SIZE_SHORT_NAME } from 'app/ui/users/profile/view-profile.component';
 import { Observable } from 'rxjs';
+import { SvgIcon } from 'app/core/svg-icon';
 
 type UserAdsSearchParams = UserAdsQueryFilters & { user: string };
 
@@ -58,7 +59,7 @@ export class UserAdsComponent
     this.shortName = words(data.user.display, MAX_SIZE_SHORT_NAME);
     if (data.createNew) {
       this.headingActions = [
-        new HeadingAction('add', this.i18n.general.addNew, () =>
+        new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () =>
           this.router.navigate(['/marketplace', this.param, this.kind, 'ad', 'new']), true),
       ];
     }
@@ -108,14 +109,12 @@ export class UserAdsComponent
   }
 
   get canViewPending(): boolean {
-    const auth = this.dataForUiHolder.auth || {};
+    const auth = this.dataForFrontendHolder.auth || {};
     const permissions = auth.permissions || {};
     const marketplace = permissions.marketplace || {};
     // Check authorization is active and is the owner or a manager with permission
-    return this.data.requiresAuthorization &&
-      (this.self || (this.simple ?
-        marketplace.userSimple.viewPending :
-        marketplace.userWebshop.viewPending));
+    return this.data.requiresAuthorization && this.self
+      || this.isManager && (this.simple ? marketplace.userSimple.viewPending : marketplace.userWebshop.viewPending);
   }
 
   get canViewDraft(): boolean {
@@ -123,8 +122,8 @@ export class UserAdsComponent
   }
 
   get isManager() {
-    return !self &&
-      (this.dataForUiHolder.role === RoleEnum.BROKER || this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR);
+    return !this.self &&
+      (this.dataForFrontendHolder.role === RoleEnum.BROKER || this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR);
   }
 
 }

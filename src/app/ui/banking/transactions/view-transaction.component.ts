@@ -18,6 +18,7 @@ import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { empty } from 'app/shared/helper';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Displays a transaction details
@@ -87,63 +88,65 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       }));
     const auth = transaction.authorizationPermissions || {};
     if (!empty(transaction.authorizations)) {
-      actions.push(new HeadingAction('check_circle_outline', this.i18n.transaction.viewAuthorizations,
+      actions.push(new HeadingAction(SvgIcon.CheckCircle, this.i18n.transaction.viewAuthorizations,
         () => this.router.navigate(['banking', 'transaction', this.key, 'authorization-history'])));
     }
     if (auth.authorize) {
-      actions.push(new HeadingAction('thumb_up', this.i18n.transaction.authorizePending, () => this.authorize()));
+      actions.push(new HeadingAction(SvgIcon.HandThumbsUp, this.i18n.transaction.authorizePending, () => this.authorize()));
     }
     if (auth.deny) {
-      actions.push(new HeadingAction('thumb_down', this.i18n.transaction.denyPending, () => this.deny()));
+      actions.push(new HeadingAction(SvgIcon.HandThumbsDown, this.i18n.transaction.denyPending, () => this.deny()));
     }
     if (auth.cancel) {
-      actions.push(new HeadingAction('cancel', this.i18n.transaction.cancelAuthorization, () => this.cancelAuthorization()));
+      actions.push(new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.cancelAuthorization, () => this.cancelAuthorization()));
     }
 
     const scheduled = transaction.scheduledPaymentPermissions || {};
     if (scheduled.block) {
-      actions.push(new HeadingAction('block', this.i18n.transaction.blockScheduling, () => this.blockScheduled()));
+      actions.push(new HeadingAction(SvgIcon.CalendarX, this.i18n.transaction.blockScheduling, () => this.blockScheduled()));
     }
     if (scheduled.unblock) {
-      actions.push(new HeadingAction('schedule', this.i18n.transaction.unblockScheduling, () => this.unblockScheduled()));
+      actions.push(new HeadingAction(SvgIcon.CalendarCheck, this.i18n.transaction.unblockScheduling, () => this.unblockScheduled()));
     }
     if (scheduled.cancel) {
-      actions.push(new HeadingAction('cancel', this.i18n.transaction.cancelScheduled, () => this.cancelScheduled()));
+      actions.push(new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.cancelScheduled, () => this.cancelScheduled()));
     }
     if (scheduled.settle) {
-      actions.push(new HeadingAction('done_all', this.i18n.transaction.settleScheduled, () => this.settleScheduled()));
+      actions.push(new HeadingAction(SvgIcon.Check2All, this.i18n.transaction.settleScheduled, () => this.settleScheduled()));
     }
     if (transaction.kind === TransactionKind.SCHEDULED_PAYMENT
       && transaction.installments.length === 1
       && transaction.installments[0].canProcess) {
-      actions.push(new HeadingAction('play_circle_outline', this.i18n.transaction.processScheduled,
+      actions.push(new HeadingAction(SvgIcon.FilePlay, this.i18n.transaction.processScheduled,
         () => this.processScheduled(transaction.installments[0])));
     }
 
     if (transaction.recurringPaymentPermissions?.cancel) {
-      actions.push(new HeadingAction('cancel', this.i18n.transaction.cancelRecurring, () => this.cancelRecurring()));
+      actions.push(new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.cancelRecurring, () => this.cancelRecurring()));
     }
 
     const requestPermissions = transaction.paymentRequestPermissions || {};
     if (requestPermissions.accept) {
-      actions.push(new HeadingAction('thumb_up', this.i18n.transaction.acceptPaymentRequest, () => this.acceptPaymentRequest()));
+      actions.push(new HeadingAction(SvgIcon.HandThumbsUp, this.i18n.transaction.acceptPaymentRequest, () => this.acceptPaymentRequest()));
     }
     if (requestPermissions.reject) {
-      actions.push(new HeadingAction('thumb_down', this.i18n.transaction.rejectPaymentRequest, () => this.rejectPaymentRequest()));
+      actions.push(new HeadingAction(SvgIcon.HandThumbsDown, this.i18n.transaction.rejectPaymentRequest,
+        () => this.rejectPaymentRequest()));
     }
     if (requestPermissions.cancel) {
-      actions.push(new HeadingAction('cancel', this.i18n.transaction.cancelPaymentRequest, () => this.cancelPaymentRequest()));
+      actions.push(new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.cancelPaymentRequest, () => this.cancelPaymentRequest()));
     }
     if (requestPermissions.reschedule) {
-      actions.push(new HeadingAction('schedule', this.i18n.transaction.reschedulePaymentRequest, () => this.reschedulePaymentRequest()));
+      actions.push(new HeadingAction(SvgIcon.CalendarEvent, this.i18n.transaction.reschedulePaymentRequest,
+        () => this.reschedulePaymentRequest()));
     }
     if (requestPermissions.changeExpiration) {
-      actions.push(new HeadingAction('schedule', this.i18n.transaction.changePaymentRequestExpiration,
+      actions.push(new HeadingAction(SvgIcon.CalendarEvent, this.i18n.transaction.changePaymentRequestExpiration,
         () => this.changePaymentRequestExpiration()));
     }
 
     if (transaction.transfer?.canChargeback) {
-      actions.push(new HeadingAction('undo', this.i18n.transaction.chargebackTransfer, () => this.chargeback()));
+      actions.push(new HeadingAction(SvgIcon.ArrowCounterclockwise, this.i18n.transaction.chargebackTransfer, () => this.chargeback()));
     }
 
     for (const operation of (transaction.transfer || {}).operations || []) {

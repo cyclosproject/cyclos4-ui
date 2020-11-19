@@ -1,15 +1,17 @@
 import {
   ChangeDetectorRef, Component, ElementRef, EventEmitter, Host, Injector,
-  Input, OnInit, Optional, Output, SkipSelf, ViewChild,
+  Input, OnInit, Optional, Output, SkipSelf, ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomField, Image, TempImageTargetEnum } from 'app/api/models';
 import { ImagesService } from 'app/api/services/images.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { LayoutService } from 'app/core/layout.service';
+import { NotificationService } from 'app/core/notification.service';
 import { AvatarSize } from 'app/shared/avatar.component';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
-import { LayoutService } from 'app/core/layout.service';
+import { ImageUploadComponent } from 'app/shared/image-upload.component';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { take } from 'rxjs/operators';
@@ -70,6 +72,8 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
 
   @ViewChild('focusHolder') focusHolder: ElementRef;
 
+  @ViewChild('imageUpload') imageUpload: ImageUploadComponent;
+
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
@@ -77,7 +81,8 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
     private errorHandler: ErrorHandlerService,
     private imagesService: ImagesService,
     private changeDetector: ChangeDetectorRef,
-    private modal: BsModalService) {
+    private modal: BsModalService,
+    private notification: NotificationService) {
     super(injector, controlContainer);
   }
 
@@ -179,6 +184,10 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
 
   getFocusableControl() {
     return this.focusHolder.nativeElement;
+  }
+
+  captureCamera() {
+    this.notification.captureCamera(file => this.imageUpload.uploadFile(file));
   }
 
 }

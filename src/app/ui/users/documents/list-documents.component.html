@@ -21,12 +21,12 @@
             <button *ngIf="isStatic(row.kind)"
               [tooltip]="i18n.general.download" class="btn btn-icon"
               (click)="download(row); $event.stopPropagation(); $event.preventDefault()">
-              <icon icon="save_alt"></icon>
+              <icon [icon]="SvgIcon.Download"></icon>
             </button>
             <button *ngIf="!isStatic(row.kind)"
               [tooltip]="i18n.document.process" class="btn btn-icon"
               (click)="router.navigate(path(row)); $event.stopPropagation(); $event.preventDefault()">
-              <icon icon="edit"></icon>
+              <icon [icon]="SvgIcon.FileEarmarkText"></icon>
             </button>
           </div>
         </div>
@@ -47,12 +47,12 @@
               <button *ngIf="isStatic(row.kind)"
                 [tooltip]="i18n.general.download" class="btn btn-icon"
                 (click)="download(row); $event.stopPropagation()">
-                <icon icon="save_alt"></icon>
+                <icon [icon]="SvgIcon.Download"></icon>
               </button>
               <button *ngIf="!isStatic(row.kind)"
                 [tooltip]="i18n.document.process" class="btn btn-icon"
                 (click)="router.navigate(path(row)); $event.stopPropagation()">
-                <icon icon="edit"></icon>
+                <icon [icon]="SvgIcon.FileEarmarkText"></icon>
               </button>
             </td>
           </tr>

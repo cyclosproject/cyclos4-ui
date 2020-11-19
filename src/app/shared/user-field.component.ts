@@ -78,7 +78,7 @@ export class UserFieldComponent
       }
     }
 
-    const permissions = (this.dataForUiHolder.auth || {}).permissions || {};
+    const permissions = (this.dataForFrontendHolder.auth || {}).permissions || {};
 
     // When the user has no permissions for search, disable the option
     const users = permissions.users || {};
@@ -122,7 +122,7 @@ export class UserFieldComponent
       return of([]);
     }
 
-    const role = this.dataForUiHolder.role;
+    const role = this.dataForFrontendHolder.role;
     const filters: UserQueryFilters = this.filters ? { ...this.filters } : {};
     filters.ignoreProfileFieldsInList = true;
     filters.pageSize = PageSize;

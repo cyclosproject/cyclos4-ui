@@ -1,10 +1,11 @@
 import { Directive, ElementRef, Injector, OnDestroy, OnInit, Type } from '@angular/core';
 import { ApiI18nService } from 'app/core/api-i18n.service';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { FormatService } from 'app/core/format.service';
+import { Shortcut, ShortcutService } from 'app/core/shortcut.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
-import { Shortcut, ShortcutService } from 'app/core/shortcut.service';
 import { Subscription } from 'rxjs';
 
 /**
@@ -13,13 +14,14 @@ import { Subscription } from 'rxjs';
 @Directive()
 export abstract class AbstractComponent implements OnInit, OnDestroy {
 
-  // Export ApiHelper to templates
+  // Exports for templates
   ApiHelper = ApiHelper;
+  SvgIcon = SvgIcon;
 
   injector: Injector;
   i18n: I18n;
   apiI18n: ApiI18nService;
-  dataForUiHolder: DataForUiHolder;
+  dataForFrontendHolder: DataForFrontendHolder;
   format: FormatService;
   shortcut: ShortcutService;
   private elementRef: ElementRef;
@@ -31,7 +33,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
     this.injector = injector;
     this.i18n = injector.get(I18n);
     this.apiI18n = injector.get(ApiI18nService);
-    this.dataForUiHolder = injector.get(DataForUiHolder);
+    this.dataForFrontendHolder = injector.get(DataForFrontendHolder);
     this.format = injector.get(FormatService);
     this.shortcut = injector.get(ShortcutService);
     this.elementRef = injector.get(ElementRef as Type<ElementRef>);

@@ -6,6 +6,7 @@ import { LoginState } from 'app/ui/core/login-state';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
+import { first } from 'rxjs/operators';
 
 /**
  * Component shown after the user logs-in with pending agreements
@@ -39,7 +40,7 @@ export class AcceptPendingAgreementsComponent
 
   ngOnInit() {
     super.ngOnInit();
-    const auth = this.dataForUiHolder.dataForUi.auth;
+    const auth = this.dataForFrontendHolder.auth || {};
     if (!auth.pendingAgreements) {
       // No agreements
       this.router.navigateByUrl(this.loginState.redirectUrl || '');
@@ -76,8 +77,7 @@ export class AcceptPendingAgreementsComponent
   }
 
   reload() {
-    this.addSub(this.dataForUiHolder.reload().subscribe(() =>
-      this.router.navigateByUrl(this.loginState.redirectUrl || '')));
+    this.dataForFrontendHolder.reload().pipe(first()).subscribe(() => this.router.navigateByUrl(this.loginState.redirectUrl || ''));
   }
 
   cancel() {

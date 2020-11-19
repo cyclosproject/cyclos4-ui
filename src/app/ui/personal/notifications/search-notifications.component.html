@@ -17,7 +17,7 @@
     (update)="update($event)" [onClick]="onClick" [rendering$]="rendering$">
 
     <mobile-result *mobileResult="let row"
-      [avatarImage]="row.relatedUser?.image" avatarIcon="notifications_none">
+      [avatarImage]="row.relatedUser?.image" avatarIcon="bell">
 
       <div class="cell-main" [tooltip]="row.message">{{ row.subject }}</div>
       <div class="cell-cell-date" [tooltip]="row.message">
@@ -42,8 +42,8 @@
               'border-0': layout.xxs$ | async
             }">
               <avatar [image]="row.relatedUser?.image"
-                [tooltip]="row.relatedUser?.display"
-                icon="notifications_none"></avatar>
+                [tooltip]="row.relatedUser?.display" [icon]="SvgIcon.Bell">
+              </avatar>
             </td>
             <td>{{ row.date | dateTime }}</td>
             <td>{{ row.message }}</td>
@@ -51,7 +51,7 @@
               <button [tooltip]="i18n.notification.actions.remove"
                 class="btn btn-icon"
                 (click)="remove(row); $event.stopPropagation()">
-                <icon icon="clear"></icon>
+                <icon [icon]="SvgIcon.Trash"></icon>
               </button>
             </td>
           </tr>

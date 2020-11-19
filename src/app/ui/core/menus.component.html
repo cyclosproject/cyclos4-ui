@@ -7,20 +7,18 @@
     (mouseenter)="dropdown.show()" (mouseleave)="dropdown.hide()"
     (click)="onClick($event, dropdownAnchor, root)" dropdown
     #dropdown="bs-dropdown" [ngClass]="ngClass(root)">
-    <icon [ngClass]="onTop ? 'top-icon' : null" size="1.4rem"
-      [icon]="root.icon"></icon>
+    <icon *ngIf="root.icon" [icon]="root.icon"></icon>
     <div class="menu-text">{{ root.label }}</div>
     <div *dropdownMenu class="dropdown-menu" role="listbox"
       [attr.id]="'menu-dropdown-' + root.rootMenu" attr.aria-labelledby="id"
       (click)="$event.preventDefault(); $event.stopPropagation();">
       <ng-container *ngFor="let entry of root.entries">
-        <a #subAnchor [id]="menuAnchorId(entry)" *ngIf="entry.url"
-          [routerLink]="entry.url" (click)="onClick($event, subAnchor, entry)"
-          class="sub-menu-item" [ngClass]="{
+        <a #subAnchor [id]="menuAnchorId(entry)" [routerLink]="entry.url"
+          (click)="onClick($event, subAnchor, entry)" class="sub-menu-item"
+          [ngClass]="{
                 active: (breadcrumb.url$ | async) === entry.url
               }">
-          <icon [ngClass]="onTop ? 'top-icon' : null" size="1.4rem"
-            [icon]="entry.icon"></icon>
+          <icon *ngIf="entry.icon" [icon]="entry.icon"></icon>
           <div class="sub-menu-text">{{ entry.label }}</div>
         </a>
       </ng-container>
@@ -31,8 +29,7 @@
     #anchor [routerLink]="root.entries[0].url"
     [tooltip]="tooltipForNonActive && activeRoot !== root.rootMenu ? root.label : undefined"
     (click)="onClick($event, anchor, root)" [ngClass]="ngClass(root)">
-    <icon [ngClass]="onTop ? 'top-icon' : null" size="1.4rem"
-      [icon]="root.icon"></icon>
+    <icon [icon]="root.icon"></icon>
     <div class="menu-text">{{ root.label }}</div>
   </a>
 

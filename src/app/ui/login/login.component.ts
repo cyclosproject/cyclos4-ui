@@ -1,14 +1,13 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, ValidationErrors } from '@angular/forms';
-import { Auth, DataForLogin, DataForUi, IdentityProvider, IdentityProviderCallbackStatusEnum } from 'app/api/models';
-import { Configuration } from 'app/ui/configuration';
-import { LoginReason, LoginState } from 'app/ui/core/login-state';
+import { DataForFrontend, DataForLogin, DataForUi, IdentityProvider, IdentityProviderCallbackStatusEnum } from 'app/api/models';
 import { NextRequestState } from 'app/core/next-request-state';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { empty, setRootSpinnerVisible } from 'app/shared/helper';
-import { Menu } from 'app/ui/shared/menu';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
+import { LoginReason, LoginState } from 'app/ui/core/login-state';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
+import { Menu } from 'app/ui/shared/menu';
 import { first } from 'rxjs/operators';
 
 /**
@@ -37,7 +36,7 @@ export class LoginComponent
   }
 
   get registrationEnabled(): boolean {
-    const dataForUi = this.dataForUiHolder.dataForUi;
+    const dataForUi = this.dataForFrontendHolder.dataForUi;
     return !empty(dataForUi.publicRegistrationGroups);
   }
 
@@ -55,16 +54,19 @@ export class LoginComponent
       principal: '',
       password: '',
     });
-    if (this.dataForUiHolder.user) {
+    if (this.dataForFrontendHolder.user) {
       // Already logged in
-      this.addSub(this.dataForUiHolder.reload().subscribe(() =>
+      this.addSub(this.dataForFrontendHolder.reload().subscribe(() =>
         this.router.navigateByUrl(this.loginState.redirectUrl || ''),
       ));
       return;
-    } else if (Configuration.externalLoginUrl) {
-      // Redirect to the external URL
-      this.login.goToLoginPage(this.loginState.redirectUrl);
-      return;
+    } else {
+      const externalLoginUrl = this.dataForFrontendHolder.dataForFrontend.externalLoginUrl;
+      if (externalLoginUrl) {
+        // Redirect to the external URL
+        this.login.goToLoginPage(this.loginState.redirectUrl);
+        return;
+      }
     }
 
     // After closing the error notification, clear and focus the password field
@@ -73,10 +75,10 @@ export class LoginComponent
       this.passwordInput.focus();
     }));
 
-    const dataForUi = this.dataForUiHolder.dataForUi;
+    const dataForUi = this.dataForFrontendHolder.dataForUi;
     if (dataForUi == null || dataForUi.dataForLogin == null) {
-      // Either the dataForUi is not loaded (?) or still points to a user. Reload first
-      this.addSub(this.dataForUiHolder.reload().subscribe(d4ui => this.initialize(d4ui)));
+      // Either the dataForFrontend is not loaded (?) or still points to a user. Reload first
+      this.addSub(this.dataForFrontendHolder.reload().subscribe(data => this.initialize(data.dataForUi)));
     } else {
       // Can initialize directly
       this.initialize(dataForUi);
@@ -123,13 +125,13 @@ export class LoginComponent
           // Successful login
           this.nextRequestState.replaceSession(callback.sessionToken).pipe(first()).subscribe(() => {
             setRootSpinnerVisible(true);
-            this.dataForUiHolder.initialize().subscribe(this.afterLogin);
+            this.dataForFrontendHolder.initialize().pipe(first()).subscribe(d => this.afterLogin(d));
           });
           break;
         case IdentityProviderCallbackStatusEnum.LOGIN_NO_MATCH:
           this.identityProviderRequestId = callback.requestId;
           this.notification.info(this.i18n.identityProvider.loginNoMatch({
-            app: this.uiLayout.appTitleSmall,
+            app: this.dataForFrontendHolder.dataForFrontend.title,
             email: callback.email,
             provider: idp.name,
           }));
@@ -137,7 +139,7 @@ export class LoginComponent
         case IdentityProviderCallbackStatusEnum.LOGIN_NO_EMAIL:
           this.identityProviderRequestId = callback.requestId;
           this.notification.info(this.i18n.identityProvider.loginNoEmail({
-            app: this.uiLayout.appTitleSmall,
+            app: this.dataForFrontendHolder.dataForFrontend.title,
             provider: idp.name,
           }));
           break;
@@ -148,11 +150,11 @@ export class LoginComponent
     });
   }
 
-  private get afterLogin(): (auth: Auth) => any {
-    return auth => {
+  private get afterLogin(): (dataForFrontend: DataForFrontend) => any {
+    return dataForFrontend => {
       setRootSpinnerVisible(false);
       // Redirect to the correct URL
-      if (!ApiHelper.isRestrictedAccess(auth)) {
+      if (!ApiHelper.isRestrictedAccess(dataForFrontend)) {
         this.router.navigateByUrl(this.loginState.redirectUrl || '');
       }
     };

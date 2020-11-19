@@ -1,24 +1,24 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
-
-const ICONS = 'src/icons';
-const OUTPUT = 'src/app/shared/icon.ts';
-var out = '/* tslint:disable */\nexport const ICON_CONTENTS = {\n';
-var files = fs.readdirSync(ICONS);
-files.forEach(file => {
-  if (file.endsWith('.svg')) {
-    const fullFile = path.join(ICONS, file);
-    const content = fs.readFileSync(fullFile, 'utf-8')
-      .replace(/'/g, '\\\'')
-      .replace(/\n/g, '\\n');
-    out += `  '${path.basename(file, '.svg')}': '${content}',\n`;
-  }
-});
-out += '};\n\n';
-out += 'export type Icon = keyof typeof ICON_CONTENTS;\n\n';
-out += 'export const ICON_NAMES = Object.keys(ICON_CONTENTS);\n\n';
-out += 'export const ICONS = ICON_NAMES as Icon[];\n\n';
-fs.writeFileSync(OUTPUT, out, { encoding: 'utf-8' });
+const fs = require('fs');
+const _ = require('lodash');
+const bootstrapIcons = 'node_modules/bootstrap-icons/icons';
+const customIcons = 'src/svg';
+const icons = {};
+for (const dir of [bootstrapIcons, customIcons]) {
+  const files = fs.readdirSync(dir);
+  files.forEach(file => {
+    if (file.endsWith('.svg')) {
+      const name = file.replace('.svg', '');
+      let content = fs.readFileSync(path.join(dir, file), 'utf-8');
+      if (dir === customIcons) {
+        content = content.replace('<svg ', `<svg class="ci ci-${name}" `);
+      }
+      icons[name] = content;
+    }
+  });
+}
+const OUTPUT = 'src/svg/icons.json';
+fs.writeFileSync(OUTPUT, JSON.stringify(icons, null, 2), { encoding: 'utf-8' });
 console.log(`Generated file ${OUTPUT}`);

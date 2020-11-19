@@ -6,6 +6,7 @@ import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Displays the user group membership and allows changing the group
@@ -52,7 +53,7 @@ export class ViewUserGroupComponent extends BaseViewPageComponent<GroupMembershi
       comment: null,
     });
     this.headingActions = [
-      new HeadingAction('history', this.i18n.general.viewHistory, () =>
+      new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
         this.router.navigate(['users', this.param, 'group', 'history']), true),
     ];
   }

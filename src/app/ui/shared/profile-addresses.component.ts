@@ -4,7 +4,6 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Injector
 import { AddressView } from 'app/api/models';
 import { Breakpoint } from 'app/core/layout.service';
 import { BaseComponent } from 'app/shared/base.component';
-import { Configuration } from 'app/ui/configuration';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { MapsService } from 'app/ui/core/maps.service';
 import { UiLayoutService } from 'app/ui/core/ui-layout.service';
@@ -77,7 +76,7 @@ export class ProfileAddressesComponent extends BaseComponent implements OnInit, 
     this.locatedAddresses.map(a => {
       const marker = new google.maps.Marker({
         title: a.name,
-        icon: Configuration.mainMapMarker,
+        icon: this.dataForFrontendHolder.dataForFrontend.mapMarkerUrl,
         position: new google.maps.LatLng(a.location.latitude, a.location.longitude),
       });
       bounds.extend(marker.getPosition());

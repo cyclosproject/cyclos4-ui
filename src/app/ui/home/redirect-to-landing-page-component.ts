@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { UiLayoutService } from 'app/ui/core/ui-layout.service';
+import { FrontendLandingPageEnum } from 'app/api/models/frontend-landing-page-enum';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
+import { LayoutService } from 'app/core/layout.service';
 
 /**
  * Redirect either to login or home, according to the configuration and logged user
@@ -14,17 +15,17 @@ import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 export class RedirectToLandingPageComponent implements OnInit {
 
   constructor(
-    private dataForUiHolder: DataForUiHolder,
-    private uiLayout: UiLayoutService,
+    private dataForFrontendHolder: DataForFrontendHolder,
+    private layout: LayoutService,
     private router: Router) {
   }
 
   ngOnInit() {
-    let landingPage: 'home' | 'login' = 'home';
+    let landingPage: FrontendLandingPageEnum = FrontendLandingPageEnum.HOME;
 
-    // When there's a logged user the landing page is always home
-    if (this.dataForUiHolder.user == null) {
-      landingPage = this.uiLayout.getBreakpointConfiguration('landingPage') || landingPage;
+    // The only possibility for the landing page not being home is when there's no logged user on mobile
+    if (this.dataForFrontendHolder.user == null && this.layout.ltmd) {
+      landingPage = this.dataForFrontendHolder.dataForFrontend.mobileLandingPage || FrontendLandingPageEnum.HOME;
     }
 
     // Redirect to the actual page

@@ -3,12 +3,13 @@
 import { Injectable } from '@angular/core';
 import { Loader } from '@googlemaps/loader';
 import { Address, AddressManage, GeographicalCoordinate, MapData } from 'app/api/models';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
+import { LayoutService } from 'app/core/layout.service';
+import { ScriptLoaderService } from 'app/core/script-loader.service';
 import { blank, empty } from 'app/shared/helper';
-import { Configuration } from 'app/ui/configuration';
 import { UiLayoutService } from 'app/ui/core/ui-layout.service';
-import { from, Observable, of, timer } from 'rxjs';
-import { filter, first, switchMap, take } from 'rxjs/operators';
+import { from, Observable, of } from 'rxjs';
+import { first, switchMap } from 'rxjs/operators';
 
 const StaticUrl = 'https://maps.googleapis.com/maps/api/staticmap';
 const ExternalUrl = 'https://www.google.com/maps/search/?api=1';
@@ -26,14 +27,15 @@ export class MapsService {
   private geocoderCache = new Map<string, GeographicalCoordinate>();
   private _data: MapData;
   private loader: Loader;
-  private markerClustererPlusStatus: 'none' | 'loading' | 'loaded' = 'none';
 
   constructor(
-    private dataForUiHolder: DataForUiHolder,
-    private uiLayout: UiLayoutService) {
-    this.dataForUiHolder.subscribe(dataForUi => this._data = dataForUi.mapData);
-    if (dataForUiHolder.dataForUi) {
-      this._data = dataForUiHolder.dataForUi.mapData;
+    private dataForFrontendHolder: DataForFrontendHolder,
+    private layout: LayoutService,
+    private uiLayout: UiLayoutService,
+    private scriptLoader: ScriptLoaderService) {
+    this.dataForFrontendHolder.subscribe(dataForFrontend => this._data = dataForFrontend.dataForUi.mapData);
+    if (dataForFrontendHolder.dataForUi) {
+      this._data = dataForFrontendHolder.dataForUi.mapData;
     }
   }
 
@@ -77,10 +79,11 @@ export class MapsService {
     if (coords == null) {
       return null;
     }
+    const icon = encodeURIComponent(this.dataForFrontendHolder.dataForFrontend.mapMarkerUrl);
     const key = this.data.googleMapsApiKey;
     const scale = (window.devicePixelRatio || 0) >= 2 ? 2 : 1;
     return `${StaticUrl}?size=${width}x${height}&scale=${scale}&zoom=15`
-      + `&markers=icon:${Configuration.mainMapMarker}|${coords.latitude},${coords.longitude}&key=${key}`
+      + `&markers=icon:${icon}|${coords.latitude},${coords.longitude}&key=${key}`
       + this.styles();
   }
 
@@ -166,7 +169,7 @@ export class MapsService {
     }
 
     const req: google.maps.GeocoderRequest = {
-      region: this.dataForUiHolder.dataForUi.country,
+      region: this.dataForFrontendHolder.dataForUi.country,
       address: query,
     };
     return new Observable(observer => {
@@ -199,7 +202,7 @@ export class MapsService {
     return new google.maps.Map(container, {
       mapTypeControl: false,
       streetViewControl: false,
-      gestureHandling: this.uiLayout.ltsm ? 'cooperative' : 'greedy',
+      gestureHandling: this.layout.ltsm ? 'cooperative' : 'greedy',
       minZoom: 2,
       maxZoom: 17,
       styles: this.uiLayout.googleMapStyles,
@@ -216,38 +219,7 @@ export class MapsService {
       });
     }
     return from(this.loader.loadPromise()).pipe(
-      switchMap(() => {
-        switch (this.markerClustererPlusStatus) {
-          case 'none':
-            this.markerClustererPlusStatus = 'loading';
-            return new Observable(obs => {
-              const script = document.createElement('script');
-              script.type = 'text/javascript';
-              script.src = MarkerClustererPlusUrl;
-              script.async = true;
-              script.onload = () => {
-                this.markerClustererPlusStatus = 'loaded';
-                obs.next(null);
-                obs.complete();
-              };
-              script.onerror = e => {
-                obs.error(e);
-                obs.complete();
-                this.markerClustererPlusStatus = 'none';
-              };
-              document.head.appendChild(script);
-            });
-          case 'loading':
-            // In the process of loading. Wait unti it is available
-            return timer(100).pipe(
-              filter(() => !!window['MarkerClusterer']),
-              take(1),
-            );
-          case 'loaded':
-            // Already loaded
-            return of(null);
-        }
-      }),
+      switchMap(() => this.scriptLoader.loadScript(MarkerClustererPlusUrl))
     );
   }
 }

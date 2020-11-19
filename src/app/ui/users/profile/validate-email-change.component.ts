@@ -8,11 +8,11 @@ import { BasePageComponent } from 'app/ui/shared/base-page.component';
  */
 @Component({
   selector: 'validate-email-change',
-  templateUrl: 'validate-email-change.component.html',
+  template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ValidateEmailChangeComponent
-  extends BasePageComponent<string>
+  extends BasePageComponent<boolean>
   implements OnInit {
 
   get userId() {
@@ -28,15 +28,9 @@ export class ValidateEmailChangeComponent
 
   ngOnInit() {
     const key = this.route.snapshot.params.key;
-    this.addSub(this.validationService.validateEmailChange(key).subscribe(() => {
-      if (this.login.user) {
-        // Was logged-in as a different user
-        this.login.logout();
-        this.notification.info(this.i18n.user.newEmailConfirmed);
-      } else {
-        // Show the page normally
-        this.data = '';
-      }
+    this.addSub(this.validationService.validateEmailChange({ key }).subscribe(() => {
+      this.notification.snackBar(this.i18n.user.newEmailConfirmed);
+      this.router.navigate(['users', 'self', 'profile']);
     }));
   }
 

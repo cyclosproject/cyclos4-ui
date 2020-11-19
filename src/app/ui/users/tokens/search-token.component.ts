@@ -11,6 +11,7 @@ import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { CreateTokenComponent } from 'app/ui/users/tokens/create-token.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
+import { SvgIcon } from 'app/core/svg-icon';
 
 type TokenSearchParams = TokenQueryFilters & {
   type: string;
@@ -53,7 +54,7 @@ export class SearchTokenComponent
   onDataInitialized(data: TokenDataForSearch) {
     super.onDataInitialized(data);
     if (data.type.physicalType !== PhysicalTokenTypeEnum.NFC_TAG) {
-      this.headingActions = [new HeadingAction('add', this.i18n.general.add, () => {
+      this.headingActions = [new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.add, () => {
         this.modal.show(CreateTokenComponent, {
           class: 'modal-form',
           initialState: { type: data.type, updateAction: () => this.reload() },

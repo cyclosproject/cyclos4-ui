@@ -7,7 +7,7 @@
   (update)="update($event)" [onClick]="onClick" [rendering$]="rendering$"
   [ngStyle]="{'min-height': '44vh'}">
   <mobile-result *mobileResult="let row" [avatarImage]="row.image"
-    avatarIcon="shopping_basket">
+    avatarIcon="basket">
     <div class="cell-date-amount">
       <div class="cell-amount">
         {{ (row.promotionalPrice || row.price) | currency:currency }}
@@ -32,7 +32,7 @@
       <ng-container *ngFor="let row of (results$ | async)?.results">
         <tr (click)="addProduct(row)">
           <td class=" avatar">
-            <avatar [image]="row.image" icon="shopping_basket"></avatar>
+            <avatar [image]="row.image" [icon]="SvgIcon.Basket"></avatar>
           </td>
           <td
             [ngStyle]="{'text-decoration': isOutOfStock(row) ? 'line-through' : ''}">

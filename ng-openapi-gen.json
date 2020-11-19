@@ -3,7 +3,9 @@
   "input": "src/openapi/cyclos-openapi.yaml",
   "output": "src/app/api",
   "includeTags": [
+    "Frontend",
     "Auth",
+    "Localization",
     "Push",
     "DeviceConfirmations",
     "Notifications",

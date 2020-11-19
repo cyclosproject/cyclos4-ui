@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { empty } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -15,7 +15,6 @@ const IGNORE_BREADCRUMB = ['', '/home', '/login', '/forgot-password'];
   providedIn: 'root',
 })
 export class BreadcrumbService {
-
   url$ = new BehaviorSubject<string>(null);
 
   /**
@@ -25,8 +24,8 @@ export class BreadcrumbService {
 
   constructor(
     private router: Router,
-    dataForUiHolder: DataForUiHolder) {
-    dataForUiHolder.subscribe(() => this.clear());
+    dataForFrontendHolder: DataForFrontendHolder) {
+    dataForFrontendHolder.subscribe(() => this.clear());
     this.router.events
       .pipe(
         filter(e => e instanceof NavigationStart),
@@ -91,4 +90,17 @@ export class BreadcrumbService {
     }
     return false;
   }
+
+  /**
+   * Removes the last entry in the breadcrumb and returns it, without triggering any navigation
+   */
+  pop(): string | undefined {
+    const breadcrumb = this.breadcrumb$.value;
+    if (breadcrumb.length > 0) {
+      const result = breadcrumb[breadcrumb.length - 1];
+      this.breadcrumb$.next(breadcrumb.slice(0, breadcrumb.length - 1));
+      return result;
+    }
+  }
+
 }

@@ -11,6 +11,7 @@ import { BaseControlComponent } from 'app/shared/base-control.component';
 import { truthyAttr } from 'app/shared/helper';
 import { LayoutService } from 'app/core/layout.service';
 import { chunk } from 'lodash-es';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Component used to display a password input
@@ -95,22 +96,25 @@ export class PasswordInputComponent
    * @param medium The send medium
    */
   private requestOtpAction(medium: SendMediumEnum): ActionWithIcon {
-    let icon: string;
+    let icon: SvgIcon;
     let label: string;
     switch (medium) {
       case SendMediumEnum.EMAIL:
-        icon = 'email';
+        icon = SvgIcon.Envelope;
         label = this.i18n.general.sendMedium.email;
         break;
       case SendMediumEnum.SMS:
-        icon = 'textsms';
+        icon = SvgIcon.Phone;
         label = this.i18n.general.sendMedium.sms;
         break;
       default:
         return null;
     }
     return new ActionWithIcon(icon, label, () => {
-      this.addSub(this.authService.newOtp({ medium }).subscribe(res => {
+      const request = this.dataForFrontendHolder.auth.pendingSecondaryPassword
+        ? this.authService.newOtpForSecondaryPassword({ medium })
+        : this.authService.newOtp({ medium });
+      this.addSub(request.subscribe(res => {
         this.notificationService.snackBar(this.i18n.password.otpSent((res || []).join(', ')));
         this.otpSent.emit(null);
       }));

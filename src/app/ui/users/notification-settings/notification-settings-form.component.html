@@ -33,9 +33,9 @@
         </multi-selection-field>
         <ng-container
           *ngFor="let section of notificationSections.keys(); let first = first">
-          <h2 *ngIf="section !== ''" [ngClass]="{'border-top-0': 
-            first && 
-            data.userAccounts.length === 0 && 
+          <h2 *ngIf="section !== ''" [ngClass]="{'border-top-0':
+            first &&
+            data.userAccounts.length === 0 &&
             data.messageCategories.length === 0 &&
             !data.forwardMessagesAllowed}"
             class="d-flex flex-column flex-xs-row justify-content-between">

@@ -15,7 +15,7 @@
       <ng-container *ngFor="let type of types">
         <tr (click)="selectType(type)">
           <td class="avatar">
-            <avatar [image]="type.image" icon="shopping_cart" size="xlarge"
+            <avatar [image]="type.image" [icon]="SvgIcon.Ticket" size="xlarge"
               roundBorders="false">
             </avatar>
           </td>

@@ -2,6 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { CustomFieldDetailed, RecordDataForSearch, RecordLayoutEnum, RecordQueryFilters, RecordResult } from 'app/api/models';
 import { RecordsService } from 'app/api/services/records.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -50,7 +51,7 @@ export class TiledRecordsComponent
   onDataInitialized(data: RecordDataForSearch) {
     const headingActions: HeadingAction[] = [];
     if (data.create) {
-      headingActions.push(new HeadingAction('add', this.i18n.general.addNew, () =>
+      headingActions.push(new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () =>
         this.router.navigate(['/records', this.param, this.type, 'new']), true));
     }
     this.headingActions = headingActions;

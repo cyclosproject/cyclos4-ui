@@ -24,7 +24,7 @@
               [value]="currency.id" [text]="currency.name"></field-option>
           </single-selection-field>
         </div>
-        <ng-container *ngIf="(moreFilters$ | async)">
+        <ng-container *ngIf="(moreFilters$ | async) || isMyAuth()">
           <ng-container
             *ngIf="(isAuthorized() || isPaymentRequest()) && data.accountTypes?.length > 1">
             <!-- Force a line break on sm and up -->
