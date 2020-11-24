@@ -117,7 +117,6 @@
       "url": "L'accès n'est pas autorisé depuis cette URL"
     },
     "loggedOut": "Vous avez été déconnecté. Veuillez vous reconnecter et répéter l'opération.",
-    "otp": "Une erreur s'est produite lors de l'envoi du mot de passe. Veuillez réessayer plus tard.",
     "securityAnswer": {
       "invalid": "La réponse de sécurité donnée est invalide",
       "disabled": "En dépassant le nombre de tentatives de questions de sécurité, cette demande a été abandonnée. S'il vous plaît, contactez l'administration"

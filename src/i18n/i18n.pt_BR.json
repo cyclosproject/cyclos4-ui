@@ -222,8 +222,9 @@
       "address": "O seu endereço de IP não esta autorizado a efetuar login",
       "url": "Não é permitido o acesso a partir desta URL"
     },
+    "emailSending": "Houve um erro ao enviar o e-mail. Por favor, tente novamente mais tarde.",
+    "smsSending": "Houve um erro ao enviar a mensagem SMS. Por favor, tente novamente mais tarde.",
     "loggedOut": "Você foi desconectado. Por favor, faça o login novamente e repita a operação.",
-    "otp": "Houve um erro ao enviar a senha. Por favor, tente novamente mais tarde.",
     "securityAnswer": {
       "invalid": "A resposta à pergunta de segurança informada é inválida",
       "disabled": "Por exceder o número de tentativas de resposta à pergunta de segurança, este pedido foi abortado.\nPor favor, entre em contato com a administração"
@@ -478,6 +479,7 @@
     "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
       "account": "Conta",
+      "accounts": "Contas",
       "payUser": "Pagar usuário",
       "paySystem": "Pagar sistema",
       "pos": "Receber pagamento",
@@ -611,6 +613,7 @@
       "toDailyLimit": "Para limite diário",
       "toWeeklyLimit": "Para limite semanal",
       "toMonthlyLimit": "Para limite mensal",
+      "definedInPaymentType": "Definido no tipo de pagamento",
       "confirm": "Você deve confirmar para aplicar os novos limites de pagamento.",
       "saved": "Os limites de pagamentos foram salvos",
       "title": {

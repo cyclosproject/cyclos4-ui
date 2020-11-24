@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FrontendContentLayoutEnum, FrontendMenuEnum, FrontendPage, FrontendPageTypeEnum } from 'app/api/models';
 import { FrontendService } from 'app/api/services/frontend.service';
 import { ScriptLoaderService } from 'app/core/script-loader.service';
+import { getRootSpinnerSvg } from 'app/shared/helper';
 import { CardMode } from 'app/ui/content/card-mode';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
@@ -100,12 +101,11 @@ export class ContentPageComponent extends BaseViewPageComponent<PageWithContent>
     const wrapperId = `wrapper_${idIx}`;
     const iframeId = `iframe_${idIx}`;
     const spinnerId = `spinner_${idIx}`;
+    const spinner = getRootSpinnerSvg();
     return `
         <div id="${wrapperId}" class="iframe-content-wrapper">
           <div id="${spinnerId}" class="iframe-loading-spinner">
-          <div class="spinner">
-          <img src="images/spinner.svg">
-        </div>
+            <div class="spinner">${spinner}</div>
           </div>
           <iframe id="${iframeId}"
             src="${actualUrl}"

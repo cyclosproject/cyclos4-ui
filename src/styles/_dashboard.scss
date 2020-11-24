@@ -3,16 +3,38 @@
 .dashboard {
   margin-top: -$layout-spacer;
   margin-left: -$layout-spacer;
-}
 
-.dashboard page-content {
-  &, & .content-area {
-    margin-top: 0 !important;
+  .notifications {
+    display: none;
+  }
+
+  page-content {
+    &, & .content-area {
+      margin-top: 0 !important;
+    }
+  }
+}
+@include media-breakpoint-up(xs) {
+  .dashboard .notifications {
+    display: block;
+    margin: $layout-spacer * 2 $layout-spacer 0 $layout-spacer;
+
+    .notification {
+      margin: $layout-spacer;
+    }
+    .notification + .notification {
+      margin-top: 0;
+    }
+
   }
 }
 @include media-breakpoint-up(md) {
   .dashboard {
     padding-top: $layout-spacer;
+
+    .notifications {
+      margin: 0;
+    }
   }
 }
 

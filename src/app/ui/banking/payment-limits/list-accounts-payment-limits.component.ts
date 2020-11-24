@@ -29,11 +29,13 @@ export class ListAccountsPaymentLimitsComponent
     this.user = this.route.snapshot.params.user;
     this.addSub(this.paymentLimitsService.getDataForUserPaymentLimits({ user: this.user }).subscribe(data => {
       if (data.accountLimits.length === 1) {
-        this.router.navigate(this.path(data.accountLimits[0].account.type));
+        this.router.navigate(this.path(data.accountLimits[0].account.type), {
+          replaceUrl: true
+        });
+      } else {
+        this.data = data;
       }
-      this.data = data;
-    }
-    ));
+    }));
   }
 
   path(accountType: EntityReference) {

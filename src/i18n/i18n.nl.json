@@ -106,7 +106,6 @@
       "url": "Toegang is niet toegestaan voor deze URL"
     },
     "loggedOut": "De verbinding is verbroken. Gelieve in te loggen opnieuw in te loggen.",
-    "otp": "Er is een fout opgetreden bij het versturen van het wachtwoord. Gelieve later opnieuw te proberen.",
     "securityAnswer": {
       "invalid": "Het veiligheid antwoord is ongeldig",
       "disabled": "Bij overschrijding van het aantal antwoordpogingen, dit verzoek is afgebroken. Neem dan contact op met de administratie"

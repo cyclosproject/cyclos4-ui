@@ -1,4 +1,4 @@
 <div *ngIf="bootstrap" class="spinner-border" role="status"
   [ngStyle]="{width: size, height: size}"></div>
-<img *ngIf="!bootstrap" src="images/spinner.svg"
-  [ngStyle]="{width: size, height: size}">
+<div *ngIf="!bootstrap" [ngStyle]="{width: size, height: size}"
+  [innerHTML]="svg | trust">

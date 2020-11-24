@@ -21,6 +21,14 @@ export function isDevServer() {
 }
 
 /**
+ * Returns the SVG content of the root spinner
+ */
+export function getRootSpinnerSvg() {
+  const rootSpinner = document.getElementById('rootSpinner') as HTMLElement;
+  return rootSpinner.innerHTML;
+}
+
+/**
  * Sets whether the root spinner in the page is visible
  */
 export function setRootSpinnerVisible(visible: boolean): void {

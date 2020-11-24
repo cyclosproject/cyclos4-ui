@@ -58,7 +58,7 @@ export class SearchPaymentLimitsOverviewComponent
   }
 
   protected getFormControlNames() {
-    return ['accountType', 'broker', 'brokers', 'by', 'currency', 'customAmountLimit', 'paymentLimitFrom', 'paymentLimitTo',
+    return ['accountType', 'broker', 'by', 'currency', 'customAmountLimit', 'paymentLimitFrom', 'paymentLimitTo',
       'dailyLimitFrom', 'dailyLimitTo', 'customAmountPerDayLimit', 'customAmountPerWeekLimit', 'weeklyLimitFrom', 'weeklyLimitTo',
       'customAmountPerMonthLimit', 'monthlyLimitFrom', 'monthlyLimitTo', 'groups', 'user'];
   }
@@ -114,6 +114,10 @@ export class SearchPaymentLimitsOverviewComponent
     } else {
       // if there is a customLimit it means "no" because "yes" is already handled
       params.customAmountPerMonthLimit = value.customAmountPerMonthLimit ? false : null;
+    }
+
+    if (value.broker) {
+      params.brokers = [value.broker];
     }
     return params;
   }

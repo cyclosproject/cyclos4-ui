@@ -14,33 +14,33 @@
         {{ data.account.type.name }}
       </label-value>
       <!-- Payment limit -->
-      <h3>{{ i18n.account.paymentLimits.paymentLimit }}</h3>
+      <h2 class="mb-2">{{ i18n.account.paymentLimits.paymentLimit }}</h2>
       <label-value [label]="i18n.account.paymentLimits.paymentLimit">
-        {{ data.amountLimit | currency:data.account.currency}}
+        {{ amountLimitValue() }}
       </label-value>
       <label-value [label]="i18n.account.limits.mode">
         {{ limitMode(data.customAmountLimit) }}
       </label-value>
       <!-- Daily limit -->
-      <h3>{{ i18n.account.paymentLimits.dailyLimit }}</h3>
+      <h2 class="mb-2">{{ i18n.account.paymentLimits.dailyLimit }}</h2>
       <label-value [label]="i18n.account.paymentLimits.dailyLimit">
-        {{ data.amountLimit | currency:data.account.currency}}
+        {{ amountPerDayLimitValue() }}
       </label-value>
       <label-value [label]="i18n.account.limits.mode">
         {{ limitMode(data.customAmountLimit) }}
       </label-value>
       <!-- Weekly limit -->
-      <h3>{{ i18n.account.paymentLimits.weeklyLimit }}</h3>
+      <h2 class="mb-2">{{ i18n.account.paymentLimits.weeklyLimit }}</h2>
       <label-value [label]="i18n.account.paymentLimits.weeklyLimit">
-        {{ data.amountLimit | currency:data.account.currency}}
+        {{ amountPerWeekLimitValue() }}
       </label-value>
       <label-value [label]="i18n.account.limits.mode">
         {{ limitMode(data.customAmountLimit) }}
       </label-value>
       <!-- Montly limit -->
-      <h3>{{ i18n.account.paymentLimits.monthlyLimit }}</h3>
+      <h2 class="mb-2">{{ i18n.account.paymentLimits.monthlyLimit }}</h2>
       <label-value [label]="i18n.account.paymentLimits.monthlyLimit">
-        {{ data.amountLimit | currency:data.account.currency}}
+        {{ amountPerMonthLimitValue() }}
       </label-value>
       <label-value [label]="i18n.account.limits.mode">
         {{ limitMode(data.customAmountLimit) }}
@@ -58,6 +58,52 @@
     </page-content>
 
     <results-layout [results]="data.history">
+
+      <mobile-result *mobileResult="let row">
+        <div class="d-flex">
+          <div class="w-100">
+            <label-value [label]="i18n.general.date"
+              labelPosition="sideForced">
+              {{ row.date | date }}
+            </label-value>
+
+            <label-value [label]="i18n.general.performedBy"
+              labelPosition="sideForced">
+              {{ row.by.display }}
+            </label-value>
+
+            <label-value [label]="i18n.account.paymentLimits.paymentLimit"
+              labelPosition="sideForced">
+              {{ row.customAmountLimit ?
+                (row.amountLimit | currency:data.account.currency) : i18n.account.limits.productDefault }}
+            </label-value>
+
+            <label-value [label]="i18n.account.paymentLimits.dailyLimit"
+              labelPosition="sideForced">
+              {{ row.customAmountPerDayLimit ?
+                (row.amountPerDayLimit | currency:data.account.currency) : i18n.account.limits.productDefault }}
+            </label-value>
+
+            <label-value [label]="i18n.account.paymentLimits.weeklyLimit"
+              labelPosition="sideForced">
+              {{ row.customAmountPerWeekLimit ?
+                (row.amountPerWeekLimit | currency:data.account.currency) : i18n.account.limits.productDefault }}
+            </label-value>
+
+            <label-value [label]="i18n.account.paymentLimits.monthlyLimit"
+              labelPosition="sideForced">
+              {{ row.customAmountPerMonthLimit ?
+                (row.amountPerMonthLimit | currency:data.account.currency) : i18n.account.limits.productDefault }}
+            </label-value>
+
+            <label-value *ngIf="row.comment" [label]="i18n.general.comments"
+              labelPosition="sideForced">
+              {{ row.comment }}
+            </label-value>
+
+          </div>
+        </div>
+      </mobile-result>
 
       <table *resultTable class="table">
         <thead>

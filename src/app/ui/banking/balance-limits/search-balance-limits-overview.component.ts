@@ -50,7 +50,7 @@ export class SearchBalanceLimitsOverviewComponent
   }
 
   protected getFormControlNames() {
-    return ['accountType', 'broker', 'brokers', 'by', 'currency', 'customLimit', 'limitFrom', 'limitTo', 'customUpperLimit',
+    return ['accountType', 'broker', 'by', 'currency', 'customLimit', 'limitFrom', 'limitTo', 'customUpperLimit',
       'upperLimitFrom', 'upperLimitTo', 'groups', 'user'];
   }
 
@@ -89,6 +89,9 @@ export class SearchBalanceLimitsOverviewComponent
     } else {
       // if there is a customUpperLimit it means "no" because "yes" is already handled
       params.customUpperLimit = value.customUpperLimit ? false : null;
+    }
+    if (value.broker) {
+      params.brokers = [value.broker];
     }
     return params;
   }

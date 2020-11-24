@@ -9,6 +9,39 @@
 
     <results-layout [results]="data.accountLimits">
 
+      <mobile-result *mobileResult="let row"
+        (click)="router.navigate(path(row.account.type)); $event.stopPropagation()">
+        <div class="d-flex">
+          <div class="w-100">
+            <label-value [label]="i18n.account.account"
+              labelPosition="sideForced">
+              {{ row.account.type.name }}
+            </label-value>
+
+            <label-value [label]="i18n.account.paymentLimits.paymentLimit"
+              labelPosition="sideForced">
+              {{ row.amountLimit ? (row.amountLimit | currency:row.account.currency) : i18n.account.limits.unlimited }}
+            </label-value>
+
+            <label-value [label]="i18n.account.paymentLimits.dailyLimit"
+              labelPosition="sideForced">
+              {{ row.amountPerDayLimit ? (row.amountPerDayLimit | currency:row.account.currency) : i18n.account.limits.unlimited }}
+            </label-value>
+
+            <label-value [label]="i18n.account.paymentLimits.weeklyLimit"
+              labelPosition="sideForced">
+              {{ row.amountPerWeekLimit ? (row.amountPerWeekLimit | currency:row.account.currency) : i18n.account.limits.unlimited }}
+            </label-value>
+
+            <label-value [label]="i18n.account.paymentLimits.monthlyLimit"
+              labelPosition="sideForced">
+              {{ row.amountPerMonthLimit ? (row.amountPerMonthLimit | currency:row.account.currency) : i18n.account.limits.unlimited }}
+            </label-value>
+
+          </div>
+        </div>
+      </mobile-result>
+
       <table *resultTable class="table table-hover cursor-pointer">
         <thead>
           <th>{{ i18n.account.account }}</th>

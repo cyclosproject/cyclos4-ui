@@ -10,7 +10,7 @@
       <div class="notifications"
         *ngIf="data.passwordsNeedingAttention?.length > 0 || data.pendingSecurityQuestion">
         <notification *ngFor="let password of data.passwordsNeedingAttention"
-          type="warning" class="d-none d-xs-block">
+          type="warning">
           {{ passwordMessage(password) }}
           <br>
           <a [routerLink]="['personal', 'passwords']" class="mt-2"
@@ -19,8 +19,7 @@
           </a>
         </notification>
 
-        <notification *ngIf="data.pendingSecurityQuestion" type="warning"
-          class="d-none d-xs-block">
+        <notification *ngIf="data.pendingSecurityQuestion" type="warning">
           {{ i18n.dashboard.passwords.securityAnswer }}
           <br>
           <a [routerLink]="['personal', 'passwords']" class="mt-2"

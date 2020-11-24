@@ -59,6 +59,10 @@
 
     icon {
       color: $tiled-results-icon-color;
+      svg.bi-basket {
+        width: 80%;
+        height: 80%;
+      }
     }
 
     .avatar-container {

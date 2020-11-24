@@ -49,4 +49,13 @@ export class SearchUserAlertsComponent
   resolveMenu() {
     return Menu.USER_ALERTS;
   }
+
+  /**
+   * Returns the route components for the given row
+   * @param row The user or contact
+   */
+  path(row: UserAlert): string[] {
+    return ['/users', row.user.id, 'profile'];
+  }
+
 }

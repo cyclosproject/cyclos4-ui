@@ -63,6 +63,34 @@ export class ViewAccountPaymentLimitsComponent
     this.historyHeadingActions.push(new HeadingAction(SvgIcon.ArrowLeft, this.i18n.general.details, () => this.showView()));
   }
 
+  amountLimitValue(): string {
+    return this.resolveAmountLimitValue(this.data.customAmountLimit, this.data.amountLimit, this.data.productAmountLimit);
+  }
+
+  amountPerDayLimitValue(): string {
+    return this.resolveAmountLimitValue(this.data.customAmountPerDayLimit, this.data.amountPerDayLimit, this.data.productAmountPerDayLimit);
+  }
+
+  amountPerWeekLimitValue(): string {
+    return this.resolveAmountLimitValue(
+      this.data.customAmountPerWeekLimit, this.data.amountPerWeekLimit, this.data.productAmountPerWeekLimit);
+  }
+
+  amountPerMonthLimitValue(): string {
+    return this.resolveAmountLimitValue(
+      this.data.customAmountPerMonthLimit, this.data.amountPerMonthLimit, this.data.productAmountPerMonthLimit);
+  }
+
+  resolveAmountLimitValue(custom: boolean, customAmount: string, productAmount: string): string {
+    if (custom) {
+      return this.format.formatAsCurrency(this.data.account.currency, customAmount, false);
+    } else if (productAmount) {
+      return this.format.formatAsCurrency(this.data.account.currency, productAmount, false);
+    } else {
+      return this.i18n.account.paymentLimits.definedInPaymentType;
+    }
+  }
+
   limitMode(custom: boolean): string {
     return custom ? this.i18n.account.limits.personalized : this.i18n.account.limits.productDefault;
   }

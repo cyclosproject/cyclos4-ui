@@ -30,14 +30,14 @@
   justify-content: center;
   align-items: center;
   margin: auto;
+  color: black;
 
   div {
-    opacity: 0.3;
     width: 45px;
     height: 45px;
   }
 
-  img {
+  svg {
     width: 64px;
     height: 64px;
   }
@@ -50,8 +50,8 @@
 }
 
 body.dark {
-  spinner img, .spinner img {
-    filter: invert(1);
+  .spinner {
+    color: white;
   }
   .solid-icon {
     background-color: $card-bg-dark;
@@ -119,6 +119,8 @@ body.dark {
 
 icon {
   display: inline-flex;
+  justify-content: center;
+  align-items: center;
   fill: currentColor;
   position: relative;
   width: 1.5rem;

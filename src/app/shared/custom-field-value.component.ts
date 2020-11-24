@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
 import { CustomField, CustomFieldValue } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { LayoutService } from 'app/core/layout.service';
@@ -13,6 +13,9 @@ import { FieldLabelPosition } from 'app/shared/base-form-field.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomFieldValueComponent implements OnInit {
+
+  @HostBinding('class.any-label-value') classAnyLabelValue = true;
+  @HostBinding('class.view') classView = true;
 
   value: any;
 

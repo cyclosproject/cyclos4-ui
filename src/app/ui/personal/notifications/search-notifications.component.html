@@ -4,10 +4,9 @@
     [headingActions]="headingActions$ | async">
     <form [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row">
-        <div class="col-12 col-md-6">
-          <boolean-field labelPosition="sideForced"
-            formControlName="onlyUnread"
-            [label]="i18n.notification.onlyUnread"></boolean-field>
+        <div class="col-12">
+          <boolean-field [label]="i18n.notification.onlyUnread"
+            formControlName="onlyUnread"></boolean-field>
         </div>
       </div>
     </form>

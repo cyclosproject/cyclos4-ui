@@ -194,7 +194,6 @@
       "url": "L'accesso non è consentito da questo URL"
     },
     "loggedOut": "Sei stato disconnesso. Effettua nuovamente il login e ripeti l'operazione.",
-    "otp": "Si è verificato un errore durante l'invio della password. Riprova più tardi.",
     "securityAnswer": {
       "invalid": "La risposta di sicurezza fornita non è valida",
       "disabled": "A causa del numero di tentativi sulla domande di sicurezza, questa richiesta è stata interrotta. Si prega di contattare l'amministrazione"

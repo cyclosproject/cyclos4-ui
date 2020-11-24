@@ -13,14 +13,14 @@
       <label-value [label]="i18n.account.account">
         {{ data.account.type.name }}
       </label-value>
-      <h3>{{ i18n.account.balanceLimits.negativeLimit }}</h3>
+      <h2 class="mb-2">{{ i18n.account.balanceLimits.negativeLimit }}</h2>
       <label-value [label]="i18n.account.balanceLimits.negativeLimit">
         {{ data.creditLimit | currency:data.account.currency}}
       </label-value>
       <label-value [label]="i18n.account.limits.mode">
         {{ data.customCreditLimit ? i18n.account.limits.personalized : i18n.account.limits.productDefault }}
       </label-value>
-      <h3>{{ i18n.account.balanceLimits.positiveLimit }}</h3>
+      <h2 class="mb-2">{{ i18n.account.balanceLimits.positiveLimit }}</h2>
       <label-value [label]="i18n.account.balanceLimits.positiveLimit">
         {{ data.upperCreditLimit ? (data.upperCreditLimit | currency:data.account.currency) : i18n.account.limits.unlimited }}
       </label-value>
@@ -40,6 +40,35 @@
     </page-content>
 
     <results-layout [results]="data.history">
+
+      <mobile-result *mobileResult="let row">
+        <div class="d-flex">
+          <div class="w-100">
+            <label-value [label]="i18n.general.date"
+              labelPosition="sideForced">
+              {{ row.date | date }}
+            </label-value>
+            <label-value [label]="i18n.general.performedBy"
+              labelPosition="sideForced">
+              {{ row.by.display }}
+            </label-value>
+            <label-value [label]="i18n.account.balanceLimits.negative"
+              labelPosition="sideForced">
+              {{ row.customCreditLimit ? (row.creditLimit | currency:data.account.currency) : i18n.account.limits.productDefault}}
+            </label-value>
+            <label-value [label]="i18n.account.balanceLimits.positive"
+              labelPosition="sideForced">
+              {{ row.customUpperCreditLimit ? ( row.upperCreditLimit ?
+              (row.upperCreditLimit | currency:data.account.currency) : i18n.account.limits.unlimited)
+              : i18n.account.limits.productDefault }}
+            </label-value>
+            <label-value *ngIf="row.comment" [label]="i18n.general.comments"
+              labelPosition="sideForced">
+              {{ row.comment }}
+            </label-value>
+          </div>
+        </div>
+      </mobile-result>
 
       <table *resultTable class="table">
         <thead>

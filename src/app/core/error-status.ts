@@ -36,4 +36,9 @@ export enum ErrorStatus {
    * Status Code: 500.
    */
   INTERNAL_SERVER_ERROR = 500,
+
+  /**
+   * Status Code: 503.
+   */
+  SERVICE_UNAVAILABLE = 503,
 }

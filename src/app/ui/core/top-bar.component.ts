@@ -168,7 +168,7 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnDest
     // Now show the other actions
     if (!empty(defaultActions)) {
       for (const action of defaultActions) {
-        if (action.id && !actions.find(a => a.id === action.id)) {
+        if (!action.id || !actions.find(a => a.id === action.id)) {
           actions.push(action);
         }
       }

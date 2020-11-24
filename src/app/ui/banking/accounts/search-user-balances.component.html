@@ -193,8 +193,7 @@
       </div>
     </form>
     <div class="row filters-row">
-      <div class="col-12 col-md-9 col-xs-5 mb-1"
-        [ngClass]="{'mb-0': (layout.xs$ | async)}">
+      <div class="col-12 col-md-9 col-xs-5">
         <result-type-field [allowedResultTypes]="allowedResultTypes$ | async"
           [formControl]="resultTypeControl">
         </result-type-field>

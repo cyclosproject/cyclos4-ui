@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
-import { truthyAttr } from 'app/shared/helper';
+import { getRootSpinnerSvg, truthyAttr } from 'app/shared/helper';
 
 /**
  * Shows a spinner to indicate that some processing is taking place
@@ -11,6 +11,8 @@ import { truthyAttr } from 'app/shared/helper';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SpinnerComponent {
+
+  svg = getRootSpinnerSvg();
 
   @HostBinding('class.spinner') classSpinner = true;
 

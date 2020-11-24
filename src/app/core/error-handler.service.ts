@@ -4,9 +4,9 @@ import {
   BuyVoucherError, BuyVoucherErrorCode, ConflictError, ConflictErrorCode,
   ErrorKind, ForbiddenError, ForbiddenErrorCode, ForgottenPasswordError,
   ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError, NotFoundError,
-  OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, RedeemVoucherError,
+  PasswordStatusEnum, PaymentError, PaymentErrorCode, RedeemVoucherError,
   RedeemVoucherErrorCode, ShoppingCartError, ShoppingCartErrorCode,
-  UnauthorizedError, UnauthorizedErrorCode, UserStatusEnum
+  UnauthorizedError, UnauthorizedErrorCode, UnavailableError, UnavailableErrorCode, UserStatusEnum
 } from 'app/api/models';
 import { ApiI18nService } from 'app/core/api-i18n.service';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
@@ -90,6 +90,9 @@ export class ErrorHandlerService {
         case ErrorStatus.CONFLICT:
           this.handleConflictError(error as ConflictError);
           return;
+        case ErrorStatus.SERVICE_UNAVAILABLE:
+          this.handleUnavailableError(error as UnavailableError);
+          return;
         case ErrorStatus.INTERNAL_SERVER_ERROR:
           // The internal server error may be a specific kind or a general error
           if (error != null && error.hasOwnProperty('kind')) {
@@ -97,10 +100,6 @@ export class ErrorHandlerService {
               case ErrorKind.PAYMENT:
                 // A payment error
                 this.handlePaymentError(error as PaymentError);
-                return;
-              case ErrorKind.OTP:
-                // An error while generating an OTP
-                this.handleOtpError(error as OtpError);
                 return;
               case ErrorKind.FORGOTTEN_PASSWORD:
                 // An error while changing a forgotten password
@@ -227,12 +226,12 @@ export class ErrorHandlerService {
     this.notification.error(this.conflictErrorMessage(error));
   }
 
-  public handlePaymentError(error: PaymentError) {
-    this.notification.error(this.paymentErrorMessage(error));
+  public handleUnavailableError(error: UnavailableError) {
+    this.notification.error(this.unavailableErrorMessage(error));
   }
 
-  public handleOtpError(error: OtpError) {
-    this.notification.error(this.otpErrorMessage(error));
+  public handlePaymentError(error: PaymentError) {
+    this.notification.error(this.paymentErrorMessage(error));
   }
 
   public handleForgottenPasswordError(error: ForgottenPasswordError) {
@@ -307,6 +306,18 @@ export class ErrorHandlerService {
         return this.i18n.error.staleEntity;
       case ConflictErrorCode.CONSTRAINT_VIOLATED_ON_REMOVE:
         return this.i18n.error.removeDataInUse;
+      default:
+        return this.general;
+    }
+  }
+
+  public unavailableErrorMessage(error: UnavailableError): string {
+    error = error || {} as UnavailableError;
+    switch (error.code) {
+      case UnavailableErrorCode.EMAIL_SENDING:
+        return this.i18n.error.emailSending;
+      case UnavailableErrorCode.SMS_SENDING:
+        return this.i18n.error.smsSending;
       default:
         return this.general;
     }
@@ -438,14 +449,6 @@ export class ErrorHandlerService {
   }
 
   /**
-   * Returns the error message for an OtpError
-   * @param error The error
-   */
-  public otpErrorMessage(_error: OtpError): string {
-    return this.i18n.error.otp;
-  }
-
-  /**
    * Returns the error message for a ForgottenPasswordError
    * @param error The error
    */
@@ -487,10 +490,6 @@ export class ErrorHandlerService {
         case ErrorKind.PAYMENT:
           // A payment error
           this.paymentErrorMessage(error as PaymentError);
-          return;
-        case ErrorKind.OTP:
-          // An error while generating an OTP
-          this.otpErrorMessage(error as OtpError);
           return;
         case ErrorKind.FORGOTTEN_PASSWORD:
           // An error while changing a forgotten password

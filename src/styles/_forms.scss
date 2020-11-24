@@ -1,20 +1,4 @@
 @import 'src/definitions';
-
-.filters-form > .row, .filters-row {
-  margin-right: 0;
-  margin-left: 0;
-
-  > .col,
-  > [class*="col-"] {
-    padding-right: 0;
-    padding-left: 0;
-  }
-
-  > .col-form-label {
-    padding-right: 0.5rem;
-  }
-}
-
 label {
   font-weight: $font-weight-bold;
   color: $label-color;
@@ -159,7 +143,7 @@ input[type=number] {
 }
 @include media-breakpoint-up(sm) {
   .custom-select, .form-control, .custom-select option {
-    padding: $input-padding-y $input-padding-x;
+    padding: calc(#{$input-padding-y} + 1px) $input-padding-x $input-padding-y $input-padding-x;
   }
   .custom-select {
     padding-right: 1.75rem;
@@ -230,11 +214,7 @@ $spaced-label-values: (
   'h2',
   'h3',
   'address-form',
-  'user-info',
-  'custom-field-value',
-  'radio-group-field',
-  'checkbox-group-field',
-  'boolean-field'
+  'user-info'
 );
 @each $lv1 in $spaced-label-values {
   @each $lv2 in $spaced-label-values {
@@ -250,8 +230,25 @@ $spaced-label-values: (
     }
   }
 }
+@each $lv in $spaced-label-values {
+  #{$lv} + .any-label-value.view {
+    margin-top: 0.2rem !important;
+  }
+}
 .any-label-value .any-label-value {
   margin-top: 0 !important;
+}
+
+.label-value.label-on-side {
+  boolean-field {
+    transform: translateY(7px);
+  }
+  checkbox-group-field {
+    transform: translateY(4px);
+  }
+  radio-group-field {
+    transform: translateY(2px);
+  }
 }
 
 .notice {
@@ -756,7 +753,7 @@ body.lt-sm date-field .calendar-dropdown-menu.show {
       margin-left: 0.5rem;
     }
     .custom-select {
-      padding: 0 0.4rem;
+      padding: 2px 0.4rem 0 0.4rem;
       background-position: right 0.45rem center !important;
     }
     .field-year {
@@ -941,7 +938,7 @@ html-field {
     box-shadow: $input-box-shadow;
     outline: none;
     border-radius: $input-border-radius;
-    padding: $input-padding-y $input-padding-x;
+    padding: calc(#{$input-padding-y} + 1px) $input-padding-x $input-padding-y $input-padding-x;
     height: $editor-height;
 
     &:focus {
@@ -1024,33 +1021,20 @@ insert-image-dialog {
 ///////////////////////////////////////////////////////////
 
 label-value {
-  display: block;
+  display: flex;
   width: 100%;
 
-  .label-value-label {
-    display: block;
-    padding: 0;
-    text-align: start;
-  }
   &.field .label-value-value,
   &.field-view .label-value-value {
     min-height: $input-height;
   }
-  .label-value-value {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-  }
-
   &.label-on-side {
     &:not(.view) .label-value-label,
     &.field-view .label-value-value {
-      padding-top: calc(#{$input-padding-y} + 3px) !important;
+      padding-top: calc(#{$input-padding-y} + 2px);
       padding-bottom: 3px;
     }
   }
-
   &.field-view, &.field {
     min-height: $input-height;
   }
@@ -1058,6 +1042,40 @@ label-value {
   &.field-view .label-value-value user-link {
     position: relative;
     top: -2px;
+  }
+
+  &.view {
+    .label-value-label,
+    .label-value-value {
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+    }
+  }
+}
+.filters-form {
+  .col-form-label {
+    padding: 0;
+    line-height: 18px;
+    padding-bottom: 1px;
+  }
+  label-value {
+    .label-value-label {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .label-value-value {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    &.label-on-side {
+      &:not(.view) .label-value-label,
+      &.field-view .label-value-value {
+        padding: 0;
+      }
+    }
   }
 }
 @include media-breakpoint-up(xs) {
@@ -1070,10 +1088,16 @@ label-value {
   }
 }
 @include media-breakpoint-up(sm) {
-  .filters-form label-value .label-value-label {
-    padding-left: 0.5rem !important;
-    justify-content: flex-end;
-    text-align: right;
+  .filters-form label-value {
+    .label-value-label {
+      padding: 0 0.5rem !important;
+      justify-content: flex-end;
+      text-align: right;
+      align-items: center;
+    }
+    .label-value-value {
+      align-items: center;
+    }
   }
 }
 .lt-sm label-value {

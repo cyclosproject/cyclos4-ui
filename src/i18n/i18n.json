@@ -222,8 +222,9 @@
       "address": "Your IP address is not allowed to login",
       "url": "Access is not allowed from this URL"
     },
+    "emailSending": "There was an error while sending the email. Please, try again later.",
+    "smsSending": "There was an error while sending the SMS message. Please, try again later.",
     "loggedOut": "You have been disconnected. Please, login again and repeat the operation.",
-    "otp": "There was an error when sending the password. Please, try again later.",
     "securityAnswer": {
       "invalid": "The given security answer is invalid",
       "disabled": "By exceeding the number of security question attempts, this request has been aborted. Please, contact the administration"
@@ -612,6 +613,7 @@
       "toDailyLimit": "To daily limit",
       "toWeeklyLimit": "To weekly limit",
       "toMonthlyLimit": "To monthly limit",
+      "definedInPaymentType": "Defined in payment type",
       "confirm": "You must confirm to apply the new payment limits",
       "saved": "The payment limits were saved",
       "title": {

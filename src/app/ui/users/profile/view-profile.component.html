@@ -5,7 +5,7 @@
     <ng-container *ngIf="showActions$ | async">
       <div class="row no-gutters">
         <div *ngIf="bankingActions.length > 0" class="col-12 col-sm-6">
-          <h2 class="border-0">{{ i18n.user.profile.banking }}</h2>
+          <h2 class="border-0 mb-2">{{ i18n.user.profile.banking }}</h2>
           <ng-container *ngFor="let action of bankingActions">
             <ng-container
               *ngTemplateOutlet="actionTpl; context: {$implicit: action}">
@@ -13,7 +13,7 @@
           </ng-container>
         </div>
         <div *ngIf="managementActions.length > 0" class="col-12 col-sm-6">
-          <h2 class="border-0">{{ i18n.user.profile.management }}</h2>
+          <h2 class="border-0 mb-2">{{ i18n.user.profile.management }}</h2>
           <ng-container *ngFor="let action of managementActions">
             <ng-container
               *ngTemplateOutlet="actionTpl; context: {$implicit: action}">
