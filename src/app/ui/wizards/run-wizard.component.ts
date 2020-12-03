@@ -90,7 +90,7 @@ export class RunWizardComponent
       if (user) {
         request = this.wizardsService.startUserWizard({ user, key: wizard });
       } else if (menu) {
-        request = this.wizardsService.startMenuWizard({ menu, key: wizard });
+        request = this.wizardsService.startMenuWizard({ menu });
       } else {
         request = this.wizardsService.startWizard({ key: wizard });
       }

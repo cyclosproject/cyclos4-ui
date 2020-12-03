@@ -1995,7 +1995,8 @@
     "document": "Documento",
     "savedSuccessfully": "Guardado con éxito",
     "process": "Procesar documento dinámico",
-    "category": "Categoría"
+    "category": "Categoría",
+    "action": "Documentos ({count})"
   },
   "token": {
     "title": {

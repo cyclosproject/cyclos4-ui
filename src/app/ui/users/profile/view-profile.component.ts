@@ -365,7 +365,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       }
       // Documents
       if (documents.view) {
-        this.managementActions.push(new HeadingAction(SvgIcon.FileEarmarkText, this.i18n.document.title.list, () => {
+        this.managementActions.push(new HeadingAction(SvgIcon.FileEarmarkText, this.i18n.document.action(user.documents?.count), () => {
           this.router.navigate(['/users', this.param, 'documents', 'search']);
         }));
       }

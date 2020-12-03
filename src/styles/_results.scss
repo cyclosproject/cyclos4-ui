@@ -98,12 +98,13 @@
 .mobile-results {
   border-top: 1px solid $mobile-results-border-color;
 
-  &:first-of-type {
-    border-top-style: none;
-  }
-  &, & a, & a:hover {
+  &, a, a:hover {
     color: $mobile-results-color;
     text-decoration: none;
+  }
+  a:focus {
+    box-shadow: none;
+    outline: none;
   }
   .avatar {
     color: $mobile-results-icon-color;
@@ -127,13 +128,11 @@
   .mobile-result {
     border-bottom: 1px solid $mobile-results-border-color;
     display: block;
-    &:focus, a:focus {
+    &:focus-within {
       box-shadow: none;
       outline: none;
-    }
-    &:focus {
       background-color: $mobile-results-focus-bg;
-      &, .cell-main {
+      &, .cell-main, a {
         color: $mobile-results-focus-color;
       }
       .avatar {
@@ -317,9 +316,9 @@ body.dark {
     }
     .mobile-result {
       border-color: $mobile-results-border-color-dark;
-      &:focus {
+      &:focus-within {
         background-color: $mobile-results-focus-bg-dark;
-        &, .cell-main {
+        &, .cell-main, a {
           color: $mobile-results-focus-color-dark;
         }
         .avatar {

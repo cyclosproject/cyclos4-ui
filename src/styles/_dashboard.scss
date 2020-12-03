@@ -155,8 +155,14 @@ body.dark account-status .last-transfers {
 // Both latest-ads and latest-users
 .dashboard-icon-result {
   .container {
-    margin-top: -0.4rem;
-    margin-bottom: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .row {
+      flex-grow: 1;
+    }
   }
 
   .content-text {
@@ -170,8 +176,6 @@ body.dark account-status .last-transfers {
     display: inline-block;
     position: relative;
     text-align: center;
-    width: 128px;
-    height: 128px;
   }
 
   .main-image .avatar-container {

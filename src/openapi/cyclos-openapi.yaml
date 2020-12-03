@@ -35912,7 +35912,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
                   description: >-
                     The file being uploaded
 
-  /menu/{menu}/operations/{operation}/data-for-run:
+  /menu/{menu}/operations/data-for-run:
     get:
       operationId: getMenuOperationDataForRun
       summary: >-
@@ -35928,13 +35928,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: menu
           description: >-
             Either the id or internal name of the custom menu item
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: operation
-          description: >-
-            Either the id or internal name of the custom operation
           in: path
           required: true
           schema:
@@ -35985,7 +35978,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 $ref: '#/components/schemas/Error'
 
 
-  /menu/{menu}/operations/{operation}/run:
+  /menu/{menu}/operations/run:
     post:
       operationId: runMenuOperation
       summary: >-
@@ -36006,13 +35999,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: menu
           description: >-
             Either the id or internal name of the custom menu item
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: operation
-          description: >-
-            Either the id or internal name of the custom operation
           in: path
           required: true
           schema:
@@ -36101,7 +36087,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             schema:
               $ref: '#/components/schemas/RunOperation'
 
-  /menu/{menu}/operations/{operation}/run-upload:
+  /menu/{menu}/operations/run-upload:
     post:
       operationId: runMenuOperationWithUpload
       summary: >-
@@ -36123,13 +36109,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: menu
           description: >-
             Either the id or internal name of the custom menu item
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: operation
-          description: >-
-            Either the id or internal name of the custom operation
           in: path
           required: true
           schema:
@@ -36381,20 +36360,13 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /menu/{menu}/wizards/{key}/start:
+  /menu/{menu}/wizards/start:
     parameters:
       - name: menu
         description: >-
           Either the id or internal name of the custom menu item
         in: path
         required: true
-        schema:
-          type: string
-      - name: key
-        in: path
-        required: true
-        description: >-
-          The custom wizard id or internal name
         schema:
           type: string
     post:

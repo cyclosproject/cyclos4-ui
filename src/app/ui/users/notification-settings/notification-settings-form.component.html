@@ -3,10 +3,12 @@
     <page-content [heading]="i18n.notificationSettings.title"
       [mobileHeading]="i18n.notificationSettings.mobileTitle">
       <form [formGroup]="form">
-        <boolean-field *ngIf="data.forwardMessagesAllowed"
-          [label]="i18n.notificationSettings.forwardMessages"
-          formControlName="forwardMessages" [disabled]="!data.editable">
-        </boolean-field>
+        <label-value *ngIf="data.forwardMessagesAllowed"
+          [label]="i18n.notificationSettings.forwardMessages" kind="view">
+          <boolean-field formControlName="forwardMessages" switch
+            [disabled]="!data.editable">
+          </boolean-field>
+        </label-value>
         <ng-container *ngFor="let at of data.userAccounts; let first = first">
           <ng-container
             *ngIf="form.get('userAccounts').get(at.id) as accountForm">

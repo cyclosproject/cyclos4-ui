@@ -1079,6 +1079,10 @@ label-value {
   }
 }
 @include media-breakpoint-up(xs) {
+  .page-content-body > label-value[kind=fieldView]:first-child {
+    margin-top: -8px;
+  }
+
   label-value:not(.label-on-side) .label-value-label {
     padding-bottom: calc(#{$input-padding-y} + #{$input-border-width}) !important;
   }
@@ -1088,6 +1092,9 @@ label-value {
   }
 }
 @include media-breakpoint-up(sm) {
+  .page-content-body > label-value[kind=fieldView]:first-child {
+    margin-top: -12px;
+  }
   .filters-form label-value {
     .label-value-label {
       padding: 0 0.5rem !important;

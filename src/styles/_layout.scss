@@ -847,13 +847,6 @@ page-content {
     }
   }
 
-  .page-content.mode-empty .content-title,
-  .page-content.mode-empty-filters .content-title {
-    border-bottom-left-radius: $card-border-radius;
-    border-bottom-right-radius: $card-border-radius;
-    border-bottom: none;
-  }
-
   .layout-centered {
     text-align: center;
     .content-title {
@@ -948,6 +941,9 @@ page-content {
   }
   .back-button:focus, .back-button:active {
     box-shadow: none !important;
+  }
+  .back-button:focus {
+    color: $link-color;
   }
 
   .heading-actions {
@@ -1046,6 +1042,13 @@ page-content {
 }
 @include media-breakpoint-up(sm) {
   page-content {
+    .page-content.mode-empty .content-title,
+    .page-content.mode-empty-filters .content-title {
+      border-bottom-left-radius: $card-border-radius;
+      border-bottom-right-radius: $card-border-radius;
+      border-bottom: none;
+    }
+
     .page-content:not(.last) {
       padding-bottom: 0;
     }
@@ -1172,6 +1175,9 @@ body.dark page-content {
   }
   .back-button {
     color: $button-icon-color-dark;
+  }
+  .back-button:focus {
+    color: $link-color-dark;
   }
   .heading-action {
     border-color: $title-button-border-color-dark;
