@@ -56,11 +56,10 @@
   flex-direction: column;
 }
 .iframe-loading-spinner {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
+  width: 64px;
+  height: 64px;
+  margin: 5rem auto;
+  flex-grow: 1;
   z-index: $zindex-popover;
   background-color: $card-bg;
   color: $card-color;

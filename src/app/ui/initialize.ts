@@ -5,11 +5,9 @@ import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { IconLoadingService } from 'app/core/icon-loading.service';
 import { NextRequestState } from 'app/core/next-request-state';
-import { isDevServer, isSameOrigin } from 'app/shared/helper';
+import { isDevServer, urlJoin } from 'app/shared/helper';
 import { concat, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-
-declare let apiRoot: string;
 
 // Initializes the shared services
 export function initialize(
@@ -21,13 +19,21 @@ export function initialize(
   nextRequestState: NextRequestState
 ): () => any {
   return async () => {
-    // Make sure the api root doesn't end with a slash
-    if (apiRoot.endsWith('/')) {
-      apiRoot = apiRoot.substring(0, apiRoot.length - 1);
+    let apiRoot = 'api';
+    if (!isDevServer()) {
+      let href = window.location.href;
+      if (!href.endsWith('/')) {
+        href += '/';
+      }
+      const pos = href.indexOf('/ui/');
+      if (pos >= 0) {
+        apiRoot = href.substr(0, pos) + '/api';
+      }
     }
+    console.log(`Using API root = ${apiRoot}`);
 
     // Will split the session token if running on the same origin and not in Angular's development server
-    nextRequestState.useCookie = isSameOrigin(apiRoot) && !isDevServer();
+    nextRequestState.useCookie = !isDevServer();
 
     // When receiving an external session token, actually assign the URL again
     const path = location.path();
@@ -67,6 +73,13 @@ export function initialize(
           switchMap(() => of(dataForFrontend)),
           catchError(() => of(dataForFrontend)));
     });
+    if (isDevServer()) {
+      dataForFrontendHolder.registerLoadHook(dataForFrontend => {
+        const link = document.getElementById('robotoLink') as HTMLLinkElement;
+        link.href = urlJoin(dataForFrontend.dataForUi.rootUrl, 'fonts/roboto.css');
+        return of(null);
+      });
+    }
     const dataForFrontend$ = dataForFrontendHolder.initialize();
 
     return await concat(i18n$, dataForFrontend$).toPromise();

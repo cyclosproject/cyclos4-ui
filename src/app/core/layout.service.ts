@@ -1,12 +1,12 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
+import { FrontendScreenSizeEnum } from 'app/api/models';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
-import { blank, ElementReference, empty, htmlCollectionToArray } from 'app/shared/helper';
 import { Escape, ShortcutService } from 'app/core/shortcut.service';
-import { isEqual, trim } from 'lodash-es';
+import { ElementReference, empty, htmlCollectionToArray } from 'app/shared/helper';
+import { isEqual } from 'lodash-es';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { FrontendScreenSizeEnum } from 'app/api/models';
 
 export type Theme = 'light' | 'dark';
 export const Themes: Theme[] = ['light', 'dark'];
@@ -442,18 +442,10 @@ export class LayoutService {
 
   private readStylesAndApplyWhenReady() {
     const style = getComputedStyle(document.body);
-
-    this._fontUrl = trim(style.getPropertyValue('--font-import-url'), '" ');
-    if (blank(this._fontUrl)) {
-      // Styles are not available yet
-      setTimeout(() => this.readStylesAndApplyWhenReady(), 100);
-      return;
-    }
     for (const name of ColorVariables) {
       this._colors.set(name, style.getPropertyValue('--' + name).trim());
       this._colorsDark.set(name, style.getPropertyValue('--' + name + '-dark').trim());
     }
-    this.applyFontImport();
     this.applyThemeColor();
   }
 
@@ -533,24 +525,5 @@ export class LayoutService {
       document.head.appendChild(meta);
     }
     meta.content = this.themeColor;
-  }
-
-  private applyFontImport() {
-    const url = this._fontUrl;
-    if (empty(url)) {
-      return;
-    }
-
-    const id = 'fontImportLink';
-    let link: HTMLLinkElement = document.getElementById(id) as HTMLLinkElement;
-    if (!link) {
-      link = document.createElement('link');
-      link.id = id;
-      link.rel = 'stylesheet';
-      document.head.appendChild(link);
-      link.href = url;
-    } else if (link.href !== url) {
-      link.href = url;
-    }
   }
 }

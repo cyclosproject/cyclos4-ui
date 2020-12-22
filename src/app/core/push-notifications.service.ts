@@ -5,7 +5,7 @@ import {
   PushNotificationEventKind, TransactionView
 } from 'app/api/models';
 import { NextRequestState } from 'app/core/next-request-state';
-import { empty } from 'app/shared/helper';
+import { empty, urlJoin } from 'app/shared/helper';
 import { EventSourcePolyfill } from 'ng-event-source';
 import { Subject } from 'rxjs';
 
@@ -52,7 +52,7 @@ export class PushNotificationsService {
       return;
     }
     const kinds = new Set<string>(Kinds);
-    let url = this.apiConfiguration.rootUrl + '/push/subscribe?clientId=' + ClientId;
+    let url = urlJoin(this.apiConfiguration.rootUrl, 'push', 'subscribe') + '?clientId=' + ClientId;
     kinds.forEach(kind => url += '&kinds=' + kind);
     this.eventSource = new EventSourcePolyfill(url, {
       headers: this.nextRequestState.headers,
@@ -75,7 +75,8 @@ export class PushNotificationsService {
       // Already opened
       return;
     }
-    const url = `${this.apiConfiguration.rootUrl}/push/subscribe?clientId=${ClientId}&kinds=`
+    const url = urlJoin(this.apiConfiguration.rootUrl, 'push', 'subscribe')
+      + `?clientId=${ClientId}&kinds=`
       + PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK
       + `&identityProviderRequestId=${requestId}`;
     this.eventSource = new EventSourcePolyfill(url, {

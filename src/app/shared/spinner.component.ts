@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnInit } from '@angular/core';
 import { getRootSpinnerSvg, truthyAttr } from 'app/shared/helper';
 
 /**
@@ -10,9 +10,7 @@ import { getRootSpinnerSvg, truthyAttr } from 'app/shared/helper';
   templateUrl: 'spinner.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SpinnerComponent {
-
-  svg = getRootSpinnerSvg();
+export class SpinnerComponent implements OnInit {
 
   @HostBinding('class.spinner') classSpinner = true;
 
@@ -24,5 +22,16 @@ export class SpinnerComponent {
   }
   set bootstrap(show: boolean | string) {
     this._bootstrap = truthyAttr(show);
+  }
+
+  constructor(private element: ElementRef<HTMLElement>) { }
+
+  ngOnInit() {
+    if (!this.bootstrap) {
+      const element = this.element.nativeElement;
+      element.style.width = this.size;
+      element.style.height = this.size;
+      element.innerHTML = getRootSpinnerSvg();
+    }
   }
 }

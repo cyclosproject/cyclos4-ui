@@ -21,6 +21,21 @@ export function isDevServer() {
 }
 
 /**
+ * Joins multiple URL parts, making sure to never concatenate dulicated slashes
+ */
+export function urlJoin(...parts: string[]) {
+  return parts.map(p => {
+    if (p.startsWith('/')) {
+      p = p.substr(1);
+    }
+    if (p.endsWith('/')) {
+      p = p.substr(0, p.length - 1);
+    }
+    return p;
+  }).join('/');
+}
+
+/**
  * Returns the SVG content of the root spinner
  */
 export function getRootSpinnerSvg() {

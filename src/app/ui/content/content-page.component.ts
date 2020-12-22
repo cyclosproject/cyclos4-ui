@@ -105,12 +105,12 @@ export class ContentPageComponent extends BaseViewPageComponent<PageWithContent>
     return `
         <div id="${wrapperId}" class="iframe-content-wrapper">
           <div id="${spinnerId}" class="iframe-loading-spinner">
-            <div class="spinner">${spinner}</div>
+            ${spinner}
           </div>
           <iframe id="${iframeId}"
             src="${actualUrl}"
             class="iframe-content"
-            style="display:block;width:1px;min-width:100%;"
+            style="display:block;width:1px;min-width:100%;position:absolute;left:-10000px;top:0px;"
             onload="
               iFrameResize({
                 heightCalculationMethod: navigator.userAgent.indexOf('MSIE') < 0 ? 'lowestElement' : 'max',
@@ -118,6 +118,9 @@ export class ContentPageComponent extends BaseViewPageComponent<PageWithContent>
                 warningTimeout: 0
               }, '#${iframeId}');
               document.getElementById('${wrapperId}').removeChild(document.getElementById('${spinnerId}'));
+              this.style.position = 'relative';
+              this.style.top = '';
+              this.style.left = '';
             ">
           </iframe>
         </div>

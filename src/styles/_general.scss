@@ -1,7 +1,6 @@
 @import 'src/definitions';
 
 :root {
-  --font-import-url: "#{$font-import-url}";
   --theme-color: #{$theme-color};
   --theme-color-dark: #{$theme-color-dark};
   --primary-dark: #{$primary-dark};

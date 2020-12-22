@@ -11,7 +11,7 @@
           [innerHTML]="i18n.login.disconnected | trust">
         </div>
         <ng-template #regularMessage>
-          {{ i18n.login.message }}
+          <div [innerHTML]="i18n.login.message | trust"></div>
         </ng-template>
       </div>
 

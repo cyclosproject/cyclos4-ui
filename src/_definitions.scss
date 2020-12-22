@@ -6,13 +6,8 @@ $accent: #2795c4 !default;
 $primary-dark: #133f52 !default;
 $accent-dark: #2795c4 !default;
 
-// Make sure the font import URL and the font family (sans serif) are in sync
-$font-import-url: "https://fonts.googleapis.com/css?family=Roboto:400,500" !default;
 $font-family-sans-serif: 'Roboto', sans-serif !default;
 $font-size-base: 0.875rem !default;
-$font-weight-light: 300 !default;
-$font-weight-normal: 400 !default;
-$font-weight-bold: 500 !default;
 
 // Toggle for enabling / disabling shadows on most parts
 $enable-shadows: true !default;

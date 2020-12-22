@@ -7,7 +7,7 @@ import { ApiConfiguration } from 'app/api/api-configuration';
 import { CustomFieldDetailed, InputErrorCode, StoredFile } from 'app/api/models';
 import { FilesService } from 'app/api/services/files.service';
 import { BaseComponent } from 'app/shared/base.component';
-import { empty } from 'app/shared/helper';
+import { empty, urlJoin } from 'app/shared/helper';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
 
 /**
@@ -151,7 +151,7 @@ export class TempFileUploadComponent extends BaseComponent {
 
   doUpload(file: FileToUpload): Observable<StoredFile> {
     return new Observable(observer => {
-      const url = `${this.apiConfiguration.rootUrl}/files/temp`;
+      const url = urlJoin(this.apiConfiguration.rootUrl, 'files', 'temp');
       const data = new FormData();
       data.append('file', file.file, file.name);
 

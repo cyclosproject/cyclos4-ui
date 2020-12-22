@@ -140,7 +140,8 @@ export class PasswordInputComponent
     if (this.enteredVKPassword.length < this.passwordInput.buttons.length) {
       this.currentVKCombinations = chunk(this.passwordInput.buttons[this.enteredVKPassword.length], this.passwordInput.buttonsPerRow);
     }
-    this.formControl.setValue(this.enteredVKPassword.length === 0 ? '' : this.passwordInput.id + '|' + this.enteredVKPassword.join('|'));
+    this.formControl.setValue(this.enteredVKPassword.length === 0 ? ''
+      : this.passwordInput.virtualKeyboardId + '|' + this.enteredVKPassword.join('|'));
   }
 
   onDisabledChange(isDisabled: boolean): void {

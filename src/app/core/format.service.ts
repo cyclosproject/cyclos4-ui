@@ -3,7 +3,7 @@ import { ApiConfiguration } from 'app/api/api-configuration';
 import { Currency, DataForFrontend, TimeFieldEnum, TimeInterval, WeekDayEnum } from 'app/api/models';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { I18n } from 'app/i18n/i18n';
-import { empty } from 'app/shared/helper';
+import { empty, urlJoin } from 'app/shared/helper';
 import Big from 'big.js';
 import moment from 'moment-mini-ts';
 import { DataForFrontendHolder } from './data-for-frontend-holder';
@@ -181,9 +181,8 @@ export class FormatService {
    * Returns the full URL to the configuration image (logo) with the given id
    */
   getLogoUrl(id: string): string {
-    return this.apiConfiguration.rootUrl
-      + '/../content/images/currentConfiguration/'
-      + id + '?' + this._dataForFrontend.dataForUi.resourceCacheKey;
+    return urlJoin(this.apiConfiguration.rootUrl, '..', 'content', 'images', 'currentConfiguration', id) + '?'
+      + this._dataForFrontend.dataForUi.resourceCacheKey;
   }
 
   /**

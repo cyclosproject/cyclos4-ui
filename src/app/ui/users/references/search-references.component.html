@@ -66,10 +66,11 @@
             <td class="font-weight-bold">
               {{ i18n.reference.percentagePositive }}</td>
             <td>
-              {{ ((allTime?.totalPositive  / allTime?.total) || 0 | percent) }}
+              {{ ((allTime?.totalPositive / allTime?.total) || 0 | percent) }}
             </td>
             <td>
-              {{ ((last30Days?.totalPositive / last30Days?.total) || 0 | percent) }}
+              {{ ((last30Days?.totalPositive / last30Days?.total) || 0 |
+              percent) }}
             </td>
           </tr>
         </tbody>

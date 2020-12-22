@@ -12,6 +12,7 @@
     "add": "Hinzufügen",
     "date": "Datum",
     "performedBy": "Durchgeführt von",
+    "status": "Status",
     "comments": "Kommentare",
     "futureDate": "Datum in der Zukunft",
     "beginDate": "Anfangsdatum",
@@ -25,8 +26,10 @@
     "notAppliedSelect": "Nicht angewendet (auswählen zum Anwenden)",
     "user": "Nutzende",
     "operator": "Betreiber",
+    "name": "Name",
     "to": "zu",
     "description": "Beschreibung",
+    "details": "Details",
     "download": "Herunterladen",
     "downloadAs": "Als {format} herunterladen",
     "image": "Bild",
@@ -80,7 +83,8 @@
     "images": "Bilder",
     "usersOfBroker": "Nutzende des Brokers",
     "sendMedium": {
-      "email": "E-Mail"
+      "email": "E-Mail",
+      "sms": "SMS"
     },
     "sendCode": "Code schicken",
     "sentCodeTo": "Der Verifizierungscode wurde an {to} geschickt",
@@ -102,20 +106,33 @@
         "jan": "Januar",
         "feb": "Februar",
         "mar": "März",
+        "apr": "April",
         "may": "Mai",
         "jun": "Juni",
         "jul": "Juli",
+        "aug": "August",
+        "sep": "September",
         "oct": "Oktober",
+        "nov": "November",
         "dec": "Dezember"
       },
       "short": {
+        "jan": "Jan",
+        "feb": "Feb",
         "mar": "Mär",
+        "apr": "Apr",
         "may": "Mai",
+        "jun": "Jun",
+        "jul": "Jul",
+        "aug": "Aug",
+        "sep": "Sep",
         "oct": "Okt",
+        "nov": "Nov",
         "dec": "Dez"
       }
     },
     "timeField": {
+      "pattern": "{amount} {field}",
       "plural": {
         "days": "Tage",
         "hours": "Stunden",
@@ -130,6 +147,7 @@
         "day": "Tag",
         "hour": "Stunde",
         "milli": "Millisekunde",
+        "minute": "Minute",
         "month": "Monat",
         "second": "Sekunde",
         "week": "Woche",
@@ -163,7 +181,9 @@
     },
     "rangeTo": "zu",
     "fileSize": {
-      "b": "{n} Bytes"
+      "b": "{n} Bytes",
+      "k": "{n}KB",
+      "m": "{n}MB"
     },
     "results": {
       "withTotal": "Zeige {first} - {last} von {total} Ergebnissen",
@@ -225,11 +245,14 @@
   },
   "menu": {
     "login": "Anmelden",
+    "language": "Sprache",
     "register": "Registrieren",
     "logout": "Abmelden",
     "shoppingCart": "Warenkorb",
+    "home": "Home",
     "dashboard": "Übersicht",
     "banking": "Bankwesen",
+    "banking.accountsSummary": "Kontoübersicht",
     "banking.payUser": "Zahlung an Nutzende",
     "banking.paySystem": "Zahlung an System",
     "banking.paySelf": "Zahlung an sich selbst",
@@ -300,7 +323,12 @@
     "disconnected": "Die Verbindung wurde getrennt.<br>Bitte melden Sie sich erneut an, um die angeforderte Seite zu sehen.",
     "principal": "Nutzende",
     "forgotPassword": "Passwort vergessen?",
-    "register": "Noch kein Benutzer? Melden Sie sich hier an."
+    "register": "Noch kein Benutzer? Melden Sie sich hier an.",
+    "error": {
+      "password": {
+        "temporarilyBlocked": "Ihr Passwort wird wegen Überschreitung der maximal zulässigen Versuche vorübergehend gesperrt"
+      }
+    }
   },
   "password": {
     "confirmationMessage": "Geben Sie Ihren {passwordType} an, um diesen Vorgang zu bestätigen",
@@ -426,8 +454,10 @@
   },
   "dashboard": {
     "quickAccess": "Schnellzugriff",
+    "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
       "account": "Konto",
+      "accounts": "Konten",
       "payUser": "Nutzende bezahlen",
       "paySystem": "System bezahlen",
       "pos": "Zahlung erhalten",
@@ -456,6 +486,7 @@
   "account": {
     "account": "Konto",
     "number": "Kontonummer",
+    "transferFilter": "Filter",
     "minAmount": "Von Betrag",
     "maxAmount": "Zu Betrag",
     "direction": "Richtung",
@@ -472,6 +503,13 @@
     "netInflow": "Nettoeinnahmen",
     "noAccounts": "Sie haben keine Konten",
     "system": "Systemkonto",
+    "mobileTitle": {
+      "account": "Konto",
+      "accountsSummary": "Kontoübersicht"
+    },
+    "title": {
+      "accountsSummary": "Kontoübersicht"
+    },
     "orderBy": {
       "dateDesc": "Datum (neueste zuerst)",
       "dateAsc": "Datum (älteste zuerst)",
@@ -493,6 +531,8 @@
       "beginNegativeSince": "Negativ nach",
       "endNegativeSince": "Negativ vor",
       "orderBy": {
+        "alphabeticallyDesc": "Name (A-Z)",
+        "alphabeticallyAsc": "Name (Z-A)",
         "balanceAsc": "Kontostand (niedrigstes zuerst)",
         "balanceDesc": "Kontostand (höchstes zuerst)"
       }
@@ -612,6 +652,7 @@
     "transferkind": {
       "accountFee": "Kontogebühr",
       "chargeback": "Rückbuchung",
+      "import": "Import",
       "initialCredit": "Startguthaben",
       "installment": "Rate",
       "payment": "Bezahlung",
@@ -721,6 +762,7 @@
       "details.recurring": "Wiederkehrende Zahlung",
       "details.request": "Zahlungsaufforderung",
       "details.chargeback": "Rückbuchung",
+      "details.ticket": "Ticket",
       "details.external": "Externe Zahlung",
       "details.transfer": "Überweisung",
       "parentTransfer": "Ursprüngliche Überweisung",
@@ -933,12 +975,18 @@
       "contact.empty": "Ihre Kontaktliste ist leer",
       "scanQrCode.tooltip": "Scannen Sie einen QR-Code mit Ihrer Kamera"
     },
+    "camera": {
+      "title.qrCode": "QR-code scannen",
+      "noCameras": "Keine Kameras auf diesem Gerät gefunden."
+    },
     "html": {
       "undo": "Rückgängig machen",
       "redo": "Wiederholen",
       "font": "Schriftart",
       "font.default": "Standard-schriftart",
       "font.sansSerif": "Sans Serif",
+      "font.serif": "Serif",
+      "font.monospace": "Monospace",
       "size": "Größe",
       "size.1": "Winzig",
       "size.2": "Klein",
@@ -1056,6 +1104,7 @@
       "userBrokerings": "Broker-Mitglieder"
     },
     "group": "Gruppe",
+    "broker": "Makler",
     "brokers": "Broker",
     "groups": "Gruppen",
     "groupSet": "Gruppierung",
@@ -1106,10 +1155,12 @@
     "beginLastLoginDate": "Letztes Login nach",
     "endLastLoginDate": "Letztes Login vor",
     "profile": {
+      "accountsSummary": "Kontoübersicht",
       "noPermission": "Sie haben keine Berechtigung, das Profil dieses Nutzenden zu sehen",
       "showActions": "Aktionen anzeigen",
       "hideActions": "Aktionen ausblenden",
       "banking": "Bankwesen",
+      "management": "Management",
       "edit": "Profil bearbeiten",
       "managePasswords": "Passwörter verwalten",
       "viewIdentityProviders": "Identitätsanbieter anzeigen",
@@ -1122,6 +1173,7 @@
       "payAsUserToSystem": "Zahlung Nutzende an System",
       "payAsUserToUser": "Zahlung von Nutzende zu Nutzende",
       "payAsUserToSelf": "Zahlung Nutzende an sich selbst",
+      "requestPayment": "Zur Zahlung auffordern",
       "requestPaymentAsUserFromUser": "Zahlung von Nutzende an Nutzende anfordern",
       "requestPaymentFromUser": "Zahlung vom Nutzenden anfordern",
       "requestPaymentAsUserFromSystem": "Zahlung vom System an Nutzende anfordern",
@@ -1176,6 +1228,10 @@
       "generatedPasswords.multiple": "Sie erhalten in Kürze eine E-Mail mit den folgenden generierten Passwörtern: {types}.",
       "viewProfile": "Profil anzeigen",
       "registerAnotherUser": "Einen anderen Nutzenden registrieren"
+    },
+    "orderBy": {
+      "alphabeticallyAsc": "Name (A-Z)",
+      "alphabeticallyDesc": "Name (Z-A)"
     }
   },
   "operatorGroup": {
@@ -1315,6 +1371,7 @@
     },
     "mainBroker": "Hauptbroker",
     "setMain": "Als Hauptbroker festlegen",
+    "broker": "Broker",
     "brokerAdded": "Der Broker wurde erfolgreich hinzugefügt",
     "administration": "Die Verwaltung",
     "action": {
@@ -1347,6 +1404,7 @@
     "verify": {
       "title": "Verifiziere {number} für SMS",
       "mobileTitle": "Verifizierung",
+      "code": "Code",
       "send": "Senden",
       "message": "Klicken Sie oben auf den Knopf, um den Bestätigungscode an Ihr Smartphone zu senden",
       "done": "Der Bestätigungscode wurde an {number} gesendet"
@@ -1465,6 +1523,7 @@
     "orderNumber": "Bestellnummer",
     "prefix": "Präfix",
     "length": "Länge",
+    "suffix": "Suffix",
     "quantity": "Menge",
     "question": "Frage",
     "questionAnswered": "Die Antwort wurde eingereicht",
@@ -1831,6 +1890,7 @@
     "createdBy": "Erstellt von",
     "lastModifiedBy": "Zuletzt geändert von",
     "lastModificationDate": "Zuletzt geändert am",
+    "action": "{type} ({count})",
     "fields": "Felder",
     "title": {
       "details": "{name} Details",
@@ -1847,6 +1907,7 @@
   },
   "userAlert": {
     "title": "Suche Nutzende-Warnungen",
+    "text": "Text",
     "mobileTitle": "Nutzerbenachrichtigungen",
     "type": {
       "title": "Typ",
@@ -1980,10 +2041,12 @@
       "given": "Gegeben"
     },
     "level": {
+      "level": "Level",
       "bad": "Schlecht",
       "veryBad": "Sehr schlecht",
       "good": "Gut",
-      "veryGood": "Sehr gut"
+      "veryGood": "Sehr gut",
+      "neutral": "Neutral"
     },
     "from": "Von",
     "to": "An",
@@ -2016,6 +2079,8 @@
     "action": "Aktion",
     "productAssigned": "Das Produkt wurde dem Nutzenden zugewiesen",
     "kind": {
+      "administrator": "Administrator",
+      "broker": "Makler",
       "member": "Mitglied"
     }
   }

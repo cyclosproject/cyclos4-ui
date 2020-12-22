@@ -8,7 +8,7 @@ import { CustomField, Image, ImageKind, TempImageTargetEnum, UserImageKind } fro
 import { ImagesService } from 'app/api/services/images.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { BaseComponent } from 'app/shared/base.component';
-import { resizeImage, ResizeResult, truthyAttr } from 'app/shared/helper';
+import { resizeImage, ResizeResult, truthyAttr, urlJoin } from 'app/shared/helper';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
 
@@ -236,7 +236,8 @@ export class ImageUploadComponent extends BaseComponent implements OnDestroy {
       data.append('image', file.content, file.name);
 
       url = this.nextRequestState.appendAuth(url);
-      file.subscription = this.http.post(`${this.apiConfiguration.rootUrl}/${url}`, data, {
+      url = urlJoin(this.apiConfiguration.rootUrl, url);
+      file.subscription = this.http.post(url, data, {
         observe: 'events',
         reportProgress: true,
         responseType: 'text',

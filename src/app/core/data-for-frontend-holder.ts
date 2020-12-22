@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
+import { ApiConfiguration } from 'app/api/api-configuration';
 import {
   Auth, DataForFrontend, DataForUi, FrontendBanner, FrontendEnum,
   FrontendIcon, FrontendPage, FrontendScreenSizeEnum, RoleEnum, User
@@ -9,7 +10,7 @@ import { FrontendService } from 'app/api/services/frontend.service';
 import { ErrorStatus } from 'app/core/error-status';
 import { NextRequestState } from 'app/core/next-request-state';
 import { I18n } from 'app/i18n/i18n';
-import { isDevServer, setReloadButton, setRootAlert } from 'app/shared/helper';
+import { isDevServer, setReloadButton, setRootAlert, urlJoin } from 'app/shared/helper';
 import moment from 'moment-mini-ts';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
@@ -30,6 +31,7 @@ export class DataForFrontendHolder {
     private authService: AuthService,
     private i18n: I18n,
     private injector: Injector,
+    private apiConfiguration: ApiConfiguration,
     private nextRequestState: NextRequestState) {
   }
 
@@ -66,7 +68,7 @@ export class DataForFrontendHolder {
 
         if (dataForFrontend.frontend === FrontendEnum.CLASSIC && !isDevServer()) {
           // Redirect the user to the classic frontend
-          this.redirectToClassicFrontend(dataForFrontend);
+          this.redirectToClassicFrontend();
           return of(null);
         }
 
@@ -206,22 +208,21 @@ export class DataForFrontendHolder {
         body: { frontend: FrontendEnum.CLASSIC }
       }).subscribe(() => {
         // ... then redirect
-        this.redirectToClassicFrontend(this.dataForFrontend);
+        this.redirectToClassicFrontend();
       });
     } else {
       // Just redirect
-      this.redirectToClassicFrontend(this.dataForFrontend);
+      this.redirectToClassicFrontend();
     }
   }
 
-  private redirectToClassicFrontend(dataForFrontend: DataForFrontend) {
+  private redirectToClassicFrontend() {
     const url = window.location.href;
     const pos = url.indexOf('/ui/');
     if (pos >= 0) {
       window.location.assign(`${url.substr(0, pos)}/classic`);
     } else {
-      const dataForUi = (dataForFrontend || {}).dataForUi || {};
-      window.location.assign(`${dataForUi.rootUrl}/classic`);
+      window.location.assign(urlJoin(this.apiConfiguration.rootUrl, '..', 'classic'));
     }
   }
 

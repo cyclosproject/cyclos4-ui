@@ -248,12 +248,11 @@ export class ApiHelper {
    * - Expired secondary password
    */
   static isRestrictedAccess(dataForFrontend: DataForFrontend): boolean {
-    if (dataForFrontend.frontend === FrontendEnum.CLASSIC && !isDevServer()) {
+    if (dataForFrontend?.frontend === FrontendEnum.CLASSIC && !isDevServer()) {
       // Must redirect to the new frontend
       return true;
     }
-    const dataForUi = (dataForFrontend || {}).dataForUi || {};
-    const auth = dataForUi.auth || {};
+    const auth = dataForFrontend?.dataForUi?.auth || {};
     return auth.expiredPassword || auth.pendingAgreements
       || auth.pendingSecondaryPassword || auth.expiredSecondaryPassword;
   }
