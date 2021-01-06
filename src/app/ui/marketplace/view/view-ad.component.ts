@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AdCategoryWithParent, AdKind, AdQuestionView, AdView,
@@ -6,6 +7,7 @@ import {
 import { AdQuestionsService } from 'app/api/services/ad-questions.service';
 import { MarketplaceService } from 'app/api/services/marketplace.service';
 import { ShoppingCartsService } from 'app/api/services/shopping-carts.service';
+import { ErrorStatus } from 'app/core/error-status';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { empty, words } from 'app/shared/helper';
@@ -54,10 +56,19 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     super.ngOnInit();
     this.guest = this.loginService.user == null;
     this.id = this.route.snapshot.paramMap.get('id');
-    this.addSub(this.marketplaceService.viewAd({ ad: this.id })
-      .subscribe(ad => {
-        this.data = ad;
-      }));
+    this.errorHandler.requestWithCustomErrorHandler(handle => {
+      this.addSub(this.marketplaceService.viewAd({ ad: this.id })
+        .subscribe(ad => {
+          this.data = ad;
+        }, (err: HttpErrorResponse) => {
+          // When not logged in and got a not found, redirect to login
+          if (err.status === ErrorStatus.NOT_FOUND && this.dataForFrontendHolder.user == null) {
+            this.login.goToLoginPage(this.router.url);
+          } else {
+            handle(err);
+          }
+        }));
+    });
   }
 
   /**

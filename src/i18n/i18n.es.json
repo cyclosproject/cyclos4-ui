@@ -1134,6 +1134,12 @@
       "myBrokerings": "Miembros asignados",
       "userBrokerings": "Brokers"
     },
+    "accountBalance": "Saldo de {name}",
+    "connected": "Conectado",
+    "connectionStatus": "Estado de conexión",
+    "disconnectedStatus": "Desconectado (último acceso: {0})",
+    "neverLogged": "Nunca ha accedido",
+    "activities": "Actividades",
     "group": "Grupo",
     "broker": "Broker",
     "brokers": "Brokers",

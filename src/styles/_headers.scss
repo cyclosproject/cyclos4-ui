@@ -95,8 +95,9 @@ h2 {
 }
 h3 {
   font-size: 1.1em;
+  font-weight: $font-weight-bold;
   color: $h3-color;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
   margin-bottom: 0.6rem;
 }
 h4, h5, h6 {

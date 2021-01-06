@@ -1134,6 +1134,12 @@
       "myBrokerings": "Assigned members",
       "userBrokerings": "Broker members"
     },
+    "accountBalance": "{name} balance",
+    "connected": "Online",
+    "connectionStatus": "Connection status",
+    "disconnectedStatus": "Off-line (last login: {date})",
+    "neverLogged": "Never logged",
+    "activities": "Activities",
     "group": "Group",
     "broker": "Broker",
     "brokers": "Brokers",

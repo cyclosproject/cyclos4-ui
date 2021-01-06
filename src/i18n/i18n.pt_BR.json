@@ -1134,6 +1134,12 @@
       "myBrokerings": "Membros atribuídos",
       "userBrokerings": "Membros do corretor"
     },
+    "accountBalance": "{name} saldo",
+    "connected": "Online",
+    "connectionStatus": "Estado da conexão",
+    "disconnectedStatus": "Desconectado (último login: {date})",
+    "neverLogged": "Nunca acessou",
+    "activities": "Atividades",
     "group": "Grupo",
     "broker": "Corretor",
     "brokers": "Corretores",

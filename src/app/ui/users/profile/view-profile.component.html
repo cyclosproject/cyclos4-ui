@@ -90,6 +90,29 @@
         </label-value>
         <custom-field-value *ngFor="let value of user.customValues"
           [fieldValue]="value"></custom-field-value>
+        <h3 *ngIf="
+          data.references ||
+          data.paymentFeedbacks ||
+          data.accounts.length > 0 ||
+          data.lastLogin ||
+          data.firstLogin ||
+          data.online != null" class="mb-1">
+          {{ i18n.user.activities }}</h3>
+        <label-value *ngIf="data.online" [label]="i18n.user.connectionStatus"
+          [value]="i18n.user.connected">
+        </label-value>
+        <label-value *ngIf="data.lastLogin && !data.online"
+          [label]="i18n.user.connectionStatus"
+          [value]="i18n.user.disconnectedStatus(format.formatAsDateTime(data.lastLogin))">
+        </label-value>
+        <label-value *ngIf="data.lastLogin == null && data.online != null"
+          [label]="i18n.user.connectionStatus"
+          [value]="i18n.user.neverLogged"></label-value>
+        <ng-container *ngFor="let acc of data.accounts">
+          <label-value [label]="i18n.user.accountBalance(acc.type.name)">
+            {{ acc.status.balance | currency: acc.currency }}
+          </label-value>
+        </ng-container>
         <label-value *ngIf="data.references"
           [label]="i18n.user.profile.references">
           <a [routerLink]="referencesPath()">

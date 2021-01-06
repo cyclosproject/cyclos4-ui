@@ -1,1 +1,11 @@
-{}
+{
+  "general": {
+    "printed": "Τυπωμένο",
+    "showFilters": "Εμφάνιση φίλτρων",
+    "lessFilters": "Λιγότερα φίλτρα",
+    "disabled": "Απενεργοποιημένο",
+    "close": "Κλείσιμο",
+    "finish": "Ολοκλήρωση",
+    "remoteAddress": "Διεύθυνση IP"
+  }
+}

@@ -70138,6 +70138,12 @@ components:
                 $ref: '#/components/schemas/UserRecords'
             documents:
               $ref: '#/components/schemas/UserDocuments'
+            accounts:
+              description: >-
+                The list of accounts with status
+              type: array
+              items:
+                $ref: '#/components/schemas/AccountWithStatus'
 
 
     UserVouchersDataForSearch:

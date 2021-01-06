@@ -220,12 +220,20 @@ $spaced-label-values: (
   @each $lv2 in $spaced-label-values {
     body.xxs {
       #{$lv1} + #{$lv2} {
-        margin-top: 0.3rem;
+        @if $lv2 == 'h1' or $lv2 == 'h2' or $lv2 == 'h3' {
+          margin-top: 0.6rem;
+        } @else {
+          margin-top: 0.3rem;
+        }
       }
     }
     body.gt-xxs {
       #{$lv1} + #{$lv2} {
-        margin-top: 0.6rem;
+        @if $lv2 == 'h1' or $lv2 == 'h2' or $lv2 == 'h3' {
+          margin-top: 1rem;
+        } @else {
+          margin-top: 0.6rem;
+        }
       }
     }
   }

@@ -70,7 +70,10 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
         .subscribe(user => {
           this.data = user;
         }, (resp: HttpErrorResponse) => {
-          if ([ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
+          if (resp.status === ErrorStatus.NOT_FOUND && this.dataForFrontendHolder.user == null) {
+            // When not logged in and got a not found, redirect to login
+            this.login.goToLoginPage(this.router.url);
+          } else if ([ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
             this.notification.error(this.i18n.user.profile.noPermission);
             this.breadcrumb.back();
             this.data = {};
