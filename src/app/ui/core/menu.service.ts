@@ -1053,7 +1053,8 @@ export class MenuService {
       }
       const sessions = permissions.sessions || {};
       if (sessions.view) {
-        add(Menu.CONNECTED_USERS, '/users/connected', SvgIcon.BoxArrowInRight, this.i18n.menu.marketplaceConnectedUsers);
+        const menu = role === RoleEnum.BROKER ? Menu.BROKER_CONNECTED_USERS : Menu.CONNECTED_USERS;
+        add(menu, '/users/connected', SvgIcon.BoxArrowInRight, this.i18n.menu.marketplaceConnectedUsers);
       }
 
       // Marketplace

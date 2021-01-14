@@ -357,6 +357,15 @@ export class ErrorHandlerService {
     error = error || {} as UnauthorizedError;
     switch (error.code) {
       case UnauthorizedErrorCode.LOGIN:
+        const missingSecondaryPassword = error.missingSecondaryPassword;
+        const secondaryDeviceAllowed = !!error.secondaryDeviceAllowed;
+        if (missingSecondaryPassword && secondaryDeviceAllowed) {
+          return this.i18n.login.error.confirmation.missingBoth(missingSecondaryPassword.name);
+        } else if (missingSecondaryPassword && !secondaryDeviceAllowed) {
+          return this.i18n.login.error.confirmation.missingPassword(missingSecondaryPassword.name);
+        } else if (!missingSecondaryPassword && secondaryDeviceAllowed) {
+          return this.i18n.login.error.confirmation.missingDevice;
+        }
         switch (error.passwordStatus) {
           case PasswordStatusEnum.DISABLED:
             return this.i18n.login.error.password.disabled;

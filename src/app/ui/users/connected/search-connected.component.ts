@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { RoleEnum, SessionDataForSearch, SessionQueryFilters, SessionResult } from 'app/api/models';
 import { SessionsService } from 'app/api/services/sessions.service';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
+import { Menu } from 'app/ui/shared/menu';
 import { Observable } from 'rxjs';
 
 /**
@@ -78,6 +79,7 @@ export class SearchConnectedComponent
   }
 
   resolveMenu() {
-    return this.menu.searchUsersMenu();
+    return this.dataForFrontendHolder.role === RoleEnum.BROKER
+      ? Menu.BROKER_CONNECTED_USERS : Menu.CONNECTED_USERS;
   }
 }

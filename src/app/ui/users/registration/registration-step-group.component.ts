@@ -35,7 +35,7 @@ export class RegistrationStepGroupComponent extends BaseComponent implements OnI
     if (groupSet == null) {
       return groups.filter(g => g.groupSet == null);
     } else {
-      return groups.filter(g => g.groupSet === groupSet.id);
+      return groups.filter(g => [groupSet.id, groupSet.internalName].includes(g.groupSet));
     }
   }
 }

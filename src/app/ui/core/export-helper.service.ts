@@ -4,7 +4,7 @@ import { ExportFormat } from 'app/api/models';
 import { SvgIcon } from 'app/core/svg-icon';
 import { I18n } from 'app/i18n/i18n';
 import { Action, HeadingAction } from 'app/shared/action';
-import { downloadResponse, empty } from 'app/shared/helper';
+import { downloadResponse, empty, setRootSpinnerVisible } from 'app/shared/helper';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 
@@ -46,7 +46,13 @@ export class ExportHelperService {
 
   private downloadHandler(format: ExportFormat, callback: (f: ExportFormat) => Observable<HttpResponse<Blob>>) {
     return () => {
-      callback(format).pipe(first()).subscribe(downloadResponse);
+      setRootSpinnerVisible(true, false);
+      callback(format).pipe(first()).subscribe(
+        r => {
+          setRootSpinnerVisible(false);
+          downloadResponse(r);
+        },
+        () => setRootSpinnerVisible(false));
     };
   }
 

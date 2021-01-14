@@ -44,14 +44,19 @@ export function getRootSpinnerSvg() {
 }
 
 /**
- * Sets whether the root spinner in the page is visible
+ * Sets whether the root spinner is visible
  */
-export function setRootSpinnerVisible(visible: boolean): void {
-  const rootSpinner = document.getElementById('rootSpinner') as HTMLElement;
-  rootSpinner.style.display = visible ? '' : 'none';
+export function setRootSpinnerVisible(visible: boolean, hideContainer = true): void {
+  const spinner = document.getElementById('rootSpinner') as HTMLElement;
+  spinner.style.display = visible ? '' : 'none';
   const root = document.getElementsByClassName('root-container').item(0) as HTMLElement;
   if (root) {
-    root.style.display = visible ? 'none' : '';
+    if (!visible || hideContainer) {
+      root.style.display = visible ? 'none' : '';
+      root.style.opacity = '1';
+    } else {
+      root.style.opacity = '0.3';
+    }
   }
 }
 
