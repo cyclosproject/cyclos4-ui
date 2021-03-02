@@ -207,16 +207,10 @@
       "change.generated.confirm": "Dit zal het genereren van een nieuwe {type}, en de waarde zal weergegeven worden slechts eenmaal. Bent u zeker?",
       "change.generated.done": "De waarde voor {type} is <data>{value}</data>.<br>Zorg ervoor om het te onthouden, want het zal niet opnieuw worden weergegeven.",
       "unblock": "Deblokkeren",
-      "unblock.confirm": "Weet u zeker dat de blokkering van uw {type}?",
-      "unblock.done": "Uw {type} werd gedeblokkeerd",
       "activate": "Activeren",
       "activate.confirm": "Dit zal activeren {type}, en de gegenereerde waarde zal weergegeven worden slechts eenmaal. Bent u zeker?",
       "enable": "Inschakelen",
-      "enable.confirm": "Bent u ervoor om uw {type}?",
-      "enable.done": "Uw {type} werd ingeschakeld",
-      "disable": "Blokkeer",
-      "disable.confirm": "Bent u zeker dat u voor het uitschakelen van uw {type}?",
-      "disable.done": "Uw {type} was uitgeschakeld"
+      "disable": "Blokkeer"
     }
   },
   "pendingAgreements": {

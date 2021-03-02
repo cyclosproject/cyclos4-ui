@@ -65,6 +65,7 @@ export enum SvgIcon {
   Funnel = 'funnel',
   Gear = 'gear',
   GeoAlt = 'geo-alt',
+  Globe = 'globe',
   ChatText = 'chat-text',
   Grid = 'grid',
   GridFill = 'grid-fill',

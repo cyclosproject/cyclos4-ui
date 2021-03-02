@@ -202,13 +202,17 @@ export class SearchUsersComponent
     }
   }
 
-  get isBrokeringSearch() {
+  get brokeringSearch() {
     return this.kind === UserSearchKind.Broker;
+  }
+
+  get byManager() {
+    return [UserSearchKind.Broker, UserSearchKind.Admin].includes(this.kind);
   }
 
   protected toSearchParams(value: any): UserQueryFilters {
     const filters: UserQueryFilters = { ...value };
-    if (this.kind === UserSearchKind.Broker) {
+    if (this.brokeringSearch) {
       filters.brokers = [this.param];
     }
     filters.activationPeriod = ApiHelper.dateRangeFilter(value.beginActivationPeriod, value.endActivationPeriod);

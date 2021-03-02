@@ -31,6 +31,9 @@
 
 <!-- Basic profile fields-->
 <ng-container [formGroup]="form">
+  <label-value *ngIf="data.broker" [label]="i18n.user.broker">
+    <user-link [user]="data.broker" hideLink></user-link>
+  </label-value>
   <input-field *ngIf="canEdit('name')" formControlName="name"
     [label]="i18n.user.name" required></input-field>
   <input-field *ngIf="canEdit('username')" formControlName="username"

@@ -41,7 +41,8 @@
                 [label]="i18n.general.distanceFilter">
               </max-distance-field>
             </div>
-            <div *ngIf="data.products?.length > 1" class="col-12 col-md-6">
+            <div *ngIf="byManager && data.products?.length > 1"
+              class="col-12 col-md-6">
               <multi-selection-field labelPosition="side"
                 formControlName="products"
                 [emptyLabel]="i18n.general.notApplied"
@@ -53,7 +54,8 @@
                 </field-option>
               </multi-selection-field>
             </div>
-            <div *ngIf="data.agreements?.length > 1" class="col-12 col-md-6">
+            <div *ngIf="byManager && data.agreements?.length > 1"
+              class="col-12 col-md-6">
               <multi-selection-field labelPosition="side"
                 formControlName="acceptedAgreements"
                 [emptyLabel]="i18n.general.notApplied"
@@ -65,7 +67,8 @@
                 </field-option>
               </multi-selection-field>
             </div>
-            <div *ngIf="data.agreements?.length > 1" class="col-12 col-md-6">
+            <div *ngIf="byManager && data.agreements?.length > 1"
+              class="col-12 col-md-6">
               <multi-selection-field labelPosition="side"
                 formControlName="notAcceptedAgreements"
                 [emptyLabel]="i18n.general.notApplied"
@@ -78,7 +81,7 @@
               </multi-selection-field>
             </div>
             <!-- Statuses -->
-            <div class="col-12 col-md-6">
+            <div *ngIf="byManager" class="col-12 col-md-6">
               <multi-selection-field labelPosition="side"
                 formControlName="statuses" [label]="i18n.general.status"
                 [fieldOptions]="statusOptions"
@@ -86,7 +89,7 @@
               </multi-selection-field>
             </div>
             <!-- Creation date -->
-            <div class="row no-gutters col-12">
+            <div *ngIf="byManager" class="row no-gutters col-12">
               <div class="col-12 col-md-6">
                 <date-field labelPosition="side"
                   formControlName="beginCreationPeriod"
@@ -103,7 +106,7 @@
               </div>
             </div>
             <!-- Activation date -->
-            <div class="row no-gutters col-12">
+            <div *ngIf="byManager" class="row no-gutters col-12">
               <div class="col-12 col-md-6">
                 <date-field labelPosition="side"
                   formControlName="beginActivationPeriod"
@@ -120,7 +123,7 @@
               </div>
             </div>
             <!-- Last login date -->
-            <div class="row no-gutters col-12">
+            <div *ngIf="byManager" class="row no-gutters col-12">
               <div class="col-12 col-md-6">
                 <date-field labelPosition="side"
                   formControlName="beginLastLoginPeriod"
@@ -136,7 +139,7 @@
                 </date-field>
               </div>
             </div>
-            <div *ngIf="!isBrokeringSearch" class="col-12 col-md-6">
+            <div *ngIf="byManager" class="col-12 col-md-6">
               <user-field labelPosition="side" formControlName="brokers"
                 [label]="i18n.general.usersOfBroker"
                 [filters]="userSearchFilters()" [allowContacts]="false">

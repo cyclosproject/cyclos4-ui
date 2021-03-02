@@ -9,7 +9,7 @@
     }"></div>
 
   <div class="d-flex flex-column flex-xs-row">
-    <div *ngIf="files?.length > 0"
+    <div
       class="d-flex flex-grow-1 flex-wrap align-items-center mb-2 mb-xs-0 mr-2">
       <div class="file-item" *ngFor="let file of files; let last = last;">
         <a [href]="appendAuth(file.url)" [type]="file.contentType"

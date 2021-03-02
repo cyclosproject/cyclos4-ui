@@ -361,16 +361,10 @@
       "change.generated.confirm": "Questo genererà un nuovo {type}, e il valore verrà visualizzato solo una volta. Sei sicuro?",
       "change.generated.done": "Il valore per {type} è <data>{value}</data>.<br>Memorizzalo, perché non verrà visualizzato di nuovo.",
       "unblock": "Sblocca",
-      "unblock.confirm": "Sei sicuro di sbloccare il tuo {type}?",
-      "unblock.done": "Il tuo {type} è stato sbloccato",
       "activate": "Attiva",
       "activate.confirm": "Questo attiverà il tuo {type}, e il valore generato verrà visualizzato solo una volta. Sei sicuro?",
       "enable": "Abilita",
-      "enable.confirm": "Sei sicuro di abilitare il tuo {type}?",
-      "enable.done": "Il tuo {type} è stato abilitato",
-      "disable": "Disattiva",
-      "disable.confirm": "Sei sicuro di voler disattivare il tuo {type}?",
-      "disable.done": "Il {type} è stato disattivato"
+      "disable": "Disattiva"
     }
   },
   "pendingAgreements": {

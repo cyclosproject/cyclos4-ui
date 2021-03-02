@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Host, Injector,
-  Input, Optional, Output, SkipSelf, ViewChild,
+  Input, Optional, Output, SkipSelf, ViewChild, HostBinding,
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
@@ -26,7 +26,7 @@ export class BooleanFieldComponent
   @Output() click = new EventEmitter<Event>();
   @ViewChild('checkbox') checkbox: ElementRef;
   _switch: boolean | string = false;
-  @Input() get switch(): boolean | string {
+  @HostBinding('class.switch') @Input() get switch(): boolean | string {
     return this._switch;
   }
   set switch(flag: boolean | string) {

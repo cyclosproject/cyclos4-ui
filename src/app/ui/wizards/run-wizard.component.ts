@@ -13,6 +13,7 @@ import { empty, focusFirstInvalid, mergeValidity, validateBeforeSubmit } from 'a
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
+import Cookies from 'js-cookie';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 
@@ -92,7 +93,10 @@ export class RunWizardComponent
       } else if (menu) {
         request = this.wizardsService.startMenuWizard({ menu });
       } else {
-        request = this.wizardsService.startWizard({ key: wizard });
+        request = this.wizardsService.startWizard({
+          key: wizard,
+          inviteToken: Cookies.get('inviteToken')
+        });
       }
       this.addSub(request.subscribe(data => {
         this.stateManager.setGlobal(`wizard-execution-${data.key}`, data);
@@ -142,6 +146,7 @@ export class RunWizardComponent
           this.registrationMessage = this.userHelper.registrationMessageHtml(result, false);
           this.registrationPrincipals = this.userHelper.registrationPrincipalsHtml(result);
           this.registrationPasswords = this.userHelper.registrationPasswordsMessage(result);
+          Cookies.remove('inviteToken', { path: '/' });
           break;
         case WizardResultTypeEnum.PLAIN_TEXT:
           this.resultMessage = (data.result || '').split('\n').join('<br>');

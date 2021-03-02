@@ -892,7 +892,7 @@ export class MenuService {
         // Add a language switcher
         const languages = addRoot(RootMenu.LANGUAGE, SvgIcon.ChatText, this.i18n.menu.language);
         locales.forEach(locale => {
-          const switchLocale = add(Menu.LANGUAGE, '', null, locale.name);
+          const switchLocale = add(Menu.LANGUAGE, '', SvgIcon.Globe, locale.name);
           switchLocale.locale = locale;
         });
         languages.dropdown = true;

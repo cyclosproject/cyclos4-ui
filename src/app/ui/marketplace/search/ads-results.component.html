@@ -41,7 +41,7 @@
       {{ ad.name }}
     </div>
     <div class="cell-text">
-      {{ i18n.ad.byOwner(ad.owner.display) }}
+      {{ i18n.ad.byOwner(ad.user.display) }}
     </div>
     <div *ngFor="let field of data.fieldsInList" class="cell-small">
       <format-field-value [fields]="data.customFields" [plainText]="true"
@@ -69,10 +69,10 @@
         </td>
         <ng-container *ngIf="!singleUser">
           <td class="avatar">
-            <avatar [image]="ad.owner.image"></avatar>
+            <avatar [image]="ad.user.image"></avatar>
           </td>
           <td>
-            {{ ad.owner.display }}
+            {{ ad.user.display }}
           </td>
         </ng-container>
         <ng-container *ngIf="layout.gtxs$ | async">
@@ -97,9 +97,9 @@
     [icon]="SvgIcon.Basket">
     <ng-container *ngIf="!singleUser">
       <div class="tile-floating-avatar">
-        <avatar class="solid-icon" [image]="ad.owner.image"
-          [tooltip]="ad.owner.display" size="medium-large"
-          (click)="$event.preventDefault(); $event.stopPropagation; router.navigate(['users', ad.owner.id, 'profile'])">
+        <avatar class="solid-icon" [image]="ad.user.image"
+          [tooltip]="ad.user.display" size="medium-large"
+          (click)="$event.preventDefault(); $event.stopPropagation; router.navigate(['users', ad.user.id, 'profile'])">
         </avatar>
       </div>
     </ng-container>
@@ -108,7 +108,7 @@
         {{ ad.price | number:decimals(ad) }}
       </span>
       {{ (ad.promotionalPrice || ad.price) |
-            currency:lookupCurrency(ad) }}
+      currency:lookupCurrency(ad) }}
     </div>
     <ng-template #blankPrice>
       <div class="card-title">
@@ -132,7 +132,7 @@
       {{ (ad.promotionalPrice || ad.price) | currency:lookupCurrency(ad) }}
     </div>
 
-    <div>{{ i18n.ad.byOwner(ad.owner.display) }}</div>
+    <div>{{ i18n.ad.byOwner(ad.user.display) }}</div>
   </map-result>
 
 </results-layout>

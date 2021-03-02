@@ -16,6 +16,7 @@ import {
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
+import Cookies from 'js-cookie';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 
@@ -158,6 +159,7 @@ export class UserRegistrationComponent
   showIdentityProviders() {
     this.addSub(this.usersService.getUserDataForNew({
       group: this.group.value,
+      inviteToken: Cookies.get('inviteToken'),
       fields: ['-agreements.content']
     }).subscribe(data => {
       this.data = data;
@@ -346,6 +348,7 @@ export class UserRegistrationComponent
           .subscribe(result => {
             this.result = result;
             this.image = null;
+            Cookies.remove('inviteToken', { path: '/' });
             this.step = 'done';
           }));
       } else {
@@ -375,6 +378,9 @@ export class UserRegistrationComponent
 
     // Copy the fields in the confirmation form
     copyProperties(this.confirmForm.value, user);
+
+    // The inviteToken isn't stored in the form, but in a cookie
+    user.inviteToken = Cookies.get('inviteToken');
 
     return user;
   }

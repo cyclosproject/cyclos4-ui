@@ -420,16 +420,10 @@
       "change.generated.confirm": "Dies generiert einen neuen {type}, und der Wert wird nur einmal angezeigt. Sind Sie sicher?",
       "change.generated.done": "Der Wert für {type} ist <data>{value}</data>.<br>Stellen Sie sicher, dass Sie ihn sich einprägen, da er nicht wieder angezeigt wird.",
       "unblock": "Entsperren",
-      "unblock.confirm": "Sind Sie sicher, dass Sie Ihren {type} entsperren wollen?",
-      "unblock.done": "Ihr {type} wurde entsperrt",
       "activate": "Aktivieren",
       "activate.confirm": "Dadurch wird Ihren {type} aktivieren und der generierte Wert wird nur einmal angezeigt. Sind Sie sicher?",
       "enable": "Aktivieren",
-      "enable.confirm": "Sind Sie sicher, dass Sie Ihren {type} aktivieren wollen?",
-      "enable.done": "Ihr {type} wurde aktiviert",
-      "disable": "Deaktivieren",
-      "disable.confirm": "Sind Sie sicher, dass Sie Ihren {type} deaktivieren wollen?",
-      "disable.done": "Ihr {type} wurde deaktiviert"
+      "disable": "Deaktivieren"
     }
   },
   "pendingAgreements": {

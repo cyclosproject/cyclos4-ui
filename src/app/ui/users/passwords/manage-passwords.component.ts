@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormGroup, Validators } from '@angular/forms';
 import {
   CreateDeviceConfirmation, DataForUserPasswords, DeviceConfirmationTypeEnum,
-  PasswordStatusAndActions, PasswordStatusEnum,
+  PasswordStatusAndActions, PasswordStatusEnum, SendMediumEnum,
 } from 'app/api/models';
 import { PasswordsService } from 'app/api/services/passwords.service';
 import { Action } from 'app/shared/action';
@@ -11,6 +11,7 @@ import { validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { ChangePasswordDialogComponent } from 'app/ui/users/passwords/change-password-dialog.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { NextRequestState } from 'app/core/next-request-state';
 
 /**
  * Manages the user passwords
@@ -36,7 +37,8 @@ export class ManagePasswordsComponent
   constructor(
     injector: Injector,
     private modal: BsModalService,
-    private passwordsService: PasswordsService) {
+    private passwordsService: PasswordsService,
+    private nextRequestState: NextRequestState) {
     super(injector);
   }
 
@@ -87,6 +89,28 @@ export class ManagePasswordsComponent
     if (permissions.changeGenerated) {
       actions.push(new Action(this.i18n.password.action.change, () => {
         this.changeGenerated(password);
+      }));
+    }
+    if (permissions.allowGeneration) {
+      actions.push(new Action(this.i18n.password.action.allowGeneration, () => {
+        this.allowGeneration(password);
+      }));
+    }
+    if (permissions.resetAndSend) {
+      if (this.data.sendMediums.includes(SendMediumEnum.EMAIL)) {
+        actions.push(new Action(this.i18n.password.action.resetAndSendEmail, () => {
+          this.resetAndSend(password, SendMediumEnum.EMAIL);
+        }));
+      }
+      if (this.data.sendMediums.includes(SendMediumEnum.SMS)) {
+        actions.push(new Action(this.i18n.password.action.resetAndSendSms, () => {
+          this.resetAndSend(password, SendMediumEnum.SMS);
+        }));
+      }
+    }
+    if (permissions.resetGenerated) {
+      actions.push(new Action(this.i18n.password.action.resetGenerated, () => {
+        this.resetGenerated(password);
       }));
     }
     if (permissions.unblock) {
@@ -171,6 +195,7 @@ export class ManagePasswordsComponent
 
   private doGenerate(password: PasswordStatusAndActions) {
     this.addSub(this.passwordsService.generatePassword({ type: password.type.id }).subscribe(newValue => {
+      this.nextRequestState.leaveNotification = true;
       this.notification.info(this.i18n.password.action.changeGeneratedDone({
         type: password.type.name,
         value: newValue,
@@ -201,11 +226,90 @@ export class ManagePasswordsComponent
       type: password.type.id,
       confirmationPassword,
     }).subscribe(newValue => {
+      this.nextRequestState.leaveNotification = true;
       this.notification.info(
         this.i18n.password.action.changeGeneratedDone({
           type: password.type.name,
           value: newValue,
         }));
+      this.reload();
+    }));
+  }
+
+  private allowGeneration(password: PasswordStatusAndActions) {
+    this.notification.confirm({
+      title: this.i18n.password.action.allowGeneration,
+      message: this.i18n.password.action.allowGenerationConfirm(password.type.name),
+      callback: () => this.doAllowGeneration(password),
+    });
+  }
+
+  private doAllowGeneration(password: PasswordStatusAndActions) {
+    this.addSub(this.passwordsService.allowGeneration({
+      type: password.type.id,
+      user: this.param,
+    }).subscribe(() => {
+      this.notification.snackBar(
+        this.i18n.password.action.allowGenerationDone(password.type.name));
+      this.reload();
+    }));
+  }
+
+  private resetGenerated(password: PasswordStatusAndActions) {
+    this.notification.confirm({
+      title: this.i18n.password.action.resetGenerated,
+      message: this.i18n.password.action.resetGeneratedConfirm(password.type.name),
+      callback: () => this.doResetGenerated(password),
+    });
+  }
+
+  private doResetGenerated(password: PasswordStatusAndActions) {
+    this.addSub(this.passwordsService.resetGeneratedPassword({
+      type: password.type.id,
+      user: this.param,
+    }).subscribe(() => {
+      this.notification.snackBar(
+        this.i18n.password.action.resetGeneratedDone(password.type.name));
+      this.reload();
+    }));
+  }
+
+  private resetAndSend(password: PasswordStatusAndActions, medium: SendMediumEnum) {
+    let title: string;
+    let message: string;
+    switch (medium) {
+      case SendMediumEnum.EMAIL:
+        title = this.i18n.password.action.resetAndSendEmail;
+        message = this.i18n.password.action.resetAndSendEmailConfirm(password.type.name);
+        break;
+      case SendMediumEnum.SMS:
+        title = this.i18n.password.action.resetAndSendSms;
+        message = this.i18n.password.action.resetAndSendSmsConfirm(password.type.name);
+        break;
+    }
+    this.notification.confirm({
+      title,
+      message,
+      callback: () => this.doResetAndSend(password, medium),
+    });
+  }
+
+  private doResetAndSend(password: PasswordStatusAndActions, medium: SendMediumEnum) {
+    this.addSub(this.passwordsService.resetAndSendPassword({
+      type: password.type.id,
+      sendMediums: [medium],
+      user: this.param,
+    }).subscribe(() => {
+      switch (medium) {
+        case SendMediumEnum.EMAIL:
+          this.notification.snackBar(
+            this.i18n.password.action.resetAndSendEmailDone(password.type.name));
+          break;
+        case SendMediumEnum.SMS:
+          this.notification.snackBar(
+            this.i18n.password.action.resetAndSendSmsDone(password.type.name));
+          break;
+      }
       this.reload();
     }));
   }

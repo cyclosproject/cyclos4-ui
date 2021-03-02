@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { AvailabilityEnum, CustomField, OperatorDataForNew, UserRegistrationResult, UserRegistrationStatusEnum } from 'app/api/models';
+import { AvailabilityEnum, CustomField, OperatorDataForNew, UserRegistrationResult, UserRegistrationStatusEnum, OperatorNew } from 'app/api/models';
 import { OperatorsService } from 'app/api/services/operators.service';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
-import { cloneControl, validateBeforeSubmit } from 'app/shared/helper';
+import { cloneControl, validateBeforeSubmit, empty } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 
@@ -71,18 +71,24 @@ export class OperatorRegistrationComponent
     // Build a full form, so it can all be validated once
     const fullForm = cloneControl(this.form);
     if (this.mobileForm) {
-      fullForm.setControl('mobile', this.mobileForm);
+      fullForm.setControl('mobilePhones', new FormArray([this.mobileForm]));
     }
     if (this.landLineForm) {
-      fullForm.setControl('landLine', this.landLineForm);
+      fullForm.setControl('landLinePhones', new FormArray([this.landLineForm]));
     }
     fullForm.setControl('passwords', new FormArray(this.passwordForms));
     if (!validateBeforeSubmit(fullForm)) {
       return;
     }
+    // Get the operator itself
+    const operator = fullForm.value as OperatorNew;
+    // We canot send a model without a number, or it will always fail the validation.
+    // If no number is given, the API expects no object either.
+    operator.mobilePhones = operator.mobilePhones.filter(p => !empty(p.number));
+    operator.landLinePhones = operator.landLinePhones.filter(p => !empty(p.number));
     // Register the operator
     this.addSub(this.operatorsService.registerOperator({
-      user: this.user, body: fullForm.value,
+      user: this.user, body: operator,
     }).subscribe(result => this.result$.next(result)));
   }
 

@@ -217,16 +217,10 @@
       "change.generated.confirm": "Cela générera un nouveau {type}, et la valeur ne sera affichée qu'une fois. Êtes-vous sûr ?",
       "change.generated.done": "La valeur de {type} est <data> {value} </ data>. <br> Veillez à le mémoriser car il ne sera plus affiché.",
       "unblock": "Débloquer",
-      "unblock.confirm": "Êtes-vous sûr de débloquer votre {type} ?",
-      "unblock.done": "Votre {type} a été débloqué ",
       "activate": "Activer",
       "activate.confirm": "Cela activera votre {type}, et la valeur générée ne sera affichée qu'une fois. Êtes-vous sûr ?",
       "enable": "Activer",
-      "enable.confirm": "Etes-vous sûr d'activer votre {type} ?",
-      "enable.done": "Votre {type} a été activé",
-      "disable": "Désactiver",
-      "disable.confirm": "Êtes-vous sûr de désactiver votre {type} ?",
-      "disable.done": "Votre {type} a été désactivé"
+      "disable": "Désactiver"
     }
   },
   "pendingAgreements": {

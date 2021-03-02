@@ -128,7 +128,7 @@ input[type=number] {
   font-weight: $font-weight-normal;
 
   &::before, &::after {
-    top: 0.1rem !important;
+    top: 0.1rem;
   }
 }
 .custom-control-label::before {
@@ -174,19 +174,27 @@ input[type=number] {
     width: 2.25rem;
     height: 1.25rem;
     left: 0;
+    top: 0.55rem;
   }
   &::after {
     width: 1rem;
     left: 2px;
     height: 1rem;
-    top: 3px !important;
+    top: 0.65rem;
+  }
+}
+
+@include media-breakpoint-up(xs) {
+  .custom-switch .custom-control-label::after {
+    top: 0.7rem;
   }
 }
 @include media-breakpoint-up(lg) {
   .custom-switch .custom-control-label::after {
-    top: 4px !important;
+    top: 0.65rem;
   }
 }
+
 .custom-switch .custom-control-input:checked ~ .custom-control-label::after {
   transform: translateX(calc(1.25rem - 4px));
 }
@@ -248,7 +256,8 @@ $spaced-label-values: (
 }
 
 .label-value.label-on-side {
-  boolean-field {
+  boolean-field:not(.switch),
+  accept-agreements agreement-link {
     transform: translateY(7px);
   }
   checkbox-group-field {
@@ -258,6 +267,16 @@ $spaced-label-values: (
     transform: translateY(2px);
   }
 }
+boolean-field:not(.switch) .label-value.label-on-side .label-value-value {
+  transform: translateY(7px);
+}
+checkbox-group-field .label-value.label-on-side .label-value-value {
+  transform: translateY(4px);
+}
+radio-group-field .label-value.label-on-side .label-value-value {
+  transform: translateY(2px);
+}
+
 
 .notice {
   font-size: 0.9rem;

@@ -58,6 +58,12 @@ export function initialize(
     const iconRoot = apiRoot === 'api' ? 'svg' : apiRoot + '/../ui/svg';
     iconLoading.iconRoot = iconRoot;
 
+    // Change the media of the styles link
+    const stylesLink = document.getElementById('stylesLink') as HTMLLinkElement;
+    if (stylesLink) {
+      stylesLink.media = '';
+    }
+
     // Initialize the data for frontend
     dataForFrontendHolder.registerLoadHook(dataForFrontend => {
       const dataForUi = dataForFrontend?.dataForUi || {};

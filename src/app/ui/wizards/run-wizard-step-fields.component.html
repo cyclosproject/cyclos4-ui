@@ -11,6 +11,11 @@
     </ng-container>
 
     <ng-container *ngIf="dataForNew.profileFieldActions?.name?.edit">
+      <label-value *ngIf="data.step.dataForNew.broker"
+        [label]="i18n.user.broker">
+        <user-link [user]="data.step.dataForNew.broker" hideLink></user-link>
+      </label-value>
+
       <input-field [formControl]="user.controls.name" required
         [label]="dataForNew.nameLabel"></input-field>
     </ng-container>
