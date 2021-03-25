@@ -152,7 +152,7 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
   }
 
   private getValue(): { value: any, link?: string } {
-    return this.fieldHelper.getValue(this.fieldValue, this.plainText);
+    return this.fieldHelper.getValue(this.fieldValue, this.plainText) || { value: null };
   }
 
   private createFieldValue(): CustomFieldValue {

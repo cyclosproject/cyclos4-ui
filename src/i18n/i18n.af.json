@@ -1,1 +1,712 @@
-{}
+{
+  "general": {
+    "by": "Deur",
+    "changedBy": "Verander deur",
+    "code": "Kode",
+    "action": "Aksie",
+    "actions": "Aksies",
+    "add": "Voeg by",
+    "date": "Datum",
+    "comments": "Kommentaar",
+    "beginDate": "Aanvangsdatum",
+    "creationDate": "Skeppingsdatum",
+    "description": "Beskrywing",
+    "download": "Aflaai",
+    "downloadAs": "Laai af as {format}",
+    "distanceFilter": "Afstand",
+    "all": "Alle",
+    "copyToClipboard": "Kopieer na knipbord",
+    "copyToClipboard.done": "Gekopieer",
+    "back": "Terug",
+    "edit": "Redigeer",
+    "confirm": "Bevestig",
+    "cancel": "Kanselleer.",
+    "close": "Sluit",
+    "remove.confirm": "Is jy seker om item {item} te verwyder?",
+    "addNew": "Voeg nuwe by",
+    "removeItemConfirm": "Is u seker om hierdie item te verwyder?",
+    "currency": "Geldeenheid",
+    "sendMedium": {
+      "email": "E-pos"
+    },
+    "datePart": {
+      "long": {
+        "day": "Dag"
+      }
+    },
+    "month": {
+      "long": {
+        "apr": "April",
+        "aug": "Augustus",
+        "dec": "Desember"
+      },
+      "short": {
+        "apr": "Apr",
+        "aug": "Aug",
+        "dec": "Des"
+      }
+    },
+    "timeField": {
+      "plural": {
+        "days": "Dae"
+      },
+      "singular": {
+        "day": "Dag"
+      }
+    },
+    "geolocation": {
+      "current": "Huidige ligging"
+    }
+  },
+  "error": {
+    "maxItems": "Kan nie meer as {max} elemente toevoeg nie",
+    "unauthorized": {
+      "url": "Toegang vanaf hierdie URL is nie toegelaat nie"
+    },
+    "securityAnswer": {
+      "disabled": "Agv die aantal sekuriteitsvraagpogings, is hierdie versoekopdrag gestaak.\nKontak asseblief die administrasie."
+    }
+  },
+  "menu": {
+    "dashboard": "Beheerpaneel",
+    "banking": "Bankwese",
+    "banking.accountsSummary": "Rekeningopsomming",
+    "banking.pendingMyAuth": "Wag op my magtiging",
+    "banking.buyVouchers": "Koop koopbewyse",
+    "banking.accountBalanceLimits": "Rekening saldo perke",
+    "banking.accountPaymentLimits": "Rekening betaling perke",
+    "brokering": "Makelary",
+    "marketplace.businessDirectory": "Besigheidsgids",
+    "marketplace.advertisements": "Advertiensies",
+    "marketplace.adInterests": "Advertensie belangstellings",
+    "marketplace.deliveryMethods": "Afleweringsmetodes",
+    "marketplace.connectedUsers": "Aangemelde gebruikers",
+    "personal.documents": "Dokumente",
+    "personal.contacts": "Kontakte",
+    "personal.agreements": "Ooreenkomste"
+  },
+  "password": {
+    "confirm.mode": "Bevestig met",
+    "title": {
+      "change.self": "Verander u wagwoord",
+      "change.user": "Verander gebruikerswagwoord"
+    },
+    "forgotten": {
+      "captcha": "Captcha bevestiging",
+      "title.changePassword": "Verander u wagwoord"
+    },
+    "status": {
+      "active": "Aktief",
+      "indefinitelyBlocked": "Geblok"
+    },
+    "action": {
+      "change": "Wysig",
+      "unblock.confirm": "Is u seker om die {type} te ontblok?",
+      "activate": "Aktiveer",
+      "enable.confirm": "Is u seker om die {tipe} te aktiveer?",
+      "disable.confirm": "Is u seker om die {tipe} te deaktiveer?",
+      "resetAndSendEmail.confirm": "Is u seker om die {tipe} terug te stel en dit per e-pos aan die gebruiker te stuur?",
+      "resetAndSendSms.confirm": "Is u seker om die {type} terug te stel en dit per SMS aan die gebruiker te stuur?",
+      "resetGenerated.confirm": "Is u seker om die {type} terug te stel, sodat die gebruiker dit weer kan genereer?",
+      "allowGeneration": "Laat generasie toe",
+      "allowGeneration.confirm": "Is u seker om die gebruiker toe te laat om hul {type} te genereer?"
+    }
+  },
+  "dashboard": {
+    "action": {
+      "account": "Rekening",
+      "accounts": "Rekeninge",
+      "contacts": "Kontakte"
+    },
+    "accounts": "Rekeninge",
+    "accountStatus": "Rekeningstatus",
+    "passwords": {
+      "proceed": "Klik hier om voort te gaan"
+    }
+  },
+  "account": {
+    "account": "Rekening",
+    "number": "Rekeningnommer",
+    "balance": "Saldo:",
+    "availableBalance": "Beskikbare saldo",
+    "balanceOn": "Saldo op {date}",
+    "mobileTitle": {
+      "account": "Rekening",
+      "accountsSummary": "Rekeningopsomming"
+    },
+    "title": {
+      "accountsSummary": "Rekeningopsomming"
+    },
+    "orderBy": {
+      "dateDesc": "Datum (nuutste eerste)",
+      "dateAsc": "Datum (oudste eerste)",
+      "amountAsc": "Bedrag (laagste eerste)",
+      "amountDesc": "Bedrag (hoogste eerste)"
+    },
+    "userBalances": {
+      "balancesSum": "Saldo's som",
+      "balancesAverage": "Saldo's gemiddeld",
+      "balancesCount": "Saldo's telling",
+      "orderBy": {
+        "balanceAsc": "Saldos (laagste eerste)",
+        "balanceDesc": "Saldos (hoogste eerste)"
+      }
+    },
+    "balanceLimits": {
+      "title": {
+        "list": "Rekening saldo perke",
+        "view": "Rekening saldo perke besonderhede",
+        "edit": "Rekening saldo perke besonderhede",
+        "history": "Rekening saldo perke geskiedenis",
+        "overview": "Rekening saldo perke oorsig"
+      },
+      "mobileTitle": {
+        "list": "Saldoperke",
+        "view": "Saldo perke besonderhede",
+        "edit": "Saldo perke besonderhede",
+        "history": "Saldo perke geskiedenis",
+        "overview": "Saldo perke oorsig"
+      }
+    },
+    "paymentLimits": {
+      "dailyLimit": "Daaglikse perk",
+      "definedInPaymentType": "Omskryf in betalingtipe",
+      "title": {
+        "list": "Rekening betaling perke",
+        "view": "Rekening betaling perke besonderhede",
+        "edit": "Rekening betaling perke besonderhede",
+        "history": "Rekening betaling perke geskiedenis",
+        "overview": "Rekening betaling perke oorsig"
+      }
+    }
+  },
+  "transaction": {
+    "amount": "Bedrag",
+    "account": "Rekening",
+    "appliedFees": "Toegepaste fooie",
+    "dueAmount": "Bedrag verskulding",
+    "dueDate": "Vervaldatum",
+    "channel": "Kanaal",
+    "chargedBack": "Teruggevorder",
+    "chargebackOf": "Terugvordering van",
+    "chargedBackBy": "Teruggevorder deur",
+    "authorizationComments": "Magtiging kommentaar",
+    "actionPerformedBy": "Aksie uitgevoer deur",
+    "accountBalance": "Rekeningsaldo",
+    "transferkind": {
+      "accountFee": "Rekeningfooi",
+      "chargeback": "Terugvordering"
+    },
+    "schedulingStatus": {
+      "closedRecurring": "Geslote herhalende betaling",
+      "canceledRecurring": "Herhalende betaling gekanselleer "
+    },
+    "status": {
+      "closed": "Gesluit",
+      "canceled": "Gekanselleer",
+      "approved": "Goedgekeur",
+      "authorized": "Gemagtig",
+      "denied": "Geweier",
+      "blocked": "Geblok"
+    },
+    "title": {
+      "authorizationHistory": "Magtigingsgeskiedenis",
+      "details.chargeback": "Terugvordering besonderhede"
+    },
+    "mobileTitle": {
+      "paymentConfirmation": "Bevestig",
+      "authorizations": "Magtigings",
+      "details.chargeback": "Terugvordering"
+    },
+    "authorizePending": "Magtig betaling in afwagting",
+    "denyPending": "Weier betaling in afwagting",
+    "cancelAuthorization": "Kanselleer die magtigingsproses",
+    "blockScheduling": "Blok skedulering",
+    "cancelScheduled": "Kanselleer hierdie geskeduleerde betaling",
+    "processScheduled.message": "Is u seker om nou hierdie geskeduleerde betaling te verwerk?",
+    "cancelRecurring": "Kanselleer hierdie herhalende betaling",
+    "chargebackTransfer": "Vordering hierdie terug",
+    "processInstallment.message": "Is u seker om die afbetaling {number} nou te verwerk?",
+    "settleInstallment.message": "Is u seker om die afbetaling {number} te vereffen?",
+    "processFailedOccurrence.message": "Is u seker om die voorkoms {number} nou te verwerk?",
+    "acceptPaymentRequest": "Aanvaar hierdie betalingsversoek",
+    "cancelPaymentRequest": "Kanselleer hierdie betalingsversoek",
+    "rejectPaymentRequest": "Weier hierdie betalingsversoek",
+    "changePaymentRequestExpiration": "Wysig vervaldatum",
+    "confirmPaymentRequest": "Is u seker om hierdie betalingsversoek te stuur?",
+    "error": {
+      "minTime": "'n Minimale periode behoort afgewag te word om 'n betaling van hierdie type te kan doen."
+    }
+  },
+  "voucher": {
+    "error": {
+      "buy": {
+        "amountForPeriod": "Die koop van hierdie tipe koopbewys is beperk tot 'n bepaalde periode. Tot {date} is slegs {amount} beskikbaar."
+      }
+    },
+    "status": {
+      "canceled": "Gekanselleer"
+    },
+    "mobileTitle": {
+      "buy": "Koop koopbewyse",
+      "buyConfirmation": "Koop bevestiging",
+      "bought": "Gekoopte koopbewyse"
+    },
+    "title": {
+      "buy": "Koop koopbewyse",
+      "buyConfirmation": "Koop bevestiging"
+    },
+    "boughtType": "Gekoop",
+    "buy": {
+      "amountRange": "Bedrag reeks",
+      "buyer": "Aankoper",
+      "minTimeToRedeem": "Kan vereffen word",
+      "payment": "Koop betaling"
+    },
+    "amountPerVoucher": "Bedrag per koopbewys",
+    "buyerGroups": "Kopergroepe",
+    "creationType": "Skeppingstipe",
+    "cancel": {
+      "refundConfirmation": "Is u seker om hierdie koopbewys te kanselleer en terug te betaal?",
+      "confirmation": "Is u seker om hierdie bewys te kanselleer?"
+    },
+    "sort": {
+      "creationDateDesc": "Skeppingsdatum dalend",
+      "creationDateAsc": "Skeppingsdatum stygende"
+    },
+    "cancelAndRefund": "Kanselleer en betaal terug",
+    "cancelConfirmation": "Is u seker om hierdie bewys te kanselleer?",
+    "changeExpirationDate": "Wysig vervaldatum"
+  },
+  "field": {
+    "date": {
+      "clear": "Maak skoon"
+    },
+    "image": {
+      "camera": "Vaslegging dmv kamera",
+      "manageAfterConfirm": "Na bevestiging, sorg asb dat u die Berg knoppie druk om die wysigings toe te pas."
+    },
+    "camera": {
+      "title.capture": "Lê beeld van u kamera vas",
+      "fileName": "Kamera {timestamp}.jpeg",
+      "capture": "Vaslegging"
+    },
+    "html": {
+      "font.default": "Verstek lettertipe",
+      "backgroundColor": "Agtergrond kleur",
+      "align.center": "Middel",
+      "bold": "Vetgedruk",
+      "list.bulleted": "Gepunteerde lys",
+      "indent.less": "Verminder inkeping",
+      "link": {
+        "text": "Vertoonde teks"
+      },
+      "image": {
+        "category": "Kategorie",
+        "float": "Rig",
+        "marginBottom": "Onderste kantlyn",
+        "border": "Raam"
+      }
+    }
+  },
+  "user": {
+    "title": {
+      "addresses": "Adresse",
+      "contactInfos": "Bykomende kontakte",
+      "confirmation": "Bevestig",
+      "contactList": "Kontaklys",
+      "addContact": "Voeg nuwe kontak by",
+      "directory": "Besigheidsgids",
+      "myBrokerings": "Toegekende lede",
+      "userBrokerings": "Makelaar toegewysde lede"
+    },
+    "mobileTitle": {
+      "addresses": "Adresse",
+      "contactInfos": "Bykomende kontakte",
+      "confirmation": "Bevestig",
+      "registration.confirmation": "Bevestig",
+      "contactList": "Kontakte",
+      "myBrokerings": "Toegekende lede",
+      "userBrokerings": "Makelaar lede"
+    },
+    "connectionStatus": "Verbindingstatus",
+    "activities": "Aktiwiteite",
+    "broker": "Makelaar",
+    "brokers": "Makelaars",
+    "activationDate": "Aktiveringdatum",
+    "email": "E-pos",
+    "email.pending": "E-pos in afwagting op bekragtig",
+    "address.define": "Definieer adres",
+    "address.add": "Voeg adres by",
+    "phone.add": "Voeg telefoon by",
+    "phone.add.mobile": "Voeg mobieletelefoon by",
+    "phone.add.landLine": "Voeg landlyn telefoon by",
+    "contactInfo": "Kontakgegewens",
+    "contactInfo.add": "Voeg kontak by",
+    "contactInfo.atAddress": "By",
+    "contact": "Kontak",
+    "acceptedAgreements": "Aanvaarde ooreenkomste",
+    "assignedProducts": "Toegekende produkte",
+    "beginUserActivationDate": "Aktiveer na",
+    "endUserActivationDate": "Aktiveer voor",
+    "profile": {
+      "accountsSummary": "Rekeningopsomming",
+      "banking": "Bankwese",
+      "addContact": "Voeg by kontakte",
+      "adInterests": "Advertensiebelange",
+      "deliveryMethods": "Afleweringsmetodes",
+      "agreements": "Ooreenkomste",
+      "buyVouchers": "Koop koopbewyse",
+      "accountsBalanceLimits": "Rekening saldo perke",
+      "accountsPaymentLimits": "Rekening betaling perke"
+    },
+    "registration": {
+      "group.public": "Kies die groep waarby u wil aansluit",
+      "group.manager": "Kies die groep vir die nuwe gebruiker",
+      "password.assign": "Ken wagwoord toe",
+      "principal.multiple.item": "<b>{principal}</b> ({value}): kan in {channels} gebruik word"
+    }
+  },
+  "operatorGroup": {
+    "title": {
+      "accountAccess": "Rekening toegang"
+    },
+    "mobileTitle": {
+      "edit": "Redigeer groep",
+      "accountAccess": "Rekening toegang"
+    },
+    "accountAccess": "Sigbaarheid van rekening",
+    "performPayments.requiresAuthorization.view": ", vereis magtiging",
+    "performPayments.maxAmountPerDay.view": ", maks. {max} per dag",
+    "performPayments.maxAmountPerDay": "Daaglikse perk",
+    "authorizePayments": "Bemagtig betalings",
+    "chargebackPayments": "Terugvordering van betalings"
+  },
+  "userStatus": {
+    "current": "Huidige status",
+    "confirm": {
+      "active": "Is u seker om {user} te aktiveer?",
+      "blocked": "Is u seker om toegang tot {user} te blokkeer?",
+      "disabled": "Is u seker om {user} te deaktiveer?",
+      "purged": "Is u seker om {user} permanent te verwyder en alle private data te verwyder?\nHierdie aksie is onomkeerbaar!",
+      "removed": "Is u seker om {user} permanent te verwyder?\nHierdie aksie is onomkeerbaar!"
+    },
+    "title": {
+      "change.user": "Verander gebruikersstatus",
+      "change.operator": "Wysig operateurstatus"
+    },
+    "mobileTitle": {
+      "change.user": "Wysig status",
+      "change.operator": "Wysig status"
+    },
+    "active": "Aktief",
+    "blocked": "Toegang geblok"
+  },
+  "agreements": {
+    "agreement": "Ooreenkoms",
+    "accepted": "Aanvaar",
+    "title": {
+      "accepted": "Aanvaarde ooreenkomste",
+      "history": "Ooreenkomste geskiedenis"
+    },
+    "mobileTitle": {
+      "accepted": "Ooreenkomste",
+      "history": "Ooreenkomste geskiedenis"
+    }
+  },
+  "groupMembership": {
+    "current": "Huidige groep",
+    "confirm": "Is u seker om {user} na groep {group} te verander?",
+    "confirm.aliasOperator": "Is u seker om {user} dieselfde magtiging as die eienaar toe te ken?",
+    "title": {
+      "change.user": "Verander gebruikersgroep",
+      "change.operator": "Wysig group"
+    },
+    "mobileTitle": {
+      "change.user": "Wysig group",
+      "change.operator": "Wysig group"
+    }
+  },
+  "brokers": {
+    "title": {
+      "list": "Makelaars",
+      "new": "Voeg makelaar by",
+      "history": "Makelaars geskiedenis"
+    },
+    "mobileTitle": {
+      "list": "Makelaars",
+      "new": "Voeg makelaar by",
+      "history": "Makelaars geskiedenis"
+    },
+    "broker": "Makelaar",
+    "action": {
+      "add": "As makelaar bygevoeg"
+    }
+  },
+  "phone": {
+    "verify": {
+      "code": "Kode",
+      "message": "Klik op die knoppie hierbo om die verifikasiekode aan u foon te stuur"
+    }
+  },
+  "address": {
+    "address": "Adres",
+    "line1": "Adresreël 1",
+    "line2": "Adresreël 2",
+    "buildingNumber": "Bounommer",
+    "city": "Stad",
+    "complement": "Aanvullend",
+    "country": "Land"
+  },
+  "ad": {
+    "accept": "Aanvaar",
+    "acceptOrder": "Aanvaar bestelling",
+    "addToCart": "Plaas in  mandjie",
+    "adjustedQuantity": {
+      "max": "- die gevraagde hoeveelheid kan nie gelewer word nie, aangesien daar is 'n maksimum aantal items in u winkeltrollie  toegelaat word. Die hoeveelheid van hierdie artikels word outomaties verminder.\n",
+      "min": "- die gevraagde hoeveelheid kan nie gelewer word nie, aangesien daar is 'n minimum aantal items in u winkeltrollie  toegelaat word. Die hoeveelheid van hierdie artikels word outomaties vermeerder.",
+      "stock": "- die gevraagde hoeveelheid kan nie gelewer word nie, aangesien die voorraad van die artikel byna uitgeput is. Die hoeveelheid van hierdie artikel word outomaties verminder.<br>\n"
+    },
+    "addProducts": "Voeg produkte by",
+    "allowDecimalQuantity": "Laat desimale toe",
+    "answer": "Antwoord",
+    "authorize": "Bemagtig",
+    "askQuestion": "Vra 'n vraag",
+    "available": "Beskikbaar",
+    "basePrice": "Basisprys",
+    "checkout": "Betaal/Koop",
+    "changeQuantity": "Wysig hoeveelheid",
+    "chargeType": "Heffingtipe",
+    "chooseSeller": "Kies 'n verkoper van die lys hieronder om voort te gaan met die inkopiemandjieproses",
+    "chooseDeliveryMethod": "Kies afleweringsmetode",
+    "chooseDeliveryAddress": "Kies afleweringsadres",
+    "choosePaymentType": "Kies betalingstipe",
+    "customAddress": "Pasgemaakte adres",
+    "customDeliveryMethod": "Pasgemaakte afleweringmetode",
+    "customQuantity": "Pasgemaakte hoeveelheid...",
+    "error": {
+      "cannotBuyFromSeller": "Op die oomblik mag u nie produkte by hierdie gebruiker koop nie. Kontak asseblief u administrateur."
+    },
+    "deliveryAddress": "Afleweringadres",
+    "deliveryInformation": "Afleweringinligting",
+    "deliveryPrice": "Afleweringprys",
+    "deliveryMethod": "Afleweringsmetode",
+    "deliveryMethods": "Afleweringsmetodes",
+    "itemsNoLongerAvailable": "- is nie meer beskikbaar nie.<br>",
+    "itemsOutOfStock": "- voorraad is uitgeput.<br>",
+    "lowBalance": "- oorskry u {currency} saldo.",
+    "category": "Kategorie",
+    "categories": "Kategorieë",
+    "creationDate": "Skeppingsdatum",
+    "byOwner": "Deur {owner}",
+    "submitToBuyerConfirmation": "Is u seker om hierdie bestelling by die koper in te dien? Na hierdie stap sal geen verdere veranderinge aan hierdie bestelling toegelaat word nie, en dit sal wag op die koper se goedkeuring.",
+    "authorizationNotes": "Magtigingsopmerkings",
+    "type": {
+      "simple": "Advertensie"
+    },
+    "orderBy": {
+      "distance": "Afstand"
+    },
+    "status": {
+      "draft": "Konsep"
+    },
+    "orderStatus": {
+      "draft": "Konsep",
+      "completed": "Voltooide",
+      "disposed": "Verwyderd"
+    },
+    "buyer": "Aankoper",
+    "title": {
+      "edit": "Redigeer advertensie",
+      "newOrder": "Skep webwinkel bestelling",
+      "deliveryAddress": "Afleweringadres",
+      "deliveryMethod": "Afleweringsmetode",
+      "deliveryMethods": "Afleweringsmetodes",
+      "confirmOrder": "Bevestig bestelling",
+      "answerQuestion": "Beantwoord vraag",
+      "adInterests": "Advertensie belangstellings",
+      "adInterest": "Advertensie belangstelling"
+    },
+    "mobileTitle": {
+      "search": "Advertiensies",
+      "details": "Advertensie",
+      "edit": "Redigeer advertensie",
+      "newOrder": "Skep webwinkel bestelling",
+      "deliveryAddress": "Afleweringadres",
+      "deliveryMethod": "Afleweringsmetode",
+      "deliveryMethods": "Afleweringsmetodes",
+      "confirmOrder": "Bevestig bestelling",
+      "answerQuestion": "Beantwoord vraag",
+      "adInterests": "Advertensie belangstellings",
+      "adInterest": "Advertensie belangstelling"
+    }
+  },
+  "notification": {
+    "admin": {
+      "adPendingAuthorization": "Advertensie in afwagtiging op goedkeuring",
+      "applicationErrors": "Toepassingsfout"
+    },
+    "user": {
+      "account": {
+        "authorizedPaymentCanceled": "Gemagtigde betaling gekanselleer",
+        "authorizedPaymentDenied": "Gemagtigde betaling geweier",
+        "authorizedPaymentExpired": "Gemagtigde betaling verstryk",
+        "authorizedPaymentSucceeded": "Gemagtigde betaling suksesvol",
+        "boughtVouchersAboutToExpire": "Gekoopte koopbewyse sal binne 'n paar dae verval",
+        "boughtVouchersExpirationDateChanged": "Vervaldatum van gekoopte koopbewys het verander",
+        "boughtVouchersExpired": "Gekoopte koopbewys het verval",
+        "limitChange": "Rekening perk gewysig",
+        "operator": {
+          "authorizedPaymentExpired": "Gemagtigde betaling deur operateur het verval"
+        }
+      },
+      "brokering": {
+        "adPendingAuthorization": "Advertensie in afwagtiging op goedkeuring"
+      },
+      "buyer": {
+        "adQuestionAnswered": "Advertensie-vraag is beantwoord"
+      },
+      "personal": {
+        "brokerAssigned": "Makelaar toegeken",
+        "brokerUnassigned": "Makelaar onthef"
+      },
+      "seller": {
+        "adAuthorized": "Advertensie goedgekeur",
+        "adExpired": "Advertensie het verstryk",
+        "adOutOfStock": "Artikel uit voorraad",
+        "adRejected": "Advertensie afgekeur",
+        "orderPendingDeliveryData": "Afleweringinligting versoek"
+      }
+    }
+  },
+  "notificationSettings": {
+    "accounts": "Rekeninge"
+  },
+  "connectedUser": {
+    "title": "Aangemelde gebruikers",
+    "mobileTitle": "Aangemelde gebruikers",
+    "channel": "Kanaal"
+  },
+  "identityProvider": {
+    "popup": "Kontak {provider}. Wag asseblief...",
+    "login": "Gaan voort met <b>{provider}</b>",
+    "login.noEmail": "Kon nie 'n e-posadres van jou {provider} rekening bepaal nie. U sal moet met u gereelde gebruikernaam en wagwoord aanmeld. Nadat u aangemeld het, sal u {app} rekening outomaties gekoppel word, dus, die volgende keer, sal die 'Gaan voort met {provider}' regstreeks werk.",
+    "registration.disclaimer": "<b> Vrywaring: </b> Geen van u data sal met hierdie verskaffers gedeel word nie, en die enigste doel om u persoonlike data daaruit te lees, is om die registrasievorm in te vul en u aan te meld nadat u geregistreer is.",
+    "disclaimer": "<b> Vrywaring: </b> Geen van u data sal met hierdie verskaffers gedeel word nie. Die enigste data wat van die verskaffers gelees word, is u vertoonnaam en e-pos, met die uitsluitlike doel om vinniger aan te meld {app}.",
+    "action": {
+      "connect": "Koppel"
+    },
+    "connectedOn": "Gekoppel op {date}"
+  },
+  "operation": {
+    "ad": "Advertensie"
+  },
+  "wizard": {
+    "emailVerificationCode": "E-pos verifikasiekode",
+    "codeSent": "Kode gestuur"
+  },
+  "setting": {
+    "theme.dark": "Donker"
+  },
+  "privacySettings": {
+    "controlsSection": "Departemente toegelaat om toegang tot private data te verkry"
+  },
+  "record": {
+    "createdBy": "Geskep deur",
+    "title": {
+      "new": "Skep nuwe {name}"
+    },
+    "mobileTitle": {
+      "new": "Skep nuwe {name}"
+    }
+  },
+  "userAlert": {
+    "type": {
+      "custom": "Pasgemaak"
+    }
+  },
+  "systemAlert": {
+    "type": {
+      "accountFeeChargedNoFailures": "Rekeningfooi het voltooi sonder enige misklukkings",
+      "accountFeeChargedWithFailures": "Rekeningfooi het voltooi met ten minste een fout",
+      "applicationRestarted": "Toepassing oorbegin",
+      "custom": "Pasgemaak"
+    }
+  },
+  "document": {
+    "title": {
+      "new": "Skep nuwe dokument",
+      "view": "Dokument besonderhede",
+      "edit": "Dokument besonderhede",
+      "list": "Dokumente",
+      "search": "Dokumente"
+    },
+    "mobileTitle": {
+      "new": "Skep nuwe dokument",
+      "view": "Dokument besonderhede",
+      "edit": "Dokument besonderhede",
+      "list": "Dokumente",
+      "search": "Dokumente"
+    },
+    "document": "Dokument",
+    "category": "Kategorie",
+    "action": "Dokumente ({count})"
+  },
+  "token": {
+    "title": {
+      "assign": "Ken toe"
+    },
+    "action": {
+      "activate": "Aktiveer",
+      "assign": "Ken toe",
+      "block": "Blokeer",
+      "cancel": "Gekanselleer",
+      "changeDeadline": "Verander sperdatum",
+      "changeExpiry": "Wysig vervaldatum"
+    },
+    "status": {
+      "activationExpired": "Aktivering verstryk",
+      "active": "Aktief",
+      "blocked": "Geblok",
+      "canceled": "Gekanselleer"
+    },
+    "activationDeadline": "Aktivering sperdatum",
+    "activationDate": "Aktiveringdatum",
+    "creationDate": "Skeppingsdatum",
+    "activationBeginDate": "Aktiverings-aanvangsdatum",
+    "activationEndDate": "Aktiverings-einddatum"
+  },
+  "reference": {
+    "count": {
+      "single": "(1 verwysing)",
+      "multi": "({0} verwysings)"
+    },
+    "title": {
+      "edit": "Redigeer gegewe verwysing"
+    },
+    "mobileTitle": {
+      "edit": "Redigeer gegewe verwysing"
+    },
+    "level": {
+      "bad": "Sleg"
+    },
+    "allTime": "Heeltyd"
+  },
+  "product": {
+    "title": {
+      "list": "Toegekende produkte",
+      "history": "Toegekende produkte geskiedenis"
+    },
+    "mobileTitle": {
+      "list": "Toegekende produkte",
+      "history": "Toegekende produkte geskiedenis"
+    },
+    "assign": "Ken toe",
+    "assignIndividualProduct": "Ken inidividuele produk toe",
+    "action": "Aksie",
+    "kind": {
+      "administrator": "Administrateur",
+      "broker": "Makelaar"
+    }
+  }
+}

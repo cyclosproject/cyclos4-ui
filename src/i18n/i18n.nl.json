@@ -41,6 +41,9 @@
     "map": "Kaart",
     "map.view": "Bekijk de kaart",
     "noOptionsSelected": "Geen opties geselecteerd",
+    "sendMedium": {
+      "email": "E-mail"
+    },
     "reloadPage": "Pagina herladen",
     "sessionExpired": {
       "title": "Sessie verlopen",
@@ -178,7 +181,7 @@
     },
     "forgotten": {
       "principal": "Gebruiker",
-      "generated.message": "Zodra u dit hebt ingediend, wordt een nieuw wachtwoord gegenereerd en verzonden naar uw e-mail adres",
+      "generated.message": "Zodra u verzendt, wordt een nieuw wachtwoord gegenereerd en verzonden naar uw e-mail adres",
       "generated.done.email": "U ontvangt binnenkort een e-mail met uw nieuwe wachtwoord.",
       "manual.done": "Uw wachtwoord is met succes gewijzigd. U kunt het nu gebruiken om in te loggen.",
       "title.changePassword": "Uw wachtwoord wijzigen"
@@ -210,7 +213,10 @@
       "activate": "Activeren",
       "activate.confirm": "Dit zal activeren {type}, en de gegenereerde waarde zal weergegeven worden slechts eenmaal. Bent u zeker?",
       "enable": "Inschakelen",
-      "disable": "Blokkeer"
+      "disable": "Blokkeer",
+      "resetAndSendEmail": "Reset en verstuur per e-mail",
+      "resetAndSendEmail.confirm": "Weet u zeker dat u {type} wilt resetten en per e-mail naar de gebruiker wilt versturen?",
+      "resetAndSendEmail.done": "{type} is gereset en per e-mail verzonden"
     }
   },
   "pendingAgreements": {
@@ -457,7 +463,9 @@
     "group": "Groep",
     "name": "Volledige naam",
     "username": "Inlognaam",
+    "email": "E-mail",
     "email.pending": "In afwachting van validatie van uw e-mailadres",
+    "operator.registration.pending": "De operator {operator} is geregistreerd, maar moet de registratie nog valideren door de e-mail te bevestigen.",
     "noImage": "Nog geen profiel afbeelding",
     "noImages": "Geen profiel foto ' s",
     "address.define": "Definiëren adres",
@@ -472,7 +480,7 @@
     "contactInfo.none": "Er zijn momenteel geen extra contacten",
     "confirmation.message": "Opslaan in uw profiel, uw {type}",
     "profileSaved": "Het profiel is opgeslagen",
-    "newEmailConfirmed": "Uw nieuw e-mail adres correct is bevestigd",
+    "newEmailConfirmed": "Uw nieuwe e-mailadres is succesvol bevestigd",
     "passwordConfirmation": "{type} bevestiging",
     "securityQuestion.message": "Mocht u uw wachtwoord vergeet, moet u het correct antwoord op de vraag om het wachtwoord opnieuw instellen.<br>Dit kan worden ingesteld later, maar houd in gedachten dat de terugwinning van het wachtwoord werkt niet zonder.",
     "securityQuestion.empty": "Laat dit veld leeg",
@@ -486,15 +494,17 @@
     },
     "registration": {
       "group.public": "Kies de groep die u wilt om deel te nemen",
+      "skipActivationEmail": "Sla activatie e-mail over",
       "active.public": "U bent met succes ingeschreven, en je account is nu actief.",
       "inactive.public": "Uw account is succesvol aangemaakt.<br>u zult Echter geactiveerd moeten worden door de overheid.<br>U ontvangt een bericht wanneer uw account actief is.",
-      "pending.public": "Uw registratie is ingediend, en dient te worden geverifieerd.<br>ontvang Je een e-mail kort met instructies om uw account te activeren.<br>Als u geen mail ontvangt, controleer dan uw spam / junk map.",
+      "pending.public": "Uw registratie is ingediend en moet worden geverifieerd.<br>U ontvangt binnenkort een e-mail met instructies over hoe u uw account kunt activeren.<br>Als u de e-mail niet ontvangt, controleer dan uw spam- of junk-folder.",
+      "pending.manager": "De gebruiker {user} is geregistreerd, maar moet de registratie nog valideren door de e-mail te bevestigen.",
       "principal.single": "U kunt gebruik maken van uw {principal} ({value}) op {channels}",
       "principal.multiple.preface": "U kunt inloggen met de volgende gegevens:",
       "principal.multiple.item": "<b>{principal}</b> ({value}): kan gebruikt worden op {channels}",
       "generatedPasswords.none": "U kunt nu inloggen met het wachtwoord dat u op de hoogte hebben gesteld.",
-      "generatedPasswords.single": "U ontvangt een e-mail kort met uw gegenereerd {type}.",
-      "generatedPasswords.multiple": "U ontvangt een e-mail op korte termijn met de volgende gegenereerde wachtwoorden: {types}."
+      "generatedPasswords.single": "U ontvangt binnenkort een e-mail met uw gegenereerde {type}.",
+      "generatedPasswords.multiple": "U ontvangt binnenkort een e-mail met de volgende gegenereerde wachtwoorden: {types}."
     },
     "orderBy": {
       "alphabeticallyAsc": "Naam (A-Z)",
@@ -561,6 +571,14 @@
       "disabled": "Geblokkeerd",
       "pending": "In behandeling"
     }
+  },
+  "identityProvider": {
+    "login.noMatch": "Geen gebruiker gevonden met e-mail {email}. U moet inloggen met uw reguliere gebruikersnaam en wachtwoord. Na het inloggen wordt uw {app} account automatisch gekoppeld, dus de volgende keer zal de functionaliteit 'Doorgaan met {provider}' direct werken.",
+    "login.noEmail": "Kon geen e-mailadres lezen van uw {provider} -account. U moet inloggen met uw gewone gebruikersnaam en wachtwoord. Na het inloggen wordt uw {app} account automatisch gekoppeld, dus de volgende keer zal de functionaliteit 'Doorgaan met {provider}' direct werken.",
+    "disclaimer": "<b>Disclaimer</b>: Geen van uw {app} gegevens wordt gedeeld met een provider. De enige gegevens die worden gelezen van de providers zijn uw weergavenaam en e-mail, met als enige doel om sneller in te loggen op {app}."
+  },
+  "wizard": {
+    "emailVerificationCode": "E-mail verificatiecode"
   },
   "document": {
     "enable": "Inschakelen"
