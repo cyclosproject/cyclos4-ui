@@ -42,8 +42,10 @@
     "map.view": "Bekijk de kaart",
     "noOptionsSelected": "Geen opties geselecteerd",
     "sendMedium": {
-      "email": "E-mail"
+      "email": "E-mail",
+      "sms": "SMS"
     },
+    "sendCode": "Stuur code",
     "reloadPage": "Pagina herladen",
     "sessionExpired": {
       "title": "Sessie verlopen",
@@ -130,6 +132,7 @@
     "logout": "Uitloggen",
     "home": "Start",
     "banking": "Geldzaken",
+    "banking.accountsSummary": "Overzicht van de rekeningen",
     "banking.payUser": "Betaling aan gebruiker",
     "banking.paySystem": "Betaling aan systeem",
     "banking.paySelf": "De betaling zelf",
@@ -146,6 +149,8 @@
     "personal.contacts": "Contacten",
     "personal.password": "Wachtwoord",
     "personal.passwords": "Wachtwoorden",
+    "personal.agreements": "Overeenkomsten",
+    "personal.references": "Referenties",
     "content": "Informatie"
   },
   "login": {
@@ -181,6 +186,7 @@
     },
     "forgotten": {
       "principal": "Gebruiker",
+      "sendMedium": "Ontvang code via",
       "generated.message": "Zodra u verzendt, wordt een nieuw wachtwoord gegenereerd en verzonden naar uw e-mail adres",
       "generated.done.email": "U ontvangt binnenkort een e-mail met uw nieuwe wachtwoord.",
       "manual.done": "Uw wachtwoord is met succes gewijzigd. U kunt het nu gebruiken om in te loggen.",
@@ -221,15 +227,17 @@
   },
   "pendingAgreements": {
     "title": {
-      "previouslyAccepted": "Bijgewerkt overeenkomst",
-      "firstTime": "Registratie akkoord"
+      "previouslyAccepted": "Bijgewerkte overeenkomst",
+      "firstTime": "Registratie overeenkomst"
     },
     "mobileTitle": {
-      "previouslyAccepted": "Bijgewerkt overeenkomst",
-      "firstTime": "Registratie akkoord"
+      "previouslyAccepted": "Bijgewerkte overeenkomst",
+      "firstTime": "Registratie overeenkomst"
     },
-    "message.previouslyAccepted": "De registratie overeenkomst is bijgewerkt.<br><br>om verder te kunnen gaan, moet je akkoord gaan met de nieuwe voorwaarden.",
-    "agree": "Ik ben het eens met de volgende registratie overeenkomsten: {agreements}"
+    "message.previouslyAccepted": "De registratie overeenkomst is bijgewerkt.<br><br>Om verder te kunnen gaan, moet u akkoord gaan met de nieuwe voorwaarden.",
+    "message.firstTime": "Om uw registratie te voltooien moet u akkoord gaan met deze voorwaarden.",
+    "agree": "Ik ga akkoord met de volgende registratieovereenkomsten: {agreements}",
+    "preface": "Ik verklaar hierbij dat ik het volgende heb gelezen en ermee akkoord ga:"
   },
   "securityQuestion": {
     "question": "Beveiligingsvraag",
@@ -239,6 +247,7 @@
     "quickAccess": "Snelle toegang",
     "action": {
       "account": "Rekening",
+      "accounts": "Rekeningen",
       "payUser": "Betaal",
       "paySystem": "Euro's kopen",
       "contacts": "Contacten",
@@ -247,7 +256,8 @@
       "password": "Wachtwoord",
       "passwords": "Wachtwoorden"
     },
-    "accountStatus": "Rekeningoverzicht",
+    "accounts": "Rekeningen",
+    "accountStatus": "Rekening status",
     "latestAds": "Nieuwste advertenties",
     "latestUsers": "Nieuwe bedrijven"
   },
@@ -264,8 +274,19 @@
     "negativeLimit": "Negatieve limiet",
     "positiveLimit": "Positieve limiet",
     "balanceOn": "Saldo op {date}",
-    "noAccounts": "Je hebt geen accounts",
-    "system": "Systeemrekening"
+    "noAccounts": "U heeft geen rekeningen",
+    "system": "Systeemrekening",
+    "mobileTitle": {
+      "accountsSummary": "Overzicht van de rekeningen"
+    },
+    "title": {
+      "accountsSummary": "Overzicht van de rekeningen"
+    },
+    "paymentLimits": {
+      "title": {
+        "list": "Rekeningen betalingslimieten"
+      }
+    }
   },
   "transaction": {
     "number": "Transactie nummer",
@@ -274,6 +295,8 @@
     "fromTo": "Van / tot",
     "from": "Van",
     "to": "Tot",
+    "receiver": "Ontvanger",
+    "senderOrReceiver": "Afzender of ontvanger",
     "account": "Rekening",
     "fromAccount": "Van rekening",
     "toAccount": "Naar rekening",
@@ -292,7 +315,7 @@
     "accountBalance": "Rekening saldo",
     "installments": "Termijnbetalingen",
     "installmentNumber": "Nummer",
-    "noAccounts": "U hoeft geen rekeningen voor het uitvoeren van de betaling",
+    "noAccounts": "U heeft geen rekeningen om de betaling uit te voeren",
     "noTypes": "Er zijn geen mogelijke betaling soorten",
     "noTypesSelection": "Er zijn geen mogelijke betaling typen van dit account naar de geselecteerde gebruiker",
     "scheduling": "Agendering",
@@ -345,6 +368,7 @@
       "settled": "Afgehandeld"
     },
     "title": {
+      "paymentSystemToSystem": "Betaling tussen systeemrekeningen",
       "paymentToSystem": "Betaling aan systeem",
       "paymentToSelf": "Betaling tussen eigen rekeningen",
       "paymentToUser": "Betaling aan gebruiker",
@@ -452,13 +476,17 @@
       "fields": "Aangepaste profiel velden",
       "phones": "Telefoons",
       "addresses": "Adressen",
-      "contactInfos": "Aanvullende contactpersonen",
+      "contactInfos": "Aanvullende contacten",
       "confirmation": "Bevestiging",
       "registration": "Gebruikersregistratie",
       "registration.confirmation": "Bevestiging van inschrijving",
       "registration.done": "Inschrijving succesvol",
       "contactList": "Contact lijst",
       "addContact": "Een nieuw contact toevoegen"
+    },
+    "mobileTitle": {
+      "contactInfos": "Aanvullende contacten",
+      "contactList": "Contacten"
     },
     "group": "Groep",
     "name": "Volledige naam",
@@ -485,12 +513,20 @@
     "securityQuestion.message": "Mocht u uw wachtwoord vergeet, moet u het correct antwoord op de vraag om het wachtwoord opnieuw instellen.<br>Dit kan worden ingesteld later, maar houd in gedachten dat de terugwinning van het wachtwoord werkt niet zonder.",
     "securityQuestion.empty": "Laat dit veld leeg",
     "captcha": "Visuele validatie",
+    "acceptedAgreements": "Geaccepteerde overeenkomsten",
+    "notAcceptedAgreements": "Niet geaccepteerde overeenkomsten",
     "profile": {
+      "accountsSummary": "Overzicht van de rekeningen",
       "noPermission": "U heeft geen toestemming om het profiel van deze gebruiker te bekijken",
+      "addContact": "Toevoegen aan contacten",
       "addContact.done": "{user} werd toegevoegd aan uw lijst met contactpersonen",
+      "removeContact": "Verwijderen uit contacten",
       "removeContact.done": "{user} is verwijderd uit uw lijst met contactpersonen",
       "pay": "Volgende",
-      "viewAds": "Bekijk advertenties"
+      "viewAds": "Bekijk advertenties",
+      "agreements": "Overeenkomsten",
+      "accountsPaymentLimits": "Rekening betalingslimieten",
+      "references": "Referenties"
     },
     "registration": {
       "group.public": "Kies de groep die u wilt om deel te nemen",
@@ -515,6 +551,22 @@
     "active": "Actief",
     "disabled": "Geblokkeerd"
   },
+  "agreements": {
+    "agreement": "Overeenkomst",
+    "required": "Vereiste overeenkomsten",
+    "optional": "Optionele overeenkomsten",
+    "optional.saved": "De geselecteerde overeenkomsten zijn opgeslagen",
+    "accepted": "Geaccepteerd",
+    "noAccepted": "Geen geaccepteerde overeenkomsten",
+    "title": {
+      "accepted": "Geaccepteerde overeenkomsten",
+      "history": "Overeenkomsten geschiedenis"
+    },
+    "mobileTitle": {
+      "accepted": "Overeenkomsten",
+      "history": "Overeenkomsten geschiedenis"
+    }
+  },
   "phone": {
     "mobile": "Mobiele telefoon",
     "landLine": "Land-line telefoon",
@@ -527,15 +579,15 @@
     "enabledSms": "SMS geactiveerd",
     "error": {
       "verify": {
-        "expired": "De verificatie code is niet verzonden of is verlopen.<br> stuur de code opnieuw in om uw telefoon en het proces opnieuw.",
+        "expired": "De verificatiecode is niet verzonden of is verlopen.<br> Stuur de code opnieuw naar uw telefoon en start het proces opnieuw.",
         "invalid": "Ongeldige verificatie code",
-        "maxAttempts": "Overschrijding van het aantal toegestane pogingen.<br>stuur de code opnieuw in om uw telefoon en het proces opnieuw."
+        "maxAttempts": "U heeft het aantal toegestane pogingen overschreden.<br>Stuur de code opnieuw naar uw telefoon en start het proces opnieuw."
       }
     },
     "verify": {
       "title": "Controleer {number} voor SMS",
       "send": "Sturen",
-      "message": "Klik op de knop hierboven om het verzenden van verificatie-code naar uw telefoon",
+      "message": "Klik op de knop hierboven om de verificatiecode naar uw telefoon te sturen",
       "done": "De verificatie code is verzonden naar {number}"
     }
   },
@@ -572,6 +624,18 @@
       "pending": "In behandeling"
     }
   },
+  "notification": {
+    "user": {
+      "reference": {
+        "changed": "Referentie gewijzigd",
+        "created": "Referentie ontvangen"
+      }
+    }
+  },
+  "notificationSettings": {
+    "accounts": "Rekeningen",
+    "feedbackAndReferences": "Feedback en referenties"
+  },
   "identityProvider": {
     "login.noMatch": "Geen gebruiker gevonden met e-mail {email}. U moet inloggen met uw reguliere gebruikersnaam en wachtwoord. Na het inloggen wordt uw {app} account automatisch gekoppeld, dus de volgende keer zal de functionaliteit 'Doorgaan met {provider}' direct werken.",
     "login.noEmail": "Kon geen e-mailadres lezen van uw {provider} -account. U moet inloggen met uw gewone gebruikersnaam en wachtwoord. Na het inloggen wordt uw {app} account automatisch gekoppeld, dus de volgende keer zal de functionaliteit 'Doorgaan met {provider}' direct werken.",
@@ -579,6 +643,12 @@
   },
   "wizard": {
     "emailVerificationCode": "E-mail verificatiecode"
+  },
+  "userAlert": {
+    "type": {
+      "givenVeryBadRefs": "Gebruiker heeft te veel 'zeer slecht' referenties gegeven",
+      "receivedVeryBadRefs": "Gebruiker heeft te veel 'zeer slecht' referenties ontvangen"
+    }
   },
   "document": {
     "enable": "Inschakelen"
@@ -591,5 +661,46 @@
     "status": {
       "active": "Actief"
     }
+  },
+  "reference": {
+    "set": "Referentie geven",
+    "referenceSet": "De referentie is met succes gegeven",
+    "count": {
+      "single": "(1 referentie)",
+      "multi": "({count} referenties)"
+    },
+    "title": {
+      "search": "Referenties",
+      "view": "Referentie details",
+      "set": "Stel nieuwe referentie in",
+      "edit": "Bewerk gegeven referentie"
+    },
+    "mobileTitle": {
+      "search": "Referenties",
+      "view": "Referentie details",
+      "set": "Stel nieuwe referentie in",
+      "edit": "Bewerk gegeven referentie"
+    },
+    "direction": {
+      "direction": "Richting",
+      "received": "Ontvangen",
+      "given": "Gegeven"
+    },
+    "level": {
+      "level": "Niveau",
+      "bad": "Slecht",
+      "veryBad": "Zeer slecht",
+      "good": "Goed",
+      "veryGood": "Zeer goed",
+      "neutral": "Neutraal"
+    },
+    "from": "Van",
+    "to": "Aan",
+    "notGiven": "Nog niet gegeven",
+    "value": "Waarde",
+    "allTime": "Altijd",
+    "last30Days": "Laatste 30 dagen",
+    "total": "Totaal",
+    "percentagePositive": "Percentage positief"
   }
 }
