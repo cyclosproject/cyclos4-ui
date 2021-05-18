@@ -3,8 +3,10 @@
 This is the new frontend for [Cyclos 4](https://www.cyclos.org/).
 Starting with Cyclos 4.14, the new frontend is bundled and served by Cyclos itself.
 
-Previously the frontend had several configuration options which should be set programmatically.
-Now all the customizations, including themes, translations, pages and banners are done in the Cyclos application.
+Previously the way to configure the frontend was programmatically. This meant that any
+change to a setting in the frontend would require rebuilding the Angular application
+and redeploying. Now all the customizations, including themes, translations, pages
+and banners are done in the Cyclos application.
 
 ## Why keeping this repository in GitHub?
 
@@ -13,27 +15,34 @@ Well, there are some reasons for that:
 
 - This frontend is a very good example on how to use the Cyclos REST API.
   The codebase is large, as it is a full frontend for Cyclos, convering many modules,
-  except system configuration and content management. As such, it is expected that most of the common API usage
-  will be covered here;
+  except system configuration and content management.
+  As such, it is expected that most of the common API usage will be covered here;
 - The project is still open source, under the MIT License.
   As such, projects that use Cyclos can help improving the frontend;
 - Also, by being MIT Licensed, projects can choose to customize some pages.
-  Additionally, projects that also connect with other software can create new functionality which will be
-  presented to users in a single, concise interface;
-- Having the project in GitHub can help us track issues which our customers find using the GitHub's issue tracker.
+  Additionally, projects that also connect with other software can create new
+  functionality which will be presented to users in a single, concise interface;
+- Having the project in GitHub can help us track issues which our customers find
+  using the GitHub's issue tracker;
+- Some projects that use Cyclos prefer to host a separated frontend, which is the only
+  publicly accessible server. Such projects leave the access to the Cyclos server
+  restricted to the organization / VPN.
 
 ## Versioning scheme
 
-Previously this frontend had its own version. Now, being bundled with Cyclos, it will have the same version as Cyclos.
-Examples: 4.14.0, 4.14.1, 4.15.3 and so on. On each Cyclos release the code on GitHub will be updated and tagged
-with the corresponding version.
+Previously this frontend had its own version. Now, being bundled with Cyclos, it will
+have the same version as Cyclos. Examples: 4.14.0, 4.14.1, 4.15.3 and so on.
+On each Cyclos release the code on GitHub will be updated and tagged with
+the corresponding version.
 
 ## Development
 
-This frontend is written in [Angular](https://angular.io/). It uses [Bootstrap 4](https://getbootstrap.com/) for theming.
+This frontend is written in [Angular](https://angular.io/).
+It uses [Bootstrap 4](https://getbootstrap.com/) for theming.
 In order to modify any file, make sure you are familiar with these technologies.
 
-To modify this frontend, either for contributing fixes or to implement custom functionality, follow these steps:
+To modify this frontend, either for contributing fixes or to implement custom
+functionality, follow these steps:
 
 1. Clone the git repository on `https://github.com/cyclosproject/cyclos4-ui`;
 1. Install NPM dependencies by running `npm install` in the project directory;
@@ -43,7 +52,8 @@ To modify this frontend, either for contributing fixes or to implement custom fu
 
 This project relies heavily on code generation. We generate:
 
-- Client classes for the Cyclos REST API, using [ng-openapi-gen](https://github.com/cyclosproject/ng-openapi-gen/);
+- Client classes for the Cyclos REST API, using
+  [ng-openapi-gen](https://github.com/cyclosproject/ng-openapi-gen/);
 - A TypeScript interface for translation keys,
   using [ng-translation-gen](https://github.com/cyclosproject/ng-translation-gen/).
   The source for it is `src/i18n/i18n.json`;
@@ -51,19 +61,23 @@ This project relies heavily on code generation. We generate:
   Most icons are from [Bootstrap](https://icons.getbootstrap.com/).
   However, there are some custom icons as well.
 
-If any of these is modified, you need to re-generate the corresponding code with the command `npm run generate`.
+If any of these is modified, you need to re-generate the corresponding code with
+the command `npm run generate`.
 
 ## Updating the frontend version served by Cyclos with your customized one
 
-Important: Make sure you checkout the exact tag version in GitHub as the Cyclos server version.
-For example, if the server runs `4.14.2`, checkout the tag `4.14.2`.
+Important: Make sure you checkout the exact tag version in GitHub as the
+Cyclos server version. For example, if the server runs `4.14.2`,
+checkout the tag `4.14.2`.
 
 Then apply all customizations to that version, and build with the `npm run build`.
 You will have the `dist/ui` folder generated with the code that should be served.
-However, Cyclos pre-process the `src/ui/index.html` file into a JSP page to include server-side data on it.
+However, Cyclos pre-process the `src/ui/index.html` file into a JSP page to include
+server-side data on it.
 
 So, to copy the files to the correct place and have the JSP file generated,
-supposing you have the Cyclos package you have downloaded extracted to the directory under `$CYCLOS_ROOT`:
+supposing you have the Cyclos package you have downloaded extracted to the directory
+under `$CYCLOS_ROOT`:
 
 ```bash
 $ cd $CYCLOS_ROOT/cyclos-x.y.z # replace with the correct version
@@ -71,11 +85,133 @@ $ cd cyclos-ui-github
 $ ./gradlew copyUi -Dui.dist=/path/to/your/customized/dist/ui
 ```
 
-After running this command, the Cyclos web directory will be updated to include your customized frontend.
-The content of the web directory can then be deployed to the application server (such as Tomcat) as usual.
+After running this command, the Cyclos web directory will be updated to include your
+customized frontend. The content of the web directory can then be deployed to the
+application server (such as Tomcat) as usual.
 
 ## Contributing translations
 
-If you wish to contribute to the translations, not only for this frontend but to Cyclos in general,
-please, request access on [https://crowdin.com/project/cyclos/](https://crowdin.com/project/cyclos/)
-and help us making Cyclos translated in more languages, as well as reviewing and extending existing translations.
+If you wish to contribute to the translations, not only for this frontend, but to
+Cyclos in general, please, request access on
+[https://crowdin.com/project/cyclos/](https://crowdin.com/project/cyclos/)
+and help us making Cyclos translated in more languages, as well as reviewing and
+extending existing translations.
+
+## Hosting the frontend separatedly from Cyclos
+
+If you prefer to host this frontend independently from Cyclos, you need to take
+the following into consideration:
+
+### Set the frontend options in Cyclos
+
+Then, in 'System > System configuration > Configurations' select the configuration
+applied to users (or the default one), under the 'Frontend' section, select the 
+new frontend and make sure users cannot switch between frontends. This way the
+new frontend will never redirect users to the classic frontend.
+
+### Setup server-side proxy on /api
+
+In the server that serves the frontend files will also need to proxy any request
+to `/api` to the actual Cyclos server. In Apache, this can be done via:
+
+```apache
+<IfModule mod_proxy.c>
+  ProxyPass "/api" "http://localhost:8080/cyclos/api" keepalive=On connectiontimeout=10 timeout=60
+  ProxyPassReverse "/api" "http://localhost:8080/cyclos/api"
+  ProxyPassReverseCookiePath "/cyclos/" "/"
+</IfModule>
+```
+
+### Setup the server to rewrite requests to the index file
+
+Angular uses `History.pushState()` method for navigation. This changes the URL to a
+sub-path without generating another request to the server. However, when navigating
+directly to one of these sub-paths, or when reloading the page, the server needs
+to respond with the index file. In Apache, this can be done with:
+
+```apache
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+```
+
+### Generate correct links from Cyclos
+In Cyclos you need a script to generate links to the new frontend for users.
+For this, as a global administrator (which may be switched to the network),
+in 'System > Tools > Script', create a script of type 'Link generation',
+with the following content:
+
+```groovy
+import org.cyclos.entities.system.CustomWizardExecution
+import org.cyclos.entities.system.ExternalRedirectExecution
+import org.cyclos.impl.utils.LinkType
+import org.cyclos.utils.StringHelper
+
+if (user != null && user.admin && user.group.adminType != null) {
+    // Don't generate custom links for system administrators
+    return null
+}
+
+String root = scriptParameters.rootUrl
+switch (type) {
+    case LinkType.REGISTRATION_VALIDATION:
+        return "${root}/users/validate-registration/${validationKey}"
+    case LinkType.EMAIL_CHANGE:
+        return "${root}/users/validate-email-change/${validationKey}"
+    case LinkType.FORGOT_PASSWORD:
+        return "${root}/forgot-password/${validationKey}"
+    case LinkType.LOGIN:
+        return "${root}/login"
+    case LinkType.EXTERNAL_REDIRECT:
+        ExternalRedirectExecution e = binding.execution
+        return "${root}/operations/callback/${maskId(e.id)}/${e.verificationToken}"
+    case LinkType.WIZARD_EXTERNAL_REDIRECT:
+        CustomWizardExecution we = binding.execution
+        return "${root}/wizards/callback/${we.key}"
+    case LinkType.NOTIFICATION:
+        def l = StringHelper.camelize(location.name())
+        return "${root}/redirect/${l}" + entityId ? "?id=${maskId(entityId)}" : ""
+}
+```
+
+Then, in 'System > System configuration > Configurations' select the configuration
+applied to users (or the default one) and mark the 'Link generation' field for
+customization. Then select the script you created and set the following as parameters,
+replacing the URL with your deployed URL:
+
+```properties
+rootUrl = https://account.example.com
+```
+
+## Improving performance on the HTTP server
+
+Angular generates some large, yet minified, JavaScript and CSS files.
+Two techniques can make loading the page much faster:
+
+- Compression: Compresses the files when sending them to the client;
+- Cache: Clients don't need to fetch again unchanged files.
+
+When the frontend is served by Cyclos, these are aplied automatically.
+However, when hosting the frontend, they should be manually configured in the server.
+On Apache, the following configuration can be applied:
+
+```apache
+  <IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+  </IfModule>
+  <IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/* "access plus 1 days"
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+    ExpiresByType text/json "access plus 1 year"
+  </IfModule>
+```
