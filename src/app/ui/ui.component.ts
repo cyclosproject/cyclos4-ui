@@ -4,10 +4,8 @@ import { DataForFrontend } from 'app/api/models';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { LayoutService } from 'app/core/layout.service';
 import { ArrowsVertical, ShortcutService } from 'app/core/shortcut.service';
-import { StateManager } from 'app/core/state-manager';
 import { I18n } from 'app/i18n/i18n';
 import { handleKeyboardFocus, setRootSpinnerVisible } from 'app/shared/helper';
-import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
 import { LoginState } from 'app/ui/core/login-state';
 import { LoginService } from 'app/ui/core/login.service';
 import { MenuService } from 'app/ui/core/menu.service';
@@ -42,8 +40,6 @@ export class UiComponent implements OnInit {
     public layout: LayoutService,
     public uiLayout: UiLayoutService,
     public i18n: I18n,
-    private stateManager: StateManager,
-    private breadcrumb: BreadcrumbService,
     private shortcut: ShortcutService,
     private uiErrorHandler: UiErrorHandlerService
   ) {
@@ -94,26 +90,6 @@ export class UiComponent implements OnInit {
 
   private doInitialize(dataForFrontend: DataForFrontend) {
     this.initialized$.next(true);
-
     this.menuBar = dataForFrontend.menuBar;
-    const dataForUi = (dataForFrontend || {}).dataForUi;
-    const auth = (dataForUi || {}).auth || {};
-
-    // Handle redirects on urgent situations
-    let redirect: string = null;
-    if (auth.pendingAgreements) {
-      redirect = '/pending-agreements';
-    } else if (auth.expiredPassword || auth.expiredSecondaryPassword) {
-      redirect = '/expired-password';
-    } else if (auth.pendingSecondaryPassword) {
-      redirect = '/login-confirmation';
-    }
-    setTimeout(() => {
-      if (redirect && this.router.url !== redirect) {
-        this.breadcrumb.clear();
-        this.stateManager.clear();
-        this.router.navigateByUrl(redirect);
-      }
-    }, 1);
   }
 }

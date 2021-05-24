@@ -10,7 +10,9 @@
   </label-value>
   <label-value *ngIf="data.minimumTimeToRedeem" kind="fieldView"
     [label]="i18n.voucher.buy.minTimeToRedeem">
-    {{ i18n.voucher.buy.minTimeToRedeemAfterBuy(format.formatTimeInterval(data.minimumTimeToRedeem)) }}
+    {{
+    i18n.voucher.buy.minTimeToRedeemAfterBuy(format.formatTimeInterval(data.minimumTimeToRedeem))
+    }}
   </label-value>
   <input-field type="number" formControlName="count" required
     fieldSize="small" [label]="i18n.voucher.numberOfVouchers">
@@ -26,7 +28,12 @@
     max: data.amountRange.max | currency:currency
   })">
   </label-value>
-  <custom-field-input *ngFor="let cf of data.customFields" [field]="cf"
-    [formControl]="customFieldControlsMap.get(cf.internalName)">
-  </custom-field-input>
+
+  <label-value *ngFor="let cf of data.customFields" [label]="cf.name"
+    [kind]="'field'" [fieldSize]="fieldSize(cf)" [required]="cf.required"
+    [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'">
+    <custom-field-input [field]="cf" hideLabel
+      [formControl]="customFieldControlsMap.get(cf.internalName)">
+    </custom-field-input>
+  </label-value>
 </ng-container>

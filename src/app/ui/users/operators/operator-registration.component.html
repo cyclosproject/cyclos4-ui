@@ -35,9 +35,13 @@
       <!-- Custom profile fields -->
       <ng-container *ngFor="let cf of data.customFields"
         [formGroup]="form.get('customValues')">
-        <custom-field-input *ngIf="canEdit(cf)" [field]="cf"
-          [formControlName]="cf.internalName">
-        </custom-field-input>
+        <label-value *ngIf="canEdit(cf)" [label]="cf.name" [kind]="'field'"
+          [fieldSize]="fieldSize(cf)" [required]="cf.required"
+          [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'">
+          <custom-field-input [field]="cf" hideLabel
+            [formControlName]="cf.internalName">
+          </custom-field-input>
+        </label-value>
       </ng-container>
 
       <!-- Mobile phone -->

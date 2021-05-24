@@ -12,6 +12,7 @@ import { empty, shareSupported, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { ApiHelper } from 'app/shared/api-helper';
 
 export type Step = 'form' | 'pending' | 'done';
 
@@ -50,7 +51,7 @@ export class ReceiveQrPaymentComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.ticketsService.dataForNewTicket().subscribe(data => this.data = data));
+    this.addSub(this.ticketsService.dataForNewTicket({ user: ApiHelper.SELF }).subscribe(data => this.data = data));
     this.addSub(this.step$.subscribe(step => this.onStepChanged(step)));
   }
 
@@ -111,6 +112,7 @@ export class ReceiveQrPaymentComponent
       set(cached);
     } else {
       this.addSub(this.ticketsService.dataForNewTicket({
+        user: ApiHelper.SELF,
         type: id
       }).subscribe(data => {
         set(data.paymentTypeData);
@@ -123,6 +125,7 @@ export class ReceiveQrPaymentComponent
       return;
     }
     this.addSub(this.ticketsService.newTicket({
+      user: ApiHelper.SELF,
       body: this.form.value
     }).subscribe(ticket => {
       this.ticket$.next(ticket);

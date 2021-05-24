@@ -43,6 +43,7 @@ import { IconComponent } from 'app/shared/icon.component';
 import { ImagePropertiesDialogComponent } from 'app/shared/image-properties-dialog.component';
 import { ImageUploadComponent } from 'app/shared/image-upload.component';
 import { ImagesFieldComponent } from 'app/shared/images-field.component';
+import { InformationTextComponent } from 'app/shared/information-text.component';
 import { InputFieldComponent } from 'app/shared/input-field.component';
 import { InsertImageDialogComponent } from 'app/shared/insert-image-dialog.component';
 import { LabelValueComponent } from 'app/shared/label-value.component';
@@ -158,6 +159,7 @@ export function initTooltipConfig(): TooltipConfig {
     ButtonToggleComponent,
     CountdownButtonComponent,
     ActionButtonComponent,
+    InformationTextComponent,
 
     TrustPipe,
     DatePipe,
@@ -259,6 +261,7 @@ export function initTooltipConfig(): TooltipConfig {
     ScanQrCodeComponent,
     CaptureCameraComponent,
     IconWithCounterComponent,
+    InformationTextComponent,
 
     ButtonToggleComponent,
     CountdownButtonComponent,

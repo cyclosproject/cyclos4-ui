@@ -29649,11 +29649,13 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           application/json:
             schema:
               $ref: '#/components/schemas/RedeemVoucher'
-  /tickets/data-for-new:
+  /{user}/tickets/data-for-new:
+    parameters:
+      - $ref: '#/components/parameters/user'
     get:
       operationId: dataForNewTicket
       summary: >-
-        Returns data for create a new ticket for the logged user.
+        Returns data for create a new ticket for the given user.
       tags:
         - Tickets
       parameters:
@@ -29723,77 +29725,16 @@ Reference to the broker of users involved in transfers. Is only taken into accou
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /tickets/{ticket}:
-    get:
-      operationId: viewTicket
-      summary: >-
-        Returns details about a ticket by ticket number
-      description: >-
-        Returns details about a ticket by ticket number.
-      tags:
-        - Tickets
-      parameters:
-        - $ref: '#/components/parameters/fields'
-        - name: ticket
-          in: path
-          required: true
-          description: >-
-            The ticket number
-          schema:
-            type: string
-      responses:
-        '200':
-          description: >-
-            Transaction details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionView'
-        '401':
-          description: >-
-            Unauthorized access. Missing or invalid crendentials supplied for such
-            operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '403':
-          description: >-
-            Permission denied for such operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ForbiddenError'
-        '404':
-          description: >-
-            An expected data was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-        '405':
-          description: >-
-            Some required service is unavailable
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnavailableError'
-        '500':
-          description: >-
-            Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /tickets:
+  /{user}/tickets:
+    parameters:
+      - $ref: '#/components/parameters/user'
     post:
       operationId: newTicket
       summary: >-
         Creates a new ticket with status `open` for the
-        logged user.
+        given user.
       description: >-
-        The logged user will be the ticket's owner and then the receiver of the
+        The given user will be the ticket's owner and then the receiver of the
         payment generated after processing the ticket only if was previously
         approved by the payer.
       tags:
@@ -29870,6 +29811,69 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           application/json:
             schema:
               $ref: '#/components/schemas/TicketNew'
+
+  /tickets/{ticket}:
+    get:
+      operationId: viewTicket
+      summary: >-
+        Returns details about a ticket by ticket number
+      description: >-
+        Returns details about a ticket by ticket number.
+      tags:
+        - Tickets
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: ticket
+          in: path
+          required: true
+          description: >-
+            The ticket number
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Transaction details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionView'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '405':
+          description: >-
+            Some required service is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnavailableError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /tickets/{ticket}/qr-code:
     get:
@@ -30190,6 +30194,172 @@ Reference to the broker of users involved in transfers. Is only taken into accou
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentError'
+
+
+  /tickets/data-for-new:
+    get:
+      operationId: dataForNewTicketDeprecated
+      summary: >-
+        Use `GET /{user}/tickets/data-for-new` instead
+        Returns data for create a new ticket for the logged user.
+      tags:
+        - Tickets
+      deprecated: true
+      x-remove-version: 4.17
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: type
+          in: query
+          required: false
+          description: >-
+            The payment type id or qualified internal name (in the form
+            `fromAccountType.paymentType`). If no payment type is provided, the
+            possible types will be returned, so the payer can choose.
+          schema:
+            type: string
+        - name: payer
+          in: query
+          required: false
+          description: >-
+            Will only be used if no specific payment type is given. An
+            identification for the user which will pay the ticket. Is optional,
+            and in most cases, should be left empty. If specified, the returned
+            payment types will take into account those that can be paid by the
+            given user.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The data for creating a ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataForTransaction'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '405':
+          description: >-
+            Some required service is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnavailableError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /tickets:
+    post:
+      operationId: newTicketDeprecated
+      summary: >-
+        Use `POST /{user}/tickets` instead.
+        Creates a new ticket with status `open` for the
+        logged user.
+      description: >-
+        The logged user will be the ticket's owner and then the receiver of the
+        payment generated after processing the ticket only if was previously
+        approved by the payer.
+      tags:
+        - Tickets
+      deprecated: true
+      x-remove-version: 4.17
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '201':
+          description: >-
+            The created ticket
+          headers:
+            Location:
+              description: >-
+                URL for viewing the ticket details
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionView'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '405':
+          description: >-
+            Some required service is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnavailableError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The data to create the new ticket
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketNew'
   /{owner}/record-types:
     get:
       operationId: listRecordTypesByOwner
@@ -49349,6 +49519,8 @@ components:
 
         Possible values are:
         
+        - `accountBalanceFixed`: Accounts with inconsistent account balances were found and fixed
+        
         - `accountFeeChargedNoFailures`: An account fee charge has finished without any failures
         
         - `accountFeeChargedWithFailures`: An account fee charge has finished with at least one failure
@@ -49368,6 +49540,7 @@ components:
         - `smsSendingFailed`: An SMS couldn't be sent
       type: string
       enum:
+        - accountBalanceFixed
         - accountFeeChargedNoFailures
         - accountFeeChargedWithFailures
         - applicationRestarted
@@ -49805,6 +49978,8 @@ components:
         
         - `givenVeryBadRefs`: A user has exceeded the maximum number of given very bad references
         
+        - `inconsistentBalanceBelowLimit`: An inconsistent account balance was found and fixed, but the balance is below the credit limit
+        
         - `insufficientBalanceForInitialCredit`: A user account's initial credit couldn't be granted because the source account lacked funds
         
         - `maxDeviceActivationAttemptsReached`: A user has reached the maximum number of attempts to activate a device by code
@@ -49830,6 +50005,7 @@ components:
       enum:
         - custom
         - givenVeryBadRefs
+        - inconsistentBalanceBelowLimit
         - insufficientBalanceForInitialCredit
         - maxDeviceActivationAttemptsReached
         - maxDeviceConfirmationCheckAttemptsReached

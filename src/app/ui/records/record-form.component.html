@@ -20,11 +20,15 @@
                 'border-top-0': !data.type.informationText}">
         {{ i18n.record.fields }}
       </h2>
-      <custom-field-input *ngFor="let cf of fieldsWithoutSection"
-        [labelPosition]="labelPosition" [field]="cf"
-        [formControl]="form.get('customValues').get(cf.internalName)"
-        [class]="resolveColumnClass(cf)" [binaryValues]="binaryValues">
-      </custom-field-input>
+      <label-value *ngFor="let cf of fieldsWithoutSection" [label]="cf.name"
+        [kind]="'field'" [fieldSize]="fieldSize(cf)" [required]="cf.required"
+        [labelPosition]="labelPosition">
+        <custom-field-input [field]="cf" hideLabel
+          [class]="resolveColumnClass(cf)" [binaryValues]="binaryValues"
+          [formControl]="form.get('customValues').get(cf.internalName)">
+        </custom-field-input>
+      </label-value>
+
       <ng-container
         *ngFor="let key of fieldsWithSection.keys(); let first = first">
         <h2 [ngClass]="{
@@ -34,11 +38,14 @@
                 'border-top-0': first && fieldsWithoutSection.length == 0}">
           {{ key.name }}
         </h2>
-        <custom-field-input *ngFor="let cf of fieldsWithSection.get(key)"
-          [labelPosition]="labelPosition" [field]="cf"
-          [formControl]="form.get('customValues').get(cf.internalName)"
-          [class]="resolveColumnClass(cf)" [binaryValues]="binaryValues">
-        </custom-field-input>
+        <label-value *ngFor="let cf of fieldsWithSection.get(key)"
+          [label]="cf.name" [kind]="'field'" [fieldSize]="fieldSize(cf)"
+          [required]="cf.required" [labelPosition]="labelPosition">
+          <custom-field-input [field]="cf" hideLabel
+            [class]="resolveColumnClass(cf)" [binaryValues]="binaryValues"
+            [formControl]="form.get('customValues').get(cf.internalName)">
+          </custom-field-input>
+        </label-value>
       </ng-container>
     </form>
     <actions>

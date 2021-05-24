@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { VoucherDataForRedeem, VoucherInitialDataForRedeem } from 'app/api/models';
+import { CustomFieldDetailed, VoucherDataForRedeem, VoucherInitialDataForRedeem } from 'app/api/models';
 import { VouchersService } from 'app/api/services/vouchers.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { focus, validateBeforeSubmit } from 'app/shared/helper';
@@ -110,5 +110,9 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
       this.submit();
     });
     this.modal.onHide.pipe(first()).subscribe(() => focus(this.inputField, true));
+  }
+
+  fieldSize(cf: CustomFieldDetailed) {
+    return this.fieldHelper.fieldSize(cf);
   }
 }

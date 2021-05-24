@@ -331,6 +331,10 @@ export class RunOperationComponent
     return (row: any) => this.rowClick(row);
   }
 
+  fieldSize(cf: CustomFieldDetailed) {
+    return this.fieldHelper.fieldSize(cf);
+  }
+
   resolveMenu(data: OperationDataForRun) {
     if (data.scope === OperationScopeEnum.SYSTEM
       || (data.scope === OperationScopeEnum.USER) && this.self) {

@@ -42,7 +42,7 @@ export class FieldPrivacyComponent implements OnInit {
   }
 
   private updateClass() {
-    this.clazz = 'h-100 d-flex align-items-center' + (this._justifyStart ? 'justify-content-start' : 'justify-content-end');
+    this.clazz = 'h-100 d-flex flex-column align-items-center' + (this._justifyStart ? 'justify-content-start' : 'justify-content-end');
   }
 
   get hidden(): boolean {

@@ -193,4 +193,8 @@ export class RunWizardStepFieldsComponent
       }
     });
   }
+
+  fieldSize(cf: CustomFieldDetailed) {
+    return this.fieldHelper.fieldSize(cf);
+  }
 }

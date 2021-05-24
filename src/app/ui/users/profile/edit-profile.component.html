@@ -163,7 +163,8 @@
         </boolean-field>
         <ng-template #plainSms>
           <label-value kind="fieldView" [label]="i18n.phone.enabledSms">
-            {{ format.formatBoolean(singleMobile.get('enabledForSms').value) }}
+            {{ format.formatBoolean(singleMobile.get('enabledForSms').value)
+            }}
           </label-value>
         </ng-template>
       </ng-container>
@@ -462,9 +463,14 @@
         <ng-container
           *ngFor="let cf of data.contactInfoConfiguration.customFields"
           [formGroup]="contactInfo['form'].get('customValues')">
-          <custom-field-input [field]="cf" [formControlName]="cf.internalName"
-            [binaryValues]="data.contactInfoBinaryValues[contactInfo['id']]">
-          </custom-field-input>
+          <label-value [label]="cf.name" [kind]="'field'"
+            [fieldSize]="fieldSize(cf)" [required]="cf.required"
+            [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'">
+            <custom-field-input [field]="cf" hideLabel
+              [binaryValues]="data.contactInfoBinaryValues[contactInfo['id']]"
+              [formControlName]="cf.internalName">
+            </custom-field-input>
+          </label-value>
         </ng-container>
         <label-value *ngIf="canManagePrivacy('contactInfo')"
           [label]="i18n.field.privacy.name" kind="field">

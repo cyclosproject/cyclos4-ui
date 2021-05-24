@@ -1,6 +1,6 @@
 <!-- A read-only label-value rendered when the control is disabled -->
 <label-value
-  *ngIf="disabled || (disabledChange | async); else controlTemplate"
+  *ngIf="disabled || (disabledChange | async); else field.informationText ? controlTemplateWithInformationText : controlTemplate"
   [label]="field.name" kind="fieldView" [labelPosition]="labelPosition">
   <format-field-value [fields]="[field]" [object]="disabledValueObject"
     [fieldName]="field.internalName"></format-field-value>
@@ -16,6 +16,14 @@
       [formControl]="formControl" [fieldOptions]="fieldOptions">
     </radio-group-field>
   </ng-container>
+</ng-template>
+
+<ng-template #controlTemplateWithInformationText>
+  <div class="d-flex justify-content-between w-100 h-100">
+    <ng-container *ngTemplateOutlet="controlTemplate"></ng-container>
+    <information-text class="ml-2" [informationText]="field.informationText">
+    </information-text>
+  </div>
 </ng-template>
 
 <ng-template #singleSelectionTemplate>

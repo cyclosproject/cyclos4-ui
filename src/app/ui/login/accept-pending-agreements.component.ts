@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormControl } from '@angular/forms';
 import { Agreement } from 'app/api/models';
 import { AgreementsService } from 'app/api/services/agreements.service';
+import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { LoginState } from 'app/ui/core/login-state';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
-import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { first } from 'rxjs/operators';
 

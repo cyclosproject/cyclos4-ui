@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Currency, VoucherDataForBuy } from 'app/api/models';
+import { Currency, CustomFieldDetailed, VoucherDataForBuy } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 
 @Component({
@@ -21,5 +21,9 @@ export class BuyVouchersStepFormComponent extends BaseComponent {
 
   get currency(): Currency {
     return this.data.account.currency;
+  }
+
+  fieldSize(cf: CustomFieldDetailed) {
+    return this.fieldHelper.fieldSize(cf);
   }
 }

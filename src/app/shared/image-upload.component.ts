@@ -226,7 +226,7 @@ export class ImageUploadComponent extends BaseComponent implements OnDestroy {
           params = {
             target: this.target,
             guestKey: this.authHelper.guestKey,
-            user: this.owner,
+            user: this.user,
             customField: this.customField == null ? null : this.customField.id,
             customFieldKind: this.customField == null ? null : this.customField.kind,
           };

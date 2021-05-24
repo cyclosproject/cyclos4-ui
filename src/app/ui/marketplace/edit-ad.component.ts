@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { AdBasicData, AdDataForEdit, AdDataForNew, AdEdit, AdKind, AdManage, Currency, DeliveryMethod, Image } from 'app/api/models';
+import { AdBasicData, AdDataForEdit, AdDataForNew, AdEdit, AdKind, AdManage, Currency, CustomFieldDetailed, DeliveryMethod, Image } from 'app/api/models';
 import { ImagesService } from 'app/api/services/images.service';
 import { MarketplaceService } from 'app/api/services/marketplace.service';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
@@ -357,6 +357,10 @@ export class EditAdComponent
    */
   captureCamera(upload: ImageUploadComponent) {
     this.notification.captureCamera(file => upload.uploadFile(file));
+  }
+
+  fieldSize(cf: CustomFieldDetailed) {
+    return this.fieldHelper.fieldSize(cf);
   }
 
   get canUploadImages(): boolean {

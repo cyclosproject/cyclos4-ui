@@ -266,6 +266,10 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     this.paymentTypeData$.next(typeData);
   }
 
+  fieldSize(cf: CustomFieldDetailed) {
+    return this.fieldHelper.fieldSize(cf);
+  }
+
   get fixedUsersList(): boolean {
     return !empty(this.data.allowedUsers);
   }

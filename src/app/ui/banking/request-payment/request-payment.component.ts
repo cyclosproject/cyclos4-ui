@@ -187,6 +187,9 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
     } else {
       clearValidatorsAndErrors(description);
     }
+    if ((typeData || {}).defaultExpirationDate) {
+      this.form.get('expirationDate').setValue(typeData.defaultExpirationDate);
+    }
     // Custom fields are handled separatedly
   }
 

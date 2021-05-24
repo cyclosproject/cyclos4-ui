@@ -160,8 +160,8 @@ export class RequestPaymentStepFormComponent extends BaseComponent implements On
     if (empty(allPaymentTypes)) {
       this.notification.error(this.i18n.transaction.noTypes);
     }
-    // Filter the payment types from the selected account type
-    const paymentTypes = allPaymentTypes.filter(tt => tt.from.id === value.account);
+    // Filter the payment types to the selected account type
+    const paymentTypes = allPaymentTypes.filter(tt => tt.to.id === value.account);
     let type: string = this.form.value.type;
     let error: any = null;
     if (empty(paymentTypes)) {
@@ -242,6 +242,10 @@ export class RequestPaymentStepFormComponent extends BaseComponent implements On
       focus(this.amountField);
     }
     this.paymentTypeData$.next(typeData);
+  }
+
+  fieldSize(cf: CustomFieldDetailed) {
+    return this.fieldHelper.fieldSize(cf);
   }
 
   get fixedUsersList(): boolean {

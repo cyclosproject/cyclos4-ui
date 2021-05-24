@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
+  CustomFieldDetailed,
   RecordCustomField, RecordCustomFieldDetailed, RecordDataForEdit, RecordDataForNew,
   RecordLayoutEnum, RecordSection,
 } from 'app/api/models';
@@ -112,5 +113,9 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
       }
       this.router.navigate(['/records', 'view', id || this.id], { replaceUrl: firstTime });
     }));
+  }
+
+  fieldSize(cf: CustomFieldDetailed) {
+    return this.fieldHelper.fieldSize(cf);
   }
 }

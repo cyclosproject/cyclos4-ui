@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, ValidationErrors } from '@angular/forms';
-import { DataForFrontend, DataForLogin, DataForUi, IdentityProvider, IdentityProviderCallbackStatusEnum } from 'app/api/models';
+import { DataForLogin, DataForUi, IdentityProvider, IdentityProviderCallbackStatusEnum } from 'app/api/models';
 import { NextRequestState } from 'app/core/next-request-state';
-import { ApiHelper } from 'app/shared/api-helper';
 import { empty, setRootSpinnerVisible } from 'app/shared/helper';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { LoginReason, LoginState } from 'app/ui/core/login-state';
@@ -125,7 +124,7 @@ export class LoginComponent
           // Successful login
           this.nextRequestState.replaceSession(callback.sessionToken).pipe(first()).subscribe(() => {
             setRootSpinnerVisible(true);
-            this.dataForFrontendHolder.initialize().pipe(first()).subscribe(d => this.afterLogin(d));
+            this.dataForFrontendHolder.initialize().pipe(first()).subscribe(() => this.afterLogin());
           });
           break;
         case IdentityProviderCallbackStatusEnum.LOGIN_NO_MATCH:
@@ -150,13 +149,11 @@ export class LoginComponent
     });
   }
 
-  private get afterLogin(): (dataForFrontend: DataForFrontend) => any {
-    return dataForFrontend => {
+  private get afterLogin(): () => any {
+    return () => {
       setRootSpinnerVisible(false);
       // Redirect to the correct URL
-      if (!ApiHelper.isRestrictedAccess(dataForFrontend)) {
-        this.router.navigateByUrl(this.loginState.redirectUrl || '');
-      }
+      this.router.navigateByUrl(this.loginState.redirectUrl || '');
     };
   }
 }

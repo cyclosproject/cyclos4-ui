@@ -66,8 +66,8 @@ export class DataForFrontendHolder {
           nextRequestState.setSessionToken(null);
         }
 
-        if (dataForFrontend.frontend === FrontendEnum.CLASSIC && !isDevServer()) {
-          // Redirect the user to the classic frontend
+        if (dataForFrontend.frontend === FrontendEnum.CLASSIC && !isDevServer() && dataForFrontend?.dataForUi?.auth?.user) {
+          // Redirect logged users to the classic frontend
           this.redirectToClassicFrontend();
           return of(null);
         }

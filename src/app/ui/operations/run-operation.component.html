@@ -97,12 +97,13 @@
     <ng-container *ngTemplateOutlet="operationContext"></ng-container>
 
     <!-- For fields -->
-    <ng-container *ngFor="let cf of formFields; let first = first">
-      <custom-field-input [field]="cf" [formControlName]="cf.internalName"
-        [focused]="!isSearch && first"
-        [labelPosition]="isSearch ? 'left' : 'auto'">
+    <label-value *ngFor="let cf of formFields; let first = first"
+      [label]="cf.name" [kind]="'field'" [fieldSize]="fieldSize(cf)"
+      [required]="cf.required" [labelPosition]="isSearch ? 'left' : 'auto'">
+      <custom-field-input [field]="cf" hideLabel
+        [focused]="!isSearch && first" [formControlName]="cf.internalName">
       </custom-field-input>
-    </ng-container>
+    </label-value>
 
     <!-- File upload -->
     <file-field *ngIf="data.hasFileUpload" [label]="i18n.operation.fileUpload"

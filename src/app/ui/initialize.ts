@@ -1,11 +1,15 @@
 import { Location } from '@angular/common';
 import { APP_INITIALIZER, Provider } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { IconLoadingService } from 'app/core/icon-loading.service';
 import { NextRequestState } from 'app/core/next-request-state';
+import { StateManager } from 'app/core/state-manager';
+import { ApiHelper } from 'app/shared/api-helper';
 import { isDevServer, urlJoin } from 'app/shared/helper';
+import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
 import { concat, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 
@@ -16,7 +20,10 @@ export function initialize(
   i18nLoading: I18nLoadingService,
   iconLoading: IconLoadingService,
   dataForFrontendHolder: DataForFrontendHolder,
-  nextRequestState: NextRequestState
+  nextRequestState: NextRequestState,
+  router: Router,
+  breadcrumb: BreadcrumbService,
+  stateManager: StateManager
 ): () => any {
   return async () => {
     let apiRoot = 'api';
@@ -30,7 +37,6 @@ export function initialize(
         apiRoot = href.substr(0, pos) + '/api';
       }
     }
-    console.log(`Using API root = ${apiRoot}`);
 
     // Will split the session token if running on the same origin and not in Angular's development server
     nextRequestState.useCookie = !isDevServer();
@@ -79,6 +85,28 @@ export function initialize(
           switchMap(() => of(dataForFrontend)),
           catchError(() => of(dataForFrontend)));
     });
+    dataForFrontendHolder.registerLoadHook(dataForFrontend => {
+      if (ApiHelper.isRestrictedAccess(dataForFrontend)) {
+        // Handle redirects on urgent situations
+        const auth = dataForFrontend?.dataForUi?.auth || {};
+        let redirect: string = null;
+        if (auth.pendingAgreements) {
+          redirect = '/pending-agreements';
+        } else if (auth.expiredPassword || auth.expiredSecondaryPassword) {
+          redirect = '/expired-password';
+        } else if (auth.pendingSecondaryPassword) {
+          redirect = '/login-confirmation';
+        }
+        setTimeout(() => {
+          if (redirect && router.url !== redirect) {
+            breadcrumb.clear();
+            stateManager.clear();
+            router.navigateByUrl(redirect);
+          }
+        }, 1);
+      }
+      return of(dataForFrontend);
+    });
     if (isDevServer()) {
       dataForFrontendHolder.registerLoadHook(dataForFrontend => {
         const link = document.getElementById('robotoLink') as HTMLLinkElement;
@@ -100,7 +128,10 @@ export const INITIALIZE: Provider = {
     I18nLoadingService,
     IconLoadingService,
     DataForFrontendHolder,
-    NextRequestState
+    NextRequestState,
+    Router,
+    BreadcrumbService,
+    StateManager
   ],
   multi: true,
 };

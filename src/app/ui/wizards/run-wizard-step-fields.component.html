@@ -119,11 +119,16 @@
     </ng-container>
 
     <ng-container *ngIf="customProfileValues">
-      <custom-field-input *ngFor="let cf of dataForNew.customFields"
-        [field]="cf"
-        [formControl]="customProfileValues.controls[cf.internalName]"
-        [binaryValues]="dataForNew.binaryValues">
-      </custom-field-input>
+      <label-value *ngFor="let cf of dataForNew.customFields"
+        [label]="cf.name" [kind]="'field'" [fieldSize]="fieldSize(cf)"
+        [required]="cf.required"
+        [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'">
+        <custom-field-input [field]="cf" hideLabel
+          [binaryValues]="dataForNew.binaryValues"
+          [formControl]="customProfileValues.controls[cf.internalName]">
+        </custom-field-input>
+      </label-value>
+
     </ng-container>
 
     <ng-container *ngTemplateOutlet="customFieldsTpl"></ng-container>
@@ -179,10 +184,14 @@
 
   <ng-template #customFieldsTpl>
     <ng-container *ngIf="customValues">
-      <custom-field-input *ngFor="let cf of data.step.customFields"
-        [field]="cf" [formControl]="customValues.controls[cf.internalName]"
-        [binaryValues]="data.binaryValues">
-      </custom-field-input>
+      <label-value *ngFor="let cf of data.step.customFields" [label]="cf.name"
+        [kind]="'field'" [fieldSize]="fieldSize(cf)" [required]="cf.required"
+        [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'">
+        <custom-field-input [field]="cf" hideLabel
+          [binaryValues]="data.binaryValues"
+          [formControl]="customValues.controls[cf.internalName]">
+        </custom-field-input>
+      </label-value>
     </ng-container>
   </ng-template>
 </form>

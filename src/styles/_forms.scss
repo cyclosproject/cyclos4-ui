@@ -256,10 +256,6 @@ $spaced-label-values: (
 }
 
 .label-value.label-on-side {
-  boolean-field:not(.switch),
-  accept-agreements agreement-link {
-    transform: translateY(7px);
-  }
   checkbox-group-field {
     transform: translateY(4px);
   }
@@ -267,9 +263,16 @@ $spaced-label-values: (
     transform: translateY(2px);
   }
 }
-boolean-field:not(.switch) .label-value.label-on-side .label-value-value {
-  transform: translateY(7px);
+
+boolean-field:not(.switch) .label-value.label-on-side .label-value-value,
+accept-agreements .label-value-value {
+  transform: translateY(9px);
 }
+
+.filters-form boolean-field .label-value.label-on-side .label-value-value {
+  transform: translateY(0px);
+}
+
 checkbox-group-field .label-value.label-on-side .label-value-value {
   transform: translateY(4px);
 }
@@ -1142,9 +1145,6 @@ label-value {
   .label-small {
     font-size: 0.8em !important;
   }
-}
-.xs label-value.field, .xs label-value.field-view {
-  padding-bottom: 0.5rem;
 }
 
 ///////////////////////////////////////////////////////////
