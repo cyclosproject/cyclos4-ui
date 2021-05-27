@@ -9,15 +9,32 @@ import download from 'downloadjs';
 import { NgxGalleryImage } from 'ngx-gallery-9';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
+import { environment } from 'app/../environments/environment';
 
 export const SmallThumbSize = [160, 100];
 export const MediumThumbSize = [320, 200];
 
 /**
- * Returns whether we're running in the development server
+ * Returns the URL to the API.
+ * When in standalone mode, read from the environment.
+ * Otherwise, use the current URL
  */
-export function isDevServer() {
-  return window.location.port === '4200';
+export function apiUrl() {
+  if (environment.standalone) {
+    return environment.apiUrl;
+  }
+  let href = window.location.href;
+  if (!href.endsWith('/')) {
+    href += '/';
+  }
+  const pos = href.indexOf('/ui/');
+  if (pos >= 0) {
+    return href.substr(0, pos) + '/api';
+  } else {
+    // How is the frontend being served if not from /ui/*?
+    // Fallback to the environment
+    return environment.apiUrl;
+  }
 }
 
 /**

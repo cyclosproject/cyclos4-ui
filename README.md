@@ -99,20 +99,38 @@ extending existing translations.
 
 ## Hosting the frontend separatedly from Cyclos
 
-If you prefer to host this frontend independently from Cyclos, you need to take
-the following into consideration:
+Some projects prefer to host the frontend separated from Cyclos. In such configuration,
+the Cyclos backend can be hidden from the public Internet.
 
-### Set the frontend options in Cyclos
+To do so, you will have to compile the frontend in standalone mode, and then be
+deployed in a separated server. Please, consider each of the following points:
 
-Then, in 'System > System configuration > Configurations' select the configuration
-applied to users (or the default one), under the 'Frontend' section, select the 
-new frontend and make sure users cannot switch between frontends. This way the
-new frontend will never redirect users to the classic frontend.
+### Set the frontend to standalone mode
+The files `src/environments/environment.ts` and `src/environments/environment.prod.ts`
+contain environment variables used in development mode and production mode, respectively.
+To host the frontend as standalone, edit the `src/environments/environment.prod.ts`
+and set `"standalone": true`.
 
-### Setup server-side proxy on /api
+Also you need to decide whether the frontend will access the backend API via proxy
+or CORS. Here is an explanation of each of them:
 
-In the server that serves the frontend files will also need to proxy any request
-to `/api` to the actual Cyclos server. In Apache, this can be done via:
+- Proxy: In this setup, the browser application will perform requests to the same
+  origin that is hosting the frontend. The server that serves the compiled frontend
+  HTML / scripts / styles (e.g. Apache) will need to proxy calls to the API path
+  (generally `/api`) to the backend server. This requires a little bit more
+  configuration on the server, but doesn't require the CORS preflight request.
+  You need also to set the Public API URL setting in Cyclos' configuration.
+- CORS: In this setup, the browser will perform requests to the backend directly.
+  As they are not in the same domain, the browser needs to perform the CORS preflight
+  request: is a request with method `OPTIONS` that will ask the backend server if the
+  request is allowed. If so, the actual request is performed. This will increase the
+  latency on every request. Also it requires the Cyclos backend server to allow CORS.
+
+More detail for each option is given below.
+### Setup the server-side proxy for /api
+
+This section applies the frontend will use proxy for the API.
+In Apache, this can be done via:
 
 ```apache
 <IfModule mod_proxy.c>
@@ -122,12 +140,44 @@ to `/api` to the actual Cyclos server. In Apache, this can be done via:
 </IfModule>
 ```
 
+On nginx, this can be configured with:
+
+```nginx
+location /api {
+  proxy_pass http://localhost:8080/cyclos/api/;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+}
+```
+
+You should also set the 'Public API URL' setting in the Cyclos configuration,
+in 'System > System configuration > Configurations'.
+For example: suppose your frontend is hosted on `https://instance.com`, while
+the Cyclos backend is hosted on `https://backend.instance.com`. The backend might not
+even be publicly accessible in the Internet. In such system, each URL returned by
+Cyclos in API requests should use `https://instance.com/api` as 'Public API URL'.
+
+### Setup the the API URL and CORS
+
+If the frontend will use CORS, requesting the backend directly.
+
+First, in `src/environments/environment.prod.ts`, set `apiUrl` to the fully-qualified
+URL of the backend URL, such as `https://backend.instance.com/api`.
+
+Then, in `cyclos.properties` of the Cyclos server, allow CORS with the
+`cyclos.cors.origin` setting. It can either be set to `*`, which allows CORS from any
+origin, or to the origin of the domain which hosts the frontend.
+
+In this case the backend's API URL is publicly accessible in the Internet, so you
+should not set the 'Public API URL' setting in the Cyclos configuration.
+
 ### Setup the server to rewrite requests to the index file
 
 Angular uses `History.pushState()` method for navigation. This changes the URL to a
 sub-path without generating another request to the server. However, when navigating
 directly to one of these sub-paths, or when reloading the page, the server needs
-to respond with the index file. In Apache, this can be done with:
+to respond with the index file. 
+
+In Apache, this can be done with:
 
 ```apache
 <IfModule mod_rewrite.c>
@@ -138,6 +188,14 @@ to respond with the index file. In Apache, this can be done with:
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /index.html [L]
 </IfModule>
+```
+
+In nginx, the configuration is:
+
+```nginx
+location / {
+  try_files $uri$args $uri$args/ /index.html;
+}
 ```
 
 ### Generate correct links from Cyclos
@@ -188,6 +246,14 @@ replacing the URL with your deployed URL:
 rootUrl = https://account.example.com
 ```
 
+### Customizing the frontend theme
+
+When running in standalone mode, the frontend will not use the theme which can be
+customized in Cyclos. Instead, the theme can be customized by adding the desired SASS
+variables in `src/styles/_custom-definitions.scss` or by adding SASS / CSS rules in
+`src/styles/_custom-definitions.scss`. The theme will be compiled together with the
+whole frontend.
+
 ## Improving performance on the HTTP server
 
 Angular generates some large, yet minified, JavaScript and CSS files.
@@ -198,6 +264,7 @@ Two techniques can make loading the page much faster:
 
 When the frontend is served by Cyclos, these are aplied automatically.
 However, when hosting the frontend, they should be manually configured in the server.
+
 On Apache, the following configuration can be applied:
 
 ```apache
@@ -205,13 +272,23 @@ On Apache, the following configuration can be applied:
     AddOutputFilterByType DEFLATE text/html
     AddOutputFilterByType DEFLATE text/css
     AddOutputFilterByType DEFLATE application/javascript
-    AddOutputFilterByType DEFLATE application/json
   </IfModule>
   <IfModule mod_expires.c>
     ExpiresActive On
-    ExpiresByType image/* "access plus 1 days"
     ExpiresByType text/css "access plus 1 year"
     ExpiresByType text/javascript "access plus 1 year"
-    ExpiresByType text/json "access plus 1 year"
   </IfModule>
+```
+
+In nginx, the configuration is:
+
+```nginx
+location / {
+  include /etc/nginx/mime.types;
+  try_files $uri$args $uri$args/ /index.html;
+  gzip on;
+  gzip_types text/html text/css application/javascript;
+  expires 1y;
+  add_header Cache-Control "public";
+}
 ```

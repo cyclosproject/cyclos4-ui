@@ -1,3 +1,4 @@
+import { environment } from 'app/../environments/environment';
 import {
   AccountWithOwner,
   DataForFrontend,
@@ -12,7 +13,7 @@ import {
   NotificationEntityTypeEnum,
   NotificationTypeEnum
 } from 'app/api/models';
-import { empty, isDevServer } from 'app/shared/helper';
+import { empty } from 'app/shared/helper';
 
 /**
  * Helper methods for working with API model
@@ -248,7 +249,7 @@ export class ApiHelper {
    * - Expired secondary password
    */
   static isRestrictedAccess(dataForFrontend: DataForFrontend): boolean {
-    if (dataForFrontend?.frontend === FrontendEnum.CLASSIC && !isDevServer()) {
+    if (dataForFrontend?.frontend === FrontendEnum.CLASSIC && !environment.standalone) {
       // Must redirect to the new frontend
       return true;
     }

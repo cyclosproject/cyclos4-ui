@@ -27,10 +27,6 @@ export class VoucherFiltersComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
     this.mask = this.data.mask ? this.data.mask : '';
-    this.form.patchValue({
-      creationType: null,
-      printed: null,
-    });
   }
 
   get statusOptions(): FieldOption[] {

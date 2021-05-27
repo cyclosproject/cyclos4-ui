@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { FieldOption } from 'app/shared/field-option';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
+import { environment } from 'environments/environment';
 
 /**
  * Manages the user settings
@@ -47,7 +48,7 @@ export class ManageSettingsComponent
       this.addSub(this.localeControl.valueChanges.subscribe(locale => this.authHelper.setLocale(locale)));
     }
 
-    this.canSwitchFrontend = this.dataForFrontendHolder.dataForFrontend.allowFrontendSwitching;
+    this.canSwitchFrontend = !environment.standalone && this.dataForFrontendHolder.dataForFrontend.allowFrontendSwitching;
   }
 
   switchFrontend() {

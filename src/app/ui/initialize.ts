@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { APP_INITIALIZER, Provider } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'app/../environments/environment';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
@@ -8,7 +9,7 @@ import { IconLoadingService } from 'app/core/icon-loading.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { StateManager } from 'app/core/state-manager';
 import { ApiHelper } from 'app/shared/api-helper';
-import { isDevServer, urlJoin } from 'app/shared/helper';
+import { apiUrl, isSameOrigin } from 'app/shared/helper';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
 import { concat, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
@@ -26,20 +27,10 @@ export function initialize(
   stateManager: StateManager
 ): () => any {
   return async () => {
-    let apiRoot = 'api';
-    if (!isDevServer()) {
-      let href = window.location.href;
-      if (!href.endsWith('/')) {
-        href += '/';
-      }
-      const pos = href.indexOf('/ui/');
-      if (pos >= 0) {
-        apiRoot = href.substr(0, pos) + '/api';
-      }
-    }
+    const apiRoot = apiUrl();
 
-    // Will split the session token if running on the same origin and not in Angular's development server
-    nextRequestState.useCookie = !isDevServer();
+    // Will split the session token if running on the same origin as the API
+    nextRequestState.useCookie = isSameOrigin(apiRoot);
 
     // When receiving an external session token, actually assign the URL again
     const path = location.path();
@@ -57,12 +48,8 @@ export function initialize(
     apiConfig.rootUrl = apiRoot;
 
     // Initialize the translations loading
-    const i18nRoot = apiRoot === 'api' ? 'i18n' : apiRoot + '/../ui/i18n';
+    const i18nRoot = environment.standalone ? 'i18n' : apiRoot + '/../ui/i18n';
     const i18n$ = i18nLoading.initialize(i18nRoot);
-
-    // Initialize the icons root
-    const iconRoot = apiRoot === 'api' ? 'svg' : apiRoot + '/../ui/svg';
-    iconLoading.iconRoot = iconRoot;
 
     // Change the media of the styles link
     const stylesLink = document.getElementById('stylesLink') as HTMLLinkElement;
@@ -107,13 +94,6 @@ export function initialize(
       }
       return of(dataForFrontend);
     });
-    if (isDevServer()) {
-      dataForFrontendHolder.registerLoadHook(dataForFrontend => {
-        const link = document.getElementById('robotoLink') as HTMLLinkElement;
-        link.href = urlJoin(dataForFrontend.dataForUi.rootUrl, 'fonts/roboto.css');
-        return of(null);
-      });
-    }
     const dataForFrontend$ = dataForFrontendHolder.initialize();
 
     return await concat(i18n$, dataForFrontend$).toPromise();

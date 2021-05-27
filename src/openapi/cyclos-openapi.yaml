@@ -9112,6 +9112,359 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /logos/{configuration}/{kind}:
+    parameters:
+      - name: configuration
+        in: path
+        required: true
+        schema:
+          type: string
+        description: >-
+          Either the id or internal name of the configuration
+      - name: kind
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/LogoKind'
+        description: >-
+          The logo to be downloaded
+    get:
+      operationId: getConfigurationLogoContent
+      summary: >-
+        Returns a logo content for a given configuration and type
+      description: >-
+        Returns the content of a logo, given the configuration and logo kind.
+        When neither `width` nor `height` are specified, returns the original content.
+        The original ratio is always maintained. When only of one of the
+        dimensions is specified, it is used as maximum, and the other is
+        calculated. When both are informed, the maximum size with the original
+        ratio that fits both dimensions is used.
+      tags:
+        - Images
+      parameters:
+        - name: width
+          in: query
+          required: false
+          description: >-
+            The requested image width
+          schema:
+            type: integer
+        - name: height
+          in: query
+          required: false
+          description: >-
+            The requested file height
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: >-
+            The image content
+          content:
+            'image/*':
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '405':
+          description: >-
+            Some required service is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnavailableError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /logos/{kind}:
+    parameters:
+      - name: kind
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/LogoKind'
+        description: >-
+          The logo to be downloaded
+    get:
+      operationId: getCurrentLogoContent
+      summary: >-
+        Returns a logo content for the current configuration and the given kind
+      description: >-
+        Returns the content of a logo for the current configuration, given a kind.
+        When neither `width` nor `height` are specified, returns the original content.
+        The original ratio is always maintained. When only of one of the
+        dimensions is specified, it is used as maximum, and the other is
+        calculated. When both are informed, the maximum size with the original
+        ratio that fits both dimensions is used.
+      tags:
+        - Images
+      parameters:
+        - name: width
+          in: query
+          required: false
+          description: >-
+            The requested image width
+          schema:
+            type: integer
+        - name: height
+          in: query
+          required: false
+          description: >-
+            The requested file height
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: >-
+            The image content
+          content:
+            'image/*':
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '405':
+          description: >-
+            Some required service is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnavailableError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /themes/{theme}/images/{kind}/{name}:
+    parameters:
+      - name: theme
+        in: path
+        required: true
+        schema:
+          type: string
+        description: >-
+          The theme id
+      - name: kind
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/ThemeImageKind'
+        description: >-
+          The kind of theme image to be downloaded
+      - name: name
+        in: path
+        required: true
+        x-dotInPath: true
+        schema:
+          type: string
+        description: >-
+          The name of the theme image to be downloaded
+    get:
+      operationId: getThemeImageContent
+      summary: >-
+        Returns a theme image content for a given theme.
+      description: >-
+        Returns the content of a theme image, given the theme, image kind and name.
+      tags:
+        - Images
+      parameters:
+        - name: width
+          in: query
+          required: false
+          description: >-
+            The requested image width
+          schema:
+            type: integer
+        - name: height
+          in: query
+          required: false
+          description: >-
+            The requested file height
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: >-
+            The image content
+          content:
+            'image/*':
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '405':
+          description: >-
+            Some required service is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnavailableError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /themes/images/{kind}/{name}:
+    parameters:
+      - name: kind
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/ThemeImageKind'
+        description: >-
+          The kind of theme image to be downloaded
+      - name: name
+        in: path
+        required: true
+        x-dotInPath: true
+        schema:
+          type: string
+        description: >-
+          The name of the theme image to be downloaded
+    get:
+      operationId: getCurrentThemeImageContent
+      summary: >-
+        Returns a theme image content for the current theme.
+      description: >-
+        Returns the content of a theme image for the current theme.
+        The image kind and name are given in the path.
+      tags:
+        - Images
+      parameters:
+        - name: width
+          in: query
+          required: false
+          description: >-
+            The requested image width
+          schema:
+            type: integer
+        - name: height
+          in: query
+          required: false
+          description: >-
+            The requested file height
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: >-
+            The image content
+          content:
+            'image/*':
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '405':
+          description: >-
+            Some required service is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnavailableError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /{user}/images/list-data:
     get:
       operationId: getUserImagesListData
@@ -27448,6 +27801,72 @@ Reference to the broker of users involved in transfers. Is only taken into accou
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /frontend/icons:
+    get:
+      operationId: getFrontendIcons
+      summary: >-
+        Returns a JSON object keyed by icon name and whose values are the
+        SVG contents
+      description: >-
+        Returns the HTML content of a given page.
+      tags:
+        - Frontend
+      parameters:
+        - name: names
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          description: >-
+            The icon names to return
+      responses:
+        '200':
+          description: >-
+            The JSON content.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '405':
+          description: >-
+            Some required service is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnavailableError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /notifications:
     get:
       operationId: searchNotifications
@@ -47735,6 +48154,32 @@ components:
         - transfer
         - user
 
+    LogoKind:
+      description: >
+        The type of logo to request
+
+        Possible values are:
+        
+        - `classic`: The logo used by the classic frontend
+        
+        - `classicShortcut`: The shortcut icon used by the classic frontend
+        
+        - `frontend`: The logo used by the new frontend
+        
+        - `mobile`: The logo used by the mobile app
+        
+        - `pay`: The logo used by the ticket / easy invoice interface
+        
+        - `report`: The logo used on printed reports
+      type: string
+      enum:
+        - classic
+        - classicShortcut
+        - frontend
+        - mobile
+        - pay
+        - report
+
     MapPreferenceEnum:
       description: >
         How the map is initialized in the mobile.
@@ -49573,6 +50018,26 @@ components:
         - customValue
         - userProfile
         - userRegistration
+
+    ThemeImageKind:
+      description: >
+        The type of theme image to request
+
+        Possible values are:
+        
+        - `background`: A background image
+        
+        - `custom`: A custom theme image
+        
+        - `mapMarker`: A map marker
+        
+        - `mobile`: An image used by the mobile application
+      type: string
+      enum:
+        - background
+        - custom
+        - mapMarker
+        - mobile
 
     TicketStatusEnum:
       description: >

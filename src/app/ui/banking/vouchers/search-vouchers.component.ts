@@ -33,7 +33,6 @@ export class SearchVouchersComponent
   protected onDataInitialized(_data) {
     super.onDataInitialized(_data);
     this.headingActions = [this.moreFiltersAction];
-    this.form.patchValue(_data.query);
   }
 
   protected getFormControlNames(): string[] {

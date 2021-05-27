@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
+import { FrontendService } from 'app/api/services/frontend.service';
 import { CacheService } from 'app/core/cache.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { Observable, of } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
-import { SvgIcon } from 'app/core/svg-icon';
 
 const builtin = new Set(Object.values(SvgIcon));
 
@@ -14,14 +14,11 @@ const builtin = new Set(Object.values(SvgIcon));
   providedIn: 'root',
 })
 export class IconLoadingService {
-
-  iconRoot: string;
-
   private icons: { [key: string]: string };
   private otherIcons = new Set<string>();
 
   constructor(
-    private http: HttpClient,
+    private frontendService: FrontendService,
     private cache: CacheService) {
     const current = isDevMode() ? {} : cache.current('icons');
     if (typeof current === 'string') {
@@ -57,8 +54,8 @@ export class IconLoadingService {
       // Nothing to load
       return of(null);
     }
-    return this.http.get(`${this.iconRoot}/icons.json`, {
-      params: { names: [...missing].join(',') }
+    return this.frontendService.getFrontendIcons({
+      names: [...missing]
     }).pipe(
       first(),
       tap({

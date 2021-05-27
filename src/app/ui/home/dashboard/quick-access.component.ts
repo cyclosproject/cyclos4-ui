@@ -8,6 +8,7 @@ import { blurIfClick, empty, handleKeyboardFocus } from 'app/shared/helper';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
 import { MenuService } from 'app/ui/core/menu.service';
 import { ActiveMenu, Menu, MenuEntry } from 'app/ui/shared/menu';
+import { environment } from 'environments/environment';
 
 export interface QuickAccessAction {
   icon: SvgIcon;
@@ -120,7 +121,9 @@ export class QuickAccessComponent extends BaseComponent implements OnInit {
       addAction(SvgIcon.LightDark, this.i18n.dashboard.action.switchTheme, new ActiveMenu(Menu.SETTINGS),
         () => this.layout.darkTheme = !this.layout.darkTheme);
     }
-    if (types.has(FrontendQuickAccessTypeEnum.USE_CLASSIC_FRONTEND) && this.dataForFrontendHolder.dataForFrontend.allowFrontendSwitching) {
+    if (types.has(FrontendQuickAccessTypeEnum.USE_CLASSIC_FRONTEND)
+      && !environment.standalone
+      && this.dataForFrontendHolder.dataForFrontend.allowFrontendSwitching) {
       addAction(SvgIcon.Display, this.i18n.dashboard.action.classicFrontend, new ActiveMenu(Menu.SETTINGS),
         () => this.dataForFrontendHolder.useClassicFrontend(true));
     }

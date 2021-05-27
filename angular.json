@@ -44,9 +44,9 @@
                         "polyfills": "src/polyfills.ts",
                         "tsConfig": "src/tsconfig.ui.json",
                         "assets": [
-                            "src/images",
                             "src/i18n",
-                            "src/svg"
+                            "src/svg",
+                            "src/fonts"
                         ],
                         "styles": [
                             "src/styles.scss"

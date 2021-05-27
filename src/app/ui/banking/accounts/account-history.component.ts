@@ -110,13 +110,15 @@ export class AccountHistoryComponent
 
   onDataInitialized(data: DataForAccountHistory) {
     super.onDataInitialized(data);
+    if (!this.form.controls['preselectedPeriod'].value) {
+      this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
+    }
 
     this.exportActions = this.exportHelper.headingActions(data.exportFormats, f =>
       this.accountsService.exportAccountHistory$Response({
         format: f.internalName,
         ...this.toSearchParams(this.form.value)
       }));
-    this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
     this.addSub(this.layout.xxs$.subscribe(() => this.updateShowForm(data)));
     this.addSub(this.moreFilters$.subscribe(() => this.updateShowForm(data)));
     this.updateShowForm(data);

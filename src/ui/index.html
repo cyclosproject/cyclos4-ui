@@ -60,23 +60,20 @@
 
   </style>
   <meta charset="utf-8">
+  <base id="baseTag" href="/">
   <script>
     var href = window.location.pathname;
     if (!href.endsWith('/')) {
       href = href + '/';
     }
     var pos = href.indexOf('/ui/')
-    var base = '/';
     if (pos >= 0) {
-      base = href.substr(0, pos + ('/ui/'.length));
+      document.getElementById('baseTag').href = href.substr(0, pos + ('/ui/'.length));
     }
-    var baseTag = document.createElement('base');
-    baseTag.href = base;
-    document.head.appendChild(baseTag)
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="themeColorMeta" name="theme-color" content="">
-  <link id="robotoLink" rel="stylesheet" href="">
+  <link rel="stylesheet" href="fonts/roboto.css">
   <link rel="stylesheet"
     href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
