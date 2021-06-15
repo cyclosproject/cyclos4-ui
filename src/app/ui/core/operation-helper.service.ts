@@ -35,6 +35,11 @@ const TypesRunDirectly: OperationResultTypeEnum[] = [
   providedIn: 'root',
 })
 export class OperationHelperService {
+
+  /** The next action that can be executed. */
+  nextAction?: string;
+
+
   private registry = new Map<string, Operation>();
 
   constructor(
@@ -94,6 +99,7 @@ export class OperationHelperService {
         .subscribe(response => this.handleResult(response));
     } else {
       // Go to the run page
+      this.nextAction = operation.id;
       const parts = ['operations'];
       switch (operation.scope) {
         case OperationScopeEnum.USER:

@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import {
   CreateDeviceConfirmation, DeviceConfirmationStatusEnum, DeviceConfirmationView,
-  ImageSizeEnum, PasswordInput, PasswordModeEnum, PerformPayment,
+  ImageSizeEnum, PasswordInput, PasswordModeEnum, PaymentPreview, PerformPayment,
 } from 'app/api/models';
 import { DeviceConfirmationsService } from 'app/api/services/device-confirmations.service';
 import { PosService } from 'app/api/services/pos.service';
@@ -38,6 +38,7 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
   ConfirmationMode = ConfirmationMode;
 
   @Input() pos: boolean;
+  @Input() paymentPreview: PaymentPreview;
   @Input() passwordInput: PasswordInput;
   @Input() createDeviceConfirmation: () => CreateDeviceConfirmation | PerformPayment;
   @Output() confirmationModeChanged = new EventEmitter<ConfirmationMode>();

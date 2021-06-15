@@ -57607,6 +57607,18 @@ components:
           description: >-
             The version of the Cyclos server. It will of the form x.y[.z]
           type: string
+        cyclosRevision:
+          description: >-
+            The git revision hash of the Cyclos compilation.
+          type: string
+        licenseKey:
+          description: >-
+            The Cyclos license key.
+          type: string
+        licensee:
+          description: >-
+            The organization to which this Cyclos instance is licensed to.
+          type: string
         currentClientTime:
           description: >-
             The current time in the the user's time zone.
@@ -57709,6 +57721,10 @@ components:
         rootUrl:
           description: >-
             The main URL set in the configuration
+          type: string
+        apiUrl:
+          description: >-
+            The public API URL for this Cyclos instance
           type: string
         country:
           description: >-

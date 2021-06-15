@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HammerModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { AccountPipe } from 'app/shared/account.pipe';
 import { ActionButtonComponent } from 'app/shared/action-button.component';
 import { ActionsComponent } from 'app/shared/actions.component';
@@ -184,7 +183,6 @@ export function initTooltipConfig(): TooltipConfig {
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
     NgxGalleryModule,
-    ZXingScannerModule,
     WebcamModule,
 
     LayoutModule,
@@ -203,7 +201,6 @@ export function initTooltipConfig(): TooltipConfig {
     TooltipModule,
     BsDropdownModule,
     NgxGalleryModule,
-    ZXingScannerModule,
     WebcamModule,
 
     LayoutModule,

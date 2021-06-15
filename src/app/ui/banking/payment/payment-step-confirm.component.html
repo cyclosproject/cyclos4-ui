@@ -105,7 +105,7 @@
       [pos]="pos" [passwordInput]="preview.confirmationPasswordInput"
       [createDeviceConfirmation]="createDeviceConfirmation"
       (confirmationModeChanged)="confirmationModeChanged.emit($event)"
-      (confirmed)="confirmed.emit($event)">
+      (confirmed)="confirmed.emit($event)" [paymentPreview]="preview">
     </confirmation-password>
   </form>
 </ng-container>

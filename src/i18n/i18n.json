@@ -1910,6 +1910,7 @@
     "transfer": "Transfer",
     "fileUpload": "File upload",
     "redirecting": "You are being redirected...",
+    "alreadyExecuted": "This action was already executed. Please, restart the operation.",
     "mobileTitle": {
       "result": "Result"
     }

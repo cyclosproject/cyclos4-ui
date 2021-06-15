@@ -46,7 +46,12 @@
                         "assets": [
                             "src/i18n",
                             "src/svg",
-                            "src/fonts"
+                            "src/fonts",
+                            {
+                                "input": "node_modules/qr-scanner",
+                                "glob": "qr-scanner-worker.min.*",
+                                "output": "/"
+                            }
                         ],
                         "styles": [
                             "src/styles.scss"
@@ -60,7 +65,6 @@
                             "downloadjs",
                             "autosize",
                             "rangy",
-                            "@zxing/library",
                             "big.js",
                             "lscache"
                         ]

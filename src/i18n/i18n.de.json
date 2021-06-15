@@ -203,6 +203,7 @@
     "general": "Es gab einen unerwarteten Fehler bei der Bearbeitung Ihrer Anfrage",
     "serverOffline": "Der Server konnte nicht kontaktiert werden.<br>Bitte versuchen Sie es später erneut.",
     "invalidRequest": "Es ist nicht möglich, sich mit dem Server zu verbinden.<br>Bitte stellen Sie sicher, dass Sie mit dem Internet verbunden sind und versuchen Sie es in ein paar Sekunden erneut.",
+    "networkInaccessible": "Dieses Netzwerk ist für den angegebenen Benutzer nicht zugänglich",
     "queryParse": "Ungültige Stichwörter",
     "uploadSizeExceeded": "Die hochgeladene Datei überschreitet die maximal zulässige Größe von {size}",
     "maxItems": "Kann nicht mehr als {max} Elemente hinzufügen",
@@ -221,6 +222,8 @@
       "address": "Ihre IP-Adresse darf sich nicht einloggen",
       "url": "Zugriff ist von dieser URL nicht erlaubt"
     },
+    "emailSending": "Beim Senden der E-Mail ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
+    "smsSending": "Beim Senden der SMS-Nachricht ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
     "loggedOut": "Die Verbindung wurde getrennt. Bitte melden Sie sich erneut an und wiederholen Sie den Vorgang.",
     "securityAnswer": {
       "invalid": "Die angegebene Sicherheitsantwort ist ungültig",
@@ -319,14 +322,33 @@
   "login": {
     "title": "Anmelden",
     "mobileTitle": "Anmelden",
+    "title.confirmation": "Anmeldebestätigung",
+    "mobileTitle.confirmation": "Anmeldebestätigung",
     "message": "Sie können sich mit Ihrem Benutzernamen und Ihrem Passwort anmelden",
     "disconnected": "Die Verbindung wurde getrennt.<br>Bitte melden Sie sich erneut an, um die angeforderte Seite zu sehen.",
     "principal": "Nutzende",
     "forgotPassword": "Passwort vergessen?",
     "register": "Noch kein Benutzer? Melden Sie sich hier an.",
+    "confirmation.text": "Sie haben sich erfolgreich eingeloggt, aber Ihre Sitzung muss bestätigt werden, um fortzufahren.",
     "error": {
+      "invalid": "Anmeldung fehlgeschlagen. Der angegebene Benutzer / das Passwort sind falsch. Bitte versuchen Sie es erneut.",
+      "remoteAddressBlocked": "Anmeldung fehlgeschlagen. Ihre IP-Adresse wurde vorübergehend gesperrt. Bitte kontaktieren Sie die Administration.",
+      "user": {
+        "blocked": "Anmeldung fehlgeschlagen. Ihr Benutzerkonto wurde gesperrt. Bitte kontaktieren Sie die Administration.",
+        "disabled": "Anmeldung fehlgeschlagen. Ihr Benutzerkonto wurde deaktiviert. Bitte kontaktieren Sie die Administration.",
+        "pending": "Anmeldung fehlgeschlagen. Ihr Benutzerkonto steht zur Aktivierung aus. Sie sollten eine E-Mail mit Anweisungen zur Aktivierung Ihres Kontos erhalten haben. Falls nicht, kontaktieren Sie bitte die Administration."
+      },
       "password": {
+        "expired": "Anmeldung fehlgeschlagen. Ihr Passwort ist abgelaufen. Bitte kontaktieren Sie die Administration.",
+        "disabled": "Anmeldung fehlgeschlagen. Ihr Passwort wurde deaktiviert. Bitte kontaktieren Sie die Administration.",
+        "reset": "Anmeldung fehlgeschlagen. Ihr Passwort wurde zurückgesetzt. Bitte kontaktieren Sie die Administration.",
+        "indefinitelyBlocked": "Anmeldung fehlgeschlagen. Ihr Login-Passwort wurde wegen Überschreitung der maximal möglichen Versuche deaktiviert. Bitte kontaktieren Sie die Administration.",
         "temporarilyBlocked": "Ihr Passwort wird wegen Überschreitung der maximal zulässigen Versuche vorübergehend gesperrt"
+      },
+      "confirmation": {
+        "missingDevice": "Anmeldung fehlgeschlagen. Sie müssen Ihre Anmeldung mit einem vertrauenswürdigen mobilen Gerät bestätigen, aber Sie haben keine. Bitte installieren Sie die mobile App und aktivieren ist ein vertrauenswürdiges Gerät.",
+        "missingPassword": "Anmeldung fehlgeschlagen. Sie müssen den Login mit Ihrem {0} bestätigen, aber Sie sind nicht aktiv. Bitte kontaktieren Sie die Administration.",
+        "missingBoth": "Anmeldung fehlgeschlagen. Sie müssen Ihren Login entweder mit Ihrem {0} oder einem vertrauenswürdigen Mobilgerät bestätigen, aber Sie haben keine. Bitte installieren Sie die mobile App und aktivieren ist ein vertrauenswürdiges Gerät zuerst, oder kontaktieren Sie die Administration."
       }
     }
   },
@@ -420,10 +442,28 @@
       "change.generated.confirm": "Dies generiert einen neuen {type}, und der Wert wird nur einmal angezeigt. Sind Sie sicher?",
       "change.generated.done": "Der Wert für {type} ist <data>{value}</data>.<br>Stellen Sie sicher, dass Sie ihn sich einprägen, da er nicht wieder angezeigt wird.",
       "unblock": "Entsperren",
+      "unblock.confirm": "Sind Sie sicher, dass Sie {type} entsperren wollen?",
+      "unblock.done": "{type} wurde entsperrt",
       "activate": "Aktivieren",
       "activate.confirm": "Dadurch wird Ihren {type} aktivieren und der generierte Wert wird nur einmal angezeigt. Sind Sie sicher?",
       "enable": "Aktivieren",
-      "disable": "Deaktivieren"
+      "enable.confirm": "Sind Sie sicher, {type} zu aktivieren?",
+      "enable.done": "{type} wurde aktiviert",
+      "disable": "Deaktivieren",
+      "disable.confirm": "Sind Sie sicher, {type} deaktivieren zu wollen?",
+      "disable.done": "{type} wurde deaktiviert",
+      "resetAndSendEmail": "Zurücksetzen und per E-Mail senden",
+      "resetAndSendEmail.confirm": "Sind Sie sicher, dass Sie den {type} zurücksetzen und ihn per E-Mail an den Benutzer senden möchten?",
+      "resetAndSendEmail.done": "{type} wurde zurückgesetzt und per E-Mail gesendet",
+      "resetAndSendSms": "Zurücksetzen und per SMS senden",
+      "resetAndSendSms.confirm": "Sind Sie sicher, dass Sie den {type} zurücksetzen und ihn per SMS an den Benutzer senden möchten?",
+      "resetAndSendSms.done": "{type} wurde zurückgesetzt und per SMS gesendet",
+      "resetGenerated": "Zurücksetzen",
+      "resetGenerated.confirm": "Sind Sie sicher, dass Sie {type} zurücksetzen wollen, damit der Benutzer es erneut generieren kann?",
+      "resetGenerated.done": "{type} wurde zurückgesetzt",
+      "allowGeneration": "Generierung erlauben",
+      "allowGeneration.confirm": "Sind Sie sicher, dass der Benutzer seine {type} generieren darf?",
+      "allowGeneration.done": "Der Benutzer kann nun seine {type} generieren"
     }
   },
   "pendingAgreements": {
@@ -462,10 +502,13 @@
       "editProfile": "Profil bearbeiten",
       "password": "Passwort",
       "passwords": "Passwörter",
-      "switchTheme": "Thema wechseln"
+      "switchTheme": "Thema wechseln",
+      "classicFrontend": "Klassisches Frontend verwenden"
     },
     "accounts": "Konten",
     "accountStatus": "Kontostatus",
+    "lastPayments": "Letzte Zahlungen",
+    "noPayments": "Keine Zahlungen",
     "latestAds": "Neueste Anzeigen",
     "latestUsers": "Neueste Nutzende",
     "passwords": {
@@ -582,6 +625,7 @@
       "toDailyLimit": "Zu Tageslimit",
       "toWeeklyLimit": "Zum wöchentlichen Limit",
       "toMonthlyLimit": "Zum monatlichen Limit ",
+      "definedInPaymentType": "Im Zahlungstyp definiert",
       "confirm": "Sie müssen bestätigen, um die neuen Zahlungslimits anzuwenden",
       "saved": "Die Zahlungslimits wurden gespeichert",
       "title": {
@@ -950,6 +994,7 @@
     },
     "image": {
       "upload": "Neues Bild hochladen",
+      "camera": "Von Kamera aufnehmen",
       "manage": "Bilder neu anordnen oder entfernen",
       "remove": "Dieses Bild entfernen",
       "manageMessage": "Sie können Bilder ziehen / loslassen um Sie neu zu sortieren.",
@@ -970,8 +1015,12 @@
       "scanQrCode.tooltip": "Scannen Sie einen QR-Code mit Ihrer Kamera"
     },
     "camera": {
+      "title.capture": "Bild von Ihrer Kamera aufnehmen",
       "title.qrCode": "QR-code scannen",
-      "noCameras": "Keine Kameras auf diesem Gerät gefunden."
+      "fileName": "Kamera-{timestamp}.jpeg",
+      "capture": "Erfassen",
+      "noCameras": "Keine Kameras auf diesem Gerät gefunden.",
+      "noPermission": "Um diese Funktionalität nutzen zu können, erteilen Sie der Anwendung bitte die Erlaubnis, auf Ihre Kamera zuzugreifen."
     },
     "html": {
       "undo": "Rückgängig machen",
@@ -1097,6 +1146,12 @@
       "myBrokerings": "Zugewiesene Mitglieder",
       "userBrokerings": "Broker-Mitglieder"
     },
+    "accountBalance": "{name} Guthaben",
+    "connected": "Online",
+    "connectionStatus": "Verbindungsstatus",
+    "disconnectedStatus": "Offline (letzter Login: {date})",
+    "neverLogged": "Niemals geloggt",
+    "activities": "Aktivitäten",
     "group": "Gruppe",
     "broker": "Makler",
     "brokers": "Broker",
@@ -1475,6 +1530,7 @@
     "deliveryMethodSaved": "Die Versandart wurde gespeichert",
     "fixed": "Fixiert",
     "hasImages": "Mit Bildern",
+    "noImages": "Keine Bilder für diese Anzeige",
     "item": "Artikel",
     "items": "Artikel",
     "itemsNone": "Derzeit gibt es keine Produkte",
@@ -1862,14 +1918,17 @@
     "alreadyExecuted": "Dieser Schritt wurde bereits ausgeführt",
     "emailVerificationCode": "E-Mail Bestätigungscode",
     "smsVerificationCode": "SMS-Bestätigungscode",
-    "codeSent": "Code gesendet"
+    "codeSent": "Code gesendet",
+    "currentStep": "Schritt {current} von {total}"
   },
   "setting": {
     "title": "Einstellungen",
     "mobileTitle": "Einstellungen",
     "theme": "Thema",
     "theme.light": "Hell",
-    "theme.dark": "Dunkel"
+    "theme.dark": "Dunkel",
+    "locale": "Sprache festlegen",
+    "useClassicFrontend": "Klassisches Frontend verwenden"
   },
   "privacySettings": {
     "title": "Privatsphäre-Einstellungen",
@@ -1954,7 +2013,8 @@
     "document": "Dokument",
     "savedSuccessfully": "Erfolgreich gespeichert",
     "process": "Dynamisches Dokument bearbeiten",
-    "category": "Kategorie"
+    "category": "Kategorie",
+    "action": "Dokumente ({count})"
   },
   "token": {
     "title": {

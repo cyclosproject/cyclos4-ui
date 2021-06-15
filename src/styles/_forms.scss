@@ -390,20 +390,6 @@ radio-group-field .label-value.label-on-side .label-value-value {
   }
 }
 
-zxing-scanner {
-  display: inline-flex;
-
-  spinner {
-    height: 70vh;
-  }
-}
-
-@include media-breakpoint-up(md) {
-  zxing-scanner spinner {
-    height: 20rem;
-  }
-}
-
 body.dark {
   label {
     color: $label-color-dark;
@@ -1353,5 +1339,25 @@ files-field {
     .file-item {
       max-width: 20rem;
     }
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+scan-qrcode {
+  video {
+    max-height: 80%;
+    max-width: 100%;
+  }
+}
+
+.label-right label-value {
+  .label-value-label {
+    padding-left: 0.5rem !important;
+    padding-right: 1rem !important;
+    justify-content: flex-end;
+    text-align: right;
+    align-items: center;
+    width: auto;
   }
 }

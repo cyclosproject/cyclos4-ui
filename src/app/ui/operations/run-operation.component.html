@@ -1,5 +1,10 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data then content"></ng-container>
+  <ng-container *ngIf="alreadyExecuted">
+    <alert type="danger" class="mt-3">
+      {{ i18n.operation.alreadyExecuted }}
+    </alert>
+  </ng-container>
+  <ng-container *ngIf="data && !alreadyExecuted then content"></ng-container>
 </page-layout>
 
 <ng-template #content>

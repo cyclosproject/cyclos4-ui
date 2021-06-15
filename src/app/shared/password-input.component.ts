@@ -3,7 +3,7 @@ import {
   Input, OnInit, Optional, Output, SkipSelf, ViewChild,
 } from '@angular/core';
 import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
-import { PasswordInput, PasswordInputMethodEnum, PasswordModeEnum, SendMediumEnum } from 'app/api/models';
+import { PasswordInput, PasswordInputMethodEnum, PasswordModeEnum, PaymentPreview, SendMediumEnum } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
 import { NotificationService } from 'app/core/notification.service';
 import { ActionWithIcon } from 'app/shared/action';
@@ -12,6 +12,7 @@ import { truthyAttr } from 'app/shared/helper';
 import { LayoutService } from 'app/core/layout.service';
 import { chunk } from 'lodash-es';
 import { SvgIcon } from 'app/core/svg-icon';
+import { PosService } from 'app/api/services/pos.service';
 
 /**
  * Component used to display a password input
@@ -28,6 +29,9 @@ import { SvgIcon } from 'app/core/svg-icon';
 export class PasswordInputComponent
   extends BaseControlComponent<string>
   implements OnInit, Validator {
+
+  @Input() pos: boolean;
+  @Input() paymentPreview: PaymentPreview;
 
   @Input() passwordInput: PasswordInput;
 
@@ -61,6 +65,7 @@ export class PasswordInputComponent
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private authService: AuthService,
+    private posService: PosService,
     private notificationService: NotificationService,
     public layout: LayoutService) {
     super(injector, controlContainer);
@@ -111,11 +116,16 @@ export class PasswordInputComponent
         return null;
     }
     return new ActionWithIcon(icon, label, () => {
-      const request = this.dataForFrontendHolder.auth.pendingSecondaryPassword
-        ? this.authService.newOtpForSecondaryPassword({ medium })
-        : this.authService.newOtp({ medium });
+      let request;
+      if (this.pos) {
+        request = this.posService.receivePaymentOtp({ medium, body: this.paymentPreview.payment });
+      } else {
+        request = this.dataForFrontendHolder.auth.pendingSecondaryPassword
+          ? this.authService.newOtpForSecondaryPassword({ medium }) : this.authService.newOtp({ medium });
+      }
       this.addSub(request.subscribe(res => {
-        this.notificationService.snackBar(this.i18n.password.otpSent((res || []).join(', ')));
+        this.notificationService.snackBar(
+          this.i18n.password.otpSent(this.pos ? this.paymentPreview.fromAccount.user.display : (res || []).join(', ')));
         this.otpSent.emit(null);
       }));
     });

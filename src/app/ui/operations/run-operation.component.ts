@@ -10,15 +10,15 @@ import {
 import { OperationsService } from 'app/api/services/operations.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
-import { OperationHelperService } from 'app/ui/core/operation-helper.service';
-import { OperationRunScope } from 'app/ui/operations/operation-run-scope';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
+import { PagedResults } from 'app/shared/paged-results';
+import { OperationHelperService } from 'app/ui/core/operation-helper.service';
+import { OperationRunScope } from 'app/ui/operations/operation-run-scope';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { PageData } from 'app/ui/shared/page-data';
-import { PagedResults } from 'app/shared/paged-results';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
 
@@ -51,6 +51,7 @@ export class RunOperationComponent
   runDirectly: boolean;
   hasSearchFields: boolean;
   leaveNotification: boolean;
+  alreadyExecuted: boolean;
   private createDeviceConfirmation: () => CreateDeviceConfirmation;
 
   get result(): RunOperationResult {
@@ -139,6 +140,13 @@ export class RunOperationComponent
     if (this.runScope === OperationRunScope.User) {
       this.self = this.authHelper.isSelf(data.user);
     }
+
+    if (data.scope === OperationScopeEnum.INTERNAL && data.id !== this.operationHelper.nextAction) {
+      // This action has already been executed, this is probably a page refresh
+      this.alreadyExecuted = true;
+      return;
+    }
+
     this.isSearch = data.resultType === OperationResultTypeEnum.RESULT_PAGE;
     this.isContent = [OperationResultTypeEnum.PLAIN_TEXT, OperationResultTypeEnum.RICH_TEXT].includes(data.resultType);
     const formFields = data.formParameters || [];
@@ -302,6 +310,7 @@ export class RunOperationComponent
     switch (action) {
       case OperationRowActionEnum.OPERATION:
         const operation = data.rowOperation;
+        this.operationHelper.nextAction = operation.id;
         this.router.navigate(['operations', 'action', ApiHelper.internalNameOrId(operation)], {
           queryParams: params,
         });
