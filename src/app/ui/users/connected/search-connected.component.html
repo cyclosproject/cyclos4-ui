@@ -34,11 +34,11 @@
       (update)="update($event)" [onClick]="onClick" [rendering$]="rendering$">
 
       <mobile-result *mobileResult="let row" [avatarImage]="row.user?.image"
-        avatarIcon="user">
+        [avatarIcon]="SvgIcon.Person">
         <div class="d-flex">
           <div>
             <div class="cell-main">
-              {{ row.user.shortDisplay }}
+              {{ row.user.display }}
             </div>
             <div class="cell-cell-date">
               {{ row.creationDate | dateTime }}
@@ -75,7 +75,7 @@
                 <avatar [image]="row.user?.image"
                   [tooltip]="row.user?.display"></avatar>
               </td>
-              <td>{{ row.user.shortDisplay }}</td>
+              <td>{{ row.user.display }}</td>
               <td>{{ row.channel.name }}</td>
               <td>{{ row.creationDate | dateTime }}</td>
               <td>{{ row.remoteAddress }}</td>

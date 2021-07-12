@@ -19,7 +19,7 @@
   <results-layout [results]="results$ | async" resultType="list"
     [toLink]="toLink" (update)="update($event)" [rendering$]="rendering$">
     <mobile-result *mobileResult="let row"
-      [avatarImage]="row.advertisement.image" avatarIcon="basket">
+      [avatarImage]="row.advertisement.image" [avatarIcon]="SvgIcon.Basket">
       <div class="d-flex">
         <div>
           <div class="cell-main">
@@ -60,8 +60,8 @@
               [tooltip]="row.advertisement.name" [icon]="SvgIcon.Basket">
             </avatar>
           <td class="link">
-            <span
-              (click)="navigateToAd(row)">{{ row.advertisement.name }}</span>
+            <span (click)="navigateToAd(row)">{{ row.advertisement.name
+              }}</span>
           </td>
           <td>
             {{ row.question }}

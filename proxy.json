@@ -1,8 +1,13 @@
-{
-  "/api": {
+[
+  {
+    "context": [
+      "/api",
+      "/ui",
+      "/consent"
+    ],
     "target": "http://localhost:8888",
     "cookieDomainRewrite": "localhost",
     "secure": false,
     "changeOrigin": true
   }
-}
+]

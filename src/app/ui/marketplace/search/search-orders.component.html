@@ -105,7 +105,7 @@
               {{ row.creationDate | date }}
             </div>
             <div class="cell-text">
-              {{ row.relatedUser.shortDisplay }}
+              {{ row.relatedUser.display }}
             </div>
           </div>
           <div class="ml-auto">
@@ -128,7 +128,7 @@
               <td>{{ row.number }}</td>
               <td>{{ resolveStatusLabel(row) }}</td>
               <td>{{ row.creationDate | date }}</td>
-              <td>{{ row.relatedUser.shortDisplay }}</td>
+              <td>{{ row.relatedUser.display }}</td>
               <td class=" text-right">
                 {{ row.totalPrice |currency: row.currency }}</td>
             </tr>

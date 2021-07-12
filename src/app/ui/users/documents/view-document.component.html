@@ -31,13 +31,13 @@
         [label]="i18n.document.brokerManageable">
         {{ format.formatBoolean(data.brokerManageable) }}
       </label-value>
-      <label-value [label]="i18n.document.document">
+      <label-value *ngIf="data.file" [label]="i18n.document.document">
         {{ data.file.name }}
       </label-value>
     </ng-container>
     <actions>
-      <action-button (action)="download()" [disabled]="requesting$ | async"
-        [label]="i18n.general.download">
+      <action-button *ngIf="data.file" (action)="download()"
+        [disabled]="requesting$ | async" [label]="i18n.general.download">
       </action-button>
     </actions>
   </page-content>

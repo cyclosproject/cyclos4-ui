@@ -81,7 +81,7 @@
       (update)="update($event)" [rendering$]="rendering$" [toLink]="toLink">
 
       <mobile-result *mobileResult="let row"
-        [avatarImage]="row.relatedUser.image" avatarIcon="user">
+        [avatarImage]="row.relatedUser.image" [avatarIcon]="SvgIcon.Person">
         <div class="d-flex">
           <div>
             <div class="cell-main">
@@ -108,7 +108,7 @@
           <ng-container *ngFor=" let row of (results$ | async)?.results">
             <tr (click)="router.navigate(path(row))">
               <td>{{ row.date | dateTime }}</td>
-              <td>{{ row.relatedUser.shortDisplay }}</td>
+              <td>{{ row.relatedUser.display }}</td>
               <td>
                 <rating-stats [level]="row.level"></rating-stats>
               </td>

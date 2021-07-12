@@ -17,6 +17,7 @@ export class ListUserBrokersComponent
   param: string;
   self: boolean;
   brokers: Brokering[];
+  hasActions = false;
 
   constructor(
     injector: Injector,
@@ -35,7 +36,9 @@ export class ListUserBrokersComponent
   }
 
   path(brokering: Brokering) {
-    return ['/users', brokering.broker.id, 'profile'];
+    if (brokering.broker.id) {
+      return ['/users', brokering.broker.id, 'profile'];
+    }
   }
 
   onDataInitialized(data: UserBrokersData) {
@@ -50,6 +53,7 @@ export class ListUserBrokersComponent
       this.headingActions.push(new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
         this.router.navigate(['/users', this.param, 'brokers', 'history']), true));
     }
+    this.hasActions = data.brokers.findIndex(b => this.canRemove(b)) >= 0;
   }
 
   get toLink() {
@@ -84,6 +88,14 @@ export class ListUserBrokersComponent
 
   resolveMenu() {
     return this.menu.searchUsersMenu();
+  }
+
+  canRemove(brokering: Brokering) {
+    return this.data?.editable && !this.authHelper.isSelfOrOwner(brokering.broker) && brokering.broker.id;
+  }
+
+  canSetMain(brokering: Brokering) {
+    return this.data?.editable && !brokering.main && brokering.broker.id;
   }
 
 }

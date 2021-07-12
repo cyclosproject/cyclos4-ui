@@ -20,7 +20,7 @@ import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { PageData } from 'app/ui/shared/page-data';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { first, tap } from 'rxjs/operators';
+import { debounceTime, first, tap } from 'rxjs/operators';
 
 /**
  * Runs a custom operation
@@ -188,8 +188,11 @@ export class RunOperationComponent
     if (this.runDirectly) {
       this.nextRequestState.leaveNotification = this.leaveNotification;
       if (this.isSearch) {
-        // When running searches directly, whenever some filter changes, re-run
-        this.addSub(this.form.valueChanges.subscribe(() => this.run(data)));
+        // When running searches directly, whenever some filter changes, re-run in page 0
+        this.addSub(this.form.valueChanges.pipe(debounceTime(ApiHelper.DEBOUNCE_TIME)).subscribe(() => {
+          this.pageData.page = 0;
+          this.run(data);
+        }));
       }
       // Run the operation
       this.run(data);

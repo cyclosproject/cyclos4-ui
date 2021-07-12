@@ -2,7 +2,7 @@
   <results-layout [results]="items" resultType="list"
     [toLink]="detailed ? toLink : null" [embedded]="true">
     <mobile-result *mobileResult="let row" [avatarImage]="row.product.image"
-      avatarIcon="basket" [title]="row.product.name">
+      [avatarIcon]="SvgIcon.Basket" [title]="row.product.name">
       <div class="d-flex">
         <div>
           <div class="cell-text">

@@ -1,8 +1,8 @@
 <page-layout [ready]="data$ | async">
   <page-content *ngIf="data" [heading]="create ? 
-    i18n.record.title.new(data.type.name) :
+    i18n.record.title['new'](data.type.name) :
     i18n.record.title.edit(data.type.name)" [mobileHeading]="create ? 
-    i18n.record.mobileTitle.new(data.type.name) :
+    i18n.record.mobileTitle['new'](data.type.name) :
     i18n.record.mobileTitle.edit(data.type.name)">
     <ng-container *ngIf="data.user && !authHelper.isSelf(data.user)">
       <user-info [user]="data.user"></user-info>
@@ -22,9 +22,9 @@
       </h2>
       <label-value *ngFor="let cf of fieldsWithoutSection" [label]="cf.name"
         [kind]="'field'" [fieldSize]="fieldSize(cf)" [required]="cf.required"
-        [labelPosition]="labelPosition">
+        [labelPosition]="labelPosition" [ngClass]="resolveColumnClass(cf)">
         <custom-field-input [field]="cf" hideLabel
-          [class]="resolveColumnClass(cf)" [binaryValues]="binaryValues"
+          [binaryValues]="binaryValues"
           [formControl]="form.get('customValues').get(cf.internalName)">
         </custom-field-input>
       </label-value>
@@ -40,9 +40,10 @@
         </h2>
         <label-value *ngFor="let cf of fieldsWithSection.get(key)"
           [label]="cf.name" [kind]="'field'" [fieldSize]="fieldSize(cf)"
-          [required]="cf.required" [labelPosition]="labelPosition">
+          [required]="cf.required" [labelPosition]="labelPosition"
+          [ngClass]="resolveColumnClass(cf)">
           <custom-field-input [field]="cf" hideLabel
-            [class]="resolveColumnClass(cf)" [binaryValues]="binaryValues"
+            [binaryValues]="binaryValues"
             [formControl]="form.get('customValues').get(cf.internalName)">
           </custom-field-input>
         </label-value>

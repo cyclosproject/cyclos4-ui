@@ -105,6 +105,9 @@ export class ReceiveQrPaymentComponent
         this.paymentTypeData$.next(d);
         this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(d.customFields));
         this.form.controls.type.setValidators(d.descriptionAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null);
+        if (d?.fixedAmount) {
+          this.form.patchValue({ amount: d.fixedAmount });
+        }
       }
     };
     const cached = this.paymentTypeDataCache.get(id);

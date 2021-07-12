@@ -35,7 +35,11 @@ export class ListDocumentsComponent
   }
 
   download(document: Document) {
-    this.addSub(this.documentsService.downloadDocumentFile$Response({ id: document.id }).subscribe(downloadResponse));
+    if (document.file) {
+      this.addSub(this.documentsService.downloadDocumentFile$Response({ id: document.id }).subscribe(downloadResponse));
+    } else {
+      this.notification.info(this.i18n.document.errorNoFile);
+    }
   }
 
   path(document: EntityReference) {

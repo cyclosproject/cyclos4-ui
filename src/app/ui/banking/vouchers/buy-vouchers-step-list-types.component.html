@@ -7,7 +7,7 @@
 
 <results-layout resultType="list" [results]="types" [onClick]="selectType">
   <mobile-result *mobileResult="let row" [avatarImage]="row.image"
-    avatarRoundBorders="false" avatarIcon="user">
+    avatarRoundBorders="false" [avatarIcon]="SvgIcon.Person">
     <div class="cell-text cell-main">
       {{ row.voucherTitle }}
     </div>

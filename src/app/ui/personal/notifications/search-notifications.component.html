@@ -16,7 +16,7 @@
     (update)="update($event)" [onClick]="onClick" [rendering$]="rendering$">
 
     <mobile-result *mobileResult="let row"
-      [avatarImage]="row.relatedUser?.image" avatarIcon="bell">
+      [avatarImage]="row.relatedUser?.image" [avatarIcon]="SvgIcon.Bell">
 
       <div class="cell-main" [tooltip]="row.message">{{ row.subject }}</div>
       <div class="cell-cell-date" [tooltip]="row.message">

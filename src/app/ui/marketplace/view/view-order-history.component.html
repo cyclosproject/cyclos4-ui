@@ -21,7 +21,7 @@
         {{ row.date | dateTime }}
       </div>
       <div class="cell-text">
-        {{ i18n.general.by }} {{ row.by.shortDisplay }}
+        {{ i18n.general.by }} {{ row.by.display }}
       </div>
     </mobile-result>
     <table *resultTable class="table table-hover">
@@ -35,7 +35,7 @@
         <tr *ngFor="let row of data.history">
           <td>{{ row.date | dateTime }}</td>
           <td>{{ resolveStatusLabel(row.status) }}</td>
-          <td>{{ row.by.shortDisplay }}</td>
+          <td>{{ row.by.display }}</td>
           <td>{{ row.remarks }}</td>
         </tr>
       </tbody>

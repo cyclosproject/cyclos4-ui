@@ -11,10 +11,17 @@
       [text]="tt.name"></field-option>
   </single-selection-field>
 
-  <decimal-field formControlName="amount" focused
-    [label]="i18n.transaction.amount" required [prefix]="currency?.prefix"
-    [suffix]="currency?.suffix" [scale]="currency?.decimalDigits">
-  </decimal-field>
+  <label-value kind="fieldView"
+    *ngIf="typeData?.fixedAmount; else amountTemplate"
+    [label]="i18n.transaction.amount">
+    {{ typeData.fixedAmount | currency:currency }}
+  </label-value>
+  <ng-template #amountTemplate>
+    <decimal-field formControlName="amount" focused
+      [label]="i18n.transaction.amount" required [prefix]="currency?.prefix"
+      [suffix]="currency?.suffix" [scale]="currency?.decimalDigits">
+    </decimal-field>
+  </ng-template>
 
   <ng-container *ngIf="typeData?.customFields?.length > 0"
     [formGroup]="form.controls.customValues">

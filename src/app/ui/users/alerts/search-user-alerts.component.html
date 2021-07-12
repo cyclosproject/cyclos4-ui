@@ -70,7 +70,7 @@
     (update)="update($event)" [rendering$]="rendering$">
 
     <mobile-result *mobileResult="let row" [avatarImage]="row.user?.image"
-      avatarIcon="user">
+      [avatarIcon]="SvgIcon.Person">
       <div class="cell-main" [tooltip]="row.user.display">
         {{ row.user.display }}</div>
       <div class="cell-cell-date">

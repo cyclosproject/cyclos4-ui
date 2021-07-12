@@ -169,7 +169,7 @@ export class AccountHistoryComponent
   }
 
   subjectName(row: AccountHistoryResult): string {
-    return this.bankingHelper.subjectName(row.relatedAccount);
+    return row.relatedName || this.bankingHelper.subjectName(row.relatedAccount);
   }
 
   /**

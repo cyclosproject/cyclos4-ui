@@ -28,6 +28,8 @@ const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, Error
 })
 export class RequestPaymentStepFormComponent extends BaseComponent implements OnInit {
 
+  setFocus = focus;
+
   @Input() data: DataForTransaction;
   @Input() form: FormGroup;
   @Input() currency: Currency;
@@ -240,6 +242,9 @@ export class RequestPaymentStepFormComponent extends BaseComponent implements On
     if (typeData) {
       this.dataCache.set(typeData.id, typeData);
       focus(this.amountField);
+      if (typeData.fixedAmount) {
+        this.form.patchValue({ amount: typeData.fixedAmount });
+      }
     }
     this.paymentTypeData$.next(typeData);
   }

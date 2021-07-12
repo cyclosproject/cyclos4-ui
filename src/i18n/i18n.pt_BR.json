@@ -1910,6 +1910,7 @@
     "transfer": "Transferência",
     "fileUpload": "Envio de arquivo",
     "redirecting": "Você está sendo redirecionado...",
+    "alreadyExecuted": "Esta ação já foi executada. Por favor, reinicie a operação.",
     "mobileTitle": {
       "result": "Resultado"
     }
@@ -2014,7 +2015,8 @@
     "savedSuccessfully": "Salvo com sucesso",
     "process": "Processar documento dinâmico",
     "category": "Categoria",
-    "action": "Documentos ({count})"
+    "action": "Documentos ({count})",
+    "error.noFile": "Não existe arquivo anexado a este documento por que ele ainda não foi enviado."
   },
   "token": {
     "title": {

@@ -10,7 +10,7 @@
     <results-layout *ngIf="data.length > 0" [results]="data"
       [toLink]="toLink">
       <mobile-result *mobileResult="let cart"
-        [avatarImage]="cart.seller.image" avatarIcon="user">
+        [avatarImage]="cart.seller.image" [avatarIcon]="SvgIcon.Person">
         <div>
           <div class="cell-main">
             {{ cart.seller.display }}
@@ -19,7 +19,8 @@
             {{ cart.currency.name }}
           </div>
           <div class="cell-text">
-            {{ cart.items.length + ' ' + (cart.items.length > 1 ? i18n.ad.items : i18n.ad.item)  }}
+            {{ cart.items.length + ' ' + (cart.items.length > 1 ?
+            i18n.ad.items : i18n.ad.item) }}
           </div>
         </div>
       </mobile-result>
@@ -42,7 +43,7 @@
               </td>
               <td>
                 <a [routerLink]="path(cart)">
-                  {{ cart.seller.shortDisplay }}
+                  {{ cart.seller.display }}
                 </a>
               </td>
               <td>

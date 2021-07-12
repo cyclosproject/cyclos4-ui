@@ -2015,7 +2015,8 @@
     "savedSuccessfully": "Saved successfully",
     "process": "Process dynamic document",
     "category": "Category",
-    "action": "Documents ({count})"
+    "action": "Documents ({count})",
+    "error.noFile": "There is no file attached to this document because it was not uploaded yet."
   },
   "token": {
     "title": {

@@ -30,14 +30,17 @@
   align-items: center;
   margin: auto;
   color: black;
-  width: 64px;
-  height: 64px;
   flex-grow: 1;
 
   svg {
     width: 100%;
     height: 100%;
   }
+}
+
+.spinner:not(.min-size) {
+  width: 64px;
+  height: 64px;
 }
 
 .solid-icon {

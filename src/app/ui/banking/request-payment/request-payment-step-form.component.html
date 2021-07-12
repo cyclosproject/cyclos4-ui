@@ -43,7 +43,7 @@
         formControlName="subject" [allowContacts]="allowContacts"
         [allowSearch]="allowSearch" [allowPrincipal]="allowPrincipal"
         [allowQrCode]="allowQrCode" [principalTypes]="data.principalTypes"
-        (selected)="$event ? amount.focus() : null"></user-field>
+        (selected)="$event ? setFocus(amountField) : null"></user-field>
     </ng-template>
   </label-value>
 
@@ -59,11 +59,19 @@
       [text]="pt.name"></field-option>
   </single-selection-field>
 
-  <decimal-field #amount [focused]="fixedDestination" formControlName="amount"
-    required [label]="i18n.transaction.amount"
-    [scale]="currency?.decimalDigits" [prefix]="currency?.prefix"
-    [suffix]="currency?.suffix">
-  </decimal-field>
+  <label-value kind="fieldView"
+    *ngIf="(paymentTypeData$ | async)?.fixedAmount; else amountTemplate"
+    [label]="i18n.transaction.amount">
+    {{ paymentTypeData$.value.fixedAmount |
+    currency:paymentTypeData$.value.currency }}
+  </label-value>
+  <ng-template #amountTemplate>
+    <decimal-field #amount [focused]="fixedDestination"
+      formControlName="amount" required [label]="i18n.transaction.amount"
+      [scale]="currency?.decimalDigits" [prefix]="currency?.prefix"
+      [suffix]="currency?.suffix">
+    </decimal-field>
+  </ng-template>
 
   <date-field *ngIf="!((paymentTypeData$ | async)?.hideExpirationDate)"
     formControlName="expirationDate" required minDate="tomorrow"

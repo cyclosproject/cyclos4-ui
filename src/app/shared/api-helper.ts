@@ -249,7 +249,9 @@ export class ApiHelper {
    * - Expired secondary password
    */
   static isRestrictedAccess(dataForFrontend: DataForFrontend): boolean {
-    if (dataForFrontend?.frontend === FrontendEnum.CLASSIC && !environment.standalone) {
+    if (dataForFrontend?.frontend === FrontendEnum.CLASSIC
+      && !environment.standalone
+      && dataForFrontend?.dataForUi?.auth?.user) {
       // Must redirect to the new frontend
       return true;
     }

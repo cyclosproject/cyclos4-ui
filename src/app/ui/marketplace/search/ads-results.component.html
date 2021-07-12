@@ -30,7 +30,7 @@
   </div>
 
   <mobile-result *mobileResult="let ad" [avatarImage]="ad.image"
-    avatarIcon="basket">
+    [avatarIcon]="SvgIcon.Basket">
     <div *ngIf="ad.price" class="cell-main">
       <span *ngIf="ad.promotionalPrice" class="promo-price">
         {{ ad.price | number:decimals(ad) }}

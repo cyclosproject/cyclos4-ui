@@ -29,6 +29,8 @@ const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, Error
 })
 export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
+  setFocus = focus;
+
   @Input() data: DataForTransaction;
   @Input() pos: boolean;
   @Input() form: FormGroup;
@@ -262,6 +264,9 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     if (typeData) {
       this.dataCache.set(typeData.id, typeData);
       focus(this.amountField);
+      if (typeData.fixedAmount) {
+        this.form.patchValue({ amount: typeData.fixedAmount });
+      }
     }
     this.paymentTypeData$.next(typeData);
   }
