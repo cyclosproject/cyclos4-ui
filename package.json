@@ -82,7 +82,7 @@
     "codelyzer": "^6.0.2",
     "ng-openapi-gen": "^0.13.0",
     "ng-translation-gen": "^0.5.2",
-    "tar": "^4.4.13",
+    "tar": "^4.4.15",
     "ts-node": "~7.0.1",
     "tslint": "^6.1.3",
     "typescript": "3.9.9",
