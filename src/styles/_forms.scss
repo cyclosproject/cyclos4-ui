@@ -45,6 +45,11 @@ label {
     margin-top: $layout-spacer-xs;
   }
 }
+
+boolean-field.form-field {
+  flex-grow: 1;
+}
+
 @include media-breakpoint-up(sm) {
   .form-field {
     flex-grow: 1;
@@ -1185,6 +1190,7 @@ rating-stats {
   align-items: center;
 
   .stars {
+    margin-top: -2px;
     display: inline-flex;
     justify-content: flex-end;
     margin-left: -0.1rem;

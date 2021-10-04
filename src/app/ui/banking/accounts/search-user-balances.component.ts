@@ -133,9 +133,10 @@ export class SearchUserBalancesComponent
     query.lastLoginPeriod = ApiHelper.dateRangeFilter(value.beginLastLoginPeriod, value.endLastLoginPeriod);
     query.negativeSincePeriod = ApiHelper.dateRangeFilter(value.beginNegativeSincePeriod, value.endNegativeSincePeriod);
 
-    if (value.minBalance && value.maxBalance) {
+    if (value.minBalance || value.maxBalance) {
       query.balanceRange = [value.minBalance, value.maxBalance];
     }
+
     if (value.minMediumRange != null && value.maxMediumRange != null) {
       query.mediumBalanceRange = [value.minMediumRange, value.maxMediumRange];
     }

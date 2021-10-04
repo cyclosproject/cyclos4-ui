@@ -187,8 +187,8 @@
     },
     "results": {
       "withTotal": "Zoekresultaten {first} - {last} van {total}",
-      "noTotal": "Het tonen van {first} - {last} resultaten",
-      "none": "Geen resultaten overeenkomen met de zoekcriteria",
+      "noTotal": "Zoekresultaten {first} - {last}",
+      "none": "Geen resultaten gevonden die overeenkomen met de zoekcriteria",
       "nextXxs": "Volgende",
       "previousXxs": "Vorige"
     },
@@ -201,7 +201,7 @@
   },
   "error": {
     "general": "Er is een onverwachte fout opgetreden bij het verwerken van uw verzoek",
-    "serverOffline": "Er kan geen contact met de server worden gemaakt.<br>Probeer het Gelieve later opnieuw.",
+    "serverOffline": "Er kan geen contact met de server worden gemaakt.<br>Probeer het later opnieuw.",
     "invalidRequest": "Er kan geen verbinding met de server gemaakt worden. Zorg ervoor dat u met het internet verbonden bent en probeert u het over enkele seconden opnieuw.",
     "networkInaccessible": "Dit netwerk is niet toegankelijk voor de opgegeven gebruiker",
     "queryParse": "Ongeldige trefwoorden",
@@ -209,80 +209,168 @@
     "maxItems": "Kan niet meer dan {max} elementen toevoegen",
     "validation": "De actie kan niet worden verwerkt, omdat er validatiefouten zijn",
     "staleEntity": "Deze gegevens kunnen niet worden opgeslagen omdat het is gewijzigd door iemand anders.<br>Laad de pagina opnieuw en herstart de bewerking.",
+    "removeDataInUse": "Dit item kan niet verwijderd worden omdat het momenteel in gebruik is.",
     "notFound": {
       "location": "De locatie die u hebt getypt of geprobeerd te openen is niet gevonden",
       "type": "De gevraagde gegevens kunnen niet worden gevonden: {type}",
       "typeKey": "De gevraagde gegevens kunnen niet worden gevonden: {type} met de sleutel {key}"
     },
-    "login": "De opgegeven inlognaam of wachtwoord is onjuist. Alstublieft, probeer het opnieuw.",
-    "remoteAddressBlocked": "Uw IP-adres is geblokkeerd voor het overschrijden van inlog pogingen",
-    "permission": "Je hebt niet de voldoende rechten om de gevraagde actie uit te voeren",
+    "login": "De opgegeven naam / wachtwoord is onjuist. Probeer het opnieuw.",
+    "remoteAddressBlocked": "Uw IP-adres is geblokkeerd wegens het overschrijden van inlogpogingen",
+    "permission": "U heeft niet voldoende rechten om de gevraagde actie uit te voeren",
     "unauthorized": {
       "address": "Het is vanaf uw locatie niet toegestaan om in te loggen",
-      "url": "Toegang is niet toegestaan voor deze URL"
+      "url": "Toegang is niet toegestaan vanaf deze URL"
     },
-    "loggedOut": "De verbinding is verbroken. Gelieve in te loggen opnieuw in te loggen.",
+    "emailSending": "Er is een fout opgetreden bij het verzenden van de e-mail. Probeer het later opnieuw.",
+    "smsSending": "Er is een fout opgetreden bij het verzenden van het SMS-bericht. Probeer het later opnieuw.",
+    "loggedOut": "De verbinding is verbroken. Gelieve opnieuw in te loggen en de bewerking te herhalen.",
     "securityAnswer": {
-      "invalid": "Het veiligheid antwoord is ongeldig",
-      "disabled": "Bij overschrijding van het aantal antwoordpogingen, dit verzoek is afgebroken. Neem dan contact op met de administratie"
+      "invalid": "Het veiligheidsantwoord is ongeldig",
+      "disabled": "Wegens overschrijding van het aantal pogingen om de beveiligingsvraag te beantwoorden, is dit verzoek afgebroken. Neem contact op met de administratie."
     },
     "illegalAction": "De actie die u probeert uit te voeren, is ongeldig",
     "field": {
       "invalid": "Dit veld is ongeldig",
-      "required": "Dit is een verplicht veld",
+      "required": "Dit veld is verplicht",
       "passwordsMatch": "De wachtwoorden komen niet overeen",
-      "minLength": "Moet ten minste {min} tekens",
+      "minLength": "Moet ten minste {min} tekens bevatten",
       "number": "Ongeldige numerieke waarde",
       "date": "Ongeldige datum",
       "minDate": "Moet {min} of na",
       "maxDate": "Moet {max} of voor"
+    },
+    "geolocation": {
+      "denied": "Geen toestemming om de huidige locatie op te halen. Geef deze toestemming in uw browser.",
+      "unavailable": "De huidige locatie is niet beschikbaar",
+      "general": "Fout bij ophalen van de huidige locatie"
     }
   },
   "menu": {
+    "login": "Login",
+    "language": "Taal",
     "register": "Registreren",
     "logout": "Uitloggen",
+    "shoppingCart": "Winkelwagen",
     "home": "Start",
+    "dashboard": "Dashboard",
     "banking": "Geldzaken",
     "banking.accountsSummary": "Overzicht van de rekeningen",
     "banking.payUser": "Betaling aan gebruiker",
     "banking.paySystem": "Betaling aan systeem",
     "banking.paySelf": "De betaling zelf",
-    "banking.scheduledPayments": "Geautoriseerde betalingen",
+    "banking.requestPaymentFromUser": "Vraag betaling van gebruiker",
+    "banking.requestPaymentFromSystem": "Vraag betaling van het systeem",
+    "banking.pos": "Betaling ontvangen",
+    "banking.receiveQrPayment": "Ontvang QR-code",
+    "banking.scheduledPayments": "Geagendeerde betalingen",
+    "banking.scheduledPaymentsOverview": "Overzicht van geagendeerde betalingen",
+    "banking.pendingMyAuth": "In afwachting van mijn autorisatie",
     "banking.authorizations": "Betalingsautorisaties",
+    "banking.paymentRequests": "Betalingsverzoeken",
+    "banking.paymentRequestsOverview": "Overzicht van betalingsverzoeken",
+    "banking.searchVouchers": "Zoek vouchers",
+    "banking.generateVouchers": "Genereer vouchers",
+    "banking.buyVouchers": "Koop vouchers",
     "banking.boughtVouchers": "View buys",
+    "banking.redeemVoucher": "Voucher inwisselen",
+    "banking.redeemedVouchers": "Bekijk ingewisselde",
+    "banking.transfersOverview": "Overschrijvingen overzicht",
+    "banking.userBalancesOverview": "Overzicht gebruiker saldi",
+    "banking.accountBalanceLimits": "Rekeningsaldo limieten",
+    "banking.accountPaymentLimits": "Rekening betalingslimieten",
     "operators": "Operators",
     "operators.operators": "Operators",
     "operators.register": "Registreer operator",
     "operators.groups": "Operator groepen",
+    "brokering": "Makelaars",
+    "brokering.users": "Gebruikers",
+    "brokering.register": "Registreer gebruiker",
     "marketplace": "Marktplaats",
+    "marketplace.users": "Gebruikers",
+    "marketplace.register": "Registreer gebruiker",
     "marketplace.directory": "Bedrijven",
+    "marketplace.userSearch": "Gebruikers",
     "marketplace.businessDirectory": "Gebruikers",
     "marketplace.advertisements": "Advertenties",
+    "marketplace.adInterests": "Advertentie interesses",
+    "marketplace.deliveryMethods": "Leveringsmethoden",
+    "marketplace.webshopSettings": "Webshop instellingen",
+    "marketplace.myAdvertisements": "Mijn advertenties",
+    "marketplace.myPurchases": "Mijn aankopen",
+    "marketplace.mySales": "Mijn verkopen",
+    "marketplace.myWebshop": "Mijn webshop",
+    "marketplace.unansweredQuestions": "Onbeantwoorde vragen",
+    "marketplace.connectedUsers": "Gebruikers online",
+    "marketplace.userAlerts": "Gebruikersmeldingen",
     "personal": "Persoonlijk",
+    "personal.documents": "Documenten",
     "personal.viewProfile": "Mijn profiel",
     "personal.editProfile": "Profiel bewerken",
     "personal.contacts": "Contacten",
     "personal.password": "Wachtwoord",
     "personal.passwords": "Wachtwoorden",
+    "personal.identityProviders": "Identity providers",
     "personal.agreements": "Overeenkomsten",
+    "personal.notifications": "Meldingen",
+    "personal.notificationSettings": "Instellingen voor meldingen",
+    "personal.settings": "Instellingen",
+    "personal.privacySettings": "Privacyinstellingen",
     "personal.references": "Referenties",
     "content": "Informatie"
   },
   "login": {
+    "title": "Login",
+    "mobileTitle": "Login",
+    "title.confirmation": "Login bevestiging",
+    "mobileTitle.confirmation": "Login bevestiging",
     "message": "U kunt inloggen met uw gebruikersnaam en wachtwoord",
     "disconnected": "U is verbroken.<br>Gelieve in te loggen om te geven de gevraagde pagina.",
     "principal": "Gebruiker",
     "forgotPassword": "Wachtwoord vergeten?",
-    "register": "Geen gebruiker? Registreer u dan hier."
+    "register": "Geen gebruiker? Registreer u dan hier.",
+    "confirmation.text": "U heeft succesvol ingelogd, maar uw sessie moet worden bevestigd om verder te gaan.",
+    "error": {
+      "invalid": "Inloggen mislukt. De opgegeven gebruiker / wachtwoord combinatie is onjuist. Probeer het opnieuw.",
+      "remoteAddressBlocked": "Inloggen mislukt. Uw IP-adres is tijdelijk geblokkeerd. Neem contact op met de administratie.",
+      "user": {
+        "blocked": "Inloggen mislukt. Uw gebruikersaccount is geblokkeerd. Neem contact op met de administratie.",
+        "disabled": "Inloggen mislukt. Uw gebruikersaccount is uitgeschakeld. Neem contact op met de administratie.",
+        "pending": "Inloggen mislukt. Uw gebruikersaccount is in afwachting van activering. Als het goed is, heeft u een e-mail ontvangen met instructies om uw account te activeren. Zo niet, neem dan contact op met de administratie."
+      },
+      "password": {
+        "expired": "Inloggen mislukt. Uw wachtwoord is verlopen. Neem contact op met de administratie.",
+        "disabled": "Inloggen mislukt. Uw wachtwoord is uitgeschakeld. Neem contact op met de administratie.",
+        "reset": "Inloggen mislukt. Uw wachtwoord is gereset. Neem contact op met de administratie.",
+        "indefinitelyBlocked": "Inloggen mislukt. Uw wachtwoord is uitgeschakeld wegens overschrijding van het maximum aantal pogingen. Neem contact op met de administratie.",
+        "temporarilyBlocked": "Uw wachtwoord is tijdelijk geblokkeerd wegens overschrijding van het maximum aantal pogingen"
+      },
+      "confirmation": {
+        "missingDevice": "Inloggen mislukt. U dient uw login te bevestigen met een beveiligd mobiel apparaat, maar dat heeft u niet ingesteld. Installeer eerst de mobiele app en activeer een beveiligd apparaat.",
+        "missingPassword": "Inloggen mislukt. U dient de login te bevestigen met uw {0} , maar dat is niet actief. Neem contact op met de administratie.",
+        "missingBoth": "Inloggen mislukt. U dient uw login te bevestigen met ofwel uw {0} of een beveiligd mobiel apparaat, maar die heeft u niet ingesteld. Installeer de mobiele app en activeer een beveiligd apparaat of neem contact op met de administratie."
+      }
+    }
   },
   "password": {
     "confirmationMessage": "Levering uw {passwordType} om deze handeling te bevestigen",
     "confirm.noPassword": "Om te bevestigen dat u nodig {passwordType}, maar je hebt geen",
+    "confirm.mode": "Bevestigen met",
     "confirm.mode.device": "Mobiele telefoon",
+    "confirm.mode.password": "Wachtwoord",
+    "confirm.device.active": "Om te bevestigen, scant u deze QR-code met uw mobiele telefoon.",
+    "confirm.device.none": "Om te kunnen bevestigen moet u een beveiligde mobiele telefoon hebben, maar u heeft er geen ingesteld",
+    "confirm.deviceOrPassword.active": "Om te bevestigen, scant u deze QR-code met uw mobiele telefoon of voert u uw {password} in",
+    "confirm.deviceOrPassword.none": "Om te kunnen bevestigen moet u een beveiligde mobiele telefoon hebben of uw {password} opgeven, maar u heeft deze niet.",
+    "confirm.deviceOrOtp.noMediums": "Om te bevestigen heeft u een beveiligde mobiele telefoon nodig (en die heeft u niet ingesteld) of een bevestigingswachtwoord, maar er zijn geen media ingesteld om die te verkrijgen.<br>Neem contact op met de administratie.",
+    "confirm.deviceOrOtp.active": "Om te bevestigen, scan deze QR-code met uw mobiele telefoon, gebruik het eerder verzonden bevestigingswachtwoord of vraag een nieuwe aan.",
+    "confirm.deviceOrOtp.request": "Om te bevestigen, scan deze QR-code met uw mobiele telefoon of vraag hieronder een bevestigingswachtwoord aan",
     "confirm.otp.noMediums": "Om er zeker van u een bevestiging wachtwoord, maar er zijn geen mogelijke media om het te ontvangen.<br>Neem dan contact op met de administratie.",
     "confirm.otp.active": "U kunt gebruik maken van de eerder verzonden bevestiging wachtwoord of een nieuwe aanvragen",
     "confirm.otp.request": "Gelieve te vragen om een bevestiging wachtwoord hieronder in om te bevestigen",
     "otp.sent": "Het wachtwoord is verstuurd naar {dest}",
+    "otp.receiveBy": "Ontvang via {medium}",
+    "otp.receiveBy.sent": "{medium} verzonden",
     "oldPassword": "Oud wachtwoord",
     "newPassword": "Nieuw wachtwoord",
     "passwordConfirmation": "Bevestiging van het wachtwoord",
@@ -297,14 +385,35 @@
     },
     "title": {
       "change.self": "Uw wachtwoord wijzigen",
+      "change.user": "Wachtwoord gebruiker wijzigen",
+      "forgotten": "Gebruikersidentificatie / herstel wachtwoord",
       "manage.single.self": "Het beheer van uw wachtwoord",
-      "manage.multiple.self": "Het beheren van uw wachtwoorden"
+      "manage.multiple.self": "Het beheren van uw wachtwoorden",
+      "manage.single.user": "Beheer wachtwoord gebruiker",
+      "manage.multiple.user": "Beheer wachtwoorden gebruiker",
+      "securityAnswer": "Stel uw beveiligingsantwoord in"
+    },
+    "mobileTitle": {
+      "change.self": "Wachtwoord wijzigen",
+      "change.user": "Wachtwoord wijzigen",
+      "forgotten": "Gebruiker / wachtwoord herstel",
+      "manage.single.self": "Wachtwoord",
+      "manage.multiple.self": "Wachtwoorden",
+      "manage.single.user": "Wachtwoord gebruiker",
+      "manage.multiple.user": "Wachtwoorden gebruiker",
+      "securityAnswer": "Antwoord op beveiligingsvraag"
     },
     "forgotten": {
+      "preface": "Hier kunt u uw gebruikersidentificatie herstellen en uw wachtwoord wijzigen. Vul hieronder uw gebruikersidentificatie in en u ontvangt een verificatiecode. U kunt een van de volgende opties gebruiken:",
       "principal": "Gebruiker",
+      "captcha": "Captcha validatie",
+      "code": "Verificatiecode",
+      "code.sent": "De verificatiecode is verzonden naar {to}",
       "sendMedium": "Ontvang code via",
+      "generate": "Wachtwoord genereren",
       "generated.message": "Zodra u verzendt, wordt een nieuw wachtwoord gegenereerd en verzonden naar uw e-mail adres",
       "generated.done.email": "U ontvangt binnenkort een e-mail met uw nieuwe wachtwoord.",
+      "generated.done.sms": "U ontvangt binnenkort een SMS-bericht met uw nieuwe wachtwoord.",
       "manual.done": "Uw wachtwoord is met succes gewijzigd. U kunt het nu gebruiken om in te loggen.",
       "title.changePassword": "Uw wachtwoord wijzigen"
     },
@@ -324,6 +433,7 @@
       "indefinitelyBlocked": "Geblokkeerd",
       "neverCreated": "Nooit gecreëerd",
       "pending": "In behandeling",
+      "reset": "Reset",
       "temporarilyBlocked": "Tijdelijk geblokkeerd"
     },
     "action": {
@@ -332,13 +442,28 @@
       "change.generated.confirm": "Dit zal het genereren van een nieuwe {type}, en de waarde zal weergegeven worden slechts eenmaal. Bent u zeker?",
       "change.generated.done": "De waarde voor {type} is <data>{value}</data>.<br>Zorg ervoor om het te onthouden, want het zal niet opnieuw worden weergegeven.",
       "unblock": "Deblokkeren",
+      "unblock.confirm": "Weet u zeker dat u het {type} wilt deblokkeren?",
+      "unblock.done": "{type} is gedeblokkeerd",
       "activate": "Activeren",
       "activate.confirm": "Dit zal activeren {type}, en de gegenereerde waarde zal weergegeven worden slechts eenmaal. Bent u zeker?",
       "enable": "Inschakelen",
+      "enable.confirm": "Weet u zeker dat u het {type} wilt inschakelen?",
+      "enable.done": "{type} is ingeschakeld",
       "disable": "Blokkeer",
+      "disable.confirm": "Weet u zeker dat u het {type} wilt uitschakelen?",
+      "disable.done": "{type} is uitgeschakeld",
       "resetAndSendEmail": "Reset en verstuur per e-mail",
       "resetAndSendEmail.confirm": "Weet u zeker dat u {type} wilt resetten en per e-mail naar de gebruiker wilt versturen?",
-      "resetAndSendEmail.done": "{type} is gereset en per e-mail verzonden"
+      "resetAndSendEmail.done": "{type} is gereset en per e-mail verzonden",
+      "resetAndSendSms": "Reset en verstuur via SMS",
+      "resetAndSendSms.confirm": "Weet u zeker dat u het {type} wilt resetten en het via SMS naar de gebruiker wilt versturen?",
+      "resetAndSendSms.done": "{type} is gereset en via SMS verzonden",
+      "resetGenerated": "Reset",
+      "resetGenerated.confirm": "Weet u zeker dat u het {type} wilt resetten, waardoor de gebruiker het opnieuw kan genereren?",
+      "resetGenerated.done": "{type} is gereset",
+      "allowGeneration": "Genereren toestaan",
+      "allowGeneration.confirm": "Weet u zeker dat u de gebruiker wilt toestaan hun {type} te genereren?",
+      "allowGeneration.done": "De gebruiker kan nu hun {type} genereren"
     }
   },
   "pendingAgreements": {
@@ -356,29 +481,49 @@
     "preface": "Ik verklaar hierbij dat ik het volgende heb gelezen en ermee akkoord ga:"
   },
   "securityQuestion": {
+    "message": "De beveiligingsvraag is vereist voor het geval u uw wachtwoord moet resetten. Eenmaal ingesteld, neem contact op met de administratie als u het wilt wijzigen.",
     "question": "Beveiligingsvraag",
-    "answer": "Uw antwoord"
+    "answer": "Uw antwoord",
+    "set": "Uw beveiligingsantwoord is ingesteld"
   },
   "dashboard": {
     "quickAccess": "Snelle toegang",
+    "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
       "account": "Rekening",
       "accounts": "Rekeningen",
       "payUser": "Betaal",
       "paySystem": "Euro's kopen",
+      "pos": "Betaling ontvangen",
+      "receiveQRPayment": "QR betaling ontvangen",
       "contacts": "Contacten",
       "directory": "Bedrijven",
+      "advertisements": "Marktplaats",
       "editProfile": "Profiel bewerken",
       "password": "Wachtwoord",
-      "passwords": "Wachtwoorden"
+      "passwords": "Wachtwoorden",
+      "switchTheme": "Wissel thema",
+      "classicFrontend": "Klassieke frontend gebruiken"
     },
     "accounts": "Rekeningen",
     "accountStatus": "Rekening status",
+    "lastPayments": "Laatste betalingen",
+    "noPayments": "Geen betalingen",
     "latestAds": "Nieuwste advertenties",
-    "latestUsers": "Nieuwe bedrijven"
+    "latestUsers": "Nieuwe bedrijven",
+    "passwords": {
+      "expired": "Uw {type} is verlopen.",
+      "reset": "Uw {type} is gereset.",
+      "pending": "Uw {type} is in afwachting van genereren.",
+      "neverCreated": "Uw {type} moet worden ingesteld.",
+      "securityAnswer": "U moet de beveiligingsvraag instellen, die vereist is voor het geval u uw wachtwoord moet resetten.",
+      "proceed": "Klik hier om verder te gaan"
+    }
   },
   "account": {
+    "account": "Rekening",
     "number": "Rekeningnummer",
+    "transferFilter": "Filter",
     "minAmount": "Van het bedrag",
     "maxAmount": "Bedrag",
     "direction": "Betaaltype",
@@ -390,13 +535,34 @@
     "negativeLimit": "Negatieve limiet",
     "positiveLimit": "Positieve limiet",
     "balanceOn": "Saldo op {date}",
+    "totalIncome": "Totaal ontvangen",
+    "totalOutflow": "Totaal betaald",
+    "netInflow": "Netto inkomen",
     "noAccounts": "U heeft geen rekeningen",
     "system": "Systeemrekening",
     "mobileTitle": {
+      "account": "Rekening",
       "accountsSummary": "Overzicht van de rekeningen"
     },
     "title": {
       "accountsSummary": "Overzicht van de rekeningen"
+    },
+    "orderBy": {
+      "dateDesc": "Datum (nieuwste eerst)",
+      "dateAsc": "Datum (oudste eerst)",
+      "amountAsc": "Bedrag (laagste eerst)",
+      "amountDesc": "Bedrag (hoogste eerst)"
+    },
+    "userBalances": {
+      "negativeSince": "Negatief sinds",
+      "title": "Gebruiker saldi",
+      "mobileTitle": "Gebruiker saldi",
+      "minBalance": "Van saldo",
+      "maxBalance": "Tot saldo",
+      "balancesSum": "Som van saldi",
+      "balancesAverage": "Gemiddeld saldo",
+      "balancesCount": "Aantal saldi",
+      "total": "Totaal"
     },
     "paymentLimits": {
       "title": {
@@ -493,7 +659,7 @@
       "processedPayment": "Betaling uitgevoerd",
       "authorizations": "Betalingsautorisaties",
       "authorizationHistory": "Autorisatie geschiedenis",
-      "scheduled": "Geautoriseerde betalingen",
+      "scheduled": "Geagendeerde betalingen",
       "details.payment": "Betalingsdetails",
       "details.scheduled": "Geagendeerde betalingsgegevens",
       "details.recurring": "Periodieke betalingsdetails",
@@ -503,6 +669,9 @@
       "details.transfer": "Betalingsoverzicht",
       "parentTransfer": "Transfer die deze",
       "childTransfers": "Transfers gegenereerd door deze"
+    },
+    "mobileTitle": {
+      "scheduled": "Geagendeerde betalingen"
     },
     "viewAuthorizations": "Bekijk autorisaties",
     "viewThisTransfer": "Bekijk deze overdracht",
@@ -515,16 +684,16 @@
     "cancelAuthorization.done": "De machtiging tot betaling is geannuleerd",
     "blockScheduling": "Bokkeer agendering",
     "blockScheduling.message": "Dit zal voorkomen dat geplande termijnen worden automatisch verwerkt",
-    "blockScheduling.done": "Deze geplande betaling zal niet langer worden automatisch verwerkt",
+    "blockScheduling.done": "Deze geagendeerde betaling zal niet langer automatisch worden verwerkt",
     "unblockScheduling": "Deblokkeer agendering",
     "unblockScheduling.message": "Dit zal hervatten van de automatische verwerking voor de geplande termijnen",
-    "unblockScheduling.done": "Deze geplande betaling wordt automatisch verwerkt",
-    "cancelScheduled": "Annuleren van de geplande betaling",
-    "cancelScheduled.message": "Dit zal definitief opheffen van deze geplande betaling",
-    "cancelScheduled.done": "Deze geplande betaling is geannuleerd",
-    "settleScheduled": "De afwikkeling van de geplande betaling",
+    "unblockScheduling.done": "Deze geagendeerde betaling wordt automatisch verwerkt",
+    "cancelScheduled": "Annuleer deze geagendeerde betaling",
+    "cancelScheduled.message": "Dit zal deze geagendeerde betaling defintief annuleren",
+    "cancelScheduled.done": "Deze geagendeerde betaling is geannuleerd",
+    "settleScheduled": "De geagendeerde betaling afwikkelen",
     "settleScheduled.message": "Dit zal permanent te markeren alle resterende termijnen als opgelost",
-    "settleScheduled.done": "Deze geplande betaling heeft plaatsgevonden",
+    "settleScheduled.done": "Deze geagendeerde betaling is afgewikkeld",
     "cancelRecurring": "Annuleren deze terugkerende betaling",
     "cancelRecurring.message": "Dit zal definitief opheffen van de periodieke betaling en het voorkomen van een toekomstige gebeurtenis",
     "cancelRecurring.done": "Deze periodieke betaling is geannuleerd",
@@ -651,6 +820,7 @@
       "removeContact": "Verwijderen uit contacten",
       "removeContact.done": "{user} is verwijderd uit uw lijst met contactpersonen",
       "pay": "Volgende",
+      "viewScheduledPayments": "Bekijk geagendeerde betalingen",
       "viewAds": "Bekijk advertenties",
       "viewOperators": "Bekijk operators",
       "status.operator": "Operator status",
@@ -872,6 +1042,7 @@
   "token": {
     "action": {
       "activate": "Activeren",
+      "block": "Blokkeren",
       "unblock": "Deblokkeren"
     },
     "status": {

@@ -24,7 +24,7 @@
     "newExpirationDate": "Neues Ablaufdatum",
     "notApplied": "Nicht angewendet",
     "notAppliedSelect": "Nicht angewendet (auswählen zum Anwenden)",
-    "user": "Nutzende",
+    "user": "Nutzer",
     "operator": "Betreiber",
     "name": "Name",
     "to": "zu",
@@ -1910,12 +1910,13 @@
     "transfer": "Überweisung",
     "fileUpload": "Datei hochladen",
     "redirecting": "Sie werden umgeleitet...",
+    "alreadyExecuted": "Dieser Vorgang wurde bereits ausgeführt. Bitte starten Sie den Vorgang neu.",
     "mobileTitle": {
       "result": "Ergebnis"
     }
   },
   "wizard": {
-    "alreadyExecuted": "Dieser Schritt wurde bereits ausgeführt",
+    "alreadyExecuted": "Diese Aktion wurde bereits ausgeführt",
     "emailVerificationCode": "E-Mail Bestätigungscode",
     "smsVerificationCode": "SMS-Bestätigungscode",
     "codeSent": "Code gesendet",
@@ -2014,7 +2015,8 @@
     "savedSuccessfully": "Erfolgreich gespeichert",
     "process": "Dynamisches Dokument bearbeiten",
     "category": "Kategorie",
-    "action": "Dokumente ({count})"
+    "action": "Dokumente ({count})",
+    "error.noFile": "Es ist keine Datei an dieses Dokument angehängt, da sie noch nicht hochgeladen wurde."
   },
   "token": {
     "title": {

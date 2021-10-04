@@ -69,7 +69,7 @@ export class LayoutService {
   _focusTrap: ElementReference;
 
   get focusTrap(): ElementReference {
-    return this._focusTrap || this.modal;
+    return this._focusTrap || this.xxs ? this.modal : null;
   }
 
   private breakpointObservers = new Map<Breakpoint, Observable<boolean>>();
