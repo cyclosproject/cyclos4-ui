@@ -1,15 +1,13 @@
-<page-layout [ready]="data$ | async" size="small" hideMenu>
+<page-layout [ready]="data$ | async" size="medium" hideMenu>
   <page-content *ngIf="passwordInput" layout="centered"
     [heading]="i18n.login.titleConfirmation"
     [mobileHeading]="i18n.login.mobileTitleConfirmation">
-    <alert type="info">
-      {{ i18n.login.confirmationText }}
-    </alert>
     <confirmation-password focused [formControl]="control"
       [passwordInput]="passwordInput"
       [createDeviceConfirmation]="createDeviceConfirmation"
       (confirmationModeChanged)="confirmationMode$.next($event)"
-      (confirmed)="submit($event)">
+      (confirmed)="submit($event)"
+      [alertMessage]="i18n.login.confirmationText">
     </confirmation-password>
 
     <actions forceRow>

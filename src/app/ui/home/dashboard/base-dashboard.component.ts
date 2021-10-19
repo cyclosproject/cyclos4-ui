@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 export abstract class BaseDashboardComponent extends BaseComponent {
 
   @HostBinding('class.dashboard-item') classItem = true;
+  @HostBinding('class.dashboard-item-full') fullWidth = false;
 
   headingActions$ = new BehaviorSubject<HeadingAction[]>(null);
   get headingActions(): HeadingAction[] {

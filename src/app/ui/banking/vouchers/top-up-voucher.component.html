@@ -1,0 +1,122 @@
+<page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
+  <page-content *ngSwitchCase="'token'" [heading]="i18n.voucher.title.topUp"
+    [mobileHeading]="i18n.voucher.mobileTitle.topUp"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+    <ng-container *ngIf="(data$ | async); else loading">
+      <voucher-transaction-step-token [data]="data" [token]="token"
+        (scan)="toForm()">
+      </voucher-transaction-step-token>
+      <actions>
+        <action-button [disabled]="requesting$ | async" (action)="toForm()"
+          [label]="i18n.general.next">
+        </action-button>
+      </actions>
+    </ng-container>
+  </page-content>
+
+  <page-content *ngSwitchCase="'form'" [heading]="i18n.voucher.title.topUp"
+    [mobileHeading]="i18n.voucher.mobileTitle.topUp"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+
+    <ng-container *ngIf="(dataForTransaction$ | async); else loading">
+      <notification *ngIf="!dataForTransaction.shouldPreview" class="mb-3"
+        type="warning">
+        {{ i18n.voucher.topUp.confirm }}
+      </notification>
+
+      <voucher-transaction-step-form [data]="dataForTransaction" [form]="form"
+        [amountAsField]="dataForTransaction.generationAmount !== VoucherGenerationAmountEnum.GENERATION"
+        [pinIsSent]="pinIsSent">
+      </voucher-transaction-step-form>
+
+      <ng-container *ngIf="dataForTransaction.confirmationPasswordInput">
+        <hr *ngIf="layout.gtxxs$ | async">
+        <confirmation-password focused [formControl]="confirmationPassword"
+          [passwordInput]="dataForTransaction.confirmationPasswordInput"
+          [createDeviceConfirmation]="createDeviceConfirmation"
+          (confirmationModeChanged)="confirmationMode$.next($event)"
+          (confirmed)="confirmationPassword.setValue($event); performFromForm()">
+        </confirmation-password>
+      </ng-container>
+
+      <actions>
+        <action-button
+          *ngIf="(confirmationMode$ | async) === ConfirmationMode.Password; else emptyDiv"
+          [disabled]="requesting$ | async" (action)="maybePreview()"
+          [label]="dataForTransaction.shouldPreview ? i18n.general.next : i18n.general.submit">
+        </action-button>
+        <action-button outline (action)="backToToken()"
+          [label]="i18n.general.previous">
+        </action-button>
+      </actions>
+    </ng-container>
+  </page-content>
+
+  <page-content *ngSwitchCase="'confirm'" [heading]="i18n.voucher.title.topUp"
+    [mobileHeading]="i18n.voucher.mobileTitle.topUp"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+    <ng-container *ngIf="(dataForTransaction$ | async); else loading">
+
+      <notification ngClass="mb-3" type="warning">
+        {{ i18n.voucher.topUp.confirm }}
+      </notification>
+
+      <voucher-transaction-step-confirm *ngIf="preview$ | async"
+        [preview]="preview" [transaction]="preview.topUp"
+        [pinIsSent]="pinIsSent">
+      </voucher-transaction-step-confirm>
+
+      <ng-container *ngIf="preview.confirmationPasswordInput">
+        <hr *ngIf="layout.gtxxs$ | async">
+        <confirmation-password focused [formControl]="confirmationPassword"
+          [passwordInput]="preview.confirmationPasswordInput"
+          [createDeviceConfirmation]="createDeviceConfirmation"
+          (confirmationModeChanged)="confirmationMode$.next($event)"
+          (confirmed)="confirmationPassword.setValue($event); performFromPreview()">
+        </confirmation-password>
+      </ng-container>
+
+      <actions>
+        <action-button
+          *ngIf="(confirmationMode$ | async) === ConfirmationMode.Password; else emptyDiv"
+          [disabled]="requesting$ | async" (action)="performFromPreview()"
+          [label]="i18n.general.submit">
+        </action-button>
+        <action-button outline (action)="backToForm()"
+          [label]="i18n.general.previous">
+        </action-button>
+      </actions>
+    </ng-container>
+  </page-content>
+
+  <page-content *ngSwitchCase="'done'" [heading]="i18n.voucher.title.topUp"
+    [mobileHeading]="i18n.voucher.mobileTitle.topUp"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+    <ng-container *ngIf="(result$ | async); else loading">
+
+      <notification ngClass="mb-3">
+        {{ i18n.voucher.topUp.done }}
+      </notification>
+
+      <voucher-transaction-step-done [result]="result">
+      </voucher-transaction-step-done>
+
+      <actions>
+        <action-button [disabled]="requesting$ | async"
+          (action)="printResult()" [label]="i18n.general.print">
+        </action-button>
+        <action-button outline (action)="backToToken()"
+          [label]="i18n.general.close">
+        </action-button>
+      </actions>
+    </ng-container>
+  </page-content>
+</page-layout>
+
+<ng-template #loading>
+  <spinner></spinner>
+</ng-template>
+
+<ng-template #emptyDiv>
+  <div></div>
+</ng-template>

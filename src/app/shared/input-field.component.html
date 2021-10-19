@@ -1,12 +1,14 @@
-<label-value *ngIf="label; else widget" [formField]="self">
+<label-value *ngIf="label; else widget" [formField]="self"
+  [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
 <ng-template #widget>
   <input #input [id]="id" [formControl]="formControl" [name]="name"
     [type]="type" (blur)="onblur.emit($event)" (focus)="onfocus.emit($event)"
+    (keyup.enter)="enter.emit($event)" (input)="oninput.emit($event)"
     [numbersOnly]="type === 'number'" [mask]="mask"
-    [placeholder]="placeholder" [autocomplete]="autocomplete"
+    [placeholder]="placeholder || ''" [autocomplete]="autocomplete"
     class="form-control w-100" [ngClass]="{
       'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched,
       'text-right' : type === 'number'

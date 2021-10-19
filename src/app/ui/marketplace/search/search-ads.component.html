@@ -6,7 +6,7 @@
   <page-content mode="filters" [heading]="i18n.ad.title.search"
     [mobileHeading]="i18n.ad.mobileTitle.search"
     [headingActions]="headingActions$ | async">
-    <form [formGroup]="form"
+    <div [formGroup]="form"
       class="filters-form filters-form-separator border-bottom">
       <div class="row no-gutters">
         <div class="col-12 col-md-6">
@@ -14,11 +14,11 @@
             [label]="i18n.general.keywords"></input-field>
         </div>
         <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
-          <max-distance-field labelPosition="side"
+          <distance-selection-field labelPosition="side"
             [data]="data.searchByDistanceData"
             formControlName="distanceFilter"
             [label]="i18n.general.distanceFilter">
-          </max-distance-field>
+          </distance-selection-field>
         </div>
         <div class="col-12 col-md-6" *ngIf="manager">
           <multi-selection-field labelPosition="side"
@@ -142,17 +142,17 @@
           </div>
         </ng-container>
       </div>
-    </form>
+    </div>
     <div class="row no-gutters filters-row">
-      <div class="col-12 col-xs-7 col-md-9">
+      <div class="col-xs-7 col-sm-3">
         <result-type-field [allowedResultTypes]="allowedResultTypes$ | async"
           [formControl]="resultTypeControl">
         </result-type-field>
       </div>
-      <div
-        *ngIf="(layout.gtxxs$ | async) && ['tiles', 'list'].includes(resultType)"
-        class="col-12 col-xs-5 col-md-3">
-        <single-selection-field [formControl]="form.get('orderBy')"
+      <div class="d-flex col-xs-5 col-sm-9 justify-content-end">
+        <single-selection-field *ngIf="['tiles', 'list'].includes(resultType)"
+          [ngClass]="{'w-25 flex-grow-0': layout.gtxs,
+      'mt-2': layout.ltxs}" [formControl]="form.get('orderBy')"
           [display]="i18n.general.orderBy"
           [emptyOption]="i18n.general.orderByRelevance">
           <field-option value="date" [text]="i18n.ad.orderBy.date">
@@ -162,6 +162,18 @@
           <field-option value="priceDesc" [text]="i18n.ad.orderBy.priceDesc">
           </field-option>
         </single-selection-field>
+        <div *ngIf="layout.gtxs$ | async" class="d-flex justify-content-end">
+          <heading-action-button
+            *ngIf="(resultType$ | async) !== ResultType.CATEGORIES"
+            class="heading-action-button pl-2 w-auto flex-grow-0"
+            [action]="categoriesAction">
+          </heading-action-button>
+          <heading-action-button
+            *ngIf="(resultType$ | async) === ResultType.CATEGORIES"
+            class="heading-action-button pl-2 w-auto flex-grow-0"
+            [action]="adsAction">
+          </heading-action-button>
+        </div>
       </div>
     </div>
   </page-content>
@@ -171,11 +183,12 @@
       <ol class="breadcrumb">
         <li *ngFor="let cat of categoryTrail$ | async; let last = last"
           class="breadcrumb-item" [ngClass]="{active: last}">
-          <ng-container *ngIf="last">{{ cat.name }}</ng-container>
+          <ng-container *ngIf="last && categoryTrail$.value.length > 1">{{
+            cat.name }}</ng-container>
           <!-- Don't leave trailing spaces or they generate an extra space -->
-          <a *ngIf="!last" href="#"
+          <a *ngIf="!last || categoryTrail$.value.length === 1" href="#"
             (click)="$event.preventDefault(); onCategorySelected(cat)">{{
-              cat.name }}</a>
+            cat.name }}</a>
         </li>
       </ol>
     </nav>
@@ -184,6 +197,7 @@
   <ads-results [results]="results$ | async" [rendering$]="rendering$"
     [data]="data$ | async" [resultType]="resultType$ | async"
     [referencePoint]="((form.valueChanges | async) || form.value).distanceFilter"
-    (update)="update($event)" (categorySelected)="onCategorySelected($event)">
+    (update)="update($event)" (categorySelected)="onCategorySelected($event)"
+    [defaultResultType]="getDefaultResultType()">
   </ads-results>
 </ng-template>

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import {
   AccountTypeWithDefaultMediumBalanceRange, Currency,
   CustomFieldDetailed, DataForUserBalancesSearch,
-  UserAddressResultEnum, UsersWithBalanceQueryFilters, UsersWithBalanceSummary, UserWithBalanceResult, UserQueryFilters, RoleEnum
+  UserAddressResultEnum, UsersWithBalanceQueryFilters, UsersWithBalanceSummary, UserWithBalanceResult, UserQueryFilters, RoleEnum, BasicProfileFieldInput
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services/accounts.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
@@ -33,7 +33,10 @@ export class SearchUserBalancesComponent
 
   summary$ = new BehaviorSubject<UsersWithBalanceSummary>(null);
   currency$ = new BehaviorSubject<Currency>(null);
-  customFieldsInSearch: CustomFieldDetailed[];
+  customFieldsInSearch: CustomFieldDetailed[] = [];
+  basicFieldsInSearch: BasicProfileFieldInput[] = [];
+  fieldsInBasicSearch: any[] = [];
+  fieldsInAdvancedSearch: any[] = [];
 
   showAccountNumber$ = new BehaviorSubject(false);
   showNegativeSince$ = new BehaviorSubject(false);
@@ -64,9 +67,29 @@ export class SearchUserBalancesComponent
   onDataInitialized(data: DataForUserBalancesSearch) {
     super.onDataInitialized(data);
 
-    this.customFieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
+    data.fieldsInBasicSearch.forEach(f => {
+      var field: any = data.customFields.find(cf => cf.internalName === f);
+      if (field) {
+        this.customFieldsInSearch.push(field);
+      } else {
+        field = data.basicFields.find(bf => bf.field === f);
+        this.basicFieldsInSearch.push(field);
+      }
+      this.fieldsInBasicSearch.push(field);
+    });
+    data.fieldsInAdvancedSearch.forEach(f => {
+      var field: any = data.customFields.find(cf => cf.internalName === f);
+      if (field) {
+        this.customFieldsInSearch.push(field);
+      } else {
+        field = data.basicFields.find(bf => bf.field === f);
+        this.basicFieldsInSearch.push(field);
+      }
+      this.fieldsInAdvancedSearch.push(field);
+    });
+
     this.form.setControl('profileFields',
-      this.fieldHelper.profileFieldsForSearchFormGroup(data.basicFields, this.customFieldsInSearch));
+      this.fieldHelper.profileFieldsForSearchFormGroup(this.basicFieldsInSearch, this.customFieldsInSearch));
 
     const filterAction = this.moreFiltersAction;
     filterAction.breakpoint = null;
@@ -132,10 +155,7 @@ export class SearchUserBalancesComponent
     query.creationPeriod = ApiHelper.dateRangeFilter(value.beginCreationPeriod, value.endCreationPeriod);
     query.lastLoginPeriod = ApiHelper.dateRangeFilter(value.beginLastLoginPeriod, value.endLastLoginPeriod);
     query.negativeSincePeriod = ApiHelper.dateRangeFilter(value.beginNegativeSincePeriod, value.endNegativeSincePeriod);
-
-    if (value.minBalance || value.maxBalance) {
-      query.balanceRange = [value.minBalance, value.maxBalance];
-    }
+    query.balanceRange = ApiHelper.rangeFilter(value.minBalance, value.maxBalance);
 
     if (value.minMediumRange != null && value.maxMediumRange != null) {
       query.mediumBalanceRange = [value.minMediumRange, value.maxMediumRange];

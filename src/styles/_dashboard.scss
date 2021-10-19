@@ -8,6 +8,22 @@
     display: none;
   }
 
+  .dashboard-cards {
+    display: flex;
+    flex-wrap: wrap;
+
+    .dashboard-item {
+      margin-top: $layout-spacer;
+      margin-left: $layout-spacer;
+      display: flex;
+      width: 100%;
+
+      page-content {
+        flex-grow: 1;
+      }
+    }
+  }
+
   page-content {
     &, & .content-area {
       margin-top: 0 !important;
@@ -38,14 +54,13 @@
   }
 }
 
-.dashboard-item {
-  margin-top: $layout-spacer;
-  margin-left: $layout-spacer;
-  display: flex;
-  flex-grow: 1;
-
-  page-content {
-    flex-grow: 1;
+@include media-breakpoint-up(lg) {
+  .dashboard {
+    .dashboard-cards {
+      .dashboard-item:not(.dashboard-item-full) {
+        width: calc(50% - #{$layout-spacer});
+      }
+    }
   }
 }
 
@@ -56,34 +71,9 @@
 
 ///////////////////////////////////////////////////////////
 
-dashboard-item {
-  & {
-    display: block;
-    width: 100%;
-    break-inside: avoid;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  & > * {
-    display: flex;
-    flex-direction: column;
-  }
-}
-@include media-breakpoint-up(md) {
-  dashboard-item {
-    margin-bottom: $layout-spacer;
-    @include make-container-max-widths();
-  }
-}
-
-///////////////////////////////////////////////////////////
-
 combined-account-status {
   .balance {
     display: flex;
-    margin: 0.2rem auto 0.8rem auto;
-    line-height: 2rem;
-    padding: 0 0.5rem;
   }
 
   .balance-label {
@@ -140,13 +130,64 @@ body.dark account-status .last-transfers {
   account-status .last-transfers {
     margin-top: 1.7rem;
   }
-  .dashboard-item .card .page-content-body {
+  .dashboard-item:not(.dashboard-item-full) .card .page-content-body {
     min-height: 22rem;
   }
 }
 @include media-breakpoint-up(xl) {
   account-status .last-transfers {
     margin-top: 0.7rem;
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+balance-history-graph {
+  width: 100%;
+  height: 10rem;
+  display: flex;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    .axes line,
+    .ticks line {
+      stroke: $graph-axis-color;
+      stroke-width: 1px;
+    }
+    .labels text {
+      fill: $graph-label-color;
+      font-size: 0.8rem;
+    }
+    .data polyline {
+      stroke: $graph-line-color;
+      stroke-width: 3px;
+      fill: none;
+    }
+    .data circle {
+      stroke: $graph-line-color;
+      fill: $graph-line-color;
+    }
+  }
+}
+@include media-breakpoint-up(lg) {
+  balance-history-graph {
+    height: 8rem;
+  }
+}
+
+body.dark balance-history-graph {
+  svg {
+    .axes line,
+    .ticks line {
+      stroke: $graph-axis-color-dark;
+    }
+    .labels text {
+      fill: $graph-label-color-dark;
+    }
+    .data line {
+      stroke: $graph-line-color-dark;
+    }
   }
 }
 
@@ -206,6 +247,29 @@ body.dark .dashboard-icon-result .main-image .avatar-container {
 
 $quick-access-spacing: 0.5rem;
 quick-access {
+
+  .quick-access {
+    display: flex;
+    flex-grow: 1;
+    padding: $quick-access-spacing;
+  }
+
+  .quick-access-container {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+  }
+
+  .quick-access-item-container {
+    display: flex;
+  }
+
+  @for $size from 2 through 8 {
+    .quick-access-item-container-#{$size} {
+      width: 100% / $size;
+    }
+  }
+
   .quick-access-item {
     text-decoration: none;
     padding: 0.1rem;
@@ -230,6 +294,7 @@ quick-access {
   .quick-access-text {
     text-align: center;
     color: $quick-access-color;
+    flex-grow: 1;
   }
 
   .quick-access-item:hover {
@@ -245,7 +310,7 @@ quick-access {
 }
 @include media-breakpoint-up(xs) {
   quick-access {
-    .quick-access-container {
+    .quick-access {
       padding: 1rem;
     }
     .quick-access-item {
@@ -271,27 +336,13 @@ quick-access {
       width: 5rem;
       height: 5rem;
     }
-
-    .quick-access-container {
-      margin: -$quick-access-spacing 0 0 -$quick-access-spacing;
-      padding: 1.4rem 0.5rem 1.8rem 0.3rem;
-    }
-
+  
     .quick-access-item, .quick-access-item:hover {
       margin: $quick-access-spacing 0 0 $quick-access-spacing;
     }
   }
 }
-@include media-breakpoint-up(md) {
-  quick-access {
-    .quick-access-item {
-      padding: $quick-access-spacing;
-    }
-  }
-}
-body.lg quick-access .quick-access-container {
-  padding: 1.2rem 0.5rem 1.7rem 0.3rem;
-}
+
 body.dark quick-access {
   .quick-access-icon {
     color: $quick-access-icon-color-dark;

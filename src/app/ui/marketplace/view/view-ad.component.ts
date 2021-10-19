@@ -181,7 +181,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     if (ad.canRemove) {
       headingActions.push(
         new HeadingAction(SvgIcon.Trash, this.i18n.general.remove, () => {
-          this.notification.confirm({
+          this.confirmation.confirm({
             message: this.i18n.general.removeConfirm(this.ad.name),
             callback: () => this.doRemove(),
           });
@@ -219,7 +219,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
 
   get categoryLabel(): string {
     return (this.ad.categories || []).length === 1 ?
-      this.i18n.ad.category : this.i18n.ad.categories;
+      this.i18n.general.category : this.i18n.ad.categories;
   }
 
   /**

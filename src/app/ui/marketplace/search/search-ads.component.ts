@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AdAddressResultEnum, AdCategoryWithChildren, AdQueryFilters,
+  AdAddressResultEnum, AdCategoryWithChildren, AdInitialSearchTypeEnum, AdQueryFilters,
   AdResult, Currency, CustomFieldDetailed, MarketplacePermissions, RoleEnum,
 } from 'app/api/models';
 import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
@@ -13,6 +13,11 @@ import { MaxDistance } from 'app/ui/shared/max-distance';
 import { Menu } from 'app/ui/shared/menu';
 import { ResultType } from 'app/ui/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
+import { MapsService } from 'app/ui/core/maps.service';
+import { PagedResults } from 'app/shared/paged-results';
+import { HeadingAction } from 'app/shared/action';
+import { SvgIcon } from 'app/core/svg-icon';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 /**
  * Search for advertisements
@@ -26,17 +31,21 @@ export class SearchAdsComponent
   extends BaseSearchPageComponent<AdDataForSearch, AdQueryFilters, AdResult>
   implements OnInit {
 
-  categoryTrail$ = new BehaviorSubject<AdCategoryWithChildren[]>(null);
+  categoryTrail$ = new BehaviorSubject<AdCategoryWithChildren[]>([]);
   currency$ = new BehaviorSubject<Currency>(null);
   profileFields: (string | CustomFieldDetailed)[];
   basicFields: CustomFieldDetailed[];
   advancedFields: CustomFieldDetailed[];
   marketplacePermissions: MarketplacePermissions;
 
+  adsAction: HeadingAction;
+  categoriesAction: HeadingAction;
+
   constructor(
     injector: Injector,
     private marketplaceService: MarketplaceService,
     private loginService: LoginService,
+    private mapService: MapsService
   ) {
     super(injector);
   }
@@ -44,10 +53,6 @@ export class SearchAdsComponent
   protected getFormControlNames() {
     return ['keywords', 'statuses', 'groups', 'category', 'customValues', 'distanceFilter', 'orderBy', 'kind', 'hasImages',
       'minAmount', 'maxAmount', 'currency', 'beginDate', 'endDate'];
-  }
-
-  getInitialResultType() {
-    return (this.layout.xxs ? ResultType.LIST : ResultType.CATEGORIES);
   }
 
   getInitialFormValue(data: AdDataForSearch) {
@@ -61,10 +66,11 @@ export class SearchAdsComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.allowedResultTypes = this.layout.xxs
-      ? [ResultType.CATEGORIES, ResultType.LIST]
-      : [ResultType.CATEGORIES, ResultType.TILES, ResultType.LIST, ResultType.MAP];
-    this.resultType = this.getInitialResultType();
+    const types = [ResultType.CATEGORIES, ResultType.TILES, ResultType.LIST];
+    if (this.mapService.enabled) {
+      types.push(ResultType.MAP);
+    }
+    this.allowedResultTypes = types;
     this.stateManager.cache('data', this.marketplaceService.getAdDataForSearch({}))
       .subscribe(data => {
         this.data = data;
@@ -86,13 +92,39 @@ export class SearchAdsComponent
 
     this.headingActions = [this.moreFiltersAction];
 
+    this.adsAction = new HeadingAction(SvgIcon.Handbag, this.i18n.ad.listAds, () =>
+      this.resultType = this.getResultType(data.resultType));
+    this.categoriesAction = new HeadingAction(SvgIcon.Book, this.i18n.ad.showCategories, () =>
+      this.resultType = ResultType.CATEGORIES);
+
     this.addSub(this.form.get('currency').valueChanges.subscribe(id =>
       this.updateCurrency(id, data)));
     // Preselect the currency if there is a single one
     if (!empty(data.currencies) && data.currencies.length === 1) {
       this.currency = data.currencies[0];
     }
+
+    if (data.adInitialSearchType === AdInitialSearchTypeEnum.CATEGORIES) {
+      this.resultType = ResultType.CATEGORIES;
+    } else {
+      this.resultType = this.getResultType(data.resultType);
+    }
     super.onDataInitialized(data);
+
+    this.addSub(this.form.valueChanges
+      .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
+      .subscribe(() => this.resultType = this.getResultType(data.resultType))
+    );
+  }
+
+  listAds() {
+    if (this.resultType === ResultType.CATEGORIES) {
+      // Switch on: show ads in the default type
+      this.resultType = this.getDefaultResultType();
+    } else {
+      // Switch off: show categories
+      this.resultType = ResultType.CATEGORIES;
+    }
   }
 
   doSearch(value: AdQueryFilters) {
@@ -135,6 +167,13 @@ export class SearchAdsComponent
     }
   }
 
+  get root(): AdCategoryWithChildren {
+    const root: AdCategoryWithChildren = {
+      name: this.i18n.ad.rootCategory,
+    };
+    return root;
+  }
+
   onCategorySelected(category: AdCategoryWithChildren) {
     const key = ApiHelper.internalNameOrId(category);
     const trail: AdCategoryWithChildren[] = [];
@@ -146,16 +185,23 @@ export class SearchAdsComponent
       if (parent) {
         trail.unshift(parent);
       }
-      const root: AdCategoryWithChildren = {
-        name: this.i18n.ad.rootCategory,
-      };
-      trail.unshift(root);
+      trail.unshift(this.root);
     } else {
       // Going back to the main category
       this.form.patchValue({ category: key }, { emitEvent: false });
       this.resultType = ResultType.CATEGORIES;
     }
     this.categoryTrail$.next(trail);
+  }
+
+  protected onBeforeRender(_results: PagedResults<AdResult>) {
+    if (_results && _results.hasResults && this.categoryTrail$.value?.length === 0) {
+      this.categoryTrail$.next([this.root]);
+    }
+  }
+
+  getDefaultResultType(): ResultType {
+    return this.getResultType(this.data.resultType);
   }
 
   private findParent(category: AdCategoryWithChildren): AdCategoryWithChildren {

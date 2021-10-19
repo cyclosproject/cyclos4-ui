@@ -25,6 +25,7 @@ export class AdsResultsComponent extends BaseComponent {
 
   @HostBinding('class') clazz = 'flex-grow-1 d-flex';
 
+  @Input() defaultResultType: ResultType;
   @Input() resultType: ResultType;
   @Input() rendering$: BehaviorSubject<boolean>;
   private _singleUser: boolean | string = false;
@@ -101,7 +102,7 @@ export class AdsResultsComponent extends BaseComponent {
     }
 
     // This will trigger an update
-    this.resultType = this.layout.xxs ? ResultType.LIST : ResultType.TILES;
+    this.resultType = this.defaultResultType;
     this.results = null;
 
     this.categorySelected.emit(category);

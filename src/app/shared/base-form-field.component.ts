@@ -62,6 +62,9 @@ export abstract class BaseFormFieldComponent<T> extends BaseControlComponent<T> 
   /** Where to place the label */
   @Input() labelPosition: FieldLabelPosition = 'auto';
 
+  /** The information text to display */
+  @Input() informationText: string;
+
   /** Defines how read-only values are rendered */
   disabledFormat: ValueFormat = 'plain';
 

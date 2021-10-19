@@ -11,6 +11,9 @@ import { FormControlLocator } from 'app/shared/form-control-locator';
 import { locateControl, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorStatus } from 'app/core/error-status';
+import { CaptchaHelperService } from 'app/core/captcha-helper.service';
 
 export type ForgotPasswordStep = 'request' | 'code' | 'change';
 
@@ -41,6 +44,7 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
   constructor(
     injector: Injector,
     private authService: AuthService,
+    private captchaHelper: CaptchaHelperService
   ) {
     super(injector);
   }
@@ -60,8 +64,8 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
       user: [null, Validators.required],
       sendMedium: data.forgotPasswordMediums[0],
     });
-    if (data.forgotPasswordCaptchaProvider) {
-      this.requestForm.addControl('captcha', this.authHelper.captchaFormGroup());
+    if (data.forgotPasswordCaptchaInput) {
+      this.requestForm.addControl('captcha', this.captchaHelper.captchaFormGroup(data.forgotPasswordCaptchaInput));
     }
   }
 
@@ -79,6 +83,12 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
         code: [null, Validators.required],
       });
       this.step = 'code';
+    }, (error: HttpErrorResponse) => {
+      if (error.status == ErrorStatus.NOT_FOUND) {
+        this.notification.error(this.i18n.password.forgotten.invalidUser);
+      } else {
+        this.errorHandler.handleHttpError(error);
+      }
     });
   }
 

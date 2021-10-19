@@ -1,6 +1,6 @@
 <ng-container [formGroup]="form">
-  <label-value *ngIf="fromUser && !fromSelf" kind="field"
-    [label]="toSystem ? i18n.transaction.receiver : i18n.transaction.fromUser">
+  <label-value *ngIf="fromUser && !fromSelf" kind="fieldView"
+    [label]="i18n.transaction.fromUser">
     <user-link [user]="fromUser"></user-link>
   </label-value>
 
@@ -78,14 +78,9 @@
     maxDate="future5" [label]="i18n.general.expirationDate">
   </date-field>
 
-  <label-value *ngFor="let cf of (paymentTypeData$ | async)?.customFields"
-    [label]="cf.name" [kind]="'field'"
-    [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'"
-    [fieldSize]="fieldSize(cf)" [required]="cf.required">
-    <custom-field-input [field]="cf" hideLabel
-      [formControl]="customValuesControlGetter(cf)">
-    </custom-field-input>
-  </label-value>
+  <custom-field-input
+    *ngFor="let cf of (paymentTypeData$ | async)?.customFields" [field]="cf"
+    [formControl]="customValuesControlGetter(cf)"></custom-field-input>
 
   <single-selection-field formControlName="scheduling" required
     [label]="i18n.transaction.scheduling"

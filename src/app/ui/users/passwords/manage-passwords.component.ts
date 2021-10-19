@@ -2,16 +2,16 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormGroup, Validators } from '@angular/forms';
 import {
   CreateDeviceConfirmation, DataForUserPasswords, DeviceConfirmationTypeEnum,
-  PasswordStatusAndActions, PasswordStatusEnum, SendMediumEnum,
+  PasswordStatusAndActions, PasswordStatusEnum, SendMediumEnum
 } from 'app/api/models';
 import { PasswordsService } from 'app/api/services/passwords.service';
-import { Action } from 'app/shared/action';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
+import { NextRequestState } from 'app/core/next-request-state';
+import { Action, HeadingAction } from 'app/shared/action';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { ChangePasswordDialogComponent } from 'app/ui/users/passwords/change-password-dialog.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { NextRequestState } from 'app/core/next-request-state';
 
 /**
  * Manages the user passwords
@@ -75,6 +75,11 @@ export class ManagePasswordsComponent
         securityQuestion: [null, Validators.required],
         securityAnswer: [null, Validators.required],
       });
+    }
+    this.headingActions = [];
+    if (data.passwords.find(p => p.history?.length > 0)) {
+      this.headingActions.push(new HeadingAction(this.SvgIcon.Clock, this.i18n.general.viewHistory, () =>
+        this.router.navigate(['/users', this.param, 'passwords', 'history']), true));
     }
   }
 
@@ -186,7 +191,7 @@ export class ManagePasswordsComponent
   }
 
   private generate(password: PasswordStatusAndActions) {
-    this.notification.confirm({
+    this.confirmation.confirm({
       title: this.i18n.password.action.activate,
       message: this.i18n.password.action.activateConfirm(password.type.name),
       callback: () => this.doGenerate(password),
@@ -212,7 +217,7 @@ export class ManagePasswordsComponent
   }
 
   private changeGenerated(password: PasswordStatusAndActions) {
-    this.notification.confirm({
+    this.confirmation.confirm({
       title: this.i18n.password.action.change,
       message: this.i18n.password.action.changeGeneratedConfirm(password.type.name),
       createDeviceConfirmation: this.createDeviceConfirmation(password),
@@ -237,7 +242,7 @@ export class ManagePasswordsComponent
   }
 
   private allowGeneration(password: PasswordStatusAndActions) {
-    this.notification.confirm({
+    this.confirmation.confirm({
       title: this.i18n.password.action.allowGeneration,
       message: this.i18n.password.action.allowGenerationConfirm(password.type.name),
       callback: () => this.doAllowGeneration(password),
@@ -256,7 +261,7 @@ export class ManagePasswordsComponent
   }
 
   private resetGenerated(password: PasswordStatusAndActions) {
-    this.notification.confirm({
+    this.confirmation.confirm({
       title: this.i18n.password.action.resetGenerated,
       message: this.i18n.password.action.resetGeneratedConfirm(password.type.name),
       callback: () => this.doResetGenerated(password),
@@ -287,7 +292,7 @@ export class ManagePasswordsComponent
         message = this.i18n.password.action.resetAndSendSmsConfirm(password.type.name);
         break;
     }
-    this.notification.confirm({
+    this.confirmation.confirm({
       title,
       message,
       callback: () => this.doResetAndSend(password, medium),
@@ -315,7 +320,7 @@ export class ManagePasswordsComponent
   }
 
   private unblock(password: PasswordStatusAndActions) {
-    this.notification.confirm({
+    this.confirmation.confirm({
       title: this.i18n.password.action.unblock,
       message: this.i18n.password.action.unblockConfirm(password.type.name),
       callback: () => this.doUnblock(password),
@@ -333,7 +338,7 @@ export class ManagePasswordsComponent
   }
 
   private enable(password: PasswordStatusAndActions) {
-    this.notification.confirm({
+    this.confirmation.confirm({
       title: this.i18n.password.action.enable,
       message: this.i18n.password.action.enableConfirm(password.type.name),
       callback: () => this.doEnable(password),
@@ -351,7 +356,7 @@ export class ManagePasswordsComponent
   }
 
   private disable(password: PasswordStatusAndActions) {
-    this.notification.confirm({
+    this.confirmation.confirm({
       title: this.i18n.password.action.disable,
       message: this.i18n.password.action.disableConfirm(password.type.name),
       callback: () => this.doDisable(password),

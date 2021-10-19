@@ -12,23 +12,36 @@
 <label-value [label]="i18n.voucher.amountPerVoucher">
   {{ buyVoucher.amount | currency:data.account.currency }}
 </label-value>
-<ng-container *ngFor="let cf of data.customFields">
-  <label-value [hidden]="!formatFieldValue.hasValue" [label]="cf.name"
+<!-- payment fields -->
+<ng-container *ngFor="let cf of data.paymentCustomFields">
+  <label-value
+    [hidden]="!fieldHelper.hasValue(cf.internalName, buyVoucher.paymentCustomValues)"
+    [label]="cf.name"
     [labelPosition]="labelOnTop((layout.ltsm$ | async), cf) ? 'top' : 'auto'">
-    <format-field-value #formatFieldValue [object]="buyVoucher"
-      [fields]="data.customFields" [fieldName]="cf.internalName">
+    <format-field-value [customValues]="buyVoucher.paymentCustomValues"
+      [fields]="data.paymentCustomFields" [fieldName]="cf.internalName">
+    </format-field-value>
+  </label-value>
+</ng-container>
+<!-- custom fields -->
+<ng-container *ngFor="let cf of data.voucherCustomFields">
+  <label-value
+    [hidden]="!fieldHelper.hasValue(cf.internalName, buyVoucher.voucherCustomValues)"
+    [label]="cf.name"
+    [labelPosition]="labelOnTop((layout.ltsm$ | async), cf) ? 'top' : 'auto'">
+    <format-field-value [customValues]="buyVoucher.voucherCustomValues"
+      [fields]="data.voucherCustomFields" [fieldName]="cf.internalName">
     </format-field-value>
   </label-value>
 </ng-container>
 
 <ng-container *ngIf="confirmationPasswordInput">
   <hr *ngIf="layout.gtxxs$ | async">
-  <form [formGroup]="form">
-    <confirmation-password focused formControlName="confirmationPassword"
-      [passwordInput]="confirmationPasswordInput"
-      [createDeviceConfirmation]="createDeviceConfirmation"
-      (confirmationModeChanged)="confirmationModeChanged.emit($event)"
-      (confirmed)="confirmed.emit($event)">
-    </confirmation-password>
-  </form>
+  <confirmation-password focused
+    [formControl]="form.get('confirmationPassword')"
+    [passwordInput]="confirmationPasswordInput"
+    [createDeviceConfirmation]="createDeviceConfirmation"
+    (confirmationModeChanged)="confirmationModeChanged.emit($event)"
+    (confirmed)="confirmed.emit($event)">
+  </confirmation-password>
 </ng-container>

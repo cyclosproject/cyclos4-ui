@@ -52,14 +52,10 @@
   <ng-container *ngFor="let cf of profileConfiguration.contactInfoFields">
     <ng-container
       *ngIf="addressForm.get('contactInfo').get('customValues').get(cf.internalName) as fieldControl">
-      <label-value *ngIf="!fieldControl.disabled || fieldControl.value"
-        [label]="cf.name" [kind]="'field'" [fieldSize]="fieldSize(cf)"
-        [required]="cf.required"
-        [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'">
-        <custom-field-input [field]="cf" hideLabel
-          [binaryValues]="binaryValues" [formControl]="fieldControl">
-        </custom-field-input>
-      </label-value>
+      <custom-field-input [field]="cf"
+        *ngIf="!fieldControl.disabled || fieldControl.value"
+        [formControl]="fieldControl" [binaryValues]="binaryValues">
+      </custom-field-input>
     </ng-container>
   </ng-container>
 </ng-container>

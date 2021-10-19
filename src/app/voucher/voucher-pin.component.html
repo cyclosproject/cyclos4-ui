@@ -1,0 +1,27 @@
+<div class="content" *ngIf="state.voucher">
+  <div class="message">{{ message() }}</div>
+  <label-value class="voucher-token" kind="fieldView"
+    [label]="i18n.voucher.token" [value]="state.token"></label-value>
+  <label-value kind="field" [label]="i18n.voucher.pin" required>
+    <password-input disableAutocomplete [placeholder]=""
+      [passwordInput]="state.pinInput" [formControl]="pin" required focused
+      [mask]="state.data.mask" (enter)="proceed()">
+    </password-input>
+  </label-value>
+</div>
+<div class="actions actions-primary">
+  <action-button
+    [label]="isBlocked() ? i18n.voucher.info.unblock : i18n.general.submit"
+    [disabled]="state.processing$ | async" (action)="proceed()">
+  </action-button>
+  <action-button
+    *ngIf="!(state.processing$ | async) && state?.voucher?.forgotPinCaptchaInput"
+    [label]="i18n.voucher.info.forgotPin.action" outline
+    [disabled]="state.processing$ | async" class="mx-0 mx-md-2"
+    (action)="forgotPin()">
+  </action-button>
+  <!-- For breakpoints <= xs the logout button is shown in the top bar -->
+  <action-button *ngIf="layout.gtxs$ | async" [label]="i18n.general.cancel"
+    outline [disabled]="state.processing$ | async" (action)="state.exit()">
+  </action-button>
+</div>

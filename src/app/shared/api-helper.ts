@@ -106,6 +106,29 @@ export class ApiHelper {
   }
 
   /**
+   * Removes a locator type or escaping quote.
+   * Examples: `plainLocator('type:1234') === '1234'`, `plainLocator('\'1234') === '1234'`
+   */
+  static plainLocator(value: string): string {
+    if (empty(value)) {
+      return '';
+    }
+    const pos = value.trim().indexOf(':');
+    value = pos >= 0 ? value.substr(pos + 1) : value;
+    if (value.startsWith('\'')) {
+      value = value.substr(1);
+    }
+    return value;
+  }
+
+  /**
+   * Returns whether both locators are equals according to #plainLocator.
+   */
+  static locatorEquals(loc1: string, loc2: string): boolean {
+    return this.plainLocator(loc1) === this.plainLocator(loc2);
+  }
+
+  /**
    * Shift the max date to the end of the day and returns it with the min as a range,
    * suitable for query filters on the API.
    */
@@ -149,6 +172,11 @@ export class ApiHelper {
       case NotificationEntityTypeEnum.USER:
         return `/users/${notification.entityId}/profile`;
       case NotificationEntityTypeEnum.TRANSACTION:
+        if (notification.type === NotificationTypeEnum.FEEDBACK_OPTIONAL ||
+          notification.type === NotificationTypeEnum.FEEDBACK_EXPIRATION_REMINDER ||
+          notification.type === NotificationTypeEnum.FEEDBACK_REQUIRED) {
+          return `/users/feedbacks/set/${notification.entityId}`;
+        }
         return `/banking/transaction/${notification.entityId}`;
       case NotificationEntityTypeEnum.TRANSFER:
         return `/banking/transfer/${notification.entityId}`;
@@ -163,9 +191,13 @@ export class ApiHelper {
       case NotificationEntityTypeEnum.TOKEN:
         return `/users/tokens/view/${notification.entityId}`;
       case NotificationEntityTypeEnum.VOUCHER:
-        return `/banking/vouchers/${notification.entityId}`;
+        return `/banking/vouchers/view/${notification.entityId}`;
+      case NotificationEntityTypeEnum.VOUCHER_TRANSACTION:
+        return `/banking/voucher-transactions/view/${notification.entityId}`;
       case NotificationEntityTypeEnum.REFERENCE:
         return `/users/references/view/${notification.entityId}`;
+      case NotificationEntityTypeEnum.FEEDBACK:
+        return `/users/feedbacks/view/${notification.entityId}`;
     }
   }
 
@@ -247,6 +279,7 @@ export class ApiHelper {
    * - Pending agreements
    * - Pending login confirmation
    * - Expired secondary password
+   * - Guest from an unauthorized IP address
    */
   static isRestrictedAccess(dataForFrontend: DataForFrontend): boolean {
     if (dataForFrontend?.frontend === FrontendEnum.CLASSIC
@@ -256,8 +289,11 @@ export class ApiHelper {
       return true;
     }
     const auth = dataForFrontend?.dataForUi?.auth || {};
-    return auth.expiredPassword || auth.pendingAgreements
-      || auth.pendingSecondaryPassword || auth.expiredSecondaryPassword;
+    return auth.expiredPassword
+      || auth.pendingAgreements
+      || auth.pendingSecondaryPassword
+      || auth.expiredSecondaryPassword
+      || auth.unauthorizedAddress;
   }
 
   /**

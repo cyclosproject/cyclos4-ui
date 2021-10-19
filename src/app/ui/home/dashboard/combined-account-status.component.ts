@@ -41,4 +41,15 @@ export class CombinedAccountStatusComponent extends BaseDashboardComponent {
   chartHeight(i: number): number {
     return this.isFull(i) ? 120 : 140;
   }
+  lineBreak(i: number): boolean {
+    switch (this.accounts.length) {
+      case 2:
+      case 3:
+        return i == 1;
+      case 4:
+        return i == 2;
+      default:
+        return false;
+    }
+  }
 }

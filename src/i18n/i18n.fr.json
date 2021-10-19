@@ -112,10 +112,6 @@
     "login": "Le nom / mot de passe donné est incorrect. Veuillez réessayer.",
     "remoteAddressBlocked": "Votre adresse IP est bloquée si le nombre de tentatives de connexion est supérieur",
     "permission": "Vous ne disposez pas des autorisations suffisantes pour effectuer l'action demandée",
-    "unauthorized": {
-      "address": "Votre adresse IP n'est pas autorisée à vous connecter",
-      "url": "L'accès n'est pas autorisé depuis cette URL"
-    },
     "loggedOut": "Vous avez été déconnecté. Veuillez vous reconnecter et répéter l'opération.",
     "securityAnswer": {
       "invalid": "La réponse de sécurité donnée est invalide",
@@ -144,7 +140,6 @@
     "banking.paySelf": "Paiement à soi-même",
     "banking.scheduledPayments": "Paiements planifiés",
     "banking.authorizations": "Autorisations de paiement",
-    "banking.boughtVouchers": "View buys",
     "marketplace": "Place de marché",
     "marketplace.directory": "Annuaire",
     "marketplace.businessDirectory": "Annuaire professionnel",
@@ -160,15 +155,9 @@
     "message": "Vous pouvez vous connecter avec votre identifiant et votre mot de passe.",
     "disconnected": "Vous avez été déconnecté.<br>Veuillez vous identifier à nouveau pour afficher la page demandée.",
     "principal": "Utilisateur",
-    "forgotPassword": "Mot de passe oublié ?",
     "register": "Pas encore de compte ? Créez-en un maintenant."
   },
   "password": {
-    "confirmationMessage": "Fournissez votre {passwordType} pour confirmer cette opération.",
-    "confirm.noPassword": "Pour confirmer, vous avez besoin d’un {passwordType}, mais vous n’en avez pas.",
-    "confirm.otp.noMediums": "Pour confirmer, vous avez besoin d'un mot de passe de confirmation, mais il n'y a pas de moyen possible pour le recevoir. <br> Contactez l'administration.",
-    "confirm.otp.active": "Vous pouvez utiliser le mot de passe de confirmation envoyé précédemment ou en demander un nouveau.",
-    "confirm.otp.request": "Veuillez demander un mot de passe de confirmation ci-dessous afin de confirmer",
     "otp.sent": "Le mot de passe a été envoyé à {dest}",
     "oldPassword": "Ancien mot de passe",
     "newPassword": "Nouveau mot de passe",
@@ -302,7 +291,6 @@
     "scheduling.direct": "Payer maintenant",
     "scheduling.single": "Planifié",
     "scheduling.installments": "Versements mensuels",
-    "scheduling.recurring": "Répéter tous les mois",
     "schedulingStatus": {
       "direct": "Paiement direct",
       "scheduledToDate": "Prévu pour le {date}",
@@ -340,7 +328,6 @@
       "approved": "Approuvé",
       "processed": "Traité",
       "authorized": "Autorisé",
-      "pending": "En attente d'autorisation",
       "denied": "Refusé",
       "blocked": "Bloqué",
       "scheduled": "Planifié",
@@ -488,7 +475,6 @@
     "passwordConfirmation": "Confirmation {type}",
     "securityQuestion.message": "Si vous oubliez votre mot de passe, vous devrez répondre correctement à la question de sécurité pour pouvoir le réinitialiser. <br> Cette option peut être définie ultérieurement, mais gardez à l'esprit que la récupération du mot de passe ne fonctionnera pas sans elle.",
     "securityQuestion.empty": "Laisser vide",
-    "captcha": "Validation visuelle",
     "profile": {
       "noPermission": "Vous n'avez pas la permission de voir le profil de cet utilisateur",
       "addContact.done": "{user} a été ajouté à votre liste de contacts",
@@ -560,7 +546,6 @@
     "name": "Titre",
     "owner": "Éditeur",
     "price": "Prix",
-    "category": "Catégorie",
     "categories": "Catégories",
     "byOwner": "Par {owner}",
     "showAllCategories": "Afficher tout",

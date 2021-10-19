@@ -3,7 +3,8 @@
     "context": [
       "/api",
       "/ui",
-      "/consent"
+      "/consent",
+      "/unsubscribe"
     ],
     "target": "http://localhost:8888",
     "cookieDomainRewrite": "localhost",

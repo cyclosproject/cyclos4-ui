@@ -1,19 +1,24 @@
 <ng-container
   *ngIf="(initialized$ | async) && (i18n.initialized$ | async); else loading">
-  <snack-bar #snackBar></snack-bar>
-  <sidenav #sidenav></sidenav>
-  <push-notifications #pushNotifications></push-notifications>
-  <div class="root-container">
-    <top-bar [user]="login.user$ | async"
-      [breakpoints]="layout.breakpointChanges$ | async"
-      [activeMenu]="menu.activeMenu$ | async"
-      (toggleSidenav)="sidenav.toggle()"></top-bar>
-    <menu-bar *ngIf="menuBar" [ngClass]="{'d-none': layout.ltlg$ | async}"
-      [activeMenu]="menu.activeMenu$ | async"></menu-bar>
-    <div #mainContainer class="main-container d-flex flex-column flex-grow-1">
-      <router-outlet *ngIf="(loggingOut$ | async) === false"></router-outlet>
+  <ng-container
+    *ngIf="dataForFrontendHolder.dataForFrontend?.dataForUi?.auth?.unauthorizedAddress !== true">
+    <snack-bar #snackBar></snack-bar>
+    <sidenav #sidenav></sidenav>
+    <push-notifications #pushNotifications></push-notifications>
+    <div class="root-container">
+      <top-bar [user]="login.user$ | async"
+        [breakpoints]="layout.breakpointChanges$ | async"
+        [activeMenu]="menu.activeMenu$ | async"
+        (toggleSidenav)="sidenav.toggle()"></top-bar>
+      <menu-bar *ngIf="menuBar" [ngClass]="{'d-none': layout.ltlg$ | async}"
+        [activeMenu]="menu.activeMenu$ | async"></menu-bar>
+      <div #mainContainer
+        class="main-container container-md d-flex flex-column flex-grow-1">
+        <router-outlet *ngIf="(loggingOut$ | async) === false">
+        </router-outlet>
+      </div>
     </div>
-  </div>
+  </ng-container>
 </ng-container>
 <ng-template #loading>
   <spinner></spinner>

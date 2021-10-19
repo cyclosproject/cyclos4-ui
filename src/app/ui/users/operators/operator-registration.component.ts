@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { AvailabilityEnum, CustomField, OperatorDataForNew, UserRegistrationResult, UserRegistrationStatusEnum, OperatorNew, CustomFieldDetailed } from 'app/api/models';
+import { AvailabilityEnum, CustomField, OperatorDataForNew, UserRegistrationResult, UserRegistrationStatusEnum, OperatorNew } from 'app/api/models';
 import { OperatorsService } from 'app/api/services/operators.service';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
@@ -111,12 +111,8 @@ export class OperatorRegistrationComponent
   viewProfile() {
     const result = this.result$.value;
     if (result) {
-      this.router.navigate(['users', result.user.id, 'profile']);
+      this.router.navigate(['/users', result.user.id, 'profile']);
     }
-  }
-
-  fieldSize(cf: CustomFieldDetailed) {
-    return this.fieldHelper.fieldSize(cf);
   }
 
   resolveMenu(data: OperatorDataForNew) {

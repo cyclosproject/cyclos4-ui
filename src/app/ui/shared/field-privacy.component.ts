@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { SvgIcon } from 'app/core/svg-icon';
-import { I18n } from 'app/i18n/i18n';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { truthyAttr } from 'app/shared/helper';
 import { TooltipDirective } from 'ngx-bootstrap/tooltip';
 import { BehaviorSubject } from 'rxjs';
@@ -34,7 +34,7 @@ export class FieldPrivacyComponent implements OnInit {
 
   icon$ = new BehaviorSubject<string>(null);
 
-  constructor(private i18n: I18n) {
+  constructor(@Inject(I18nInjectionToken) private i18n: I18n) {
   }
 
   ngOnInit() {

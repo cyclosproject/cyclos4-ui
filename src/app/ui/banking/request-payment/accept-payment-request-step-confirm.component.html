@@ -98,13 +98,32 @@
   <hr *ngIf="layout.gtxxs$ | async">
   <div class="break-nl">{{preview.confirmationMessage}}</div>
 </ng-container>
-<form [formGroup]="form">
+<ng-container [formGroup]="form">
   <hr *ngIf="layout.gtxxs$ | async">
-  <date-field labelPosition="side" formControlName="processDate"
-    [label]="i18n.transaction.processDate" minDate="tomorrow"
-    maxDate="future100" fieldSize="full"
+  <label-value kind="fieldView" [label]="i18n.general.expirationDate">
+    {{ preview.paymentRequest.expirationDate | date }}
+  </label-value>
+
+  <single-selection-field [label]="i18n.transaction.scheduling"
+    [formControl]="scheduleTo">
+    <field-option [value]="PaymentRequestScheduledTo.NOW"
+      [text]="i18n.transaction.paymentRequestSchedulingNow">
+    </field-option>
+    <field-option [value]="PaymentRequestScheduledTo.DATE"
+      [text]="i18n.transaction.paymentRequestSchedulingDate">
+    </field-option>
+    <field-option [value]="PaymentRequestScheduledTo.EXPIRY"
+      [text]="i18n.transaction.paymentRequestSchedulingExpiration(format.formatAsDate(preview.paymentRequest.expirationDate))">
+    </field-option>
+  </single-selection-field>
+
+  <date-field
+    *ngIf="(scheduleTo.valueChanges | async) === PaymentRequestScheduledTo.DATE"
+    formControlName="processDate" [label]="i18n.transaction.processDate"
+    minDate="tomorrow" [maxDate]="preview.paymentRequest.expirationDate"
     [tooltip]="i18n.transaction.processDateTooltip">
   </date-field>
+
   <textarea-field [label]="i18n.general.comments" formControlName="comments">
   </textarea-field>
   <ng-container *ngIf="preview.confirmationPasswordInput">
@@ -116,4 +135,4 @@
       (confirmed)="confirmed.emit($event)">
     </confirmation-password>
   </ng-container>
-</form>
+</ng-container>

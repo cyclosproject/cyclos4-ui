@@ -1,0 +1,109 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content mode="filters" [heading]="i18n.voucher.title.transactions"
+    [mobileHeading]="i18n.voucher.mobileTitle.transactions"
+    [headingActions]="headingActions$ | async">
+    <div [formGroup]="form" class="filters-form filters-form-separator">
+      <div class="row no-gutters">
+        <ng-container *ngIf="data.user && !self">
+          <div class="col-12 col-md-6">
+            <label-value [label]="i18n.general.user" labelPosition="side"
+              kind="fieldView">
+              <user-link [user]="data.user"></user-link>
+            </label-value>
+          </div>
+          <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
+          </div>
+        </ng-container>
+        <div *ngIf="data.types?.length > 1" class="col-12 col-md-6">
+          <multi-selection-field labelPosition="side" formControlName="types"
+            [label]="i18n.general.type">
+            <field-option *ngFor="let type of data.types" [value]="type.id"
+              [internalName]="type.internalName" [id]="type.id"
+              [text]="type.name">
+            </field-option>
+          </multi-selection-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            [emptyOption]="i18n.general.notApplied" formControlName="kind"
+            [label]="i18n.voucher.transaction.kind">
+            <field-option [value]="VoucherTransactionKind.REDEEM"
+              [text]="i18n.voucher.transaction.redeem">
+            </field-option>
+            <field-option [value]="VoucherTransactionKind.TOP_UP"
+              [text]="i18n.voucher.transaction.topUp">
+            </field-option>
+          </single-selection-field>
+        </div>
+        <div class="row no-gutters col-12">
+          <div class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="periodBegin"
+              [label]="i18n.general.beginDate" minDate="past100"
+              maxDate="todayEnd" fieldSize="full" class>
+            </date-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="periodEnd"
+              [label]="i18n.general.endDate" minDate="past100"
+              maxDate="todayEnd" fieldSize="full">
+            </date-field>
+          </div>
+        </div>
+      </div>
+    </div>
+  </page-content>
+  <results-layout resultType="list" [results]="results$ | async"
+    [toLink]="toLink" (update)="update($event)" [rendering$]="rendering$">
+
+    <mobile-result *mobileResult="let row" [date]="row.date"
+      [amount]="row.amount" [currency]="row.type.configuration.currency"
+      [avatarImage]="row.type.image" [avatarIcon]="SvgIcon.Ticket"
+      [amountColor]=false>
+      <div class="cell-text cell-main">
+        {{ row.type.voucherTitle }}
+      </div>
+    </mobile-result>
+
+    <table *resultTable class="table table-hover cursor-pointer">
+      <thead>
+        <th class="avatar"></th>
+        <th>{{ i18n.voucher.transaction.date }}</th>
+        <th>{{ i18n.voucher.transaction.kind }}</th>
+        <th>{{ i18n.voucher.voucher }}</th>
+        <th class="amount">{{ i18n.voucher.transaction.amount }}</th>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of (results$ | async)?.results">
+          <tr (click)="router.navigate(path(row))">
+            <td class="avatar">
+              <avatar [image]="row.type.image" [icon]="SvgIcon.Ticket">
+              </avatar>
+            </td>
+            <td>
+              <a [routerLink]="path(row)"> {{ row.date | dateTime }}
+              </a>
+            </td>
+            <td>
+              <a [routerLink]="path(row)">
+                {{ apiI18n.voucherTransactionKind(row.kind) }}
+              </a>
+            </td>
+            <td>
+              <a [routerLink]="path(row)">
+                {{ row.type.voucherTitle }}
+              </a>
+            </td>
+            <td class="amount">
+              {{ format.abs(row.amount) |
+              currency:row.type.configuration.currency }}
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </results-layout>
+</ng-template>

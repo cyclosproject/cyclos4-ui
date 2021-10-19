@@ -9,7 +9,7 @@ import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
-import { empty } from 'app/shared/helper';
+import { empty, truncate } from 'app/shared/helper';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -32,6 +32,8 @@ type AccountHistorySearchParams = AccountHistoryQueryFilters & {
 export class AccountHistoryComponent
   extends BaseSearchPageComponent<DataForAccountHistory, AccountHistorySearchParams, AccountHistoryResult>
   implements OnInit {
+
+  truncate = truncate;
 
   ownerParam: string;
   typeParam: string;
@@ -169,7 +171,7 @@ export class AccountHistoryComponent
   }
 
   subjectName(row: AccountHistoryResult): string {
-    return row.relatedName || this.bankingHelper.subjectName(row.relatedAccount);
+    return row.relatedName ?? this.bankingHelper.subjectName(row.relatedAccount);
   }
 
   /**
@@ -193,6 +195,9 @@ export class AccountHistoryComponent
    * @param row The row
    */
   avatarImage(row: AccountHistoryResult): Image {
+    if (row.image) {
+      return row.image;
+    }
     return row.relatedAccount.kind === 'user' ? row.relatedAccount.user.image : null;
   }
 

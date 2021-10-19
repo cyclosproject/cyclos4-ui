@@ -189,10 +189,6 @@
     "login": "Il nome / password specificato non sono corretti. Riprova.",
     "remoteAddressBlocked": "Il tuo indirizzo IP è bloccato per aver superato i tentativi di accesso",
     "permission": "Non hai i permessi sufficienti per eseguire l'azione richiesta",
-    "unauthorized": {
-      "address": "Il tuo indirizzo IP non è autorizzato a accedere",
-      "url": "L'accesso non è consentito da questo URL"
-    },
     "loggedOut": "Sei stato disconnesso. Effettua nuovamente il login e ripeti l'operazione.",
     "securityAnswer": {
       "invalid": "La risposta di sicurezza fornita non è valida",
@@ -228,11 +224,6 @@
     "banking.pos": "Addebita carta",
     "banking.scheduledPayments": "Pagamenti pianificati",
     "banking.authorizations": "Autorizzazioni di pagamento",
-    "banking.searchVouchers": "Cerca voucher",
-    "banking.buyVouchers": "Acquista voucher",
-    "banking.boughtVouchers": "Visualizza acquisti",
-    "banking.redeemVoucher": "Riscatta voucher",
-    "banking.redeemedVouchers": "Mostra voucher riscattati",
     "banking.transfersOverview": "Panoramica operazioni",
     "operators": "Operatori",
     "operators.operators": "Operatori",
@@ -263,7 +254,6 @@
     "personal.passwords": "Password",
     "personal.identityProviders": "I provider di identità",
     "personal.notifications": "Notifiche",
-    "personal.notificationSettings": "Impostazioni di notifica",
     "personal.settings": "Impostazioni",
     "content": "Informazioni"
   },
@@ -271,26 +261,13 @@
     "message": "Puoi accedere con il tuo nome utente e password",
     "disconnected": "Sei stato disconnesso.<br>Per favore, accedi di nuovo per visualizzare la pagina richiesta.",
     "principal": "Utente",
-    "forgotPassword": "Password dimenticata?",
     "register": "Non sei ancora un utente? Registrati qui."
   },
   "password": {
-    "confirmationMessage": "Inserisci la tua {passwordType} per confermare questa operazione",
-    "confirm.noPassword": "Per confermare hai bisogno di un {passwordType}, ma non ne hai",
     "confirm.mode": "Conferma con",
     "confirm.mode.device": "Cellulare",
-    "confirm.device.active": "Per confermare, scansiona questo codice QR con il tuo telefono cellulare",
-    "confirm.device.none": "Per confermare che devi avere un cellulare verificato. Il tuo non è ancora verificato",
-    "confirm.deviceOrPassword.active": "Per confermare, scansionare questo codice QR con il tuo cellulare o inserisci la tua {password}",
-    "confirm.deviceOrPassword.none": "Per confermare è necessario disporre di una cellulare verificato o inserire la {password}",
-    "confirm.deviceOrOtp.noMediums": "Per confermare che è necessario un cellulare verificato (e non ne hai) o un Otp ma non ci sono possibili mezzi per riceverlo.<br>Contatta l'amministrazione.",
-    "confirm.deviceOrOtp.active": "Per confermare, scansionare questo codice QR con il tuo cellulare, utilizzare la password di conferma precedentemente inviata o richiedine una nuova",
-    "confirm.deviceOrOtp.request": "Per confermare, scansionare questo codice QR con il tuo cellulare o richiedere una password di conferma qui sotto",
-    "confirm.otp.noMediums": "Per confermare hai bisogno di una password di conferma, ma non ci sono i mezzi per riceverla.<br>Per favore, contatta l'amministrazione.",
-    "confirm.otp.active": "Puoi utilizzare la password di conferma inviata in precedenza o richiederne una nuova",
-    "confirm.otp.request": "Per favore, richiedi una password di conferma qui sotto per confermare",
-    "otp.sent": "La password è stata inviata a {dest}",
     "otp.receiveBy": "Ricevi via {medium}",
+    "otp.sent": "La password è stata inviata a {dest}",
     "oldPassword": "Vecchia password",
     "newPassword": "Nuova password",
     "passwordConfirmation": "Conferma password",
@@ -306,7 +283,6 @@
     "title": {
       "change.self": "Cambia la tua password",
       "change.user": "Modifica la password",
-      "forgotten": "Identificazione utente / recupero password",
       "manage.single.self": "Gestisci la tua password",
       "manage.multiple.self": "Gestisci le password",
       "manage.single.user": "Gestisci password utente",
@@ -323,7 +299,6 @@
       "securityAnswer": "Risposta di sicurezza"
     },
     "forgotten": {
-      "preface": "Qui puoi recuperare la tua Id utente e cambiare la tua password. Inserisci la tua identificazione qui sotto e riceverai un codice di verifica. Puoi utilizzare uno dei seguenti metodi:",
       "principal": "Utente",
       "captcha": "Verifica Captcha",
       "code": "Codice di verifica",
@@ -473,7 +448,6 @@
     "scheduling.direct": "Paga ora",
     "scheduling.single": "Pianificato",
     "scheduling.installments": "Rate mensili",
-    "scheduling.recurring": "Ripeti mensilmente",
     "schedulingStatus": {
       "direct": "Pagamento diretto",
       "scheduledToDate": "Pianificato il {date}",
@@ -511,7 +485,6 @@
       "approved": "Approvato",
       "processed": "Elaborato",
       "authorized": "Autorizzato",
-      "pending": "In attesa di autorizzazione",
       "denied": "Negato",
       "blocked": "Bloccato",
       "scheduled": "Pianificato",
@@ -633,17 +606,7 @@
       }
     },
     "redeem": {
-      "error": {
-        "status": "Questo voucher non può essere riscattato. Lo stato attuale è: {status}.",
-        "user": "L'utente attuale non è autorizzato a riscattare voucher di questo tipo.",
-        "notAllowedYet": "Questo voucher non può essere riscattato prima di {beginDate}.",
-        "notAllowedToday": "Questo buono non può essere riscattato oggi. I giorni consentiti per riscattare sono: {allowedDays}.",
-        "userBlocked": "Sei stato bloccato per il superamento del numero di tentativi consentiti."
-      },
-      "confirm": "I dettagli del voucher sono riportati sotto. Per favore, consultali qui sotto e conferma questa azione.",
       "done": "Il voucher è stato riscattato con successo.",
-      "date": "Data di riscatto",
-      "redeemer": "Riscattato da",
       "payment": "Pagamento per riscatto voucher"
     },
     "status": {
@@ -656,21 +619,15 @@
     "mobileTitle": {
       "buy": "Acquista voucher",
       "buyConfirmation": "Conferma di acquisto",
-      "bought": "Voucher acquistati",
       "redeem": "Riscatta voucher",
-      "redeemed": "Voucher riscattati",
       "search": "Cerca voucher"
     },
     "title": {
       "buy": "Acquista voucher",
       "buyConfirmation": "Conferma di acquisto",
-      "searchBought": "Cerca buoni acquistati",
       "redeem": "Riscatta voucher",
-      "redeemed": "Voucher riscattati",
       "search": "Cerca voucher"
     },
-    "boughtType": "Acquistato",
-    "generatedType": "Generato",
     "buy": {
       "amountRange": "Gamma importo",
       "buyer": "Acquirente",
@@ -683,7 +640,6 @@
     "numberOfVouchers": "Numero voucher",
     "amountPerVoucher": "Importo per voucher",
     "buyerGroups": "Gruppi acquirenti",
-    "redeemerGroups": "Gruppi accettatori",
     "cancel": {
       "done": "Questo voucher è stato annullato.",
       "packConfirmation": "Ci sono altri buoni appartenenti allo stesso pacchetto che saranno cancellati. Sei sicuro di continuare?",
@@ -698,10 +654,6 @@
       "redeemDateDesc": "Ordina per data (decrescente)",
       "redeemDateAsc": "Ordina per data (decrescente)"
     },
-    "cancelAndRefund": "Annulla e rimborsa",
-    "cancelDone": "Questo voucher è stato annullato.",
-    "cancelConfirmation": "Sei sicuro di voler annullare questo voucher?",
-    "cancelPackConfirmation": "Ci sono altri buoni appartenenti allo stesso pacchetto che saranno cancellati. Sei sicuro di continuare?",
     "token": "Codice voucher",
     "owner": "Utente",
     "changeExpirationDate": "Cambia data di scadenza",
@@ -820,7 +772,6 @@
     "passwordConfirmation": "{type} conferma",
     "securityQuestion.message": "Se si dimentica la password, si dovrà rispondere correttamente alla domanda di sicurezza per reimpostare la password.<br>Questa può essere impostata più tardi, ma ricorda che il recupero della password non funzionerà senza domanda di sicurezza.",
     "securityQuestion.empty": "Lascia vuoto",
-    "captcha": "Convalida visiva",
     "contact": "Contatto",
     "creationBegin": "Registrato dopo",
     "creationEnd": "Registrato prima",
@@ -859,10 +810,6 @@
       "status.operator": "Stato operatore",
       "group.user": "Gruppo utente",
       "group.operator": "Gruppo Operatore",
-      "viewRedeemedVouchers": "Mostra voucher riscattati",
-      "redeemVoucher": "Riscatta voucher",
-      "viewBoughtVouchers": "Vedi voucher acquistati",
-      "buyVouchers": "Acquista voucher",
       "notificationSettings": "Impostazioni di notifica"
     },
     "registration": {
@@ -1011,7 +958,6 @@
     "mainBroker": "Broker principale",
     "setMain": "Imposta principale",
     "brokerAdded": "Il broker è stato aggiunto con successo",
-    "administration": "Amministrazione",
     "action": {
       "add": "Aggiunto come broker",
       "remove": "Rimosso un broker",
@@ -1139,7 +1085,6 @@
     "price": "Prezzo",
     "questionAsked": "La domanda è stata presentata al venditore",
     "questionRemoved": "La domanda è stata rimossa",
-    "category": "Categoria",
     "categories": "Categorie",
     "creationDate": "Data di creazione",
     "byOwner": "Da {owner}",
@@ -1317,9 +1262,6 @@
         "authorizedPaymentDenied": "Autorizzazione al pagamento negata",
         "authorizedPaymentExpired": "Pagamento autorizzato è scaduto",
         "authorizedPaymentSucceeded": "Pagamento autorizzato ed eseguito con successo",
-        "boughtVouchersAboutToExpire": "I voucher acquistati scadranno tra qualche giorno",
-        "boughtVouchersExpirationDateChanged": "La data di scadenza del voucher acquistato è stata modificata",
-        "boughtVouchersExpired": "I voucher acquistati sono scaduti",
         "externalPaymentExpired": "Pagamento esterno scaduto",
         "externalPaymentPerformedFailed": "Impossibile consegnare  il pagamento esterno via mail",
         "externalPaymentReceivedFailed": "Impossibile consegnare  il pagamento esterno via mail (non ricevuto)",

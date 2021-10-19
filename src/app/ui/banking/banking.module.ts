@@ -1,14 +1,18 @@
 import { NgModule } from '@angular/core';
 import { AccountHistoryComponent } from 'app/ui/banking/accounts/account-history.component';
-import { SearchUserBalancesComponent } from 'app/ui/banking/accounts/search-user-balances.component';
-import { BalancesSummaryComponent } from 'app/ui/banking/accounts/balances-summary.component';
 import { AccountStatusViewComponent } from 'app/ui/banking/accounts/account-status-view.component';
+import { BalancesSummaryComponent } from 'app/ui/banking/accounts/balances-summary.component';
+import { ListAccountsComponent } from 'app/ui/banking/accounts/list-accounts.component';
+import { SearchUserBalancesComponent } from 'app/ui/banking/accounts/search-user-balances.component';
 import { EditAccountBalanceLimitsComponent } from 'app/ui/banking/balance-limits/edit-account-balance-limits.component';
 import { ListAccountsBalanceLimitsComponent } from 'app/ui/banking/balance-limits/list-accounts-balance-limits.component';
-import { ListAccountsComponent } from 'app/ui/banking/accounts/list-accounts.component';
 import { SearchBalanceLimitsOverviewComponent } from 'app/ui/banking/balance-limits/search-balance-limits-overview.component';
 import { ViewAccountBalanceLimitsComponent } from 'app/ui/banking/balance-limits/view-account-balance-limits.component';
 import { BankingRoutingModule } from 'app/ui/banking/banking-routing.module';
+import { ExternalPaymentStepConfirmComponent } from 'app/ui/banking/external-payment/external-payment-step-confirm.component';
+import { ExternalPaymentStepDoneComponent } from 'app/ui/banking/external-payment/external-payment-step-done.component';
+import { ExternalPaymentStepFormComponent } from 'app/ui/banking/external-payment/external-payment-step-form.component';
+import { ExternalPaymentComponent } from 'app/ui/banking/external-payment/external-payment.component';
 import { EditAccountPaymentLimitsComponent } from 'app/ui/banking/payment-limits/edit-account-payment-limits.component';
 import { ListAccountsPaymentLimitsComponent } from 'app/ui/banking/payment-limits/list-accounts-payment-limits.component';
 import { SearchPaymentLimitsOverviewComponent } from 'app/ui/banking/payment-limits/search-payment-limits-overview.component';
@@ -18,6 +22,7 @@ import { PaymentStepDoneComponent } from 'app/ui/banking/payment/payment-step-do
 import { PaymentStepFormComponent } from 'app/ui/banking/payment/payment-step-form.component';
 import { PaymentComponent } from 'app/ui/banking/payment/payment.component';
 import { AcceptPaymentRequestStepConfirmComponent } from 'app/ui/banking/request-payment/accept-payment-request-step-confirm.component';
+import { AcceptPaymentRequestStepDoneComponent } from 'app/ui/banking/request-payment/accept-payment-request-step-done.component';
 import { AcceptPaymentRequestComponent } from 'app/ui/banking/request-payment/accept-payment-request.component';
 import { RequestPaymentStepDoneComponent } from 'app/ui/banking/request-payment/request-payment-step-done.component';
 import { RequestPaymentStepFormComponent } from 'app/ui/banking/request-payment/request-payment-step-form.component';
@@ -26,30 +31,44 @@ import { ReceiveQrPaymentStepDoneComponent } from 'app/ui/banking/ticket/receive
 import { ReceiveQrPaymentStepFormComponent } from 'app/ui/banking/ticket/receive-qr-payment-step-form.component';
 import { ReceiveQrPaymentStepPendingComponent } from 'app/ui/banking/ticket/receive-qr-payment-step-pending.component';
 import { ReceiveQrPaymentComponent } from 'app/ui/banking/ticket/receive-qr-payment.component';
-import { SearchOwnerInstallmentsComponent } from 'app/ui/banking/transactions/search-owner-installments.component';
+import { EditRecurringPaymentComponent } from 'app/ui/banking/transactions/edit-recurring-payment.component';
+import { ReschedulePaymentRequestDialogComponent } from 'app/ui/banking/transactions/reschedule-payment-request-dialog.component';
 import { SearchInstallmentsComponent } from 'app/ui/banking/transactions/search-installments.component';
+import { SearchOwnerInstallmentsComponent } from 'app/ui/banking/transactions/search-owner-installments.component';
 import { SearchOwnerTransactionsComponent } from 'app/ui/banking/transactions/search-owner-transactions.component';
 import { SearchTransactionsOverviewComponent } from 'app/ui/banking/transactions/search-transactions-overview.component';
 import { ViewAuthorizationHistoryComponent } from 'app/ui/banking/transactions/view-authorization-history.component';
 import { ViewTransactionComponent } from 'app/ui/banking/transactions/view-transaction.component';
 import { SearchTransfersOverviewComponent } from 'app/ui/banking/transfers/search-transfers-overview.component';
 import { TransferDetailsComponent } from 'app/ui/banking/transfers/transfer-details.component';
+import { TransferSimpleDetailsComponent } from 'app/ui/banking/transfers/transfer-simple-details.component';
 import { ViewTransferComponent } from 'app/ui/banking/transfers/view-transfer.component';
+import { VoucherDetailsComponent } from 'app/ui/banking/transfers/voucher-details.component';
 import { BuyVouchersStepConfirmComponent } from 'app/ui/banking/vouchers/buy-vouchers-step-confirm.component';
 import { BuyVouchersStepFormComponent } from 'app/ui/banking/vouchers/buy-vouchers-step-form.component';
-import { BuyVouchersStepListTypesComponent } from 'app/ui/banking/vouchers/buy-vouchers-step-list-types.component';
 import { BuyVouchersComponent } from 'app/ui/banking/vouchers/buy-vouchers.component';
 import { GenerateVouchersStepConfirmComponent } from 'app/ui/banking/vouchers/generate-vouchers-step-confirm.component';
 import { GenerateVouchersStepFormComponent } from 'app/ui/banking/vouchers/generate-vouchers-step-form.component';
-import { GenerateVouchersStepListTypesComponent } from 'app/ui/banking/vouchers/generate-vouchers-step-list-types.component';
 import { GenerateVouchersComponent } from 'app/ui/banking/vouchers/generate-vouchers.component';
-import { SearchBoughtVouchersComponent } from 'app/ui/banking/vouchers/search-bought-vouchers.component';
+import { RedeemVoucherComponent } from 'app/ui/banking/vouchers/redeem-voucher.component';
+import { SearchUserVouchersComponent } from 'app/ui/banking/vouchers/search-user-vouchers.component';
+import { SearchVoucherTransactionsComponent } from 'app/ui/banking/vouchers/search-voucher-transactions.component';
 import { SearchVouchersComponent } from 'app/ui/banking/vouchers/search-vouchers.component';
+import { SendVoucherStepConfirmComponent } from 'app/ui/banking/vouchers/send-voucher-step-confirm.component';
+import { SendVoucherStepFormComponent } from 'app/ui/banking/vouchers/send-voucher-step-form.component';
+import { SendVoucherComponent } from 'app/ui/banking/vouchers/send-voucher.component';
+import { TopUpVoucherComponent } from 'app/ui/banking/vouchers/top-up-voucher.component';
+import { ViewVoucherTransactionComponent } from 'app/ui/banking/vouchers/view-voucher-transaction.component';
+import { ViewVoucherComponent } from 'app/ui/banking/vouchers/view-voucher.component';
+import { VoucherChangePinDialogComponent } from 'app/ui/banking/vouchers/voucher-change-pin-dialog.component';
 import { VoucherFiltersComponent } from 'app/ui/banking/vouchers/voucher-filters.component';
+import { VoucherNotificationSettingsDialogComponent } from 'app/ui/banking/vouchers/voucher-notification-settings-dialog.component';
+import { VoucherTransactionStepConfirmComponent } from 'app/ui/banking/vouchers/voucher-transaction-step-confirm.component';
+import { VoucherTransactionStepDoneComponent } from 'app/ui/banking/vouchers/voucher-transaction-step-done.component';
+import { VoucherTransactionStepFormComponent } from 'app/ui/banking/vouchers/voucher-transaction-step-form.component';
+import { VoucherTransactionStepTokenComponent } from 'app/ui/banking/vouchers/voucher-transaction-step-token.component';
+import { VoucherTypeSelectionComponent } from 'app/ui/banking/vouchers/voucher-type-selection.component';
 import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
-import { RedeemVoucherComponent } from './vouchers/redeem-voucher.component';
-import { SearchRedeemedVouchersComponent } from './vouchers/search-redeemed-vouchers.component';
-import { ViewVoucherComponent } from './vouchers/view-voucher.component';
 
 /**
  * Banking module
@@ -65,6 +84,8 @@ import { ViewVoucherComponent } from './vouchers/view-voucher.component';
     AccountStatusViewComponent,
     ViewTransferComponent,
     TransferDetailsComponent,
+    TransferSimpleDetailsComponent,
+    VoucherDetailsComponent,
     ViewAuthorizationHistoryComponent,
     SearchTransfersOverviewComponent,
     SearchUserBalancesComponent,
@@ -76,6 +97,7 @@ import { ViewVoucherComponent } from './vouchers/view-voucher.component';
     SearchOwnerInstallmentsComponent,
     SearchInstallmentsComponent,
     ViewTransactionComponent,
+    ReschedulePaymentRequestDialogComponent,
 
     PaymentComponent,
     PaymentStepFormComponent,
@@ -87,18 +109,28 @@ import { ViewVoucherComponent } from './vouchers/view-voucher.component';
     ReceiveQrPaymentStepPendingComponent,
     ReceiveQrPaymentStepDoneComponent,
 
+    VoucherTypeSelectionComponent,
     BuyVouchersComponent,
-    SearchBoughtVouchersComponent,
-    BuyVouchersStepListTypesComponent,
+    SendVoucherComponent,
+    SearchUserVouchersComponent,
     BuyVouchersStepFormComponent,
     BuyVouchersStepConfirmComponent,
+    SendVoucherStepFormComponent,
+    SendVoucherStepConfirmComponent,
     RedeemVoucherComponent,
+    TopUpVoucherComponent,
+    VoucherTransactionStepTokenComponent,
+    VoucherTransactionStepFormComponent,
+    VoucherTransactionStepConfirmComponent,
+    VoucherTransactionStepDoneComponent,
     ViewVoucherComponent,
-    SearchRedeemedVouchersComponent,
+    ViewVoucherTransactionComponent,
+    VoucherNotificationSettingsDialogComponent,
+    VoucherChangePinDialogComponent,
+    SearchVoucherTransactionsComponent,
     SearchVouchersComponent,
     VoucherFiltersComponent,
     GenerateVouchersComponent,
-    GenerateVouchersStepListTypesComponent,
     GenerateVouchersStepFormComponent,
     GenerateVouchersStepConfirmComponent,
 
@@ -116,7 +148,15 @@ import { ViewVoucherComponent } from './vouchers/view-voucher.component';
     RequestPaymentStepFormComponent,
     RequestPaymentStepDoneComponent,
     AcceptPaymentRequestComponent,
-    AcceptPaymentRequestStepConfirmComponent
+    AcceptPaymentRequestStepConfirmComponent,
+    AcceptPaymentRequestStepDoneComponent,
+
+    ExternalPaymentComponent,
+    ExternalPaymentStepFormComponent,
+    ExternalPaymentStepConfirmComponent,
+    ExternalPaymentStepDoneComponent,
+
+    EditRecurringPaymentComponent
   ],
 })
 export class BankingModule {

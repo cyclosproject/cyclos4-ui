@@ -29,104 +29,162 @@
       [image]="user.image" [additionalImages]="user.additionalImages">
     </profile-images>
 
-    <div class="d-flex flex-row-reverse">
+    <float-labels>
       <profile-images *ngIf="imageEnabled && (layout.gtxs$ | async)"
         [image]="user.image" [additionalImages]="user.additionalImages"
-        [icon]="SvgIcon.PersonCircle">
+        [icon]="SvgIcon.PersonCircle" class="float-right">
       </profile-images>
-      <div class="d-flex flex-grow-1 flex-column">
-        <label-value *ngIf="showOperatorOwner"
-          [label]="i18n.user.operatorOwner">
-          <user-link [user]="user.user"></user-link>
-        </label-value>
-        <label-value *ngIf="user.groupSet" [label]="i18n.user.groupSet"
-          [value]="user.groupSet.name"></label-value>
-        <label-value *ngIf="user.group" [label]="i18n.user.group"
-          [value]="user.group.name"></label-value>
-        <label-value *ngIf="user.status" [label]="i18n.general.status"
-          [value]="userHelper.userStatus(user.status)"></label-value>
-        <label-value *ngIf="user.name" [label]="i18n.user.name"
-          [value]="user.name"></label-value>
-        <label-value *ngIf="user.username" [label]="i18n.user.username"
-          [value]="user.username"></label-value>
-        <label-value *ngIf="user.registrationDate"
-          [label]="i18n.user.registrationDate"
-          [value]="user.registrationDate | date"></label-value>
-        <label-value *ngIf="showActivationDate"
-          [label]="i18n.user.activationDate"
-          [value]="user.activationDate | date"></label-value>
-        <label-value *ngIf="user.email" [label]="i18n.user.email">
-          <a [href]="'mailto:' + user.email" class="link-with-icon">
-            <icon [icon]="SvgIcon.Envelope"></icon>
-            <span>{{ user.email }}</span>
-          </a>
-        </label-value>
-        <label-value *ngIf="mobilePhone" [label]="i18n.phone.mobile">
-          <a [href]="'tel:' + mobilePhone.normalizedNumber"
-            class="link-with-icon">
-            <icon [icon]="SvgIcon.Phone"></icon>
-            <span>{{ mobilePhone.number }}</span>
-          </a>
-        </label-value>
-        <label-value *ngFor="let phone of mobilePhones" [label]="phone.name">
-          <a [href]="'tel:' + phone.normalizedNumber" class="link-with-icon">
-            <icon [icon]="SvgIcon.Phone"></icon>
-            <span>{{ phone.number }}</span>
-          </a>
-        </label-value>
-        <label-value *ngIf="landLinePhone" [label]="i18n.phone.landLine">
-          <a [href]="'tel:' + landLinePhone.normalizedNumber"
-            class="link-with-icon">
-            <icon [icon]="SvgIcon.Telephone"></icon>
-            <span>{{ landLinePhone.number }}</span>
-          </a>
-        </label-value>
-        <label-value *ngFor="let phone of landLinePhones"
-          [label]="phone.name">
-          <a [href]="'tel:' + phone.normalizedNumber" class="link-with-icon">
-            <icon [icon]="SvgIcon.Telephone"></icon>
-            <span>{{ phone.number }}</span>
-          </a>
-        </label-value>
-        <custom-field-value *ngFor="let value of user.customValues"
+      <label-value *ngIf="showOperatorOwner"
+        [label]="i18n.user.operatorOwner">
+        <user-link [user]="user.user"></user-link>
+      </label-value>
+      <label-value *ngIf="user.groupSet" [label]="i18n.user.groupSet"
+        [value]="user.groupSet.name"></label-value>
+      <label-value *ngIf="user.group" [label]="i18n.user.group"
+        [value]="user.group.name"></label-value>
+      <label-value *ngIf="user.status" [label]="i18n.general.status"
+        [value]="userHelper.userStatus(user.status)"></label-value>
+      <label-value *ngIf="user.name" [label]="i18n.user.name"
+        [value]="user.name"></label-value>
+      <label-value *ngIf="user.username" [label]="i18n.user.username"
+        [value]="user.username"></label-value>
+      <label-value *ngIf="user.registrationDate"
+        [label]="i18n.user.registrationDate"
+        [value]="user.registrationDate | date"></label-value>
+      <label-value *ngIf="user.invitedBy" [label]="i18n.user.invitedBy">
+        <user-link [user]="user.invitedBy"></user-link>
+      </label-value>
+      <label-value *ngIf="showActivationDate"
+        [label]="i18n.user.activationDate"
+        [value]="user.activationDate | date"></label-value>
+      <label-value *ngIf="user.email" [label]="i18n.user.email">
+        <a [href]="'mailto:' + user.email" class="link-with-icon">
+          <icon [icon]="SvgIcon.Envelope"></icon>
+          <span>{{ user.email }}</span>
+        </a>
+      </label-value>
+      <label-value *ngIf="mobilePhone" [label]="i18n.phone.mobile">
+        <a [href]="'tel:' + mobilePhone.normalizedNumber"
+          class="link-with-icon">
+          <icon [icon]="SvgIcon.Phone"></icon>
+          <span>{{ mobilePhone.number }}</span>
+        </a>
+      </label-value>
+      <label-value *ngFor="let phone of mobilePhones" [label]="phone.name">
+        <a [href]="'tel:' + phone.normalizedNumber" class="link-with-icon">
+          <icon [icon]="SvgIcon.Phone"></icon>
+          <span>{{ phone.number }}</span>
+        </a>
+      </label-value>
+      <label-value *ngIf="landLinePhone" [label]="i18n.phone.landLine">
+        <a [href]="'tel:' + landLinePhone.normalizedNumber"
+          class="link-with-icon">
+          <icon [icon]="SvgIcon.Telephone"></icon>
+          <span>{{ landLinePhone.number }}</span>
+        </a>
+      </label-value>
+      <label-value *ngFor="let phone of landLinePhones" [label]="phone.name">
+        <a [href]="'tel:' + phone.normalizedNumber" class="link-with-icon">
+          <icon [icon]="SvgIcon.Telephone"></icon>
+          <span>{{ phone.number }}</span>
+        </a>
+      </label-value>
+      <custom-field-value *ngFor="let value of fieldsWithoutSection"
+        [fieldValue]="value"></custom-field-value>
+      <ng-container *ngFor="let key of fieldsWithSection.keys()">
+        <h3>{{ key.name }}</h3>
+        <div class="mb-2" *ngIf="key.informationText">
+          {{ key.informationText }}</div>
+        <custom-field-value *ngFor="let value of fieldsWithSection.get(key)"
           [fieldValue]="value"></custom-field-value>
-        <h3 *ngIf="
+      </ng-container>
+      <h3 *ngIf="
           data.references ||
           data.paymentFeedbacks ||
           data.accounts.length > 0 ||
           data.lastLogin ||
           data.firstLogin ||
           data.online != null" class="mb-1">
-          {{ i18n.user.activities }}</h3>
-        <label-value *ngIf="data.online" [label]="i18n.user.connectionStatus"
-          [value]="i18n.user.connected">
-        </label-value>
-        <label-value *ngIf="data.lastLogin && !data.online"
-          [label]="i18n.user.connectionStatus"
-          [value]="i18n.user.disconnectedStatus(format.formatAsDateTime(data.lastLogin))">
-        </label-value>
-        <label-value *ngIf="data.lastLogin == null && data.online != null"
-          [label]="i18n.user.connectionStatus"
-          [value]="i18n.user.neverLogged"></label-value>
-        <ng-container *ngFor="let acc of data.accounts">
-          <label-value [label]="i18n.user.accountBalance(acc.type.name)">
-            {{ acc.status.balance | currency: acc.currency }}
-          </label-value>
-        </ng-container>
-        <label-value *ngIf="data.references"
-          [label]="i18n.user.profile.references">
-          <a [routerLink]="referencesPath()">
-            <rating-stats *ngIf="data.references.count > 0"
-              [score]="data.references.score" [textRight]="data.references.count > 1 ?
+        {{ i18n.user.activities }}</h3>
+      <label-value *ngIf="data.online" [label]="i18n.user.connectionStatus"
+        [value]="i18n.user.connected">
+      </label-value>
+      <label-value *ngIf="data.lastLogin && !data.online"
+        [label]="i18n.user.connectionStatus"
+        [value]="i18n.user.disconnectedStatus(format.formatAsDateTime(data.lastLogin))">
+      </label-value>
+      <label-value *ngIf="data.lastLogin == null && data.online != null"
+        [label]="i18n.user.connectionStatus" [value]="i18n.user.neverLogged">
+      </label-value>
+      <label-value *ngIf="data.references"
+        [label]="i18n.user.profile.references">
+        <a [routerLink]="referencesPath()">
+          <rating-stats *ngIf="data.references.count > 0"
+            [score]="data.references.score" [textRight]="data.references.count > 1 ?
             i18n.reference.count.multi(data.references.count) :
             i18n.reference.count.single">
-            </rating-stats>
-            <ng-container *ngIf="data.references.count === 0">
-              {{ i18n.reference.notGiven }}</ng-container>
-          </a>
-        </label-value>
-      </div>
-    </div>
+          </rating-stats>
+          <ng-container *ngIf="data.references.count === 0">
+            {{ i18n.reference.notGiven }}</ng-container>
+        </a>
+      </label-value>
+      <label-value *ngIf="data.paymentFeedbacks"
+        [label]="i18n.user.profile.feedbacks">
+        <a [routerLink]="feedbackPath()">
+          <rating-stats *ngIf="data.paymentFeedbacks.count > 0"
+            [score]="data.paymentFeedbacks.score" [textRight]="data.paymentFeedbacks.count > 1 ?
+          i18n.feedback.count.multi(data.paymentFeedbacks.count) :
+          i18n.feedback.count.single">
+          </rating-stats>
+          <ng-container *ngIf="data.paymentFeedbacks.count === 0">
+            {{ i18n.reference.notGiven }}</ng-container>
+        </a>
+      </label-value>
+      <ng-container *ngFor="let acc of data.accounts">
+        <ng-container *ngIf="acc.status">
+          <h3> {{ i18n.account.accountInformation(acc.type.name) }} </h3>
+          <label-value
+            *ngIf="acc.status.balance || acc.status.availableBalance" [label]="
+            i18n.account.balance">
+            <ng-container *ngIf="acc.status.balance">
+              {{
+              i18n.user.profile.balance(format.formatAsCurrency(acc.currency,
+              acc.status.balance))}}
+            </ng-container>
+            <ng-container *ngIf="acc.status.availableBalance">
+              <br *ngIf="acc.status.balance" />
+              {{
+              i18n.user.profile.availableBalance(format.formatAsCurrency(acc.currency,
+              acc.status.availableBalance))}}
+            </ng-container>
+          </label-value>
+          <ng-container *ngIf="acc.status.transactionsAllTime">
+            <label-value [label]="i18n.user.profile.activityInPeriod">
+              {{
+              i18n.user.profile.transactions(acc.status.transactionsInPeriod)
+              }}<br>
+              {{
+              i18n.user.profile.totalReceived(format.formatAsCurrency(acc.currency,
+              acc.status.receivedInPeriod)) }}<br />
+              {{
+              i18n.user.profile.totalPaid(format.formatAsCurrency(acc.currency,
+              acc.status.paidInPeriod)) }}<br />
+            </label-value>
+            <label-value [label]="i18n.user.profile.activityAllTime">
+              {{
+              i18n.user.profile.transactions(acc.status.transactionsAllTime)
+              }}<br>
+              {{
+              i18n.user.profile.totalReceived(format.formatAsCurrency(acc.currency,
+              acc.status.receivedAllTime)) }}<br />
+              {{
+              i18n.user.profile.totalPaid(format.formatAsCurrency(acc.currency,
+              acc.status.paidAllTime)) }}<br />
+            </label-value>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </float-labels>
     <div class="d-flex flex-grow-1 flex-column">
       <profile-addresses [addresses]="user.addresses"></profile-addresses>
 
@@ -136,26 +194,29 @@
         <div class="additional-contacts row no-gutters">
           <div class="text-center col-12 col-sm-6 col-md-4 col-lg-3 pb-3"
             *ngFor="let contactInfo of user.contactInfos; let first=first">
-            <avatar size="140" useLightbox [image]="contactInfo.image"
-              class="mb-2">
-            </avatar>
-            <div class="font-weight-bold">{{ contactInfo.name }}</div>
-            <a class="d-block" *ngIf="contactInfo.email"
+            <div class="data-item">
+              <avatar size="140" useLightbox [image]="contactInfo.image">
+              </avatar>
+            </div>
+            <div class="data-item font-weight-bold">{{ contactInfo.name }}
+            </div>
+            <a class="data-item" *ngIf="contactInfo.email"
               [href]="'mailto:' + contactInfo.email">
               {{ contactInfo.email }}
             </a>
-            <a class="d-block"
+            <a class="data-item"
               [href]="'tel:' + contactInfo.normalizedMobilePhone">
               {{ contactInfo.mobilePhone }}
             </a>
-            <a class="d-block"
+            <a class="data-item"
               [href]="'tel:' + contactInfo.normalizedLandLinePhone">
               {{ contactInfo.landLinePhone }}
             </a>
-            <div *ngFor="let value of contactInfo.customValues">
+            <div class="data-item"
+              *ngFor="let value of contactInfo.customValues">
               <format-field-value [fieldValue]="value"></format-field-value>
             </div>
-            <div *ngIf="contactInfo.address" class="text-accent">
+            <div *ngIf="contactInfo.address" class="data-item text-accent">
               <span class="inline-label">{{
                 i18n.user.contactInfoAtAddress
                 }}</span>

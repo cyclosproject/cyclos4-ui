@@ -1,9 +1,10 @@
 <nav *ngIf="roots$ | async as roots" class="navbar navbar-expand-md">
-  <div class="navbar-container">
+  <div class="navbar-container container-lg">
     <!-- The sidenav toggle on mobile / tablet -->
     <a #sidenavTrigger class="never-active" *ngIf="layout.ltlg$ | async"
       id="sidenav-trigger" href="#"
-      (click)="toggleSidenav.emit(); $event.preventDefault(); blurIfClick('sidenav-trigger', $event);">
+      (click)="toggleSidenav.emit(); $event.preventDefault(); blurIfClick('sidenav-trigger', $event);"
+      [attr.aria-label]="i18n.menu.menu">
       <icon [icon]="SvgIcon.List"></icon>
     </a>
     <a #brand class="navbar-brand" routerLink="/">
@@ -14,11 +15,12 @@
       <!-- The title -->
       <div class="top-title">{{
         (layout.xxs$ | async)
-        ? (uiLayout.title$ | async) || dataForFrontendHolder.dataForFrontend.mobileTitle
-        : (layout.xs$ | async)
-          ? dataForFrontendHolder.dataForFrontend.mobileTitle
-          : dataForFrontendHolder.dataForFrontend.title
-      }}</div>
+        ? (uiLayout.title$ | async) ||
+        dataForFrontendHolder.dataForFrontend.mobileTitle
+        : (layout.ltmd$ | async)
+        ? dataForFrontendHolder.dataForFrontend.mobileTitle
+        : dataForFrontendHolder.dataForFrontend.title
+        }}</div>
     </a>
     <div #menuContainer class="menu-container">
       <ng-container *ngIf="layout.xxs$ | async; else mobileOrGreater">
@@ -46,7 +48,8 @@
     <ng-container *ngIf="(user != null) && (layout.gtxxs$ | async)">
       <div *ngIf="authHelper.restrictedAccess; else profileLink"
         class="profile-label">
-        <avatar *ngIf="user.image" size="small-medium" [image]="user.image">
+        <avatar *ngIf="user.image" size="small-medium" [image]="user.image"
+          [icon]="SvgIcon.Person">
         </avatar>
         <icon *ngIf="!user.image" [icon]="SvgIcon.Person">
         </icon>
@@ -68,27 +71,43 @@
           </div>
         </a>
       </ng-template>
-      <ng-container
-        *ngIf="notification.notificationsStatus$ | async as status">
+      <ng-container *ngIf="messageHelper.messageStatus$ | async as status">
         <a *ngIf="status && (layout.gtxxs$ | async)"
-          routerLink="/personal/notifications" id="notifications-link"
-          (click)="navigate(Menu.NOTIFICATIONS, $event); blurIfClick('notifications-link', $event);"
-          [ngClass]="customNgClass(Menu.NOTIFICATIONS)"
-          [tooltip]="hasMenu ? i18n.menu.personalNotifications : null">
-          <icon-with-counter [icon]="SvgIcon.Bell"
-            [count]="status.newNotifications">
+          routerLink="/users/messages/search" id="messages-link"
+          (click)="navigate(messageHelper.resolveMenu(), $event); blurIfClick('messages-link', $event);"
+          [ngClass]="customNgClass(messageHelper.resolveMenu())"
+          [tooltip]="hasMenu ? messageHelper.resolveLabel() : null"
+          [attr.aria-label]="messageHelper.resolveLabel()">
+          <icon-with-counter [icon]="SvgIcon.Envelope"
+            [count]="status.newMessages">
           </icon-with-counter>
           <div *ngIf="(layout.gtmd$ | async) && !hasMenu" class="ml-2">
-            {{ i18n.menu.personalNotifications }}
+            {{ messageHelper.resolveLabel() }}
           </div>
         </a>
       </ng-container>
+    </ng-container>
+    <ng-container *ngIf="notification.notificationsStatus$ | async as status">
+      <a *ngIf="status && (layout.gtxxs$ | async)"
+        routerLink="/personal/notifications" id="notifications-link"
+        (click)="navigate(Menu.NOTIFICATIONS, $event); blurIfClick('notifications-link', $event);"
+        [ngClass]="customNgClass(Menu.NOTIFICATIONS)"
+        [tooltip]="hasMenu ? i18n.menu.personalNotifications : null"
+        [attr.aria-label]="i18n.menu.personalNotifications">
+        <icon-with-counter [icon]="SvgIcon.Bell"
+          [count]="status.newNotifications">
+        </icon-with-counter>
+        <div *ngIf="(layout.gtmd$ | async) && !hasMenu" class="ml-2">
+          {{ i18n.menu.personalNotifications }}
+        </div>
+      </a>
     </ng-container>
 
     <a href="#" *ngIf="user != null && shoppingCart" id="shopping-cart"
       routerLink="/marketplace/shopping-cart" class="nav-item"
       [ngClass]="customNgClass(Menu.SHOPPING_CART)"
       [tooltip]="hasMenu ? i18n.menu.shoppingCart : null"
+      [attr.aria-label]="i18n.menu.shoppingCart"
       (click)="navigate(Menu.SHOPPING_CART, $event); blurIfClick('shopping-cart', $event);">
       <icon-with-counter [icon]="SvgIcon.Cart3"
         [count]="marketplaceHelper.cartItems$ | async"></icon-with-counter>
@@ -101,15 +120,17 @@
       id="logout-trigger" class="nav-item"
       [ngClass]="customNgClass(Menu.LOGOUT)"
       [tooltip]="hasMenu ? i18n.menu.logout : null"
+      [attr.aria-label]="i18n.menu.logout"
       (click)="navigate(Menu.LOGOUT, $event); blurIfClick('logout-trigger', $event);">
-      <icon [icon]="SvgIcon.BoxArrowRight"></icon>
+      <icon [icon]="SvgIcon.Logout2"></icon>
       <div *ngIf="(layout.gtmd$ | async) && !hasMenu" class="ml-2">
         {{ i18n.menu.logout }}
       </div>
     </a>
     <ng-container *ngIf="user == null">
       <a *ngIf="(layout.gtsm$ | async) && menu.menuEntry(Menu.PUBLIC_REGISTRATION)"
-        routerLink="/register" id="register-link"
+        routerLink="/users/registration" id="register-link"
+        [attr.aria-label]="i18n.menu.register"
         (click)="navigate(Menu.PUBLIC_REGISTRATION, $event); blurIfClick('register-link', $event);"
         [ngClass]="customNgClass(Menu.PUBLIC_REGISTRATION)">
         <icon [icon]="SvgIcon.PersonPlus"></icon>
@@ -118,9 +139,10 @@
         </div>
       </a>
       <a routerLink="/login" id="login-link"
+        [attr.aria-label]="i18n.menu.login"
         (click)="navigate(Menu.LOGIN, $event); blurIfClick('login-link', $event);"
         [ngClass]="customNgClass(Menu.LOGIN)">
-        <icon [icon]="SvgIcon.BoxArrowInRight"></icon>
+        <icon [icon]="SvgIcon.Login2"></icon>
         <div *ngIf="layout.gtsm$ | async" class="ml-2">
           {{ i18n.menu.login }}
         </div>
@@ -130,7 +152,7 @@
 </ng-template>
 
 <ng-template #xxsMenu>
-  <heading-actions [headingActions]="xxsActions(
+  <heading-actions root [headingActions]="xxsActions(
       uiLayout.headingActions$ | async,
       router.events | async,
       login.user$ | async)">

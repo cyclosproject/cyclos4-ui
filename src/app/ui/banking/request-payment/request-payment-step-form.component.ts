@@ -6,13 +6,14 @@ import {
   NotFoundError, TransactionTypeData, TransferType, User
 } from 'app/api/models';
 import { PaymentRequestsService } from 'app/api/services/payment-requests.service';
-import { BankingHelperService } from 'app/ui/core/banking-helper.service';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 import { ErrorStatus } from 'app/core/error-status';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
 import { blank, empty, focus } from 'app/shared/helper';
 import { UserFieldComponent } from 'app/shared/user-field.component';
+import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
@@ -57,7 +58,8 @@ export class RequestPaymentStepFormComponent extends BaseComponent implements On
   constructor(
     injector: Injector,
     public bankingHelper: BankingHelperService,
-    private paymentRequestsService: PaymentRequestsService) {
+    private paymentRequestsService: PaymentRequestsService,
+    private authHelper: AuthHelperService) {
     super(injector);
   }
 
@@ -247,10 +249,6 @@ export class RequestPaymentStepFormComponent extends BaseComponent implements On
       }
     }
     this.paymentTypeData$.next(typeData);
-  }
-
-  fieldSize(cf: CustomFieldDetailed) {
-    return this.fieldHelper.fieldSize(cf);
   }
 
   get fixedUsersList(): boolean {

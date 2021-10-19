@@ -1,4 +1,5 @@
-<label-value *ngIf="label; else widget" [formField]="self">
+<label-value *ngIf="label; else widget" [formField]="self"
+  [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 

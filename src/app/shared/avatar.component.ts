@@ -6,7 +6,7 @@ import {
 import { Image } from 'app/api/models';
 import { SvgIcon } from 'app/core/svg-icon';
 import { galleryImage, truthyAttr } from 'app/shared/helper';
-import { NgxGalleryComponent, NgxGalleryImage, NgxGalleryOptions } from 'ngx-gallery-9';
+import { NgxGalleryComponent, INgxGalleryImage, NgxGalleryOptions } from 'ngx-gallery-9';
 
 /**
  * The size for rendered avatars.
@@ -106,7 +106,7 @@ export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
 
   allImages: Image[];
 
-  galleryImages: NgxGalleryImage[];
+  galleryImages: INgxGalleryImage[];
 
   @Input() imageSize: number = null;
 

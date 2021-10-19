@@ -92,10 +92,6 @@ export class ProcessDynamicDocumentComponent
     return this.form.get(internalName);
   }
 
-  fieldSize(cf: CustomFieldDetailed) {
-    return this.fieldHelper.fieldSize(cf);
-  }
-
   resolveMenu() {
     return this.menu.userMenu(null, Menu.MY_DOCUMENTS);
   }

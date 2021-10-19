@@ -29,7 +29,7 @@
           </ng-container>
         </label-value>
         <label-value [label]="i18n.ad.owner">
-          <user-link [user]="ad.owner"></user-link>
+          <user-link [user]="ad.user"></user-link>
         </label-value>
         <label-value *ngIf="status" [label]="i18n.general.status">
           {{ status }}
@@ -88,16 +88,22 @@
       <ng-container
         *ngFor="let dm of data.deliveryMethods; let first = first">
         <h3 [ngClass]="{'pt-2': !first}"> {{ dm.name }} </h3>
-        <label-value *ngIf="dm.minDeliveryTime"
+        <label-value
+          *ngIf="dm.minDeliveryTime && dm.minDeliveryTime.amount > 0"
           [label]="i18n.ad.minDeliveryTime">
           {{ format.formatTimeInterval(dm.minDeliveryTime) }}
         </label-value>
-        <label-value [label]="i18n.ad.maxDeliveryTime">
+        <label-value
+          *ngIf="dm.maxDeliveryTime && dm.maxDeliveryTime.amount > 0"
+          [label]="i18n.ad.maxDeliveryTime">
           {{ format.formatTimeInterval(dm.maxDeliveryTime) }}
         </label-value>
         <label-value *ngIf="hasFixedDeliveryPrice(dm)"
           [label]="i18n.ad.price">
           {{ dm.chargeAmount | currency:ad.currency }}
+        </label-value>
+        <label-value *ngIf="dm.address" [label]="i18n.ad.pickupAddress">
+          {{ format.formatAddress(dm.address) }}
         </label-value>
         <label-value *ngIf="dm.description"
           [label]="i18n.general.description">
@@ -137,7 +143,7 @@
           <div class="pl-2" style="line-height: 1rem">
             {{ q.answer}}
             <div style="font-size: 0.6rem">
-              {{data.owner.display}} - {{ q.answerDate | dateTime }}</div>
+              {{data.user.display}} - {{ q.answerDate | dateTime }}</div>
           </div>
         </div>
         <hr class="inner-separator pb-1" *ngIf="!last">

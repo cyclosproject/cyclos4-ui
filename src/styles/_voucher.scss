@@ -1,0 +1,169 @@
+@import 'src/definitions';
+
+body.voucher {
+  .root {
+    .main-container  {
+      padding: 0.7rem;
+    }
+  }
+  .card {
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    border: none;
+    margin-top: 1rem;
+  }
+
+  .content {
+    flex-grow: 1;
+  }
+
+  .system {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .title {
+    font-size: 1.6em;
+    line-height: 1.6em;
+    margin-top: 1rem;
+    flex-grow: 1;
+    color: $label-color;
+  }
+
+  .system-image {
+    max-width: 12rem;
+    max-height: 3rem;
+  }
+
+  .message {
+    margin-bottom: 1rem;
+  }
+
+  .avatar-container {
+    background-size: cover;
+    background-position: center;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+  }
+
+  .is-voucher-page {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3rem;
+
+    action-button + action-button {
+      margin-top: 1rem;
+    }
+  }
+
+  table .date-time-column {
+    width: 10rem;
+  }
+
+  heading-action-button {
+    .btn {
+      border: solid 1px $border-color;
+    }
+  }
+
+  .toolbar {
+    margin-bottom: 2rem;
+    display: flex;
+    heading-action-button + heading-action-button {
+      margin-left: 1rem;
+    }
+  }
+}
+
+@include media-breakpoint-down(xs) {
+  body.voucher {
+    .system {
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+@include media-breakpoint-down(xs) {
+  label-value.voucher-token {
+    flex-direction: column;
+
+    .label-value-label, .label-value-container, .label-value-value {
+      width: 100%;
+    }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  body.voucher {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .card {
+      width: 44rem;
+      min-height: 30rem;
+      padding: 2rem;
+      border: 1px solid $border-color;
+      margin: auto;
+      margin-top: 1rem;
+  
+      & > *:not(.system):not(.title):not(router-outlet) {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    .system {
+      flex-direction: row;
+      margin-bottom: 2rem;
+    }
+
+    .title {
+      font-size: 1.8em;
+      line-height: 1.8em;
+      margin-top: 0;
+      margin-left: 1.5rem;
+    }
+  
+    .message {
+      margin-bottom: 2rem;
+    }
+
+    .actions {
+      flex-direction: row-reverse;
+      justify-content: space-between;
+      margin-top: 2rem;
+
+      action-button {
+        width: 18rem;
+      }
+
+      action-button + action-button {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+body.voucher.dark {
+  .card {
+    border-color: $border-color-dark;
+  }
+  .title {
+    color: $label-color-dark;
+  }
+}

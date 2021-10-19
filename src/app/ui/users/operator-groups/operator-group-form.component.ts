@@ -104,6 +104,9 @@ export class OperatorGroupFormComponent
     if (data.canViewAdvertisements) {
       this.form.addControl('viewAdvertisements', new FormControl(group.viewAdvertisements));
     }
+    if (data.canPerformVoucherTransactions) {
+      this.form.addControl('voucherTransactions', new FormControl(group.voucherTransactions));
+    }
     if (data.broker) {
       this.form.addControl('brokering', new FormControl(group.brokering));
     }

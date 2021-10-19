@@ -6,7 +6,7 @@
   <page-content mode="filters" [heading]="heading"
     [mobileHeading]="mobileHeading"
     [headingActions]="headingActions$ | async">
-    <form [formGroup]="form" class="filters-form">
+    <div [formGroup]="form" class="filters-form">
       <div class="row">
         <div *ngIf="statusOptions?.length > 0" class="col-12 col-md-6">
           <single-selection-field labelPosition="side"
@@ -26,7 +26,7 @@
         </div>
         <ng-container *ngIf="(moreFilters$ | async) || isMyAuth()">
           <ng-container
-            *ngIf="(isAuthorized() || isPaymentRequest()) && data.accountTypes?.length > 1">
+            *ngIf="(isAuthorized() || isPaymentRequest() || isExternalPayment()) && data.accountTypes?.length > 1">
             <!-- Force a line break on sm and up -->
             <div class="w-100 d-none d-sm-block"></div>
             <div class="col-12 col-md-6">
@@ -105,7 +105,7 @@
               </field-option>
             </multi-selection-field>
           </div>
-          <ng-container *ngIf="isPaymentRequest()">
+          <ng-container *ngIf="isPaymentRequest() || isExternalPayment()">
             <div class="col-12 col-md-6">
               <date-field labelPosition="side"
                 formControlName="expirationBegin"
@@ -133,7 +133,7 @@
           </div>
         </ng-container>
       </div>
-    </form>
+    </div>
   </page-content>
 
   <results-layout resultType="list" [results]="results$ | async"
@@ -143,8 +143,9 @@
       [amount]="row.amount" [currency]="currenciesByKey.get(row.currency)">
       <div class="cell-text cell-main">
         {{ i18n.transaction.fromToText({
-          from: bankingHelper.subjectName(isPaymentRequest() ? row.to : row.from),
-          to: bankingHelper.subjectName(isPaymentRequest() ? row.from : row.to)
+        from: bankingHelper.subjectName(isPaymentRequest() ? row.to :
+        row.from),
+        to: bankingHelper.subjectName(isPaymentRequest() ? row.from : row.to)
         }) }}
       </div>
     </mobile-result>
@@ -181,12 +182,14 @@
             </td>
             <td>
               <a [routerLink]="bankingHelper.transactionPath(row)">
-                {{ bankingHelper.subjectName( isPaymentRequest() ? row.to : row.from) }}
+                {{ bankingHelper.subjectName( isPaymentRequest() ? row.to :
+                row.from) }}
               </a>
             </td>
             <td>
               <a [routerLink]="bankingHelper.transactionPath(row)">
-                {{ bankingHelper.subjectName(  isPaymentRequest() ? row.from : row.to) }}
+                {{ bankingHelper.subjectName( isPaymentRequest() ? row.from :
+                row.to) }}
               </a>
             </td>
             <ng-container *ngIf="isPaymentRequest()">

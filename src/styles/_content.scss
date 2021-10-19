@@ -41,6 +41,10 @@
   }
 }
 
+.card-body {
+  flex-grow: 0;
+}
+
 .custom-content-container {
   display: flex;
   flex-direction: column;

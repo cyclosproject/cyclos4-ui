@@ -1,0 +1,104 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data; then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content mode="filters" [heading]="i18n.voucher.title.search"
+    [mobileHeading]="i18n.voucher.mobileTitle.search"
+    [headingActions]="headingActions$ | async">
+
+    <div [formGroup]="form" class="filters-form filters-form-separator">
+      <div class="row">
+        <ng-container *ngIf="data.user && !self">
+          <div class="col-12 col-md-6">
+            <label-value [label]="i18n.general.user" kind="fieldView">
+              <user-link [user]="data.user"></user-link>
+            </label-value>
+          </div>
+          <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
+          </div>
+        </ng-container>
+        <div *ngIf="data.types?.length > 0" class="col-12 col-md-6">
+          <multi-selection-field labelPosition="side" formControlName="types"
+            [emptyLabel]="i18n.general.notApplied"
+            [label]="i18n.general.type">
+            <field-option *ngFor="let type of data.types" [value]="type.id"
+              [internalName]="type.internalName" [id]="type.id"
+              [text]="type.name">
+            </field-option>
+          </multi-selection-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            formControlName="creationType"
+            [label]="i18n.voucher.creationType.userLabel"
+            [fieldOptions]=creationTypeOptions
+            [emptyOption]="this.i18n.general.all">
+          </single-selection-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <multi-selection-field labelPosition="side"
+            formControlName="statuses" [emptyLabel]="i18n.general.notApplied"
+            [label]="i18n.general.status" [fieldOptions]="statusOptions">
+          </multi-selection-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <input-field labelPosition="side" formControlName="token"
+            [label]="i18n.voucher.token" [mask]="data.mask">
+          </input-field>
+        </div>
+      </div>
+    </div>
+  </page-content>
+
+  <results-layout resultType="list" [results]="results$ | async"
+    [rendering$]="rendering$" (update)="update($event)" [toLink]="toLink">
+
+    <mobile-result *mobileResult="let row" [date]="row.creationDate"
+      [amount]="row.amount" [amountColor]="false"
+      [avatarImage]="row.type.image" [avatarIcon]="SvgIcon.Ticket"
+      [currency]="row.type.configuration.currency">
+      <div class="cell-text cell-main">
+        {{ row.type.voucherTitle }}
+      </div>
+    </mobile-result>
+
+    <table *resultTable class="table table-hover cursor-pointer">
+      <tbody>
+        <th class="avatar"></th>
+        <th>{{i18n.voucher.voucher}}</th>
+        <th>{{i18n.general.expirationDate}}</th>
+        <th>{{i18n.general.status}}</th>
+        <th class="amount">{{i18n.transaction.amount}}</th>
+        <th class="amount">{{i18n.voucher.balance}}</th>
+        <tr (click)="router.navigate(path(row))"
+          *ngFor="let row of (results$ | async)?.results">
+          <td class="avatar">
+            <avatar [image]="row.type.image" [icon]="SvgIcon.Ticket">
+            </avatar>
+          </td>
+          <td>
+            <a [routerLink]="path(row)">{{ row.type.voucherTitle }}</a>
+          </td>
+          <td>
+            <a *ngIf="row.status !== VoucherStatusEnum.REDEEMED"
+              [routerLink]="path(row)">{{ row.expirationDate | dateTime }}</a>
+          </td>
+          <td>
+            <a [routerLink]="path(row)">{{ apiI18n.voucherStatus(row.status)
+              }}</a>
+          </td>
+          <td class="amount">
+            <a [routerLink]="path(row)">{{ row.amount |
+              currency:row.type.configuration.currency }}</a>
+          </td>
+          <td class="amount">
+            <a [routerLink]="path(row)">{{ row.balance |
+              currency:row.type.configuration.currency }}</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </results-layout>
+
+</ng-template>

@@ -6,6 +6,7 @@ import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { downloadResponse } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { SvgIcon } from 'app/core/svg-icon';
+import { empty } from 'app/shared/helper';
 
 /**
  * View the details of a document. Only for managers
@@ -20,6 +21,7 @@ export class ViewDocumentComponent
   implements OnInit {
 
   id: string;
+  empty = empty;
 
   constructor(
     injector: Injector,
@@ -43,7 +45,7 @@ export class ViewDocumentComponent
   }
 
   remove() {
-    this.notification.confirm({
+    this.confirmation.confirm({
       message: this.i18n.general.removeItemConfirm,
       callback: () => this.doRemove(),
     });

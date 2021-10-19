@@ -26,8 +26,8 @@ export enum RootMenu {
   BROKERING = 'brokering',
   MARKETPLACE = 'marketplace',
   HOME = 'home',
-  PUBLIC_DIRECTORY = 'publicDirectory',
   PUBLIC_MARKETPLACE = 'publicMarketplace',
+  PUBLIC_DIRECTORY = 'publicDirectory',
   LANGUAGE = 'language',
   CONTENT = 'content',
   PERSONAL = 'personal',
@@ -77,20 +77,19 @@ export namespace Menu {
   export const SCHEDULED_PAYMENTS_OVERVIEW = new Menu(RootMenu.BANKING, 'SCHEDULED_PAYMENTS_OVERVIEW');
   export const AUTHORIZED_PAYMENTS = new Menu(RootMenu.BANKING, 'AUTHORIZED_PAYMENTS');
   export const AUTHORIZED_PAYMENTS_OVERVIEW = new Menu(RootMenu.BANKING, 'AUTHORIZED_PAYMENTS_OVERVIEW');
+  export const PENDING_MY_AUTHORIZATION = new Menu(RootMenu.BANKING, 'PENDING_MY_AUTHORIZATION');
   export const PAYMENT_REQUESTS = new Menu(RootMenu.BANKING, 'PAYMENT_REQUESTS');
   export const PAYMENT_REQUESTS_OVERVIEW = new Menu(RootMenu.BANKING, 'PAYMENT_REQUESTS_OVERVIEW');
-  export const PENDING_MY_AUTHORIZATION = new Menu(RootMenu.BANKING, 'PENDING_MY_AUTHORIZATION');
-  export const REDEEM_VOUCHER = new Menu(RootMenu.BANKING, 'REDEEM_VOUCHER');
-  export const SEARCH_REDEEMED = new Menu(RootMenu.BANKING, 'SEARCH_REDEEMED');
+  export const EXTERNAL_PAYMENTS = new Menu(RootMenu.BANKING, 'EXTERNAL_PAYMENTS');
+  export const EXTERNAL_PAYMENTS_OVERVIEW = new Menu(RootMenu.BANKING, 'EXTERNAL_PAYMENTS_OVERVIEW');
+  export const VOUCHER_TRANSACTIONS = new Menu(RootMenu.BANKING, 'VOUCHER_TRANSACTIONS');
   export const SEARCH_VOUCHERS = new Menu(RootMenu.BANKING, 'SEARCH_VOUCHERS');
-  export const GENERATE_VOUCHER = new Menu(RootMenu.BANKING, 'GENERATE_VOUCHER');
-  export const PAYMENT_REQUEST_TO_USER = new Menu(RootMenu.BANKING, 'PAYMENT_REQUEST_TO_USER');
-  export const PAYMENT_REQUEST_TO_SYSTEM = new Menu(RootMenu.BANKING, 'PAYMENT_REQUEST_TO_SYSTEM');
 
   // Users / Marketplace
   export const SEARCH_USERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USERS');
   export const SEARCH_ADS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_ADS');
   export const SEARCH_USER_ADS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USER_ADS');
+  export const SYSTEM_MESSAGES = new Menu(RootMenu.MARKETPLACE, 'SYSTEM_MESSAGES');
   export const PURCHASES = new Menu(RootMenu.MARKETPLACE, 'PURCHASES');
   export const SEARCH_USER_WEBSHOP = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USER_WEBSHOP');
   export const SALES = new Menu(RootMenu.MARKETPLACE, 'SALES');
@@ -102,11 +101,9 @@ export namespace Menu {
   export const ADMIN_REGISTRATION = new Menu(RootMenu.MARKETPLACE, 'ADMIN_REGISTRATION');
   export const USER_ALERTS = new Menu(RootMenu.MARKETPLACE, 'USER_ALERTS');
   export const SHOPPING_CART = new Menu(RootMenu.MARKETPLACE, 'SHOPPING_CART');
-
+  export const INVITE = new Menu(RootMenu.MARKETPLACE, 'SEND_INVITATION');
   export const VIEW_AD = new Menu(RootMenu.MARKETPLACE, 'VIEW_AD');
-
-  export const BUY_VOUCHER = new Menu(RootMenu.MARKETPLACE, 'BUY_VOUCHER');
-  export const SEARCH_BOUGHT_VOUCHERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_BOUGHT_VOUCHERS');
+  export const SEARCH_MY_VOUCHERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_MY_VOUCHERS');
 
   // Operators
   export const MY_OPERATORS = new Menu(RootMenu.OPERATORS, 'MY_OPERATORS');
@@ -127,11 +124,11 @@ export namespace Menu {
   export const PASSWORDS = new Menu(RootMenu.PERSONAL, 'PASSWORDS');
   export const IDENTITY_PROVIDERS = new Menu(RootMenu.PERSONAL, 'IDENTITY_PROVIDERS');
   export const AGREEMENTS = new Menu(RootMenu.PERSONAL, 'AGREEMENTS');
+  export const MESSAGES = new Menu(RootMenu.PERSONAL, 'MESSAGES');
   export const NOTIFICATIONS = new Menu(RootMenu.PERSONAL, 'NOTIFICATIONS');
-  export const NOTIFICATIONS_SETTINGS = new Menu(RootMenu.PERSONAL, 'NOTIFICATIONS_SETTINGS');
   export const SETTINGS = new Menu(RootMenu.PERSONAL, 'SETTINGS');
-  export const PRIVACY_SETTINGS = new Menu(RootMenu.PERSONAL, 'PRIVACY_SETTINGS');
   export const REFERENCES = new Menu(RootMenu.PERSONAL, 'REFERENCES');
+  export const FEEDBACKS = new Menu(RootMenu.PERSONAL, 'FEEDBACKS');
 
   // Custom operations (one per root menu in owner, also one per operation container)
   export const RUN_OPERATION_BANKING = new Menu(RootMenu.BANKING, 'RUN_OPERATION_BANKING');

@@ -9,29 +9,30 @@
   'mode-filters': mode === 'filters',
   'mode-empty-filters': mode === 'emptyFilters',
   'mode-transparent': mode === 'transparent',
-  'mode-full-height': mode === 'fullHeight' || mode === 'fullHeightTight',
   'mode-empty': mode === 'empty',
+  'full-height': mode === 'fullHeight' || mode === 'fullHeightTight',
   'print-content-only': printContentOnly
 }">
   <div *ngIf="heading != null && layoutService.gtxxs$ | async"
     class="content-title d-flex"
     [ngClass]="{ 'd-print-none': printContentOnly }">
-    <button tabindex="0"
+    <button type="button" tabindex="0"
       *ngIf="!hideBack && (breadcrumb.breadcrumb$ | async)?.length > 1"
       class="back-button btn btn-transparent" (click)="breadcrumb.back()">
       <icon [icon]="SvgIcon.ArrowLeft"></icon>
     </button>
     <div
       class="title-text text-truncate flex-grow-1 d-flex align-items-center">
-      {{ (layoutService.gtxs$ | async) ? heading || mobileHeading : mobileHeading || heading }}
+      {{ (layoutService.gtxs$ | async) ? heading || mobileHeading :
+      mobileHeading || heading }}
     </div>
 
-    <heading-actions
-      *ngIf="(layoutService.ltsm$ | async) || headingActions?.length <= 2"
+    <heading-actions root
+      *ngIf="(layoutService.ltsm$ | async) || headingActions?.length > 0"
       [headingActions]="headingActions"></heading-actions>
   </div>
   <actions-toolbar
-    *ngIf="(layoutService.gtxs$ | async) && headingActions?.length > 2"
+    *ngIf="(layoutService.gtxs$ | async) && headingActions?.length > 0"
     [headingActions]="headingActions"></actions-toolbar>
   <div *ngIf="mode !== 'empty'"
     class="page-content-body card-body d-flex flex-column">

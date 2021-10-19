@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import {
   AccountType, AccountWithOwner, AdminMenuEnum, DataForFrontend,
@@ -16,12 +16,13 @@ import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { StateManager } from 'app/core/state-manager';
 import { SvgIcon } from 'app/core/svg-icon';
-import { I18n } from 'app/i18n/i18n';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { empty, toFullUrl, truthyAttr } from 'app/shared/helper';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
 import { LoginService } from 'app/ui/core/login.service';
+import { MapsService } from 'app/ui/core/maps.service';
 import { OperationHelperService } from 'app/ui/core/operation-helper.service';
 import { RecordHelperService } from 'app/ui/core/records-helper.service';
 import { TokenHelperService } from 'app/ui/core/token-helper.service';
@@ -61,12 +62,14 @@ export interface NavigateParams {
 }
 
 interface ResolvedVouchersPermissions {
-  buy: boolean;
-  redeem: boolean;
-  generate: boolean;
-  viewBought: boolean;
-  viewRedeemed: boolean;
   view: boolean;
+  generate: boolean;
+  viewVouchers: boolean;
+  buy: boolean;
+  send: boolean;
+  viewTransactions: boolean;
+  redeem: boolean;
+  topUp: boolean;
 }
 
 /**
@@ -85,7 +88,7 @@ export class MenuService {
   }
 
   constructor(
-    private i18n: I18n,
+    @Inject(I18nInjectionToken) private i18n: I18n,
     private dataForFrontendHolder: DataForFrontendHolder,
     i18nLoading: I18nLoadingService,
     private router: Router,
@@ -101,7 +104,8 @@ export class MenuService {
     private cache: CacheService,
     private usersService: UsersService,
     private uiLayout: UiLayoutService,
-    private nextRequestState: NextRequestState
+    private nextRequestState: NextRequestState,
+    private mapService: MapsService
   ) {
 
     // Whenever the authenticated user, translations or content pages changes, reload the menu
@@ -512,10 +516,12 @@ export class MenuService {
   }
 
   /**
-   * Returns the home menu, which is `Menu.HOME` for guests, or `Menu.DASHBOARD` for logged users.
+   * Returns the home menu, which is `Menu.HOME` for guests (except if disabled, in this case, 'Menu.LOGIN'),
+   * or `Menu.DASHBOARD` for logged users.
    */
   homeMenu(): Menu {
-    return this.dataForFrontendHolder.user ? Menu.DASHBOARD : Menu.HOME;
+    const hasHomePage = this.dataForFrontendHolder.dataForFrontend?.hasHomePage;
+    return this.dataForFrontendHolder.user ? Menu.DASHBOARD : hasHomePage ? Menu.HOME : Menu.LOGIN;
   }
 
   /**
@@ -523,8 +529,6 @@ export class MenuService {
    * If self, returns the `selfMenu`. Otherwise, returns the menu to search users.
    * @param user The user being tested
    * @param selfMenu The menu when the user is self
-   * @see #isSelfOrOwner
-   * @see #searchUsersMenu
    */
   userMenu(user: User, selfMenu: Menu | ActiveMenu): Menu | ActiveMenu | Observable<Menu | ActiveMenu> {
     return this.authHelper.isSelfOrOwner(user) ? selfMenu : this.searchUsersMenu(user);
@@ -570,14 +574,10 @@ export class MenuService {
         return this.usersService
           .viewUser({ user: user.id, fields: ['relationship'] })
           .pipe(
-            map(v => {
-              return v.relationship === UserRelationshipEnum.BROKER;
-            }),
+            map(v => v.relationship === UserRelationshipEnum.BROKER)
           );
       }).pipe(
-        map(isBroker =>
-          truthyAttr(isBroker) ? Menu.MY_BROKERED_USERS : Menu.SEARCH_USERS,
-        ),
+        map(isBroker => truthyAttr(isBroker) ? Menu.MY_BROKERED_USERS : Menu.SEARCH_USERS)
       );
     } else {
       // All other cases of non-self users are via search users
@@ -606,17 +606,25 @@ export class MenuService {
    * Returns the menu for one of the given accounts
    */
   accountMenu(from: AccountWithOwner, to: AccountWithOwner) {
-    const fromSelf = this.authHelper.isSelf(from);
-    const toSelf = this.authHelper.isSelf(to);
-    if (fromSelf || toSelf) {
+    let account: AccountWithOwner = null;
+    if (from || to) {
+      if (!from || !to) {
+        account = from || to;
+      } else {
+        const fromSelf = this.authHelper.isSelf(from);
+        const toSelf = this.authHelper.isSelf(to);
+        if (fromSelf || toSelf) {
+          account = fromSelf ? from.type : to.type;
+        }
+      }
+    }
+    if (account && this.authHelper.isSelfOrOwner(account.user)) {
       // We have to assume we're viewing a self acount
       return new ActiveMenu(Menu.ACCOUNT_HISTORY, {
-        accountType: fromSelf ? from.type : to.type,
+        accountType: account.type,
       });
-    } else {
-      // Either an admin or broker viewing other member's accounts
-      return this.searchUsersMenu();
     }
+    return this.searchUsersMenu();
   }
 
   /**
@@ -715,6 +723,8 @@ export class MenuService {
 
     const auth = data.dataForUi.auth || {};
     const role = auth == null ? null : auth.role;
+    const isAdmin = role === RoleEnum.ADMINISTRATOR;
+    const isBroker = role === RoleEnum.BROKER;
     const permissions = auth.permissions || {};
     const user = auth.user;
     const restrictedAccess = this.authHelper.restrictedAccess;
@@ -733,19 +743,19 @@ export class MenuService {
       return entry;
     };
     // Create the root menu entries
-    const home = addRoot(RootMenu.HOME, SvgIcon.HouseDoor, this.i18n.menu.home, null);
-    const dashboard = addRoot(RootMenu.DASHBOARD, SvgIcon.Grid, this.i18n.menu.dashboard, null);
+    const home = addRoot(RootMenu.HOME, SvgIcon.HouseDoor2, this.i18n.menu.home, null);
+    const dashboard = addRoot(RootMenu.DASHBOARD, SvgIcon.Grid2, this.i18n.menu.dashboard, null);
     const publicDirectory = addRoot(RootMenu.PUBLIC_DIRECTORY, SvgIcon.People, this.i18n.menu.marketplaceDirectory);
-    const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE, SvgIcon.Shop, this.i18n.menu.marketplaceAdvertisements);
-    addRoot(RootMenu.BANKING, SvgIcon.Wallet2, this.i18n.menu.banking);
+    const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE, SvgIcon.Bag2, this.i18n.menu.marketplaceAdvertisements);
+    addRoot(RootMenu.BANKING, SvgIcon.Wallet3, this.i18n.menu.banking);
     addRoot(RootMenu.OPERATORS, SvgIcon.PersonCircleOutline, this.i18n.menu.operators);
     addRoot(RootMenu.BROKERING, SvgIcon.PersonSquareOutline, this.i18n.menu.brokering);
-    const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, SvgIcon.Shop, this.i18n.menu.marketplace);
-    const content = addRoot(RootMenu.CONTENT, SvgIcon.FileText, this.i18n.menu.content);
+    const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, SvgIcon.Shop2, this.i18n.menu.marketplace);
+    const content = addRoot(RootMenu.CONTENT, SvgIcon.InfoCircle, this.i18n.menu.content);
     addRoot(RootMenu.PERSONAL, SvgIcon.Person, this.i18n.menu.personal, null, [MenuType.SIDENAV, MenuType.BAR, MenuType.SIDE]);
     const register = addRoot(RootMenu.REGISTRATION, SvgIcon.PersonPlus, this.i18n.menu.register, null, [MenuType.SIDENAV]);
-    const login = addRoot(RootMenu.LOGIN, SvgIcon.BoxArrowInRight, this.i18n.menu.login, null, [MenuType.SIDENAV]);
-    const logout = addRoot(RootMenu.LOGOUT, SvgIcon.BoxArrowRight, this.i18n.menu.logout, null, []);
+    const login = addRoot(RootMenu.LOGIN, SvgIcon.Login2, this.i18n.menu.login, null, [MenuType.SIDENAV]);
+    const logout = addRoot(RootMenu.LOGOUT, SvgIcon.Logout2, this.i18n.menu.logout, null, []);
 
     // Lambda that adds a submenu to a root menu
     const add = (
@@ -770,7 +780,7 @@ export class MenuService {
         const activeMenu = new ActiveMenu(menu, {
           contentPage: slug,
         });
-        add(activeMenu, `/page/${slug}`, page.svgIcon || SvgIcon.FileText, page.name);
+        add(activeMenu, `/page/${slug}`, page.svgIcon || SvgIcon.FileEarmarkText, page.name);
       }
       return pages;
     };
@@ -869,23 +879,24 @@ export class MenuService {
 
       // Add each kind of records
       doAddRecords('system', systemRecords.filter(p => this.adminMenuMatches(root, p.type.adminMenu)));
-      if ((role === RoleEnum.BROKER && root === RootMenu.BROKERING)
-        || (role === RoleEnum.ADMINISTRATOR && root === RootMenu.MARKETPLACE)) {
+      if ((isBroker && root === RootMenu.BROKERING) || (isAdmin && root === RootMenu.MARKETPLACE)) {
         doAddRecords(RecordHelperService.GENERAL_SEARCH, userRecords);
       }
       doAddRecords('self', myRecords.filter(p => this.userMenuMatches(root, p.type.userMenu)));
     };
     // Add the submenus
-    if (restrictedAccess) {
+    if (restrictedAccess) {/*  */
       // No menus in restricted access
     } else if (user == null) {
       // Guest
-      add(Menu.HOME, '/', SvgIcon.HouseDoor, home.label);
+      if (data.hasHomePage) {
+        add(Menu.HOME, '/', SvgIcon.HouseDoor2, home.label);
+      }
       if (users.search || users.map) {
         add(Menu.PUBLIC_DIRECTORY, '/users/search', SvgIcon.People, publicDirectory.label);
       }
-      if (marketplace.userSimple.view || marketplace.userWebshop.view) {
-        add(Menu.PUBLIC_MARKETPLACE, '/marketplace/search', SvgIcon.Shop, publicMarketplace.label);
+      if (marketplace?.userSimple?.view || marketplace?.userWebshop?.view) {
+        add(Menu.PUBLIC_MARKETPLACE, '/marketplace/search', SvgIcon.Shop2, publicMarketplace.label);
       }
       const locales = data.dataForUi.allowedLocales || [];
       if (locales.length > 1) {
@@ -902,17 +913,17 @@ export class MenuService {
         add(Menu.PUBLIC_REGISTRATION, '/users/registration', SvgIcon.PersonPlus, register.label);
       }
       const externalLoginUrl = this.dataForFrontendHolder.dataForFrontend.externalLoginUrl;
-      add(Menu.LOGIN, externalLoginUrl || '/login', SvgIcon.BoxArrowInRight, login.label);
+      add(Menu.LOGIN, externalLoginUrl || '/login', SvgIcon.Login2, login.label);
     } else {
       // Logged user
-      add(Menu.DASHBOARD, '/', SvgIcon.Grid, dashboard.label);
+      add(Menu.DASHBOARD, '/', SvgIcon.Grid2, dashboard.label);
 
       const banking = permissions.banking || {};
       const contacts = permissions.contacts || {};
       const operators = permissions.operators || {};
 
       // Banking
-      const owner = role === RoleEnum.ADMINISTRATOR ? ApiHelper.SYSTEM : ApiHelper.SELF;
+      const owner = isAdmin ? ApiHelper.SYSTEM : ApiHelper.SELF;
       const accountTypes = this.bankingHelper.ownerAccountTypes();
       if (accountTypes.length >= ApiHelper.MIN_ACCOUNTS_FOR_SUMMARY) {
         add(Menu.ACCOUNTS_SUMMARY, `/banking/${owner}/accounts-summary`, SvgIcon.Wallet2, this.i18n.menu.bankingAccountsSummary);
@@ -939,29 +950,25 @@ export class MenuService {
       if (payments.pos) {
         add(Menu.POS, `/banking/pos`, SvgIcon.CreditCard, this.i18n.menu.bankingPos);
       }
-      const paymentRequests = banking.paymentRequests || {};
-      if (paymentRequests.sendToUser) {
-        add(Menu.PAYMENT_REQUEST_TO_USER, `/banking/${owner}/payment-request`, SvgIcon.Wallet2ArrowLeft,
-          this.i18n.menu.bankingRequestPaymentFromUser);
-      }
-      if (paymentRequests.sendToSystem) {
-        add(Menu.PAYMENT_REQUEST_TO_SYSTEM, `/banking/${owner}/payment-request/system`, SvgIcon.Wallet2ArrowLeft,
-          this.i18n.menu.bankingRequestPaymentFromSystem);
-      }
-      if ((banking.scheduledPayments || {}).view) {
+      if (banking.scheduledPayments?.view) {
         add(Menu.SCHEDULED_PAYMENTS, `/banking/${owner}/installments`,
           SvgIcon.CalendarEvent, this.i18n.menu.bankingScheduledPayments);
       }
-      if (paymentRequests.view) {
+      if (banking.paymentRequests?.view) {
         add(Menu.PAYMENT_REQUESTS, `/banking/${owner}/payment-requests`, SvgIcon.Wallet2ArrowLeft, this.i18n.menu.bankingPaymentRequests);
       }
+      if (banking.externalPayments?.view) {
+        add(Menu.EXTERNAL_PAYMENTS, `/banking/${owner}/external-payments`, SvgIcon.Wallet2ArrowUpRight,
+          this.i18n.menu.bankingExternalPayments);
+      }
+
       const authorizations = (banking.authorizations || {});
       if (authorizations.authorize) {
         add(Menu.PENDING_MY_AUTHORIZATION, `/banking/pending-my-authorization`,
           SvgIcon.Wallet2Check, this.i18n.menu.bankingPendingMyAuth);
       }
       if (authorizations.view) {
-        if (role === RoleEnum.ADMINISTRATOR && banking.searchGeneralAuthorizedPayments) {
+        if (isAdmin && banking.searchGeneralAuthorizedPayments) {
           add(Menu.AUTHORIZED_PAYMENTS_OVERVIEW, `/banking/authorized-payments`,
             SvgIcon.Wallet2Check, this.i18n.menu.bankingAuthorizations);
         } else {
@@ -970,18 +977,22 @@ export class MenuService {
         }
       }
       if (banking.searchGeneralTransfers) {
-        add(Menu.ADMIN_TRANSFERS_OVERVIEW, `/banking/transfers-overview`,
-          SvgIcon.ArrowLeftRight, this.i18n.menu.bankingTransfersOverview);
+        add(Menu.ADMIN_TRANSFERS_OVERVIEW, `/banking/transfers-overview`, SvgIcon.ArrowLeftRight, this.i18n.menu.bankingTransfersOverview);
       }
 
-      if ((banking.scheduledPayments || {}).view && banking.searchGeneralScheduledPayments) {
+      if (banking.scheduledPayments?.view && banking.searchGeneralScheduledPayments) {
         add(Menu.SCHEDULED_PAYMENTS_OVERVIEW, `/banking/installments-overview`,
           SvgIcon.CalendarEvent, this.i18n.menu.bankingScheduledPaymentsOverview);
       }
 
-      if (paymentRequests.view && role === RoleEnum.ADMINISTRATOR && banking.searchGeneralPaymentRequests) {
+      if (isAdmin && banking.searchGeneralPaymentRequests) {
         add(Menu.PAYMENT_REQUESTS_OVERVIEW, `/banking/payment-requests`,
           SvgIcon.Wallet2ArrowLeft, this.i18n.menu.bankingPaymentRequestsOverview);
+      }
+
+      if (isAdmin && banking.searchGeneralExternalPayments) {
+        add(Menu.EXTERNAL_PAYMENTS_OVERVIEW, `/banking/external-payments`,
+          SvgIcon.Wallet2ArrowUpRight, this.i18n.menu.bankingExternalPaymentsOverview);
       }
 
       if (banking.searchUsersWithBalances) {
@@ -989,20 +1000,13 @@ export class MenuService {
           SvgIcon.Wallet2Person, this.i18n.menu.bankingUserBalancesOverview);
       }
 
-      if (vouchers.viewRedeemed) {
-        add(Menu.SEARCH_REDEEMED, '/banking/' + ApiHelper.SELF + '/vouchers/redeemed',
-          SvgIcon.Ticket, this.i18n.menu.bankingRedeemedVouchers);
-      }
-      if (vouchers.redeem && role !== RoleEnum.ADMINISTRATOR) {
-        add(Menu.REDEEM_VOUCHER, '/banking/' + ApiHelper.SELF + '/vouchers/redeem',
-          SvgIcon.Ticket, this.i18n.menu.bankingRedeemVoucher);
+      if (vouchers.viewTransactions) {
+        add(Menu.VOUCHER_TRANSACTIONS, '/banking/' + ApiHelper.SELF + '/voucher-transactions',
+          SvgIcon.TicketTransactions, this.i18n.menu.bankingVoucherTransactions);
       }
       if (vouchers.view) {
         add(Menu.SEARCH_VOUCHERS, '/banking/vouchers',
-          SvgIcon.Ticket, this.i18n.menu.bankingSearchVouchers);
-      }
-      if (vouchers.generate) {
-        add(Menu.GENERATE_VOUCHER, `/banking/vouchers/generate`, SvgIcon.Ticket, this.i18n.menu.bankingGenerateVouchers);
+          SvgIcon.Ticket, this.i18n.menu.bankingVouchers);
       }
 
       if (banking.searchGeneralBalanceLimits) {
@@ -1028,7 +1032,7 @@ export class MenuService {
       }
 
       // Brokering
-      if (auth.role === RoleEnum.BROKER) {
+      if (isBroker) {
         add(Menu.MY_BROKERED_USERS, '/users/brokerings', SvgIcon.PersonSquareOutline, this.i18n.menu.brokeringUsers);
         if (users.registerAsBroker) {
           add(Menu.BROKER_REGISTRATION, '/users/registration', SvgIcon.PersonPlus, this.i18n.menu.brokeringRegister);
@@ -1041,20 +1045,27 @@ export class MenuService {
           add(Menu.BROKER_AUTHORIZED_PAYMENTS_OVERVIEW, `/banking/authorized-payments`,
             SvgIcon.Wallet2Check, this.i18n.menu.bankingAuthorizations);
         }
+        addRecords(RootMenu.BROKERING);
+        addOperations(RootMenu.BROKERING);
+        addWizards(RootMenu.BROKERING);
       }
 
       // Users
-      if (users.search || users.map) {
+      if ((!data.dataForUi.hideUserSearchInMenu && users.search) || (!isAdmin && users.map && this.mapService.enabled)) {
         add(Menu.SEARCH_USERS, '/users/search', SvgIcon.People,
-          role === RoleEnum.ADMINISTRATOR ? this.i18n.menu.marketplaceUserSearch : this.i18n.menu.marketplaceBusinessDirectory);
+          isAdmin ? this.i18n.menu.marketplaceUserSearch : this.i18n.menu.marketplaceBusinessDirectory);
       }
       if (users.registerAsAdmin) {
         add(Menu.ADMIN_REGISTRATION, '/users/registration', SvgIcon.PersonPlus, this.i18n.menu.marketplaceRegister);
       }
       const sessions = permissions.sessions || {};
       if (sessions.view) {
-        const menu = role === RoleEnum.BROKER ? Menu.BROKER_CONNECTED_USERS : Menu.CONNECTED_USERS;
-        add(menu, '/users/connected', SvgIcon.BoxArrowInRight, this.i18n.menu.marketplaceConnectedUsers);
+        const menu = isBroker ? Menu.BROKER_CONNECTED_USERS : Menu.CONNECTED_USERS;
+        add(menu, '/users/connected', SvgIcon.Login2, this.i18n.menu.marketplaceConnectedUsers);
+      }
+      const systemMessages = (permissions.messages || {}).system;
+      if (systemMessages?.view) {
+        add(Menu.SYSTEM_MESSAGES, '/users/messages/search', SvgIcon.Envelope, this.i18n.menu.marketplaceSystemMessages);
       }
 
       // Marketplace
@@ -1070,17 +1081,21 @@ export class MenuService {
       if (marketplace.userWebshop.purchase) {
         add(Menu.SHOPPING_CART, '/marketplace/shopping-cart', SvgIcon.Cart3, this.i18n.menu.shoppingCart);
       }
+      if (marketplace.userWebshop.purchase) {
+        add(Menu.PURCHASES, 'marketplace/self/purchases', SvgIcon.Bag2, this.i18n.menu.marketplaceMyPurchases);
+      }
 
       if (marketplace.interests) {
         add(Menu.AD_INTERESTS, 'marketplace/self/ad-interests', SvgIcon.Star, this.i18n.menu.marketplaceAdInterests);
+      }
+      if (vouchers.viewVouchers) {
+        add(Menu.SEARCH_MY_VOUCHERS, '/banking/self/vouchers', SvgIcon.Ticket,
+          this.i18n.menu.bankingVouchers);
       }
 
       const simple = marketplace.mySimple || {};
       if (simple.enable) {
         add(Menu.SEARCH_USER_ADS, 'marketplace/self/simple/list', SvgIcon.Basket, this.i18n.menu.marketplaceMyAdvertisements);
-      }
-      if (marketplace.userWebshop.purchase) {
-        add(Menu.PURCHASES, 'marketplace/self/purchases', SvgIcon.Cart3, this.i18n.menu.marketplaceMyPurchases);
       }
       const webshop = marketplace.myWebshop || {};
       if (webshop.enable) {
@@ -1094,20 +1109,16 @@ export class MenuService {
         add(Menu.UNANSWERED_QUESTIONS, 'marketplace/unanswered-questions',
           SvgIcon.ChatLeft, this.i18n.menu.marketplaceUnansweredQuestions);
       }
+      if (permissions.invite?.send) {
+        add(Menu.INVITE, '/personal/invite', SvgIcon.EnvelopeOpen, this.i18n.menu.marketplaceInviteUsers);
+      }
 
-      if (vouchers.buy && role !== RoleEnum.ADMINISTRATOR) {
-        add(Menu.BUY_VOUCHER, '/banking/self/vouchers/buy', SvgIcon.Ticket, this.i18n.menu.bankingBuyVouchers);
-      }
-      if (vouchers.viewBought) {
-        add(Menu.SEARCH_BOUGHT_VOUCHERS, '/banking/self/vouchers/bought', SvgIcon.Ticket,
-          this.i18n.menu.bankingBoughtVouchers);
-      }
       addRecords(RootMenu.MARKETPLACE);
       addOperations(RootMenu.MARKETPLACE);
       addWizards(RootMenu.MARKETPLACE);
       addContentPages(Menu.CONTENT_PAGE_MARKETPLACE);
 
-      if (role === RoleEnum.ADMINISTRATOR) {
+      if (isAdmin) {
         // For admins, show the marketplace menu as users
         marketplaceRoot.icon = SvgIcon.People;
         marketplaceRoot.label = this.i18n.menu.marketplaceUsers;
@@ -1118,7 +1129,7 @@ export class MenuService {
         marketplaceRoot.label = publicDirectory.label;
         marketplaceRoot.title = publicDirectory.label;
       }
-      if (auth.role === RoleEnum.ADMINISTRATOR) {
+      if (isAdmin) {
         for (const token of permissions.tokens?.user) {
           const activeMenu = new ActiveMenu(Menu.USER_TOKENS, { tokenType: token.type });
           add(activeMenu, `/users/tokens/search/${token.type.id}`, SvgIcon.CreditCard, token.type.pluralName);
@@ -1130,6 +1141,7 @@ export class MenuService {
       if (myProfile.editProfile) {
         add(Menu.EDIT_MY_PROFILE, '/users/self/profile/edit', SvgIcon.PersonCheck, this.i18n.menu.personalEditProfile, [MenuType.SIDENAV]);
       }
+      add(Menu.SETTINGS, '/personal/settings', SvgIcon.Gear, this.i18n.menu.personalSettings);
       if (contacts.enable) {
         add(Menu.CONTACTS, '/users/contacts', SvgIcon.Book, this.i18n.menu.personalContacts);
       }
@@ -1155,20 +1167,19 @@ export class MenuService {
         const activeMenu = new ActiveMenu(Menu.MY_TOKENS, { tokenType: token.type });
         add(activeMenu, `/users/self/tokens/${token.type.id}`, this.tokenHelper.icon(token.type), token.type.pluralName);
       }
+      const myMessages = (permissions.messages || {}).my;
+      if (myMessages?.view) {
+        add(Menu.MESSAGES, '/users/messages/search', SvgIcon.Envelope, this.i18n.menu.personalMessages);
+      }
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', SvgIcon.Bell, this.i18n.menu.personalNotifications);
-      }
-      if ((permissions.notificationSettings || {}).enable) {
-        add(Menu.NOTIFICATIONS_SETTINGS, `/users/${ApiHelper.SELF}/notification-settings`,
-          SvgIcon.BellSlash, this.i18n.menu.personalNotificationSettings);
-      }
-      add(Menu.SETTINGS, '/personal/settings', SvgIcon.Gear, this.i18n.menu.personalSettings);
-      if ((permissions.privacySettings || {}).view) {
-        add(Menu.PRIVACY_SETTINGS, '/users/self/privacy-settings', SvgIcon.EyeSlash, this.i18n.menu.personalPrivacySettings);
       }
 
       if ((permissions.references || {}).view) {
         add(Menu.REFERENCES, '/users/self/references/search', SvgIcon.Star, this.i18n.menu.personalReferences);
+      }
+      if ((permissions.paymentFeedbacks || {}).view) {
+        add(Menu.FEEDBACKS, '/users/self/feedbacks/search', SvgIcon.Award, this.i18n.menu.personalFeedbacks);
       }
       addRecords(RootMenu.PERSONAL);
       addOperations(RootMenu.PERSONAL);
@@ -1176,7 +1187,7 @@ export class MenuService {
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);
 
       // Add the logout
-      add(Menu.LOGOUT, null, SvgIcon.BoxArrowRight, logout.label, logout.showIn);
+      add(Menu.LOGOUT, null, SvgIcon.Logout2, logout.label, logout.showIn);
     }
 
     // Content pages in the content root menu
@@ -1197,15 +1208,17 @@ export class MenuService {
     return rootMenus;
   }
 
-  private resolveVoucherPermissions(vouchersPermissions: VouchersPermissions): ResolvedVouchersPermissions {
+  resolveVoucherPermissions(vouchersPermissions: VouchersPermissions): ResolvedVouchersPermissions {
     const voucherPermissions = vouchersPermissions.vouchers || [];
-    const buy = !!voucherPermissions.find(config => config.buy);
-    const redeem = !!voucherPermissions.find(config => config.redeem);
-    const generate = !!voucherPermissions.find(config => config.generate);
-    const viewBought = !!voucherPermissions.find(config => config.viewBought);
-    const viewRedeemed = !!voucherPermissions.find(config => config.viewRedeemed);
     const view = !!voucherPermissions.find(config => config.view);
-    return { buy, redeem, generate, viewBought, viewRedeemed, view };
+    const generate = !!voucherPermissions.find(config => config.generate);
+    const viewVouchers = !!voucherPermissions.find(config => config.viewVouchers);
+    const buy = !!voucherPermissions.find(config => config.buy);
+    const send = !!voucherPermissions.find(config => config.send);
+    const viewTransactions = !!voucherPermissions.find(config => config.viewTransactions);
+    const redeem = !!voucherPermissions.find(config => config.redeem);
+    const topUp = !!voucherPermissions.find(config => config.topUp);
+    return { view, generate, viewVouchers, buy, send, viewTransactions, redeem, topUp };
   }
 
 }

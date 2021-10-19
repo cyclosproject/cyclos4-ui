@@ -37,7 +37,8 @@
             </label-value>
           </div>
           <div class="ml-auto text-right d-flex flex-column">
-            <button [tooltip]="i18n.general.view" class="btn btn-icon"
+            <button type="button" [tooltip]="i18n.general.view"
+              class="btn btn-icon"
               (click)="router.navigate(view(row)); $event.stopPropagation(); $event.preventDefault()">
               <icon [icon]="SvgIcon.Search"></icon>
             </button>

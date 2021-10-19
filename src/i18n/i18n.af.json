@@ -82,9 +82,6 @@
   },
   "error": {
     "maxItems": "Kan nie meer as {max} elemente toevoeg nie",
-    "unauthorized": {
-      "url": "Toegang vanaf hierdie URL is nie toegelaat nie"
-    },
     "securityAnswer": {
       "disabled": "Agv die aantal sekuriteitsvraagpogings, is hierdie versoekopdrag gestaak.\nKontak asseblief die administrasie."
     },
@@ -97,7 +94,6 @@
     "banking": "Bankwese",
     "banking.accountsSummary": "Rekeningopsomming",
     "banking.pendingMyAuth": "Wag op my magtiging",
-    "banking.buyVouchers": "Koop koopbewyse",
     "banking.accountBalanceLimits": "Rekening saldo perke",
     "banking.accountPaymentLimits": "Rekening betaling perke",
     "brokering": "Makelary",
@@ -311,14 +307,12 @@
     },
     "mobileTitle": {
       "buy": "Koop koopbewyse",
-      "buyConfirmation": "Koop bevestiging",
-      "bought": "Gekoopte koopbewyse"
+      "buyConfirmation": "Koop bevestiging"
     },
     "title": {
       "buy": "Koop koopbewyse",
       "buyConfirmation": "Koop bevestiging"
     },
-    "boughtType": "Gekoop",
     "buy": {
       "amountRange": "Bedrag reeks",
       "buyer": "Aankoper",
@@ -327,7 +321,6 @@
     },
     "amountPerVoucher": "Bedrag per koopbewys",
     "buyerGroups": "Kopergroepe",
-    "creationType": "Skeppingstipe",
     "cancel": {
       "refundConfirmation": "Is u seker om hierdie koopbewys te kanselleer en terug te betaal?",
       "confirmation": "Is u seker om hierdie bewys te kanselleer?"
@@ -338,8 +331,6 @@
       "expirationDateDesc": "Vervaldatum dalend",
       "expirationDateAsc": "Vervaldatum stygende"
     },
-    "cancelAndRefund": "Kanselleer en betaal terug",
-    "cancelConfirmation": "Is u seker om hierdie bewys te kanselleer?",
     "changeExpirationDate": "Wysig vervaldatum",
     "expirationDateChanged": "Vervaldatum het verander"
   },
@@ -368,7 +359,6 @@
         "text": "Vertoonde teks"
       },
       "image": {
-        "category": "Kategorie",
         "height": "Hoogte",
         "float": "Rig",
         "marginBottom": "Onderste kantlyn",
@@ -400,7 +390,6 @@
       "userBrokerings": "Makelaar lede"
     },
     "connectionStatus": "Verbindingstatus",
-    "activities": "Aktiwiteite",
     "group": "Groep",
     "broker": "Makelaar",
     "brokers": "Makelaars",
@@ -424,6 +413,7 @@
     "assignedProducts": "Toegekende produkte",
     "beginUserActivationDate": "Aktiveer na",
     "endUserActivationDate": "Aktiveer voor",
+    "activities": "Aktiwiteite",
     "profile": {
       "accountsSummary": "Rekeningopsomming",
       "hideActions": "Versteek aksies",
@@ -433,7 +423,6 @@
       "adInterests": "Advertensiebelange",
       "deliveryMethods": "Afleweringsmetodes",
       "agreements": "Ooreenkomste",
-      "buyVouchers": "Koop koopbewyse",
       "accountsBalanceLimits": "Rekening saldo perke",
       "accountsPaymentLimits": "Rekening betaling perke"
     },
@@ -582,7 +571,6 @@
     "itemsNoLongerAvailable": "- is nie meer beskikbaar nie.<br>",
     "itemsOutOfStock": "- voorraad is uitgeput.<br>",
     "lowBalance": "- oorskry u {currency} saldo.",
-    "category": "Kategorie",
     "categories": "Kategorieë",
     "creationDate": "Skeppingsdatum",
     "byOwner": "Deur {owner}",
@@ -647,9 +635,6 @@
         "authorizedPaymentDenied": "Gemagtigde betaling geweier",
         "authorizedPaymentExpired": "Gemagtigde betaling verstryk",
         "authorizedPaymentSucceeded": "Gemagtigde betaling suksesvol",
-        "boughtVouchersAboutToExpire": "Gekoopte koopbewyse sal binne 'n paar dae verval",
-        "boughtVouchersExpirationDateChanged": "Vervaldatum van gekoopte koopbewys het verander",
-        "boughtVouchersExpired": "Gekoopte koopbewys het verval",
         "externalPaymentExpired": "Eksterne betaling het verstryk",
         "externalPaymentPerformedFailed": "Eksterne betaling kon nie gelewer word nie",
         "externalPaymentReceivedFailed": "Eksterne betaling kon nie ontvang word nie",
@@ -768,7 +753,6 @@
     },
     "enable": "Skakel aan",
     "document": "Dokument",
-    "category": "Kategorie",
     "action": "Dokumente ({count})"
   },
   "token": {

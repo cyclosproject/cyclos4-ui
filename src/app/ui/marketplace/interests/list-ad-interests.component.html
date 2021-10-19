@@ -11,8 +11,9 @@
       <mobile-result *mobileResult="let row">
         <div class="d-flex">
           <div class="cell-main">{{ row.name }}</div>
-          <div *ngIf="data.canManage" class="ml-auto text-right">
-            <button [tooltip]="i18n.general.remove" class="btn btn-icon"
+          <div *ngIf="data.canEdit" class="ml-auto text-right">
+            <button type="button" [tooltip]="i18n.general.remove"
+              class="btn btn-icon"
               (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
               <icon [icon]="SvgIcon.Trash"></icon>
             </button>
@@ -22,7 +23,7 @@
       <table *resultTable class="table table-hover cursor-pointer">
         <thead>
           <th>{{ i18n.general.name }}</th>
-          <th *ngIf="data.canManage" class="actions"></th>
+          <th *ngIf="data.canEdit" class="actions"></th>
         </thead>
         <tbody>
           <ng-container *ngFor="let row of data.adInterests">
@@ -30,8 +31,9 @@
               <td>
                 {{ row.name }}
               </td>
-              <td *ngIf="data.canManage" class="actions">
-                <button [tooltip]="i18n.general.remove" class="btn btn-icon"
+              <td *ngIf="data.canEdit" class="actions">
+                <button type="button" [tooltip]="i18n.general.remove"
+                  class="btn btn-icon"
                   (click)="remove(row); $event.stopPropagation()">
                   <icon [icon]="SvgIcon.Trash"></icon>
                 </button>

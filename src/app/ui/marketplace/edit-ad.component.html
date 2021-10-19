@@ -1,9 +1,10 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [heading]="create ? i18n.ad.title.new : i18n.ad.title.edit"
-      [mobileHeading]="create ? i18n.ad.mobileTitle.new : i18n.ad.mobileTitle.edit"
+    <page-content
+      [heading]="create ? i18n.ad.title['new'] : i18n.ad.title.edit"
+      [mobileHeading]="create ? i18n.ad.mobileTitle['new'] : i18n.ad.mobileTitle.edit"
       [headingActions]="headingActions$ | async">
-      <form [formGroup]="form">
+      <ng-container [formGroup]="form">
         <ng-container *ngIf="data.maxImages > 0">
           <h2
             class="border-0 d-flex mb-3 flex-column flex-xs-row justify-content-between mt-2 mt-md-0">
@@ -23,7 +24,7 @@
               </div>
             </ng-container>
           </div>
-          <actions class="mt-2" reverseRow>
+          <actions kind="secondary" class="mt-2" reverseRow>
             <ng-container
               *ngIf="canUploadImages && (multiUpload.uploading$ | async) === false">
               <action-button outline (action)="multiUpload.perform()"
@@ -40,13 +41,13 @@
           <image-upload #multiUpload
             [target]="id ? 'marketplace' : 'advertisement'"
             [max]="data.maxImages" (uploadDone)="onUploadDone($event)"
-            [owner]="id" [user]="data.owner.id">
+            [owner]="id" [user]="data.user.id">
           </image-upload>
         </ng-container>
         <hr *ngIf="data.maxImages > 0" class="mt-4 mb-2" />
         <label-value kind="fieldView" *ngIf="!self"
           [label]="i18n.general.user">
-          <user-link [user]="data.owner"></user-link>
+          <user-link [user]="data.user"></user-link>
         </label-value>
         <label-value kind="fieldView" *ngIf="!create"
           [label]="i18n.general.status">
@@ -59,7 +60,8 @@
         <input-field [label]="i18n.general.name" formControlName="name"
           required></input-field>
         <single-selection-field *ngIf="data.maxCategoriesPerAd == 1"
-          formControlName="categories" [label]="i18n.ad.category" required>
+          formControlName="categories" [label]="i18n.general.category"
+          required>
           <field-option *ngFor="let cat of categories"
             [value]="ApiHelper.internalNameOrId(cat)" [id]="cat.id"
             [internalName]="cat.internalName" [text]="cat.name"
@@ -143,17 +145,10 @@
         </ng-container>
         <html-field formControlName="description"
           [label]="i18n.general.description" required></html-field>
-
-        <label-value *ngFor="let cf of data.customFields" [label]="cf.name"
-          [kind]="'field'" [fieldSize]="fieldSize(cf)"
-          [required]="cf.required"
-          [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'">
-          <custom-field-input [field]="cf" hideLabel
-            [binaryValues]="binaryValues"
-            [formControl]="form.get('customValues').get(cf.internalName)">
-          </custom-field-input>
-        </label-value>
-
+        <custom-field-input *ngFor="let cf of data.customFields" [field]="cf"
+          [formControl]="form.get('customValues').get(cf.internalName)"
+          [binaryValues]="binaryValues">
+        </custom-field-input>
         <multi-selection-field *ngIf="data.addresses"
           [label]="i18n.ad.showAddressOnMap" formControlName="addresses">
           <field-option *ngFor="let addr of data.addresses" [value]="addr.id"
@@ -202,7 +197,7 @@
             </field-option>
           </multi-selection-field>
         </ng-container>
-      </form>
+      </ng-container>
       <actions>
         <action-button (action)="save()" [label]="i18n.general.save">
         </action-button>

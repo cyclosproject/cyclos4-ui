@@ -25,6 +25,7 @@ heading-actions {
 
   .heading-actions-plain-buttons {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     height: 100%;
 
@@ -327,7 +328,8 @@ body.dark profile-images {
 
 ///////////////////////////////////////////////////////////
 
-search-references {
+search-references,
+search-feedbacks {
   .bar {
     display: inline-block;
     background-color: #fdce7e;
@@ -353,4 +355,19 @@ view-profile {
       opacity: 0.30;
     }
   }
+}
+
+///////////////////////////////////////////////////////////
+
+receive-qr-payment {
+  spinner {
+    height: auto !important;
+    padding: 0 !important;
+    color: $accent !important;
+    transform: translateY(-0.2rem);
+  }
+}
+
+body.dark receive-qr-payment spinner {
+  color: $accent-dark !important;
 }

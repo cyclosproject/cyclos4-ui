@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { AdCategoryWithChildren, AdStatusEnum, OrderStatusEnum, ShoppingCartItemDetailed } from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { FormatService } from 'app/core/format.service';
-import { I18n } from 'app/i18n/i18n';
-import { HierarchyItem } from 'app/ui/marketplace/hierarchy-item.component';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { empty } from 'app/shared/helper';
+import { HierarchyItem } from 'app/ui/marketplace/hierarchy-item.component';
 import { BehaviorSubject } from 'rxjs';
 
 /**
@@ -19,7 +19,7 @@ export class MarketplaceHelperService {
   cartItems$ = new BehaviorSubject<number>(0);
 
   constructor(
-    private i18n: I18n,
+    @Inject(I18nInjectionToken) private i18n: I18n,
     protected authHelper: AuthHelperService,
     protected dataForFrontendHolder: DataForFrontendHolder,
     protected format: FormatService,

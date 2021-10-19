@@ -1,12 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth, DataForFrontend, Permissions, User } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
+import { ConfirmationService } from 'app/core/confirmation.service';
+import { NotificationService } from 'app/core/notification.service';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { NextRequestState } from 'app/core/next-request-state';
-import { NotificationService } from 'app/core/notification.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
-import { I18n } from 'app/i18n/i18n';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { empty } from 'app/shared/helper';
 import { LoginState } from 'app/ui/core/login-state';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -28,7 +29,8 @@ export class LoginService {
     private authService: AuthService,
     private loginState: LoginState,
     private router: Router,
-    private i18n: I18n,
+    @Inject(I18nInjectionToken) private i18n: I18n,
+    private confirmation: ConfirmationService,
     private notification: NotificationService,
     private pushNotifications: PushNotificationsService) {
 
@@ -47,23 +49,7 @@ export class LoginService {
     });
 
     // Whenever the user is logged out, clear the status
-    pushNotifications.loggedOut$.subscribe(() => {
-      if (this.loginState.loggingOut) {
-        // In the middle of a logout
-        return;
-      }
-      this.clear();
-      this.nextRequestState.setSessionToken(null);
-
-      // Also ask the user if they want to login again
-      if (this.i18n.initialized$.value) {
-        // The translations are initialized, confirm whether to login again
-        this.loggedOutConfirmation();
-      } else {
-        // As soon as translations are initialized, confirm whether to login again
-        this.i18n.initialized$.pipe(first()).subscribe(() => this.loggedOutConfirmation());
-      }
-    });
+    pushNotifications.loggedOut$.subscribe(() => this.confirmLogout());
 
     // Reload the data for UI whenever the permissions change
     pushNotifications.permissionsChanged$.subscribe(() =>
@@ -71,8 +57,28 @@ export class LoginService {
     );
   }
 
+  public confirmLogout() {
+    if (this.loginState.loggingOut) {
+      // In the middle of a logout
+      return;
+    }
+    this.clear();
+    this.nextRequestState.setSessionToken(null);
+
+    // Also ask the user if they want to login again
+    if (this.i18n.initialized$.value) {
+      // The translations are initialized, confirm whether to login again
+      this.loggedOutConfirmation();
+    } else {
+      // As soon as translations are initialized, confirm whether to login again
+      this.i18n.initialized$.pipe(first()).subscribe(() => this.loggedOutConfirmation());
+    }
+  }
+
   private loggedOutConfirmation() {
-    this.notification.confirm({
+    this.notification.close();
+    this.confirmation.hide();
+    this.confirmation.confirm({
       title: this.i18n.general.sessionExpired.title,
       message: this.i18n.general.sessionExpired.message,
       confirmLabel: this.i18n.general.sessionExpired.loginAgain,

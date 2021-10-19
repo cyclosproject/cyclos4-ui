@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Address, AddressConfiguration, AddressConfigurationForUserProfile, AddressFieldEnum } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
-import { I18n } from 'app/i18n/i18n';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { empty } from 'app/shared/helper';
 import { cloneDeep } from 'lodash-es';
 
@@ -17,19 +17,19 @@ export class AddressHelperService {
   constructor(
     private formBuilder: FormBuilder,
     private fieldsHelper: FieldHelperService,
-    private i18n: I18n) {
+    @Inject(I18nInjectionToken) private i18n: I18n) {
   }
 
   /**
    * Builds a `FormGroup` containing controls for all enabled fields, plus id, version and name
    * @param config The address configuration
    */
-  addressFormGroup(config: AddressConfiguration): FormGroup {
+  addressFormGroup(config: AddressConfiguration, nameNotRequired?: boolean): FormGroup {
     const form = this.formBuilder.group({
       id: null,
       version: null,
       hidden: null,
-      name: [null, Validators.required],
+      name: nameNotRequired ? null : [null, Validators.required],
       location: this.formBuilder.group({
         latitude: null,
         longitude: null,

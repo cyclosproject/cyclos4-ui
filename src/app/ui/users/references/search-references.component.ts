@@ -15,7 +15,7 @@ import { ReferenceHelperService } from 'app/ui/users/references/reference-helper
 import { BehaviorSubject, Observable } from 'rxjs';
 
 type SearchReferencesParams = UserReferenceQueryFilters & {
-  user: string
+  user: string;
 };
 
 /**
@@ -69,9 +69,9 @@ export class SearchReferencesComponent
         new HeadingAction(SvgIcon.Star, this.i18n.reference.set,
           () => {
             if (data.current) {
-              this.router.navigate(['users', 'references', 'edit', data.current.id]);
+              this.router.navigate(['/users', 'references', 'edit', data.current.id]);
             } else {
-              this.router.navigate(['users', 'references', 'set', 'self', this.param]);
+              this.router.navigate(['/users', 'references', 'set', 'self', this.param]);
             }
           }, true)];
     }
@@ -128,7 +128,7 @@ export class SearchReferencesComponent
    * Removes the given reference
    */
   remove(row: UserReferenceResult) {
-    this.notification.confirm({
+    this.confirmation.confirm({
       message: this.i18n.general.removeItemConfirm,
       callback: () => {
         this.addSub(this.referencesService.deleteReference({ id: row.id }).subscribe(() => {

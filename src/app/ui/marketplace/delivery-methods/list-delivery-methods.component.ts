@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { DeliveryMethod, DeliveryMethodChargeTypeEnum, UserDeliveryMethodsListData } from 'app/api/models';
+import { DeliveryMethod, DeliveryMethodChargeTypeEnum, DeliveryMethodTypeEnum, UserDeliveryMethodsListData } from 'app/api/models';
 import { DeliveryMethodsService } from 'app/api/services/delivery-methods.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
@@ -58,7 +58,7 @@ export class ListDeliveryMethodsComponent
   }
 
   remove(deliveryMethod: DeliveryMethod) {
-    this.notification.confirm({
+    this.confirmation.confirm({
       message: this.i18n.general.removeConfirm(deliveryMethod.name),
       callback: () => this.doRemove(deliveryMethod),
     });
@@ -80,6 +80,19 @@ export class ListDeliveryMethodsComponent
         return this.i18n.ad.fixed;
       case DeliveryMethodChargeTypeEnum.NEGOTIATED:
         return this.i18n.ad.negotiated;
+    }
+    return '';
+  }
+
+  /**
+   * Resolves the label for deliver or pickup delivery method
+   */
+  resolveDeliveryTypeLabel(type: DeliveryMethodTypeEnum): string {
+    switch (type) {
+      case DeliveryMethodTypeEnum.DELIVER:
+        return this.i18n.ad.deliver;
+      case DeliveryMethodTypeEnum.PICKUP:
+        return this.i18n.ad.pickup;
     }
     return '';
   }

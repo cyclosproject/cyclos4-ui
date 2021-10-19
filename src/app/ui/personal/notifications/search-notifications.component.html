@@ -2,14 +2,14 @@
   <page-content mode="filters" [heading]="i18n.notification.title"
     [mobileHeading]="i18n.notification.mobileTitle"
     [headingActions]="headingActions$ | async">
-    <form [formGroup]="form" class="filters-form filters-form-separator">
+    <div [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row">
         <div class="col-12">
           <boolean-field [label]="i18n.notification.onlyUnread"
             formControlName="onlyUnread"></boolean-field>
         </div>
       </div>
-    </form>
+    </div>
 
   </page-content>
   <results-layout resultType="list" [results]="results$ | async"
@@ -47,8 +47,8 @@
             <td>{{ row.date | dateTime }}</td>
             <td>{{ row.message }}</td>
             <td class="actions">
-              <button [tooltip]="i18n.notification.actions.remove"
-                class="btn btn-icon"
+              <button type="button" class="btn btn-icon"
+                [tooltip]="i18n.notification.actions.remove"
                 (click)="remove(row); $event.stopPropagation()">
                 <icon [icon]="SvgIcon.Trash"></icon>
               </button>

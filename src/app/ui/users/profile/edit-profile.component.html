@@ -19,7 +19,7 @@
         </div>
         <image-upload #singleUpload containerClass="mt-3" target="profile"
           [owner]="param" (uploadDone)="onUploadDone($event)"></image-upload>
-        <actions class="mt-3" reverseRow
+        <actions kind="secondary" class="mt-3" reverseRow
           *ngIf="canEdit('image') && (singleUpload.uploading$ | async) === false">
           <action-button outline (action)="singleUpload.perform()"
             [label]="i18n.field.image.upload">
@@ -54,7 +54,8 @@
             </div>
           </ng-container>
         </div>
-        <actions *ngIf="canEdit('image')" class="mt-2" reverseRow>
+        <actions kind="secondary" *ngIf="canEdit('image')" class="mt-2"
+          reverseRow>
           <ng-container
             *ngIf="canUploadImages && (multiUpload.uploading$ | async) === false">
             <action-button outline (action)="multiUpload.perform()"
@@ -91,9 +92,11 @@
         [label]="i18n.user.username" [required]="canEdit('username')">
       </input-field>
       <label-value *ngIf="hasField('email')" [label]="i18n.user.email"
-        [kind]="canEdit('email') ? 'field' : 'fieldView'"
-        [ignoreExtraCell]="!canManagePrivacy('email')">
-        <input-field formControlName="email" [required]="canEdit('email')">
+        [kind]="canEdit('email') ? 'field' : 'fieldView'" [forId]="'email'"
+        [ignoreExtraCell]="!canManagePrivacy('email')"
+        [required]="canEdit('email') && data.userConfiguration.emailRequired">
+        <input-field formControlName="email" [id]="'email'"
+          [required]="canEdit('email') && data.userConfiguration.emailRequired">
         </input-field>
         <field-privacy *extraCell field="email"
           [control]="user.get('hiddenFields')"></field-privacy>
@@ -106,17 +109,18 @@
     </ng-container>
 
     <!-- Custom profile fields -->
-    <ng-container *ngFor="let cf of data.userConfiguration?.customFields"
+    <ng-container *ngFor="let cf of fieldsWithoutSection"
       [formGroup]="user.get('customValues')">
-      <!-- Don't show custom values that are empty and non-editable -->
       <label-value *ngIf="canEdit(cf) || !isEmpty(cf)" [label]="cf.name"
-        [kind]="canEdit(cf) ? 'field' : 'fieldView'"
+        [kind]="canEdit(cf) ? 'field' : 'fieldView'" [forId]="cf.internalName"
         [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'"
-        [ignoreExtraCell]="!canManagePrivacy(cf)" [fieldSize]="fieldSize(cf)"
-        [required]="cf.required">
+        [maximizeLabel]="cf.type === 'boolean'"
+        [ignoreExtraCell]="!canManagePrivacy(cf)" [required]="cf.required"
+        [informationText]="cf.informationText">
         <custom-field-input *ngIf="canEdit(cf); else plainFieldValue"
           [field]="cf" hideLabel [formControlName]="cf.internalName"
-          [binaryValues]="data.userConfiguration.binaryValues">
+          [binaryValues]="data.userConfiguration.binaryValues"
+          [fieldSize]="fieldSize(cf)" hideInformationText>
         </custom-field-input>
         <ng-template #plainFieldValue>
           <format-field-value [fieldValue]="fieldValue(cf)">
@@ -126,15 +130,42 @@
           [control]="user.get('hiddenFields')"></field-privacy>
       </label-value>
     </ng-container>
+    <ng-container *ngFor="let key of fieldsWithSection.keys()">
+      <h2>{{ key.name }}</h2>
+      <div class="mb-3" *ngIf="key.informationText">
+        {{ key.informationText }}</div>
+      <ng-container *ngFor="let cf of fieldsWithSection.get(key)"
+        [formGroup]="user.get('customValues')">
+        <label-value *ngIf="canEdit(cf) || !isEmpty(cf)" [label]="cf.name"
+          [kind]="canEdit(cf) ? 'field' : 'fieldView'"
+          [forId]="cf.internalName"
+          [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'"
+          [ignoreExtraCell]="!canManagePrivacy(cf)" [required]="cf.required"
+          [informationText]="cf.informationText" [fieldSize]="fieldSize(cf)">
+          <custom-field-input *ngIf="canEdit(cf); else plainFieldValue"
+            [field]="cf" hideLabel [formControlName]="cf.internalName"
+            [binaryValues]="data.userConfiguration.binaryValues"
+            hideInformationText>
+          </custom-field-input>
+          <ng-template #plainFieldValue>
+            <format-field-value [fieldValue]="fieldValue(cf)">
+            </format-field-value>
+          </ng-template>
+          <field-privacy *extraCell [field]="cf.internalName"
+            [control]="user.get('hiddenFields')"></field-privacy>
+        </label-value>
+      </ng-container>
+    </ng-container>
 
     <!-- Single mobile phone -->
     <ng-container *ngIf="singleMobile" [formGroup]="singleMobile">
-      <label-value [label]="i18n.phone.mobile"
+      <h2 class="mb-2">{{ i18n.phone.mobile }}</h2>
+      <label-value [label]="i18n.phone.mobile" [forId]="'mobilePhoneNumber'"
         [required]="data.phoneConfiguration.mobileAvailability === 'required'"
         [ignoreExtraCell]="!canManagePrivacy('phone')" kind="field"
         fieldSize="small">
         <input-field *ngIf="canEdit('phone'); else plainPhoneNumber"
-          formControlName="number"
+          formControlName="number" [id]="'mobilePhoneNumber'"
           [placeholder]="data.phoneConfiguration.mobileExample"></input-field>
         <ng-template #plainPhoneNumber>
           {{ singleMobile.get('number').value }}
@@ -143,7 +174,8 @@
         </field-privacy>
       </label-value>
 
-      <ng-container *ngIf="phoneHasSms(singleMobileManage)">
+      <ng-container
+        *ngIf="(byManager || phoneHasSms(singleMobileManage) && !singleMobile.get('verified').value)">
         <boolean-field [label]="i18n.phone.verified"
           *ngIf="canEdit('phone'); else plainVerified"
           [formControl]="singleMobile.get('verified')">
@@ -155,11 +187,12 @@
         </ng-template>
       </ng-container>
 
-      <ng-container *ngIf="showEnableForSms(singleMobile)">
+      <ng-container
+        *ngIf="phoneHasSms(singleMobileManage) && showEnableForSms(singleMobile)">
         <boolean-field *ngIf="canEdit('phone'); else plainSms"
           [label]="i18n.phone.enabledSms"
           [formControl]="singleMobile.get('enabledForSms')"
-          (click)="maybeVerify($event)">
+          (onClick)="maybeVerify($event)">
         </boolean-field>
         <ng-template #plainSms>
           <label-value kind="fieldView" [label]="i18n.phone.enabledSms">
@@ -172,12 +205,14 @@
 
     <!-- Single land-line phone -->
     <ng-container *ngIf="singleLandLine" [formGroup]="singleLandLine">
+      <h2 class="mb-2">{{ i18n.phone.landLine }}</h2>
       <label-value [label]="i18n.phone.landLine"
+        [forId]="'landLinePhoneNumber'"
         [required]="data.phoneConfiguration.landLineAvailability === 'required'"
         [ignoreExtraCell]="!canManagePrivacy('address')" kind="field"
         fieldSize="small">
         <input-field *ngIf="canEdit('phone'); else plainPhoneNumber"
-          formControlName="number"
+          formControlName="number" [id]="'landLinePhoneNumber'"
           [placeholder]="data.phoneConfiguration.landLineExample">
         </input-field>
         <ng-template #plainPhoneNumber>
@@ -244,10 +279,11 @@
           </button>
           <div #dropDownMenu class="dropdown-menu dropdown-menu-right"
             *dropdownMenu role="listbox" id="newPhoneDropDown">
-            <button class="dropdown-item" (click)="addLandLine()">
+            <button type="button" class="dropdown-item"
+              (click)="addLandLine()">
               {{ i18n.user.phoneAddLandLine }}
             </button>
-            <button class="dropdown-item" (click)="addMobile()">
+            <button type="button" class="dropdown-item" (click)="addMobile()">
               {{ i18n.user.phoneAddMobile }}
             </button>
           </div>
@@ -286,9 +322,9 @@
         </ng-container>
 
         <ng-container
-          *ngIf="phone['kind'] === 'mobile' && phoneHasSms(phone['form'])">
+          *ngIf="(byManager || !phone.verified) && phoneHasSms(phone)">
           <boolean-field [label]="i18n.phone.verified"
-            *ngIf="canEdit('phone'); else plainVerified"
+            *ngIf="byManager && canEdit('phone'); else plainVerified"
             formControlName="verified">
           </boolean-field>
           <ng-template #plainVerified>
@@ -299,10 +335,10 @@
         </ng-container>
 
         <ng-container
-          *ngIf="phone['kind'] === 'mobile' && showEnableForSms(phone['form'])">
+          *ngIf="phoneHasSms(phone) && showEnableForSms(phone['form'])">
           <boolean-field *ngIf="canEdit('phone'); else plainSms"
             [label]="i18n.phone.enabledSms" formControlName="enabledForSms"
-            (click)="maybeVerify($event, phone['id'])">
+            (onClick)="maybeVerify($event, phone['id'])">
           </boolean-field>
           <ng-template #plainSms>
             <label-value kind="fieldView" [label]="i18n.phone.enabledSms">
@@ -312,7 +348,8 @@
         </ng-container>
 
         <label-value *ngIf="canManagePrivacy('phone')"
-          [label]="i18n.field.privacy.name" kind="field">
+          labelPosition="sideForced" [label]="i18n.field.privacy.name"
+          kind="field">
           <div class="d-flex w-100 justify-content-between">
             <field-privacy [control]="phone['form'].get('hidden')"
               justifyStart></field-privacy>
@@ -364,7 +401,8 @@
           [binaryValues]="data.addressBinaryValues[address['id']]">
         </address-form>
         <label-value *ngIf="canManagePrivacy('address')"
-          [label]="i18n.field.privacy.name" kind="field">
+          [label]="i18n.field.privacy.name" kind="field"
+          labelPosition="sideForced">
           <div class="d-flex w-100 justify-content-between">
             <field-privacy [control]="address['form'].get('hidden')"
               justifyStart></field-privacy>
@@ -389,7 +427,7 @@
           *ngIf="maps.enabled || (layout.xxs$ | async) || !data.addressConfiguration.managePrivacy">
           <div *ngIf="layout.gtxs$ | async" class="col-4"></div>
           <div class="col-12 col-sm-8">
-            <actions class="mt-0" forceRow>
+            <actions kind="secondary" class="mt-0" forceRow>
               <action-button *ngIf="editableFields.has('address')" outline
                 (action)="removeAddress(address)"
                 [label]="i18n.user.addressRemove">
@@ -463,17 +501,13 @@
         <ng-container
           *ngFor="let cf of data.contactInfoConfiguration.customFields"
           [formGroup]="contactInfo['form'].get('customValues')">
-          <label-value [label]="cf.name" [kind]="'field'"
-            [fieldSize]="fieldSize(cf)" [required]="cf.required"
-            [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'">
-            <custom-field-input [field]="cf" hideLabel
-              [binaryValues]="data.contactInfoBinaryValues[contactInfo['id']]"
-              [formControlName]="cf.internalName">
-            </custom-field-input>
-          </label-value>
+          <custom-field-input [field]="cf" [formControlName]="cf.internalName"
+            [binaryValues]="data.contactInfoBinaryValues[contactInfo['id']]">
+          </custom-field-input>
         </ng-container>
         <label-value *ngIf="canManagePrivacy('contactInfo')"
-          [label]="i18n.field.privacy.name" kind="field">
+          [label]="i18n.field.privacy.name" kind="field"
+          labelPosition="sideForced">
           <div class="d-flex w-100 justify-content-between">
             <field-privacy [control]="contactInfo['form'].get('hidden')"
               justifyStart></field-privacy>

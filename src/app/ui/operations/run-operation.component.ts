@@ -5,7 +5,7 @@ import { Params } from '@angular/router';
 import {
   CreateDeviceConfirmation, CustomFieldDetailed, DeviceConfirmationTypeEnum,
   ExportFormat, OperationDataForRun, OperationResultTypeEnum,
-  OperationRowActionEnum, OperationScopeEnum, RunOperationResult
+  OperationRowActionEnum, OperationScopeEnum, RunOperationAction, RunOperationResult
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services/operations.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
@@ -184,6 +184,9 @@ export class RunOperationComponent
     // Register the row action, if any
     this.operationHelper.register(data.rowOperation);
 
+    // Heading actions
+    this.addHeadingActions(data, data.actions);
+
     // Maybe the operation will be executed directly
     if (this.runDirectly) {
       this.nextRequestState.leaveNotification = this.leaveNotification;
@@ -213,7 +216,7 @@ export class RunOperationComponent
       return;
     }
     if (!empty(data.confirmationText) || data.confirmationPasswordInput) {
-      this.notification.confirm({
+      this.confirmation.confirm({
         title: data.name,
         message: data.confirmationText,
         createDeviceConfirmation: this.createDeviceConfirmation,
@@ -228,6 +231,10 @@ export class RunOperationComponent
   updatePage(data: PageData) {
     this.pageData = data;
     this.run();
+  }
+
+  get runAction() {
+    return () => this.run();
   }
 
   private doRun(data: OperationDataForRun, confirmationPassword: string, exportFormat?: ExportFormat) {
@@ -267,12 +274,23 @@ export class RunOperationComponent
     this.result$.next(result);
 
     // Heading actions
+    this.addHeadingActions(this.data, result.actions);
+
+    if (this.isSearch) {
+      // Get the results page from the response
+      const paged = new PagedResults(result.rows);
+      PagedResults.fillHeaders(paged, response);
+      this.pageResults$.next(paged);
+    }
+  }
+
+  private addHeadingActions(data: OperationDataForRun, actions: RunOperationAction[]) {
     const headingActions: HeadingAction[] = [];
-    if (this.data.allowPrint && this.isContent) {
+    if (data.allowPrint && this.isContent) {
       headingActions.push(this.exportHelper.printAction());
-    } else if (!empty(this.data.exportFormats)) {
-      this.exportHelper.headingActions(this.data.exportFormats, f =>
-        this.operationHelper.runRequest(this.data, {
+    } else if (!empty(data.exportFormats)) {
+      this.exportHelper.headingActions(data.exportFormats, f =>
+        this.operationHelper.runRequest(data, {
           scopeId: this.scopeId,
           formParameters: this.form.value,
           pageData: this.pageData,
@@ -280,7 +298,7 @@ export class RunOperationComponent
           exportFormat: f
         })).forEach(a => headingActions.push(a));
     }
-    for (const action of result.actions || []) {
+    for (const action of actions || []) {
       // Register each custom operation action
       const op = action.action;
       if (op) {
@@ -294,13 +312,6 @@ export class RunOperationComponent
       headingActions[0].maybeRoot = true;
     }
     this.headingActions = headingActions;
-
-    if (this.isSearch) {
-      // Get the results page from the response
-      const paged = new PagedResults(result.rows);
-      PagedResults.fillHeaders(paged, response);
-      this.pageResults$.next(paged);
-    }
   }
 
   /** Handle the row action */
@@ -314,7 +325,7 @@ export class RunOperationComponent
       case OperationRowActionEnum.OPERATION:
         const operation = data.rowOperation;
         this.operationHelper.nextAction = operation.id;
-        this.router.navigate(['operations', 'action', ApiHelper.internalNameOrId(operation)], {
+        this.router.navigate(['/operations', 'action', ApiHelper.internalNameOrId(operation)], {
           queryParams: params,
         });
         break;
@@ -341,10 +352,6 @@ export class RunOperationComponent
 
   get onClick() {
     return (row: any) => this.rowClick(row);
-  }
-
-  fieldSize(cf: CustomFieldDetailed) {
-    return this.fieldHelper.fieldSize(cf);
   }
 
   resolveMenu(data: OperationDataForRun) {

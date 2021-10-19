@@ -1,4 +1,5 @@
-<label-value *ngIf="label; else widget" [formField]="self">
+<label-value *ngIf="label; else widget" [formField]="self"
+  [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
@@ -8,7 +9,7 @@
       'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
     }"></div>
 
-  <div class="d-flex flex-column flex-xs-row">
+  <div class="d-flex flex-column flex-xs-row w-100">
     <div
       class="d-flex flex-wrap flex-grow-1 align-content-center mt-1 mb-2 mb-xs-0">
       <avatar class="d-block mr-2" *ngFor="let img of images"
@@ -17,21 +18,22 @@
     </div>
     <div class="d-flex align-items-center">
       <ng-container *ngIf="maxFiles === 1 || images.length < maxFiles">
-        <button class="btn btn-icon d-flex align-content-center"
+        <button type="button" class="btn btn-icon d-flex align-content-center"
           [tooltip]="i18n.field.image.upload" (click)="imageUpload.perform()">
           <icon [icon]="SvgIcon.Upload"></icon>
         </button>
-        <button class="ml-2 btn btn-icon d-flex align-content-center"
+        <button type="button"
+          class="ml-2 btn btn-icon d-flex align-content-center"
           [tooltip]="i18n.field.image.upload" (click)="captureCamera()">
           <icon [icon]="SvgIcon.Camera"></icon>
         </button>
       </ng-container>
-      <button *ngIf="maxFiles > 1 && images.length > 0"
+      <button type="button" *ngIf="maxFiles > 1 && images.length > 0"
         class="ml-2 btn btn-icon d-flex align-content-center"
         [tooltip]="i18n.field.image.manage" (click)="manageImages()">
         <icon [icon]="SvgIcon.Pencil"></icon>
       </button>
-      <button *ngIf="maxFiles === 1 && images.length > 0"
+      <button type="button" *ngIf="maxFiles === 1 && images.length > 0"
         class="ml-2 btn btn-icon d-flex align-content-center"
         [tooltip]="i18n.field.image.remove" (click)="removeAllImages()">
         <icon [icon]="SvgIcon.Trash"></icon>

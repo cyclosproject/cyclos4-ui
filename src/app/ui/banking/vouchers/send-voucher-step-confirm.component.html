@@ -1,0 +1,49 @@
+<ng-container *ngIf="data.user && !authHelper.isSelf(data.user)">
+  <user-info [user]="data.user">
+  </user-info>
+</ng-container>
+<!-- description + image -->
+<label-value [label]="i18n.general.type">
+  {{ data.type.voucherTitle }}
+</label-value>
+<label-value [label]="i18n.user.email">
+  {{ sendVoucher.email }}
+</label-value>
+<label-value [label]="i18n.voucher.amountPerVoucher">
+  {{ sendVoucher.amount | currency:data.account.currency }}
+</label-value>
+<label-value *ngIf="sendVoucher.message" [label]="i18n.voucher.send.message"
+  valueFormat="break">{{ sendVoucher.message }}</label-value>
+<!-- payment fields -->
+<ng-container *ngFor="let cf of data.paymentCustomFields">
+  <label-value
+    [hidden]="!fieldHelper.hasValue(cf.internalName, sendVoucher.paymentCustomValues)"
+    [label]="cf.name"
+    [labelPosition]="labelOnTop((layout.ltsm$ | async), cf) ? 'top' : 'auto'">
+    <format-field-value [customValues]="sendVoucher.paymentCustomValues"
+      [fields]="data.paymentCustomFields" [fieldName]="cf.internalName">
+    </format-field-value>
+  </label-value>
+</ng-container>
+<!-- custom fields -->
+<ng-container *ngFor="let cf of data.voucherCustomFields">
+  <label-value
+    [hidden]="!fieldHelper.hasValue(cf.internalName, sendVoucher.voucherCustomValues)"
+    [label]="cf.name"
+    [labelPosition]="labelOnTop((layout.ltsm$ | async), cf) ? 'top' : 'auto'">
+    <format-field-value [customValues]="sendVoucher.voucherCustomValues"
+      [fields]="data.voucherCustomFields" [fieldName]="cf.internalName">
+    </format-field-value>
+  </label-value>
+</ng-container>
+
+<ng-container *ngIf="confirmationPasswordInput">
+  <hr *ngIf="layout.gtxxs$ | async">
+  <confirmation-password focused
+    [formControl]="form.get('confirmationPassword')"
+    [passwordInput]="confirmationPasswordInput"
+    [createDeviceConfirmation]="createDeviceConfirmation"
+    (confirmationModeChanged)="confirmationModeChanged.emit($event)"
+    (confirmed)="confirmed.emit($event)">
+  </confirmation-password>
+</ng-container>

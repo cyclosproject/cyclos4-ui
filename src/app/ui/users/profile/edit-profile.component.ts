@@ -3,11 +3,12 @@ import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '
 import {
   AddressManage, AvailabilityEnum, ContactInfoManage, CreateDeviceConfirmation,
   CustomField, CustomFieldDetailed, CustomFieldValue, DataForEditFullProfile,
-  DeviceConfirmationTypeEnum, FullProfileEdit, Image, PhoneEditWithId, PhoneKind, PhoneManage
+  DeviceConfirmationTypeEnum, FieldSection, FullProfileEdit, Image, PhoneEditWithId, PhoneKind, PhoneManage, UserCustomFieldDetailed
 } from 'app/api/models';
 import { ImagesService } from 'app/api/services/images.service';
 import { PhonesService } from 'app/api/services/phones.service';
 import { UsersService } from 'app/api/services/users.service';
+import { CameraService } from 'app/core/camera.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -54,8 +55,12 @@ export class EditProfileComponent
   enabledFields: Set<string>;
   editableFields: Set<string>;
   managePrivacyFields: Set<string>;
-  userCustomFields: Map<string, CustomFieldDetailed>;
+  userCustomFields: Map<string, UserCustomFieldDetailed>;
+  fieldsWithoutSection: Array<UserCustomFieldDetailed>;
+  fieldsWithSection = new Map<FieldSection, UserCustomFieldDetailed[]>();
   canConfirm: boolean;
+  mainImage: string;
+  hasRemovedImages: boolean;
 
   confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
 
@@ -80,7 +85,7 @@ export class EditProfileComponent
   // Single models
   singleMobileManage: PhoneManage;
   singleLandLineManage: PhoneManage;
-  singleAddressManage: PhoneManage;
+  singleAddressManage: AddressManage;
 
   // Arrays to keep the visible models
   images: Image[];
@@ -102,6 +107,7 @@ export class EditProfileComponent
     public maps: MapsService,
     private addressHelper: AddressHelperService,
     private modal: BsModalService,
+    private camera: CameraService,
     private changeDetector: ChangeDetectorRef) {
     super(injector);
   }
@@ -116,7 +122,7 @@ export class EditProfileComponent
 
     this.headingActions = [
       new HeadingAction(SvgIcon.Search, this.i18n.general.view, () =>
-        this.router.navigate(['users', this.param, 'profile']),
+        this.router.navigate(['/users', this.param, 'profile']),
         true),
     ];
 
@@ -145,7 +151,6 @@ export class EditProfileComponent
       this.canConfirm = this.authHelper.canConfirm(data.confirmationPasswordInput);
       if (!this.canConfirm) {
         this.notification.warning(this.authHelper.getConfirmationMessage(data.confirmationPasswordInput));
-        this.router.navigate(['users', 'profile']);
       }
 
       this.ready$.next(true);
@@ -242,10 +247,27 @@ export class EditProfileComponent
     return max == null || max <= 0 ? 'disabled' : max === 1 ? 'single' : 'multiple';
   }
 
+  resolveFormGroup(): FormGroup {
+    return new FormGroup({
+      user: this.user,
+      createLandLinePhones: new FormArray(this.createLandLinePhones),
+      modifyLandLinePhones: new FormArray(this.modifyLandLinePhones),
+      createMobilePhones: new FormArray(this.createMobilePhones),
+      modifyMobilePhones: new FormArray(this.modifyMobilePhones),
+      createAddresses: new FormArray(this.createAddresses),
+      modifyAddresses: new FormArray(this.modifyAddresses),
+      createContactInfos: new FormArray(this.createContactInfos),
+      modifyContactInfos: new FormArray(this.modifyContactInfos),
+    });
+  }
+
   saveOrConfirm() {
+    if (!validateBeforeSubmit(this.resolveFormGroup())) {
+      return;
+    }
     if (this.data.confirmationPasswordInput) {
       // A confirmation is required
-      this.notification.confirm({
+      this.confirmation.confirm({
         title: this.i18n.user.title.confirmation,
         passwordInput: this.data.confirmationPasswordInput,
         createDeviceConfirmation: this.createDeviceConfirmation,
@@ -260,34 +282,35 @@ export class EditProfileComponent
   }
 
   save(confirmationPassword?: string) {
-    const fullForm = new FormGroup({
-      user: this.user,
-      createLandLinePhones: new FormArray(this.createLandLinePhones),
-      modifyLandLinePhones: new FormArray(this.modifyLandLinePhones),
-      createMobilePhones: new FormArray(this.createMobilePhones),
-      modifyMobilePhones: new FormArray(this.modifyMobilePhones),
-      createAddresses: new FormArray(this.createAddresses),
-      modifyAddresses: new FormArray(this.modifyAddresses),
-      createContactInfos: new FormArray(this.createContactInfos),
-      modifyContactInfos: new FormArray(this.modifyContactInfos),
-    });
     if (!confirmationPassword && this.confirmationPassword) {
-      fullForm.setControl('confirmationPassword', this.confirmationPassword);
       confirmationPassword = this.confirmationPassword.value;
     }
-    if (!validateBeforeSubmit(fullForm)) {
-      return;
-    }
 
-    this.addSub(this.usersService.saveUserFullProfile({
-      user: this.param,
-      confirmationPassword,
-      body: this.editForSubmit(),
-    }).subscribe(() => {
+    const body = this.editForSubmit();
+
+    const onFinish = () => {
       this.notification.snackBar(this.i18n.user.profileSaved);
       this.reload();
       scrollTop();
-    }));
+    };
+
+    const saveUserFullProfileReq = this.usersService.saveUserFullProfile({
+      user: this.param,
+      confirmationPassword,
+      body: body,
+    });
+
+    // If the main image has changed reload the user version
+    if (this.mainImageChanged() && false) {
+      this.addSub(this.usersService.getDataForEditFullProfile({ user: this.param, fields: ['user.version'] })
+        .subscribe(data => {
+          body.user.version = data.user.version;
+          this.addSub(saveUserFullProfileReq.subscribe(onFinish));
+        }
+        ));
+    } else {
+      this.addSub(saveUserFullProfileReq.subscribe(onFinish));
+    }
   }
 
   private editForSubmit(): FullProfileEdit {
@@ -357,6 +380,15 @@ export class EditProfileComponent
     return edit;
   }
 
+  /**
+   * Returns if the main user image has changed
+   */
+  protected mainImageChanged(): boolean {
+    const currentImage = this.images.length > 0 ? this.ApiHelper.internalNameOrId(this.images[0]) : null;
+    // Check any change in the main image, either added and removed, or changed
+    return this.mainImage == null && currentImage == null && this.hasRemovedImages || this.mainImage !== currentImage;
+  }
+
   private initialize(data: DataForEditFullProfile) {
     this.userCustomFields = new Map();
     this.enabledFields = new Set();
@@ -400,6 +432,8 @@ export class EditProfileComponent
     }
 
     this.images = this.data.images.slice();
+    this.mainImage = this.images.length > 0 ? this.ApiHelper.internalNameOrId(this.images[0]) : null;
+
     this.phones = [];
 
     // Prepare the mobile forms
@@ -480,6 +514,25 @@ export class EditProfileComponent
       }));
     });
     this.contactInfos = (data.contactInfos || []).slice();
+
+    const fields = Array.from(this.userCustomFields.values());
+    this.fieldsWithoutSection = fields.filter(field => field.section == null) || [];
+    const sections = new Map();
+    fields.map(v => v.section).forEach(s => {
+      if (s != null) {
+        sections.set(s.id, s);
+      }
+    });
+    sections.forEach(s => {
+      const filter = fields.filter(field => field.section != null && field.section.id === s.id);
+      if (!empty(filter)) {
+        filter.forEach(cf => {
+          if (this.canEdit(cf) || !this.isEmpty(cf)) {
+            this.fieldsWithSection.set(s, filter);
+          }
+        });
+      }
+    });
   }
 
   private buildUserForm(): FormGroup {
@@ -626,13 +679,13 @@ export class EditProfileComponent
   }
 
   /**
-   * A phone has the SMS field it the configuration alloes, the phone is a persistent mobile phone and its number is untouched
+   * A phone has the SMS field if the configuration allows, the phone is a persistent mobile phone and its number is untouched
    */
   phoneHasSms(phone: PhoneManage): boolean {
     if (!this.data.phoneConfiguration.smsEnabled) {
       return false;
     }
-    return phone['id'] && phone['kind'] === PhoneKind.MOBILE && phone.number === phone['form'].value.number;
+    return phone['id'] && phone['number'] === phone['form'].value.number && phone['kind'] === PhoneKind.MOBILE;
   }
 
   hasExtension(phone: PhoneManage): boolean {
@@ -855,7 +908,7 @@ export class EditProfileComponent
    * Opens a dialog to capture an image from camera
    */
   captureCamera(upload: ImageUploadComponent) {
-    this.notification.captureCamera(file => upload.uploadFile(file));
+    this.camera.capture(file => upload.uploadFile(file));
   }
 
   /**
@@ -870,7 +923,8 @@ export class EditProfileComponent
     });
     const component = ref.content as ManageImagesComponent;
     component.result.pipe(first()).subscribe(result => {
-      if (!empty(result.removedImages)) {
+      this.hasRemovedImages = !empty(result.removedImages);
+      if (this.hasRemovedImages) {
         // Remove each of the removed images
         for (const removed of result.removedImages) {
           this.addSub(this.imagesService.deleteImage({ idOrKey: removed }).subscribe());

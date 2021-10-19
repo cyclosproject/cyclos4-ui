@@ -25,7 +25,8 @@ export class RedirectToLandingPageComponent implements OnInit {
 
     // The only possibility for the landing page not being home is when there's no logged user on mobile
     if (this.dataForFrontendHolder.user == null && this.layout.ltmd) {
-      landingPage = this.dataForFrontendHolder.dataForFrontend.mobileLandingPage || FrontendLandingPageEnum.HOME;
+      const data = this.dataForFrontendHolder.dataForFrontend;
+      landingPage = data.mobileLandingPage || data.hasHomePage ? FrontendLandingPageEnum.HOME : FrontendLandingPageEnum.LOGIN;
     }
 
     // Redirect to the actual page

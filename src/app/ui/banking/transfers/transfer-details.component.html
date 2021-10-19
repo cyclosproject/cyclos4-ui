@@ -1,13 +1,70 @@
-<label-value *ngIf="transfer.transactionNumber"
-  [label]="i18n.transaction.number">
-  {{ transfer.transactionNumber }}
+<label-value [label]="i18n.transaction.amount">
+  {{ transfer.amount | currency:transfer.currency }}
+</label-value>
+<label-value *ngIf="transfer.transaction?.by"
+  [label]="i18n.general.performedBy">
+  {{ transfer.transaction.by.display }}
+</label-value>
+<label-value *ngIf="transfer.transaction?.receivedBy"
+  [label]="i18n.transaction.receivedBy">
+  {{ transfer.transaction.receivedBy.display }}
 </label-value>
 <label-value [label]="i18n.general.date">
   {{ transfer.date | dateTime }}
 </label-value>
-<label-value [label]="i18n.transaction.amount">
-  {{ transfer.amount | currency:transfer.currency }}
+<label-value [label]="i18n.transaction.from">
+  <ng-container *ngIf="transfer.transaction?.fromName; else fromUser">
+    {{ transfer.transaction.fromName }}
+  </ng-container>
+  <ng-template #fromUser>
+    <user-link [account]="transfer.from"></user-link>
+  </ng-template>
 </label-value>
+<label-value [label]="i18n.transaction.to">
+  <ng-container *ngIf="transfer.transaction?.toName; else toUser">
+    {{ transfer.transaction.toName }}
+  </ng-container>
+  <ng-template #toUser>
+    <user-link [account]="transfer.to"></user-link>
+  </ng-template>
+</label-value>
+<label-value [label]="i18n.transaction.type">
+  {{ transfer.type.name }}
+</label-value>
+<ng-container
+  *ngIf="transfer.transaction?.voucherTransaction as voucherTransaction">
+  <label-value [label]="voucherTransaction.kind === VoucherTransactionKind.REDEEM
+      ? i18n.transaction.voucherRedeemed
+      : i18n.transaction.voucherToppedUp">
+    <maybe-link
+      [link]="voucherTransaction.voucherId ? ['/banking', 'vouchers', 'view', voucherTransaction.voucherId] : null">
+      {{ voucherTransaction.token }}
+    </maybe-link>
+  </label-value>
+  <label-value [label]="i18n.voucher.voucher"
+    [value]="voucherTransaction.type.voucherTitle">
+  </label-value>
+</ng-container>
+<label-value *ngIf="transfer.transaction?.channel"
+  [label]="i18n.transaction.channel">
+  {{ transfer.transaction.channel.name }}
+</label-value>
+<label-value *ngIf="transfer.transactionNumber"
+  [label]="i18n.transaction.number">
+  {{ transfer.transactionNumber }}
+</label-value>
+<label-value *ngFor="let status of transfer.statuses"
+  [label]="status.flow.name">
+  {{ status.name }}
+</label-value>
+<custom-field-value *ngFor="let value of transfer.transaction?.customValues"
+  [fieldValue]="value">
+</custom-field-value>
+<label-value *ngIf="transfer.description || transfer.transaction?.description"
+  [label]="i18n.general.description" valueFormat="break"
+  [value]="transfer.description || transfer.transaction?.description">
+</label-value>
+
 <label-value *ngIf="transfer.chargedBackBy"
   [label]="i18n.transaction.chargedBackBy">
   <a [routerLink]="path(transfer.chargedBackBy)">
@@ -20,69 +77,107 @@
     {{ transfer.chargebackOf.display }}
   </a>
 </label-value>
-<label-value *ngIf="transfer.transaction?.by"
-  [label]="i18n.general.performedBy">
-  {{ transfer.transaction.by.display }}
-</label-value>
-<label-value *ngIf="transfer.transaction?.receivedBy"
-  [label]="i18n.transaction.receivedBy">
-  {{ transfer.transaction.receivedBy.display }}
-</label-value>
-<label-value [label]="i18n.transaction.from">
-  <user-link [account]="transfer.from"></user-link>
-</label-value>
-<label-value [label]="i18n.transaction.to">
-  <user-link [account]="transfer.to"></user-link>
-</label-value>
-<label-value [label]="i18n.transaction.type">
-  {{ transfer.type.name }}
-</label-value>
-<label-value *ngIf="transfer.transaction?.channel"
-  [label]="i18n.transaction.channel">
-  {{ transfer.transaction.channel.name }}
-</label-value>
-<custom-field-value *ngFor="let value of transfer.transaction?.customValues"
-  [fieldValue]="value">
-</custom-field-value>
-<label-value *ngFor="let status of transfer.statuses"
-  [label]="status.flow.name">
-  {{ status.name }}
-</label-value>
 
 <label-value *ngIf="lastAuthComment"
   [label]="i18n.transaction.authorizationComments" [value]="lastAuthComment"
   valueFormat="break">
 </label-value>
 
-<label-value *ngIf="transfer.transaction?.description"
-  [label]="i18n.general.description" valueFormat="break"
-  [value]="transfer.transaction.description"></label-value>
+<ng-container
+  *ngIf="transfer.transaction?.boughtVouchers?.length === 1 && transfer.transaction.boughtVouchers[0] as voucher">
+  <h2 *ngIf="voucher.creationType === VoucherCreationTypeEnum.BOUGHT"
+    class="mt-4">{{ (layout.gtxs$ | async)
+    ? i18n.transaction.title.boughtVoucher
+    : i18n.transaction.mobileTitle.boughtVoucher }}</h2>
+  <h2 *ngIf="voucher.creationType === VoucherCreationTypeEnum.SENT"
+    class="mt-4">{{ (layout.gtxs$ | async)
+    ? i18n.transaction.title.sentVoucher
+    : i18n.transaction.mobileTitle.sentVoucher }}</h2>
+  <voucher-details [voucher]="transfer.transaction.boughtVouchers[0]">
+  </voucher-details>
+  <actions>
+    <a class="btn btn-outline-primary" [routerLink]="voucherPath(voucher)">
+      {{ i18n.transaction.viewThisVoucher }}
+    </a>
+  </actions>
+</ng-container>
 
-<ng-container *ngIf="transfer.parent">
+<ng-container *ngIf="transfer.transaction?.boughtVouchers?.length > 1">
+  <h2 class="mt-4 mb-0">{{ (layout.gtxs$ | async)
+    ? i18n.transaction.title.boughtVouchers
+    : i18n.transaction.mobileTitle.boughtVouchers }}</h2>
+  <results-layout [results]="transfer.transaction.boughtVouchers"
+    [toLink]="toVoucherLink">
+    <mobile-result *mobileResult="let row" [amount]="row.amount"
+      [currency]="transfer.currency" [amountColor]="false">
+      <div class="cell-text">
+        {{ row.token }}
+      </div>
+    </mobile-result>
+    <table *resultTable class="table table-hover cursor-pointer">
+      <thead>
+        <th>{{ i18n.voucher.token }}</th>
+        <th>{{ i18n.general.status }}</th>
+        <th *ngIf="hasVoucherExpirationDate">{{ i18n.general.expirationDate }}
+        </th>
+        <th class="text-right">{{ i18n.transaction.amount }}</th>
+        <th class="text-right">{{ i18n.voucher.balance }}</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of transfer.transaction.boughtVouchers"
+          [tooltip]="row.description"
+          (click)=" router.navigate(voucherPath(row))">
+          <td>
+            <a [routerLink]="voucherPath(row)">
+              {{ row.token }}
+            </a>
+          </td>
+          <td>
+            <a [routerLink]="voucherPath(row)">
+              {{ apiI18n.voucherStatus(row.status) }}
+            </a>
+          </td>
+          <td *ngIf="hasVoucherExpirationDate">
+            <a [routerLink]="voucherPath(row)">
+              {{ row.expirationDate | dateTime }}
+            </a>
+          </td>
+          <td class="text-right">
+            <a [routerLink]="voucherPath(row)">
+              {{ row.amount | currency:transfer.currency }}
+            </a>
+          </td>
+          <td class="text-right">
+            <a [routerLink]="voucherPath(row)">
+              {{ row.balance | currency:transfer.currency }}
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </results-layout>
+</ng-container>
+
+<ng-container *ngIf="transfer.parent as parent">
   <h2 class="mt-4">{{ (layout.gtxs$ | async)
     ? i18n.transaction.title.parentTransfer
     : i18n.transaction.mobileTitle.parentTransfer }}</h2>
-  <label-value *ngIf="transfer.parent.transactionNumber"
-    [label]="i18n.transaction.number">
-    {{ transfer.parent.transactionNumber }}
-  </label-value>
-  <label-value [label]="i18n.general.date">
-    {{ transfer.parent.date | dateTime }}
-  </label-value>
-  <label-value [label]="i18n.transaction.amount">
-    {{ transfer.parent.amount | currency:transfer.parent.currency }}
-  </label-value>
-  <label-value [label]="i18n.transaction.from">
-    <user-link [account]="transfer.parent.from"></user-link>
-  </label-value>
-  <label-value [label]="i18n.transaction.to">
-    <user-link [account]="transfer.parent.to"></user-link>
-  </label-value>
-  <label-value [label]="i18n.transaction.type">
-    {{ transfer.parent.type.name }}
-  </label-value>
+  <transfer-simple-details [transfer]="parent"></transfer-simple-details>
   <actions>
-    <a class="btn btn-outline-primary" [routerLink]="path(transfer.parent)">
+    <a class="btn btn-outline-primary" [routerLink]="path(parent)">
+      {{ i18n.transaction.viewThisTransfer }}
+    </a>
+  </actions>
+</ng-container>
+
+<ng-container
+  *ngIf="transfer.children?.length === 1 && transfer.children[0] as child">
+  <h2 class="mt-4">{{ (layout.gtxs$ | async)
+    ? i18n.transaction.title.childTransfer
+    : i18n.transaction.mobileTitle.childTransfer }}</h2>
+  <transfer-simple-details [transfer]="child"></transfer-simple-details>
+  <actions>
+    <a class="btn btn-outline-primary" [routerLink]="path(child)">
       {{ i18n.transaction.viewThisTransfer }}
     </a>
   </actions>
@@ -117,8 +212,8 @@
         <th class="text-right">{{ i18n.transaction.amount }}</th>
       </thead>
       <tbody>
-        <tr *ngFor="let row of transfer.children"
-          (click)="router.navigate(path(row))">
+        <tr *ngFor="let row of transfer.children" [tooltip]="row.description"
+          (click)=" router.navigate(path(row))">
           <td>
             <a [routerLink]="path(row)">
               {{ row.date | date }}

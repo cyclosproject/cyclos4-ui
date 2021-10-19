@@ -1,4 +1,4 @@
-/// <reference types="@types/googlemaps" />
+/// <reference types="@types/google-maps" />
 
 import { Injectable } from '@angular/core';
 import { Loader } from '@googlemaps/loader';

@@ -58,7 +58,7 @@ export class ListOperatorGroupsComponent
   }
 
   remove(group: EntityReference) {
-    this.notification.confirm({
+    this.confirmation.confirm({
       message: this.i18n.general.removeConfirm(group.name),
       callback: () => this.doRemove(group),
     });

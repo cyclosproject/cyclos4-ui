@@ -1,15 +1,12 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-  PaymentPreview,
-  Transaction, TransactionAuthorizationStatusEnum
-} from 'app/api/models';
+import { PaymentRequestPreview, Transaction, TransactionAuthorizationStatusEnum } from 'app/api/models';
 import { PaymentRequestsService } from 'app/api/services/payment-requests.service';
-import { BankingHelperService } from 'app/ui/core/banking-helper.service';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { FormControlLocator } from 'app/shared/form-control-locator';
-import { locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
+import { empty, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
+import { BankingHelperService } from 'app/ui/core/banking-helper.service';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { cloneDeep } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
@@ -24,7 +21,9 @@ export type PaymentStep = 'confirm' | 'done';
   templateUrl: 'accept-payment-request.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AcceptPaymentRequestComponent extends BasePageComponent<PaymentPreview> implements OnInit {
+export class AcceptPaymentRequestComponent extends BasePageComponent<PaymentRequestPreview> implements OnInit {
+
+  empty = empty;
 
   ConfirmationMode = ConfirmationMode;
 
@@ -34,8 +33,6 @@ export class AcceptPaymentRequestComponent extends BasePageComponent<PaymentPrev
   step$ = new BehaviorSubject<PaymentStep>(null);
   form: FormGroup;
   confirmationPassword: FormControl;
-  title: string;
-  mobileTitle: string;
   canConfirm: boolean;
   confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
   performed: Transaction;
@@ -61,7 +58,7 @@ export class AcceptPaymentRequestComponent extends BasePageComponent<PaymentPrev
     this.addSub(this.paymentRequestsService.previewPaymentRequest({ key: this.transactionKey }).subscribe(preview => this.data = preview));
   }
 
-  onDataInitialized(data: PaymentPreview) {
+  onDataInitialized(data: PaymentRequestPreview) {
     // Build the form
     this.form = this.formBuilder.group({
       processDate: null,
@@ -100,7 +97,9 @@ export class AcceptPaymentRequestComponent extends BasePageComponent<PaymentPrev
   }
 
   get doneTitle(): string {
-    if (this.performed) {
+    if (this.form.value.processDate) {
+      return this.i18n.transaction.title.paymentConfirmation;
+    } else {
       return this.performed.authorizationStatus === TransactionAuthorizationStatusEnum.PENDING
         ? this.i18n.transaction.title.pendingPayment
         : this.i18n.transaction.title.processedPayment;
@@ -108,7 +107,9 @@ export class AcceptPaymentRequestComponent extends BasePageComponent<PaymentPrev
   }
 
   get doneMobileTitle(): string {
-    if (this.performed) {
+    if (this.form.value.processDate) {
+      return this.i18n.transaction.mobileTitle.paymentConfirmation;
+    } else {
       return this.performed.authorizationStatus === TransactionAuthorizationStatusEnum.PENDING
         ? this.i18n.transaction.mobileTitle.pendingPayment
         : this.i18n.transaction.mobileTitle.processedPayment;
@@ -116,7 +117,7 @@ export class AcceptPaymentRequestComponent extends BasePageComponent<PaymentPrev
   }
 
   viewPerformed() {
-    this.router.navigate(['banking', 'transaction', this.bankingHelper.transactionNumberOrId(this.performed)]);
+    this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(this.performed)]);
   }
 
   locateControl(locator: FormControlLocator) {

@@ -27,7 +27,8 @@
                 </a>
               </td>
               <td class="actions">
-                <button [tooltip]="i18n.general.removeTooltip(row.name)"
+                <button type="button"
+                  [tooltip]="i18n.general.removeTooltip(row.name)"
                   class="btn btn-icon"
                   (click)="remove(row); $event.stopPropagation()">
                   <icon [icon]="SvgIcon.Trash"></icon>

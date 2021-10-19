@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import {
   AccountWithCurrency, AvailabilityEnum, Currency, CustomFieldDetailed,
   DataForTransaction, PaymentPreview, PaymentSchedulingEnum, PerformPayment,
+  TimeFieldEnum,
+  TimeInterval,
   Transaction, TransactionAuthorizationStatusEnum, TransactionTypeData, TransferType,
 } from 'app/api/models';
 import { PaymentsService } from 'app/api/services/payments.service';
@@ -17,6 +19,7 @@ import { cloneDeep } from 'lodash-es';
 import { isEqual } from 'lodash-es';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { PaymentStepFormComponent } from 'app/ui/banking/payment/payment-step-form.component';
 
 export type PaymentStep = 'form' | 'confirm' | 'done';
 
@@ -83,6 +86,8 @@ const FIRST_OCCURRENCE_DATE_VAL: ValidatorFn = control => {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentComponent extends BasePageComponent<DataForTransaction> implements OnInit {
+
+  @ViewChild('paymentStepForm') paymentStepForm: PaymentStepFormComponent;
 
   ConfirmationMode = ConfirmationMode;
 
@@ -231,6 +236,7 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
       occurrencesCount: [null, OCCURRENCES_COUNT_VAL],
       firstOccurrenceIsNow: true,
       firstOccurrenceDate: [null, FIRST_OCCURRENCE_DATE_VAL],
+      occurrenceInterval: [{ amount: 1, field: TimeFieldEnum.MONTHS } as TimeInterval, Validators.required]
     });
   }
 
@@ -320,8 +326,9 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
   }
 
   toConfirm() {
+    this.paymentStepForm.removeSubscriptions();
     // Before proceeding, copy the value of all valid custom fields
-    const customValueControls: { [key: string]: AbstractControl } = {};
+    const customValueControls: { [key: string]: AbstractControl; } = {};
     const typeData = this.paymentTypeData;
     if (typeData && typeData.customFields) {
       for (const cf of typeData.customFields) {
@@ -330,6 +337,7 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
     }
     this.form.setControl('customValues', new FormGroup(customValueControls));
     if (!validateBeforeSubmit(this.form)) {
+      this.paymentStepForm.createSubscriptions();
       return;
     }
     this.addSub(this.confirmDataRequest().subscribe(preview => {
@@ -337,7 +345,7 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
       this.step = 'confirm';
       this.canConfirm = this.authHelper.canConfirm(preview.confirmationPasswordInput);
       if (!this.canConfirm) {
-        this.notification.warning(this.authHelper.getConfirmationMessage(preview.confirmationPasswordInput));
+        this.notification.warning(this.authHelper.getConfirmationMessage(preview.confirmationPasswordInput, this.pos));
       }
       const val = preview.confirmationPasswordInput ? Validators.required : null;
       this.confirmationPassword.setValidators(val);
@@ -434,7 +442,7 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
   }
 
   viewPerformed() {
-    this.router.navigate(['banking', 'transaction', this.bankingHelper.transactionNumberOrId(this.performed)]);
+    this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(this.performed)]);
   }
 
   reload() {

@@ -1,10 +1,10 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
     <page-content
-      [heading]="create ? i18n.operatorGroup.title.new : i18n.operatorGroup.title.edit"
-      [mobileHeading]="create ? i18n.operatorGroup.mobileTitle.new : i18n.operatorGroup.mobileTitle.edit"
+      [heading]="create ? i18n.operatorGroup.title['new'] : i18n.operatorGroup.title.edit"
+      [mobileHeading]="create ? i18n.operatorGroup.mobileTitle['new'] : i18n.operatorGroup.mobileTitle.edit"
       [headingActions]="headingActions$ | async">
-      <form [formGroup]="form">
+      <ng-container [formGroup]="form">
         <label-value *ngIf="!self" [label]="i18n.general.user"
           mode="fieldView">
           <user-link [user]="data.user"></user-link>
@@ -16,8 +16,8 @@
 
         <ng-container *ngIf="data.accountTypes?.length > 0">
           <h2 class="mt-3 mb-0">{{ (layout.ltsm$ | async)
-          ? i18n.operatorGroup.mobileTitle.accountAccess
-          : i18n.operatorGroup.title.accountAccess }}
+            ? i18n.operatorGroup.mobileTitle.accountAccess
+            : i18n.operatorGroup.title.accountAccess }}
           </h2>
           <ng-container *ngIf="!singleAccount">
             <ng-container *ngTemplateOutlet="generalAccounts"></ng-container>
@@ -45,7 +45,7 @@
         </ng-container>
 
         <h2 class="mt-3 mb-0">{{
-        (layout.ltsm$ | async)
+          (layout.ltsm$ | async)
           ? i18n.operatorGroup.mobileTitle.permissions
           : i18n.operatorGroup.title.permissions }}
         </h2>
@@ -57,6 +57,9 @@
         <boolean-field *ngIf="data.canViewAdvertisements"
           [label]="i18n.operatorGroup.viewAdvertisements"
           formControlName="viewAdvertisements"></boolean-field>
+        <boolean-field *ngIf="data.canPerformVoucherTransactions"
+          [label]="i18n.operatorGroup.voucherTransactions"
+          formControlName="voucherTransactions"></boolean-field>
         <multi-selection-field *ngIf="data.operations?.length > 0"
           [label]="i18n.operatorGroup.runOperations"
           formControlName="operations">
@@ -68,7 +71,7 @@
         <boolean-field *ngIf="data.broker"
           [label]="i18n.operatorGroup.brokering" formControlName="brokering">
         </boolean-field>
-      </form>
+      </ng-container>
       <actions>
         <action-button class="btn-main" [disabled]="requesting$ | async"
           (action)="save()" [label]="i18n.general.save">
