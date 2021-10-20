@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Address, DeliveryMethod, DeliveryMethodTypeEnum, DeviceConfirmationTypeEnum, ShoppingCartCheckout, ShoppingCartDataForCheckout } from 'app/api/models';
+import { Address, DeliveryMethod, DeviceConfirmationTypeEnum, ShoppingCartCheckout, ShoppingCartDataForCheckout } from 'app/api/models';
 import { ShoppingCartsService } from 'app/api/services/shopping-carts.service';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
@@ -166,8 +166,7 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
 
     const checkout: ShoppingCartCheckout = cloneDeep(this.form.value);
     delete checkout['address'];
-    checkout.deliveryAddress = this.deliveryMethod !== null && this.deliveryMethod.deliveryType === DeliveryMethodTypeEnum.PICKUP ?
-      this.deliveryMethod.address : this.addressForm.value;
+    checkout.deliveryAddress = this.addressForm.value;
 
     this.addSub(this.shoppingCartService.checkoutShoppingCart({
       id: this.data.cart.id,

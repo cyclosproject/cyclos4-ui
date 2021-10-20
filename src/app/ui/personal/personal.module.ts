@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { SearchNotificationsComponent } from 'app/ui/personal/notifications/search-notifications.component';
 import { PersonalRoutingModule } from 'app/ui/personal/personal-routing.module';
 import { ManageSettingsComponent } from 'app/ui/personal/settings/manage-settings.component';
-import { SendInvitationComponent } from 'app/ui/personal/invite/send-invitation.component';
 import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
 
 /**
@@ -12,7 +11,6 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
   declarations: [
     SearchNotificationsComponent,
     ManageSettingsComponent,
-    SendInvitationComponent
   ],
   imports: [
     PersonalRoutingModule,

@@ -26,8 +26,8 @@ export class ViewOperatorGroupComponent
   self: boolean;
   singleAccount: boolean;
   visibleAccounts: OperatorGroupAccountView[];
-  paymentsByAccount: { [key: string]: OperatorGroupPaymentView[]; };
-  authorizeByAccount: { [key: string]: TransferTypeWithCurrency[]; };
+  paymentsByAccount: { [key: string]: OperatorGroupPaymentView[] };
+  authorizeByAccount: { [key: string]: TransferTypeWithCurrency[] };
 
   constructor(
     injector: Injector,
@@ -79,7 +79,7 @@ export class ViewOperatorGroupComponent
   }
 
   remove() {
-    this.confirmation.confirm({
+    this.notification.confirm({
       message: this.i18n.general.removeConfirm(this.group.name),
       callback: () => this.doRemove(),
     });
@@ -88,7 +88,7 @@ export class ViewOperatorGroupComponent
   private doRemove() {
     this.addSub(this.operatorGroupsService.deleteOperatorGroup({ id: this.id }).subscribe(() => {
       this.notification.snackBar(this.i18n.general.removeDone(this.group.name));
-      this.router.navigate(['/users', this.authHelper.orSelf(this.group.user), 'operator-groups']);
+      this.router.navigate(['users', this.authHelper.orSelf(this.group.user), 'operator-groups']);
     }));
   }
 

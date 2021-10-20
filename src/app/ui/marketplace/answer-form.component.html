@@ -29,10 +29,9 @@
             {{ data.question }}
           </label-value>
           <label-value [ngClass]="{'pt-1': !data.answer}"
-            [label]="i18n.ad.answer" [required]="!data.answer"
-            [forId]="'answer'">
+            [label]="i18n.ad.answer" [required]="!data.answer">
             <textarea-field *ngIf="!data.answer" required="true"
-              [formControl]="answer" [id]="'answer'">
+              [formControl]="answer">
             </textarea-field>
             <ng-container *ngIf="data.answer"> {{data.answer}} </ng-container>
           </label-value>

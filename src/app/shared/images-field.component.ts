@@ -5,10 +5,9 @@ import {
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomField, Image, TempImageTargetEnum } from 'app/api/models';
 import { ImagesService } from 'app/api/services/images.service';
-import { CameraService } from 'app/core/camera.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { LayoutService } from 'app/core/layout.service';
-import { StoredFileCacheService } from 'app/core/stored-file-cache.service';
+import { NotificationService } from 'app/core/notification.service';
 import { AvatarSize } from 'app/shared/avatar.component';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
@@ -83,8 +82,7 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
     private imagesService: ImagesService,
     private changeDetector: ChangeDetectorRef,
     private modal: BsModalService,
-    private camera: CameraService,
-    private storedFileCacheService: StoredFileCacheService) {
+    private notification: NotificationService) {
     super(injector, controlContainer);
   }
 
@@ -156,7 +154,6 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
         this.images = this.images.filter(i => !result.removedImages.includes(i.id));
         this.uploadedImages = this.uploadedImages.filter(i => !result.removedImages.includes(i.id));
         value = value.filter(id => !result.removedImages.includes(id));
-        result.removedImages.forEach(id => this.storedFileCacheService.delete(id));
       }
       this.images = value.map(id => this.images.find(i => i.id === id));
       this.value = value;
@@ -174,18 +171,10 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
         this.addSub(this.imagesService.deleteImage({ idOrKey: i.id }).subscribe());
       });
     });
-    this.images.forEach(i => this.storedFileCacheService.delete(i.id));
     this.images = [];
     this.value = [];
     // Manually mark the control as touched, as there's no native inputs
     this.notifyTouched();
-  }
-
-  onValueInitialized(_value: string | string[]) {
-    this.imageIds
-      .map(id => this.storedFileCacheService.read(id))
-      .filter(sf => sf)
-      .forEach(sf => this.images.push(sf));
   }
 
   notifyTouched() {
@@ -198,6 +187,7 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
   }
 
   captureCamera() {
-    this.camera.capture(file => this.imageUpload.uploadFile(file));
+    this.notification.captureCamera(file => this.imageUpload.uploadFile(file));
   }
+
 }

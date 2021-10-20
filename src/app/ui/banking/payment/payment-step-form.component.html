@@ -1,5 +1,5 @@
 <ng-container [formGroup]="form">
-  <label-value *ngIf="fromUser && !fromSelf" kind="fieldView"
+  <label-value *ngIf="fromUser && !fromSelf" kind="field"
     [label]="i18n.transaction.fromUser">
     <user-link [user]="fromUser"></user-link>
   </label-value>
@@ -70,7 +70,6 @@
         formControlName="subject" [allowContacts]="allowContacts"
         [allowSearch]="allowSearch" [allowPrincipal]="allowPrincipal"
         [allowQrCode]="allowQrCode" [principalTypes]="data.principalTypes"
-        [allowLocate]="data.allowAutocomplete"
         (selected)="$event ? setFocus(amountField) : null"></user-field>
     </ng-template>
   </label-value>
@@ -101,9 +100,14 @@
     </decimal-field>
   </ng-template>
 
-  <custom-field-input
-    *ngFor="let cf of (paymentTypeData$ | async)?.customFields" [field]="cf"
-    [formControl]="customValuesControlGetter(cf)"></custom-field-input>
+  <label-value *ngFor="let cf of (paymentTypeData$ | async)?.customFields"
+    [label]="cf.name" [kind]="'field'"
+    [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'"
+    [fieldSize]="fieldSize(cf)" [required]="cf.required">
+    <custom-field-input [field]="cf" hideLabel
+      [formControl]="customValuesControlGetter(cf)">
+    </custom-field-input>
+  </label-value>
 
   <single-selection-field formControlName="scheduling" required
     [label]="i18n.transaction.scheduling"
@@ -175,10 +179,6 @@
         formControlName="occurrencesCount" required
         [label]="i18n.transaction.occurrencesCount">
       </input-field>
-
-      <time-interval-field formControlName="occurrenceInterval"
-        [label]="i18n.transaction.occurrenceInterval" required>
-      </time-interval-field>
     </ng-container>
   </ng-container>
 

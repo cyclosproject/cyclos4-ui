@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { Transaction } from 'app/api/models';
+import { Transaction, TransactionAuthorizationStatusEnum, TransactionKind } from 'app/api/models';
+import { BankingHelperService } from 'app/ui/core/banking-helper.service';
+import { BaseComponent } from 'app/shared/base.component';
 import { Enter } from 'app/core/shortcut.service';
 import { SvgIcon } from 'app/core/svg-icon';
-import { BaseComponent } from 'app/shared/base.component';
-import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 
 /**
  * Send and accept payment request final step
@@ -16,6 +16,7 @@ import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 export class RequestPaymentStepDoneComponent extends BaseComponent implements OnInit {
 
   @Input() performed: Transaction;
+  @Input() processDate: string;
   icon: SvgIcon;
   message: string;
 
@@ -27,12 +28,33 @@ export class RequestPaymentStepDoneComponent extends BaseComponent implements On
 
   ngOnInit() {
     super.ngOnInit();
-    this.icon = SvgIcon.Check2;
-    this.message = this.performed.transactionNumber
-      ? this.i18n.transaction.paymentRequestSentWithNumber(this.performed.transactionNumber)
-      : this.i18n.transaction.paymentRequestSent;
-    this.addShortcut(Enter,
-      () => this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(this.performed)]));
+    let addShortcut = true;
+    if (this.performed?.kind === TransactionKind.PAYMENT_REQUEST) {
+      this.icon = SvgIcon.Check2;
+      this.message = this.performed.kind
+        ? this.i18n.transaction.processedPaymentRequestWithNumber(this.performed.transactionNumber)
+        : this.i18n.transaction.processedPaymentRequest;
+    } else {
+      if (this.performed?.authorizationStatus === TransactionAuthorizationStatusEnum.PENDING) {
+        this.icon = SvgIcon.CalendarEvent;
+        this.message = this.performed.transactionNumber
+          ? this.i18n.transaction.pendingWithNumber(this.performed.transactionNumber)
+          : this.i18n.transaction.pending;
+      } else if (this.performed) {
+        this.icon = SvgIcon.Check2;
+        this.message = this.performed.transactionNumber
+          ? this.i18n.transaction.processedWithNumber(this.performed.transactionNumber)
+          : this.i18n.transaction.processed;
+      } else {
+        this.icon = SvgIcon.CalendarEvent;
+        this.message = this.i18n.transaction.acceptedScheduledPaymentRequest(this.processDate);
+        addShortcut = false;
+      }
+    }
+    if (addShortcut) {
+      this.addShortcut(Enter,
+        () => this.router.navigate(['banking', 'transaction', this.bankingHelper.transactionNumberOrId(this.performed)]));
+    }
   }
 
 }

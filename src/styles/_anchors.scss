@@ -1,16 +1,14 @@
 @import 'src/definitions';
 
 a {
+  color: $link-color;
   cursor: pointer;
+  &:hover {
+    color: $link-hover-color;
+  }
   &:focus:not(:active) {
     outline: none;
     box-shadow: $btn-focus-box-shadow;
-  }
-}
-a:not(.btn) {
-  color: $link-color;
-  &:hover {
-    color: $link-hover-color;
   }
 }
 a.body-color:hover {
@@ -31,7 +29,7 @@ a.plain, maybe-link.plain a {
   }
 }
 a.decorated {
-  color: $link-color;
+  color: $link-color !important;
 }
 a.icon {
   outline: none;
@@ -57,15 +55,18 @@ a.ngx-gallery-thumbnail:focus {
 }
 
 body.dark {
-  a:not(.btn) {
+  a {
     color: $link-color-dark;
     &:hover {
       color: $link-hover-color-dark;
     }
   }
-  a.body-color:hover, a.plain, maybe-link.plain a,
+  a.body-color:hover {
+    color: $body-color-dark;
+  }
+  a.plain, maybe-link.plain a,
   a.undecorated, maybe-link.undecorated a {
-    color: $body-color-dark !important;
+    color: $body-color-dark;
   }
 }
 

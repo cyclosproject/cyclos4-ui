@@ -1,12 +1,10 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataForFrontend, UnauthorizedError, UnauthorizedErrorCode } from 'app/api/models';
+import { DataForFrontend } from 'app/api/models';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
-import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { LayoutService } from 'app/core/layout.service';
-import { NextRequestState } from 'app/core/next-request-state';
 import { ArrowsVertical, ShortcutService } from 'app/core/shortcut.service';
-import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
+import { I18n } from 'app/i18n/i18n';
 import { handleKeyboardFocus, setRootSpinnerVisible } from 'app/shared/helper';
 import { LoginState } from 'app/ui/core/login-state';
 import { LoginService } from 'app/ui/core/login.service';
@@ -23,7 +21,6 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class UiComponent implements OnInit {
 
-  @HostBinding('class.root') root = true;
   @ViewChild(SidenavComponent) sidenav: SidenavComponent;
   @ViewChild('mainContainer') mainContainer: ElementRef;
 
@@ -36,16 +33,14 @@ export class UiComponent implements OnInit {
   constructor(
     private ngZone: NgZone,
     private router: Router,
-    public dataForFrontendHolder: DataForFrontendHolder,
+    private dataForFrontendHolder: DataForFrontendHolder,
     public login: LoginService,
     public loginState: LoginState,
     public menu: MenuService,
     public layout: LayoutService,
     public uiLayout: UiLayoutService,
-    @Inject(I18nInjectionToken) public i18n: I18n,
-    private nextRequestState: NextRequestState,
+    public i18n: I18n,
     private shortcut: ShortcutService,
-    private errorHandler: ErrorHandlerService,
     private uiErrorHandler: UiErrorHandlerService
   ) {
   }
@@ -95,15 +90,6 @@ export class UiComponent implements OnInit {
 
   private doInitialize(dataForFrontend: DataForFrontend) {
     this.initialized$.next(true);
-
     this.menuBar = dataForFrontend.menuBar;
-    const dataForUi = (dataForFrontend || {}).dataForUi;
-    const auth = (dataForUi || {}).auth || {};
-
-    if (auth.unauthorizedAddress) {
-      const error = { code: UnauthorizedErrorCode.UNAUTHORIZED_ADDRESS } as UnauthorizedError;
-      this.nextRequestState.leaveNotification = true;
-      this.errorHandler.handleUnauthorizedError(error);
-    }
   }
 }

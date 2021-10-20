@@ -10,27 +10,14 @@
       <label-value [label]="i18n.general.name">
         {{ data.name }}
       </label-value>
-      <label-value *ngIf="!empty(data.internalName)"
-        [label]="i18n.general.internalName">
-        {{ data.internalName }}
-      </label-value>
-      <label-value *ngIf="!empty(data.description)"
-        [label]="i18n.general.description">
+      <label-value [label]="i18n.general.description">
         {{ data.description }}
       </label-value>
-      <label-value ng *ngIf="data.category" [label]="i18n.general.category">
+      <label-value ng *ngIf="data.category" [label]="i18n.document.category">
         {{ data.category.name }}
       </label-value>
       <label-value [label]="i18n.document.enable">
         {{ format.formatBoolean(data.enabled) }}
-      </label-value>
-      <label-value *ngIf="data.publiclyAccessible"
-        [label]="i18n.document.publiclyAccessible">
-        {{ format.formatBoolean(data.publiclyAccessible) }}
-      </label-value>
-      <label-value *ngIf="data.downloadUrl"
-        [label]="i18n.general.downloadUrl">
-        {{ data.downloadUrl }}
       </label-value>
       <label-value *ngIf="data.userVisible"
         [label]="i18n.document.userVisible">

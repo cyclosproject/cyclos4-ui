@@ -13,7 +13,6 @@ import { PushNotificationComponent } from 'app/ui/core/push-notification.compone
 import { PushNotificationsComponent } from 'app/ui/core/push-notifications.component';
 import { SidenavComponent } from 'app/ui/core/sidenav.component';
 import { TopBarComponent } from 'app/ui/core/top-bar.component';
-import { MessageHelperService } from 'app/ui/core/message-helper.service';
 import { UiErrorHandlerService } from 'app/ui/core/ui-error-handler.service';
 import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
@@ -60,7 +59,6 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
     OperationHelperService,
     WizardHelperService,
     TokenHelperService,
-    MessageHelperService,
   ],
   entryComponents: [
     PushNotificationComponent

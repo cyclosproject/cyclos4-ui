@@ -68,7 +68,7 @@ export class ViewCartComponent
 
   onDataInitialized(data: ShoppingCartView) {
     this.headingActions = [
-      new HeadingAction(SvgIcon.Bag2, this.i18n.ad.checkout, () => this.checkout(), true),
+      new HeadingAction(SvgIcon.Bag, this.i18n.ad.checkout, () => this.checkout(), true),
     ];
 
     this.checkMessages(data);
@@ -173,7 +173,7 @@ export class ViewCartComponent
       req(item[0]);
     } else {
       // Display a popup with a decimal field to edit quantity
-      this.confirmation.confirm({
+      this.notification.confirm({
         title: this.i18n.ad.changeQuantity,
         labelPosition: 'above',
         customFields: [{

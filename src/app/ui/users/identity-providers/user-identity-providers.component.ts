@@ -78,7 +78,7 @@ export class UserIdentityProvidersComponent
   }
 
   private disconnect(uip: UserIdentityProvider) {
-    this.confirmation.confirm({
+    this.notification.confirm({
       title: this.i18n.identityProvider.action.disconnect,
       message: this.i18n.identityProvider.action.disconnectConfirm(uip.identityProvider.name),
       callback: () => this.doDisconnect(uip),

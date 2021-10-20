@@ -41,11 +41,6 @@ export class HomeComponent extends BasePageComponent<DataForFrontendHome> implem
   ngOnInit() {
     super.ngOnInit();
     if (this.login.user == null) {
-      if (!this.dataForFrontendHolder.dataForFrontend?.hasHomePage) {
-        // No home page! Redirect to login
-        this.router.navigate(['/login']);
-        return;
-      }
       // For guests, we just have content. So, emulate scrolling on d-pad (useful for KaiOS)
       this.emulateKeyboardScroll();
     }

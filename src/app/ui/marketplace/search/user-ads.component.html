@@ -6,8 +6,7 @@
   <page-content mode="filters" [heading]="resolveHeading(false)"
     [mobileHeading]="resolveHeading(true)"
     [headingActions]="headingActions$ | async">
-    <div [formGroup]="form"
-      class="filters-form filters-form-separator border-bottom">
+    <form [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row">
         <div class="col-12 col-md-6" *ngIf="!self">
           <label-value [label]="i18n.general.user" kind="fieldView"
@@ -65,7 +64,7 @@
           </multi-selection-field>
         </div>
       </div>
-    </div>
+    </form>
     <div class="filters-row">
       <result-type-field [formControl]="resultTypeControl"
         [allowedResultTypes]="allowedResultTypes$ | async">

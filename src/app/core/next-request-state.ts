@@ -28,13 +28,7 @@ export class NextRequestState {
   /**
    * Flag to disable default error handling on next request
    */
-  private _ignoreNextError: boolean;
-  get ignoreNextError(): boolean {
-    return this._ignoreNextError;
-  }
-  set ignoreNextError(flag: boolean) {
-    this._ignoreNextError = flag;
-  }
+  ignoreNextError: boolean;
 
   /**
    * Flag to not close notification on next request

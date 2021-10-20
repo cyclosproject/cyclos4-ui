@@ -33,7 +33,7 @@ import { UiComponent } from './ui.component';
     ContentModule,
   ],
   providers: [
-    INITIALIZE,
+    INITIALIZE
   ],
   bootstrap: [UiComponent],
 })

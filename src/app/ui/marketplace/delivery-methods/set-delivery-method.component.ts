@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { Currency, DeliveryMethodTypeEnum, SetDeliveryMethod, TimeInterval } from 'app/api/models';
+import { Currency, SetDeliveryMethod, TimeInterval } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
@@ -18,7 +18,6 @@ export class SetDeliveryMethodComponent extends BaseComponent implements OnInit 
   @Input() chargeAmount: number;
   @Input() minTime: TimeInterval;
   @Input() maxTime: TimeInterval;
-  @Input() deliveryType: DeliveryMethodTypeEnum;
   @Input() currency: Currency;
   @Output() done = new EventEmitter<SetDeliveryMethod>();
 
@@ -37,7 +36,6 @@ export class SetDeliveryMethodComponent extends BaseComponent implements OnInit 
       chargeAmount: [this.chargeAmount, Validators.required],
       minTime: this.minTime,
       maxTime: [this.maxTime, Validators.required],
-      deliveryType: [this.deliveryType, Validators.required],
       remarks: '',
     });
   }

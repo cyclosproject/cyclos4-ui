@@ -72,7 +72,7 @@ export class SearchUnansweredQuestionsComponent
    * Removes the given question and reload results
    */
   remove(question: AdQuestion) {
-    this.confirmation.confirm({
+    this.notification.confirm({
       message: this.i18n.general.removeItemConfirm,
       callback: () => {
         this.addSub(this.adQuestionService.deleteAdQuestion({ id: question.id })

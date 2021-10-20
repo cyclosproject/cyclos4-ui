@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, HostBindin
 import { FormGroup } from '@angular/forms';
 import {
   AddressConfiguration, AddressConfigurationForUserProfile,
-  AddressFieldEnum, Country, CustomFieldBinaryValues,
+  AddressFieldEnum, Country, CustomFieldBinaryValues, CustomFieldDetailed,
 } from 'app/api/models';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { CountriesResolve } from 'app/ui/countries.resolve';
@@ -67,4 +67,7 @@ export class AddressFormComponent extends BaseComponent implements OnInit {
     this.profileConfiguration = this.configuration as AddressConfigurationForUserProfile;
   }
 
+  fieldSize(cf: CustomFieldDetailed) {
+    return this.fieldHelper.fieldSize(cf);
+  }
 }

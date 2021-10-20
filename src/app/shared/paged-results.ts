@@ -52,10 +52,10 @@ export class PagedResults<T> {
    * @param response The HTTP response
    */
   static fillHeaders(paged: PagedResults<any>, response: HttpResponse<any>): void {
-    paged.page = parseInt(response.headers.get('X-Current-Page'), 10) ?? paged.page;
-    paged.pageSize = parseInt(response.headers.get('X-Page-Size'), 10) ?? paged.pageSize;
-    paged.totalCount = parseInt(response.headers.get('X-Total-Count'), 10) ?? paged.totalCount;
-    paged.pageCount = parseInt(response.headers.get('X-Page-Count'), 10) ?? paged.pageCount;
-    paged.hasNext = [true, 'true'].includes(response.headers.get('X-Has-Next-Page') ?? paged.hasNext);
+    paged.page = parseInt(response.headers.get('X-Current-Page'), 10);
+    paged.pageSize = parseInt(response.headers.get('X-Page-Size'), 10);
+    paged.totalCount = parseInt(response.headers.get('X-Total-Count'), 10);
+    paged.pageCount = parseInt(response.headers.get('X-Page-Count'), 10);
+    paged.hasNext = response.headers.get('X-Has-Next-Page') === 'true';
   }
 }

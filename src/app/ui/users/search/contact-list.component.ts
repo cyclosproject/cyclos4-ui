@@ -7,7 +7,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { ResultType } from 'app/ui/shared/result-type';
-import { PickUserDialogComponent } from 'app/ui/users/search/pick-user-dialog.component';
+import { AddContactDialogComponent } from 'app/ui/users/search/add-contact-dialog.component';
 import { UsersResultsComponent } from 'app/ui/users/search/users-results.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
@@ -75,9 +75,9 @@ export class ContactListComponent
     }
     const auth = this.login.auth || {};
     const permissions = auth.permissions || {};
-    const canAddContact = permissions.users?.search || permissions.banking?.payments?.user;
-    // If can search or pay to other users, allow the add contacts dialog
-    if (canAddContact) {
+    const users = permissions.users || {};
+    // If can search other users, allow the add contacts dialog
+    if (users.search) {
       this.headingActions = [
         new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () => this.addNew(), true),
       ];
@@ -85,25 +85,13 @@ export class ContactListComponent
   }
 
   private addNew() {
-    const canSearch = this.login.auth?.permissions?.users?.search;
-    const ref = this.modal.show(PickUserDialogComponent, {
+    const ref = this.modal.show(AddContactDialogComponent, {
       class: 'modal-form',
-      initialState: {
-        excludeContacts: true,
-        title: this.i18n.user.title.addContact,
-        label: this.i18n.user.contact,
-        allowSearch: canSearch
-      }
     });
-    const component = ref.content as PickUserDialogComponent;
+    const component = ref.content as AddContactDialogComponent;
     this.addSub(component.done.subscribe(user => {
-      this.addSub(this.contactsService.createContact({
-        user: ApiHelper.SELF,
-        body: { contact: user.id }
-      }).subscribe(() => {
-        this.notification.snackBar(this.i18n.user.profile.addContactDone(user.display));
-        this.reload();
-      }))
+      this.notification.snackBar(this.i18n.user.profile.addContactDone(user.display));
+      this.reload();
     }));
   }
 

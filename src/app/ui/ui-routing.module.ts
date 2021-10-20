@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
-import { NoPreloading, RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from 'app/shared/not-found.component';
+import { ContentPageGuard } from 'app/ui/content-page-guard';
 import { ContentPageComponent } from 'app/ui/content/content-page.component';
 import { HomeComponent } from 'app/ui/home/home.component';
 import { RedirectToLandingPageComponent } from 'app/ui/home/redirect-to-landing-page-component';
 import { LoggedUserGuard } from 'app/ui/logged-user-guard';
 import { AcceptPendingAgreementsComponent } from 'app/ui/login/accept-pending-agreements.component';
 import { ChangeExpiredPasswordComponent } from 'app/ui/login/change-expired-password.component';
+import { ChangeForgottenPasswordComponent } from 'app/ui/login/change-forgotten-password.component';
 import { ForgotPasswordComponent } from 'app/ui/login/forgot-password.component';
 import { LoginConfirmationComponent } from 'app/ui/login/login-confirmation.component';
 import { LoginComponent } from 'app/ui/login/login.component';
@@ -28,13 +30,16 @@ const rootRoutes: Routes = [
     component: LoginComponent,
   },
   {
+    path: 'login-confirmation',
+    component: LoginConfirmationComponent
+  },
+  {
     path: 'forgot-password',
     component: ForgotPasswordComponent,
   },
   {
-    path: 'login-confirmation',
-    canActivate: [LoggedUserGuard],
-    component: LoginConfirmationComponent
+    path: 'forgot-password/:key',
+    component: ChangeForgottenPasswordComponent,
   },
   {
     path: 'pending-agreements',
@@ -46,9 +51,15 @@ const rootRoutes: Routes = [
     canActivate: [LoggedUserGuard],
     component: ChangeExpiredPasswordComponent,
   },
+  // {
+  //   path: 'login-confirmation',
+  //   canActivate: [LoggedUserGuard],
+  //   component: LoginConfirmationComponent,
+  // },
   {
     path: 'page/:slug',
     component: ContentPageComponent,
+    canActivate: [ContentPageGuard],
   },
   {
     path: 'redirect/:location',
@@ -95,7 +106,7 @@ const rootRoutes: Routes = [
   imports: [
     RouterModule.forRoot(rootRoutes, {
       onSameUrlNavigation: 'reload',
-      preloadingStrategy: NoPreloading,
+      preloadingStrategy: PreloadAllModules,
     }),
     UiSharedModule,
   ],
@@ -103,7 +114,8 @@ const rootRoutes: Routes = [
     RouterModule,
   ],
   providers: [
-    LoggedUserGuard
+    LoggedUserGuard,
+    ContentPageGuard,
   ],
 })
 export class UiRoutingModule { }

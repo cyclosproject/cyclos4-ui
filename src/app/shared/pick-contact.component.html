@@ -5,12 +5,17 @@
 <ng-template #results>
   <div>
     <div class="mb-2" *ngFor="let row of (results$ | async)?.results">
-      <a (click)="emit(row); $event.preventDefault()" href="#">
+      <div *ngIf="isExcluded(row); else link" class="text-removed">
         {{ row.contact.display }}
-      </a>
+      </div>
+      <ng-template #link>
+        <a (click)="emit(row); $event.preventDefault()" href="#">
+          {{ row.contact.display }}
+        </a>
+      </ng-template>
     </div>
   </div>
-  <actions kind="secondary" forceRow>
+  <actions forceRow>
     <action-button *ngIf="results$.value.hasNext" (action)="update(1)" outline
       [label]="i18n.general.next">
     </action-button>

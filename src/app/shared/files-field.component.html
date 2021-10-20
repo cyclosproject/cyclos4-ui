@@ -1,5 +1,4 @@
-<label-value *ngIf="label; else widget" [formField]="self"
-  [informationText]="informationText">
+<label-value *ngIf="label; else widget" [formField]="self">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
@@ -23,17 +22,17 @@
       </div>
     </div>
     <div class="d-flex">
-      <button type="button" *ngIf="maxFiles === 1 || files.length < maxFiles"
+      <button *ngIf="maxFiles === 1 || files.length < maxFiles"
         class="btn btn-icon d-flex align-content-center"
         [tooltip]="i18n.field.file.upload" (click)="fileUpload.perform()">
         <icon [icon]="SvgIcon.Upload"></icon>
       </button>
-      <button type="button" *ngIf="maxFiles > 1 && files.length > 0"
+      <button *ngIf="maxFiles > 1 && files.length > 0"
         class="ml-2 btn btn-icon d-flex align-content-center"
         [tooltip]="i18n.field.file.manage" (click)="manageFiles()">
         <icon [icon]="SvgIcon.Pencil"></icon>
       </button>
-      <button type="button" *ngIf="maxFiles === 1 && files.length > 0"
+      <button *ngIf="maxFiles === 1 && files.length > 0"
         class="ml-2 btn btn-icon d-flex align-content-center"
         [tooltip]="i18n.field.file.remove" (click)="removeAllFiles()">
         <icon [icon]="SvgIcon.Trash"></icon>

@@ -14,7 +14,7 @@
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'done'"
+  <page-content *ngSwitchCase="'done'" hideBack
     [heading]="this.i18n.transaction.title.paymentRequestSent"
     [mobileHeading]="this.i18n.transaction.mobileTitle.paymentRequestSent"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>

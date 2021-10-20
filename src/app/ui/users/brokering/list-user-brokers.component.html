@@ -25,7 +25,7 @@
             </div>
           </div>
           <div class="ml-auto" *ngIf="canRemove(row)">
-            <button class="btn btn-icon" type="button"
+            <button class="btn btn-icon"
               (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
               <icon [icon]="SvgIcon.Trash"></icon>
             </button>
@@ -66,8 +66,7 @@
                 </a>
               </td>
               <td class="actions actions-multiple" *ngIf="canRemove(row)">
-                <button type="button" [tooltip]="i18n.general.remove"
-                  class="btn btn-icon"
+                <button [tooltip]="i18n.general.remove" class="btn btn-icon"
                   (click)="remove(row); $event.stopPropagation()">
                   <icon [icon]="SvgIcon.Trash"></icon>
                 </button>

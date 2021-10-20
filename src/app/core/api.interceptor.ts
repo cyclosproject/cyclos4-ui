@@ -1,8 +1,6 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponseBase } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponseBase } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ForbiddenError, ForbiddenErrorCode } from 'app/api/models';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
-import { ErrorStatus } from 'app/core/error-status';
 import { NextRequestState } from 'app/core/next-request-state';
 import { NotificationService } from 'app/core/notification.service';
 import { Observable } from 'rxjs';
@@ -15,8 +13,6 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ApiInterceptor implements HttpInterceptor {
-
-  hideConfirmationHandler = () => { };
 
   constructor(
     private nextRequestState: NextRequestState,
@@ -56,45 +52,11 @@ export class ApiInterceptor implements HttpInterceptor {
         err => {
           this.nextRequestState.finish(req);
           if (!ignoreError) {
-            if (this.isConfirmationRequest(req)) {
-              this.handleConfirmationError(err);
-            } else {
-              this.errorHandler.handleHttpError(err);
-            }
+            this.errorHandler.handleHttpError(err);
           }
         },
-        () => {
-          this.nextRequestState.finish(req);
-          if (this.isConfirmationRequest(req)) {
-            this.hideConfirmationHandler();
-          }
-        },
+        () => this.nextRequestState.finish(req),
       ),
     );
-  }
-
-  /**
-   * Checks if the given request error is a password
-   * exception so the confirmation popup is not hidden
-   */
-  handleConfirmationError(err: HttpErrorResponse) {
-    const error = this.errorHandler.parseError(err.error);
-    const invalidPassword =
-      error != null &&
-      err.status === ErrorStatus.FORBIDDEN &&
-      (error as ForbiddenError).code === ForbiddenErrorCode.INVALID_PASSWORD;
-
-    if (!invalidPassword) {
-      this.hideConfirmationHandler();
-    }
-    this.errorHandler.handleHttpError(err);
-  }
-
-  /**
-   * Returns true if the given request is used for confirmation
-   * by checking confirmationPassword header
-   */
-  private isConfirmationRequest(request: HttpRequest<any>): boolean {
-    return request.headers?.has('confirmationPassword');
   }
 }

@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { AdBasicData, AdDataForEdit, AdDataForNew, AdEdit, AdKind, AdManage, Currency, DeliveryMethod, Image } from 'app/api/models';
+import { AdBasicData, AdDataForEdit, AdDataForNew, AdEdit, AdKind, AdManage, Currency, CustomFieldDetailed, DeliveryMethod, Image } from 'app/api/models';
 import { ImagesService } from 'app/api/services/images.service';
 import { MarketplaceService } from 'app/api/services/marketplace.service';
-import { CameraService } from 'app/core/camera.service';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { ImageUploadComponent } from 'app/shared/image-upload.component';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
@@ -56,8 +55,7 @@ export class EditAdComponent
     private modal: BsModalService,
     private changeDetector: ChangeDetectorRef,
     private marketplaceHelper: MarketplaceHelperService,
-    private marketplaceService: MarketplaceService,
-    private camera: CameraService) {
+    private marketplaceService: MarketplaceService) {
     super(injector);
   }
 
@@ -358,7 +356,11 @@ export class EditAdComponent
    * Opens a dialog to capture an image from camera
    */
   captureCamera(upload: ImageUploadComponent) {
-    this.camera.capture(file => upload.uploadFile(file));
+    this.notification.captureCamera(file => upload.uploadFile(file));
+  }
+
+  fieldSize(cf: CustomFieldDetailed) {
+    return this.fieldHelper.fieldSize(cf);
   }
 
   get canUploadImages(): boolean {

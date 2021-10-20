@@ -6,7 +6,7 @@
   <page-content mode="filters" [heading]="i18n.transaction.title.scheduled"
     [mobileHeading]="i18n.transaction.mobileTitle.scheduled"
     [headingActions]="headingActions$ | async">
-    <div [formGroup]="form" class="filters-form">
+    <form [formGroup]="form" class="filters-form">
       <div class="row">
         <div class="col-12 col-md-6">
           <single-selection-field labelPosition="side"
@@ -85,7 +85,7 @@
           </ng-container>
         </ng-container>
       </div>
-    </div>
+    </form>
   </page-content>
 
   <results-layout resultType="list" [results]="results$ | async"
@@ -118,8 +118,7 @@
             <td>{{ bankingHelper.subjectName(row.transaction.to) }}</td>
             <td>{{ number(row) }}</td>
             <td class="amount">
-              {{ row.amount |
-              currency:currencies.get(row.transaction.currency) }}
+              {{ row.amount | currency:currencies.get(row.transaction.currency) }}
             </td>
           </tr>
         </ng-container>

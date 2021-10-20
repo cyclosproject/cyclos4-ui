@@ -60,7 +60,7 @@ export class WizardHelperService {
    */
   headingAction(wizard: Wizard, user: string): HeadingAction {
     return new HeadingAction(this.icon(wizard), wizard.label || wizard.name, () => {
-      this.router.navigate(['/wizards', 'user', user, ApiHelper.internalNameOrId(wizard)]);
+      this.router.navigate(['wizards', 'user', user, ApiHelper.internalNameOrId(wizard)]);
     });
   }
 }

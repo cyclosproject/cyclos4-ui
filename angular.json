@@ -1,8 +1,5 @@
 {
     "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-    "cli": {
-        "analytics": false
-    },
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
@@ -26,7 +23,7 @@
                     "skipTests": true
                 },
                 "@schematics/angular:module": {
-                    
+                    "skipTests": true
                 },
                 "@schematics/angular:pipe": {
                     "skipTests": true
@@ -39,6 +36,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
+                        "aot": true,
                         "outputHashing": "all",
                         "outputPath": "dist/ui",
                         "index": "src/ui/index.html",
@@ -53,35 +51,23 @@
                                 "input": "node_modules/qr-scanner",
                                 "glob": "qr-scanner-worker.min.*",
                                 "output": "/"
-                            },
-                            {
-                                "input": "node_modules/upup/dist",
-                                "glob": "*",
-                                "output": "/"
                             }
                         ],
                         "styles": [
                             "src/styles.scss"
                         ],
                         "scripts": [
-                            "node_modules/upup/src/upup.js"
+                            
                         ],
                         "allowedCommonJsDependencies": [
                             "hammerjs",
-                            "js-cookie",
                             "b64-to-blob",
                             "downloadjs",
                             "autosize",
                             "rangy",
                             "big.js",
                             "lscache"
-                        ],
-                        "vendorChunk": true,
-                        "extractLicenses": false,
-                        "buildOptimizer": false,
-                        "sourceMap": true,
-                        "optimization": false,
-                        "namedChunks": true
+                        ]
                     },
                     "configurations": {
                         "production": {
@@ -99,12 +85,14 @@
                             ],
                             "optimization": true,
                             "sourceMap": false,
+                            "extractCss": true,
+                            "namedChunks": true,
+                            "aot": true,
                             "extractLicenses": true,
                             "vendorChunk": false,
                             "buildOptimizer": true
                         }
-                    },
-                    "defaultConfiguration": ""
+                    }
                 },
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
@@ -131,5 +119,8 @@
             }
         }
     },
-    "defaultProject": "ui"
+    "defaultProject": "ui",
+    "cli": {
+        "analytics": false
+    }
 }

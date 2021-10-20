@@ -19,16 +19,19 @@
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'done'" [heading]="doneTitle"
+  <page-content *ngSwitchCase="'done'" hideBack [heading]="doneTitle"
     [mobileHeading]="doneMobileTitle"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
-    <accept-payment-request-step-done class="flex-grow-1 d-flex flex-column"
-      [paymentRequest]="data.paymentRequest" [performed]="performed"
+    <request-payment-step-done class="flex-grow-1 d-flex flex-column"
+      [performed]="performed"
       [processDate]="this.form.value.processDate | date">
-    </accept-payment-request-step-done>
-    <actions forceRow *ngIf="empty(this.form.value.processDate)">
+    </request-payment-step-done>
+    <actions forceRow>
       <action-button (action)="viewPerformed()"
         [label]="i18n.transaction.doneView">
+      </action-button>
+      <action-button outline (action)="reload()"
+        [label]="i18n.transaction.doneNew">
       </action-button>
     </actions>
   </page-content>

@@ -1,4 +1,4 @@
-<ng-container *ngIf="hasValue$ | async; else empty">
+<ng-container *ngIf="hasValue; else empty">
   <ng-container *ngIf="directValue">
     <ng-container *ngIf="!link && !externalLink">
       {{ value }}
@@ -14,8 +14,8 @@
     [ngClass]="{'d-inline': inline}">{{ value }}</div>
   <rich-text-container *ngIf="type == 'richText'" [value]="value">
   </rich-text-container>
-  <span *ngIf="type == 'decimal'">{{ value | number:field.decimalDigits
-    }}</span>
+  <span
+    *ngIf="type == 'decimal'">{{ value | number:field.decimalDigits }}</span>
   <ng-container *ngIf="type == 'singleSelection' || type == 'multiSelection'">
     <span *ngFor="let pv of value; let last = last;">
       <span *ngIf="pv.category">{{ pv.category.name }} - </span>{{ pv.value +

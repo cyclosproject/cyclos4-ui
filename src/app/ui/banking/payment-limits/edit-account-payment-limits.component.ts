@@ -27,7 +27,6 @@ export class EditAccountPaymentLimitsComponent
   isDefaultDailyLimit$ = new BehaviorSubject<boolean>(null);
   isDefaultWeeklyLimit$ = new BehaviorSubject<boolean>(null);
   isDefaultMonthlyLimit$ = new BehaviorSubject<boolean>(null);
-  isDefaultYearlyLimit$ = new BehaviorSubject<boolean>(null);
 
   constructor(
     injector: Injector,
@@ -59,7 +58,6 @@ export class EditAccountPaymentLimitsComponent
     const dailyMode = this.mode(data.customAmountPerDayLimit);
     const weeklyMode = this.mode(data.customAmountPerWeekLimit);
     const monthlyMode = this.mode(data.customAmountPerMonthLimit);
-    const yearlyMode = this.mode(data.customAmountPerYearLimit);
     this.form = this.formBuilder.group({
       paymentLimitMode: paymentMode,
       amountLimit: data.amountLimit,
@@ -69,8 +67,6 @@ export class EditAccountPaymentLimitsComponent
       amountPerWeekLimit: data.amountPerWeekLimit,
       monthlyLimitMode: monthlyMode,
       amountPerMonthLimit: data.amountPerMonthLimit,
-      yearlyLimitMode: yearlyMode,
-      amountPerYearLimit: data.amountPerYearLimit,
       comment: null,
     });
     this.formControl('paymentLimitMode').valueChanges.subscribe(value => this.isDefaultPaymentLimit$.next(value === 'default'));
@@ -81,8 +77,6 @@ export class EditAccountPaymentLimitsComponent
     this.isDefaultWeeklyLimit$.next(weeklyMode === 'default');
     this.formControl('monthlyLimitMode').valueChanges.subscribe(value => this.isDefaultMonthlyLimit$.next(value === 'default'));
     this.isDefaultMonthlyLimit$.next(monthlyMode === 'default');
-    this.formControl('yearlyLimitMode').valueChanges.subscribe(value => this.isDefaultYearlyLimit$.next(value === 'default'));
-    this.isDefaultYearlyLimit$.next(yearlyMode === 'default');
   }
 
   save() {
@@ -112,16 +106,11 @@ export class EditAccountPaymentLimitsComponent
       delete value.amountPerMonthLimit;
     }
 
-    value.customAmountPerYearLimit = value.yearlyLimitMode !== 'default';
-    if (!value.customAmountPerYearLimit) {
-      delete value.amountPerYearLimit;
-    }
-
     delete value.creditLimitMode;
     delete value.upperCreditLimitMode;
 
     if (this.data.confirmationPasswordInput) {
-      this.confirmation.confirm({
+      this.notification.confirm({
         title: this.i18n.general.confirm,
         message: this.i18n.account.paymentLimits.confirm,
         createDeviceConfirmation: this.paymentLimitsDeviceConfirmation(),

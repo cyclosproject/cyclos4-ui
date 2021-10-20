@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostBinding, Inject, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Notification } from 'app/api/models';
 import { NotificationsService } from 'app/api/services/notifications.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { LayoutService } from 'app/core/layout.service';
 import { SvgIcon } from 'app/core/svg-icon';
-import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
+import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { MenuService } from 'app/ui/core/menu.service';
 import { ActiveMenu } from 'app/ui/shared/menu';
@@ -44,7 +44,7 @@ export class PushNotificationComponent {
   private timeoutHandle: any;
 
   constructor(
-    @Inject(I18nInjectionToken) public i18n: I18n,
+    public i18n: I18n,
     public layout: LayoutService,
     private notificationsService: NotificationsService,
     private menuService: MenuService,

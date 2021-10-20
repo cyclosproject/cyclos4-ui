@@ -7,8 +7,6 @@ import { PageData } from 'app/ui/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { ResultType } from 'app/ui/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
-import { AuthHelperService } from 'app/core/auth-helper.service';
-import { FieldHelperService } from 'app/core/field-helper.service';
 
 export const MAX_COLUMNS = 7;
 export const MAX_TILE_FIELDS = 2;
@@ -52,10 +50,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
   showTableHeader: boolean;
   canViewProfile: boolean;
 
-  constructor(
-    injector: Injector,
-    private authHelper: AuthHelperService,
-    private fieldHelper: FieldHelperService) {
+  constructor(injector: Injector) {
     super(injector);
   }
 

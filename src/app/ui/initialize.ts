@@ -9,12 +9,10 @@ import { IconLoadingService } from 'app/core/icon-loading.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { StateManager } from 'app/core/state-manager';
 import { ApiHelper } from 'app/shared/api-helper';
-import { apiUrl, empty, i18nRoot, initializeStyleLinks, isSameOrigin } from 'app/shared/helper';
+import { apiUrl, isSameOrigin } from 'app/shared/helper';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
-import { forkJoin, of, timer } from 'rxjs';
-import { catchError, filter, first, switchMap } from 'rxjs/operators';
-
-declare const UpUp: any;
+import { concat, of } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 
 // Initializes the shared services
 export function initialize(
@@ -49,27 +47,35 @@ export function initialize(
     // Initialize the API configuration
     apiConfig.rootUrl = apiRoot;
 
+    // Initialize the translations loading
+    const i18nRoot = environment.standalone ? 'i18n' : apiRoot + '/../ui/i18n';
+    const i18n$ = i18nLoading.initialize(i18nRoot);
 
-    // Initialize the style links
-    initializeStyleLinks();
+    // Change the media of the styles link
+    const stylesLink = document.getElementById('stylesLink') as HTMLLinkElement;
+    if (stylesLink) {
+      stylesLink.media = '';
+    }
 
     // Initialize the data for frontend
-    dataForFrontendHolder.registerLoadHook(d => {
-      const dataForUi = d?.dataForUi || {};
-      // Initialize the translations loading
-      return i18nLoading.initialize(i18nRoot(apiRoot), { resourceCacheKey: dataForUi.resourceCacheKey, locale: dataForUi.currentLocale.code })
-        .pipe(switchMap(() => of(d)));
+    dataForFrontendHolder.registerLoadHook(dataForFrontend => {
+      const dataForUi = dataForFrontend?.dataForUi || {};
+      const language = (dataForUi.language || { code: 'en' }).code;
+      const country = dataForUi.country;
+      return i18nLoading.load(language, country)
+        .pipe(switchMap(() => of(dataForFrontend)));
     });
-    dataForFrontendHolder.registerLoadHook(d => {
-      return iconLoading.load(d?.svgIconNames || [])
+    dataForFrontendHolder.registerLoadHook(dataForFrontend => {
+      nextRequestState.ignoreNextError = true;
+      return iconLoading.load(dataForFrontend?.svgIconNames || [])
         .pipe(
-          switchMap(() => of(d)),
-          catchError(() => of(d)));
+          switchMap(() => of(dataForFrontend)),
+          catchError(() => of(dataForFrontend)));
     });
-    dataForFrontendHolder.registerLoadHook(d => {
-      if (ApiHelper.isRestrictedAccess(d)) {
+    dataForFrontendHolder.registerLoadHook(dataForFrontend => {
+      if (ApiHelper.isRestrictedAccess(dataForFrontend)) {
         // Handle redirects on urgent situations
-        const auth = d?.dataForUi?.auth || {};
+        const auth = dataForFrontend?.dataForUi?.auth || {};
         let redirect: string = null;
         if (auth.pendingAgreements) {
           redirect = '/pending-agreements';
@@ -86,28 +92,11 @@ export function initialize(
           }
         }, 1);
       }
-      return of(d);
+      return of(dataForFrontend);
     });
-    if (environment.production && !environment.standalone) {
-      dataForFrontendHolder.registerLoadHook(d => {
-        if (UpUp) {
-          UpUp.start({
-            'service-worker-url': 'upup.sw.min.js',
-            'cache-version': d.dataForUi.resourceCacheKey,
-            'content-url': 'offline'
-          });
-        }
-        return of(d);
-      });
-    }
     const dataForFrontend$ = dataForFrontendHolder.initialize();
-    const themeLoaded$ = timer(1000, 500).pipe(filter(() => {
-      const style = getComputedStyle(document.body);
-      return !empty(style.getPropertyValue('--primary').trim());
-    }), first());
 
-
-    return forkJoin([dataForFrontend$, themeLoaded$]).toPromise();
+    return await concat(i18n$, dataForFrontend$).toPromise();
   };
 }
 export const INITIALIZE: Provider = {

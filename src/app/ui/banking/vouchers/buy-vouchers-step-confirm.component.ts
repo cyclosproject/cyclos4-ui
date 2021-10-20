@@ -2,13 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnIn
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   BuyVoucher, CreateDeviceConfirmation, CustomField, CustomFieldTypeEnum, DeviceConfirmationTypeEnum,
-  PasswordInput, VoucherDataForBuy
+  PasswordInput, VoucherDataForBuy,
 } from 'app/api/models';
-import { AuthHelperService } from 'app/core/auth-helper.service';
-import { FieldHelperService } from 'app/core/field-helper.service';
-import { Enter } from 'app/core/shortcut.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
+import { Enter } from 'app/core/shortcut.service';
 
 @Component({
   selector: 'buy-vouchers-step-confirm',
@@ -28,10 +26,7 @@ export class BuyVouchersStepConfirmComponent extends BaseComponent implements On
   form: FormGroup;
   createDeviceConfirmation: () => CreateDeviceConfirmation;
 
-  constructor(
-    injector: Injector,
-    public authHelper: AuthHelperService,
-    public fieldHelper: FieldHelperService) {
+  constructor(injector: Injector) {
     super(injector);
   }
 

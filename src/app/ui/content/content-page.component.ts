@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { FrontendContentLayoutEnum, FrontendMenuEnum, FrontendPageTypeEnum } from 'app/api/models';
-import { FrontendPageWithContent } from 'app/api/models/frontend-page-with-content';
+import { FrontendContentLayoutEnum, FrontendMenuEnum, FrontendPage, FrontendPageTypeEnum } from 'app/api/models';
 import { FrontendService } from 'app/api/services/frontend.service';
 import { ScriptLoaderService } from 'app/core/script-loader.service';
 import { getRootSpinnerSvg } from 'app/shared/helper';
 import { CardMode } from 'app/ui/content/card-mode';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
+
+export type PageWithContent = FrontendPage & { content: string };
 
 export const IframeResizerUrl = 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.11/iframeResizer.min.js';
 
@@ -18,7 +19,7 @@ export const IframeResizerUrl = 'https://cdnjs.cloudflare.com/ajax/libs/iframe-r
   templateUrl: 'content-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentPageComponent extends BaseViewPageComponent<FrontendPageWithContent> implements OnInit {
+export class ContentPageComponent extends BaseViewPageComponent<PageWithContent> implements OnInit {
 
   private static nextId = 0;
 
@@ -28,7 +29,7 @@ export class ContentPageComponent extends BaseViewPageComponent<FrontendPageWith
 
   private slug: string;
 
-  get page(): FrontendPageWithContent {
+  get page(): PageWithContent {
     return this.data;
   }
 
@@ -43,52 +44,54 @@ export class ContentPageComponent extends BaseViewPageComponent<FrontendPageWith
   ngOnInit() {
     super.ngOnInit();
     this.slug = this.route.snapshot.params.slug;
-    this.addSub(this.frontendService.viewFrontendPage({ key: this.slug }).subscribe(page => this.preProcessPage(page)));
+    const page = this.dataForFrontendHolder.page(this.slug) as PageWithContent;
+    this.cardMode = page.layout === FrontendContentLayoutEnum.CARD_TIGHT ? 'tight' : 'normal';
+    if (page) {
+      switch (page.type) {
+        case FrontendPageTypeEnum.CONTENT:
+          // For others, fetch the content
+          this.addSub(this.frontendService.frontendPageContent({ key: this.slug })
+            .subscribe(content => {
+              page.content = content;
+              this.data = page;
+            }));
+          break;
+        case FrontendPageTypeEnum.IFRAME:
+          // For iframe, make sure the script is loaded, then assign the content
+          this.addSub(this.scriptLoader.loadScript(IframeResizerUrl).subscribe(() => {
+            page.content = this.iframe(page.url);
+            this.data = page;
+          }));
+          break;
+        case FrontendPageTypeEnum.URL:
+          window.open(page.url, '_blank');
+          break;
+        case FrontendPageTypeEnum.OPERATION:
+          this.breadcrumb.clear();
+          this.router.navigate(['operations', 'menu',
+            this.ApiHelper.internalNameOrId(page),
+            this.ApiHelper.internalNameOrId(page.operation)], {
+            replaceUrl: true
+          });
+          break;
+        case FrontendPageTypeEnum.WIZARD:
+          this.breadcrumb.clear();
+          this.router.navigate(['wizards', 'menu', this.slug, this.ApiHelper.internalNameOrId(page.wizard)], {
+            replaceUrl: true
+          });
+          break;
+      }
+      if (page.type === FrontendPageTypeEnum.IFRAME) {
+      } else {
+      }
+    } else {
+      this.errorHandler.handleNotFoundError({});
+    }
   }
 
-  private preProcessPage(page: FrontendPageWithContent) {
-    if ([FrontendPageTypeEnum.CONTENT, FrontendPageTypeEnum.IFRAME].includes(page.type)) {
-      // For types that actually show something in the page, adjust the UI layout
-      this.uiLayout.fullWidth = page.layout === 'full';
-      this.uiLayout.title = page.name;
-      this.cardMode = page.layout === FrontendContentLayoutEnum.CARD_TIGHT ? 'tight' : 'normal';
-    }
-    switch (page.type) {
-      case FrontendPageTypeEnum.CONTENT:
-        // The content is already present. Just initialize.
-        this.data = page;
-        break;
-      case FrontendPageTypeEnum.IFRAME:
-        // For iframe, make sure the script is loaded, then assign the content and initialize
-        this.addSub(this.scriptLoader.loadScript(IframeResizerUrl).subscribe(() => {
-          page.content = this.iframe(page.url);
-          this.data = page;
-        }));
-        break;
-      case FrontendPageTypeEnum.URL:
-        // For URL, open the new tab and navigate back to home
-        window.open(page.url, '_blank');
-        this.router.navigate([], {
-          replaceUrl: true
-        });
-        break;
-      case FrontendPageTypeEnum.OPERATION:
-        // For custom operation, navigate to the execution page
-        this.breadcrumb.clear();
-        this.router.navigate(['/operations', 'menu',
-          this.ApiHelper.internalNameOrId(page),
-          this.ApiHelper.internalNameOrId(page.operation)], {
-          replaceUrl: true
-        });
-        break;
-      case FrontendPageTypeEnum.WIZARD:
-        // For wizard, navigate to the execution page
-        this.breadcrumb.clear();
-        this.router.navigate(['/wizards', 'menu', this.slug, this.ApiHelper.internalNameOrId(page.wizard)], {
-          replaceUrl: true
-        });
-        break;
-    }
+  onDataInitialized(page: PageWithContent) {
+    this.uiLayout.fullWidth = page.layout === 'full';
+    this.uiLayout.title = page.name;
   }
 
   iframe(url: string) {
@@ -124,7 +127,7 @@ export class ContentPageComponent extends BaseViewPageComponent<FrontendPageWith
     `;
   }
 
-  resolveMenu(page: FrontendPageWithContent) {
+  resolveMenu(page: PageWithContent) {
     let menu: Menu;
     switch (page.menu) {
       case FrontendMenuEnum.BANKING:

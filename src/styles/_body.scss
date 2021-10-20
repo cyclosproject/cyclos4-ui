@@ -31,13 +31,14 @@ body.gt-md {
   transition:
     background-color ease-in-out 0.4s,
     color ease-in-out 0.4s,
-    border-color ease-in-out 0.4s,
-    fill ease-in-out 0.4s,
-    stroke ease-in-out 0.4s !important
+    border-color ease-in-out 0.4s !important;
 }
 
+top-bar nav {
+  @include theme-transitions()
+}
 body.theme-transition {
-  &, & * {
+  &, .main-container * {
     @include theme-transitions()
   }
 }

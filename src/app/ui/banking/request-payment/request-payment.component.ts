@@ -245,7 +245,7 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
 
   perform() {
     // Before proceeding, copy the value of all valid custom fields
-    const customValueControls: { [key: string]: AbstractControl; } = {};
+    const customValueControls: { [key: string]: AbstractControl } = {};
     const typeData = this.paymentTypeData;
     if (typeData && typeData.customFields) {
       for (const cf of typeData.customFields) {
@@ -256,7 +256,7 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
     if (!validateBeforeSubmit(this.form)) {
       return;
     }
-    this.confirmation.confirm({
+    this.notification.confirm({
       title: this.i18n.general.confirm,
       message: this.i18n.transaction.confirmPaymentRequest,
       callback: () =>
@@ -300,7 +300,7 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
   }
 
   viewPerformed() {
-    this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(this.performed)]);
+    this.router.navigate(['banking', 'transaction', this.bankingHelper.transactionNumberOrId(this.performed)]);
   }
 
   reload() {
@@ -329,10 +329,11 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
   resolveMenu(data: DataForTransaction) {
     if (this.fromSystem) {
       // Payment from system
-      return Menu.PAYMENT_REQUESTS;
+      return Menu.PAYMENT_REQUEST_TO_USER;
     } else {
       // Payment from user
-      return this.menu.userMenu(data.fromUser, Menu.PAYMENT_REQUESTS);
+      const ownMenu = this.toSystem ? Menu.PAYMENT_REQUEST_TO_SYSTEM : Menu.PAYMENT_REQUEST_TO_USER;
+      return this.menu.userMenu(data.fromUser, ownMenu);
     }
   }
 

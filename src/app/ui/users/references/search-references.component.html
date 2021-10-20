@@ -3,7 +3,7 @@
     <page-content mode="filters" [heading]="i18n.reference.title.search"
       [mobileHeading]="i18n.reference.mobileTitle.search"
       [headingActions]="headingActions$ | async">
-      <div [formGroup]="form" class="filters-form filters-form-separator">
+      <form [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row">
           <ng-container *ngIf="data.user && !isOwner">
             <div class="col-12 col-md-6">
@@ -25,21 +25,21 @@
             </radio-group-field>
           </div>
         </div>
-      </div>
+      </form>
     </page-content>
 
     <page-content *ngIf="(layout.gtsm$ | async) && (stats$ | async)"
       mode="table">
       <table class="table table-hover small-height">
         <thead>
-          <th width="40%">{{ i18n.reference.value }}</th>
-          <th width="30%">{{ i18n.reference.allTime }}</th>
-          <th width="30%">{{ i18n.reference.last30Days }}</th>
+          <th width="33%">{{ i18n.reference.value }}</th>
+          <th>{{ i18n.reference.allTime }}</th>
+          <th>{{ i18n.reference.last30Days }}</th>
         </thead>
         <tbody>
           <tr *ngFor="let entry of levels">
             <td>
-              <rating-stats class="w-100 pr-3" [level]="entry.level"
+              <rating-stats class="w-100" [level]="entry.level"
                 [textLeft]="entry.text">
               </rating-stats>
             </td>
@@ -113,9 +113,8 @@
                 <rating-stats [level]="row.level"></rating-stats>
               </td>
               <td class="actions actions-multiple">
-                <button *ngIf="data.manage" type="button"
-                  [tooltip]="i18n.general.remove" class="btn btn-icon"
-                  (click)="remove(row)">
+                <button *ngIf="data.manage" [tooltip]="i18n.general.remove"
+                  class="btn btn-icon" (click)="remove(row)">
                   <icon [icon]="SvgIcon.Trash"></icon>
                 </button>
               </td>

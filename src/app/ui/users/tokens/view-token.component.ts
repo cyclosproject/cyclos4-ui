@@ -62,7 +62,7 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
     // Set activation deadline
     if (token.setActivationDeadline) {
       headingActions.push(new HeadingAction(SvgIcon.CalendarEvent, this.i18n.token.action.changeDeadline, () => {
-        this.confirmation.confirm({
+        this.notification.confirm({
           title: this.i18n.token.action.changeDeadline,
           customFields: [{
             internalName: 'deadline',
@@ -79,7 +79,7 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
     // Set expiry date
     if (token.setExpiryDate) {
       headingActions.push(new HeadingAction(SvgIcon.CalendarEvent, this.i18n.token.action.changeExpiry, () => {
-        this.confirmation.confirm({
+        this.notification.confirm({
           title: this.i18n.token.action.changeExpiry,
           customFields: [{
             internalName: 'expiry',
@@ -115,7 +115,7 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
     // Cancel
     if (token.cancel) {
       headingActions.push(new HeadingAction(SvgIcon.XCircle, this.i18n.token.action.cancel, () => {
-        this.confirmation.confirm({
+        this.notification.confirm({
           title: this.i18n.token.action.cancel,
           message: this.i18n.token.action.message.cancel,
           callback: () =>

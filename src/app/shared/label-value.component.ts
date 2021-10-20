@@ -1,19 +1,19 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, ElementRef,
-  HostBinding, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild,
+  HostBinding, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef,
 } from '@angular/core';
 import { CustomFieldSizeEnum } from 'app/api/models';
-import { Breakpoint as LayoutBreakpoint, LayoutService } from 'app/core/layout.service';
 import { BaseFormFieldComponent, FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { ExtraCellDirective } from 'app/shared/extra-cell.directive';
 import { truthyAttr } from 'app/shared/helper';
+import { Breakpoint as LayoutBreakpoint, LayoutService } from 'app/core/layout.service';
 import { ValueFormat } from 'app/shared/value-format';
 import { Subscription } from 'rxjs';
-
 
 export const COLS = 12;
 
 type Breakpoint = 'xxs' | 'xs' | 'sm' | 'md';
+const Breakpoints: Breakpoint[] = ['xxs', 'xs', 'sm', 'md'];
 
 /**
  * How the label-value is used:
@@ -34,13 +34,14 @@ export type LabelValueKind = 'view' | 'field' | 'fieldView';
 export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
 
   @HostBinding('class.label-value') classLabelValue = true;
+  @HostBinding('class.row') classRow = true;
+  @HostBinding('class.no-gutters') classNoGutters = true;
   @HostBinding('class.any-label-value') classAnyLabelValue = true;
   @HostBinding('class.label-on-side') classLabelOnSide = false;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
     private layout: LayoutService,
-    private element: ElementRef<HTMLElement>
   ) { }
 
   private subs: Subscription[] = [];
@@ -48,7 +49,7 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
   /** When the content has an extraCell directive, we render it on the same row */
   @ContentChild(ExtraCellDirective, { static: true, read: TemplateRef }) _extraCell: TemplateRef<any>;
 
-  @HostBinding('class.has-extra-cell') get extraCell(): ExtraCellDirective {
+  get extraCell(): ExtraCellDirective {
     if (this._ignoreExtraCell) {
       return null;
     }
@@ -64,12 +65,10 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
   /** Where to place the label */
   @Input() labelPosition: FieldLabelPosition = 'auto';
 
-  /** The information text to display */
-  @Input() informationText: string;
-
   /** Whether the extra cell, even if present, should be ignored */
   private _ignoreExtraCell = false;
-  @Input() get ignoreExtraCell(): boolean | string {
+  @HostBinding('class.maximize-label') @Input()
+  get ignoreExtraCell(): boolean | string {
     return this._ignoreExtraCell;
   }
   set ignoreExtraCell(ignoreExtraCell: boolean | string) {
@@ -78,7 +77,7 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
 
   /** Whether to use as many columns as possible for the label */
   private _maximizeLabel = false;
-  @HostBinding('class.maximize-label') @Input() get maximizeLabel(): boolean | string {
+  @Input() get maximizeLabel(): boolean | string {
     return this._maximizeLabel;
   }
   set maximizeLabel(maximizeLabel: boolean | string) {
@@ -104,10 +103,14 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   /** The size for the value part */
-  @Input() fieldSize = CustomFieldSizeEnum.FULL;
+  @Input() fieldSize: CustomFieldSizeEnum | number = CustomFieldSizeEnum.FULL;
+
+  labelClasses: string[];
+  valueClasses: string[];
+  extraClasses: string[];
 
   /** Optional control id for which this label refers to */
-  @Input() forId = undefined;
+  @Input() forId = '';
 
   /** The value may be specified as this attribute or as tag content */
   private _value = null;
@@ -119,6 +122,8 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   @Input() kind: LabelValueKind = 'view';
+
+  @Input() labelCols: number | string;
 
   @HostBinding('class.view') get view() {
     return this.kind === 'view';
@@ -150,6 +155,7 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
       this.valueFormat = field.disabledFormat;
       this.updateFieldDisabled(field.disabled);
     }
+    this.initClasses();
     if (field) {
       // As we've modified @Input() properties, manually trigger change detection
       this.changeDetector.detectChanges();
@@ -159,25 +165,11 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
       this.updateLabelOnSideClass(bs);
     }));
     this.updateLabelOnSideClass(this.layout.activeBreakpoints);
-    this.updateSizeClass();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.labelOnSide) {
-      this.updateLabelOnSideClass(this.layout.activeBreakpoints);
-    }
-    if (changes.fieldSize) {
-      this.updateSizeClass();
-    }
-  }
-
-  private updateSizeClass() {
-    const classes = this.element.nativeElement.classList;
-    for (const size of Object.values(CustomFieldSizeEnum)) {
-      classes.remove(`size-${size}`);
-    }
-    if (this.fieldSize) {
-      classes.add(`size-${this.fieldSize}`);
+    if (changes.labelPosition || changes.fieldSize) {
+      this.initClasses();
     }
   }
 
@@ -189,10 +181,31 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
     const labelOnSide = this.isLabelOnSide(bp);
     if (this.classLabelOnSide !== labelOnSide) {
       this.classLabelOnSide = labelOnSide;
-      // We have to manipulate the element directly because host binding is not adding or removing the
-      // class style correctly when this component is embeeded inside another component (e.g custom-field-input.component)
-      this.element.nativeElement.classList[labelOnSide ? 'add' : 'remove']('label-on-side');
       this.changeDetector.detectChanges();
+    }
+  }
+
+  /**
+   * Initializes the classes for label, value and extra.
+   * The extra cell, if used, takes 2 cols in xxs / xs, and 1 col for larger.
+   */
+  private initClasses() {
+    this.labelClasses = [];
+    this.valueClasses = [];
+    this.extraClasses = [];
+
+    for (const breakpoint of Breakpoints) {
+      const cols = this.getCols(breakpoint);
+      const prefix = breakpoint === 'xxs' ? '' : `-${breakpoint}`;
+      this.labelClasses.push(`col${prefix}-${cols.label}`);
+      this.valueClasses.push(`col${prefix}-${cols.value}`);
+      if (this.extraCell) {
+        this.extraClasses.push(`col${prefix}-${cols.extra}`);
+      }
+    }
+    if (this.maximizeLabel) {
+      this.valueClasses.push('align-items-end');
+      this.valueClasses.push('align-items-sm-start');
     }
   }
 
@@ -213,6 +226,127 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
       default:
         // For larger resolutions, will always use labels on side, unless explicitly stated as above
         return this.labelPosition !== 'above';
+    }
+  }
+
+  /**
+   * Returns the number of columns used by each aspect: label, value and extra
+   * @param breakpoint The resolution breakpoint
+   */
+  private getCols(breakpoint: Breakpoint): { label: number, value: number, extra: number } {
+    const labelCols = this.getLabelCols(breakpoint);
+
+    let valueCols = this.getValueCols(labelCols, breakpoint);
+    let extraCols = this.getExtraCols(breakpoint);
+
+    if (this.extraCell) {
+      const totalCols = valueCols + labelCols + extraCols;
+      if (totalCols > COLS) {
+        // Sacrifice the value cols, taking all remaining cols
+        valueCols = (COLS === labelCols ? COLS : COLS - labelCols) - extraCols;
+      } else if (totalCols < COLS) {
+        // There are less cols - expand the extra cols
+        extraCols = (COLS === labelCols ? COLS : COLS - labelCols) - valueCols;
+      }
+    }
+    return { label: labelCols, value: valueCols, extra: extraCols };
+  }
+
+  /**
+   * Returns the number of columns used by labels in the given breakpoint
+   */
+  private getLabelCols(breakpoint: Breakpoint): number {
+    const labelOnSide = this.isLabelOnSide(breakpoint);
+    if (labelOnSide) {
+      const cols = typeof this.labelCols === 'string' ? parseInt(this.labelCols, 10) : this.labelCols || 0;
+      if (cols > 0) {
+        return cols;
+      }
+      switch (breakpoint) {
+        case 'xxs':
+          // On xxs use 6 cols
+          return this.maximizeLabel
+            ? this.extraCell ? 8 : 9
+            : 6;
+        case 'xs':
+          // On xs use 5 cols
+          return this.maximizeLabel
+            ? this.extraCell ? 9 : 10
+            : 5;
+        default:
+          // On larger resolutions, always use 4 cols for labels
+          return 4;
+      }
+    } else {
+      // Use all columns
+      return COLS;
+    }
+  }
+
+  /**
+   * Returns the number of columns used by values
+   */
+  private getValueCols(labelCols: number, breakpoint: Breakpoint): number {
+    if (typeof this.fieldSize === 'number') {
+      // Specific number of columns
+      return this.fieldSize;
+    } else if (this.labelPosition === 'above') {
+      // Take all cols for value
+      return COLS;
+    } else if (breakpoint === 'xxs') {
+      // On xxs we ignore the fieldSize
+      return labelCols === COLS ? COLS : COLS - labelCols;
+    } else {
+      // Depends on field size
+      switch (this.fieldSize) {
+        case CustomFieldSizeEnum.TINY:
+          switch (breakpoint) {
+            case 'xs':
+              return 6;
+            case 'sm':
+              return 4;
+            default:
+              return 3;
+          }
+        case CustomFieldSizeEnum.SMALL:
+          switch (breakpoint) {
+            case 'xs':
+              return 7;
+            case 'sm':
+              return 5;
+            default:
+              return 3;
+          }
+        case CustomFieldSizeEnum.MEDIUM:
+          switch (breakpoint) {
+            case 'xs':
+              return 9;
+            case 'sm':
+              return 6;
+            default:
+              return 5;
+          }
+        default:
+          return labelCols === COLS ? COLS : COLS - labelCols;
+      }
+    }
+  }
+
+  /**
+   * Returns the number of columns used by extra widgets
+   */
+  private getExtraCols(breakpoint: Breakpoint): number {
+    if (this.extraCell) {
+      switch (breakpoint) {
+        case 'xxs':
+          return 3;
+        case 'xs':
+          return 2;
+        default:
+          return 1;
+      }
+    } else {
+      return 0;
     }
   }
 

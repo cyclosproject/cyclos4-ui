@@ -57,10 +57,6 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
     this.message$.next(message);
   }
 
-  get disableLabel(): (remainingSeconds: number) => string {
-    return remainingSeconds => this.i18n.phone.verify.sendDisabled(remainingSeconds);
-  }
-
   /**
    * Performs the phone verification
    */

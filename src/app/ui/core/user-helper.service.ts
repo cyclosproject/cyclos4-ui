@@ -1,18 +1,18 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
   AddressConfigurationForUserProfile, AvailabilityEnum, BasicUserDataForNew, OperatorDataForNew,
   OperatorGroupAccountAccessEnum, ProfileFieldActions, TokenStatusEnum, User,
-  UserBasicData, UserDataForNew, UserRegistrationResult, UserRegistrationStatusEnum, UserStatusEnum
+  UserBasicData, UserDataForNew, UserStatusEnum, UserRegistrationResult, UserRegistrationStatusEnum
 } from 'app/api/models';
 import { UsersService } from 'app/api/services/users.service';
+import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
-import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
+import { LoginService } from 'app/ui/core/login.service';
+import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';
-import { AddressHelperService } from 'app/ui/core/address-helper.service';
-import { LoginService } from 'app/ui/core/login.service';
 import { Observable, of, Subscription, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -56,7 +56,7 @@ export class UserHelperService {
 
   constructor(
     private fieldHelper: FieldHelperService,
-    @Inject(I18nInjectionToken) private i18n: I18n,
+    private i18n: I18n,
     private formBuilder: FormBuilder,
     private addressHelper: AddressHelperService,
     private login: LoginService,

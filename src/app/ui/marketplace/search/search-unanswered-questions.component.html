@@ -3,7 +3,7 @@
     [mode]="simpleQuestions && webshopQuestions ? 'filters' : 'empty'"
     [heading]="i18n.ad.title.unansweredQuestions"
     [mobileHeading]="i18n.ad.mobileTitle.unansweredQuestions">
-    <div [formGroup]="form" class="filters-form filters-form-separator">
+    <form [formGroup]="form" class="filters-form filters-form-separator">
       <div *ngIf="simpleQuestions && webshopQuestions"
         class="col-12 col-md-6">
         <single-selection-field labelPosition="side" formControlName="kind"
@@ -14,7 +14,7 @@
           </field-option>
         </single-selection-field>
       </div>
-    </div>
+    </form>
   </page-content>
   <results-layout [results]="results$ | async" resultType="list"
     [toLink]="toLink" (update)="update($event)" [rendering$]="rendering$">
@@ -33,8 +33,7 @@
           </div>
         </div>
         <div class="ml-auto text-right d-flex flex-column">
-          <button type="button" [tooltip]="i18n.general.remove"
-            class="btn btn-icon mt-2"
+          <button [tooltip]="i18n.general.remove" class="btn btn-icon mt-2"
             (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
             <icon [icon]="SvgIcon.Trash"></icon>
           </button>
@@ -71,8 +70,7 @@
             {{ row.questionDate | date }}
           </td>
           <td class="actions actions-multiple">
-            <button type="button" [tooltip]="i18n.general.remove"
-              class="btn btn-icon"
+            <button [tooltip]="i18n.general.remove" class="btn btn-icon"
               (click)="remove(row); $event.stopPropagation()">
               <icon [icon]="SvgIcon.Trash"></icon>
             </button>

@@ -1,83 +1,87 @@
 <page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
-  <page-content *ngSwitchCase="'token'" [heading]="i18n.voucher.title.redeem"
-    [mobileHeading]="i18n.voucher.mobileTitle.redeem"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
-    <ng-container *ngIf="(data$ | async); else loading">
-      <voucher-transaction-step-token [data]="data" [token]="token"
-        (scan)="toForm()">
-      </voucher-transaction-step-token>
-      <actions>
-        <action-button [disabled]="requesting$ | async" (action)="toForm()"
-          [label]="i18n.general.next">
-        </action-button>
-      </actions>
-    </ng-container>
-  </page-content>
-
   <page-content *ngSwitchCase="'form'" [heading]="i18n.voucher.title.redeem"
     [mobileHeading]="i18n.voucher.mobileTitle.redeem"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
-
-    <ng-container *ngIf="(dataForTransaction$ | async); else loading">
-      <notification *ngIf="!dataForTransaction.shouldPreview" class="mb-3"
-        type="warning">
-        {{ i18n.voucher.redeem.confirm }}
-      </notification>
-
-      <voucher-transaction-step-form [data]="dataForTransaction" [form]="form"
-        [amountAsField]="dataForTransaction.type.allowPartialRedeems">
-      </voucher-transaction-step-form>
-
-      <ng-container *ngIf="dataForTransaction.pinInput">
-        <hr *ngIf="layout.gtxxs$ | async">
-        <label-value [label]="dataForTransaction.pinInput.name" kind="field"
-          required>
-          <password-input disableAutocomplete [formControl]="form.get('pin')"
-            [passwordInput]="dataForTransaction.pinInput">
-          </password-input>
-        </label-value>
-      </ng-container>
-
+    <div *ngIf="(data$ | async); else loading">
+      <ng-container [ngTemplateOutlet]="active_user"></ng-container>
+      <div class="d-flex flex-grow-1">
+        <div class="flex-grow-1">
+          <label-value kind="field" [label]="i18n.voucher.token">
+            <input-field #inputField type="text" focused [mask]="mask"
+              [formControl]="token" [placeholder]="mask" required>
+            </input-field>
+            <button *extraCell class="btn btn-icon" #scanQrCodeButton
+              [tooltip]="i18n.field.user.scanQrCodeTooltip"
+              (click)="showScanQrCode()">
+              <icon [icon]="SvgIcon.QrcodeScan"></icon>
+            </button>
+          </label-value>
+        </div>
+      </div>
       <actions>
-        <action-button
-          *ngIf="(confirmationMode$ | async) === ConfirmationMode.Password; else emptyDiv"
-          [disabled]="requesting$ | async" (action)="maybePreview()"
-          [label]="dataForTransaction.shouldPreview ? i18n.general.next : i18n.general.submit">
-        </action-button>
-        <action-button outline (action)="backToToken()"
-          [label]="i18n.general.previous">
+        <action-button [disabled]="requesting$ | async" (action)="submit()"
+          [label]="i18n.general.submit">
         </action-button>
       </actions>
-    </ng-container>
+    </div>
   </page-content>
-
   <page-content *ngSwitchCase="'confirm'"
     [heading]="i18n.voucher.title.redeem"
     [mobileHeading]="i18n.voucher.mobileTitle.redeem"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
-    <ng-container *ngIf="(dataForTransaction$ | async); else loading">
+    <ng-container *ngIf="(dataForRedeem$ | async); else loading">
+
+      <ng-container [ngTemplateOutlet]="active_user"></ng-container>
 
       <notification ngClass="mb-3" type="warning">
         {{ i18n.voucher.redeem.confirm }}
       </notification>
 
-      <voucher-transaction-step-confirm *ngIf="preview$ | async"
-        [preview]="preview" [transaction]="preview.redeem">
-      </voucher-transaction-step-confirm>
+      <div class="d-flex flex-grow-1 flex-column">
 
-      <ng-container *ngIf="preview.pinInput">
-        <hr *ngIf="layout.gtxxs$ | async">
-        <label-value [label]="preview.pinInput.name" kind="field" required>
-          <password-input disableAutocomplete [formControl]="pin"
-            [passwordInput]="preview.pinInput">
-          </password-input>
+        <div
+          [ngClass]="{'d-flex flex-row-reverse justify-content-between': (layout.gtsm$ | async) && dataForRedeem.type.image}">
+          <div *ngIf="dataForRedeem.type.image"
+            class="image d-flex justify-content-center mt-2 mb-4"
+            [ngClass]="{'flex-grow-1':  !dataForRedeem.type.voucherDescription}">
+            <avatar size="160" imageSize="200" useLightbox
+              [image]="dataForRedeem.type.image">
+            </avatar>
+          </div>
+
+          <ng-container *ngIf="dataForRedeem.type.voucherDescription">
+            <div class="break-nl">{{ dataForRedeem.type.voucherDescription }}
+            </div>
+          </ng-container>
+        </div>
+        <hr class="mt-3" />
+        <label-value [label]="i18n.general.type">
+          {{ dataForRedeem.type.name }}
         </label-value>
-      </ng-container>
+        <label-value [label]="i18n.voucher.token"> {{ dataForRedeem.token }}
+        </label-value>
+        <label-value *ngIf="dataForRedeem.buyer"
+          [label]="i18n.voucher.buy.buyer">
+          <user-link [user]="dataForRedeem.buyer"></user-link>
+        </label-value>
+        <label-value [label]="i18n.transaction.amount">
+          {{ dataForRedeem.amount |
+          currency:dataForRedeem.type.configuration.currency }}
+        </label-value>
+
+        <label-value *ngFor="let cf of dataForRedeem.customFields"
+          [label]="cf.name" [kind]="'field'" [fieldSize]="fieldSize(cf)"
+          [required]="cf.required"
+          [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'">
+          <custom-field-input [field]="cf" hideLabel
+            [formControl]="form.get(cf.internalName)">
+          </custom-field-input>
+        </label-value>
+
+      </div>
 
       <actions>
-        <action-button
-          *ngIf="(confirmationMode$ | async) === ConfirmationMode.Password; else emptyDiv"
-          [disabled]="requesting$ | async" (action)="performFromPreview()"
+        <action-button [disabled]="requesting$ | async" (action)="submit()"
           [label]="i18n.general.submit">
         </action-button>
         <action-button outline (action)="backToForm()"
@@ -86,36 +90,17 @@
       </actions>
     </ng-container>
   </page-content>
-
-  <page-content *ngSwitchCase="'done'" [heading]="i18n.voucher.title.redeem"
-    [mobileHeading]="i18n.voucher.mobileTitle.redeem"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
-    <ng-container *ngIf="(result$ | async); else loading">
-
-      <notification ngClass="mb-3">
-        {{ i18n.voucher.redeem.done }}
-      </notification>
-
-      <voucher-transaction-step-done [result]="result">
-      </voucher-transaction-step-done>
-
-      <actions>
-        <action-button [disabled]="requesting$ | async"
-          (action)="printResult()" [label]="i18n.general.print">
-        </action-button>
-        <action-button outline (action)="backToToken()"
-          [label]="i18n.general.close">
-        </action-button>
-      </actions>
-    </ng-container>
-  </page-content>
-
 </page-layout>
 
-<ng-template #loading>
-  <spinner></spinner>
+<ng-template #active_user>
+  <ng-container *ngIf="!self">
+    <user-info [user]="data.user"></user-info>
+    <hr>
+  </ng-container>
 </ng-template>
 
-<ng-template #emptyDiv>
-  <div></div>
+<ng-template #loading>
+  <page-content>
+    <spinner></spinner>
+  </page-content>
 </ng-template>

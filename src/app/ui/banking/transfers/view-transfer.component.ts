@@ -52,7 +52,7 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
     const transaction = transfer.transaction || {};
     if (!empty(transaction.authorizations)) {
       actions.push(new HeadingAction(SvgIcon.CheckCircle, this.i18n.transaction.viewAuthorizations, () => {
-        this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(transaction), 'authorization-history']);
+        this.router.navigate(['banking', 'transaction', this.bankingHelper.transactionNumberOrId(transaction), 'authorization-history']);
       }));
     }
     if (transfer.canChargeback) {
@@ -73,7 +73,7 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
   }
 
   private chargeback() {
-    this.confirmation.confirm({
+    this.notification.confirm({
       title: this.i18n.transaction.chargebackTransfer,
       message: this.i18n.transaction.chargebackTransferMessage,
       createDeviceConfirmation: this.chargebackDeviceConfirmation(),

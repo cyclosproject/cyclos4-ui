@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AsyncValidatorFn, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   BasicProfileFieldInput, CustomField, CustomFieldBinaryValues,
@@ -6,7 +6,7 @@ import {
   CustomFieldValue, LinkedEntityTypeEnum
 } from 'app/api/models';
 import { FormatService } from 'app/core/format.service';
-import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
+import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';
@@ -22,7 +22,7 @@ export class FieldHelperService {
   constructor(
     private formBuilder: FormBuilder,
     private format: FormatService,
-    @Inject(I18nInjectionToken) private i18n: I18n) {
+    private i18n: I18n) {
   }
 
   /**
@@ -37,11 +37,6 @@ export class FieldHelperService {
     } else {
       return field.size;
     }
-  }
-
-  hasValue(customFieldInternalName, valuesMap: { [key: string]: string; }): boolean {
-    const value = valuesMap[customFieldInternalName];
-    return value != null && (value.length === undefined || value.length > 0);
   }
 
   /**
@@ -67,10 +62,13 @@ export class FieldHelperService {
           value: this.format.formatAsNumber(fieldValue.decimalValue, fieldValue.field.decimalDigits),
         };
       case CustomFieldTypeEnum.DYNAMIC_SELECTION:
-      case CustomFieldTypeEnum.DYNAMIC_MULTI_SELECTION:
-        return {
-          value: (fieldValue.dynamicValues || []).map(v => v.label || v.value).join(', ')
-        };
+        const dyn = fieldValue.dynamicValue;
+        if (dyn) {
+          return {
+            value: dyn.label || dyn.value,
+          };
+        }
+        break;
       case CustomFieldTypeEnum.FILE:
         return {
           value: fieldValue.fileValues,
@@ -90,23 +88,23 @@ export class FieldHelperService {
         switch (fieldValue.field.linkedEntityType) {
           case LinkedEntityTypeEnum.USER:
             entity = fieldValue.userValue;
-            path = ['/users', ':id', 'profile'];
+            path = ['users', ':id', 'profile'];
             break;
           case LinkedEntityTypeEnum.ADVERTISEMENT:
             entity = fieldValue.adValue;
-            path = ['/marketplace', 'view', ':id'];
+            path = ['marketplace', 'view', ':id'];
             break;
           case LinkedEntityTypeEnum.TRANSACTION:
             entity = fieldValue.transactionValue;
-            path = ['/banking', 'transaction', ':id'];
+            path = ['banking', 'transaction', ':id'];
             break;
           case LinkedEntityTypeEnum.TRANSFER:
             entity = fieldValue.transferValue;
-            path = ['/banking', 'transfer', ':id'];
+            path = ['banking', 'transfer', ':id'];
             break;
           case LinkedEntityTypeEnum.RECORD:
             entity = fieldValue.recordValue;
-            path = ['/records', 'view', ':id'];
+            path = ['records', 'view', ':id'];
             break;
         }
         if (entity != null) {
@@ -233,7 +231,7 @@ export class FieldHelperService {
     currentValues?: any,
     useDefaults?: boolean,
     disabledProvider?: (field: CustomFieldDetailed) => boolean,
-    asyncValProvider?: (field: CustomFieldDetailed) => AsyncValidatorFn;
+    asyncValProvider?: (field: CustomFieldDetailed) => AsyncValidatorFn
   }): FormGroup {
     const controls = this.customValuesFormControlMap(customFields, options);
     const group = this.formBuilder.group({});
@@ -307,7 +305,6 @@ export class FieldHelperService {
       case CustomFieldTypeEnum.INTEGER:
         return (field.integerValues || []).map(v => ({ value: String(v), text: this.format.formatAsNumber(v, 0) }));
       case CustomFieldTypeEnum.DYNAMIC_SELECTION:
-      case CustomFieldTypeEnum.DYNAMIC_MULTI_SELECTION:
         return (field.dynamicValues || []).map(v => ({ value: v.value, text: v.label }));
       case CustomFieldTypeEnum.SINGLE_SELECTION:
       case CustomFieldTypeEnum.MULTI_SELECTION:
@@ -336,7 +333,7 @@ export class FieldHelperService {
    * Returns a suitable representation for using custom field values in searches
    * @param customValues The custom values map
    */
-  toCustomValuesFilter(customValues: { [key: string]: string; }): string[] {
+  toCustomValuesFilter(customValues: { [key: string]: string }): string[] {
     const result: string[] = [];
     for (const key of Object.keys(customValues || {})) {
       const value = customValues[key];
@@ -351,7 +348,7 @@ export class FieldHelperService {
    * Returns a suitable representation for using user profile field values in searches
    * @param values The profile field values map
    */
-  toProfileFieldsFilter(values: { [key: string]: string; }): string[] {
+  toProfileFieldsFilter(values: { [key: string]: string }): string[] {
     // TODO we should correctly handle custom fields which are ranges.
     return this.toCustomValuesFilter(values);
   }
@@ -382,15 +379,11 @@ export class FieldHelperService {
           fieldValue.stringValue = value;
           break;
         case CustomFieldTypeEnum.DYNAMIC_SELECTION:
-        case CustomFieldTypeEnum.DYNAMIC_MULTI_SELECTION:
           const dynamicParts = value.split(/\|/g);
-          if (cf.type === CustomFieldTypeEnum.DYNAMIC_SELECTION) {
-            // For single dynamic selection, strip away the second part, if any
-            if (dynamicParts.length > 1) {
-              dynamicParts.splice(1, dynamicParts.length - 1);
-            }
-          }
-          fieldValue.dynamicValues = (cf.dynamicValues || []).filter(dv => dynamicParts.includes(dv.value));
+          fieldValue.dynamicValue = {
+            value: dynamicParts[0],
+            label: dynamicParts[1] || dynamicParts[0],
+          };
           break;
         case CustomFieldTypeEnum.SINGLE_SELECTION:
         case CustomFieldTypeEnum.MULTI_SELECTION:

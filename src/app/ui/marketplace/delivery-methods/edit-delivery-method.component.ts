@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormGroup, Validators } from '@angular/forms';
 import {
   Currency, DeliveryMethodBasicData,
-  DeliveryMethodChargeTypeEnum, DeliveryMethodDataForEdit,
-  DeliveryMethodDataForNew, DeliveryMethodEdit, DeliveryMethodTypeEnum, TimeFieldEnum,
+  DeliveryMethodChargeTypeEnum, DeliveryMethodDataForEdit, DeliveryMethodDataForNew, DeliveryMethodEdit,
 } from 'app/api/models';
 import { DeliveryMethodsService } from 'app/api/services/delivery-methods.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
@@ -64,9 +63,7 @@ export class EditDeliveryMethodComponent
     this.form = this.formBuilder.group({
       name: [dm.name, Validators.required],
       chargeType: dm.chargeType,
-      deliveryType: dm.deliveryType,
       chargeCurrency: dm.chargeCurrency,
-      address: dm.address,
       chargeAmount: dm.chargeAmount,
       enabled: dm.enabled,
       minDeliveryTime: dm.minDeliveryTime,
@@ -74,20 +71,17 @@ export class EditDeliveryMethodComponent
       description: [dm.description, Validators.required],
       version: (dm as DeliveryMethodEdit).version,
     });
-    this.updateFieldsVisibility(data);
+    this.updateCurrency(data);
 
-    this.addSub(this.form.controls.chargeType.valueChanges.subscribe(() => this.updateFieldsVisibility(data)));
-    this.addSub(this.form.controls.chargeCurrency.valueChanges.subscribe(() => this.updateFieldsVisibility(data)));
-    this.addSub(this.form.controls.deliveryType.valueChanges.subscribe(() => this.updateFieldsVisibility(data)));
+    this.addSub(this.form.controls.chargeType.valueChanges.subscribe(() => this.updateCurrency(data)));
+    this.addSub(this.form.controls.chargeCurrency.valueChanges.subscribe(() => this.updateCurrency(data)));
   }
 
   /**
    * When charge type is fixed preselects the first currency if no one was specified,
-   * otherwise clears the currency and hides related fields. Also display/hide the seller
-   * address based on delivery type
+   * otherwise clears the currency and hides related fields
    */
-  protected updateFieldsVisibility(data: DeliveryMethodBasicData) {
-    const pickup = this.form.controls.deliveryType.value === DeliveryMethodTypeEnum.PICKUP;
+  protected updateCurrency(data: DeliveryMethodBasicData) {
     if (!empty(data.currencies) &&
       this.form.controls.chargeType.value === DeliveryMethodChargeTypeEnum.FIXED) {
       const id = this.form.controls.chargeCurrency.value;
@@ -96,21 +90,11 @@ export class EditDeliveryMethodComponent
       this.form.patchValue({ chargeCurrency: this.currency.id }, { emitEvent: false });
       this.form.controls.chargeCurrency.setValidators(Validators.required);
       this.form.controls.chargeAmount.setValidators(Validators.required);
-      if (pickup) {
-        if (this.form.controls.chargeAmount.value == null) {
-          // Set 0 (free) amount as default value
-          this.form.patchValue({ chargeCurrency: this.currency.id, chargeAmount: 0 }, { emitEvent: false });
-        }
-      }
     } else {
       this.currency = null;
       this.form.patchValue({ chargeCurrency: null, chargeAmount: null }, { emitEvent: false });
       this.form.controls.chargeCurrency.clearValidators();
       this.form.controls.chargeAmount.clearValidators();
-    }
-    if (pickup && this.form.controls.maxDeliveryTime.value == null) {
-      // Set 0 (instant) time as default value
-      this.form.patchValue({ maxDeliveryTime: { amount: 0, field: TimeFieldEnum.DAYS } });
     }
   }
 

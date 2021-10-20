@@ -6,5 +6,4 @@ import { GeographicalCoordinate } from 'app/api/models';
 export interface MaxDistance extends GeographicalCoordinate {
   maxDistance: number;
   name: string;
-  id: string;
 }

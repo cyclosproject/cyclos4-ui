@@ -34,7 +34,7 @@
   </div>
 </div>
 
-<ng-container [formGroup]="form">
+<form [formGroup]="form">
   <ng-container *ngFor="let pt of data.passwordTypes; let i = index">
     <h2>{{ pt.name }}</h2>
     <ng-container [formGroup]="passwordForm(i)">
@@ -83,20 +83,22 @@
         {{ i18n.user.title.registrationConfirmation }}
       </h2>
 
-      <div *ngIf="data.agreements?.length > 0">
-        <div class="mb-3">{{ i18n.pendingAgreements.preface }}</div>
-        <accept-agreements [agreements]="data.agreements"
-          formControlName="acceptAgreements"></accept-agreements>
-      </div>
+      <div class="row no-gutters">
+        <div class="col-12 col-sm-6 col-md-7"
+          *ngIf="data.agreements?.length > 0">
+          <div class="mb-3">{{ i18n.pendingAgreements.preface }}</div>
+          <accept-agreements [agreements]="data.agreements"
+            formControlName="acceptAgreements"></accept-agreements>
+        </div>
 
-      <div *ngIf="data.captchaType != null"
-        [ngClass]="{'mt-3': data.agreements?.length > 0}">
-        <div class="mb-3">{{ i18n.user.captcha }}</div>
-        <div class="mb-3">
-          <captcha [captchaInput]="data.captchaInput"
-            [form]="form.get('captcha')"></captcha>
+        <div class="col-12 col-sm-6 col-md-5"
+          *ngIf="data.captchaType != null">
+          <div class="mb-3">{{ i18n.user.captcha }}</div>
+          <div class="mb-3">
+            <captcha [form]="form.get('captcha')"></captcha>
+          </div>
         </div>
       </div>
     </ng-container>
   </ng-container>
-</ng-container>
+</form>

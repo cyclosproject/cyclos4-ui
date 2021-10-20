@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { Transfer, TransferView, Voucher, VoucherCreationTypeEnum, VoucherStatusEnum, VoucherTransactionKind } from 'app/api/models';
+import { Transfer, TransferView } from 'app/api/models';
 import { HeadingAction } from 'app/shared/action';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
@@ -15,9 +15,6 @@ import { LoginService } from 'app/ui/core/login.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransferDetailsComponent extends BaseComponent implements OnInit {
-
-  VoucherTransactionKind = VoucherTransactionKind;
-  VoucherCreationTypeEnum = VoucherCreationTypeEnum;
 
   @Input() transfer: TransferView;
   @Input() headingActions: HeadingAction[];
@@ -49,17 +46,5 @@ export class TransferDetailsComponent extends BaseComponent implements OnInit {
 
   get toLink() {
     return (transfer: Transfer) => this.path(transfer);
-  }
-
-  voucherPath(voucher: Voucher): string[] {
-    return voucher?.id ? ['/banking', 'vouchers', 'view', voucher.id] : null;
-  }
-
-  get toVoucherLink() {
-    return (voucher: Voucher) => this.voucherPath(voucher);
-  }
-
-  get hasVoucherExpirationDate(): boolean {
-    return !!this.transfer.transaction?.boughtVouchers?.find(v => v.status === VoucherStatusEnum.OPEN);
   }
 }

@@ -70,7 +70,7 @@ export class ListUserBrokersComponent
   }
 
   remove(brokering: Brokering) {
-    this.confirmation.confirm({
+    this.notification.confirm({
       message: this.i18n.general.removeConfirm(brokering.broker.display),
       callback: () => this.doRemove(brokering),
     });

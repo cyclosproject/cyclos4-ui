@@ -2,7 +2,7 @@
 
 .dropdown-menu {
   min-width: 100%;
-  max-height:  13rem;
+  max-height: 16rem;
   overflow-x: hidden;
   overflow-y: auto;
   visibility: hidden;
@@ -171,16 +171,6 @@ body.dark {
   }
 }
 
-not-found {
-  margin: 1rem;
-}
-
-@include media-breakpoint-up(md) {
-  not-found {
-    margin: 0 1.5rem 0 1.5rem;
-  }
-}
-
 ///////////////////////////////////////////////////////////
 
 notification {
@@ -224,7 +214,7 @@ push-notification {
   width: 100%;
   margin-bottom: 0.5rem;
   a {
-    color: $body-color !important;
+    color: $body-color;
   }
   .subject {
     font-weight: $font-weight-bold;
@@ -253,7 +243,7 @@ push-notification {
 }
 body.dark push-notification {
   a {
-    color: $body-color-dark !important;
+    color: $body-color-dark;
   }
 }
 

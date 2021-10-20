@@ -3,6 +3,7 @@
     class="dropdown-toggle" href="#" (onShown)="dropdownShown.emit(root)"
     (onHidden)="dropdownHidden.emit(root)"
     [attr.aria-controls]="'menu-dropdown-' + root.rootMenu"
+    [tooltip]="tooltipForNonActive && activeRoot !== root.rootMenu ? root.label : undefined"
     (mouseenter)="dropdown.show()" (mouseleave)="dropdown.hide()"
     (click)="onClick($event, dropdownAnchor, root)" dropdown
     #dropdown="bs-dropdown" [ngClass]="ngClass(root)">

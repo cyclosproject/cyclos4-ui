@@ -47,7 +47,7 @@ export class SearchDocumentsComponent
   }
 
   remove(doc: DocumentResult) {
-    this.confirmation.confirm({
+    this.notification.confirm({
       message: this.i18n.general.removeItemConfirm,
       callback: () => this.doRemove(doc),
     });

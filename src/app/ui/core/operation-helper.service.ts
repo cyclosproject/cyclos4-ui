@@ -51,9 +51,12 @@ export class OperationHelperService {
     private nextRequestState: NextRequestState) {
     dataForFrontendHolder.subscribe(dataForFrontend => {
       // Store all custom operations in the registry
-      const operations = dataForFrontend?.dataForUi?.auth?.permissions?.operations;
-      (operations?.system || []).forEach(o => this.register(o.operation));
-      (operations?.user || []).forEach(o => this.register(o.operation));
+      const dataForUi = (dataForFrontend || {}).dataForUi;
+      const auth = (dataForUi || {}).auth;
+      const permissions = (auth || {}).permissions;
+      const operations = permissions.operations || {};
+      (operations.system || []).forEach(o => this.register(o.operation));
+      (operations.user || []).forEach(o => this.register(o.operation));
     });
   }
 
@@ -82,7 +85,7 @@ export class OperationHelperService {
    * @param operation The operation to run
    * @param scopeId The id of the scoping entity, such as user, advertisement, etc
    */
-  run(operation: Operation, scopeId?: string, formParameters?: { [key: string]: string; }) {
+  run(operation: Operation, scopeId?: string, formParameters?: { [key: string]: string }) {
     const loggedUser = this.dataForFrontendHolder.user;
     if (!loggedUser) {
       return;
@@ -97,7 +100,7 @@ export class OperationHelperService {
     } else {
       // Go to the run page
       this.nextAction = operation.id;
-      const parts = ['/operations'];
+      const parts = ['operations'];
       switch (operation.scope) {
         case OperationScopeEnum.USER:
           if (!scopeId || scopeId === loggedUser.id) {
@@ -133,10 +136,10 @@ export class OperationHelperService {
   runRequest(operation: Operation, options: {
     scopeId?: string,
     confirmationPassword?: string,
-    formParameters?: { [key: string]: string; },
+    formParameters?: { [key: string]: string },
     pageData?: PageData,
     upload?: Blob,
-    exportFormat?: ExportFormat;
+    exportFormat?: ExportFormat
   }): Observable<HttpResponse<any>> {
 
     // The request body (RunOperation)
@@ -247,7 +250,7 @@ export class OperationHelperService {
   /**
    * Returns a heading action suitable to run the given custom operation
    */
-  headingAction(operation: Operation, scopeId: string, formParameters?: { [key: string]: string; }): HeadingAction {
+  headingAction(operation: Operation, scopeId: string, formParameters?: { [key: string]: string }): HeadingAction {
     return new HeadingAction(this.icon(operation), operation.label, () => this.run(operation, scopeId, formParameters));
   }
 

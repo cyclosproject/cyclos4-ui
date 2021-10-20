@@ -2,12 +2,9 @@
 
   <!-- Step 1: Select voucher type -->
   <ng-container *ngSwitchCase="'select-type'">
-    <voucher-type-selection [user]="data.user"
-      [heading]="i18n.voucher.title.buy"
-      [mobileHeading]="i18n.voucher.mobileTitle.buy"
-      [categories]="data.categories" [types]="data.types"
+    <buy-vouchers-step-list-types [user]="data.user" [types]="data.types"
       (typeSelected)="toForm($event)">
-    </voucher-type-selection>
+    </buy-vouchers-step-list-types>
   </ng-container>
 
   <!-- Step 2: Buy form -->
@@ -16,7 +13,7 @@
     [mobileHeading]="dataTypeForBuy.type.voucherTitle"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <buy-vouchers-step-form class="flex-grow-1" [data]="dataTypeForBuy"
-      [form]="form">
+      [form]="form" [customFieldControlsMap]="customFieldControlsMap">
     </buy-vouchers-step-form>
 
     <actions forceRow>

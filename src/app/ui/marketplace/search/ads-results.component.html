@@ -99,7 +99,7 @@
       <div class="tile-floating-avatar">
         <avatar class="solid-icon" [image]="ad.user.image"
           [tooltip]="ad.user.display" size="medium-large"
-          (click)="$event.preventDefault(); $event.stopPropagation; router.navigate(['/users', ad.user.id, 'profile'])">
+          (click)="$event.preventDefault(); $event.stopPropagation; router.navigate(['users', ad.user.id, 'profile'])">
         </avatar>
       </div>
     </ng-container>

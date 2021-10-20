@@ -1,6 +1,6 @@
 @import 'src/definitions';
 
-.root {
+ui-root {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -13,14 +13,18 @@
   }
   .main-container {
     margin: 1.5rem auto 0 auto;
-    padding: 0;
     width: 100%;
     max-width: var(--window-width);
   }
 }
-body.lt-md .root .main-container {
+body.lt-md ui-root .main-container {
   padding: 0;
   margin-top: 0;
+}
+@include media-breakpoint-up(md) {
+  body:not(.full-width) ui-root .main-container {
+    @include make-container-max-widths();
+  }
 }
 
 ///////////////////////////////////////////////////////////
@@ -28,8 +32,8 @@ body.lt-md .root .main-container {
 // Both top-bar and sidenav
 .has-top-bar {
   icon, icon-with-counter {
-    width: 22px;
-    height: 22px;
+    width: 1.2rem;
+    height: 1.2rem;
   }
 
   nav {
@@ -177,9 +181,6 @@ body.lt-md .root .main-container {
 
   .personal-label {
     margin-left: 0.5rem;
-    height: 100%;
-    display: flex;
-    align-items: center;
     @include text-truncate();
   }
   &.has-menu .personal-label {
@@ -308,7 +309,8 @@ body.lt-md .root .main-container {
       height: $top-bar-with-menu-height;
     }
     .navbar-container {
-      padding: 0 !important;
+      padding: 0;
+      @include make-container-max-widths();
     }
 
     .navbar-brand {
@@ -358,26 +360,38 @@ top-bar.has-top-bar {
     a.menu-item:not(.never-active) {
       &::before {
         content: " ";
-        opacity: 0;
+        display: block;
         position: absolute;
-        bottom: 0px;
-        height: 4px;
-        background-color: $top-bar-item-marker-color;
-        transition: opacity ease-in 0.4s;
-        left: 50%;
-        width: 0;
-        transform: translateX(-50%);
-        transition: width 0.3s ease;
+        bottom: 10px;
+        height: 1px;
+        background-color: $top-bar-color;
+        transition: opacity ease-in-out 0.4s;
+        opacity: 0;
+        left: $top-bar-item-spacing-spacious;
+        width: calc(100% - #{2 * $top-bar-item-spacing-spacious});
       }
 
-      &.active::before,
-      &:not(.active):hover::before {
-        opacity: 1;
-        width: calc(100% - 4px);
+      &.density-medium::before {
+        left: calc(#{$top-bar-item-spacing-medium} - 0.1rem);
+        width: calc(100% - #{2 * $top-bar-item-spacing-medium} + 0.2rem);
       }
 
-      &:not(.active):hover::before {
-        background-color: $top-bar-item-marker-hover-color;
+      &.density-dense::before {
+        left: calc(#{$top-bar-item-spacing-dense} - 0.1rem);
+        width: calc(100% - #{2 * $top-bar-item-spacing-dense} + 0.2rem);
+      }
+
+      &.density-custom::before {
+        left: calc(#{$top-bar-item-spacing-custom} - 0.1rem);
+        width: calc(100% - #{2 * $top-bar-item-spacing-custom} + 0.2rem);
+      }
+
+      &:hover::before {
+        opacity: 0.7 !important;
+      }
+
+      &.active::before {
+        opacity: 1 !important;
       }
     }
   }
@@ -431,17 +445,13 @@ body.dark top-bar.has-top-bar {
       background-color: $top-bar-sub-item-hover-bg-dark;
       color: $top-bar-sub-item-hover-color-dark;
     }
-    a.menu-item:not(.never-active) {
-      &::before {
-        background-color: $top-bar-item-marker-color-dark;
-      }
 
-      &:not(.active):hover::before {
-        background-color: $top-bar-item-marker-hover-color-dark;
-      }
-    }
     .menu-separator {
       border-color: $top-bar-color-dark;
+    }
+
+    a:not(.never-active):not(.sub-menu-item)::before {
+      background-color: $top-bar-color-dark;
     }
   }
   .heading-action {
@@ -475,7 +485,7 @@ body.dark top-bar.has-top-bar {
 
 ///////////////////////////////////////////////////////////
 
-.is-sidenav {
+sidenav {
   position: fixed;
   height: 100%;
   width: 100%;
@@ -509,14 +519,13 @@ body.dark top-bar.has-top-bar {
   .sidenav-menu {
     a {
       display: block;
-      padding: $top-bar-item-spacing-xxs;
+      padding: $top-bar-item-spacing-xxs / 2 $top-bar-item-spacing-xxs;
       color: $sidenav-color;
     }
     a, a:hover {
       text-decoration: none;
     }
     a:active {
-      color: $sidenav-active-color;
       background-color: $sidenav-active-bg;
     }
   }
@@ -559,7 +568,7 @@ body.dark top-bar.has-top-bar {
     }
     .sidenav-menu {
       a {
-        padding: $top-bar-item-spacing-custom;
+        padding: $top-bar-item-spacing-custom / 2 $top-bar-item-spacing-custom;
       }
       icon {
         margin-right: $top-bar-item-spacing-custom * 2;
@@ -591,7 +600,6 @@ body.dark sidenav {
       color: $sidenav-color-dark;
     }
     a:active {
-      color: $sidenav-active-color-dark;
       background-color: $sidenav-active-bg-dark;
     }
     icon {
@@ -646,14 +654,13 @@ menu-bar {
   }
   .navbar-container {
     display: flex;
-    padding: 0 !important;
+    padding: 0;
     margin: 0 auto;
     flex-grow: 1;
+    @include make-container-max-widths();
   }
 
   menus {
-    height: 100%;
-
     .nav-item {
       display: inline-flex;
       align-items: center;
@@ -671,9 +678,6 @@ menu-bar {
       padding-right: $lg-padding;
       position: relative;
     }
-    a:hover {
-      text-decoration: none;
-    }
     a.sub-menu-item {
       padding: 0.7rem calc(#{$lg-padding} + 0.2rem) 0.7rem $lg-padding;
     }
@@ -682,42 +686,7 @@ menu-bar {
       line-height: 1em;
       white-space: nowrap;
     }
-
-    a.nav-item {
-      color: $menu-bar-inactive-color;
-      background-color: $menu-bar-inactive-bg;
-
-      &.active {
-        color: $menu-bar-active-color;
-        background-color: $menu-bar-active-bg;
-      }
-
-      &::before {
-        content: " ";
-        opacity: 0;
-        position: absolute;
-        bottom: -1px;
-        height: 4px;
-        background-color: $menu-bar-active-marker-color;
-        transition: opacity ease-in 0.4s;
-        left: 50%;
-        width: 0;
-        transform: translateX(-50%);
-        transition: width 0.3s ease;
-      }
-
-      &.active::before,
-      &:not(.active):hover::before {
-        opacity: 1;
-        width: calc(100% - 4px);
-      }
-
-      &:not(.active):hover::before {
-        background-color: $menu-bar-inactive-marker-color;
-      }
-    }
-
-    a.nav-item:not(.active):not(.sub-menu-item) {
+    a:not(.active) {
       color: $menu-bar-inactive-color;
       background-color: $menu-bar-inactive-bg;
       icon {
@@ -730,7 +699,27 @@ menu-bar {
         box-shadow: none;
       }
     }
-
+    a.active {
+      color: $menu-bar-active-color;
+      icon {
+        color: $menu-bar-active-icon-color;
+      }
+      &:hover, &:focus {
+        color: $menu-bar-active-hover-color;
+        background-color: $menu-bar-active-hover-bg;
+        text-decoration: none;
+        box-shadow: none;
+      }
+    }
+    a.active:not(.sub-menu-item)::before {
+      content: "";
+      background-color: $menu-bar-active-border-color;
+      height: 2px;
+      bottom: -1px;
+      width: 100%;
+      left: 0;
+      position: absolute;
+    }
     .dropdown-menu {
       icon {
         color: $menu-bar-inactive-icon-color !important;
@@ -798,23 +787,17 @@ body.dark menu-bar {
     border-color: $menu-bar-line-color-dark;
   }
   menus {
-    a.nav-item {
-      color: $menu-bar-inactive-color-dark;
-
-      &.active {
-        color: $menu-bar-active-color-dark;
+    a.active {
+      color: $menu-bar-active-color-dark;
+      icon {
+        color: $menu-bar-active-icon-color-dark;
       }
-
-      &::before {
-        background-color: $menu-bar-active-marker-color-dark;
-      }
-
-      &:not(.active):hover::before {
-        background-color: $menu-bar-inactive-marker-color-dark;
+      &:hover, &:focus {
+        color: $menu-bar-active-hover-color-dark;
+        background-color: $menu-bar-active-hover-bg-dark;
       }
     }
-
-    a.nav-item:not(.active):not(.sub-menu-item) {
+    a:not(.active) {
       color: $menu-bar-inactive-color-dark;
       background-color: $menu-bar-inactive-bg-dark;
       icon {
@@ -823,7 +806,12 @@ body.dark menu-bar {
       &:hover, &:focus {
         color: $menu-bar-inactive-hover-color-dark;
         background-color: $menu-bar-inactive-hover-bg-dark;
+        text-decoration: none;
+        box-shadow: none;
       }
+    }
+    a.active:not(.sub-menu-item)::before {
+      background-color: $menu-bar-active-border-color-dark;
     }
   }
 }
@@ -857,11 +845,6 @@ page-content {
       line-height: 1em;
       margin-left: 0.6rem;
     }
-  }
-
-  .page-content.mode-empty .content-title,
-  .page-content.mode-empty-filters .content-title{
-    border-bottom: none;
   }
 
   .layout-centered {
@@ -924,7 +907,12 @@ page-content {
       padding: 0;
     }
   }
-
+  .mode-full-height {
+    .page-content-body {
+      display: flex;
+      flex-grow: 1;
+    }
+  }
   .page-content:not(.last) {
     padding-bottom: $layout-spacer-xxs;
     border-bottom: 1px solid $border-color;
@@ -947,8 +935,8 @@ page-content {
     color: $button-icon-color;
 
     icon {
-      width: 22px;
-      height: 22px;
+      width: 1.2rem;
+      height: 1.2rem;
     }
   }
   .back-button:focus, .back-button:active {
@@ -1009,18 +997,14 @@ page-content {
       }
     }
   }
-  .page-content.mode-empty-filters,
-  .page-content.mode-empty {
+  .page-content.mode-empty-filters {
+    border-bottom: none;
     padding: 0;
     margin: 0;
   }
   .page-content.mode-empty .page-content-body,
   .page-content.mode-empty-filters .page-content-body {
     display: none !important;
-  }
-
-  .page-content.full-height .page-content-body {
-    flex-grow: 1;
   }
 }
 @include media-breakpoint-up(xs) {
@@ -1037,9 +1021,6 @@ page-content {
     }
     .page-content:not(.last) {
       padding-bottom: $layout-spacer-xs;
-    }
-    .page-content.mode-empty, .page-content.mode-empty-filters {
-      padding-bottom:0;
     }
     .page-content-body {
       padding: $layout-spacer-xs;
@@ -1080,7 +1061,7 @@ page-content {
     .page-content.mode-view-form .page-content-body {
       padding: #{$layout-spacer * 1.2} $layout-spacer;
     }
-    .mode-filters .page-content-body .filters-form {
+    .mode-filters .page-content-body form {
       padding-top: 0;
       padding-bottom: 1rem;
       .any-label-value {
@@ -1095,8 +1076,6 @@ page-content {
 @include media-breakpoint-up(md) {
   page-content {
     margin-top: $section-margin;
-    padding: 0 !important;
-
     .layout-centered .content-title {
       margin-top: 1.75rem;
     }
@@ -1110,10 +1089,14 @@ page-content {
         padding-top: 0.1rem;
       }
     }
+    .page-content.mode-empty .content-title,
+    .page-content.mode-empty-filters .content-title {
+      border-bottom: 1px solid $border-color;
+    }
+    .page-content {
+      @include make-container-max-widths();
+    }
   }
-}
-.no-top-margin-page-content page-content {
-  margin-top: 0;
 }
 body.xxs page-content {
   .page-content.last:not(.mode-tight) {
@@ -1134,7 +1117,7 @@ body.xs page-content {
     padding-bottom: $layout-spacer-xs;
   }
 }
-body.xs page-content.no-padding .mode-filters .page-content-body .form {
+body.xs page-content.no-padding .mode-filters .page-content-body form {
   padding-top: $layout-spacer-xs;
 }
 body.lt-sm page-content {
@@ -1238,7 +1221,6 @@ page-layout {
     display: flex;
     width: 100%;
     flex-grow: 1;
-    padding: 0 !important;
   }
 
   .side-area {
@@ -1248,8 +1230,8 @@ page-layout {
     flex-direction: column;
 
     .navbar icon {
-      width: 22px;
-      height: 22px;
+      width: 1.2rem;
+      height: 1.2rem;
       transform: translateY(-1px);
     }
   }

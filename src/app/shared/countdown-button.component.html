@@ -3,7 +3,7 @@
   'btn-primary': !outline,
   'btn-outline-primary': outline }"
   (click)="onClick($event); $event.stopPropagation()"
-  [disabled]="(disabled$ | async) || inputDisabled">
+  [disabled]="disabled$ | async">
   <icon *ngIf="icon" [icon]="icon"></icon>
   <span *ngIf="text$">{{ text$ | async }}</span>
 </button>

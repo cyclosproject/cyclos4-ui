@@ -62,8 +62,6 @@
             'border-top-0': first && valuesWithoutSection.length == 0 && (!hasPreviousFields || data.type.informationText)}">
             {{ key.name }}
           </h2>
-          <div class="mb-2" *ngIf="key.informationText">
-            {{ key.informationText }}</div>
           <custom-field-value [labelPosition]="labelPosition"
             *ngFor="let value of valuesWithSection.get(key)"
             [fieldValue]="value" [class]="resolveColumnClass(value)">

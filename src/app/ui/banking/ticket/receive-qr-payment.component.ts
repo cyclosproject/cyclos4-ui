@@ -147,7 +147,7 @@ export class ReceiveQrPaymentComponent
 
   viewPerformed() {
     const payment = this.payment$.value;
-    this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(payment)]);
+    this.router.navigate(['banking', 'transaction', this.bankingHelper.transactionNumberOrId(payment)]);
   }
 
   private onStepChanged(step: Step) {

@@ -10,7 +10,7 @@ import { Menu } from 'app/ui/shared/menu';
 import { forkJoin, Observable } from 'rxjs';
 import { first, skip } from 'rxjs/operators';
 
-type NotificationSearchParams = QueryFilters & { onlyUnread: boolean; };
+type NotificationSearchParams = QueryFilters & { onlyUnread: boolean };
 
 /**
  * Displays a search for notifications
@@ -38,7 +38,7 @@ export class SearchNotificationsComponent
     this.data = {};
 
     // Send a background request indicating the last time notifications were viewed
-    this.addSub(this.notificationsService.updateLastViewDateForNotifications().pipe(first()).subscribe(() => {
+    this.addSub(this.notificationsService.markAsViewed().pipe(first()).subscribe(() => {
       // And then immediately update the current notifications status
       const status$ = this.notification.notificationsStatus$;
       const status = { ...status$.value };
@@ -50,33 +50,18 @@ export class SearchNotificationsComponent
       this.addSub(this.notification.notificationsStatus$.pipe(skip(1)).subscribe(() => this.update()));
     }));
 
-    const settingsAction = this.dataForFrontendHolder.auth?.permissions?.notificationSettings?.enable
-      ? new HeadingAction(SvgIcon.BellSlash, this.i18n.notification.actions.settings, () => {
-        this.router.navigate(['/users', ApiHelper.SELF, 'notification-settings']);
-      }, true)
-      : null;
-    if (settingsAction) {
-      this.headingActions = [settingsAction];
-    }
     // Update the heading actions with the mark all as read if there's any unread notifications
     this.addSub(this.results$.subscribe(results => {
+      const headingActions = [];
       const notifications = ((results ? results.results : null) || []);
       const unread = notifications.filter(n => !n.read);
-      const updateActions = () => {
-        const headingActions = [];
-        if (unread.length > 0) {
-          headingActions.push(new HeadingAction(SvgIcon.Check2All, this.i18n.notification.actions.markAllRead, () => this.markAllRead()));
-        }
-        if (notifications.length > 0) {
-          headingActions.push(new HeadingAction(SvgIcon.Trash, this.i18n.notification.actions.removeAll, () => this.removeAll()));
-        }
-        if (settingsAction) {
-          headingActions.push(settingsAction);
-        }
-        this.headingActions = headingActions;
-      };
-      updateActions();
-      this.addSub(this.layout.breakpointChanges$.subscribe(updateActions));
+      if (unread.length > 0) {
+        headingActions.push(new HeadingAction(SvgIcon.Check2All, this.i18n.notification.actions.markAllRead, () => this.markAllRead()));
+      }
+      if (notifications.length > 0) {
+        headingActions.push(new HeadingAction(SvgIcon.Trash, this.i18n.notification.actions.removeAll, () => this.removeAll()));
+      }
+      this.headingActions = headingActions;
     }));
   }
 

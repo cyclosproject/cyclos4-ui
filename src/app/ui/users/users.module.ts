@@ -14,11 +14,6 @@ import { ListDocumentsComponent } from 'app/ui/users/documents/list-documents.co
 import { ProcessDynamicDocumentComponent } from 'app/ui/users/documents/process-dynamic-document.component';
 import { SearchDocumentsComponent } from 'app/ui/users/documents/search-documents.component';
 import { ViewDocumentComponent } from 'app/ui/users/documents/view-document.component';
-import { ListFeedbackIgnoredUsersComponent } from 'app/ui/users/feedbacks/list-feedback-ignored-users.component';
-import { SearchFeedbackComponent } from 'app/ui/users/feedbacks/search-feedbacks.component';
-import { SearchPaymentAwaitingFeedbackComponent } from 'app/ui/users/feedbacks/search-payment-awaiting-feedback.component';
-import { SetFeedbackComponent } from 'app/ui/users/feedbacks/set-feedback.component';
-import { ViewFeedbackComponent } from 'app/ui/users/feedbacks/view-feedback.component';
 import { ViewUserGroupHistoryComponent } from 'app/ui/users/group-membership/view-user-group-history.component';
 import { ViewUserGroupComponent } from 'app/ui/users/group-membership/view-user-group.component';
 import { UserIdentityProvidersComponent } from 'app/ui/users/identity-providers/user-identity-providers.component';
@@ -30,7 +25,6 @@ import { OperatorRegistrationComponent } from 'app/ui/users/operators/operator-r
 import { SearchUserOperatorsComponent } from 'app/ui/users/operators/search-user-operators.component';
 import { ChangePasswordDialogComponent } from 'app/ui/users/passwords/change-password-dialog.component';
 import { ManagePasswordsComponent } from 'app/ui/users/passwords/manage-passwords.component';
-import { ViewPasswordsHistoryComponent } from 'app/ui/users/passwords/view-passwords-history.component';
 import { ListProductAssignmentComponent } from 'app/ui/users/products/list-product-assignment.component';
 import { ViewProductAssignmentHistoryComponent } from 'app/ui/users/products/view-product-assignment-history.component';
 import { EditProfileComponent } from 'app/ui/users/profile/edit-profile.component';
@@ -47,8 +41,8 @@ import { RegistrationStepGroupComponent } from 'app/ui/users/registration/regist
 import { RegistrationStepIdPComponent } from 'app/ui/users/registration/registration-step-idp.component';
 import { UserRegistrationComponent } from 'app/ui/users/registration/user-registration.component';
 import { ValidateRegistrationComponent } from 'app/ui/users/registration/validate-registration.component';
+import { AddContactDialogComponent } from 'app/ui/users/search/add-contact-dialog.component';
 import { ContactListComponent } from 'app/ui/users/search/contact-list.component';
-import { PickUserDialogComponent } from 'app/ui/users/search/pick-user-dialog.component';
 import { SearchUsersComponent } from 'app/ui/users/search/search-users.component';
 import { UsersResultsComponent } from 'app/ui/users/search/users-results.component';
 import { ViewUserStatusHistoryComponent } from 'app/ui/users/status/view-user-status-history.component';
@@ -58,9 +52,6 @@ import { CreateTokenComponent } from 'app/ui/users/tokens/create-token.component
 import { ListTokenComponent } from 'app/ui/users/tokens/list-token.component';
 import { SearchTokenComponent } from 'app/ui/users/tokens/search-token.component';
 import { ViewTokenComponent } from 'app/ui/users/tokens/view-token.component';
-import { SearchMessagesComponent } from 'app/ui/users/messages/search-messages.component';
-import { ViewMessageComponent } from 'app/ui/users/messages/view-message.component';
-import { EditMessageComponent } from 'app/ui/users/messages/edit-message.component';
 import { UsersRoutingModule } from 'app/ui/users/users-routing.module';
 
 /**
@@ -77,7 +68,7 @@ import { UsersRoutingModule } from 'app/ui/users/users-routing.module';
     SearchUsersComponent,
     UsersResultsComponent,
     ContactListComponent,
-    PickUserDialogComponent,
+    AddContactDialogComponent,
 
     ViewProfileComponent,
     EditProfileComponent,
@@ -115,7 +106,6 @@ import { UsersRoutingModule } from 'app/ui/users/users-routing.module';
 
     ManagePasswordsComponent,
     ChangePasswordDialogComponent,
-    ViewPasswordsHistoryComponent,
 
     UserIdentityProvidersComponent,
 
@@ -141,21 +131,11 @@ import { UsersRoutingModule } from 'app/ui/users/users-routing.module';
 
     SearchReferencesComponent,
     ViewReferenceComponent,
-    SetReferenceComponent,
-
-    SearchFeedbackComponent,
-    SearchPaymentAwaitingFeedbackComponent,
-    ViewFeedbackComponent,
-    SetFeedbackComponent,
-    ListFeedbackIgnoredUsersComponent,
-
-    SearchMessagesComponent,
-    ViewMessageComponent,
-    EditMessageComponent
+    SetReferenceComponent
   ],
   entryComponents: [
     VerifyPhoneComponent,
-    PickUserDialogComponent,
+    AddContactDialogComponent,
     ChangePasswordDialogComponent,
   ],
 })

@@ -11,18 +11,16 @@
 
     <ng-container *ngIf="localeControl">
       <radio-group-field [label]="i18n.setting.locale"
-        [formControl]="localeControl"
-        *ngIf="(layout.gtxs$ | async) && localeOptions.length <= 2"
+        [formControl]="localeControl" *ngIf="localeOptions.length <= 3"
         [fieldOptions]="localeOptions">
       </radio-group-field>
       <single-selection-field [label]="i18n.setting.locale"
-        [formControl]="localeControl"
-        *ngIf="(layout.ltsm$ | async) || localeOptions.length > 2"
+        [formControl]="localeControl" *ngIf="localeOptions.length > 3"
         [fieldOptions]="localeOptions">
       </single-selection-field>
     </ng-container>
 
-    <actions kind="secondary" *ngIf="canSwitchFrontend">
+    <actions *ngIf="canSwitchFrontend">
       <span></span>
       <action-button [label]="i18n.setting.useClassicFrontend" outline
         (action)="switchFrontend()"></action-button>

@@ -1,5 +1,5 @@
 <h1>{{ i18n.token.title['new'](type.name) }}</h1>
-<ng-container [formGroup]="form" class="d-flex flex-grow-1 flex-column">
+<form [formGroup]="form" class="d-flex flex-grow-1 flex-column">
   <label-value *ngIf="user" [label]="i18n.general.user" kind="fieldView"
     labelPosition="side">
     {{ user.display }}
@@ -29,4 +29,4 @@
       [label]="i18n.general.cancel">
     </action-button>
   </actions>
-</ng-container>
+</form>

@@ -2,14 +2,12 @@
 
   <!-- Step 1: Select voucher type -->
   <ng-container *ngSwitchCase="'select-type'">
-    <voucher-type-selection [heading]="i18n.voucher.title.generate"
-      [mobileHeading]="i18n.voucher.mobileTitle.generate"
-      [categories]="data.categories" [types]="data.types"
+    <generate-vouchers-step-list-types [types]="data.types"
       (typeSelected)="toForm($event)">
-    </voucher-type-selection>
+    </generate-vouchers-step-list-types>
   </ng-container>
 
-  <!-- Step 2: Generate form -->
+  <!-- Step 2: Buy form -->
   <page-content *ngSwitchCase="'form'"
     [heading]="dataTypeForGenerate.type.voucherTitle"
     [mobileHeading]="dataTypeForGenerate.type.voucherTitle"

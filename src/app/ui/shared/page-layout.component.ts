@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { LayoutService } from 'app/core/layout.service';
 import { empty, truthyAttr } from 'app/shared/helper';
 import { LoginState } from 'app/ui/core/login-state';
@@ -18,9 +18,6 @@ import { BehaviorSubject, Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageLayoutComponent implements OnInit, OnDestroy {
-
-  @HostBinding("class.container-lg") classContainerLg = true;
-
   @Input() heading: string;
   @Input() ready = true;
   @Input() size: 'small' | 'medium' | 'large' | 'full' = 'full';

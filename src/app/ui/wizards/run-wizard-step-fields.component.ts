@@ -45,7 +45,6 @@ export class RunWizardStepFieldsComponent
   @Input() customValues: FormGroup;
   @Input() emailValidation: FormControl;
   @Input() smsValidation: FormControl;
-  @Input() submitAction: Function;
 
   @Output() imageUploaded = new EventEmitter<Image>();
   @Output() imageRemoved = new EventEmitter<Image>();
@@ -193,5 +192,9 @@ export class RunWizardStepFieldsComponent
         focusFirstInvalid();
       }
     });
+  }
+
+  fieldSize(cf: CustomFieldDetailed) {
+    return this.fieldHelper.fieldSize(cf);
   }
 }

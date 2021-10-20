@@ -1,15 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import {
   AccountKind, CreateDeviceConfirmation, DeviceConfirmationTypeEnum,
-  PaymentRequestActionEnum, PaymentRequestPreview, PerformPayment, TransferFeePreview, User
+  PaymentPreview, PaymentRequestActionEnum, PerformPayment, TransferFeePreview, User
 } from 'app/api/models';
-import { AuthHelperService } from 'app/core/auth-helper.service';
-import { Enter } from 'app/core/shortcut.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { empty } from 'app/shared/helper';
-import { PaymentRequestScheduledTo } from 'app/ui/banking/request-payment/payment-request-scheduled-to';
+import { Enter } from 'app/core/shortcut.service';
 
 /**
  * Payment step: confirm the accepted payment request
@@ -20,7 +18,6 @@ import { PaymentRequestScheduledTo } from 'app/ui/banking/request-payment/paymen
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AcceptPaymentRequestStepConfirmComponent extends BaseComponent implements OnInit {
-  PaymentRequestScheduledTo = PaymentRequestScheduledTo;
 
   fromUser: User;
   fromSelf: boolean;
@@ -29,21 +26,18 @@ export class AcceptPaymentRequestStepConfirmComponent extends BaseComponent impl
   toSelf: boolean;
   toSystem: boolean;
   @Input() form: FormGroup;
-  @Input() preview: PaymentRequestPreview;
+  @Input() preview: PaymentPreview;
   @Input() transaction: string;
   @Input() confirmationPassword: FormControl;
   @Input() showPaymentType: boolean;
   @Output() confirmationModeChanged = new EventEmitter<ConfirmationMode>();
   @Output() confirmed = new EventEmitter<string>();
 
-  scheduleTo: FormControl;
   fees: TransferFeePreview[];
 
   createDeviceConfirmation: () => CreateDeviceConfirmation | PerformPayment;
 
-  constructor(
-    injector: Injector,
-    private authHelper: AuthHelperService) {
+  constructor(injector: Injector) {
     super(injector);
   }
 
@@ -57,18 +51,6 @@ export class AcceptPaymentRequestStepConfirmComponent extends BaseComponent impl
     this.toUser = this.preview.toAccount.user;
     this.toSelf = this.toUser && this.authHelper.isSelf(this.toUser);
     this.toSystem = this.preview.toAccount.kind === AccountKind.SYSTEM;
-
-    this.scheduleTo = new FormControl(PaymentRequestScheduledTo.NOW);
-    this.addSub(this.scheduleTo.valueChanges.subscribe(rescheduleTo => {
-      if (rescheduleTo === PaymentRequestScheduledTo.DATE) {
-        this.form.controls.processDate.setValidators(Validators.required);
-      } else {
-        this.form.controls.processDate.clearValidators();
-      }
-      const processDate: string = rescheduleTo === PaymentRequestScheduledTo.EXPIRY
-        ? this.preview.paymentRequest.expirationDate : null;
-      this.form.patchValue({ processDate });
-    }));
 
     this.form.setControl('confirmationPassword', this.confirmationPassword);
     this.fees = this.preview.fees;

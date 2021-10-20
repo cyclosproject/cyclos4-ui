@@ -65,17 +65,16 @@ boolean-field.form-field {
     padding-left: 0;
     padding-right: $layout-spacer;
 
-    .label-value-label {
+    .col-form-label {
       padding-left: $layout-spacer;
     }
+  }
+  .page-content.mode-filters actions-toolbar .actions-toolbar-container {
+    padding-bottom: $layout-spacer;
   }
   .page-content.mode-filters actions-toolbar hr {
     margin-top: 0;
   }
-}
-
-input[type=date].form-control {
-  line-height: $input-height;
 }
 
 .form-control, .custom-select {
@@ -130,10 +129,11 @@ input[type=number] {
 
 .custom-control-label {
   padding-left: 0.2rem;
+  padding-top: 0.05rem;
   font-weight: $font-weight-normal;
 
   &::before, &::after {
-    top: 0;
+    top: 0.1rem;
   }
 }
 .custom-control-label::before {
@@ -146,15 +146,9 @@ input[type=number] {
 .custom-select, .form-control, .custom-select option {
   padding: 0 0.4rem;
 }
-
 @include media-breakpoint-up(sm) {
   .custom-select, .form-control, .custom-select option {
     padding: calc(#{$input-padding-y} + 1px) $input-padding-x $input-padding-y $input-padding-x;
-  }
-  .filters-form {
-    .custom-select, .form-control, .custom-select option {
-      padding: $input-padding-y $input-padding-x $input-padding-y $input-padding-x;
-    }
   }
   .custom-select {
     padding-right: 1.75rem;
@@ -185,14 +179,29 @@ input[type=number] {
     width: 2.25rem;
     height: 1.25rem;
     left: 0;
-    top: 0;
+    top: 0.55rem;
   }
   &::after {
     width: 1rem;
-    left: 4px;
+    left: 2px;
     height: 1rem;
-    top: 0.10rem;
+    top: 0.65rem;
   }
+}
+
+@include media-breakpoint-up(xs) {
+  .custom-switch .custom-control-label::after {
+    top: 0.7rem;
+  }
+}
+@include media-breakpoint-up(lg) {
+  .custom-switch .custom-control-label::after {
+    top: 0.65rem;
+  }
+}
+
+.custom-switch .custom-control-input:checked ~ .custom-control-label::after {
+  transform: translateX(calc(1.25rem - 4px));
 }
 
 .invalid-feedback {
@@ -251,6 +260,32 @@ $spaced-label-values: (
   margin-top: 0 !important;
 }
 
+.label-value.label-on-side {
+  checkbox-group-field {
+    transform: translateY(4px);
+  }
+  radio-group-field {
+    transform: translateY(2px);
+  }
+}
+
+boolean-field:not(.switch) .label-value.label-on-side .label-value-value,
+accept-agreements .label-value-value {
+  transform: translateY(9px);
+}
+
+.filters-form boolean-field .label-value.label-on-side .label-value-value {
+  transform: translateY(0px);
+}
+
+checkbox-group-field .label-value.label-on-side .label-value-value {
+  transform: translateY(4px);
+}
+radio-group-field .label-value.label-on-side .label-value-value {
+  transform: translateY(2px);
+}
+
+
 .notice {
   font-size: 0.9rem;
   font-weight: $font-weight-normal;
@@ -262,7 +297,7 @@ $spaced-label-values: (
   padding: 0.2rem 0.4rem;
   min-height: 1.5em;
   cursor: default;
-  color: $input-color  !important;
+  color: $input-color;
   background-color: $input-bg;
   white-space: nowrap;
   &:hover, &:focus {
@@ -358,11 +393,6 @@ $spaced-label-values: (
     margin-left: 0.5rem;
     font-family: $font-family-monospace;
   }
-
-  .char {
-    line-height: 1rem;
-    font-size: 2rem;
-  }
 }
 
 body.dark {
@@ -448,7 +478,7 @@ body.dark {
     border-color: $input-border-color-dark;
   }
   .select-option {
-    color: $input-color-dark  !important;
+    color: $input-color-dark;
     background-color: $input-bg-dark;
   }
   .select-option.selected {
@@ -780,12 +810,10 @@ chip {
     background-color: $input-bg;
     padding: 0.3rem;
     padding-right: 0.6rem;
-    height: $input-height;
   }
   a {
     color: $input-color;
     padding: 0.1rem 0.2rem 0 0;
-    transform: translateY(0.1rem);
   }
   a:hover {
     text-decoration: none;
@@ -844,26 +872,6 @@ confirmation-password {
   .rejected {
     opacity: 0.1;
   }
-
-  .otpCountdownLabel {
-    text-align: start;
-  }
-
-  .otpCountdownLabelColor, .otpCountdownLabel {
-    color: #999;
-  }
-
-  label-value {
-    &.label-on-side {
-      .label-value-label {
-        width: 10rem;
-        text-align: start;
-      }
-      .label-value-container {
-        width: calc(100% - 10rem);
-      }
-    }
-  }
 }
 @include media-breakpoint-up(sm) {
   confirmation-password {
@@ -872,20 +880,10 @@ confirmation-password {
 }
 
 ///////////////////////////////////////////////////////////
-password-input {
-  .otp {
-    countdown-button {
-      button {
-        justify-content: start !important;
-      }
-    }
-  }
-}
-
-///////////////////////////////////////////////////////////
 
 custom-field-input {
   display: flex;
+  flex-grow: 1;
 }
 
 ///////////////////////////////////////////////////////////
@@ -950,10 +948,6 @@ html-field {
       display: inline-flex;
       margin-left: $group-gap;
       margin-top: $group-gap;
-    }
-
-    select {
-      min-width: 8rem;
     }
   }
 
@@ -1049,84 +1043,18 @@ insert-image-dialog {
 
 label-value {
   display: flex;
-  flex-direction: column;
   width: 100%;
-
-  .label-value-container,
-  .label-value-value {
-    flex-grow: 1;
-    max-width: 100%;
-  }
-
-  .label-value-value {
-    flex-direction: column;
-  }
-
-  .label-value-container {
-    display: flex;
-    position: relative;
-  }
-
-  .label-value-extra {
-    margin-left: 0.5rem;
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  information-text {
-    margin-left: 0.5rem;
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  &.field {
-    &.size-tiny, &.size-small {
-      .label-value-value {
-        width: 12rem;
-        flex-grow: 0;
-      }
-      .label-value-extra {
-        flex-grow: 1;
-      }
-      .informationText {
-        flex-grow: 1;
-      }
-    }
-  }
 
   &.field .label-value-value,
   &.field-view .label-value-value {
     min-height: $input-height;
   }
   &.label-on-side {
-    flex-direction: row;
-
-    .label-value-label {
-      padding-right: 1rem;
-      width: 10rem;
-      margin: 0;
-    }
-    &.has-extra-cell .label-value-value {
-      max-width: calc(100% - 2.6rem - 0.5rem);
-    }
-    .label-value-container {
-      width: calc(100% - 10rem);
-    }
-
     &:not(.view) .label-value-label,
     &.field-view .label-value-value {
       padding-top: calc(#{$input-padding-y} + 2px);
       padding-bottom: 3px;
     }
-
-    checkbox-group-field, radio-group-field {
-      padding-top: calc(#{$input-padding-y} + 2px);
-      padding-bottom: 3px;
-    }
-  }
-  &:not(.label-on-side) {
-    display: flex;
-    flex-direction: column;
   }
   &.field-view, &.field {
     min-height: $input-height;
@@ -1145,151 +1073,25 @@ label-value {
     }
   }
 }
-
-checkbox-group-field, boolean-field, radio-group-field {
-  label-value .label-value-value {
-    padding-top: calc(#{$input-padding-y} + 2px);
-    padding-bottom: 3px;
-  }
-}
-
-.filters-form boolean-field label-value .label-value-value,
-.filters-form radio-group-field label-value .label-value-value {
-  // filters-form doesn't need padding because the label is not using padding
-  padding-top: inherit;
-  padding-bottom: inherit;
-}
-
-
-@include media-breakpoint-up(md) {
-  label-value {
-    &.label-on-side {
-      .label-value-label {
-        width: 16rem;
-      }
-      .label-value-container {
-        width: calc(100% - 16rem);
-      }
-    }
-
-    &.field {
-      &.size-tiny {
-        .label-value-value {
-          width: 9rem;
-          flex-grow: 0;
-        }
-        .label-value-extra {
-          flex-grow: 1;
-        }
-        .informationText {
-          flex-grow: 1;
-        }
-      }
-      &.size-small {
-        .label-value-value {
-          width: 12rem;
-          flex-grow: 0;
-        }
-        .label-value-extra {
-          flex-grow: 1;
-        }
-        .informationText {
-          flex-grow: 1;
-        }
-      }
-      &.size-medium {
-        .label-value-value {
-          width: 16rem;
-          flex-grow: 0;
-        }
-        .label-value-extra {
-          flex-grow: 1;
-        }
-        .informationText {
-          flex-grow: 1;
-        }
-      }
-      &.size-large {
-        .label-value-value {
-          width: 24rem;
-          flex-grow: 0;
-        }
-        .label-value-extra {
-          flex-grow: 1;
-        }
-        .informationText {
-          flex-grow: 1;
-        }
-      }
-    }
-  }
-
-  modal-container {
-    label-value {
-      &.label-on-side {
-        .label-value-label {
-          width: 10rem;
-        }
-        .label-value-container {
-          width: calc(100% - 10rem);
-        }
-      }
-    }
-  }
-}
-
-float-labels .any-label-value {
-    width: auto;
-}
-@include media-breakpoint-up(xs) {
-  float-labels label-value.label-on-side .label-value-label {
-    width: 8rem;
-  }
-}
-@include media-breakpoint-up(sm) {
-  float-labels label-value.label-on-side .label-value-label {
-    width: 12rem;
-  }
-}
-
-@include media-breakpoint-down(sm) {
-  label-value {
-    &:not(.view).label-on-side boolean-field {
-      // flex-grow: 1 is not applied in form-field under sm
-      // and this padding is not applied if its view on label-value-label
-      padding-top: calc(#{$input-padding-y} + 2px);
-      padding-bottom: 3px;
-    }
-  }
-}
 .filters-form {
-  // use the same line-height in the label and in the value
+  .col-form-label {
+    padding: 0;
+    line-height: 18px;
+    padding-bottom: 1px;
+  }
   label-value {
     .label-value-label {
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      padding: 0;
-      line-height: 18px;
-      padding-bottom: 1px;
     }
     .label-value-value {
-      line-height: 18px;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       justify-content: center;
-      .custom-select {
-        line-height: 18px;
-      }
     }
     &.label-on-side {
-      .label-value-label {
-        width: 9rem;
-      }
-      .label-value-container {
-        width: calc(100% - 9rem);
-      }
       &:not(.view) .label-value-label,
       &.field-view .label-value-value {
         padding: 0;
@@ -1297,14 +1099,13 @@ float-labels .any-label-value {
     }
   }
 }
-
 @include media-breakpoint-up(xs) {
   .page-content-body > label-value[kind=fieldView]:first-child {
     margin-top: -8px;
   }
 
   label-value:not(.label-on-side) .label-value-label {
-    padding-bottom: 0 !important;
+    padding-bottom: calc(#{$input-padding-y} + #{$input-border-width}) !important;
   }
 
   .filters-form label-value .label-value-label {
@@ -1335,9 +1136,6 @@ float-labels .any-label-value {
   .label-small {
     font-size: 0.8em !important;
   }
-}
-.xs label-value.field, .xs label-value.field-view {
-  padding-bottom: 0.5rem;
 }
 
 ///////////////////////////////////////////////////////////
@@ -1552,49 +1350,6 @@ files-field {
 
 ///////////////////////////////////////////////////////////
 
-input-list-field {
-  .input-fields {
-    display: flex;
-    flex-direction: column;
-
-    .field-and-action {
-      display: flex;
-      flex-direction: row;
-
-      & + .field-and-action {
-        margin-top: 0.5rem;
-      }
-
-      button {
-        margin-left: 0.5rem;
-      }
-    }
-  }
-}
-
-///////////////////////////////////////////////////////////
-
-.input-field-secret {
-  font-family: text-security-disc;
-  /* Use -webkit-text-security if the browser supports it */
-  -webkit-text-security: disc;
-}
-
-.input-field-secret::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  font-family: $font-family-sans-serif;
-}
-.input-field-secret::-moz-placeholder { /* Firefox 19+ */
-  font-family: $font-family-sans-serif;
-}
-.input-field-secret:-ms-input-placeholder { /* IE 10+ */
-  font-family: $font-family-sans-serif;
-}
-.input-field-secret:-moz-placeholder { /* Firefox 18- */
-  font-family: $font-family-sans-serif;
-}
-
-///////////////////////////////////////////////////////////
-
 scan-qrcode {
   video {
     max-height: 80%;
@@ -1610,34 +1365,5 @@ scan-qrcode {
     text-align: right;
     align-items: center;
     width: auto;
-  }
-}
-
-///////////////////////////////////////////////////////////
-
-hidden-text {
-  display: flex;
-  width: 100%;
-  flex-grow: 1;
-  .hidden-text-label {
-    flex-grow: 1;
-  }
-  .hidden-text-icon {
-    margin-left: 0.5rem;
-    cursor: pointer;
-
-    icon {
-      &, svg {
-        width: 18px;
-        height: 18px;
-      }
-    }
-  }
-}
-
-@include media-breakpoint-up(md) {
-  hidden-text .hidden-text-label {
-    flex-grow: 0;
-    min-width: 4rem;
   }
 }

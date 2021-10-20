@@ -3,9 +3,8 @@
   <label #button class="btn btn-icon"
     [ngClass]="['focusable', 'resultType-' + resultType]"
     *ngFor="let resultType of allowedResultTypes"
-    [tooltip]="tooltip(resultType)" (focus)="addShortcuts(resultType)"
-    (blur)="removeShortcuts(resultType)" [btnRadio]="resultType" tabindex="0"
-    role="button">
+    (focus)="addShortcuts(resultType)" (blur)="removeShortcuts(resultType)"
+    [btnRadio]="resultType" tabindex="0" role="button">
     <icon size="1.2rem" [icon]="icon(resultType)"></icon>
   </label>
 </div>

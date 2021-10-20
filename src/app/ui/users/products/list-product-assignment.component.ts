@@ -68,7 +68,7 @@ export class ListProductAssignmentComponent extends BasePageComponent<UserProduc
    * Assign a product to the user
    */
   assign() {
-    this.confirmation.confirm({
+    this.notification.confirm({
       title: this.i18n.product.assignIndividualProduct,
       labelPosition: 'above',
       customFields: [
@@ -111,7 +111,7 @@ export class ListProductAssignmentComponent extends BasePageComponent<UserProduc
    * Removes the given product from the user's individuals products
    */
   remove(product: ProductWithUserAccount) {
-    this.confirmation.confirm({
+    this.notification.confirm({
       message: this.i18n.general.removeItemConfirm,
       callback: () => {
         this.addSub(this.productAssignmentService.unassignIndividualProduct({ product: product.id, user: this.user })

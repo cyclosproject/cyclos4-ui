@@ -23,8 +23,8 @@ export class TimeIntervalFieldComponent extends BaseFormFieldComponent<TimeInter
   amountControl: FormControl;
 
   constructor(injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private formBuilder: FormBuilder,
+              @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
+              private formBuilder: FormBuilder,
   ) {
     super(injector, controlContainer);
   }
@@ -32,9 +32,7 @@ export class TimeIntervalFieldComponent extends BaseFormFieldComponent<TimeInter
   ngOnInit() {
     super.ngOnInit();
 
-    if (this.fieldSize == null) {
-      this.fieldSize = CustomFieldSizeEnum.MEDIUM;
-    }
+    this.fieldSize = CustomFieldSizeEnum.MEDIUM;
 
     this.form = this.formBuilder.group(this.defaultValue);
 

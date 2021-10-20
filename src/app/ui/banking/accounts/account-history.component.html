@@ -7,7 +7,7 @@
   <page-content mode="filters" [heading]="title"
     [mobileHeading]="(layout.xxs$ | async) ? i18n.account.mobileTitle.account : title"
     [headingActions]="headingActions$ | async">
-    <div *ngIf="showForm$ | async" [formGroup]="form" class="filters-form"
+    <form *ngIf="showForm$ | async" [formGroup]="form" class="filters-form"
       [ngClass]="{ 'border-0': noStatus$ | async }">
       <div class="row">
         <ng-container *ngIf="data.account.user && !self">
@@ -75,9 +75,8 @@
               [scale]="currency.decimalDigits">
             </decimal-field>
           </div>
-          <div *ngIf="data.showDescriptionInFilters" class="col-12 col-md-6">
-            <input-field type="text" labelPosition="side"
-              [label]="i18n.general.description"
+          <div class="col-12 col-md-6">
+            <input-field type="text" [label]="i18n.general.description"
               formControlName="description">
             </input-field>
           </div>
@@ -148,7 +147,7 @@
           </div>
         </ng-container>
       </div>
-    </div>
+    </form>
 
     <!-- Account status -->
     <ng-container *ngIf="(noStatus$ | async) === false">
@@ -180,9 +179,8 @@
         <th class="avatar"></th>
         <th>{{ i18n.general.date }}</th>
         <th>{{ i18n.transaction.fromTo }}</th>
-        <th *ngIf="data.showDescriptionInList && (layout.gtsm$ | async)"
-          width="40%">{{
-          i18n.general.description }}</th>
+        <th *ngIf="layout.gtsm$ | async" width="30%">{{
+            i18n.general.description }}</th>
         <th class="amount">{{ i18n.transaction.amount }}</th>
       </thead>
       <tbody>
@@ -202,9 +200,10 @@
                 {{ subjectName(row) }}
               </a>
             </td>
-            <td *ngIf="data.showDescriptionInList && (layout.gtsm$ | async)">
-              <a *ngIf="row.description" [routerLink]="path(row)">
-                {{ truncate(row.description, 100) }}
+            <td *ngIf="layout.gtsm$ | async">
+              <a *ngIf="row.description" class="d-inline-block"
+                [routerLink]="path(row)">
+                {{ row.description }}
               </a>
             </td>
             <td class="amount">

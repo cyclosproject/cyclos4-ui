@@ -1,13 +1,9 @@
 <!-- A read-only label-value rendered when the control is disabled -->
 <label-value
-  *ngIf="disabled || (disabledChange | async); else controlTemplate"
-  [label]="field.name" kind="fieldView" [labelPosition]="labelPosition"
-  [informationText]="getInformationText()">
+  *ngIf="disabled || (disabledChange | async); else field.informationText ? controlTemplateWithInformationText : controlTemplate"
+  [label]="field.name" kind="fieldView" [labelPosition]="labelPosition">
   <format-field-value [fields]="[field]" [object]="disabledValueObject"
-    [fieldName]="field.internalName"
-    [files]="binaryValues?.fileValues[field.internalName]"
-    [images]="binaryValues?.imageValues[field.internalName]">
-  </format-field-value>
+    [fieldName]="field.internalName"></format-field-value>
 </label-value>
 
 <!-- Template rendered when the field is editable, that is, there's a control -->
@@ -17,79 +13,71 @@
       *ngIf="control == 'radio'; else singleSelectionTemplate" [id]="id"
       [label]="label" [name]="name" [labelPosition]="labelPosition"
       [fieldSize]="fieldSize" [required]="required"
-      [formControl]="formControl" [fieldOptions]="fieldOptions"
-      [informationText]="getInformationText()">
+      [formControl]="formControl" [fieldOptions]="fieldOptions">
     </radio-group-field>
   </ng-container>
+</ng-template>
+
+<ng-template #controlTemplateWithInformationText>
+  <div class="d-flex justify-content-between w-100 h-100">
+    <ng-container *ngTemplateOutlet="controlTemplate"></ng-container>
+    <information-text class="ml-2" [informationText]="field.informationText">
+    </information-text>
+  </div>
 </ng-template>
 
 <ng-template #singleSelectionTemplate>
   <single-selection-field #singleSelectionField [id]="id" [label]="label"
     [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
     [required]="required" [formControl]="formControl" emptyOption
-    [fieldOptions]="fieldOptions" [informationText]="getInformationText()">
+    [fieldOptions]="fieldOptions">
   </single-selection-field>
 </ng-template>
 
 <ng-template #specificTemplate>
-  <!-- integer or entity -->
-  <input-field #inputField
-    *ngIf="type === 'integer' || (type === 'linkedEntity' && linkedEntityType !== 'user')"
-    [id]="id" [label]="label" [name]="name" [labelPosition]="labelPosition"
-    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
+  <!-- string, integer or entity -->
+  <input-field #inputField *ngIf="input" [id]="id" [label]="label"
+    [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl"
     [autocomplete]="autocomplete" [type]="type === 'integer' ? 'tel' : 'text'"
-    [mask]="field.pattern" [placeholder]="field.pattern || ''"
-    [informationText]="getInformationText()"></input-field>
-
-  <!-- string -->
-  <ng-container *ngIf="type === 'string'">
-    <label-value *ngIf="label; else stringTemplate" [label]="label"
-      kind="field" [labelPosition]="labelPosition"
-      [informationText]="getInformationText()" [required]="required">
-      <ng-container [ngTemplateOutlet]="stringTemplate"></ng-container>
-    </label-value>
-  </ng-container>
+    [mask]="field.pattern" [placeholder]="field.pattern || ''"></input-field>
 
   <!-- url -->
   <url-field #urlField *ngIf="type === 'url'" [id]="id" [label]="label"
     [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
     [required]="required" [formControl]="formControl"
-    [autocomplete]="autocomplete" [informationText]="getInformationText()">
-  </url-field>
+    [autocomplete]="autocomplete"></url-field>
 
   <!-- text -->
   <textarea-field #textareaField *ngIf="type === 'text'" [id]="id"
     [label]="label" [name]="name" [labelPosition]="labelPosition"
-    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
-    [informationText]="getInformationText()">
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl">
   </textarea-field>
 
   <!-- richText -->
   <html-field #richTextField *ngIf="type === 'richText'" [id]="id"
     [label]="label" [name]="name" [labelPosition]="labelPosition"
-    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
-    [informationText]="getInformationText()">
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl">
   </html-field>
 
   <!-- boolean -->
   <boolean-field #booleanField *ngIf="type == 'boolean'" [id]="id"
     [label]="label" [name]="name" labelPosition="sideForced"
-    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
-    [informationText]="getInformationText()">
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl">
   </boolean-field>
 
   <!-- decimal -->
   <decimal-field #decimalField *ngIf="type == 'decimal'" [id]="id"
     [label]="label" [name]="name" [labelPosition]="labelPosition"
     [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
-    [scale]="field.decimalDigits" [informationText]="getInformationText()">
+    [scale]="field.decimalDigits">
   </decimal-field>
 
   <!-- date -->
   <date-field #dateField *ngIf="type == 'date'" [id]="id" [label]="label"
     [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
     [required]="required" [formControl]="formControl" minDate="past100"
-    maxDate="future100" [informationText]="getInformationText()">
+    maxDate="future100">
   </date-field>
 
   <!-- single selection -->
@@ -97,30 +85,27 @@
     *ngIf="type == 'singleSelection' && control == 'singleSelection'"
     [id]="id" [label]="label" [name]="name" [labelPosition]="labelPosition"
     [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
-    emptyOption [fieldOptions]="fieldOptions"
-    [informationText]="getInformationText()">
+    emptyOption [fieldOptions]="fieldOptions">
   </single-selection-field>
   <radio-group-field #radioGroupField
     *ngIf="type == 'singleSelection' && control == 'radio'" [id]="id"
     [label]="label" [name]="name" [labelPosition]="labelPosition"
     [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
-    [fieldOptions]="fieldOptions" [informationText]="getInformationText()">
+    [fieldOptions]="fieldOptions">
   </radio-group-field>
 
   <!-- multi selection -->
-  <multi-selection-field #multiSelectionField *ngIf="['multiSelection', 'dynamicMultiSelection'].includes(type)
-      && control == 'multiSelection'" [id]="id" [label]="label" [name]="name"
-    [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-    [required]="required" [formControl]="formControl"
-    [separator]="ApiHelper.VALUE_SEPARATOR" [fieldOptions]="fieldOptions"
-    [informationText]="getInformationText()">
+  <multi-selection-field #multiSelectionField
+    *ngIf="type == 'multiSelection' && control == 'multiSelection'" [id]="id"
+    [label]="label" [name]="name" [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
+    [separator]="ApiHelper.VALUE_SEPARATOR" [fieldOptions]="fieldOptions">
   </multi-selection-field>
-  <checkbox-group-field #cheboxGroupField *ngIf="['multiSelection', 'dynamicMultiSelection'].includes(type)
-      && control == 'checkbox'" [id]="id" [label]="label" [name]="name"
-    [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-    [required]="required" [formControl]="formControl"
-    [separator]="ApiHelper.VALUE_SEPARATOR" [fieldOptions]="fieldOptions"
-    [informationText]="getInformationText()">
+  <checkbox-group-field #cheboxGroupField
+    *ngIf="type == 'multiSelection' && control == 'checkbox'" [id]="id"
+    [label]="label" [name]="name" [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
+    [separator]="ApiHelper.VALUE_SEPARATOR" [fieldOptions]="fieldOptions">
   </checkbox-group-field>
 
   <!-- images -->
@@ -130,8 +115,7 @@
     [initialImages]="binaryValues?.imageValues[field.internalName]"
     target="customValue" [customField]="field"
     [separator]="ApiHelper.VALUE_SEPARATOR" [maxFiles]="field.maxFiles"
-    (upload)="imagesUploaded.emit($event)"
-    [informationText]="getInformationText()">
+    (upload)="imagesUploaded.emit($event)">
   </images-field>
 
   <!-- files -->
@@ -141,33 +125,13 @@
     [initialFiles]="binaryValues?.fileValues[field.internalName]"
     [customField]="field" [separator]="ApiHelper.VALUE_SEPARATOR"
     [maxFiles]="field.maxFiles" [mimeTypes]="field.mimeTypes"
-    (upload)="filesUploaded.emit($event)"
-    [informationText]="getInformationText()">
+    (upload)="filesUploaded.emit($event)">
   </files-field>
 
   <!-- Linked user -->
   <user-field #userField *ngIf="linkedEntityType === 'user'" [id]="id"
     [label]="label" [name]="name" [labelPosition]="labelPosition"
-    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
-    [informationText]="getInformationText()">
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl">
   </user-field>
 
-</ng-template>
-
-<ng-template #stringTemplate>
-  <div class="d-flex w-100">
-    <input-field #inputField [id]="id" [name]="name"
-      [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-      [required]="required" [formControl]="formControl"
-      [autocomplete]="autocomplete" type="text" [mask]="field.pattern"
-      [placeholder]="field.pattern || ''"
-      [informationText]="getInformationText()"></input-field>
-    <div class="ml-2">
-      <button *ngIf="field.showQrCodeScan" type="button" class="btn btn-icon"
-        #scanQrCodeButton [tooltip]="i18n.field.user.scanQrCodeTooltip"
-        (click)="showScanQrCode()">
-        <icon [icon]="SvgIcon.QrcodeScan"></icon>
-      </button>
-    </div>
-  </div>
 </ng-template>

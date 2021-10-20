@@ -1,7 +1,6 @@
 <page-content [heading]="i18n.dashboard.accounts" hideBack>
   <div class="row no-gutters flex-grow-1">
     <ng-container *ngFor="let account of accounts; let i = index">
-      <div class="mt-1 col-12" *ngIf="lineBreak(i)"></div>
       <div class="col" [ngClass]="cellClass(i)">
         <div class="balance">
           <div class="balance-label">
@@ -17,12 +16,13 @@
             negative: format.isNegative(account.account.status.balance),
             positive: format.isPositive(account.account.status.balance)
             }">
-            {{ account.account.status.balance |
-            currency:account.account.currency }}
+            {{ account.account.status.balance | currency:account.account.currency }}
           </div>
         </div>
         <div class="px-3">
-          <balance-history-graph [account]="account"></balance-history-graph>
+          <canvas balanceHistoryChart [account]="account" class="mw-100"
+            [width]="chartWidth(i)" [height]="chartHeight(i)"
+            [darkTheme]="(layout.theme$ | async) === 'dark'"></canvas>
         </div>
       </div>
     </ng-container>

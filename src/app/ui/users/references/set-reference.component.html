@@ -4,7 +4,7 @@
       [heading]="create ? i18n.reference.title.set : i18n.reference.title.edit"
       [mobileHeading]="create ? i18n.reference.mobileTitle.set : i18n.reference.title.edit"
       [headingActions]="headingActions$ | async">
-      <ng-container [formGroup]="form">
+      <form [formGroup]="form">
         <label-value *ngIf="!create" [label]="i18n.general.date">
           {{ data.date | dateTime }}
         </label-value>
@@ -35,7 +35,7 @@
         <textarea-field formControlName="comments"
           [label]="i18n.general.comments" required>
         </textarea-field>
-      </ng-container>
+      </form>
       <actions forceRow>
         <action-button [disabled]="requesting$ | async" (action)="save()"
           [label]="i18n.general.submit">

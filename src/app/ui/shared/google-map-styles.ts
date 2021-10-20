@@ -1,4 +1,4 @@
-/// <reference types="@types/google-maps" />
+/// <reference types="@types/googlemaps" />
 
 /** Light theme styles */
 export const LightMapStyles: google.maps.MapTypeStyle[] = [];
