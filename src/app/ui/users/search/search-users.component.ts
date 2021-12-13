@@ -168,7 +168,7 @@ export class SearchUsersComponent
         data.fieldsInList = ['display'];
       }
       this.doIgnoringUpdate(() => {
-        this.customFieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
+        this.customFieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch?.includes(cf.internalName));
         this.form.setControl('profileFields',
           this.fieldHelper.profileFieldsForSearchFormGroup(data.basicFields, this.customFieldsInSearch));
         if (!this.broker && data.broker) {

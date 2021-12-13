@@ -506,6 +506,7 @@ export class EditProfileComponent
     form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
       currentValues: user.customValues,
       disabledProvider: cf => !this.canEdit(cf.internalName),
+      requiredProvider: cf => this.canEdit(cf.internalName) && cf.required
     }));
 
     return form;

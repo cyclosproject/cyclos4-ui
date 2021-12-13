@@ -113,7 +113,7 @@
         [kind]="canEdit(cf) ? 'field' : 'fieldView'"
         [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'"
         [ignoreExtraCell]="!canManagePrivacy(cf)" [fieldSize]="fieldSize(cf)"
-        [required]="cf.required">
+        [required]="canEdit(cf) && cf.required">
         <custom-field-input *ngIf="canEdit(cf); else plainFieldValue"
           [field]="cf" hideLabel [formControlName]="cf.internalName"
           [binaryValues]="data.userConfiguration.binaryValues">

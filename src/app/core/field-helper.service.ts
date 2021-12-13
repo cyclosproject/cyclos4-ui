@@ -223,6 +223,8 @@ export class FieldHelperService {
    *
    * - `currentValues`: If provided will contain the field values by internal name. If not, use the default value
    * - `useDefaults`: When set to false will not use the default values for fields. Defaults to true.
+   * - `requiredProvider`: If provided will be called for each custom field to determine whether the field is required. 
+   *                       Otherwise, the CustomFieldDetailed.required flag will be used to add the corresponding validation.
    * - `disabledProvider`: If provided will be called for each custom field to determine whether the field should be disabled
    * - `asyncValProvider`: If provided will be called for each custom field to provide an additional, asynchronous validation
    * @returns The FormGroup
@@ -230,6 +232,7 @@ export class FieldHelperService {
   customValuesFormGroup(customFields: CustomFieldDetailed[], options?: {
     currentValues?: any,
     useDefaults?: boolean,
+    requiredProvider?: (field: CustomFieldDetailed) => boolean,
     disabledProvider?: (field: CustomFieldDetailed) => boolean,
     asyncValProvider?: (field: CustomFieldDetailed) => AsyncValidatorFn
   }): FormGroup {
@@ -255,6 +258,7 @@ export class FieldHelperService {
   customValuesFormControlMap(customFields: CustomFieldDetailed[], options?: {
     currentValues?: any,
     useDefaults?: boolean,
+    requiredProvider?: (field: CustomFieldDetailed) => boolean,
     disabledProvider?: (field: CustomFieldDetailed) => boolean,
     asyncValProvider?: (field: CustomFieldDetailed) => AsyncValidatorFn,
   }): Map<string, FormControl> {
@@ -263,6 +267,7 @@ export class FieldHelperService {
     const useDefaults = options.useDefaults !== false;
     const disabledProvider = options.disabledProvider || (() => false);
     const asyncValProvider = options.asyncValProvider;
+    const requiredProvider = options.requiredProvider ? options.requiredProvider : ((cf: CustomFieldDetailed) => cf.required);
     const customValuesControlsMap = new Map();
     for (const cf of customFields) {
       let value: string = currentValues[cf.internalName];
@@ -274,7 +279,7 @@ export class FieldHelperService {
           value,
           disabled: disabledProvider(cf),
         },
-        cf.required ? Validators.required : null,
+        requiredProvider(cf) ? Validators.required : null,
         asyncValProvider ? asyncValProvider(cf) : null,
       ));
     }

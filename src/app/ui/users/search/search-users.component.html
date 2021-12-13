@@ -3,11 +3,10 @@
 </page-layout>
 
 <ng-template #content>
-  <page-content
-    [mode]="dataForFrontendHolder.user ? 'filters' : 'emptyFilters'"
-    [heading]="heading" [mobileHeading]="mobileHeading"
+  <page-content mode="filters" [heading]="heading"
+    [mobileHeading]="mobileHeading"
     [headingActions]="headingActions$ | async">
-    <form [formGroup]="form" *ngIf="dataForFrontendHolder.user"
+    <form [formGroup]="form"
       class="filters-form filters-form-separator border-bottom">
       <div class="row">
         <div class="col-12 col-md-6" *ngIf="!self && broker">
@@ -162,7 +161,8 @@
         </ng-container>
       </div>
     </form>
-    <div class="row filters-row" *ngIf="dataForFrontendHolder.user">
+    <div *ngIf="(allowedResultTypes$ | async).length > 1"
+      class="row filters-row">
       <div class="col-12 col-xs-7 col-md-9">
         <result-type-field [allowedResultTypes]="allowedResultTypes$ | async"
           [formControl]="resultTypeControl">

@@ -13483,6 +13483,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         also returned additional data - the confirmation password input, in
         case some action is needed; and the security question data, in case
         the security answer is pending.
+        Passwords whose type's `mode` is `script` are never included.
       tags:
         - Passwords
       security:
@@ -13544,6 +13545,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         Returns the status for each passwords the given user have.
       description: >-
         Returns the passwords, with their statuses, for a given user.
+        Passwords whose type's `mode` is `script` are never included.
       tags:
         - Passwords
       security:
