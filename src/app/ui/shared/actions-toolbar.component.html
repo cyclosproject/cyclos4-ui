@@ -1,15 +1,5 @@
-<ng-container *ngIf="(visibleActions$ | async)?.length > 0">
-  <div class="actions-toolbar-container">
-    <ng-container *ngFor="let action of visibleActions$.value">
-      <div *ngIf="action.position !== 'right'" class="actions-toolbar-item">
-        <heading-action-button [action]="action"></heading-action-button>
-      </div>
-    </ng-container>
-    <ng-container *ngFor="let action of headingActions">
-      <div *ngIf="action.position === 'right'"
-        class="actions-toolbar-item actions-toolbar-item-right">
-        <heading-action-button [action]="action"></heading-action-button>
-      </div>
-    </ng-container>
-  </div>
-</ng-container>
+<div class="actions-toolbar-container">
+  <heading-actions [headingActions]="headingActions"
+    (visibleActions)="updateVisibility($event)">
+  </heading-actions>
+</div>

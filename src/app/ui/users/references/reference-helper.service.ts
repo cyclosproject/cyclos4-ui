@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ReferenceLevelEnum } from 'app/api/models';
-import { I18n } from 'app/i18n/i18n';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 
 /**
  * Helper service for references functions
@@ -11,7 +11,7 @@ import { I18n } from 'app/i18n/i18n';
 export class ReferenceHelperService {
 
   constructor(
-    private i18n: I18n) {
+    @Inject(I18nInjectionToken) private i18n: I18n) {
   }
 
   resolveLevelLabel(level: ReferenceLevelEnum) {

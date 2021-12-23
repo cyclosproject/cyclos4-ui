@@ -81,6 +81,11 @@ export class ViewAccountPaymentLimitsComponent
       this.data.customAmountPerMonthLimit, this.data.amountPerMonthLimit, this.data.productAmountPerMonthLimit);
   }
 
+  amountPerYearLimitValue(): string {
+    return this.resolveAmountLimitValue(
+      this.data.customAmountPerYearLimit, this.data.amountPerYearLimit, this.data.productAmountPerYearLimit);
+  }
+
   resolveAmountLimitValue(custom: boolean, customAmount: string, productAmount: string): string {
     if (custom) {
       return this.format.formatAsCurrency(this.data.account.currency, customAmount, false);

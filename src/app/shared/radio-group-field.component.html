@@ -1,23 +1,26 @@
-<label-value *ngIf="label; else widget" [formField]="self">
+<label-value *ngIf="label; else widget" [formField]="self"
+  [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 <ng-template #widget>
   <ng-container
     *ngFor="let category of categories | async; let firstCat = first">
-    <div class="w-100 input-min-height d-flex " [ngClass]="{
+    <div class="w-100 d-flex " [ngClass]="{
       'flex-wrap': !asColumn,
       'align-items-center': !asColumn,
       'flex-column': asColumn,
-      'align-items-left': asColumn
-    }" style="margin-top: -0.25rem">
-      <div *ngIf="category.name" class="mt-1 mr-3 font-weight-bold"
+      'align-items-left': asColumn,
+      'mt-3': !firstCat
+    }">
+      <div *ngIf="category.name" class="mr-3 font-weight-bold"
         style="line-height: 1rem">{{ category.name }}
       </div>
       <div #check
         *ngFor="let option of category.options | async; let firstOpt = first"
-        class="custom-control custom-radio d-inline-flex mt-1 mr-3 align-items-center"
+        class="custom-control custom-radio d-inline-flex mr-3 align-items-center"
         (click)="value = option.value; $event.preventDefault(); $event.stopPropagation()"
-        (keydown.space)="$event.preventDefault(); $event.stopPropagation()">
+        (keydown.space)="$event.preventDefault(); $event.stopPropagation()"
+        [ngClass]="{'mt-1': !firstOpt && asColumn}">
         <input type="radio" [name]="name" class="custom-control-input"
           [id]="id + '_' + option.value" [value]="option.value"
           (keyup.enter)="value = option.value; $event.preventDefault(); $event.stopPropagation()"

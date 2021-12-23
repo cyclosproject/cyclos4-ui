@@ -1,7 +1,8 @@
-import { Injectable, isDevMode } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { FrontendService } from 'app/api/services/frontend.service';
 import { CacheService } from 'app/core/cache.service';
 import { SvgIcon } from 'app/core/svg-icon';
+import { isDevServer } from 'app/shared/helper';
 import { Observable, of } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
 
@@ -14,13 +15,13 @@ const builtin = new Set(Object.values(SvgIcon));
   providedIn: 'root',
 })
 export class IconLoadingService {
-  private icons: { [key: string]: string };
+  private icons: { [key: string]: string; };
   private otherIcons = new Set<string>();
 
   constructor(
     private frontendService: FrontendService,
     private cache: CacheService) {
-    const current = isDevMode() ? {} : cache.current('icons');
+    const current = cache.current('icons');
     if (typeof current === 'string') {
       try {
         this.icons = { ...JSON.parse(current) };
@@ -36,18 +37,14 @@ export class IconLoadingService {
   /**
    * Returns a cold observer which loads the missing icons
    */
-  load(names: string[]): Observable<any> {
+  load(names: string[], includeBuiltin = true): Observable<any> {
     // Store the additional icon names
     names = names || [];
-    names.forEach(name => {
-      if (!builtin.has(name as SvgIcon)) {
-        this.otherIcons.add(name);
-      }
-    });
+    this.checkOthers(names);
 
     // Determine the missing icons
-    const missing = new Set([...builtin, ...names]);
-    if (!isDevMode()) {
+    const missing = new Set([...(includeBuiltin ? builtin : []), ...names]);
+    if (!isDevServer()) {
       Object.keys(this.icons).forEach(name => missing.delete(name));
     }
     if (missing.size === 0) {
@@ -63,12 +60,14 @@ export class IconLoadingService {
       }));
   }
 
-  private store(icons: { [key: string]: string }) {
+  /**
+   * Stores the given icons
+   */
+  store(icons: { [key: string]: string; }) {
     icons = icons || {};
+    this.checkOthers(Object.keys(icons));
     this.icons = { ...this.icons, ...icons };
-    if (!isDevMode) {
-      this.cache.set('icons', this.icons, 60 * 60 * 24);
-    }
+    this.cache.set('icons', this.icons, 60 * 60 * 24);
   }
 
   /**
@@ -89,5 +88,13 @@ export class IconLoadingService {
       </svg>`;
     }
     return content;
+  }
+
+  private checkOthers(names: string[]) {
+    names.forEach(name => {
+      if (!builtin.has(name as SvgIcon)) {
+        this.otherIcons.add(name);
+      }
+    });
   }
 }

@@ -18,7 +18,7 @@ export class TokenHelperService {
     const phys = type?.physicalType || PhysicalTokenTypeEnum.OTHER;
     switch (phys) {
       case PhysicalTokenTypeEnum.QR_CODE:
-        return SvgIcon.QrcodeScan;
+        return SvgIcon.QrCodeScan;
       case PhysicalTokenTypeEnum.BARCODE:
         return SvgIcon.UpcScan;
       case PhysicalTokenTypeEnum.NFC_TAG:

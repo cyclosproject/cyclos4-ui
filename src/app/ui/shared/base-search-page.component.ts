@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Directive, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { QueryFilters } from 'app/api/models';
+import { QueryFilters, ResultTypeEnum } from 'app/api/models';
 import { NextRequestState } from 'app/core/next-request-state';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -196,6 +196,28 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
   }
 
   /**
+   * Returns the current result type based on the given enum
+   */
+  protected getResultType(resultType: ResultTypeEnum): ResultType {
+    let rt: ResultType = null;
+    switch (resultType) {
+      case ResultTypeEnum.LIST:
+      case ResultTypeEnum.LIST_THUMB:
+        rt = ResultType.LIST;
+        break;
+      case ResultTypeEnum.MAP:
+        // When map is not available select other type as fallback
+        rt = this.allowedResultTypes.includes(ResultType.MAP) ?
+          ResultType.MAP : ResultType.TILES;
+        break;
+      case ResultTypeEnum.TILED:
+        rt = ResultType.TILES;
+        break;
+    }
+    return rt;
+  }
+
+  /**
    * Returns the label for showing more filters action
    */
   protected showMoreFiltersLabel(): string {
@@ -257,7 +279,7 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
    * Updates the search results
    */
   update(pageData?: PageData) {
-    if (this.ignoreNextUpdate) {
+    if (this.ignoreNextUpdate || this.resultType === ResultType.CATEGORIES) {
       return;
     }
     if (pageData) {
@@ -273,8 +295,7 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
     value.pageSize = this.uiLayout.searchPageSize;
     this.addSub(this.doSearch(this.toSearchParams(value)).subscribe(response => {
       if (this.resultType === ResultType.CATEGORIES) {
-        // Switch to the first allowed result type that isn't categories
-        this.resultType = this.allowedResultTypes.find(rt => rt !== ResultType.CATEGORIES);
+        this.resultType = this.getDefaultResultType();
       }
       this.results = PagedResults.from(response);
     }));
@@ -285,6 +306,11 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
    */
   resetPage(emitEvent = false) {
     this.form.patchValue({ page: 0 }, { emitEvent });
+  }
+
+  getDefaultResultType(): ResultType {
+    // Use the first allowed result type that isn't categories
+    return this.allowedResultTypes.find(rt => rt !== ResultType.CATEGORIES);
   }
 
   /**

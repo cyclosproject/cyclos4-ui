@@ -1,0 +1,217 @@
+<!doctype html>
+<html>
+
+<head>
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      min-height: 100%;
+      display: flex;
+      background-color: #f8f9fa;
+    }
+
+    body.dark {
+      background-color: #2a2a2a;
+    }
+
+    #rootSpinner,
+    #rootAlertContainer {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #rootSpinner {
+      color: black;
+    }
+
+    body.dark #rootSpinner {
+      color: white;
+    }
+
+    #rootSpinner svg {
+      width: 64px;
+      height: 64px;
+    }
+
+    noscript {
+      display: flex;
+      justify-content: center;
+      font-family: sans-serif;
+      font-size: 1rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      text-align: center;
+    }
+
+  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta id="themeColorMeta" name="theme-color" content="">
+  <base href="/">
+  <script>
+    var data = null;
+    var apiRoot = null;
+  </script>
+</head>
+
+<body class="voucher"
+  onload="self.cyclosLoaded === true ? null : document.getElementById('rootSpinner').style.display = ''">
+  <div id="rootSpinner">
+    <svg viewBox="0 0 40 40" fill="currentColor">
+      <path opacity="0.2"
+        d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+        s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+        c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z">
+      </path>
+      <path opacity="0.7" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+        C22.32,8.481,24.301,9.057,26.013,10.047z"
+        transform="rotate(200.068 20 20)">
+        <animateTransform attributeType="xml" attributeName="transform"
+          type="rotate" from="0 20 20" to="360 20 20" dur="0.7s"
+          repeatCount="indefinite"></animateTransform>
+      </path>
+    </svg>
+  </div>
+  <script>
+    var theme = localStorage ? localStorage.getItem('theme') : null;
+    if (theme == null || theme === '') {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      localStorage ? localStorage.setItem('theme', theme) : null;
+    } else {
+      theme = theme === 'dark' ? 'dark' : 'light';
+    }
+    document.body.classList.add(theme);
+  </script>
+  <div id="rootAlertContainer" style="display: none">
+    <div class="d-flex flex-column alert alert-danger p-4 text-center"
+      role="alert">
+      <div id="rootAlert"></div>
+      <button type="button" id="reloadButton" style="display:none"
+        class="btn btn-primary mt-4" onclick="location.reload()"></button>
+    </div>
+  </div>
+  <voucher-root class="d-flex flex-grow-1"></voucher-root>
+  <noscript>
+    This application requires JavaScript, but your browser either doesn't
+    support it or has disabled it.
+    <br><br>
+    Please, enable JavaScript if possible, or use another browser.
+  </noscript>
+
+  <!--Bootstrap Icons -->
+  <div style="display:none" id="bi-qr-code-scan">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+      fill="currentColor" class="bi bi-qr-code-scan" viewBox="0 0 16 16">
+      <path
+        d="M0 .5A.5.5 0 0 1 .5 0h3a.5.5 0 0 1 0 1H1v2.5a.5.5 0 0 1-1 0v-3Zm12 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V1h-2.5a.5.5 0 0 1-.5-.5ZM.5 12a.5.5 0 0 1 .5.5V15h2.5a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5Zm15 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H15v-2.5a.5.5 0 0 1 .5-.5ZM4 4h1v1H4V4Z" />
+      <path d="M7 2H2v5h5V2ZM3 3h3v3H3V3Zm2 8H4v1h1v-1Z" />
+      <path d="M7 9H2v5h5V9Zm-4 1h3v3H3v-3Zm8-6h1v1h-1V4Z" />
+      <path
+        d="M9 2h5v5H9V2Zm1 1v3h3V3h-3ZM8 8v2h1v1H8v1h2v-2h1v2h1v-1h2v-1h-3V8H8Zm2 2H9V9h1v1Zm4 2h-1v1h-2v1h3v-2Zm-4 2v-1H8v1h2Z" />
+      <path d="M12 9h2V8h-2v1Z" />
+    </svg>
+  </div>
+  <div style="display:none" id="bi-exclamation-triangle">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+      fill="currentColor" class="bi bi-exclamation-triangle"
+      viewBox="0 0 16 16">
+      <path fill-rule="evenodd"
+        d="M7.938 2.016a.146.146 0 0 0-.054.057L1.027 13.74a.176.176 0 0 0-.002.183c.016.03.037.05.054.06.015.01.034.017.066.017h13.713a.12.12 0 0 0 .066-.017.163.163 0 0 0 .055-.06.176.176 0 0 0-.003-.183L8.12 2.073a.146.146 0 0 0-.054-.057A.13.13 0 0 0 8.002 2a.13.13 0 0 0-.064.016zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
+      <path
+        d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z" />
+    </svg>
+  </div>
+  <div style="display:none" id="bi-arrow-counterclockwise">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+      fill="currentColor" class="bi bi-arrow-counterclockwise"
+      viewBox="0 0 16 16">
+      <path fill-rule="evenodd"
+        d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z" />
+      <path
+        d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z" />
+    </svg>
+  </div>
+  <div style="display:none" id="bi-info-circle">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+      fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+      <path
+        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+      <path
+        d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+    </svg>
+  </div>
+  <div style="display:none" id="bi-x-circle">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+      fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+      <path
+        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+      <path
+        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+    </svg>
+  </div>
+
+  <div style="display:none" id="bi-gear">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+      fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+      <path
+        d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+      <path
+        d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+    </svg>
+  </div>
+
+  <div style="display:none" id="bi-key">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+      fill="currentColor" class="bi bi-key" viewBox="0 0 16 16">
+      <path
+        d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z" />
+      <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+    </svg>
+  </div>
+
+  <div style="display:none" id="bi-list">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+      fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+      <path fill-rule="evenodd"
+        d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+    </svg>
+  </div>
+
+  <!-- Cyclos Icons -->
+  <div style="display:none" id="ci-logout2">
+    <svg width="16" height="16" fill="currentColor" class="ci ci-logout2"
+      viewBox="0 0 16 16" version="1.1">
+      <path fill-rule="evenodd"
+        d="M 9.5,3 C 9.5,2.7238576 9.276142,2.5 9,2.5 H 1.5 C 1.223858,2.5 1,2.7238576 1,3 v 10 c 0,0.276142 0.223858,0.5 0.5,0.5 H 9 c 0.276142,0 0.5,-0.223858 0.5,-0.5 v -2.5 c 0,-0.6666664 1,-0.6666664 1,0 V 13 c 0,0.828427 -0.671573,1.5 -1.5,1.5 H 1.5 C 0.671573,14.5 0,13.828427 0,13 V 3 C 0,2.1715729 0.671573,1.5 1.5,1.5 H 9 c 0.828427,0 1.5,0.6715729 1.5,1.5 v 2.5 c 0,0.6666664 -1,0.6666664 -1,0 z" />
+      <path fill-rule="evenodd"
+        d="m 15.854,8.354 a 0.5,0.5 0 0 0 0,-0.708 l -3,-3 A 0.5006316,0.5006316 0 1 0 12.146,5.354 L 14.293,7.5 H 5.5 a 0.5,0.5 0 0 0 0,1 h 8.793 l -2.147,2.146 a 0.5006316,0.5006316 0 0 0 0.708,0.708 z" />
+    </svg>
+  </div>
+  <div style="display:none" id="ci-house-door2">
+    <svg width="16" height="16" fill="currentColor" class="ci ci-house-door2"
+      viewBox="0 0 16 16" version="1.1">
+      <path fill-rule="evenodd"
+        d="m 7.646,0.6468938 c 0.1953639,-0.1958584 0.5126361,-0.1958584 0.708,0 l 6,5.50025 c 0.09371,0.093951 0.146237,0.2213011 0.146,0.354 v 7.0005002 c 0,0.276142 -0.223858,0.5 -0.5,0.5 h -4 c -0.2761424,0 -0.4930986,-0.223944 -0.5,-0.5 v -4.5 h -3 v 4.5 c 0,0.276142 -0.2238576,0.5 -0.5,0.5 H 2 c -0.2761424,0 -0.5,-0.223858 -0.5,-0.5 V 6.5011438 c -2.37e-4,-0.1326989 0.052286,-0.2600493 0.146,-0.354 z M 2.5,6.7081438 v 6.2935002 h 3 v -4.5 C 5.5,8.2255014 5.7238576,8.0016438 6,8.0016438 h 4 c 0.276142,0 0.5,0.2238577 0.5,0.5000002 v 4.5 h 3 V 6.7081438 L 8,1.7078938 Z" />
+      <path fill-rule="evenodd"
+        d="m 13,2.0013938 v 3.5 l -2,-1.9 v -1.6 c 0,-0.2761424 0.223858,-0.5 0.5,-0.5 h 1 c 0.276142,0 0.5,0.2238576 0.5,0.5 z" />
+    </svg>
+  </div>
+
+</body>
+
+</html>

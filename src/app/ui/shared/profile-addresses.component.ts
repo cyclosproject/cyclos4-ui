@@ -1,4 +1,4 @@
-/// <reference types="@types/googlemaps" />
+/// <reference types="@types/google-maps" />
 
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { AddressView } from 'app/api/models';

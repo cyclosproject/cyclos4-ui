@@ -1,9 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import {
-  AvailabilityEnum, DataForTransaction, ImageSizeEnum, Transaction,
-  TransactionTypeData, TransactionView, TransferType
-} from 'app/api/models';
+import { AvailabilityEnum, DataForTransaction, ImageSizeEnum, TransactionTypeData, TransactionView, TransferType } from 'app/api/models';
 import { TicketsService } from 'app/api/services/tickets.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
@@ -14,7 +11,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { ApiHelper } from 'app/shared/api-helper';
 
-export type Step = 'form' | 'pending' | 'done';
+export type Step = 'form' | 'pending';
 
 /**
  * Generates a QR-code which can be scanned and paid
@@ -34,7 +31,6 @@ export class ReceiveQrPaymentComponent
   paymentTypes$ = new BehaviorSubject<TransferType[]>([]);
   paymentType$ = new BehaviorSubject<TransferType>(null);
   paymentTypeData$ = new BehaviorSubject<TransactionTypeData>(null);
-  payment$ = new BehaviorSubject<Transaction>(null);
   private paymentTypeDataCache = new Map<string, TransactionTypeData>();
   private pushSub: Subscription;
   qrCodeUrl$ = new BehaviorSubject<string>(null);
@@ -145,18 +141,13 @@ export class ReceiveQrPaymentComponent
     }));
   }
 
-  viewPerformed() {
-    const payment = this.payment$.value;
-    this.router.navigate(['banking', 'transaction', this.bankingHelper.transactionNumberOrId(payment)]);
-  }
-
   private onStepChanged(step: Step) {
     if (step === 'pending') {
       this.pushSub = this.pushNotifications.ticket$.subscribe(ticket => {
         const current = this.ticket$.value;
         if (current && current.id === ticket.id) {
-          this.payment$.next(ticket.transaction);
-          this.step$.next('done');
+          this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(ticket.transaction)],
+            { state: { url: this.router.url } });
         }
       });
     } else {

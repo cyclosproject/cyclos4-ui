@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Currency, VoucherDataForGenerate, VoucherTypeDetailed } from 'app/api/models';
+import { Currency, VoucherDataForGenerate, VoucherGenerationAmountEnum, VoucherTypeDetailed } from 'app/api/models';
 import { VouchersService } from 'app/api/services/vouchers.service';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
@@ -144,21 +144,23 @@ export class GenerateVouchersComponent extends BasePageComponent<VoucherDataForG
   }
 
   private buildForm(): void {
-    if (this.form) {
-      this.form.reset(); // clear previous values (if any)
+    this.form = this.formBuilder.group({
+      amount: new FormControl(''),
+      count: new FormControl(''),
+      user: new FormControl(''),
+      userData: new FormControl('') // Used to get the user info in the confirmation page
+    });
+    this.form.addControl('voucherCustomValues', this.fieldHelper.customValuesFormGroup(this.dataTypeForGenerate.voucherCustomFields));
+    const amount = this.form.controls.amount;
+    if (this.data.generationAmount === VoucherGenerationAmountEnum.GENERATION) {
+      amount.setValidators(Validators.required);
     } else {
-      this.form = this.formBuilder.group({
-        count: new FormControl(''),
-        amount: new FormControl(''),
-        user: new FormControl(''),
-        userData: new FormControl('') // Used to get the user info in the confirmation page
-      });
+      amount.clearValidators();
     }
-
     this.form.get('count').setValue(1);
   }
 
   resolveMenu() {
-    return Menu.GENERATE_VOUCHER;
+    return Menu.SEARCH_VOUCHERS;
   }
 }

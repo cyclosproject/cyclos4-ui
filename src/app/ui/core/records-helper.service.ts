@@ -77,7 +77,7 @@ export class RecordHelperService {
    * Returns the icon name that should be used for the given record type
    */
   icon(type: RecordType): SvgIcon | string {
-    return type.svgIcon || SvgIcon.FileText;
+    return type.svgIcon || SvgIcon.FileEarmarkText;
   }
 
   /**

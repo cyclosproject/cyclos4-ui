@@ -49,11 +49,11 @@
           [id]="id + '_min'" [scale]="field.decimalDigits"
           [name]="name ? name + '_min' : null" [formControl]="range.at(0)">
         </decimal-field>
-        <date-field #dateMin *ngIf="type == 'date'" [id]="id + '_min'" minimal
+        <date-field #dateMin *ngIf="type == 'date'" [id]="id + '_min'"
           [name]="name ? name + '_min' : null" [formControl]="range.at(0)">
         </date-field>
       </div>
-      <div class="d-flex px-1 pt-1 align-items-center">
+      <div class="d-flex p-1 align-items-center">
         {{ i18n.general.rangeTo }}</div>
       <div class="flex-grow-1">
         <input-field #integerMax *ngIf="type == 'integer'" [id]="id + '_max'"
@@ -63,7 +63,7 @@
           [id]="id + '_max'" [scale]="field.decimalDigits"
           [name]="name ? name + '_max' : null" [formControl]="range.at(1)">
         </decimal-field>
-        <date-field #dateMax *ngIf="type == 'date'" [id]="id + '_max'" minimal
+        <date-field #dateMax *ngIf="type == 'date'" [id]="id + '_max'"
           [name]="name ? name + '_max' : null" [formControl]="range.at(1)">
         </date-field>
       </div>

@@ -111,7 +111,8 @@ export class CustomFieldFilterComponent
 
   get input(): boolean {
     return INPUT.includes(this.type)
-      || (this.type === CustomFieldTypeEnum.DYNAMIC_SELECTION && !this.field.hasValuesList)
+      || ((this.type === CustomFieldTypeEnum.DYNAMIC_SELECTION || this.type === CustomFieldTypeEnum.DYNAMIC_MULTI_SELECTION)
+        && !this.field.hasValuesList)
       || (this.type === CustomFieldTypeEnum.LINKED_ENTITY && !this.user);
   }
 

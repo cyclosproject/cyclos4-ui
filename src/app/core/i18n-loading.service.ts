@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, isDevMode } from '@angular/core';
-import { I18n } from 'app/i18n/i18n';
-import { BehaviorSubject, EMPTY, Observable, Subscription } from 'rxjs';
-import { first, map, tap } from 'rxjs/operators';
+import { Inject, Injectable } from '@angular/core';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
+import { I18nMeta } from 'app/i18n/i18n-meta';
+import { isDevServer } from 'app/shared/helper';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 /**
  * Handles loading of translation keys
@@ -11,50 +13,55 @@ import { first, map, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class I18nLoadingService {
-  locales = I18n.locales();
+  locales = I18nMeta.locales();
 
   isStatic = false;
   i18nRoot: string;
+  private resourceCacheKey: string;
   private locale$ = new BehaviorSubject<string>(null);
 
   constructor(
-    private i18n: I18n,
+    @Inject(I18nInjectionToken) private i18n: I18n,
     private http: HttpClient) {
   }
 
   /**
    * Called just after the application setup. Basically checks for a static locale
    */
-  initialize(i18nRoot: string) {
+  initialize(i18nRoot: string, params: { resourceCacheKey?: string, locale?: string; }) {
     this.i18nRoot = i18nRoot;
+    this.resourceCacheKey = params.resourceCacheKey;
     // If running in development mode, read the default translations first
-    if (isDevMode()) {
-      const hash = I18n.contentHash('en');
+    if (isDevServer()) {
+      const hash = I18nMeta.contentHash('en');
       return this.http.get(`${i18nRoot}/i18n.json?h=${hash}`).pipe(
-        first(),
-        tap({
-          next: defaultValues => this.i18n.defaultValues = defaultValues
+        switchMap((defaultValues) => {
+          this.i18n.$defaults(defaultValues);
+          return this.load(params.locale);
         }));
     } else {
-      return EMPTY;
+      return this.load(params.locale);
     }
   }
 
   /**
-   * Loads the translation for the given language and country
+   * Loads the translation for the given locale
    */
-  load(language: string, country: string): Observable<I18n> {
+  private load(localeParam = 'en'): Observable<I18n> {
     // Figure out the locale to use, according to the available ones
     let locale: string;
-    const withCountry = `${language}_${country}`;
-    if (this.locales.includes(withCountry)) {
-      locale = withCountry;
-    } else if (this.locales.includes(language)) {
-      locale = language;
+    if (this.locales.includes(localeParam)) {
+      locale = localeParam;
     } else {
-      locale = 'en';
+      const parts = localeParam.split(/_/g);
+      if (this.locales.includes(parts[0])) {
+        locale = parts[0];
+      } else {
+        locale = 'en';
+      }
     }
-    const url = `${this.i18nRoot}/i18n${locale === 'en' ? '' : '.' + locale}.json`;
+
+    const url = `${this.i18nRoot}/i18n${locale === 'en' ? '' : '.' + locale}.json?_k=${this.resourceCacheKey}`;
     return this.http.get(url).pipe(
       map(values => {
         this.setLocale(locale, values);
@@ -76,7 +83,7 @@ export class I18nLoadingService {
    * Shouldn't be called by regular components, only by initializations.
    */
   private setLocale(locale: string, translationValues: any) {
-    this.i18n.initialize(translationValues);
+    this.i18n.$initialize(translationValues);
     if (this.locale$.value !== locale) {
       this.locale$.next(locale);
     }

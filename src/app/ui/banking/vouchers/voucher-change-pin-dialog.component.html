@@ -1,0 +1,34 @@
+<h1>{{ i18n.voucher.changePin.title }}</h1>
+<ng-container [formGroup]="form">
+  <input-field *ngIf="voucher.requireOldPinForChange" required focused
+    formControlName="oldPin" type="password"
+    [label]="i18n.voucher.changePin.oldPin"></input-field>
+  <input-field required [focused]="!voucher.requireOldPinForChange"
+    formControlName="newPin" type="password"
+    [label]="i18n.voucher.changePin.newPin"></input-field>
+  <input-field required formControlName="newPinConfirmation" type="password"
+    [label]="i18n.voucher.changePin.pinConfirmation"></input-field>
+
+  <confirmation-password
+    *ngIf="!voucher.requireOldPinForChange && voucher.confirmationPasswordInput"
+    class="mt-4" formControlName="confirmationPassword"
+    [createDeviceConfirmation]="createDeviceConfirmation"
+    (confirmationModeChanged)="confirmationMode$.next($event)"
+    (confirmed)="submit($event)"
+    [passwordInput]="voucher.confirmationPasswordInput">
+  </confirmation-password>
+</ng-container>
+
+<actions forceRow>
+  <div
+    *ngIf="(confirmationMode$ | async) === ConfirmationMode.Device; else submitTpl">
+  </div>
+  <ng-template #submitTpl>
+    <action-button [disabled]="requesting$ | async" (action)="submit()"
+      [label]="i18n.general.submit">
+    </action-button>
+  </ng-template>
+  <action-button outline (action)="modalRef.hide()"
+    [label]="i18n.general.cancel">
+  </action-button>
+</actions>

@@ -1,22 +1,25 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Inject, Injector, Input, OnInit } from '@angular/core';
 import {
   CustomField, CustomFieldDetailed, CustomFieldTypeEnum, CustomFieldValue,
-  Image, LinkedEntityTypeEnum, StoredFile,
+  Image, LinkedEntityTypeEnum, StoredFile
 } from 'app/api/models';
 import { FilesService } from 'app/api/services/files.service';
 import { ImagesService } from 'app/api/services/images.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
-import { I18n } from 'app/i18n/i18n';
+import { StoredFileCacheService } from 'app/core/stored-file-cache.service';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { AbstractComponent } from 'app/shared/abstract.component';
 import { ApiHelper } from 'app/shared/api-helper';
 import { truthyAttr } from 'app/shared/helper';
 import download from 'downloadjs';
+import { BehaviorSubject } from 'rxjs';
 
 /** Types whose values are rendered directly */
 const DIRECT_TYPES = [
   CustomFieldTypeEnum.STRING,
   CustomFieldTypeEnum.DYNAMIC_SELECTION,
+  CustomFieldTypeEnum.DYNAMIC_MULTI_SELECTION,
   CustomFieldTypeEnum.BOOLEAN,
   CustomFieldTypeEnum.INTEGER,
   CustomFieldTypeEnum.DECIMAL,
@@ -39,11 +42,12 @@ const DIRECT_TYPES = [
 export class FormatFieldValueComponent extends AbstractComponent implements OnInit {
   constructor(
     injector: Injector,
-    public i18n: I18n,
+    @Inject(I18nInjectionToken) public i18n: I18n,
     private nextRequestState: NextRequestState,
     private filesService: FilesService,
     private imagesService: ImagesService,
-    private fieldHelper: FieldHelperService) {
+    private fieldHelper: FieldHelperService,
+    private storedFileCacheService: StoredFileCacheService) {
     super(injector);
   }
 
@@ -106,7 +110,7 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
   field: CustomField;
   type: CustomFieldTypeEnum;
   value: any;
-  protected doHasValue = false;
+  hasValue$ = new BehaviorSubject(false);
   link: string;
   externalLink: string;
 
@@ -117,8 +121,7 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
   ngOnInit() {
     super.ngOnInit();
 
-    if (this.fieldValue == null &&
-      (this.fields == null || this.object == null)) {
+    if (this.fieldValue == null && this.customValues == null && (this.fields == null || this.object == null)) {
       throw new Error('Either fieldValue or all fields, field and object must be set');
     }
     // Default the custom values source to object.customValues
@@ -137,7 +140,7 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
       this.type = CustomFieldTypeEnum.STRING;
     }
     this.value = valueAndLink.value;
-    this.doHasValue = this.value != null && (this.value.length === undefined || this.value.length > 0);
+    this.hasValue$.next(this.value != null && (this.value.length === undefined || this.value.length > 0));
     if (valueAndLink.link) {
       if (valueAndLink.link.includes('://')) {
         this.externalLink = valueAndLink.link;
@@ -147,21 +150,22 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
     }
   }
 
-  get hasValue() {
-    return this.doHasValue;
-  }
-
-  private getValue(): { value: any, link?: string } {
+  private getValue(): { value: any, link?: string; } {
     return this.fieldHelper.getValue(this.fieldValue, this.plainText) || { value: null };
   }
 
   private createFieldValue(): CustomFieldValue {
     // First get the actual value
-    let value = this.object[this.fieldName] as string;
+    let value = this.object == null ? null : this.object[this.fieldName] as string;
     if (value == null && this.customValues) {
       // Attempt a custom field value
       value = this.customValues[this.fieldName] as string;
     }
+
+    if (value != null) {
+      value = String(value);
+    }
+
     if (value === '') {
       value = null;
     }
@@ -190,10 +194,18 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
         fieldValue.decimalValue = value;
         break;
       case CustomFieldTypeEnum.DYNAMIC_SELECTION:
-        fieldValue.dynamicValue = {
-          value: parts[0],
-          label: parts.length > 1 ? parts[1] : parts[0],
-        };
+      case CustomFieldTypeEnum.DYNAMIC_MULTI_SELECTION:
+        if (fieldValue.field.type === CustomFieldTypeEnum.DYNAMIC_SELECTION) {
+          // For single dynamic selection, strip away the second part, if any
+          if (parts.length > 1) {
+            parts.splice(1, parts.length - 1);
+          }
+        }
+        fieldValue.dynamicValues = parts.map(ref => {
+          const cf = (fieldValue.field as CustomFieldDetailed);
+          const dynamicValues = (cf || {}).dynamicValues || [];
+          return dynamicValues.find(dv => dv.value === ref);
+        }).filter(dv => !!dv);
         break;
       case CustomFieldTypeEnum.INTEGER:
         fieldValue.integerValue = parseInt(value, 10);
@@ -202,14 +214,9 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
       case CustomFieldTypeEnum.MULTI_SELECTION:
         fieldValue.enumeratedValues = parts.map(ref => {
           const cf = (fieldValue.field as CustomFieldDetailed);
-          const possibleValues = (cf || {}).possibleValues;
-          if (possibleValues) {
-            return possibleValues.find(pv => pv.id === ref || pv.internalName === ref);
-          }
-          return null;
-        });
-        // Make sure no nulls exist in the value
-        fieldValue.enumeratedValues = fieldValue.enumeratedValues.filter(pv => pv != null);
+          const possibleValues = (cf || {}).possibleValues || [];
+          return possibleValues.find(pv => pv.id === ref || pv.internalName === ref);
+        }).filter(pv => !!pv);
         break;
       case CustomFieldTypeEnum.LINKED_ENTITY:
         if (value != null) {
@@ -250,10 +257,22 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
         }
         break;
       case CustomFieldTypeEnum.FILE:
-        fieldValue.fileValues = parts.map(id => (this.files || []).find(f => f.id === id)).filter(f => f != null);
+        fieldValue.fileValues = parts.map(id => {
+          let file = (this.files || []).find(f => f.id === id);
+          if (!file) {
+            file = this.storedFileCacheService.read(id);
+          }
+          return file;
+        }).filter(f => f);
         break;
       case CustomFieldTypeEnum.IMAGE:
-        fieldValue.imageValues = parts.map(id => (this.images || []).find(i => i.id === id)).filter(i => i != null);
+        fieldValue.imageValues = parts.map(id => {
+          let image = (this.images || []).find(i => i.id === id);
+          if (!image) {
+            image = this.storedFileCacheService.read(id);
+          }
+          return image;
+        }).filter(i => i);
         break;
       default:
         fieldValue.stringValue = value;

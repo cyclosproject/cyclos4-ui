@@ -1,0 +1,139 @@
+<notification class="mb-3" *ngIf="preview.pendingAuthorization"
+  type="warning">
+  {{ i18n.transaction.requiresAuthorization }}
+</notification>
+
+<label-value *ngIf="!fromSelf && fromUser"
+  [label]="i18n.transaction.fromUser">
+  <user-link [user]="fromUser"></user-link>
+</label-value>
+<label-value *ngIf="fromSystem" [label]="i18n.transaction.fromAccount">
+  {{ preview.fromAccount.type.name }}
+</label-value>
+<label-value *ngIf="toUser" [label]="i18n.transaction.toUser">
+  <user-link [user]="toUser"></user-link>
+</label-value>
+<label-value *ngIf="toSystem" [label]="i18n.transaction.toAccount">
+  {{ preview.toAccount.type.name }}
+</label-value>
+<label-value *ngIf="showPaymentType" [label]="i18n.transaction.type">
+  {{ preview.paymentType.name }}
+</label-value>
+<label-value
+  *ngIf="preview.mainAmount != null && preview.totalAmount !== preview.mainAmount"
+  [label]="i18n.transaction.amount">
+  {{ preview.mainAmount | currency:preview.currency }}
+</label-value>
+<label-value *ngIf="fees?.length > 0" [label]="i18n.transaction.appliedFees">
+  <div class="row no-gutters align-items-end" *ngFor="let feePreview of fees">
+    <div class="col-3">{{ feePreview.fee.name }}:</div>
+    <div class="col pl-1">{{ feePreview.amount |
+      currency:preview.currency }}</div>
+  </div>
+</label-value>
+<custom-field-value *ngFor="let fv of preview.customValues" [fieldValue]="fv">
+</custom-field-value>
+<label-value *ngIf="preview.installments?.length === 1"
+  [label]="i18n.transaction.dueDate">
+  {{ preview.installments[0].dueDate | date }}
+</label-value>
+<label-value *ngIf="preview.installments?.length > 1"
+  [label]="i18n.transaction.installments">
+  <table class="table table-hover">
+    <thead *ngIf="layout.gtxs$ | async">
+      <th>{{ i18n.transaction.installmentNumber }}</th>
+      <th>{{ i18n.transaction.dueDate }}</th>
+      <th class="text-right">{{ i18n.transaction.amount }}</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let installment of preview.installments">
+        <td>
+          {{ installment.number }}
+        </td>
+        <td>
+          {{ installment.dueDate | date }}
+        </td>
+        <td class="text-right">
+          {{ installment.mainAmount | currency:preview.currency }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</label-value>
+<label-value *ngIf="preview.payment.scheduling === 'recurring'"
+  [label]="i18n.transaction.recurringPayment">
+  <ng-container
+    *ngIf="preview.payment.firstOccurrenceDate == null; else occurrencesDateSet">
+    <ng-container *ngIf="preview.payment.occurrencesCount == null">
+      {{ i18n.transaction.recurringPaymentNowManual }}
+    </ng-container>
+    <ng-container *ngIf="preview.payment.occurrencesCount != null">
+      {{
+      i18n.transaction.recurringPaymentNowFixed(preview.payment.occurrencesCount)
+      }}
+    </ng-container>
+  </ng-container>
+  <ng-template #occurrencesDateSet>
+    <ng-container *ngIf="preview.payment.occurrencesCount == null">
+      {{
+      i18n.transaction.recurringPaymentDateManual(preview.payment.firstOccurrenceDate
+      | date) }}
+    </ng-container>
+    <ng-container *ngIf="preview.payment.occurrencesCount != null">
+      {{
+      i18n.transaction.recurringPaymentDateFixed({
+      date: preview.payment.firstOccurrenceDate | date,
+      count: preview.payment.occurrencesCount
+      }) }}
+    </ng-container>
+  </ng-template>
+</label-value>
+<label-value [label]="i18n.general.description"
+  *ngIf="preview.payment.description" [value]="preview.payment.description"
+  valueFormat="break"></label-value>
+<hr *ngIf="layout.gtxxs$ | async">
+<label-value class="totalAmount" [label]="i18n.transaction.totalAmount">
+  {{ preview.totalAmount | currency:preview.currency }}
+</label-value>
+<ng-container *ngIf="(preview.confirmationMessage || '').length > 0">
+  <hr *ngIf="layout.gtxxs$ | async">
+  <div class="break-nl">{{preview.confirmationMessage}}</div>
+</ng-container>
+<ng-container [formGroup]="form">
+  <hr *ngIf="layout.gtxxs$ | async">
+  <label-value kind="fieldView" [label]="i18n.general.expirationDate">
+    {{ preview.paymentRequest.expirationDate | date }}
+  </label-value>
+
+  <single-selection-field [label]="i18n.transaction.scheduling"
+    [formControl]="scheduleTo">
+    <field-option [value]="PaymentRequestScheduledTo.NOW"
+      [text]="i18n.transaction.paymentRequestSchedulingNow">
+    </field-option>
+    <field-option [value]="PaymentRequestScheduledTo.DATE"
+      [text]="i18n.transaction.paymentRequestSchedulingDate">
+    </field-option>
+    <field-option [value]="PaymentRequestScheduledTo.EXPIRY"
+      [text]="i18n.transaction.paymentRequestSchedulingExpiration(format.formatAsDate(preview.paymentRequest.expirationDate))">
+    </field-option>
+  </single-selection-field>
+
+  <date-field
+    *ngIf="(scheduleTo.valueChanges | async) === PaymentRequestScheduledTo.DATE"
+    formControlName="processDate" [label]="i18n.transaction.processDate"
+    minDate="tomorrow" [maxDate]="preview.paymentRequest.expirationDate"
+    [tooltip]="i18n.transaction.processDateTooltip">
+  </date-field>
+
+  <textarea-field [label]="i18n.general.comments" formControlName="comments">
+  </textarea-field>
+  <ng-container *ngIf="preview.confirmationPasswordInput">
+    <hr *ngIf="layout.gtxxs$ | async">
+    <confirmation-password focused formControlName="confirmationPassword"
+      [passwordInput]="preview.confirmationPasswordInput"
+      [createDeviceConfirmation]="createDeviceConfirmation"
+      (confirmationModeChanged)="confirmationModeChanged.emit($event)"
+      (confirmed)="confirmed.emit($event)">
+    </confirmation-password>
+  </ng-container>
+</ng-container>

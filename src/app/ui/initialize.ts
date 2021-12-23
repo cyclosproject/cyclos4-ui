@@ -7,12 +7,15 @@ import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { IconLoadingService } from 'app/core/icon-loading.service';
 import { NextRequestState } from 'app/core/next-request-state';
+import { ScriptLoaderService } from 'app/core/script-loader.service';
 import { StateManager } from 'app/core/state-manager';
 import { ApiHelper } from 'app/shared/api-helper';
-import { apiUrl, isSameOrigin } from 'app/shared/helper';
+import { apiUrl, empty, i18nRoot, initializeStyleLinks, isSameOrigin } from 'app/shared/helper';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
-import { concat, of } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { forkJoin, of, timer } from 'rxjs';
+import { catchError, filter, first, switchMap } from 'rxjs/operators';
+
+declare const UpUp: any;
 
 // Initializes the shared services
 export function initialize(
@@ -24,7 +27,8 @@ export function initialize(
   nextRequestState: NextRequestState,
   router: Router,
   breadcrumb: BreadcrumbService,
-  stateManager: StateManager
+  stateManager: StateManager,
+  scriptLoader: ScriptLoaderService
 ): () => any {
   return async () => {
     const apiRoot = apiUrl();
@@ -47,42 +51,34 @@ export function initialize(
     // Initialize the API configuration
     apiConfig.rootUrl = apiRoot;
 
-    // Initialize the translations loading
-    const i18nRoot = environment.standalone ? 'i18n' : apiRoot + '/../ui/i18n';
-    const i18n$ = i18nLoading.initialize(i18nRoot);
 
-    // Change the media of the styles link
-    const stylesLink = document.getElementById('stylesLink') as HTMLLinkElement;
-    if (stylesLink) {
-      stylesLink.media = '';
-    }
+    // Initialize the style links
+    initializeStyleLinks();
 
     // Initialize the data for frontend
-    dataForFrontendHolder.registerLoadHook(dataForFrontend => {
-      const dataForUi = dataForFrontend?.dataForUi || {};
-      const language = (dataForUi.language || { code: 'en' }).code;
-      const country = dataForUi.country;
-      return i18nLoading.load(language, country)
-        .pipe(switchMap(() => of(dataForFrontend)));
+    dataForFrontendHolder.registerLoadHook(d => {
+      const dataForUi = d?.dataForUi || {};
+      // Initialize the translations loading
+      return i18nLoading.initialize(i18nRoot(apiRoot), { resourceCacheKey: dataForUi.resourceCacheKey, locale: dataForUi.currentLocale.code })
+        .pipe(switchMap(() => of(d)));
     });
-    dataForFrontendHolder.registerLoadHook(dataForFrontend => {
-      nextRequestState.ignoreNextError = true;
-      return iconLoading.load(dataForFrontend?.svgIconNames || [])
+    dataForFrontendHolder.registerLoadHook(d => {
+      return iconLoading.load(d?.svgIconNames || [])
         .pipe(
-          switchMap(() => of(dataForFrontend)),
-          catchError(() => of(dataForFrontend)));
+          switchMap(() => of(d)),
+          catchError(() => of(d)));
     });
-    dataForFrontendHolder.registerLoadHook(dataForFrontend => {
-      if (ApiHelper.isRestrictedAccess(dataForFrontend)) {
+    dataForFrontendHolder.registerLoadHook(d => {
+      if (ApiHelper.isRestrictedAccess(d)) {
         // Handle redirects on urgent situations
-        const auth = dataForFrontend?.dataForUi?.auth || {};
+        const auth = d?.dataForUi?.auth || {};
         let redirect: string = null;
         if (auth.pendingAgreements) {
-          redirect = '/pending-agreements';
+          redirect = '/post-login/pending-agreements';
         } else if (auth.expiredPassword || auth.expiredSecondaryPassword) {
-          redirect = '/expired-password';
+          redirect = '/post-login/expired-password';
         } else if (auth.pendingSecondaryPassword) {
-          redirect = '/login-confirmation';
+          redirect = '/post-login/login-confirmation';
         }
         setTimeout(() => {
           if (redirect && router.url !== redirect) {
@@ -92,11 +88,32 @@ export function initialize(
           }
         }, 1);
       }
-      return of(dataForFrontend);
+      return of(d);
     });
+    if (environment.production && !environment.standalone) {
+      dataForFrontendHolder.registerLoadHook(d => {
+        return scriptLoader.loadScript('upup.min.js').pipe(
+          switchMap(() => {
+            if (UpUp) {
+              // Service workers are not available in Firefox private mode
+              UpUp.start({
+                'service-worker-url': 'upup.sw.min.js',
+                'cache-version': d.dataForUi.resourceCacheKey,
+                'content-url': 'offline'
+              });
+            }
+            return of(d);
+          }));
+      });
+    }
     const dataForFrontend$ = dataForFrontendHolder.initialize();
+    const themeLoaded$ = timer(1000, 500).pipe(filter(() => {
+      const style = getComputedStyle(document.body);
+      return !empty(style.getPropertyValue('--primary').trim());
+    }), first());
 
-    return await concat(i18n$, dataForFrontend$).toPromise();
+
+    return forkJoin([dataForFrontend$, themeLoaded$]).toPromise();
   };
 }
 export const INITIALIZE: Provider = {
@@ -111,7 +128,8 @@ export const INITIALIZE: Provider = {
     NextRequestState,
     Router,
     BreadcrumbService,
-    StateManager
+    StateManager,
+    ScriptLoaderService
   ],
   multi: true,
 };

@@ -1,17 +1,24 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreateDeviceConfirmation, CustomFieldDetailed, PasswordInput } from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
-import { ConfirmCallbackParams } from 'app/core/notification.service';
-import { I18n } from 'app/i18n/i18n';
+import { ShortcutService } from 'app/core/shortcut.service';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { blank, empty, validateBeforeSubmit } from 'app/shared/helper';
-import { ShortcutService } from 'app/core/shortcut.service';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+
+/**
+ * The confirm calls its callback using this parameter
+ */
+export interface ConfirmCallbackParams {
+  confirmationPassword?: string;
+  customValues?: { [key: string]: string; };
+}
 
 /**
  * Component shown in a dialog, to present a confirmation message, optionally with a confirmation password
@@ -46,7 +53,7 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    public i18n: I18n,
+    @Inject(I18nInjectionToken) public i18n: I18n,
     public modalRef: BsModalRef,
     private fieldHelper: FieldHelperService,
     private authHelper: AuthHelperService,
@@ -104,6 +111,16 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
       value.confirmationPassword = confirmationPassword;
     }
     this.callback(value);
+    if (this.passwordInput == null) {
+      // If it's not a confirmation with password just hide it,
+      // otherwise hiding is handled by the api interceptor
+      // which verifies if the password is invalid and then hides
+      // popup
+      this.modalRef.hide();
+    }
+  }
+
+  hide() {
     this.modalRef.hide();
   }
 }

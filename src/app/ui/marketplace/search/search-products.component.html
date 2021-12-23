@@ -1,8 +1,8 @@
 <h1>{{ i18n.ad.addProducts }}</h1>
-<form [formGroup]="form" class="mb-2 mb-md-0">
+<div [formGroup]="form" class="mb-2 mb-md-0">
   <input-field formControlName="keywords" [label]="i18n.general.keywords">
   </input-field>
-</form>
+</div>
 <results-layout resultType="list" [results]="results$ | async"
   (update)="update($event)" [onClick]="onClick" [rendering$]="rendering$"
   [ngStyle]="{'min-height': '44vh'}">

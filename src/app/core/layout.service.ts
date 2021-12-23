@@ -13,8 +13,7 @@ export const Themes: Theme[] = ['light', 'dark'];
 const ThemeKey = 'theme';
 
 const ColorVariables = [
-  'primary', 'theme-color', 'chart-color',
-  'body-color', 'border-color', 'text-muted',
+  'primary', 'theme-color', 'body-color', 'border-color', 'text-muted',
 ];
 
 /*
@@ -469,13 +468,6 @@ export class LayoutService {
    */
   get primaryColor(): string {
     return this.getColor('primary');
-  }
-
-  /**
-   * Returns the chart color
-   */
-  get chartColor(): string {
-    return this.getColor('chart-color');
   }
 
   /**

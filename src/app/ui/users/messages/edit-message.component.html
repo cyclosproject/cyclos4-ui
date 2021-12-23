@@ -1,0 +1,64 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [heading]="resolveTitle()"
+      [mobileHeading]="resolveMobileTitle()"
+      [headingActions]="headingActions$ | async">
+      <label-value *ngIf="toUser" class="mb-1" [label]="i18n.message.sendTo">
+        <user-link [user]="toUser"></user-link>
+      </label-value>
+      <ng-container [formGroup]="form">
+        <single-selection-field
+          *ngIf="destinations.length > 1 && toUser == null"
+          formControlName="destination" [label]="i18n.message.sendTo"
+          required>
+          <field-option *ngFor="let destination of destinations"
+            [value]="destination"
+            [text]="messageHelper.resolveDestination(destination)">
+          </field-option>
+        </single-selection-field>
+        <ng-container
+          *ngIf="
+          (destinations.length === 1 && destinations[0] === MessageDestinationEnum.USER && toUser == null) ||
+         (form.controls.destination.valueChanges | async) === MessageDestinationEnum.USER">
+          <user-field *ngIf="maxRecipients === 1" formControlName="toUsers"
+            [label]="i18n.message.messageDestination.user" required>
+          </user-field>
+          <multiple-users-field
+            *ngIf="maxRecipients === 0 || maxRecipients > 1"
+            formControlName="toUsers" [label]="i18n.message.toUsers" required>
+          </multiple-users-field>
+        </ng-container>
+        <multi-selection-field
+          *ngIf="groups.length > 0 && (
+        (destinations.length === 1 && destinations[0] === MessageDestinationEnum.GROUP) ||
+       (form.controls.destination.valueChanges | async) === MessageDestinationEnum.GROUP)"
+          formControlName="toGroups" [emptyLabel]="i18n.general.notApplied"
+          [label]="i18n.message.toGroups" required>
+          <field-option *ngFor="let group of groups"
+            [value]="ApiHelper.internalNameOrId(group)"
+            [internalName]="group.internalName" [id]="group.id"
+            [text]="group.name" [parent]="group.groupSet">
+          </field-option>
+        </multi-selection-field>
+        <single-selection-field
+          *ngIf="categories.length > 0 && !reply && (dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR ||
+        (destinations.length === 1 && destinations[0] === MessageDestinationEnum.SYSTEM) ||
+        (form.controls.destination.valueChanges | async) === MessageDestinationEnum.SYSTEM)"
+          formControlName="category" [label]="i18n.general.category" required>
+          <field-option *ngFor="let category of categories"
+            [value]="category.id" [internalName]="category.internalName"
+            [text]="category.name">
+          </field-option>
+        </single-selection-field>
+        <input-field [label]="i18n.message.subject" formControlName="subject"
+          required></input-field>
+        <html-field class="mt-2" formControlName="body" required></html-field>
+      </ng-container>
+      <actions forceRow>
+        <action-button [disabled]="requesting$ | async" (action)="send()"
+          [label]="i18n.message.send">
+        </action-button>
+      </actions>
+    </page-content>
+  </ng-container>
+</page-layout>

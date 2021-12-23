@@ -4,8 +4,9 @@
 
 <ng-template #content>
   <page-content mode="filters" [heading]="heading"
-    [mobileHeading]="mobileHeading">
-    <form [formGroup]="form" class="filters-form">
+    [mobileHeading]="mobileHeading"
+    [headingActions]="headingActions$ | async">
+    <div [formGroup]="form" class="filters-form">
       <div class="row">
         <ng-container *ngIf="data.user && !self">
           <div class="col-12 col-md-6">
@@ -93,7 +94,7 @@
           </user-field>
         </div>
       </div>
-    </form>
+    </div>
   </page-content>
 
   <results-layout resultType="list" [results]="results$ | async"
@@ -111,20 +112,22 @@
 
     <table *resultTable class="table table-hover cursor-pointer">
       <thead>
-        <th class="avatar"></th>
+        <th *ngIf="!isExternalPayment()" class="avatar"></th>
         <th>{{ i18n.general.date }}</th>
-        <th *ngIf="!isPaymentRequest()">{{ i18n.transaction.fromTo }}</th>
-        <ng-container *ngIf="isPaymentRequest()">
-          <th>{{ i18n.transaction.senderOrReceiver }}</th>
-          <th>{{ i18n.general.status }}</th>
-        </ng-container>
-        <th>{{ i18n.transaction.scheduling }}</th>
+        <th *ngIf="!isPaymentRequest()">{{ isExternalPayment() ?
+          i18n.transaction.to : i18n.transaction.fromTo }}</th>
+        <th *ngIf="isPaymentRequest()">{{ i18n.transaction.senderOrReceiver }}
+        </th>
+        <th *ngIf="isPaymentRequest() || isExternalPayment()">{{
+          i18n.general.status }}</th>
+        <th *ngIf="!isExternalPayment()">{{ i18n.transaction.scheduling }}
+        </th>
         <th class="amount">{{ i18n.transaction.amount }}</th>
       </thead>
       <tbody>
         <ng-container *ngFor="let row of (results$ | async)?.results">
           <tr (click)="router.navigate(bankingHelper.transactionPath(row))">
-            <td class="avatar">
+            <td *ngIf="!isExternalPayment()" class="avatar">
               <avatar [image]="bankingHelper.avatarImage(row.related)"
                 [icon]="bankingHelper.avatarIcon(row.related)">
               </avatar>
@@ -133,12 +136,14 @@
               {{ row.date | date }}
             </td>
             <td>
-              {{ bankingHelper.subjectName(row.related) }}
+              {{ isExternalPayment()
+              ? row.toPrincipalValue
+              : bankingHelper.subjectName(row.related) }}
             </td>
-            <td *ngIf="isPaymentRequest()">
+            <td *ngIf="isPaymentRequest() || isExternalPayment()">
               {{ apiI18n.transactionStatus(row) }}
             </td>
-            <td>
+            <td *ngIf="!isExternalPayment()">
               {{ bankingHelper.scheduling(row) }}
             </td>
             <td class="amount" [ngClass]="{

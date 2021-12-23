@@ -1,12 +1,13 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Inject, Input } from '@angular/core';
 import { NgControl } from '@angular/forms';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { empty } from 'app/shared/helper';
 import { Mask, MaskField } from 'app/shared/mask';
 
 const ALLOWED = [
   'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
   'End', 'Home', 'Delete', 'Backspace', 'Tab',
-  'Shift', 'Control', 'Alt', 'Super', 'Meta',
+  'Shift', 'Control', 'Alt', 'Super', 'Meta', 'Enter'
 ];
 
 /**
@@ -17,6 +18,7 @@ const ALLOWED = [
 })
 export class MaskDirective {
   constructor(
+    @Inject(I18nInjectionToken) public i18n: I18n,
     private el: ElementRef,
     private control: NgControl,
   ) { }
@@ -116,7 +118,7 @@ export class MaskDirective {
     const selectionEnd = el.selectionEnd || el.value.length;
 
     const value = el.value;
-    const text = value.substr(0, caret) + event.clipboardData.getData('text/plain') + value.substr(selectionEnd);
+    const text = value.substr(0, caret) + (event.clipboardData.getData('text/plain') || '').trim() + value.substr(selectionEnd);
     const masked = this._mask.apply(text);
 
     event.preventDefault();
@@ -125,6 +127,11 @@ export class MaskDirective {
     // Force a change event to be triggered, as we always preventDefault()
     this.control.control.setValue(masked);
     this.control.control.updateValueAndValidity();
+
+    if (!this._mask.isValid(masked)) {
+      this.control.control.setErrors({ invalidValuePattern: true });
+      this.control.control.markAsTouched();
+    }
 
     // Update the caret
     el.selectionStart = masked.length;

@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
+import { InputError, InputErrorCode } from 'app/api/models';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
-import { UiLayoutService } from 'app/ui/core/ui-layout.service';
-import { InputError, InputErrorCode, NestedError } from 'app/api/models';
 import { NotificationService } from 'app/core/notification.service';
-import { empty, focusFirstInvalid } from 'app/shared/helper';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
-import { LoginService } from 'app/ui/core/login.service';
-import { Router } from '@angular/router';
 import { FormControlLocator } from 'app/shared/form-control-locator';
+import { empty, focusFirstInvalid } from 'app/shared/helper';
+import { LoginService } from 'app/ui/core/login.service';
+import { UiLayoutService } from 'app/ui/core/ui-layout.service';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 
 @Injectable({
   providedIn: 'root'
@@ -18,31 +17,12 @@ export class UiErrorHandlerService {
     private errorHandler: ErrorHandlerService,
     private layout: UiLayoutService,
     private notification: NotificationService,
-    private login: LoginService,
-    private router: Router) {
+    private login: LoginService) {
   }
 
   initialize(): void {
     this.errorHandler.validationErrorHandler = e => this.handleValidationError(e);
-    this.errorHandler.nestedErrorHandler = e => this.handleNestedError(e);
-    this.errorHandler.goToLoginPageHandler = () => this.login.goToLoginPage(this.router.url);
-  }
-
-  private handleNestedError(error: NestedError) {
-    const message = this.errorHandler.nestedErrorMessage(error);
-    const page = this.layout.currentPage;
-    const control = page ? page.locateControl({ nestedProperty: error.property, nestedIndex: error.index }) : null;
-
-    if (control) {
-      // A formControl is found - set its error
-      control.setErrors({
-        message,
-      });
-    } else {
-      // No form control -> show as general errors
-      this.notification.error(message);
-    }
-
+    this.errorHandler.goToLoginPageHandler = () => this.login.confirmLogout();
   }
 
   private handleValidationError(error: InputError) {

@@ -1,0 +1,23 @@
+<label-value [label]="i18n.voucher.voucher">
+  {{ voucher.type.voucherTitle }}
+</label-value>
+<label-value [label]="i18n.voucher.token">
+  {{ voucher.token }}
+</label-value>
+<label-value *ngIf="voucher.creationType === VoucherCreationTypeEnum.SENT"
+  [label]="i18n.voucher.sentToEmail">
+  {{ voucher.email }}
+</label-value>
+<label-value *ngIf="voucher.amount" [label]="i18n.transaction.amount">
+  {{ voucher.amount | currency:voucher.type.configuration.currency }}
+</label-value>
+<label-value *ngIf="voucher.balance" [label]="i18n.voucher.balance">
+  {{ voucher.balance | currency:voucher.type.configuration.currency }}
+</label-value>
+<label-value *ngIf="voucher.status" [label]="i18n.general.status">
+  {{ apiI18n.voucherStatus(voucher.status) }}
+</label-value>
+<label-value *ngIf="voucher.status === 'open'"
+  [label]="i18n.general.expirationDate">
+  {{ voucher.expirationDate | dateTime }}
+</label-value>

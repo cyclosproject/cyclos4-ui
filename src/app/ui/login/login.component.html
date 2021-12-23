@@ -3,8 +3,7 @@
     [layout]="(layout.ltmd$ | async) ? 'normal' : 'centered'" mode="tight"
     last [heading]="i18n.login.title" [mobileHeading]="i18n.login.mobileTitle"
     [ngClass]="{'with-left-area': uiLayout.leftAreaVisible$ | async}">
-    <form [formGroup]="form" (submit)="$event.preventDefault()"
-      class="mt-3 mt-xs-0">
+    <form [formGroup]="form" class="mt-3 mt-xs-0">
       <div class="pre-login-text"
         *ngIf="loggedOut || (layout.gtxxs$ | async)">
         <div *ngIf="loggedOut; else regularMessage"
@@ -38,7 +37,7 @@
         (keyup.enter)="submit.click()"
         [placeholder]="data.accessPasswordType.name"></password-input>
 
-      <action-button #submit
+      <action-button #submit actionKind="primary"
         class="login-margin-top login-margin-bottom mt-3 "
         [disabled]="requesting$ | async" (action)="doLogin($event)"
         [label]="i18n.general.submit">
@@ -46,7 +45,7 @@
 
       <div *ngIf="data.identityProviders?.length > 0" class="mb-4">
         <button type="button" *ngFor="let idp of data.identityProviders"
-          class="identity-provider" [ngStyle]="{
+          class="btn-action-primary identity-provider" [ngStyle]="{
           border: '1px solid ' + idp.borderColor,
           background: idp.backgroundColor,
           color: idp.textColor

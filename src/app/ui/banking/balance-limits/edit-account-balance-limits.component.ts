@@ -101,7 +101,7 @@ export class EditAccountBalanceLimitsComponent
     delete value.upperCreditLimitMode;
 
     if (this.data.confirmationPasswordInput) {
-      this.notification.confirm({
+      this.confirmation.confirm({
         title: this.i18n.general.confirm,
         message: this.i18n.account.balanceLimits.confirm,
         createDeviceConfirmation: this.balanceLimitsDeviceConfirmation(),

@@ -1,5 +1,12 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnInit } from '@angular/core';
 import { truthyAttr } from 'app/shared/helper';
+
+export type ActionKind
+  /** Primary actions like submit. Default kind */
+  = 'primary'
+
+  /** Actions "inside" a page which are not primary, like actions over images editing the profile or the button to add new addresses */
+  | 'secondary';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -8,6 +15,8 @@ import { truthyAttr } from 'app/shared/helper';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActionsComponent implements OnInit {
+
+  @Input() kind: ActionKind = 'primary';
 
   private _forceRow: boolean | string;
   @Input() get forceRow(): boolean | string {
@@ -25,6 +34,14 @@ export class ActionsComponent implements OnInit {
     this._reverseRow = truthyAttr(reverseRow);
   }
 
+  private _forceColumn: boolean | string;
+  @Input() get forceColumn(): boolean | string {
+    return this._forceColumn;
+  }
+  set forceColumn(forceColumn: boolean | string) {
+    this._forceColumn = truthyAttr(forceColumn);
+  }
+
   private _minimal: boolean | string;
   @HostBinding('class.minimal') @Input() get minimal(): boolean | string {
     return this._minimal;
@@ -40,13 +57,15 @@ export class ActionsComponent implements OnInit {
     const el = this.element.nativeElement as HTMLElement;
     el.className = 'actions d-flex justify-content-between ' + el.className;
     el.classList.add('flex-column');
-    // The reverse is actually reversed :)
-    const suffix = this.reverseRow ? 'row' : 'row-reverse';
-    if (this.forceRow) {
-      el.classList.add(`flex-xs-${suffix}`);
-      el.classList.add('force-row');
-    } else {
-      el.classList.add(`flex-sm-${suffix}`);
+    if (this.kind === 'primary') {
+      el.classList.add('actions-primary');
+    }
+    if (!this.forceColumn) {
+      // The reverse is actually reversed :)
+      el.classList.add('flex-sm-' + (this.reverseRow ? 'row' : 'row-reverse'));
+      if (this.forceRow) {
+        el.classList.add('force-row');
+      }
     }
   }
 }

@@ -28,7 +28,7 @@ export class ViewPrivacySettingsComponent
   ngOnInit() {
     super.ngOnInit();
     this.user = this.route.snapshot.params.user;
-    this.addSub(this.privacySettingsService.getPrivacySettingsData({ user: this.user ? this.user : ApiHelper.SELF })
+    this.addSub(this.privacySettingsService.getPrivacySettingsData({ user: this.user || ApiHelper.SELF })
       .subscribe(data => {
         if (data.canEdit) {
           this.router.navigate(['/users', this.user, 'privacy-settings', 'edit'], { replaceUrl: true });
@@ -42,6 +42,6 @@ export class ViewPrivacySettingsComponent
   }
 
   resolveMenu() {
-    return this.authHelper.isSelf(this.user) ? Menu.PRIVACY_SETTINGS : this.menu.searchUsersMenu();
+    return this.menu.userMenu(this.data?.user, Menu.MY_PROFILE);
   }
 }

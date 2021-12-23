@@ -16,9 +16,17 @@ import { ListDocumentsComponent } from 'app/ui/users/documents/list-documents.co
 import { ProcessDynamicDocumentComponent } from 'app/ui/users/documents/process-dynamic-document.component';
 import { SearchDocumentsComponent } from 'app/ui/users/documents/search-documents.component';
 import { ViewDocumentComponent } from 'app/ui/users/documents/view-document.component';
+import { ListFeedbackIgnoredUsersComponent } from 'app/ui/users/feedbacks/list-feedback-ignored-users.component';
+import { SearchFeedbackComponent } from 'app/ui/users/feedbacks/search-feedbacks.component';
+import { SearchPaymentAwaitingFeedbackComponent } from 'app/ui/users/feedbacks/search-payment-awaiting-feedback.component';
+import { SetFeedbackComponent } from 'app/ui/users/feedbacks/set-feedback.component';
+import { ViewFeedbackComponent } from 'app/ui/users/feedbacks/view-feedback.component';
 import { ViewUserGroupHistoryComponent } from 'app/ui/users/group-membership/view-user-group-history.component';
 import { ViewUserGroupComponent } from 'app/ui/users/group-membership/view-user-group.component';
 import { UserIdentityProvidersComponent } from 'app/ui/users/identity-providers/user-identity-providers.component';
+import { EditMessageComponent } from 'app/ui/users/messages/edit-message.component';
+import { SearchMessagesComponent } from 'app/ui/users/messages/search-messages.component';
+import { ViewMessageComponent } from 'app/ui/users/messages/view-message.component';
 import { NotificationSettingsFormComponent } from 'app/ui/users/notification-settings/notification-settings-form.component';
 import { ListOperatorGroupsComponent } from 'app/ui/users/operator-groups/list-operator-groups.component';
 import { OperatorGroupFormComponent } from 'app/ui/users/operator-groups/operator-group-form.component';
@@ -26,6 +34,7 @@ import { ViewOperatorGroupComponent } from 'app/ui/users/operator-groups/view-op
 import { OperatorRegistrationComponent } from 'app/ui/users/operators/operator-registration.component';
 import { SearchUserOperatorsComponent } from 'app/ui/users/operators/search-user-operators.component';
 import { ManagePasswordsComponent } from 'app/ui/users/passwords/manage-passwords.component';
+import { ViewPasswordsHistoryComponent } from 'app/ui/users/passwords/view-passwords-history.component';
 import { ListProductAssignmentComponent } from 'app/ui/users/products/list-product-assignment.component';
 import { ViewProductAssignmentHistoryComponent } from 'app/ui/users/products/view-product-assignment-history.component';
 import { EditProfileComponent } from 'app/ui/users/profile/edit-profile.component';
@@ -51,6 +60,26 @@ const usersRoutes: Routes = [
       {
         path: 'search',
         component: SearchUsersComponent,
+      },
+      {
+        path: 'messages/search',
+        component: SearchMessagesComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: 'messages/view/:id',
+        component: ViewMessageComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: 'messages/send',
+        component: EditMessageComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: 'messages/reply/:id',
+        component: EditMessageComponent,
+        canActivate: [LoggedUserGuard],
       },
       {
         path: 'brokerings',
@@ -191,6 +220,11 @@ const usersRoutes: Routes = [
         canActivate: [LoggedUserGuard],
       },
       {
+        path: ':user/passwords/history',
+        component: ViewPasswordsHistoryComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
         path: ':user/identity-providers',
         component: UserIdentityProvidersComponent,
         canActivate: [LoggedUserGuard],
@@ -289,6 +323,16 @@ const usersRoutes: Routes = [
         canActivate: [LoggedUserGuard],
       },
       {
+        path: 'feedbacks/search-awaiting',
+        component: SearchPaymentAwaitingFeedbackComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: ':user/feedbacks/search',
+        component: SearchFeedbackComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
         path: ':user/references/search',
         component: SearchReferencesComponent,
         canActivate: [LoggedUserGuard],
@@ -299,6 +343,11 @@ const usersRoutes: Routes = [
         canActivate: [LoggedUserGuard],
       },
       {
+        path: 'feedbacks/view/:id',
+        component: ViewFeedbackComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
         path: 'references/set/:from/:to',
         component: SetReferenceComponent,
         canActivate: [LoggedUserGuard],
@@ -306,6 +355,21 @@ const usersRoutes: Routes = [
       {
         path: 'references/edit/:id',
         component: SetReferenceComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: 'feedbacks/set/:transactionId',
+        component: SetFeedbackComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: 'feedbacks/edit/:id',
+        component: SetFeedbackComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: 'feedbacks/settings',
+        component: ListFeedbackIgnoredUsersComponent,
         canActivate: [LoggedUserGuard],
       }
     ],

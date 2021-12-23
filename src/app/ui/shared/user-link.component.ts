@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { AccountWithOwner, User } from 'app/api/models';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { truthyAttr } from 'app/shared/helper';
 
@@ -14,7 +15,10 @@ import { truthyAttr } from 'app/shared/helper';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserLinkComponent extends BaseComponent implements OnInit {
-  constructor(injector: Injector) {
+
+  constructor(
+    injector: Injector,
+    private authHelper: AuthHelperService) {
     super(injector);
   }
 

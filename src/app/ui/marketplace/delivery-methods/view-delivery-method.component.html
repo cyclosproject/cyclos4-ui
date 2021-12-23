@@ -12,6 +12,12 @@
       <label-value [label]="i18n.ad.chargeType"
         [value]="resolveChargeTypeLabel()">
       </label-value>
+      <label-value [label]="i18n.ad.deliveryType"
+        [value]="resolveDeliveryTypeLabel()">
+      </label-value>
+      <label-value *ngIf="data.deliveryType === 'pickup'"
+        [label]="i18n.address.address" [value]="data.address.name">
+      </label-value>
       <label-value *ngIf="data.chargeAmount" [label]="i18n.ad.price">
         {{ data.chargeAmount | currency: data.chargeCurrency }}
       </label-value>
@@ -24,8 +30,8 @@
       </label-value>
       <label-value [label]="i18n.general.enabled">
         {{ data.enabled ?
-          i18n.general.yes :
-          i18n.general.no }}
+        i18n.general.yes :
+        i18n.general.no }}
       </label-value>
       <ng-container *ngIf="data.description"
         class="d-flex justify-content-start">

@@ -1,0 +1,40 @@
+<ng-container *ngIf="(initialized$ | async); else spinner">
+  <snack-bar #snackBar></snack-bar>
+  <div class="card" *ngIf="layout.gtxs$ | async; else mobile">
+    <div class="system">
+      <img class="system-image" [src]="data.applicationLogo.url"
+        [alt]="data.dataForUi.applicationName"
+        [tooltip]="data.dataForUi.applicationName">
+      <!-- Why pipe Async does not work for the title??? -->
+      <div class="title">{{ state.title }}</div>
+      <!-- The following condition avoid to show the exit action in the /pin page -->
+      <heading-action-button
+        *ngIf="!(state.voucherHasActions$ | async) && state.voucher && (!state.voucher.pinInput || state.pin)"
+        [action]="state.exitAction">
+      </heading-action-button>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</ng-container>
+
+<ng-template #mobile>
+  <voucher-sidenav #sidenav></voucher-sidenav>
+  <div class="root-container">
+    <top-bar (toggleSidenav)="sidenav.toggle()"></top-bar>
+    <div #mainContainer
+      class="main-container container-md d-flex flex-column flex-grow-1">
+      <!-- The following condition shows the logo only in the /token & /pin pages -->
+      <div class="system"
+        *ngIf="!(state.voucher$ | async) || (state.voucher.pinInput && !state.pin)">
+        <img class="system-image" [src]="data.applicationLogo.url"
+          [alt]="data.dataForUi.applicationName"
+          [tooltip]="data.dataForUi.applicationName">
+      </div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #spinner>
+  <spinner></spinner>
+</ng-template>

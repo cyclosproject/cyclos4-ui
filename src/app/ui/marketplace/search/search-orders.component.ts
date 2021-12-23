@@ -94,7 +94,7 @@ export class SearchOrdersComponent
   }
 
   private addNew() {
-    this.notification.confirm({
+    this.confirmation.confirm({
       title: this.i18n.ad.title.newOrder,
       labelPosition: 'above',
       customFields: this.newOrderFields(),
@@ -105,7 +105,7 @@ export class SearchOrdersComponent
           user: this.param,
           currency: res.customValues.currency,
         }).subscribe(() => {
-          this.router.navigate(['marketplace', this.param, 'sale', 'new'], {
+          this.router.navigate(['/marketplace', this.param, 'sale', 'new'], {
             queryParams: {
               buyer: res.customValues.buyer,
               currency: res.customValues.currency,

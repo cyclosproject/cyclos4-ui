@@ -8,7 +8,7 @@
       <user-info [user]="data.user"></user-info>
       <hr>
     </ng-container>
-    <form [formGroup]="form" [ngClass]="{'mr-n3': columnLayout}">
+    <div [formGroup]="form" [ngClass]="{'mr-n3': columnLayout}">
       <ng-container *ngIf="data.type.informationText">
         <rich-text-container [value]="data.type.informationText">
         </rich-text-container>
@@ -20,22 +20,11 @@
                 'border-top-0': !data.type.informationText}">
         {{ i18n.record.fields }}
       </h2>
-      <ng-container *ngFor="let cf of fieldsWithoutSection">
-        <label-value *ngIf="canEdit(cf) || !isEmpty(cf)" [label]="cf.name"
-          [kind]="canEdit(cf) ? 'field' : 'fieldView'"
-          [fieldSize]="fieldSize(cf)" [required]="canEdit(cf) && cf.required"
-          [labelPosition]="labelPosition" [ngClass]="resolveColumnClass(cf)">
-          <custom-field-input [field]="cf" hideLabel
-            *ngIf="canEdit(cf); else plainFieldValue"
-            [binaryValues]="binaryValues"
-            [formControl]="form.get('customValues').get(cf.internalName)">
-          </custom-field-input>
-          <ng-template #plainFieldValue>
-            <format-field-value [fieldValue]="fieldValue(cf)">
-            </format-field-value>
-          </ng-template>
-        </label-value>
-      </ng-container>
+      <custom-field-input *ngFor="let cf of fieldsWithoutSection"
+        [labelPosition]="labelPosition" [field]="cf"
+        [formControl]="form.get('customValues').get(cf.internalName)"
+        [class]="resolveColumnClass(cf)" [binaryValues]="binaryValues">
+      </custom-field-input>
       <ng-container
         *ngFor="let key of fieldsWithSection.keys(); let first = first">
         <h2 [ngClass]="{
@@ -45,26 +34,15 @@
                 'border-top-0': first && fieldsWithoutSection.length == 0}">
           {{ key.name }}
         </h2>
-        <ng-container *ngFor="let cf of fieldsWithSection.get(key)">
-          <label-value *ngIf="canEdit(cf) || !isEmpty(cf)" [label]="cf.name"
-            [kind]="canEdit(cf) ? 'field' : 'fieldView'"
-            [fieldSize]="fieldSize(cf)"
-            [required]="canEdit(cf) && cf.required"
-            [labelPosition]="labelPosition"
-            [ngClass]="resolveColumnClass(cf)">
-            <custom-field-input [field]="cf" hideLabel
-              *ngIf="canEdit(cf); else plainFieldValue"
-              [binaryValues]="binaryValues"
-              [formControl]="form.get('customValues').get(cf.internalName)">
-            </custom-field-input>
-            <ng-template #plainFieldValue>
-              <format-field-value [fieldValue]="fieldValue(cf)">
-              </format-field-value>
-            </ng-template>
-          </label-value>
-        </ng-container>
+        <div class="mb-2" *ngIf="key.informationText">
+          {{ key.informationText }}</div>
+        <custom-field-input *ngFor="let cf of fieldsWithSection.get(key)"
+          [labelPosition]="labelPosition" [field]="cf"
+          [formControl]="form.get('customValues').get(cf.internalName)"
+          [class]="resolveColumnClass(cf)" [binaryValues]="binaryValues">
+        </custom-field-input>
       </ng-container>
-    </form>
+    </div>
     <actions>
       <action-button [disabled]="requesting$ | async" (action)="save()"
         [label]="i18n.general.save">

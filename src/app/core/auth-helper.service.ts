@@ -1,21 +1,20 @@
-import { Injectable } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Inject, Injectable } from '@angular/core';
 import {
-  AccountKind, AccountWithOwner, AvailabilityEnum, IdentityProvider,
+  AccountKind, AccountWithOwner, AvailabilityEnum,
+  IdentityProvider,
   IdentityProviderCallbackResult, IdentityProviderRequestResult,
   PasswordInput, PasswordModeEnum, RoleEnum, User, UserLocale
 } from 'app/api/models';
 import { IdentityProvidersService } from 'app/api/services/identity-providers.service';
 import { LocalizationService } from 'app/api/services/localization.service';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
-import { NextRequestState } from 'app/core/next-request-state';
+import { NextRequestState, PreferredLocale } from 'app/core/next-request-state';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
-import { I18n } from 'app/i18n/i18n';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { empty } from 'app/shared/helper';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { PreferredLocale } from 'app/core/next-request-state';
 
 /**
  * Helper service for authentication / password common functions
@@ -28,9 +27,8 @@ export class AuthHelperService {
   private identityProviderSubscription: Subscription;
 
   constructor(
-    private i18n: I18n,
+    @Inject(I18nInjectionToken) private i18n: I18n,
     private dataForFrontendHolder: DataForFrontendHolder,
-    private formBuilder: FormBuilder,
     private identityProvidersService: IdentityProvidersService,
     private pushNotifications: PushNotificationsService,
     private localizationService: LocalizationService,
@@ -213,7 +211,7 @@ export class AuthHelperService {
   /**
    * Returns the message that should be presented to users in case a confirmation password cannot be used
    */
-  getConfirmationMessage(passwordInput: PasswordInput): string {
+  getConfirmationMessage(passwordInput: PasswordInput, posConfirmation?: boolean): string {
     if (passwordInput == null) {
       return null;
     }
@@ -229,17 +227,19 @@ export class AuthHelperService {
     if (deviceRequired || deviceOptional && !passwordUsable) {
       if (deviceUsable) {
         // Show a message to scan the QR-code
-        return this.i18n.password.confirmDeviceActive;
+        return posConfirmation ? this.i18n.transaction.confirmMessage.activeDevice : this.i18n.password.confirmMessage.activeDevice;
       } else {
         if (deviceRequired) {
           // Device is required but has none
-          return this.i18n.password.confirmDeviceNone;
+          return posConfirmation ? this.i18n.transaction.confirmMessage.notActiveDevice : this.i18n.password.confirmMessage.notActiveDevice;
         } else {
           // Device is optional and has no password
           if (otp) {
-            return this.i18n.password.confirmDeviceOrOtpNoMediums;
+            return posConfirmation ? this.i18n.transaction.confirmMessage.notActiveDeviceOrRenewablePasswordNoMediums(passwordInput.name)
+              : this.i18n.password.confirmMessage.notActiveDeviceOrRenewablePasswordNoMediums(passwordInput.name);
           } else {
-            return this.i18n.password.confirmDeviceOrPasswordNone(passwordInput.name);
+            return posConfirmation ? this.i18n.transaction.confirmMessage.notActiveDeviceOrPassword(passwordInput.name)
+              : this.i18n.password.confirmMessage.notActiveDeviceOrPassword(passwordInput.name);
           }
         }
       }
@@ -249,32 +249,46 @@ export class AuthHelperService {
     if (deviceOptional && deviceUsable) {
       // At this point we know the password is usable and the device is active, so the user can choose
       if (otp) {
-        if (passwordInput.hasActivePassword) {
-          return this.i18n.password.confirmDeviceOrOtpActive;
+        if (passwordInput.hasActivePassword && hasOtpSendMediums) {
+          return posConfirmation ? this.i18n.transaction.confirmMessage.activeDeviceOrRenewablePassword
+            : this.i18n.password.confirmMessage.activeDeviceOrRenewablePassword;
+        } else if (passwordInput.hasActivePassword) {
+          return posConfirmation ? this.i18n.transaction.confirmMessage.activeDeviceOrRenewablePasswordNoMediums
+            : this.i18n.password.confirmMessage.activeDeviceOrRenewablePasswordNoMediums;
         } else {
-          return this.i18n.password.confirmDeviceOrOtpRequest;
+          return posConfirmation ? this.i18n.transaction.confirmMessage.activeDeviceOrNotActiveRenewablePassword
+            : this.i18n.password.confirmMessage.activeDeviceOrNotActiveRenewablePassword;
         }
       } else {
-        return this.i18n.password.confirmDeviceOrPasswordActive(passwordInput.name);
+        return posConfirmation ? this.i18n.transaction.confirmMessage.activeDeviceOrPassword(passwordInput.name)
+          : this.i18n.password.confirmMessage.activeDeviceOrPassword(passwordInput.name);
       }
     }
 
     // At this point, the confirmation is with password only
     if (otp) {
       // The messages for OTP are distinct
-      if (!hasOtpSendMediums) {
-        return this.i18n.password.confirmOtpNoMediums;
-      } else if (passwordInput.hasActiveDevice) {
-        return this.i18n.password.confirmOtpActive;
+      if (!passwordInput.hasActivePassword && !hasOtpSendMediums) {
+        return posConfirmation ? this.i18n.transaction.confirmMessage.notActiveRenewablePasswordNoMediums(passwordInput.name)
+          : this.i18n.password.confirmMessage.notActiveRenewablePasswordNoMediums(passwordInput.name);
+      } else if (passwordInput.hasActivePassword && hasOtpSendMediums) {
+        return posConfirmation ? this.i18n.transaction.confirmMessage.activeRenewablePassword
+          : this.i18n.password.confirmMessage.activeRenewablePassword;
+      } else if (passwordInput.hasActivePassword) {
+        return posConfirmation ? this.i18n.transaction.confirmMessage.activeRenewablePasswordNoMediums
+          : this.i18n.password.confirmMessage.activeRenewablePasswordNoMediums;
       } else {
-        return this.i18n.password.confirmOtpRequest;
+        return posConfirmation ? this.i18n.transaction.confirmMessage.notActiveRenewablePassword
+          : this.i18n.password.confirmMessage.notActiveRenewablePassword;
       }
     } else {
       // A regular password
       if (passwordUsable) {
-        return this.i18n.password.confirmationMessage(passwordInput.name);
+        return posConfirmation ? this.i18n.transaction.confirmMessage.activePassword(passwordInput.name)
+          : this.i18n.password.confirmMessage.activePassword(passwordInput.name);
       } else {
-        return this.i18n.password.confirmNoPassword(passwordInput.name);
+        return posConfirmation ? this.i18n.transaction.confirmMessage.notActivePassword(passwordInput.name)
+          : this.i18n.password.confirmMessage.notActivePassword(passwordInput.name);
       }
     }
   }
@@ -292,17 +306,6 @@ export class AuthHelperService {
       `-${actualPrefix}permissions.operations`,
       `-${actualPrefix}permissions.accounts`,
     ];
-  }
-
-  /**
-   * Returns a form that has a captcha challenge and response
-   * @param formBuilder The form builder
-   */
-  captchaFormGroup() {
-    return this.formBuilder.group({
-      challenge: ['', Validators.required],
-      response: ['', Validators.required],
-    });
   }
 
   /**

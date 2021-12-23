@@ -1,15 +1,14 @@
-<page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
-
-  <page-content *ngSwitchCase="'confirm'"
+<page-layout [ready]="data$ | async">
+  <page-content *ngIf="data"
     [heading]="i18n.transaction.title.paymentConfirmation"
     [mobileHeading]="i18n.transaction.mobileTitle.paymentConfirmation"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
-    <accept-payment-request-step-confirm
-      class="flex-grow-1 d-flex flex-column" [transaction]="transactionKey"
-      [preview]="data" [confirmationPassword]="confirmationPassword"
+    <accept-payment-request-confirm class="flex-grow-1 d-flex flex-column"
+      [transaction]="transactionKey" [preview]="data"
+      [confirmationPassword]="confirmationPassword"
       (confirmationModeChanged)="confirmationMode$.next($event)" [form]="form"
       (confirmed)="perform($event)" [showPaymentType]="true">
-    </accept-payment-request-step-confirm>
+    </accept-payment-request-confirm>
     <actions forceRow>
       <action-button
         *ngIf="(confirmationMode$ | async) != ConfirmationMode.Device; else spacer"
@@ -17,26 +16,5 @@
         [label]="i18n.general.confirm"></action-button>
       <ng-template #spacer>&nbsp;</ng-template>
     </actions>
-  </page-content>
-
-  <page-content *ngSwitchCase="'done'" hideBack [heading]="doneTitle"
-    [mobileHeading]="doneMobileTitle"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
-    <request-payment-step-done class="flex-grow-1 d-flex flex-column"
-      [performed]="performed"
-      [processDate]="this.form.value.processDate | date">
-    </request-payment-step-done>
-    <actions forceRow>
-      <action-button (action)="viewPerformed()"
-        [label]="i18n.transaction.doneView">
-      </action-button>
-      <action-button outline (action)="reload()"
-        [label]="i18n.transaction.doneNew">
-      </action-button>
-    </actions>
-  </page-content>
-
-  <page-content *ngSwitchDefault>
-    <spinner></spinner>
   </page-content>
 </page-layout>

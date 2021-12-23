@@ -16,6 +16,9 @@
               {{ i18n.ad.chargeType }}:
               {{ resolveChargeTypeLabel(row.chargeType) }}</div>
             <div class="cell-text">
+              {{ i18n.ad.deliveryType }}:
+              {{ resolveDeliveryTypeLabel(row.deliveryType) }}</div>
+            <div class="cell-text">
               {{ i18n.ad.price }}:
               {{ row.chargeAmount | currency: row.chargeCurrency }}</div>
             <div *ngIf="row.minDeliveryTime" class="cell-text">
@@ -26,27 +29,27 @@
               {{ format.formatTimeInterval(row.maxDeliveryTime) }}</div>
             <div class="cell-text">
               {{ i18n.general.enabled }}:
-              {{ row.enabled ?
-                      i18n.general.yes :
-                      i18n.general.no }}</div>
+              {{ row.enabled ? i18n.general.yes : i18n.general.no }}</div>
           </div>
-          <div *ngIf="data.canManage" class="ml-auto text-right">
-            <button [tooltip]="i18n.general.remove" class="btn btn-icon"
-              (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
-              <icon [icon]="SvgIcon.Trash"></icon>
-            </button>
-          </div>
+        </div>
+        <div *ngIf="data.canEdit" class="ml-auto text-right">
+          <button type="button" [tooltip]="i18n.general.remove"
+            class="btn btn-icon"
+            (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
+            <icon [icon]="SvgIcon.Trash"></icon>
+          </button>
         </div>
       </mobile-result>
       <table *resultTable class="table table-hover cursor-pointer">
         <thead>
           <th>{{ i18n.general.name }}</th>
           <th>{{ i18n.ad.chargeType }}</th>
+          <th>{{ i18n.ad.deliveryType }}</th>
           <th class="text-right">{{ i18n.ad.price }}</th>
           <th>{{ i18n.ad.minDeliveryTime }}</th>
           <th>{{ i18n.ad.maxDeliveryTime }}</th>
           <th>{{ i18n.general.enabled }}</th>
-          <th *ngIf="data.canManage" class="actions"></th>
+          <th *ngIf="data.canEdit" class="actions"></th>
         </thead>
         <tbody>
           <ng-container *ngFor="let row of data.deliveryMethods">
@@ -56,6 +59,9 @@
               </td>
               <td>
                 {{ resolveChargeTypeLabel(row.chargeType) }}
+              </td>
+              <td>
+                {{ resolveDeliveryTypeLabel(row.deliveryType) }}
               </td>
               <td class="text-right">
                 {{ row.chargeAmount | currency: row.chargeCurrency }}
@@ -67,12 +73,11 @@
                 {{ format.formatTimeInterval(row.maxDeliveryTime) }}
               </td>
               <td>
-                {{ row.enabled ?
-                i18n.general.yes :
-                i18n.general.no }}
+                {{ row.enabled ? i18n.general.yes : i18n.general.no }}
               </td>
-              <td *ngIf="data.canManage" class="actions">
-                <button [tooltip]="i18n.general.remove" class="btn btn-icon"
+              <td *ngIf="data.canEdit" class="actions">
+                <button type="button" [tooltip]="i18n.general.remove"
+                  class="btn btn-icon"
                   (click)="remove(row); $event.stopPropagation()">
                   <icon [icon]="SvgIcon.Trash"></icon>
                 </button>

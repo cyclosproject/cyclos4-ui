@@ -1,4 +1,4 @@
-<ng-container *ngIf="hasValue; else empty">
+<ng-container *ngIf="hasValue$ | async; else empty">
   <ng-container *ngIf="directValue">
     <ng-container *ngIf="!link && !externalLink">
       {{ value }}
@@ -14,8 +14,6 @@
     [ngClass]="{'d-inline': inline}">{{ value }}</div>
   <rich-text-container *ngIf="type == 'richText'" [value]="value">
   </rich-text-container>
-  <span
-    *ngIf="type == 'decimal'">{{ value | number:field.decimalDigits }}</span>
   <ng-container *ngIf="type == 'singleSelection' || type == 'multiSelection'">
     <span *ngFor="let pv of value; let last = last;">
       <span *ngIf="pv.category">{{ pv.category.name }} - </span>{{ pv.value +
@@ -34,8 +32,9 @@
   <ng-container *ngIf="type == 'image' && (value || []).length > 0">
     <div class="flex-wrap"
       [ngClass]="{'d-flex': !inline, 'd-inline-flex': inline}">
-      <avatar class="d-block mr-1" *ngFor="let img of value" size="small"
-        useLightbox [image]="img" [additionalImages]="value"></avatar>
+      <avatar-lightbox class="d-block mr-1" *ngFor="let img of value"
+        size="small" [image]="img" [additionalImages]="value">
+      </avatar-lightbox>
     </div>
   </ng-container>
 </ng-container>
