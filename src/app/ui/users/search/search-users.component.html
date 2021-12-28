@@ -6,7 +6,8 @@
   <page-content mode="filters" [heading]="heading"
     [mobileHeading]="mobileHeading"
     [headingActions]="headingActions$ | async">
-    <form [formGroup]="form" class="filters-form filters-form-separator border-bottom">
+    <form [formGroup]="form"
+      class="filters-form filters-form-separator border-bottom">
       <div class="row">
         <div class="col-12 col-md-6" *ngIf="!self && broker">
           <label-value [label]="i18n.general.user" labelPosition="side">
@@ -32,22 +33,13 @@
               </field-option>
             </multi-selection-field>
           </div>
-          <div class="col-12 col-md-6" *ngFor="let f of fieldsInBasicSearch">
-            <basic-profile-field-filter *ngIf="!(f.id)" labelPosition="side"
-              [field]="f"
-              [formControl]="form.get('profileFields').get(f.field)">
-            </basic-profile-field-filter>
-            <custom-field-filter *ngIf="f.id" labelPosition="side" [field]="f"
-              [formControl]="form.get('profileFields').get(f.internalName)">
-            </custom-field-filter>
-          </div>
           <ng-container *ngIf="moreFilters$ | async">
             <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
-              <distance-selection-field labelPosition="side"
+              <max-distance-field labelPosition="side"
                 [data]="data.searchByDistanceData"
                 formControlName="distanceFilter"
                 [label]="i18n.general.distanceFilter">
-              </distance-selection-field>
+              </max-distance-field>
             </div>
             <div *ngIf="byManager && data.products?.length > 1"
               class="col-12 col-md-6">
@@ -95,22 +87,6 @@
                 [fieldOptions]="statusOptions"
                 [emptyLabel]="i18n.general.notApplied">
               </multi-selection-field>
-            </div>
-            <!-- Invited by -->
-            <div *ngIf="byManager" class="col-12 col-md-6">
-              <user-field labelPosition="side" formControlName="invitedBy"
-                [label]="i18n.user.invitedBy" [allowSelf]="true" [filters]="{
-                  includeGlobal: true
-                }">
-              </user-field>
-            </div>
-            <!-- Invited by me -->
-            <div
-              *ngIf="!byManager && dataForFrontendHolder.auth?.permissions?.invite"
-              class="col-12 col-md-6">
-              <boolean-field labelPosition="side"
-                formControlName="invitedByMe" [label]="i18n.user.invitedByMe">
-              </boolean-field>
             </div>
             <!-- Creation date -->
             <div *ngIf="byManager" class="row no-gutters col-12">
@@ -170,15 +146,15 @@
               </user-field>
             </div>
 
-            <div class="col-12 col-md-6"
-              *ngFor="let f of fieldsInAdvancedSearch">
-              <basic-profile-field-filter *ngIf="!(f.id)" labelPosition="side"
-                [field]="f"
+            <div class="col-12 col-md-6" *ngFor="let f of data.basicFields">
+              <basic-profile-field-filter labelPosition="side" [field]="f"
                 [formControl]="form.get('profileFields').get(f.field)">
               </basic-profile-field-filter>
-              <custom-field-filter *ngIf="f.id" labelPosition="side"
-                [field]="f"
-                [formControl]="form.get('profileFields').get(f.internalName)">
+            </div>
+            <div class="col-12 col-md-6"
+              *ngFor="let cf of customFieldsInSearch">
+              <custom-field-filter labelPosition="side" [field]="cf"
+                [formControl]="form.get('profileFields').get(cf.internalName)">
               </custom-field-filter>
             </div>
           </ng-container>

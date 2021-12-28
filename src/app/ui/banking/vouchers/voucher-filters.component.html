@@ -1,6 +1,6 @@
 <page-content mode="filters" [heading]="heading"
   [mobileHeading]="mobileHeading" [headingActions]="headingActions">
-  <div [formGroup]="form" class="filters-form filters-form-separator">
+  <form [formGroup]="form" class="filters-form filters-form-separator">
     <div class="row no-gutters">
       <!-- Types -->
       <div *ngIf="data.types?.length > 1" class="col-12 col-md-6">
@@ -21,16 +21,14 @@
       </div>
       <!-- Token -->
       <div class="col-12 col-md-6">
-        <input-field type="text" labelPosition="side"
-          [label]="i18n.voucher.token" [mask]="mask" formControlName="token"
-          [placeholder]="mask">
+        <input-field type="text" [label]="i18n.voucher.token" [mask]="mask"
+          formControlName="token" [placeholder]="mask">
         </input-field>
       </div>
       <!-- Creation type -->
       <div class="col-12 col-md-6">
         <single-selection-field labelPosition="side"
-          formControlName="creationType"
-          [label]="i18n.voucher.creationType.label"
+          formControlName="creationType" [label]="i18n.voucher.creationType"
           [fieldOptions]=creationTypeOptions
           [emptyOption]="this.i18n.general.all">
         </single-selection-field>
@@ -77,19 +75,18 @@
             </date-field>
           </div>
         </div>
-        <!-- Transaction date date -->
+        <!-- Redeeming date -->
         <div class="row no-gutters col-12">
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side"
-              formControlName="transactionDateBegin"
-              [label]="i18n.voucher.transaction.date" minDate="past100"
+            <date-field labelPosition="side" formControlName="redeemBegin"
+              [label]="i18n.voucher.redeem.date" minDate="past100"
               maxDate="todayEnd" fieldSize="full" class>
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side"
-              formControlName="transactionDateEnd" [label]="i18n.general.to"
-              minDate="past100" maxDate="todayEnd" fieldSize="full">
+            <date-field labelPosition="side" formControlName="redeemEnd"
+              [label]="i18n.general.to" minDate="past100" maxDate="todayEnd"
+              fieldSize="full">
             </date-field>
           </div>
         </div>
@@ -120,47 +117,28 @@
         <div class="col-12 col-md-6">
           <label-value kind="field" [label]="i18n.voucher.buy.buyer">
             <user-field [autoSearch]="true" formControlName="buyer"
-              [allowContacts]="true" [allowSearch]="true">
-            </user-field>
+              [allowContacts]="true" [allowSearch]="true"
+              [allowPrincipal]="false"></user-field>
           </label-value>
         </div>
-        <!-- Transaction user groups  -->
+        <!-- Redeemer groups  -->
         <div *ngIf="data.userGroups?.length > 1" class="col-12 col-md-6">
           <multi-selection-field labelPosition="side"
-            hierarchyProperty="groupSet"
-            formControlName="transactionUserGroups"
-            [label]="i18n.voucher.transaction.userGroups">
+            hierarchyProperty="groupSet" formControlName="redeemerGroups"
+            [label]="i18n.voucher.redeemerGroups">
             <field-option *ngFor="let group of data.userGroups"
               [value]="group.id" [internalName]="group.internalName"
               [id]="group.id" [text]="group.name" [parent]="group.groupSet">
             </field-option>
           </multi-selection-field>
         </div>
-        <!-- Transaction user -->
+        <!-- Redeemer -->
         <div class="col-12 col-md-6">
-          <label-value kind="field" [label]="i18n.voucher.transaction.user">
-            <user-field [autoSearch]="true" formControlName="transactionUser"
-              [allowContacts]="true" [allowSearch]="true">
-            </user-field>
+          <label-value kind="field" [label]="i18n.voucher.redeem.redeemer">
+            <user-field [autoSearch]="true" formControlName="redeemer"
+              [allowContacts]="true" [allowSearch]="true"
+              [allowPrincipal]="false"></user-field>
           </label-value>
-        </div>
-
-        <!-- E-mail and mobile phone -->
-        <div class="col-12 col-md-6">
-          <input-field formControlName="email" [label]="i18n.user.email">
-          </input-field>
-        </div>
-        <div class="col-12 col-md-6">
-          <input-field formControlName="mobilePhone"
-            [label]="i18n.phone.mobile">
-          </input-field>
-        </div>
-
-        <!-- Custom fields -->
-        <div class="col-12 col-md-6" *ngFor="let cf of customFieldsInSearch">
-          <custom-field-filter labelPosition="side" [field]="cf"
-            [formControl]="form.get('customFields').get(cf.internalName)">
-          </custom-field-filter>
         </div>
       </ng-container>
       <!-- Order by -->
@@ -173,5 +151,5 @@
         </single-selection-field>
       </div>
     </div>
-  </div>
+  </form>
 </page-content>

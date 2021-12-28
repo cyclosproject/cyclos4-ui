@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+
+<head>
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      min-height: 100%;
+      display: flex;
+      background-color: #f8f9fa;
+    }
+
+    body.dark {
+      background-color: #2a2a2a;
+    }
+
+    #rootSpinner,
+    #rootAlertContainer {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #rootSpinner {
+      color: black;
+    }
+
+    body.dark #rootSpinner {
+      color: white;
+    }
+
+    #rootSpinner svg {
+      width: 64px;
+      height: 64px;
+    }
+
+    noscript {
+      display: flex;
+      justify-content: center;
+      font-family: sans-serif;
+      font-size: 1rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      text-align: center;
+    }
+
+  </style>
+  <meta charset="utf-8">
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta id="themeColorMeta" name="theme-color" content="">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body
+  onload="self.cyclosLoaded === true ? null : document.getElementById('rootSpinner').style.display = ''">
+  <div id="rootSpinner">
+    <svg viewBox="0 0 40 40" fill="currentColor">
+      <path opacity="0.2"
+        d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+        s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+        c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z">
+      </path>
+      <path opacity="0.7" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+        C22.32,8.481,24.301,9.057,26.013,10.047z"
+        transform="rotate(200.068 20 20)">
+        <animateTransform attributeType="xml" attributeName="transform"
+          type="rotate" from="0 20 20" to="360 20 20" dur="0.7s"
+          repeatCount="indefinite"></animateTransform>
+      </path>
+    </svg>
+  </div>
+  <script>
+    var theme = localStorage ? localStorage.getItem('theme') : null;
+    if (theme == null || theme === '') {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      localStorage ? localStorage.setItem('theme', theme) : null;
+    } else {
+      theme = theme === 'dark' ? 'dark' : 'light';
+    }
+    document.body.classList.add(theme);
+  </script>
+  <div id="rootAlertContainer" style="display: none">
+    <div class="d-flex flex-column alert alert-danger p-4 text-center"
+      role="alert">
+      <div id="rootAlert"></div>
+      <button type="button" id="reloadButton" style="display:none"
+        class="btn btn-primary mt-4" onclick="location.reload()"></button>
+    </div>
+  </div>
+  <pay-root class="d-flex flex-column flex-grow-1"></pay-root>
+  <noscript>
+    This application requires JavaScript, but your browser either doesn't
+    support it or has disabled it.
+    <br><br>
+    Please, enable JavaScript if possible, or use another browser.
+  </noscript>
+</body>
+
+</html>

@@ -2,6 +2,7 @@
   "general": {
     "by": "Deur",
     "changedBy": "Verander deur",
+    "code": "Kode",
     "action": "Aksie",
     "actions": "Aksies",
     "add": "Voeg by",
@@ -35,6 +36,11 @@
     "currency": "Geldeenheid",
     "sendMedium": {
       "email": "E-pos"
+    },
+    "datePart": {
+      "long": {
+        "day": "Dag"
+      }
     },
     "month": {
       "long": {
@@ -76,6 +82,9 @@
   },
   "error": {
     "maxItems": "Kan nie meer as {max} elemente toevoeg nie",
+    "unauthorized": {
+      "url": "Toegang vanaf hierdie URL is nie toegelaat nie"
+    },
     "securityAnswer": {
       "disabled": "Agv die aantal sekuriteitsvraagpogings, is hierdie versoekopdrag gestaak.\nKontak asseblief die administrasie."
     },
@@ -88,6 +97,7 @@
     "banking": "Bankwese",
     "banking.accountsSummary": "Rekeningopsomming",
     "banking.pendingMyAuth": "Wag op my magtiging",
+    "banking.buyVouchers": "Koop koopbewyse",
     "banking.accountBalanceLimits": "Rekening saldo perke",
     "banking.accountPaymentLimits": "Rekening betaling perke",
     "brokering": "Makelary",
@@ -301,19 +311,23 @@
     },
     "mobileTitle": {
       "buy": "Koop koopbewyse",
-      "buyConfirmation": "Koop bevestiging"
+      "buyConfirmation": "Koop bevestiging",
+      "bought": "Gekoopte koopbewyse"
     },
     "title": {
       "buy": "Koop koopbewyse",
       "buyConfirmation": "Koop bevestiging"
     },
+    "boughtType": "Gekoop",
     "buy": {
       "amountRange": "Bedrag reeks",
       "buyer": "Aankoper",
-      "minTimeToRedeem": "Kan vereffen word"
+      "minTimeToRedeem": "Kan vereffen word",
+      "payment": "Koop betaling"
     },
     "amountPerVoucher": "Bedrag per koopbewys",
     "buyerGroups": "Kopergroepe",
+    "creationType": "Skeppingstipe",
     "cancel": {
       "refundConfirmation": "Is u seker om hierdie koopbewys te kanselleer en terug te betaal?",
       "confirmation": "Is u seker om hierdie bewys te kanselleer?"
@@ -324,10 +338,15 @@
       "expirationDateDesc": "Vervaldatum dalend",
       "expirationDateAsc": "Vervaldatum stygende"
     },
+    "cancelAndRefund": "Kanselleer en betaal terug",
+    "cancelConfirmation": "Is u seker om hierdie bewys te kanselleer?",
     "changeExpirationDate": "Wysig vervaldatum",
     "expirationDateChanged": "Vervaldatum het verander"
   },
   "field": {
+    "date": {
+      "clear": "Maak skoon"
+    },
     "image": {
       "camera": "Vaslegging dmv kamera",
       "manageAfterConfirm": "Na bevestiging, sorg asb dat u die Berg knoppie druk om die wysigings toe te pas."
@@ -339,6 +358,7 @@
     },
     "html": {
       "font.default": "Verstek lettertipe",
+      "backgroundColor": "Agtergrond kleur",
       "align.center": "Middel",
       "bold": "Vetgedruk",
       "list.bulleted": "Gepunteerde lys",
@@ -348,6 +368,7 @@
         "text": "Vertoonde teks"
       },
       "image": {
+        "category": "Kategorie",
         "height": "Hoogte",
         "float": "Rig",
         "marginBottom": "Onderste kantlyn",
@@ -369,6 +390,9 @@
     },
     "mobileTitle": {
       "editProfile": "Redigeer profiel",
+      "addresses": "Adresse",
+      "contactInfos": "Bykomende kontakte",
+      "confirmation": "Bevestig",
       "registration.confirmation": "Bevestig",
       "contactList": "Kontakte",
       "directory": "Gids",
@@ -376,8 +400,10 @@
       "userBrokerings": "Makelaar lede"
     },
     "connectionStatus": "Verbindingstatus",
+    "activities": "Aktiwiteite",
     "group": "Groep",
     "broker": "Makelaar",
+    "brokers": "Makelaars",
     "groups": "Groepe",
     "groupSet": "Groepstel",
     "group.filter": "Groepe",
@@ -398,7 +424,6 @@
     "assignedProducts": "Toegekende produkte",
     "beginUserActivationDate": "Aktiveer na",
     "endUserActivationDate": "Aktiveer voor",
-    "activities": "Aktiwiteite",
     "profile": {
       "accountsSummary": "Rekeningopsomming",
       "hideActions": "Versteek aksies",
@@ -408,6 +433,7 @@
       "adInterests": "Advertensiebelange",
       "deliveryMethods": "Afleweringsmetodes",
       "agreements": "Ooreenkomste",
+      "buyVouchers": "Koop koopbewyse",
       "accountsBalanceLimits": "Rekening saldo perke",
       "accountsPaymentLimits": "Rekening betaling perke"
     },
@@ -473,7 +499,13 @@
     "current": "Huidige groep",
     "confirm": "Is u seker om {user} na groep {group} te verander?",
     "confirm.aliasOperator": "Is u seker om {user} dieselfde magtiging as die eienaar toe te ken?",
+    "title": {
+      "change.user": "Verander gebruikersgroep",
+      "change.operator": "Wysig group"
+    },
     "mobileTitle": {
+      "change.user": "Wysig group",
+      "change.operator": "Wysig group",
       "history.user": "Groepgeskiedenis",
       "history.operator": "Groepgeskiedenis"
     }
@@ -495,6 +527,7 @@
     }
   },
   "phone": {
+    "extensionValue": "uitbr. {value}",
     "enabledSms": "Aangeskakel vir SMS",
     "verify": {
       "code": "Kode",
@@ -549,6 +582,7 @@
     "itemsNoLongerAvailable": "- is nie meer beskikbaar nie.<br>",
     "itemsOutOfStock": "- voorraad is uitgeput.<br>",
     "lowBalance": "- oorskry u {currency} saldo.",
+    "category": "Kategorie",
     "categories": "Kategorieë",
     "creationDate": "Skeppingsdatum",
     "byOwner": "Deur {owner}",
@@ -613,6 +647,9 @@
         "authorizedPaymentDenied": "Gemagtigde betaling geweier",
         "authorizedPaymentExpired": "Gemagtigde betaling verstryk",
         "authorizedPaymentSucceeded": "Gemagtigde betaling suksesvol",
+        "boughtVouchersAboutToExpire": "Gekoopte koopbewyse sal binne 'n paar dae verval",
+        "boughtVouchersExpirationDateChanged": "Vervaldatum van gekoopte koopbewys het verander",
+        "boughtVouchersExpired": "Gekoopte koopbewys het verval",
         "externalPaymentExpired": "Eksterne betaling het verstryk",
         "externalPaymentPerformedFailed": "Eksterne betaling kon nie gelewer word nie",
         "externalPaymentReceivedFailed": "Eksterne betaling kon nie ontvang word nie",
@@ -651,6 +688,7 @@
   "notificationSettings": {
     "accounts": "Rekeninge",
     "feedbackAndReferences": "Terugvoer en verwysings",
+    "enableOrDisable": "Skakel {section} aan of af",
     "enableAll": "Skakel alles aan",
     "disableAll": "Skakel alles af"
   },
@@ -665,6 +703,7 @@
     "login": "Gaan voort met <b>{provider}</b>",
     "login.noEmail": "Kon nie 'n e-posadres van jou {provider} rekening bepaal nie. U sal moet met u gereelde gebruikernaam en wagwoord aanmeld. Nadat u aangemeld het, sal u {app} rekening outomaties gekoppel word, dus, die volgende keer, sal die 'Gaan voort met {provider}' regstreeks werk.",
     "registration.disclaimer": "<b> Vrywaring: </b> Geen van u data sal met hierdie verskaffers gedeel word nie, en die enigste doel om u persoonlike data daaruit te lees, is om die registrasievorm in te vul en u aan te meld nadat u geregistreer is.",
+    "disclaimer": "<b> Vrywaring: </b> Geen van u data sal met hierdie verskaffers gedeel word nie. Die enigste data wat van die verskaffers gelees word, is u vertoonnaam en e-pos, met die uitsluitlike doel om vinniger aan te meld {app}.",
     "action": {
       "connect": "Koppel",
       "disconnect": "Ontkoppel"
@@ -684,6 +723,7 @@
     "theme.dark": "Donker"
   },
   "privacySettings": {
+    "enableControl": "Skakel privaatheidbeheer aan",
     "controlsSection": "Departemente toegelaat om toegang tot private data te verkry"
   },
   "record": {
@@ -728,6 +768,7 @@
     },
     "enable": "Skakel aan",
     "document": "Dokument",
+    "category": "Kategorie",
     "action": "Dokumente ({count})"
   },
   "token": {
@@ -764,6 +805,9 @@
       "multi": "({0} verwysings)"
     },
     "title": {
+      "edit": "Redigeer gegewe verwysing"
+    },
+    "mobileTitle": {
       "edit": "Redigeer gegewe verwysing"
     },
     "direction": {

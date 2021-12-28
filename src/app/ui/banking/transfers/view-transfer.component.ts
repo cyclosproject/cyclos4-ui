@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { CreateDeviceConfirmation, DeviceConfirmationTypeEnum, TransferView } from 'app/api/models';
 import { TransfersService } from 'app/api/services/transfers.service';
-import { SvgIcon } from 'app/core/svg-icon';
-import { HeadingAction } from 'app/shared/action';
-import { empty } from 'app/shared/helper';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
-import { RunOperationHelperService } from 'app/ui/core/run-operation-helper.service';
+import { OperationHelperService } from 'app/ui/core/operation-helper.service';
+import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
+import { empty } from 'app/shared/helper';
+import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Displays a transfer details
@@ -24,7 +24,7 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
     injector: Injector,
     private bankingHelper: BankingHelperService,
     private transfersService: TransfersService,
-    private runOperationHelper: RunOperationHelperService) {
+    private operationHelper: OperationHelperService) {
     super(injector);
   }
 
@@ -52,7 +52,7 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
     const transaction = transfer.transaction || {};
     if (!empty(transaction.authorizations)) {
       actions.push(new HeadingAction(SvgIcon.CheckCircle, this.i18n.transaction.viewAuthorizations, () => {
-        this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(transaction), 'authorization-history']);
+        this.router.navigate(['banking', 'transaction', this.bankingHelper.transactionNumberOrId(transaction), 'authorization-history']);
       }));
     }
     if (transfer.canChargeback) {
@@ -60,7 +60,7 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
         () => this.chargeback()));
     }
     for (const operation of transfer.operations || []) {
-      actions.push(this.runOperationHelper.headingAction(operation, transfer.id));
+      actions.push(this.operationHelper.headingAction(operation, transfer.id));
     }
     return actions;
   }
@@ -73,7 +73,7 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
   }
 
   private chargeback() {
-    this.confirmation.confirm({
+    this.notification.confirm({
       title: this.i18n.transaction.chargebackTransfer,
       message: this.i18n.transaction.chargebackTransferMessage,
       createDeviceConfirmation: this.chargebackDeviceConfirmation(),

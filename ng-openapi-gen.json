@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
-  "input": "src/openapi/cyclos-openapi.yaml",
+  "input": "../cyclos4-web/build/generated/resources/openapi/main/openapi/cyclos-openapi.yaml",
   "output": "src/app/api",
   "includeTags": [
     "Frontend",
@@ -8,7 +8,6 @@
     "Localization",
     "Push",
     "DeviceConfirmations",
-    "Messages",
     "Notifications",
     "NotificationSettings",
     "Passwords",
@@ -27,14 +26,12 @@
     "Installments",
     "ScheduledPayments",
     "RecurringPayments",
-    "ExternalPayments",
     "PendingPayments",
     "Transfers",
     "Payments",
     "Tickets",
     "POS",
     "Accounts",
-    "AccountVisibility",
     "Marketplace",
     "AdQuestions",
     "AdInterests",
@@ -47,7 +44,6 @@
     "Wizards",
     "Sessions",
     "Vouchers",
-    "VoucherInfo",
     "Alerts",
     "Brokering",
     "Records",
@@ -62,12 +58,9 @@
     "PaymentLimits",
     "PrivacySettings",
     "References",
-    "PaymentFeedbacks",
-    "PaymentRequests",
-    "Invite"
+    "PaymentRequests"
   ],
   "enumStyle": "upper",
   "skipJsonSuffix": true,
-  "serviceIndex": false,
-  "module": false
+  "serviceIndex": false
 }

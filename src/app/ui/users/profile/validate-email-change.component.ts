@@ -30,7 +30,7 @@ export class ValidateEmailChangeComponent
     const key = this.route.snapshot.params.key;
     this.addSub(this.validationService.validateEmailChange({ key }).subscribe(() => {
       this.notification.snackBar(this.i18n.user.newEmailConfirmed);
-      this.router.navigate(['/users', 'self', 'profile']);
+      this.router.navigate(['users', 'self', 'profile']);
     }));
   }
 

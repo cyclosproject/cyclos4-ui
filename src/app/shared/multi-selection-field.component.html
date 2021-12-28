@@ -1,5 +1,4 @@
-<label-value *ngIf="label; else widget" [formField]="self"
-  [informationText]="informationText">
+<label-value *ngIf="label; else widget" [formField]="self">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
@@ -31,7 +30,7 @@
           *ngFor="let option of category.options | async; let firstOpt = first"
           class="custom-control custom-checkbox d-flex align-content-center"
           [class]="resolveStyle(option)" [ngClass]="{
-            'mt-1': !(firstCat &&  !category.name && firstOpt)
+            'mt-1': !(firstCat && firstOpt)
           }" (click)="toggle(option.value)"
           (keydown.space)="$event.preventDefault(); $event.stopPropagation()"
           (keyup.enter)="toggle(option.value)" (keyup.esc)="close()">

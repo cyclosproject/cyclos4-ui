@@ -1,8 +1,8 @@
 <page-layout [ready]="data$ | async">
   <page-content *ngIf="data" [heading]="i18n.user.title.operatorRegistration"
     [mobileHeading]="i18n.user.mobileTitle.operatorRegistration" last>
-    <ng-container *ngIf="(result$ | async) == null; else done"
-      [formGroup]="form" autocomplete="off">
+    <form *ngIf="(result$ | async) == null; else done" [formGroup]="form"
+      autocomplete="off">
       <label-value *ngIf="!self" [label]="i18n.user.operatorOwner">
         <user-link [user]="data.user"></user-link>
       </label-value>
@@ -35,9 +35,13 @@
       <!-- Custom profile fields -->
       <ng-container *ngFor="let cf of data.customFields"
         [formGroup]="form.get('customValues')">
-        <custom-field-input *ngIf="canEdit(cf)" [field]="cf"
-          [formControlName]="cf.internalName">
-        </custom-field-input>
+        <label-value *ngIf="canEdit(cf)" [label]="cf.name" [kind]="'field'"
+          [fieldSize]="fieldSize(cf)" [required]="cf.required"
+          [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'">
+          <custom-field-input [field]="cf" hideLabel
+            [formControlName]="cf.internalName">
+          </custom-field-input>
+        </label-value>
       </ng-container>
 
       <!-- Mobile phone -->
@@ -87,7 +91,7 @@
         <action-button (action)="register()" [label]="i18n.general.submit">
         </action-button>
       </actions>
-    </ng-container>
+    </form>
   </page-content>
 
   <ng-template #done>

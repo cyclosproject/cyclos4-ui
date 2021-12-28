@@ -22,7 +22,7 @@ export class AddressDetailsComponent extends BaseComponent implements OnInit {
   }
 
   @Input() address: Address;
-  @Input() elementClass = 'data-item';
+  @Input() elementClass: string;
 
   contactInfo: AddressContactInfo;
 
@@ -32,6 +32,10 @@ export class AddressDetailsComponent extends BaseComponent implements OnInit {
     if (view && view.contactInfo) {
       this.contactInfo = view.contactInfo;
     }
+  }
+
+  get classNames() {
+    return this.elementClass ? [this.elementClass] : 'mb-1';
   }
 
   get country(): string {

@@ -3,9 +3,9 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormControl, FormGroup } from '@angular/forms';
 import { Params } from '@angular/router';
 import {
-  CreateDeviceConfirmation, Currency, CustomFieldDetailed, DeviceConfirmationTypeEnum,
+  CreateDeviceConfirmation, CustomFieldDetailed, DeviceConfirmationTypeEnum,
   ExportFormat, OperationDataForRun, OperationResultTypeEnum,
-  OperationRowActionEnum, OperationScopeEnum, RunOperationAction, RunOperationResult, RunOperationResultColumn, RunOperationResultColumnTypeEnum
+  OperationRowActionEnum, OperationScopeEnum, RunOperationResult
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services/operations.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
@@ -14,14 +14,11 @@ import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { PagedResults } from 'app/shared/paged-results';
-import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
 import { OperationHelperService } from 'app/ui/core/operation-helper.service';
-import { RunOperationHelperService } from 'app/ui/core/run-operation-helper.service';
 import { OperationRunScope } from 'app/ui/operations/operation-run-scope';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { PageData } from 'app/ui/shared/page-data';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, first, tap } from 'rxjs/operators';
 
@@ -55,7 +52,6 @@ export class RunOperationComponent
   hasSearchFields: boolean;
   leaveNotification: boolean;
   alreadyExecuted: boolean;
-  closeTimer: any;
   private createDeviceConfirmation: () => CreateDeviceConfirmation;
 
   get result(): RunOperationResult {
@@ -70,10 +66,8 @@ export class RunOperationComponent
     injector: Injector,
     private fieldsHelper: FieldHelperService,
     private operationHelper: OperationHelperService,
-    private runOperationHelper: RunOperationHelperService,
     private nextRequestState: NextRequestState,
-    private operationsService: OperationsService,
-    private modal: BsModalService) {
+    private operationsService: OperationsService) {
     super(injector);
   }
 
@@ -147,7 +141,7 @@ export class RunOperationComponent
       this.self = this.authHelper.isSelf(data.user);
     }
 
-    if (data.scope === OperationScopeEnum.INTERNAL && data.id !== this.runOperationHelper.nextAction) {
+    if (data.scope === OperationScopeEnum.INTERNAL && data.id !== this.operationHelper.nextAction) {
       // This action has already been executed, this is probably a page refresh
       this.alreadyExecuted = true;
       return;
@@ -158,7 +152,7 @@ export class RunOperationComponent
     const formFields = data.formParameters || [];
     this.form = this.fieldsHelper.customValuesFormGroup(formFields);
     this.fileControl = this.formBuilder.control(null);
-    this.runDirectly = this.runOperationHelper.canRunDirectly(data, false);
+    this.runDirectly = this.operationHelper.canRunDirectly(data, false);
     this.hasSearchFields = formFields.length > 0 || data.hasFileUpload;
 
     if (formFields.length > 0) {
@@ -190,9 +184,6 @@ export class RunOperationComponent
     // Register the row action, if any
     this.operationHelper.register(data.rowOperation);
 
-    // Heading actions
-    this.addHeadingActions(data, data.actions);
-
     // Maybe the operation will be executed directly
     if (this.runDirectly) {
       this.nextRequestState.leaveNotification = this.leaveNotification;
@@ -221,33 +212,16 @@ export class RunOperationComponent
     if (!this.form.valid) {
       return;
     }
-    if (data.submitWithQrCodeScan) {
-      const ref = this.modal.show(ScanQrCodeComponent, {
-        class: 'modal-form',
-      });
-      const component = ref.content as ScanQrCodeComponent;
-      component.select.pipe(first()).subscribe(value => this.confirmAndRun(data, value));
-    } else {
-      this.confirmAndRun(data);
-    }
-  }
-
-  private confirmAndRun(data: OperationDataForRun, scannedQrCode?: string) {
     if (!empty(data.confirmationText) || data.confirmationPasswordInput) {
-      this.confirmation.confirm({
+      this.notification.confirm({
         title: data.name,
         message: data.confirmationText,
         createDeviceConfirmation: this.createDeviceConfirmation,
         passwordInput: data.confirmationPasswordInput,
-        callback: conf => this.doRun(data, {
-          confirmationPassword: conf.confirmationPassword,
-          scannedQrCode
-        }),
+        callback: conf => this.doRun(data, conf.confirmationPassword),
       });
     } else {
-      this.doRun(data, {
-        scannedQrCode
-      });
+      this.doRun(data, null);
     }
   }
 
@@ -256,25 +230,15 @@ export class RunOperationComponent
     this.run();
   }
 
-  get runAction() {
-    return () => this.run();
-  }
-
-  private doRun(data: OperationDataForRun, params?: {
-    confirmationPassword?: string,
-    scannedQrCode?: string,
-    exportFormat?: ExportFormat;
-  }) {
-    params = params || {};
+  private doRun(data: OperationDataForRun, confirmationPassword: string, exportFormat?: ExportFormat) {
     // Get the request from OperationHelperService
-    const request = this.runOperationHelper.runRequest(data, {
+    const request = this.operationHelper.runRequest(data, {
       scopeId: this.scopeId,
-      confirmationPassword: params.confirmationPassword,
-      scannedQrCode: params.scannedQrCode,
+      confirmationPassword,
       formParameters: this.form.value,
-      exportFormat: params.exportFormat,
       pageData: this.pageData,
-      upload: this.fileControl.value
+      upload: this.fileControl.value,
+      exportFormat
     });
 
     // Append the query parameters
@@ -290,7 +254,7 @@ export class RunOperationComponent
   }
 
   private afterRun(response: HttpResponse<any>) {
-    const handled = this.runOperationHelper.handleResult(response);
+    const handled = this.operationHelper.handleResult(response);
     if (handled) {
       // Already handled (download / notification / url / redirect)
       return;
@@ -302,37 +266,13 @@ export class RunOperationComponent
     // Store the result
     this.result$.next(result);
 
-    // If there's a timeout for closing the result, apply it
-    if (this.isContent && this.data.closeAfterSeconds != null) {
-      this.closeTimer = setTimeout(() => this.reload(), this.data.closeAfterSeconds * 1000);
-    }
-
     // Heading actions
-    this.addHeadingActions(this.data, result.actions);
-
-    if (this.isSearch) {
-      // Get the results page from the response
-      const paged = new PagedResults(result.rows);
-      PagedResults.fillHeaders(paged, response);
-      this.pageResults$.next(paged);
-    }
-  }
-
-  reload() {
-    if (this.closeTimer) {
-      clearTimeout(this.closeTimer);
-      this.closeTimer = null;
-    }
-    super.reload();
-  }
-
-  private addHeadingActions(data: OperationDataForRun, actions: RunOperationAction[]) {
     const headingActions: HeadingAction[] = [];
-    if (data.allowPrint && this.isContent) {
+    if (this.data.allowPrint && this.isContent) {
       headingActions.push(this.exportHelper.printAction());
-    } else if (!empty(data.exportFormats)) {
-      this.exportHelper.headingActions(data.exportFormats, f =>
-        this.runOperationHelper.runRequest(data, {
+    } else if (!empty(this.data.exportFormats)) {
+      this.exportHelper.headingActions(this.data.exportFormats, f =>
+        this.operationHelper.runRequest(this.data, {
           scopeId: this.scopeId,
           formParameters: this.form.value,
           pageData: this.pageData,
@@ -340,13 +280,13 @@ export class RunOperationComponent
           exportFormat: f
         })).forEach(a => headingActions.push(a));
     }
-    for (const action of actions || []) {
+    for (const action of result.actions || []) {
       // Register each custom operation action
       const op = action.action;
       if (op) {
         this.operationHelper.register(op);
         headingActions.push(new HeadingAction(this.operationHelper.icon(op), op.label, () => {
-          this.runOperationHelper.run(op, null, action.parameters);
+          this.operationHelper.run(op, null, action.parameters);
         }));
       }
     }
@@ -354,6 +294,13 @@ export class RunOperationComponent
       headingActions[0].maybeRoot = true;
     }
     this.headingActions = headingActions;
+
+    if (this.isSearch) {
+      // Get the results page from the response
+      const paged = new PagedResults(result.rows);
+      PagedResults.fillHeaders(paged, response);
+      this.pageResults$.next(paged);
+    }
   }
 
   /** Handle the row action */
@@ -366,8 +313,8 @@ export class RunOperationComponent
     switch (action) {
       case OperationRowActionEnum.OPERATION:
         const operation = data.rowOperation;
-        this.runOperationHelper.nextAction = operation.id;
-        this.router.navigate(['/operations', 'action', ApiHelper.internalNameOrId(operation)], {
+        this.operationHelper.nextAction = operation.id;
+        this.router.navigate(['operations', 'action', ApiHelper.internalNameOrId(operation)], {
           queryParams: params,
         });
         break;
@@ -396,21 +343,8 @@ export class RunOperationComponent
     return (row: any) => this.rowClick(row);
   }
 
-  formatCell(value: any, col: RunOperationResultColumn): string {
-    switch (col.type) {
-      case RunOperationResultColumnTypeEnum.BOOLEAN:
-        return this.format.formatBoolean(value);
-      case RunOperationResultColumnTypeEnum.DATE:
-        return this.format.formatAsDate(value);
-      case RunOperationResultColumnTypeEnum.NUMBER:
-        return this.format.formatAsNumber(value, col.decimalDigits);
-      case RunOperationResultColumnTypeEnum.CURRENCY_AMOUNT:
-        if (value && typeof value === 'object') {
-          const ca = value as { amount: any, currency: Currency; };
-          return this.format.formatAsCurrency(ca.currency, ca.amount);
-        }
-    }
-    return String(value);
+  fieldSize(cf: CustomFieldDetailed) {
+    return this.fieldHelper.fieldSize(cf);
   }
 
   resolveMenu(data: OperationDataForRun) {

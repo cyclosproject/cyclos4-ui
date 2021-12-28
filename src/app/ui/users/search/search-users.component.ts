@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  BasicProfileFieldInput,
   Country, CustomFieldDetailed, RoleEnum, User, UserAddressResultEnum,
   UserDataForMap, UserDataForSearch, UserQueryFilters, UserStatusEnum
 } from 'app/api/models';
@@ -9,7 +8,6 @@ import { UsersService } from 'app/api/services/users.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';
-import { MapsService } from 'app/ui/core/maps.service';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { CountriesResolve } from 'app/ui/countries.resolve';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
@@ -53,16 +51,12 @@ export class SearchUsersComponent
   canViewMap: boolean;
   countries$: Observable<Country[]>;
   customFieldsInSearch: CustomFieldDetailed[];
-  basicFieldsInSearch: BasicProfileFieldInput[];
-  fieldsInBasicSearch: any[];
-  fieldsInAdvancedSearch: any[];
 
   constructor(
     injector: Injector,
     private usersService: UsersService,
     private userHelper: UserHelperService,
     private countriesResolve: CountriesResolve,
-    private mapService: MapsService
   ) {
     super(injector);
   }
@@ -70,16 +64,11 @@ export class SearchUsersComponent
   protected getFormControlNames() {
     return ['keywords', 'groups', 'customValues', 'distanceFilter', 'orderBy', 'statuses', 'beginActivationPeriod', 'endActivationPeriod',
       'beginCreationPeriod', 'endCreationPeriod', 'beginLastLoginPeriod', 'endLastLoginPeriod', 'notAcceptedAgreements',
-      'acceptedAgreements', 'products', 'brokers', 'invitedBy', 'invitedByMe'];
+      'acceptedAgreements', 'products', 'brokers'];
   }
 
   getInitialResultType() {
-    return this.doCanSearch() ? this.layout.xxs ? ResultType.LIST : ResultType.TILES : ResultType.MAP;
-  }
-
-  doCanSearch() {
-    const usersSearch = this.login.auth?.permissions?.users?.search;
-    return this.router.url.includes('brokerings') || (!this.dataForFrontendHolder.dataForUi.hideUserSearchInMenu && usersSearch);
+    return this.layout.xxs ? ResultType.LIST : ResultType.TILES;
   }
 
   ngOnInit() {
@@ -127,8 +116,8 @@ export class SearchUsersComponent
     // Get the permissions to search users and view map directory
     const permissions = (auth || {}).permissions || {};
     const users = permissions.users || {};
-    this.canSearch = this.kind === UserSearchKind.Broker || (users.search && !this.dataForFrontendHolder.dataForUi.hideUserSearchInMenu);
-    this.canViewMap = publicOrMember && users.map && this.mapService.enabled;
+    this.canSearch = this.kind === UserSearchKind.Broker || !!users.search;
+    this.canViewMap = publicOrMember && users.map;
     if (!this.canSearch && !this.canViewMap) {
       this.errorHandler.handleForbiddenError({});
       return;
@@ -145,8 +134,8 @@ export class SearchUsersComponent
 
     this.countries$ = this.countriesResolve.data;
 
-    // Get data for search
-    this.onResultTypeChanged(this.getInitialResultType() === ResultType.MAP ? ResultType.MAP : null, null);
+    this.resultType = this.getInitialResultType();
+    this.onResultTypeChanged(this.resultType, null);
   }
 
   get statusOptions(): FieldOption[] {
@@ -178,43 +167,16 @@ export class SearchUsersComponent
         // When there are no fields in list, set the display
         data.fieldsInList = ['display'];
       }
-      if (resultType == null) {
-        // Update default only first time
-        this.resultType = this.getResultType(data.resultType);
-      }
       this.doIgnoringUpdate(() => {
-        this.customFieldsInSearch = [];
-        this.basicFieldsInSearch = [];
-        this.fieldsInBasicSearch = [];
-        this.fieldsInAdvancedSearch = [];
-        data.fieldsInBasicSearch?.forEach(f => {
-          var field: any = data.customFields.find(cf => cf.internalName === f);
-          if (field) {
-            this.customFieldsInSearch.push(field);
-          } else {
-            field = data.basicFields.find(bf => bf.field === f);
-            this.basicFieldsInSearch.push(field);
-          }
-          this.fieldsInBasicSearch.push(field);
-        });
-        data.fieldsInAdvancedSearch?.forEach(f => {
-          var field: any = data.customFields.find(cf => cf.internalName === f);
-          if (field) {
-            this.customFieldsInSearch.push(field);
-          } else {
-            field = data.basicFields.find(bf => bf.field === f);
-            this.basicFieldsInSearch.push(field);
-          }
-          this.fieldsInAdvancedSearch.push(field);
-        });
+        this.customFieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch?.includes(cf.internalName));
         this.form.setControl('profileFields',
-          this.fieldHelper.profileFieldsForSearchFormGroup(this.basicFieldsInSearch, this.customFieldsInSearch));
+          this.fieldHelper.profileFieldsForSearchFormGroup(data.basicFields, this.customFieldsInSearch));
         if (!this.broker && data.broker) {
           this.broker = data.broker;
         }
         this.data = data;
         this.headingActions = [
-          ...this.doShowMoreFilters() ? [] : [this.moreFiltersAction],
+          ...empty(data.fieldsInSearch) ? [] : [this.moreFiltersAction],
           ...this.exportHelper.headingActions(this.data.exportFormats, f => this.usersService.exportUsers$Response({
             format: f.internalName,
             ...this.toSearchParams(this.form.value)
@@ -240,11 +202,6 @@ export class SearchUsersComponent
     }
   }
 
-  doShowMoreFilters() {
-    return empty(this.data.fieldsInAdvancedSearch) && !this.byManager && !this.dataForFrontendHolder.auth?.permissions?.invite
-      && this.data.searchByDistanceData;
-  }
-
   get brokeringSearch() {
     return this.kind === UserSearchKind.Broker;
   }
@@ -263,10 +220,6 @@ export class SearchUsersComponent
     filters.lastLoginPeriod = ApiHelper.dateRangeFilter(value.beginLastLoginPeriod, value.endLastLoginPeriod);
 
     filters.profileFields = this.fieldHelper.toProfileFieldsFilter(value.profileFields);
-
-    if (value.invitedByMe) {
-      filters.invitedBy = ApiHelper.SELF;
-    }
 
     const distanceFilter: MaxDistance = value.distanceFilter;
     if (distanceFilter) {

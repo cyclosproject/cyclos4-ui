@@ -1,20 +1,18 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   BuyVoucherError, BuyVoucherErrorCode, ConflictError, ConflictErrorCode,
   ErrorKind, ForbiddenError, ForbiddenErrorCode, ForgottenPasswordError,
   ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError, NotFoundError,
   PasswordStatusEnum, PaymentError, PaymentErrorCode, RedeemVoucherError,
   RedeemVoucherErrorCode, ShoppingCartError, ShoppingCartErrorCode,
-  TopUpVoucherError,
-  TopUpVoucherErrorCode,
   UnauthorizedError, UnauthorizedErrorCode, UnavailableError, UnavailableErrorCode, UserStatusEnum
 } from 'app/api/models';
 import { ApiI18nService } from 'app/core/api-i18n.service';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { FormatService } from 'app/core/format.service';
 import { NotificationService } from 'app/core/notification.service';
-import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
+import { I18n } from 'app/i18n/i18n';
 import { empty } from 'app/shared/helper';
 import { first } from 'rxjs/operators';
 import { ErrorStatus } from './error-status';
@@ -28,17 +26,16 @@ import { NextRequestState } from './next-request-state';
 })
 export class ErrorHandlerService {
 
-  // These handlers are used to reduce the initial bundle, so other apps (not the ui)
-  // can use the same error handler without pulling a lot of dependencies.
   goToLoginPageHandler: () => any;
   validationErrorHandler: (error: InputError) => any;
+  nestedErrorHandler: (error: NestedError) => any;
 
   constructor(
     private notification: NotificationService,
     private format: FormatService,
     private nextRequestState: NextRequestState,
     private dataForFrontendHolder: DataForFrontendHolder,
-    @Inject(I18nInjectionToken) private i18n: I18n,
+    private i18n: I18n,
     private apiI18n: ApiI18nService
   ) { }
 
@@ -63,101 +60,70 @@ export class ErrorHandlerService {
     if (err.error instanceof Error) {
       // Client-side error
       console.error('Client-side request error');
-      console.dir(err.error);
+      console.error(err.error);
     } else {
       // Server-generated error
-      const error = this.parseError(err.error);
-      if (!this.i18n.initialized$.value) {
-        //In case the translations weren't loaded show a fixed message
-        this.handleErrorWhenNoTranslations(err.status, error);
-      } else {
-        switch (err.status) {
-          case ErrorStatus.INVALID_REQUEST:
-            this.handleInvalidRequest();
-            return;
-          case ErrorStatus.UNAUTHORIZED:
-            this.handleUnauthorizedError(error as UnauthorizedError);
-            return;
-          case ErrorStatus.FORBIDDEN:
-            this.handleForbiddenError(error as ForbiddenError);
-            return;
-          case ErrorStatus.NOT_FOUND:
-            this.handleNotFoundError(error as NotFoundError);
-            return;
-          case ErrorStatus.UNPROCESSABLE_ENTITY:
-            this.handleInputError(error as InputError);
-            return;
-          case ErrorStatus.CONFLICT:
-            this.handleConflictError(error as ConflictError);
-            return;
-          case ErrorStatus.SERVICE_UNAVAILABLE:
-            this.handleUnavailableError(error as UnavailableError);
-            return;
-          case ErrorStatus.INTERNAL_SERVER_ERROR:
-            // The internal server error may be a specific kind or a general error
-            if (error != null && error.hasOwnProperty('kind')) {
-              switch (error.kind) {
-                case ErrorKind.PAYMENT:
-                  // A payment error
-                  this.handlePaymentError(error as PaymentError);
-                  return;
-                case ErrorKind.FORGOTTEN_PASSWORD:
-                  // An error while changing a forgotten password
-                  this.handleForgottenPasswordError(error as ForgottenPasswordError);
-                  return;
-                case ErrorKind.REDEEM_VOUCHER:
-                  this.handleRedeemVoucherError(error as RedeemVoucherError);
-                  return;
-                case ErrorKind.TOP_UP_VOUCHER:
-                  this.handleTopUpVoucherError(error as TopUpVoucherError);
-                  return;
-                case ErrorKind.BUY_VOUCHER:
-                  this.handleBuyVoucherError(error as BuyVoucherError);
-                  return;
-                case ErrorKind.SHOPPING_CART:
-                  this.handleShoppingCartError(error as ShoppingCartError);
-                  return;
-                case ErrorKind.NESTED:
-                  // An error in a nested property
-                  this.handleNestedError(error as NestedError);
-                  return;
-              }
-            }
+      let error = err.error;
+      if (typeof error === 'string') {
+        try {
+          error = JSON.parse(error);
+        } catch (e) {
+          error = null;
         }
-        // No known specific error was handled
-        this.handleGeneralError();
       }
-    }
-  }
-
-  /**
-   * It only handles a handful of server errors (the most common ones) when the translations were not loaded.
-   */
-  handleErrorWhenNoTranslations(httpStatus: number, error: any) {
-    console.error("Translations are not loaded. Error:");
-    console.dir(error);
-    switch (httpStatus) {
-      case ErrorStatus.NOT_FOUND:
-        this.notification.error("The location you typed or tried to access was not found");
-        return;
-      case ErrorStatus.UNAUTHORIZED:
-      case ErrorStatus.FORBIDDEN:
-        this.notification.error("You don't have sufficient permissions to perform the requested action");
-        return;
-    }
-    this.notification.error("There was an unexpected error while processing your request");
-  }
-
-  public parseError(err: any): any {
-    let error = err;
-    if (typeof error === 'string') {
-      try {
-        error = JSON.parse(error);
-      } catch (e) {
-        error = null;
+      switch (err.status) {
+        case ErrorStatus.INVALID_REQUEST:
+          this.handleInvalidRequest();
+          return;
+        case ErrorStatus.UNAUTHORIZED:
+          this.handleUnauthorizedError(error as UnauthorizedError);
+          return;
+        case ErrorStatus.FORBIDDEN:
+          this.handleForbiddenError(error as ForbiddenError);
+          return;
+        case ErrorStatus.NOT_FOUND:
+          this.handleNotFoundError(error as NotFoundError);
+          return;
+        case ErrorStatus.UNPROCESSABLE_ENTITY:
+          this.handleInputError(error as InputError);
+          return;
+        case ErrorStatus.CONFLICT:
+          this.handleConflictError(error as ConflictError);
+          return;
+        case ErrorStatus.SERVICE_UNAVAILABLE:
+          this.handleUnavailableError(error as UnavailableError);
+          return;
+        case ErrorStatus.INTERNAL_SERVER_ERROR:
+          // The internal server error may be a specific kind or a general error
+          if (error != null && error.hasOwnProperty('kind')) {
+            switch (error.kind) {
+              case ErrorKind.PAYMENT:
+                // A payment error
+                this.handlePaymentError(error as PaymentError);
+                return;
+              case ErrorKind.FORGOTTEN_PASSWORD:
+                // An error while changing a forgotten password
+                this.handleForgottenPasswordError(error as ForgottenPasswordError);
+                return;
+              case ErrorKind.REDEEM_VOUCHER:
+                this.handleRedeemVoucherError(error as RedeemVoucherError);
+                return;
+              case ErrorKind.BUY_VOUCHER:
+                this.handleBuyVoucherError(error as BuyVoucherError);
+                return;
+              case ErrorKind.SHOPPING_CART:
+                this.handleShoppingCartError(error as ShoppingCartError);
+                return;
+              case ErrorKind.NESTED:
+                // An error in a nested property
+                this.handleNestedError(error as NestedError);
+                return;
+            }
+          }
       }
+      // No known specific error was handled
+      this.handleGeneralError();
     }
-    return error;
   }
 
   public handleInvalidRequest() {
@@ -172,10 +138,10 @@ export class ErrorHandlerService {
         this.notification.error(this.unauthorizedErrorMessage(error));
       }
     };
-    if (error?.code === UnauthorizedErrorCode.MISSING_AUTHORIZATION) {
+    if (error.code === UnauthorizedErrorCode.MISSING_AUTHORIZATION) {
       // Should be logged-in. Redirect to login page.
       goToLogin();
-    } else if (error?.code === UnauthorizedErrorCode.LOGGED_OUT) {
+    } else if (error.code === UnauthorizedErrorCode.LOGGED_OUT) {
       // Was logged out. Fetch the DataForFrontend again (as guest) and go to the login page.
       this.nextRequestState.setSessionToken(null);
       this.dataForFrontendHolder.reload().pipe(first()).subscribe(() => goToLogin());
@@ -193,7 +159,7 @@ export class ErrorHandlerService {
   }
 
   public handleInputError(error: InputError) {
-    if (this.validationErrorHandler && [InputErrorCode.VALIDATION, InputErrorCode.AGGREGATED].includes(error?.code)) {
+    if (this.validationErrorHandler && [InputErrorCode.VALIDATION, InputErrorCode.AGGREGATED].includes(error.code)) {
       this.validationErrorHandler(error);
     } else {
       this.notification.error(this.inputErrorMessage(error));
@@ -201,19 +167,7 @@ export class ErrorHandlerService {
   }
 
   public handleRedeemVoucherError(error: RedeemVoucherError) {
-    if (error?.code === RedeemVoucherErrorCode.PAYMENT) {
-      this.handlePaymentError(error.paymentError);
-    } else {
-      this.notification.error(this.redeemVoucherErrorMessage(error));
-    }
-  }
-
-  public handleTopUpVoucherError(error: TopUpVoucherError) {
-    if (error?.code === TopUpVoucherErrorCode.PAYMENT) {
-      this.handlePaymentError(error.paymentError);
-    } else {
-      this.notification.error(this.topUpVoucherErrorMessage(error));
-    }
+    this.notification.error(this.redeemVoucherErrorMessage(error));
   }
 
   public handleShoppingCartError(error: ShoppingCartError) {
@@ -221,16 +175,16 @@ export class ErrorHandlerService {
   }
 
   private shoppingCartErrorMessage(error: ShoppingCartError) {
-    if (error?.code === ShoppingCartErrorCode.CAN_NOT_BUY_FROM_SELLER) {
+    if (error.code === ShoppingCartErrorCode.CAN_NOT_BUY_FROM_SELLER) {
       return this.i18n.ad.error.cannotBuyFromSeller;
-    } else if (error?.code === ShoppingCartErrorCode.NOT_ENOUGH_STOCK) {
+    } else if (error.code === ShoppingCartErrorCode.NOT_ENOUGH_STOCK) {
       return this.i18n.ad.error.notEnoughStock;
     }
     return this.general;
   }
 
   public handleBuyVoucherError(error: BuyVoucherError) {
-    if (error?.code === BuyVoucherErrorCode.PAYMENT) {
+    if (error.code === BuyVoucherErrorCode.PAYMENT) {
       this.handlePaymentError(error.paymentError);
     } else {
       this.notification.error(this.buyVoucherErrorMessage(error));
@@ -238,7 +192,7 @@ export class ErrorHandlerService {
   }
 
   private buyVoucherErrorMessage(error: BuyVoucherError): string {
-    switch (error?.code) {
+    switch (error.code) {
       case BuyVoucherErrorCode.MAX_AMOUNT_FOR_PERIOD:
         return this.i18n.voucher.error.buy.amountForPeriod({ date: error.dateAllowedAgain, amount: error.amountLeftForBuying });
       case BuyVoucherErrorCode.MAX_OPEN_AMOUNT:
@@ -252,7 +206,7 @@ export class ErrorHandlerService {
   }
 
   private redeemVoucherErrorMessage(error: RedeemVoucherError): string {
-    switch (error?.code) {
+    switch (error.code) {
       case RedeemVoucherErrorCode.NOT_ALLOWED_FOR_USER:
         return this.i18n.voucher.error.redeem.user;
       case RedeemVoucherErrorCode.NOT_ALLOWED_FOR_VOUCHER:
@@ -262,33 +216,8 @@ export class ErrorHandlerService {
         return this.i18n.voucher.error.redeem.notAllowedToday(allowedDays);
       case RedeemVoucherErrorCode.NOT_ALLOWED_YET:
         return this.i18n.voucher.error.redeem.notAllowedYet(error.redeemAfterDate);
-      case RedeemVoucherErrorCode.INSUFFICIENT_BALANCE:
-        if (error.balance && error.currency) {
-          const balance = this.format.formatAsCurrency(error.currency, error.balance);
-          return this.i18n.voucher.error.redeem.insufficientBalanceBalance(balance);
-        } else {
-          return this.i18n.voucher.error.redeem.insufficientBalance;
-        }
       case RedeemVoucherErrorCode.USER_BLOCKED:
         return this.i18n.voucher.error.redeem.userBlocked;
-      case RedeemVoucherErrorCode.PAYMENT:
-        return this.paymentErrorMessage(error.paymentError);
-    }
-    return this.general;
-  }
-
-  private topUpVoucherErrorMessage(error: TopUpVoucherError): string {
-    switch (error?.code) {
-      case TopUpVoucherErrorCode.ACTIVATION_EXPIRED:
-        return this.i18n.voucher.error.topUp.activationExpired(this.format.formatAsDateTime(error.activationLimit));
-      case TopUpVoucherErrorCode.NOT_ALLOWED_FOR_VOUCHER:
-        return this.i18n.voucher.error.topUp.status(this.apiI18n.voucherStatus(error.voucherStatus));
-      case TopUpVoucherErrorCode.ALREADY_ACTIVATED:
-        return this.i18n.voucher.error.topUp.alreadyActivated;
-      case TopUpVoucherErrorCode.MAX_BALANCE_REACHED:
-        return this.i18n.voucher.error.topUp.maxBalanceReached;
-      case TopUpVoucherErrorCode.PAYMENT:
-        return this.paymentErrorMessage(error.paymentError);
     }
     return this.general;
   }
@@ -310,7 +239,11 @@ export class ErrorHandlerService {
   }
 
   public handleNestedError(error: NestedError) {
-    this.notification.error(this.nestedErrorMessage(error));
+    if (this.nestedErrorHandler) {
+      this.nestedErrorHandler(error);
+    } else {
+      this.notification.error(this.nestedErrorMessage(error));
+    }
   }
 
   public handleGeneralError() {
@@ -322,7 +255,10 @@ export class ErrorHandlerService {
    * @param error The error
    */
   public inputErrorMessage(error: InputError): string {
-    switch (error?.code) {
+    if (error == null) {
+      return null;
+    }
+    switch (error.code) {
       case InputErrorCode.VALIDATION:
         const errors: string[] = [];
         (error.generalErrors || []).forEach(e => errors.push(e));
@@ -396,7 +332,10 @@ export class ErrorHandlerService {
    * @param error The error
    */
   public notFoundErrorMessage(error: NotFoundError): string {
-    if (error?.entityType) {
+    if (error == null) {
+      return null;
+    }
+    if (error.entityType) {
       if (error.key) {
         return this.i18n.error.notFound.typeKey({
           type: error.entityType,
@@ -469,7 +408,8 @@ export class ErrorHandlerService {
    * @param error The error
    */
   public forbiddenErrorMessage(error: ForbiddenError): string {
-    switch (error?.code) {
+    error = error || {} as ForbiddenError;
+    switch (error.code) {
       case ForbiddenErrorCode.ILLEGAL_ACTION:
         return this.i18n.error.illegalAction;
       case ForbiddenErrorCode.INVALID_PASSWORD:
@@ -480,8 +420,6 @@ export class ErrorHandlerService {
         return this.i18n.password.error.temporarilyBlocked;
       case ForbiddenErrorCode.INDEFINITELY_BLOCKED:
         return this.i18n.password.error.indefinitelyBlocked;
-      case ForbiddenErrorCode.OTP_INVALIDATED:
-        return this.i18n.password.error.otpInvalidated;
       default:
         return this.i18n.error.permission;
     }
@@ -514,8 +452,6 @@ export class ErrorHandlerService {
         return this.i18n.transaction.error.monthlyAmount(amount());
       case PaymentErrorCode.MONTHLY_PAYMENTS_EXCEEDED:
         return this.i18n.transaction.error.monthlyCount(count());
-      case PaymentErrorCode.YEARLY_AMOUNT_EXCEEDED:
-        return this.i18n.transaction.error.yearlyAmount(amount());
       default:
         return this.general;
     }
@@ -526,7 +462,8 @@ export class ErrorHandlerService {
    * @param error The error
    */
   public forgottenPasswordErrorMessage(error: ForgottenPasswordError): string {
-    switch (error?.code) {
+    error = error || {} as ForgottenPasswordError;
+    switch (error.code) {
       case ForgottenPasswordErrorCode.INVALID_SECURITY_ANSWER:
         if (error.keyInvalidated) {
           return this.i18n.error.securityAnswer.disabled;

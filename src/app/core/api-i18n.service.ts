@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   ExternalPaymentStatusEnum, InstallmentStatusEnum,
   PaymentRequestStatusEnum, RecurringPaymentStatusEnum,
@@ -6,15 +6,11 @@ import {
   TicketStatusEnum, TransactionAuthorizationActionEnum,
   TransactionAuthorizationStatusEnum, TransactionKind, TransactionResult,
   TransactionView,
-
-  TransferKind, VoucherCreationTypeEnum,
-
-  VoucherPinStatusForRedeemEnum,
-
+  VoucherCreationTypeEnum,
+  TransferKind,
   VoucherStatusEnum,
-  VoucherTransactionKind
 } from 'app/api/models';
-import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * Service used to translate API enums
@@ -24,7 +20,7 @@ import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 })
 export class ApiI18nService {
 
-  constructor(@Inject(I18nInjectionToken) private i18n: I18n) {
+  constructor(private i18n: I18n) {
   }
 
   /**
@@ -35,7 +31,7 @@ export class ApiI18nService {
       case TransactionAuthorizationStatusEnum.AUTHORIZED:
         return this.i18n.transaction.status.authorized;
       case TransactionAuthorizationStatusEnum.PENDING:
-        return this.i18n.transaction.status.pendingAuthorization;
+        return this.i18n.transaction.status.pending;
       case TransactionAuthorizationStatusEnum.DENIED:
         return this.i18n.transaction.status.denied;
       case TransactionAuthorizationStatusEnum.CANCELED:
@@ -191,38 +187,16 @@ export class ApiI18nService {
    */
   voucherStatus(status: VoucherStatusEnum): string {
     switch (status) {
-      case VoucherStatusEnum.BLOCKED:
-        return this.i18n.voucher.status.blocked;
       case VoucherStatusEnum.REDEEMED:
         return this.i18n.voucher.status.redeemed;
       case VoucherStatusEnum.PENDING:
         return this.i18n.voucher.status.pending;
-      case VoucherStatusEnum.INACTIVE:
-        return this.i18n.voucher.status.inactive;
       case VoucherStatusEnum.OPEN:
         return this.i18n.voucher.status.open;
       case VoucherStatusEnum.EXPIRED:
         return this.i18n.voucher.status.expired;
       case VoucherStatusEnum.CANCELED:
         return this.i18n.voucher.status.canceled;
-      case VoucherStatusEnum.ACTIVATION_EXPIRED:
-        return this.i18n.voucher.status.activationExpired;
-    }
-  }
-
-  /**
-   * Returns the voucher PIN status display
-   */
-  voucherPinStatusForRedeem(status: VoucherPinStatusForRedeemEnum): string {
-    switch (status) {
-      case VoucherPinStatusForRedeemEnum.NOT_USED:
-        return this.i18n.voucher.pinStatusForRedeem.notUsed;
-      case VoucherPinStatusForRedeemEnum.REQUIRED:
-        return this.i18n.voucher.pinStatusForRedeem.required;
-      case VoucherPinStatusForRedeemEnum.SUBSEQUENT:
-        return this.i18n.voucher.pinStatusForRedeem.subsequent;
-      case VoucherPinStatusForRedeemEnum.BLOCKED:
-        return this.i18n.voucher.pinStatusForRedeem.blocked;
     }
   }
 
@@ -236,7 +210,7 @@ export class ApiI18nService {
       case TransferKind.CHARGEBACK:
         return this.i18n.transaction.transferkind.chargeback;
       case TransferKind.IMPORT:
-        return this.i18n.transaction.transferkind['import'];
+        return this.i18n.transaction.transferkind.import;
       case TransferKind.INITIAL_CREDIT:
         return this.i18n.transaction.transferkind.initialCredit;
       case TransferKind.INSTALLMENT:
@@ -253,24 +227,10 @@ export class ApiI18nService {
    */
   voucherCreationType(status: VoucherCreationTypeEnum): string {
     switch (status) {
-      case VoucherCreationTypeEnum.GENERATED:
-        return this.i18n.voucher.creationType.generated;
       case VoucherCreationTypeEnum.BOUGHT:
-        return this.i18n.voucher.creationType.bought;
-      case VoucherCreationTypeEnum.SENT:
-        return this.i18n.voucher.creationType.sent;
-    }
-  }
-
-  /**
-   * Returns the voucher creation type display
-   */
-  voucherTransactionKind(status: VoucherTransactionKind): string {
-    switch (status) {
-      case VoucherTransactionKind.REDEEM:
-        return this.i18n.voucher.transaction.redeem;
-      case VoucherTransactionKind.TOP_UP:
-        return this.i18n.voucher.transaction.topUp;
+        return this.i18n.voucher.boughtType;
+      case VoucherCreationTypeEnum.GENERATED:
+        return this.i18n.voucher.generatedType;
     }
   }
 

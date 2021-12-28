@@ -31,10 +31,9 @@ export class InputFieldComponent
   /** A mask (pattern) to be applied to the field */
   @Input() mask: string;
 
-  @Output() enter = new EventEmitter<KeyboardEvent>();
+  @Output() enter = new EventEmitter<string>();
   @Output() onblur = new EventEmitter<FocusEvent>();
   @Output() onfocus = new EventEmitter<FocusEvent>();
-  @Output() oninput = new EventEmitter<InputEvent>();
 
   @ViewChild('input') inputRef: ElementRef;
 

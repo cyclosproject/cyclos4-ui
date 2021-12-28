@@ -20,10 +20,9 @@ export class NotificationComponent implements OnInit, OnDestroy {
   @Input() type: NotificationType = 'info';
   @Input() message: string;
   @Input() allowClose = true;
-  @Input() icon: SvgIcon;
 
   alertType: string;
-  defaultIcon: SvgIcon;
+  icon: SvgIcon;
   private shortcutSub: Subscription;
 
   constructor(
@@ -39,15 +38,15 @@ export class NotificationComponent implements OnInit, OnDestroy {
     switch (this.type) {
       case 'info':
         this.alertType = 'success';
-        this.defaultIcon = SvgIcon.InfoCircle;
+        this.icon = SvgIcon.InfoCircle;
         break;
       case 'warning':
         this.alertType = 'warning';
-        this.defaultIcon = SvgIcon.ExclamationCircle;
+        this.icon = SvgIcon.ExclamationCircle;
         break;
       default:
         this.alertType = 'danger';
-        this.defaultIcon = SvgIcon.ExclamationTriangle;
+        this.icon = SvgIcon.ExclamationTriangle;
         break;
     }
     if (this.allowClose) {

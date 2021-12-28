@@ -27,16 +27,14 @@
           [user]="user" [emailValidation]="emailValidation"
           [smsValidation]="smsValidation" [mobilePhone]="mobilePhone"
           [landLinePhone]="landLinePhone" [defineAddress]="defineAddress"
-          [address]="address" [customValues]="customValues"
-          [submitAction]="resolveSubmitAction()">
+          [address]="address" [customValues]="customValues">
         </run-wizard-step-fields>
 
         <div *ngIf="transitions?.length > 0"
           class="d-flex flex-column mt-3 mt-md-4">
           <action-button *ngFor="let t of transitions" type="button"
-            actionKind="primary" class="centered-button"
-            (action)="transition(t)" [disabled]="requesting$ | async"
-            [label]="t.label">
+            class="centered-button" (action)="transition(t)"
+            [disabled]="requesting$ | async" [label]="t.label">
           </action-button>
         </div>
       </div>
@@ -59,8 +57,8 @@
         <div *ngIf="data.stepCount != null"
           class="d-flex align-items-center justify-content-center py-2">
           {{ i18n.wizard.currentStep({
-          current: data.stepNumber,
-          total: data.stepCount
+            current: data.stepNumber,
+            total: data.stepCount
           }) }}
         </div>
         <action-button *ngIf="showBack; else noBack" (action)="back()" outline

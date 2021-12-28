@@ -7,7 +7,7 @@
         labelPosition="side">
         <user-link [user]="data.user"></user-link>
       </label-value>
-      <ng-container [formGroup]="form">
+      <form [formGroup]="form">
         <radio-group-field [label]="i18n.ad.productNumber"
           formControlName="productGenerationType">
           <field-option value="generated" [text]="i18n.ad.generated">
@@ -18,8 +18,7 @@
         <input-field
           *ngIf="((form.get('productGenerationType').valueChanges | async) || form.get('productGenerationType').value) === 'manual'"
           formControlName="productNumberMask"
-          [label]="i18n.ad.productNumberMask" required
-          [informationText]="i18n.general.maskHelp">
+          [label]="i18n.ad.productNumberMask" required>
         </input-field>
         <radio-group-field [label]="i18n.ad.orderNumber"
           formControlName="orderGenerationType">
@@ -41,7 +40,7 @@
             [label]="i18n.ad.suffix" required>
           </input-field>
         </ng-container>
-      </ng-container>
+      </form>
       <actions forceRow>
         <action-button [disabled]="requesting$ | async" (action)="save()"
           [label]="i18n.general.submit">

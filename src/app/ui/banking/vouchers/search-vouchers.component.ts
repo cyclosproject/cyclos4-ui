@@ -1,74 +1,50 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { CustomFieldDetailed, GeneralVouchersDataForSearch } from 'app/api/models';
-import { HeadingAction } from 'app/shared/action';
-import { BaseSearchVouchersComponent, VoucherSearchParams } from 'app/ui/banking/vouchers/base-search-vouchers.component';
+import { VoucherResult, VouchersDataForSearch, VouchersQueryFilters, VoucherStatusEnum } from 'app/api/models';
+import { VouchersService } from 'app/api/services/vouchers.service';
+import { FieldOption } from 'app/shared/field-option';
+import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { Menu } from 'app/ui/shared/menu';
+
+type VoucherSearchParams = VouchersQueryFilters & {
+  fields?: Array<string>;
+};
 @Component({
   selector: 'search-vouchers',
   templateUrl: './search-vouchers.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchVouchersComponent
-  extends BaseSearchVouchersComponent<GeneralVouchersDataForSearch, VoucherSearchParams>
+  extends BaseSearchPageComponent<VouchersDataForSearch, VoucherSearchParams, VoucherResult>
   implements OnInit {
 
-  constructor(injector: Injector) {
+  constructor(
+    injector: Injector,
+    private voucherService: VouchersService
+  ) {
     super(injector);
   }
 
-  customFieldsInSearch: CustomFieldDetailed[];
-
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.vouchersService.getGeneralVouchersDataForSearch({})
+    this.addSub(this.voucherService.getVouchersDataForSearch({})
       .subscribe(dataForSearch => this.data = dataForSearch));
   }
 
-  protected onDataInitialized(data: GeneralVouchersDataForSearch) {
-    super.onDataInitialized(data);
-
-    this.customFieldsInSearch = [];
-    data.fieldsInBasicSearch.forEach(f => {
-      var field: any = data.customFields.find(cf => cf.internalName === f);
-      if (field) {
-        this.customFieldsInSearch.push(field);
-      }
-    });
-
-    this.form.setControl('customFields', this.fieldHelper.customFieldsForSearchFormGroup(this.customFieldsInSearch));
-
-    const headingActions: HeadingAction[] = [this.moreFiltersAction];
-    if (data.canGenerate) {
-      headingActions.push(new HeadingAction(this.SvgIcon.Ticket, this.i18n.voucher.generate.generate, () => this.generate()));
-    }
-    headingActions.push(...this.exportActions(data));
-    this.headingActions = headingActions;
-  }
-
-  private exportActions(data: GeneralVouchersDataForSearch): HeadingAction[] {
-    return this.exportHelper.headingActions(data.exportFormats,
-      f => this.vouchersService.exportVouchers$Response({
-        format: f.internalName,
-        ...this.toSearchParams(this.form.value)
-      }));
-  }
-
-  private generate() {
-    this.router.navigate(['/banking', 'vouchers', 'generate']);
+  protected onDataInitialized(_data) {
+    super.onDataInitialized(_data);
+    this.headingActions = [this.moreFiltersAction];
   }
 
   protected getFormControlNames(): string[] {
-    return ['types', 'creationBegin', 'creationEnd', 'statuses', 'token', 'creationType', 'printed', 'customFields',
-      'amountMin', 'amountMax', 'expirationBegin', 'expirationEnd',
-      'transactionDateBegin', 'transactionDateEnd', 'buyer',
-      'transactionUser', 'buyerGroups', 'transactionUserGroups',
-      'email', 'mobilePhone', 'orderBy'];
+    return ['types', 'creationBegin', 'creationEnd', 'statuses', 'token', 'creationType', 'printed',
+      'amountMin', 'amountMax', 'expirationBegin', 'expirationEnd', 'redeemBegin', 'redeemEnd', 'buyer',
+      'redeemer', 'buyerGroups', 'redeemerGroups', 'orderBy'];
   }
 
   protected toSearchParams(value: any): VoucherSearchParams {
-    const result = super.toSearchParams(value);
-    if (value.transactionDateBegin || value.transactionDateEnd) {
-      result.transactionPeriod = this.ApiHelper.dateRangeFilter(value.redeemBegin, value.redeemEnd);
+    const result: VoucherSearchParams = value;
+    if (value.redeemBegin || value.redeemEnd) {
+      result.redeemPeriod = this.ApiHelper.dateRangeFilter(value.redeemBegin, value.redeemEnd);
     }
     if (value.creationBegin || value.creationEnd) {
       result.creationPeriod = this.ApiHelper.dateRangeFilter(value.creationBegin, value.creationEnd);
@@ -79,13 +55,35 @@ export class SearchVouchersComponent
     if (value.amountMin || value.amountMax) {
       result.amountRange = this.ApiHelper.rangeFilter(value.amountMin, value.amountMax);
     }
-
-    result.customFields = this.fieldHelper.toCustomValuesFilter(value.customFields);
-
     return result;
   }
 
-  resolveMenu(_data: GeneralVouchersDataForSearch) {
+  protected doSearch(value: VoucherSearchParams) {
+    return this.voucherService.searchVouchers$Response(value);
+  }
+
+  get statusOptions(): FieldOption[] {
+    const statuses = Object.values(VoucherStatusEnum) as VoucherStatusEnum[];
+    return statuses.map(st => ({ value: st, text: this.apiI18n.voucherStatus(st) }));
+  }
+
+  get toLink() {
+    return (row: VoucherResult) => this.path(row);
+  }
+
+  path(row: VoucherResult): string[] {
+    return ['/banking/vouchers/view/', row.id];
+  }
+
+  showMoreFiltersLabel() {
+    return this.i18n.general.moreFilters;
+  }
+
+  showLessFiltersLabel() {
+    return this.i18n.general.lessFilters;
+  }
+
+  resolveMenu(_data: VouchersDataForSearch) {
     return Menu.SEARCH_VOUCHERS;
   }
 }

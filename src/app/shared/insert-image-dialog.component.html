@@ -24,7 +24,8 @@
         <h2>{{ i18n.field.html.image.sourceExisting }}</h2>
       </ng-container>
       <single-selection-field *ngIf="data.categories?.length > 1"
-        [label]="i18n.general.category" [formControl]="categoryControl">
+        [label]="i18n.field.html.image.category"
+        [formControl]="categoryControl">
         <field-option *ngFor="let cat of data.categories"
           [value]="cat.category.id" [text]="cat.category.name">
         </field-option>

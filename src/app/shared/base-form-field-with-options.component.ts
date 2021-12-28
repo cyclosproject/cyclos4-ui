@@ -181,7 +181,7 @@ export abstract class BaseFormFieldWithOptionsComponent<T> extends BaseFormField
       return true;
     }
     // If a parent option is selected, consider this one as selected as well
-    if (value?.parent) {
+    if (value.parent) {
       const parent = this.findOption(value.parent);
       if (selected.find(opt => fieldOptionMatches(opt, parent))) {
         return true;

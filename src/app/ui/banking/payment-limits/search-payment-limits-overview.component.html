@@ -7,7 +7,7 @@
     [heading]="i18n.account.paymentLimits.title.overview"
     [mobileHeading]="i18n.account.paymentLimits.mobileTitle.overview"
     [headingActions]="headingActions$ | async">
-    <div [formGroup]="form" class="filters-form filters-form-separator">
+    <form [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row no-gutters">
         <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
           <multi-selection-field labelPosition="side"
@@ -149,34 +149,6 @@
               [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
             </decimal-field>
           </div>
-          <!-- Yearly limit filter -->
-          <div class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
-              formControlName="customAmountPerYearLimit"
-              [fieldOptions]="customLimitOptions"
-              [emptyOption]="i18n.general.all"
-              [label]="i18n.account.paymentLimits.personalizedYearlyLimit">
-            </single-selection-field>
-          </div>
-          <!-- Force a new line to keep range in same row -->
-          <div class="w-100" [hidden]="!(isCustomYearlyLimit$ | async)">
-          </div>
-          <div class="col-12 col-md-6"
-            [hidden]="!(isCustomYearlyLimit$ | async)">
-            <decimal-field formControlName="yearlyLimitFrom"
-              [label]="i18n.account.paymentLimits.fromYearlyLimit"
-              fieldSize="full" [scale]="currencyDecimalDigits()"
-              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
-            </decimal-field>
-          </div>
-          <div class="col-12 col-md-6"
-            [hidden]="!(isCustomYearlyLimit$ | async)">
-            <decimal-field formControlName="yearlyLimitTo"
-              [label]="i18n.account.paymentLimits.toYearlyLimit"
-              fieldSize="full" [scale]="currencyDecimalDigits()"
-              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
-            </decimal-field>
-          </div>
 
           <div class="col-12 col-md-6">
             <user-field labelPosition="side" formControlName="user"
@@ -197,7 +169,7 @@
           </div>
         </ng-container>
       </div>
-    </div>
+    </form>
   </page-content>
 
   <results-layout [results]="results$ | async" [rendering$]="rendering$"
@@ -216,32 +188,22 @@
           <label-value [label]="i18n.account.paymentLimits.paymentLimit"
             labelPosition="sideForced">
             {{ row.customAmountLimit ?
-            (row.amountLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+              (row.amountLimit | currency:row.account.currency) : i18n.account.limits.productDefault }}
           </label-value>
           <label-value [label]="i18n.account.paymentLimits.dailyLimit"
             labelPosition="sideForced">
             {{ row.customAmountPerDayLimit ?
-            (row.amountPerDayLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+            (row.amountPerDayLimit | currency:row.account.currency) : i18n.account.limits.productDefault }}
           </label-value>
           <label-value [label]="i18n.account.paymentLimits.weeklyLimit"
             labelPosition="sideForced">
             {{ row.customAmountPerWeekLimit ?
-            (row.amountPerWeekLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+            (row.amountPerWeekLimit | currency:row.account.currency) : i18n.account.limits.productDefault }}
           </label-value>
           <label-value [label]="i18n.account.paymentLimits.monthlyLimit"
             labelPosition="sideForced">
             {{ row.customAmountPerMonthLimit ?
-            (row.amountPerMonthLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
-          </label-value>
-          <label-value [label]="i18n.account.paymentLimits.yearlyLimit"
-            labelPosition="sideForced">
-            {{ row.customAmountPerYearLimit ?
-            (row.amountPerYearLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+          (row.amountPerMonthLimit | currency:row.account.currency) : i18n.account.limits.productDefault }}
           </label-value>
         </div>
       </div>
@@ -255,7 +217,6 @@
         <th>{{ i18n.account.paymentLimits.dailyLimit }}</th>
         <th>{{ i18n.account.paymentLimits.weeklyLimit }}</th>
         <th>{{ i18n.account.paymentLimits.monthlyLimit }}</th>
-        <th>{{ i18n.account.paymentLimits.yearlyLimit }}</th>
       </thead>
       <tbody>
         <tr *ngFor="let row of (results$ | async)?.results"
@@ -264,28 +225,19 @@
           <td>{{ row.account.type.name }}</td>
           <td>
             {{ row.customAmountLimit ?
-            (row.amountLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+              (row.amountLimit | currency:row.account.currency) : i18n.account.limits.productDefault }}
           </td>
           <td>
             {{ row.customAmountPerDayLimit?
-            (row.amountPerDayLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+              (row.amountPerDayLimit | currency:row.account.currency) : i18n.account.limits.productDefault }}
           </td>
           <td>
             {{ row.customAmountPerWeekLimit?
-            (row.amountPerWeekLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+              (row.amountPerWeekLimit | currency:row.account.currency) : i18n.account.limits.productDefault }}
           </td>
           <td>
             {{ row.customAmountPerMonthLimit?
-            (row.amountPerMonthLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
-          </td>
-          <td>
-            {{ row.customAmountPerYearLimit?
-            (row.amountPerYearLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+              (row.amountPerMonthLimit | currency:row.account.currency) : i18n.account.limits.productDefault }}
           </td>
         </tr>
       </tbody>

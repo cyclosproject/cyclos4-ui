@@ -1,0 +1,159 @@
+plugins {
+    id 'base'
+}
+
+description = 'Cyclos 4 new fronted'
+
+ext {
+    packageFile = "$projectDir/package.json"
+    nodeModulesDir = "$projectDir/node_modules"
+    ngDev = Boolean.getBoolean('ng.development')
+}
+
+task npmPrepareBuild(type: Exec) {
+    dependsOn ':cyclos4-web:generateRest'
+    dependsOn ':cyclos4-ui:npmInstall'
+
+    description = 'Runs NPM prepare-build on cyclos4-ui'
+
+    inputs.file packageFile
+    inputs.dir 'src'
+    outputs.file "$projectDir/package-lock.json"
+    outputs.dir 'node_modules'
+	outputs.dir 'src/app/api'
+	outputs.dir 'src/app/i18n'
+	outputs.file 'src/app/svg/icons.json'
+
+    workingDir = projectDir
+    commandLine 'npm', 'run', 'prepare-build'
+}
+
+task npmInstall(type: Exec) {
+    finalizedBy npmPrepareBuild
+    group = 'NPM'
+    description = 'NPM install'
+    inputs.file packageFile
+    outputs.dir nodeModulesDir
+    workingDir = projectDir
+    commandLine 'npm', 'install'
+}
+
+task npmInstallBootstrap(type: Exec) {
+    group = 'NPM'
+    description = 'NPM install'
+    inputs.file packageFile
+    outputs.upToDateWhen { file("$nodeModulesDir/bootstrap").exists() }
+    workingDir = projectDir
+    commandLine 'npm', 'install', '--no-save', 'bootstrap'
+}
+
+task npmBuild(type: Exec) {
+    dependsOn npmPrepareBuild
+    ext {
+        srcDir = "$projectDir/src"
+        outDir = "$projectDir/dist/ui"
+    }
+    group = 'NPM'
+    description = 'Package the application'
+    inputs.property 'development', ngDev
+    inputs.dir srcDir
+    outputs.dir outDir
+    workingDir = projectDir
+    commandLine 'npm', 'run', ngDev ? 'ng-build-dev' : 'build'
+}
+
+task github() {
+    dependsOn ':cyclos4-web:generateRest'
+    ext {
+        outDir = "$buildDir/github"
+        openapi = "${project(':cyclos4-web').buildDir}/generated/resources/openapi/main/openapi/cyclos-openapi.yaml"
+        dirs = ['src', 'tools']
+        files = [
+            '.browserslistrc', 
+            '.editorconfig', 
+            '.gitignore', 
+            'angular.json', 
+            'LICENSE', 
+            'ng-openapi-gen.json', 
+            'ng-translation-gen.json',
+            'package.json', 
+            'package-lock.json', 
+            'proxy.json', 
+            'README.md', 
+            'tsconfig.base.json', 
+            'tsconfig.json', 
+            'tslint.json' 
+        ]
+        replaceValueInJson = { jsonFile, key, value ->
+            jsonFile = file(jsonFile)
+            def content = jsonFile.getText('UTF-8')
+            content = content.replaceFirst("\"${key}\":\\s*\"[^\"]*\"") { "\"${key}\": \"${value}\"" }
+            jsonFile.setText(content, 'UTF-8')
+        }
+        
+        version = project.version
+        if (version.split('\\.').length == 2) {
+            version += '.0' 
+        }
+    }
+    group = 'Build'
+    description = 'Prepare the files to be copied to the GitHub project'
+    
+    dirs.each { inputs.dir it }
+    files.each { inputs.file it }
+    outputs.dir outDir
+    
+    doLast {
+        // First, clean the output folder
+        ant.delete(dir: outDir)
+        
+        // Then, copy all files
+        def excludes = "src/pay/**, src/app/pay/**"
+        ant.copy(todir: outDir) {
+            files.each { ant.fileset(dir: projectDir, includes: it, defaultexcludes: 'no') }
+            dirs.each {
+                ant.fileset(dir: projectDir, 
+                includes: "$it/**",
+                excludes: excludes,
+                defaultexcludes: 'no')
+            }
+        }
+        
+        // Copy the openapi descriptor from the web
+        ant.copy(file: openapi, todir: "$outDir/src/openapi")
+        
+        // Then modify the ng-openapi-gen.json to use the local descriptor
+        replaceValueInJson("$outDir/ng-openapi-gen.json", 'input', 'src/openapi/cyclos-openapi.yaml')
+
+        // Update the version in package
+        replaceValueInJson("$outDir/package.json", 'version', version)
+        replaceValueInJson("$outDir/package-lock.json", 'version', version)
+
+        // Remove the other projects
+        def angularJson = file("$outDir/angular.json")
+        def angularContent = new groovy.json.JsonSlurper().parseText(angularJson.getText('UTF-8'))
+        def projects = new ArrayList(angularContent.projects.keySet())
+        projects.remove('ui')
+        projects.each { angularContent.projects.remove(it) }
+        def angularJsonContent = groovy.json.JsonOutput.toJson(angularContent)
+        angularJsonContent = groovy.json.JsonOutput.prettyPrint(angularJsonContent)
+        angularJson.setText(angularJsonContent, 'UTF-8')
+        
+        // Remove the build scripts for the other applications
+        def packageJson = file("$outDir/package.json")
+        def lines = packageJson.readLines('UTF-8')
+        lines = lines.findAll {
+            for (def p in projects) {
+                if (it.contains("\"${p}:")) {
+                    return false
+                }
+            }
+            return true
+        }
+        packageJson.setText(lines.join('\n'), 'UTf-8')
+    }
+}
+
+build {
+    dependsOn npmBuild
+}

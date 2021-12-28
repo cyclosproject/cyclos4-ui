@@ -1,5 +1,4 @@
-<label-value *ngIf="label; else widget" [formField]="self"
-  [informationText]="informationText">
+<label-value *ngIf="label; else widget" [formField]="self">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
@@ -15,15 +14,15 @@
               [value]="value.value">
               {{ value.label }}</option>
           </select>
-          <button type="button" *ngIf="action.widget === 'button'"
-            [id]="action.fieldId" class="btn btn-icon" (click)="run(action)"
+          <button *ngIf="action.widget === 'button'" [id]="action.fieldId"
+            class="btn btn-icon" (click)="run(action)"
             [tooltip]="action.tooltip">
             <icon [icon]="action.icon"></icon>
           </button>
         </ng-container>
       </div>
       <div class="toolbar-group flex-grow-1 d-flex justify-content-end">
-        <button type="button" [id]="id + '_toggleSource'" class="btn btn-icon"
+        <button [id]="id + '_toggleSource'" class="btn btn-icon"
           [ngClass]="{'active': source$ | async}" (click)="toggleSource()"
           [tooltip]="i18n.field.html.source">
           <icon [icon]="SvgIcon.Code"></icon>

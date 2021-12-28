@@ -14,7 +14,7 @@ import { empty, words } from 'app/shared/helper';
 import { TextDialogComponent } from 'app/shared/text-dialog.component';
 import { LoginService } from 'app/ui/core/login.service';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
-import { RunOperationHelperService } from 'app/ui/core/run-operation-helper.service';
+import { OperationHelperService } from 'app/ui/core/operation-helper.service';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -39,7 +39,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   constructor(
     injector: Injector,
     private modal: BsModalService,
-    private runOperationHelper: RunOperationHelperService,
+    private operationHelper: OperationHelperService,
     private loginService: LoginService,
     private adQuestionService: AdQuestionsService,
     private marketplaceHelper: MarketplaceHelperService,
@@ -181,7 +181,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     if (ad.canRemove) {
       headingActions.push(
         new HeadingAction(SvgIcon.Trash, this.i18n.general.remove, () => {
-          this.confirmation.confirm({
+          this.notification.confirm({
             message: this.i18n.general.removeConfirm(this.ad.name),
             callback: () => this.doRemove(),
           });
@@ -192,7 +192,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
       ad: ad.id
     })).forEach(a => headingActions.push(a));
     for (const operation of ad.operations || []) {
-      headingActions.push(this.runOperationHelper.headingAction(operation, ad.id));
+      headingActions.push(this.operationHelper.headingAction(operation, ad.id));
     }
     this.headingActions = headingActions;
     this.title = words(ad.name, 60);
@@ -219,7 +219,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
 
   get categoryLabel(): string {
     return (this.ad.categories || []).length === 1 ?
-      this.i18n.general.category : this.i18n.ad.categories;
+      this.i18n.ad.category : this.i18n.ad.categories;
   }
 
   /**

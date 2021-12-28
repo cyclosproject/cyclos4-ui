@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BuyVoucher, Currency, UserMenuEnum, VoucherBuyingPreview, VoucherTypeDetailed } from 'app/api/models';
+import { Currency, VoucherTypeDetailed } from 'app/api/models';
 import { VoucherDataForBuy } from 'app/api/models/voucher-data-for-buy';
 import { VouchersService } from 'app/api/services/vouchers.service';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 
@@ -31,9 +31,10 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
   user: string;
   form: FormGroup;
 
-  preview: VoucherBuyingPreview;
   confirmationPassword: FormControl;
   confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
+
+  customFieldControlsMap: Map<string, FormControl>;
 
   // The data for a specific voucher type
   dataTypeForBuy: VoucherDataForBuy;
@@ -85,26 +86,27 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
       this.confirmationPassword.setValue(confirmationPassword);
     }
 
-    const confirmationPasswordInput = this.preview?.confirmationPasswordInput;
     if (this.confirmationPasswordInput && !validateBeforeSubmit(this.confirmationPassword)) {
       return;
     }
 
-    const buyVoucher = this.preview.buyVoucher;
+    const body = this.form.value;
+    body.type = this.dataTypeForBuy.type.id;
     const params = {
       user: this.user,
-      confirmationPassword: confirmationPasswordInput ? this.confirmationPassword.value : null,
-      body: buyVoucher,
+      confirmationPassword: this.confirmationPasswordInput ? this.confirmationPassword.value : null,
+      body,
     };
-    this.addSub(this.voucherService.buyVouchers(params)
-      .subscribe((ids: string[]) => {
-        if (ids.length === 1) {
-          this.router.navigate(['/banking', 'vouchers', 'view', ids[0]]);
-        } else {
-          this.router.navigate(['/banking', this.user, 'vouchers']);
-        }
-        this.notification.snackBar(this.i18n.voucher.buy.done);
-      }),
+    this.addSub(
+      this.voucherService.buyVouchers(params)
+        .subscribe((ids: string[]) => {
+          if (ids.length === 1) {
+            this.router.navigate(['banking', 'vouchers', 'view', ids[0]]);
+          } else {
+            this.router.navigate(['banking', this.user, 'vouchers', 'bought']);
+          }
+          this.notification.snackBar(this.i18n.voucher.buy.done);
+        }),
     );
   }
 
@@ -120,11 +122,7 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
    * Go to second step
    */
   toForm(type: VoucherTypeDetailed): void {
-    this.addSub(this.voucherService.getVoucherDataForBuy({
-      user: this.user,
-      type: type.id,
-      fields: ['-confirmationPasswordInput']
-    })
+    this.addSub(this.voucherService.getVoucherDataForBuy({ user: this.user, type: type.id })
       .subscribe(data => {
         this.dataTypeForBuy = data;
         this.buildForm();
@@ -141,34 +139,20 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
       return;
     }
 
-    const type = this.dataTypeForBuy.type;
-    const body = this.form.value as BuyVoucher;
-    body.type = type.id;
-
-    this.addSub(this.voucherService.previewBuyVouchers({
-      fields: ['confirmationPasswordInput', 'totalAmount', 'buyVoucher'],
-      user: this.user,
-      body
-    }).subscribe(preview => {
-      preview.type = type;
-      preview.user = this.data.user;
-      const confirmationPasswordInput = preview.confirmationPasswordInput;
-      this.canConfirm = this.authHelper.canConfirm(preview.confirmationPasswordInput);
-      if (!this.canConfirm) {
-        this.notification.warning(this.authHelper.getConfirmationMessage(confirmationPasswordInput));
-        return;
-      } else if (confirmationPasswordInput) { // can confirm and confirmation is required
-        if (!this.confirmationPassword) {
-          // The confirmation password is held in a separated control
-          this.confirmationPassword = this.formBuilder.control(null);
-          this.confirmationPassword.setValidators(Validators.required);
-        } else {
-          this.confirmationPassword.reset();
-        }
+    this.canConfirm = this.authHelper.canConfirm(this.confirmationPasswordInput);
+    if (!this.canConfirm) {
+      this.notification.warning(this.authHelper.getConfirmationMessage(this.confirmationPasswordInput));
+      return;
+    } else if (this.confirmationPasswordInput) { // can confirm and confirmation is required
+      if (!this.confirmationPassword) {
+        // The confirmation password is hold in a separated control
+        this.confirmationPassword = this.formBuilder.control(null);
+        this.confirmationPassword.setValidators(Validators.required);
+      } else {
+        this.confirmationPassword.reset();
       }
-      this.step = 'confirm';
-      this.preview = preview;
-    }));
+    }
+    this.step = 'confirm';
   }
 
   private get confirmationPasswordInput() {
@@ -176,19 +160,28 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
   }
 
   private buildForm(): void {
-    this.form = this.formBuilder.group({
-      count: 1,
-      amount: null,
-      gift: false
-    });
-    this.form.addControl('paymentCustomValues', this.fieldHelper.customValuesFormGroup(this.dataTypeForBuy.paymentCustomFields));
-    this.form.addControl('voucherCustomValues', this.fieldHelper.customValuesFormGroup(this.dataTypeForBuy.voucherCustomFields));
+    if (this.form) {
+      this.form.reset(); // clear previous values (if any)
+    } else {
+      this.customFieldControlsMap = this.fieldHelper.customValuesFormControlMap(this.dataTypeForBuy.customFields);
+      this.form = this.formBuilder.group({
+        count: new FormControl(''),
+        amount: new FormControl(''),
+      });
+      if (this.customFieldControlsMap.size > 0) {
+        const fieldValues = new FormGroup({});
+        for (const c of this.customFieldControlsMap) {
+          fieldValues.addControl(c[0], c[1]);
+        }
+        this.form.setControl('customValues', fieldValues);
+      }
+    }
+
     this.form.get('count').setValue(1);
   }
 
   resolveMenu(data: VoucherDataForBuy) {
-    return this.menu.userMenu(data.user, this.dataForFrontendHolder.dataForFrontend.voucherBuyingMenu == UserMenuEnum.MARKETPLACE ?
-      Menu.SEARCH_MY_VOUCHERS_MARKETPLACE : Menu.SEARCH_MY_VOUCHERS_BANKING);
+    return this.menu.userMenu(data.user, Menu.BUY_VOUCHER);
   }
 
 }

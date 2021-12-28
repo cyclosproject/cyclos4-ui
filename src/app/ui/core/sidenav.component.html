@@ -1,19 +1,18 @@
 <nav class="navbar navbar-expand-md">
   <div class="navbar-container">
     <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
-      (click)="toggle(); $event.preventDefault()"
-      [attr.aria-label]="i18n.general.close">
+      (click)="toggle(); $event.preventDefault()">
       <icon [icon]="SvgIcon.XCircle"></icon>
     </a>
     <div class="navbar-brand flex-grow-1">
       <div class="top-title">{{
         dataForFrontend.dataForFrontend.mobileMenuTitle
-        }}</div>
+      }}</div>
     </div>
     <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
-      (click)="loginOrLogout($event)"
-      [attr.aria-label]="(login.user$ | async) ? i18n.menu.login : i18n.menu.logout">
-      <icon [icon]="(login.user$ | async) ? SvgIcon.Logout2 : SvgIcon.Login2">
+      (click)="loginOrLogout($event)">
+      <icon
+        [icon]="(login.user$ | async) ? SvgIcon.BoxArrowRight : SvgIcon.BoxArrowInRight">
       </icon>
     </a>
   </div>

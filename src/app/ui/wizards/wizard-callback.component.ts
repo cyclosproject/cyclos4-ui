@@ -32,7 +32,7 @@ export class WizardCallbackComponent
       },
     }).subscribe(data => {
       this.stateManager.setGlobal(`wizard-execution-${data.key}`, data);
-      this.router.navigate(['/wizards', 'run', data.key], {
+      this.router.navigate(['wizards', 'run', data.key], {
         replaceUrl: true
       });
     }));

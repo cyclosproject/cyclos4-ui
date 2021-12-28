@@ -5,14 +5,16 @@
     [heading]="i18n.ad.title.deliveryMethod"
     [mobileHeading]="i18n.ad.mobileTitle.deliveryMethod"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
-    <div class="mb-4">
-      <radio-group-field [asColumn]="data.deliveryMethods.length > 3"
-        [label]="i18n.ad.chooseDeliveryMethod"
-        [formControl]="form.get('deliveryMethod')">
-        <field-option *ngFor="let dm of data.deliveryMethods" [value]="dm.id"
-          [text]="dm.name"></field-option>
-      </radio-group-field>
-    </div>
+    <form [formGroup]="form">
+      <div class="mb-4">
+        <radio-group-field [asColumn]="data.deliveryMethods.length > 3"
+          [label]="i18n.ad.chooseDeliveryMethod"
+          formControlName="deliveryMethod">
+          <field-option *ngFor="let dm of data.deliveryMethods"
+            [value]="dm.id" [text]="dm.name"></field-option>
+        </radio-group-field>
+      </div>
+    </form>
     <h2>{{ i18n.ad.deliveryInformation }}</h2>
     <ng-container *ngIf="deliveryMethod$ | async">
       <label-value *ngIf="deliveryMethod.minDeliveryTime"
@@ -25,11 +27,7 @@
       </label-value>
       <label-value [label]="i18n.ad.price">
         {{ !negotiated ?
-        (deliveryMethod.chargeAmount | currency:
-        deliveryMethod.chargeCurrency) : i18n.ad.negotiated}}
-      </label-value>
-      <label-value [label]="i18n.general.description">
-        {{ deliveryMethod.description }}
+        (deliveryMethod.chargeAmount | currency: deliveryMethod.chargeCurrency) : i18n.ad.negotiated}}
       </label-value>
     </ng-container>
     <actions forceRow>
@@ -43,30 +41,25 @@
     [heading]="i18n.ad.title.deliveryAddress"
     [mobileHeading]="i18n.ad.mobileTitle.deliveryAddress"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
-    <ng-container
-      *ngIf="deliveryMethod == null || deliveryMethod.deliveryType === 'deliver'">
+    <form [formGroup]="form">
       <div class="mb-4">
         <radio-group-field [asColumn]="data.addresses.length > 3"
-          [label]="i18n.ad.chooseDeliveryAddress"
-          [formControl]="form.get('address')">
+          [label]="i18n.ad.chooseDeliveryAddress" formControlName="address">
           <field-option *ngFor="let dm of data.addresses" [value]="dm.id"
             [text]="dm.name"></field-option>
         </radio-group-field>
       </div>
-      <hr />
-      <div class="mb-4">
-        <address-form [addressForm]="addressForm"
-          [configuration]="data.addressConfiguration">
-        </address-form>
-      </div>
-    </ng-container>
-    <ng-container
-      *ngIf="deliveryMethod != null && deliveryMethod.deliveryType === 'pickup'">
-      <address-details [address]="deliveryMethod.address">
-      </address-details>
-    </ng-container>
+    </form>
+    <hr />
+    <div class="mb-4">
+      <address-form [addressForm]="addressForm"
+        [configuration]="data.addressConfiguration">
+      </address-form>
+    </div>
     <h2>{{ i18n.ad.remarks }}</h2>
-    <textarea-field [formControl]="form.get('remarks')"></textarea-field>
+    <form [formGroup]="form">
+      <textarea-field formControlName="remarks"></textarea-field>
+    </form>
     <actions forceRow>
       <action-button (action)="next()" [label]="i18n.general.next">
       </action-button>
@@ -82,11 +75,13 @@
     [heading]="i18n.ad.title.paymentType"
     [mobileHeading]="i18n.ad.mobileTitle.paymentType"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
-    <radio-group-field [asColumn]="true" [label]="i18n.ad.choosePaymentType"
-      [formControl]="form.get('paymentType')">
-      <field-option *ngFor="let pt of data.paymentTypes" [value]="pt.id"
-        [text]="pt.name"></field-option>
-    </radio-group-field>
+    <form [formGroup]="form">
+      <radio-group-field [asColumn]="true" [label]="i18n.ad.choosePaymentType"
+        formControlName="paymentType">
+        <field-option *ngFor="let pt of data.paymentTypes" [value]="pt.id"
+          [text]="pt.name"></field-option>
+      </radio-group-field>
+    </form>
     <actions forceRow>
       <action-button (action)="next()" [label]="i18n.general.next">
       </action-button>
@@ -106,29 +101,29 @@
       </label-value>
       <label-value [label]="i18n.ad.deliveryPrice">
         {{ !negotiated ?
-        (deliveryMethod.chargeAmount | currency:
-        deliveryMethod.chargeCurrency) : i18n.ad.toBeConfirmedBySeller }}
+          (deliveryMethod.chargeAmount | currency: deliveryMethod.chargeCurrency) : i18n.ad.toBeConfirmedBySeller }}
       </label-value>
       <hr>
       <label-value class="totalAmount" [label]="i18n.ad.total">
         {{ totalPrice | currency: data.cart.currency }}
       </label-value>
       <label class="any-label-value notice text-muted">
-        {{ negotiated ? i18n.ad.deliveryPriceToBeConfirmed :
-        i18n.ad.reserveAmount }}
+        {{ negotiated ? i18n.ad.deliveryPriceToBeConfirmed : i18n.ad.reserveAmount }}
       </label>
       <shopping-cart-items [items]="data.cart.items"
         [currency]="data.cart.currency">
       </shopping-cart-items>
       <ng-container *ngIf="!negotiated && data.confirmationPasswordInput">
         <hr class="mt-0" *ngIf="layout.gtxxs$ | async">
-        <confirmation-password focused
-          [formControl]="form.get('confirmationPassword')"
-          [passwordInput]="data.confirmationPasswordInput"
-          [createDeviceConfirmation]="createDeviceConfirmation"
-          (confirmationModeChanged)="confirmationMode$.next($event)"
-          (confirmed)="submit($event)">
-        </confirmation-password>
+        <form [formGroup]="form">
+          <confirmation-password focused
+            formControlName="confirmationPassword"
+            [passwordInput]="data.confirmationPasswordInput"
+            [createDeviceConfirmation]="createDeviceConfirmation"
+            (confirmationModeChanged)="confirmationMode$.next($event)"
+            (confirmed)="submit($event)">
+          </confirmation-password>
+        </form>
       </ng-container>
       <actions forceRow>
         <action-button

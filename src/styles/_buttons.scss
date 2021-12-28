@@ -22,7 +22,6 @@ button[disabled], button[disabled]:hover {
   border: none;
   box-shadow: none;
 }
-
 .lt-sm {
   .btn-main {
     height: 3rem;
@@ -43,7 +42,7 @@ button[disabled], button[disabled]:hover {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: $button-icon-width;
+  width: 2.6rem;
   padding: 0;
   height: $input-height;
   @include button-variant($button-icon-bg, $button-icon-border-color);
@@ -122,11 +121,17 @@ actions {
     margin-top: 1rem;
   }
 }
+@include media-breakpoint-up(xs) {
+  actions.force-row {
+    button, .button, a, input[type=button], input[type=submit] {
+      min-width: 7rem;
+    }
 
-.actions-primary .button, .actions-primary button, .btn-action-primary {
-  min-height: 3rem;
+    button + button, button + .button, .button + button, .button + .button {
+      margin-top: 0;
+    }
+  }
 }
-
 @include media-breakpoint-up(sm) {
   actions {
     button, .button, a, input[type=button], input[type=submit] {
@@ -137,18 +142,7 @@ actions {
       margin-top: 0;
     }
   }
-
-  .actions-primary .button, .actions-primary button, .btn-action-primary {
-    min-height: $input-height;
-  }
-
-  distance-selection actions {
-    button + button, button + .button, .button + button, .button + .button {
-      margin-top: 1rem;
-    }
-  }
 }
-
 @media print {
   actions {
     display: none;

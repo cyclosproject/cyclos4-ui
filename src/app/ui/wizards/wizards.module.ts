@@ -20,7 +20,7 @@ import { WizardsRoutingModule } from './wizard-routing.module';
   ],
   imports: [
     WizardsRoutingModule,
-    UiSharedModule
-  ]
+    UiSharedModule,
+  ],
 })
 export class WizardsModule { }

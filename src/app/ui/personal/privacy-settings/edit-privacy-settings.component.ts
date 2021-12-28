@@ -69,6 +69,6 @@ export class EditPrivacySettingsComponent
   }
 
   resolveMenu() {
-    return this.menu.userMenu(this.data?.user, Menu.MY_PROFILE);
+    return this.authHelper.isSelf(this.user) ? Menu.PRIVACY_SETTINGS : this.menu.searchUsersMenu();
   }
 }

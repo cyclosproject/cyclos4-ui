@@ -1,16 +1,15 @@
 import { HttpResponse } from '@angular/common/http';
 import { ElementRef } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
-import { environment } from 'app/../environments/environment';
 import { Image } from 'app/api/models';
+import { FormControlLocator } from 'app/shared/form-control-locator';
 import { LayoutService } from 'app/core/layout.service';
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, End, Home, PageDown, PageUp } from 'app/core/shortcut.service';
-import { FormControlLocator } from 'app/shared/form-control-locator';
 import download from 'downloadjs';
-import { deburr } from 'lodash-es';
-import { INgxGalleryImage } from 'ngx-gallery-9';
+import { NgxGalleryImage } from 'ngx-gallery-9';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
+import { environment } from 'app/../environments/environment';
 
 export const SmallThumbSize = [160, 100];
 export const MediumThumbSize = [320, 200];
@@ -42,11 +41,7 @@ export function apiUrl() {
  * Joins multiple URL parts, making sure to never concatenate dulicated slashes
  */
 export function urlJoin(...parts: string[]) {
-  if (empty(parts)) {
-    return '';
-  }
-  const prefix = parts[0].startsWith('/') ? '/' : '';
-  return prefix + parts.map(p => {
+  return parts.map(p => {
     if (p.startsWith('/')) {
       p = p.substr(1);
     }
@@ -252,7 +247,7 @@ export function focusFirstField() {
   setTimeout(() => {
     const elements = document.getElementsByClassName('form-control');
     if (elements.length > 0) {
-      focusElement(elements.item(0) as HTMLElement);
+      (elements.item(0) as HTMLInputElement).focus();
     }
   }, 10);
 }
@@ -264,20 +259,9 @@ export function focusFirstInvalid() {
   setTimeout(() => {
     const elements = document.getElementsByClassName('is-invalid');
     if (elements.length > 0) {
-      focusElement(elements.item(0) as HTMLElement);
+      (elements.item(0) as HTMLInputElement).focus();
     }
   }, 10);
-}
-
-export function focusElement(element: HTMLElement) {
-  // Is used scrollIntoView because focus() doesn't center the focused element in firefox
-  // https://stackoverflow.com/questions/52077869/while-focus-the-element-page-not-get-scrolled-in-firefox-and-ie
-  if (element) {
-    element.focus();
-    if (element.scrollIntoView) {
-      element.scrollIntoView({ block: 'center' });
-    }
-  }
 }
 
 /**
@@ -705,7 +689,7 @@ export function focus(control: any, force = false) {
   }
   if (control.focus) {
     setTimeout(() => {
-      focusElement(control);
+      control.focus();
       ensureInScroll(control);
     }, 1);
   }
@@ -741,7 +725,7 @@ export function isChildElement(el: Element, parent: Element) {
  */
 export function handleKeyboardFocus(layout: LayoutService, element: ElementReference, event: KeyboardEvent, options?: {
   horizontalOffset?: number;
-  verticalOffset?: number;
+  verticalOffset?: number
 }) {
 
   element = resolveElement(element);
@@ -882,12 +866,12 @@ export function enumValues<T>(type: any): T[] {
 /**
  * Returns a ngx-gallery image representing the given image
  */
-export function galleryImage(image: Image): INgxGalleryImage {
-  return {
+export function galleryImage(image: Image): NgxGalleryImage {
+  return new NgxGalleryImage({
     big: image.url,
     medium: `${image.url}?width=${MediumThumbSize[0]}&height=${MediumThumbSize[1]}`,
     small: `${image.url}?width=${SmallThumbSize[0]}&height=${SmallThumbSize[1]}`,
-  };
+  });
 }
 
 /**
@@ -919,89 +903,4 @@ export function copyToClipboard(text: string) {
     document.getSelection().removeAllRanges();
     document.getSelection().addRange(selected);
   }
-}
-
-/**
- * Initializes the CSS links which are expected to be on the host page
- */
-export function initializeStyleLinks() {
-  // Change the media of the styles link
-  const stylesLink = document.getElementById('stylesLink') as HTMLLinkElement;
-  if (stylesLink) {
-    stylesLink.media = '';
-  }
-}
-
-/**
- * Processes text to be used in a client-side keywords matching.
- * Uses lodash's deburr() method, also using trim() and toLowerCase()
- */
-export function normalizeKeywords(text: string) {
-  return deburr(text || '').trim().toLowerCase();
-}
-
-/**
- * Return whether we're running in dev mode or not according to the port used in the URL.
- * @returns true If the port is greater than or equals to 4200 and less than 4300.
- */
-export function isDevServer(): boolean {
-  const port = parseInt(window?.location?.port, 10);
-  return port >= 4200 && port < 4300;
-}
-
-/**
- * Return the i18n path according we're running in dev mode or not
- * @param apiRoot the base api root path
- */
-export function i18nRoot(apiRoot: string): string {
-  return environment.standalone ? 'i18n' : apiRoot + '/../ui/i18n';
-}
-
-
-/**
- * Truncates the given string without cutting words in the middle, and appending ellipsis in the end. Line breaks
- * are transformed in spaces.
- */
-export function truncate(str: string, maxLength: number): string {
-  if (str == null) {
-    return null;
-  }
-  str = str.replace('\r\n', ' ');
-  str = str.replace('\n', ' ');
-  str = str.replace('\r', ' ');
-  str = str.replace('  ', ' ');
-  if (str.length < maxLength || maxLength < 0) {
-    if (!str.includes(' ') && str.length > 50) {
-      // if the word has no space and it is too big
-      str = str.substr(0, 50) + '…';
-    }
-    return str;
-  }
-  var length = maxLength;
-  if (str.length > length) {
-    var pos = length - 1;
-    for (var i = 0; i < 10; i++) {
-      try {
-        const c = str.charAt(pos - i);
-        if (' \t\n\r.,()!?'.indexOf(c) >= 0) {
-          throw '';
-        }
-      } catch (e) {
-        pos -= i;
-        break;
-      }
-    }
-    if (pos <= 0) {
-      str = str.substr(0, maxLength);
-    } else {
-      str = str.substr(0, pos).trim() + '…';
-    }
-  }
-
-  if (!str.includes(' ') && str.length > 50) {
-    // if the word has no space and it is too big
-    str = str.substr(0, 50) + '…';
-  }
-
-  return str;
 }

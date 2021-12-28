@@ -7,7 +7,6 @@ import {
 } from 'app/api/models';
 import { ImagesService } from 'app/api/services/images.service';
 import { UsersService } from 'app/api/services/users.service';
-import { CaptchaHelperService } from 'app/core/captcha-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { ApiHelper } from 'app/shared/api-helper';
 import {
@@ -72,7 +71,6 @@ export class UserRegistrationComponent
     injector: Injector,
     private usersService: UsersService,
     private userHelper: UserHelperService,
-    private captchaHelper: CaptchaHelperService,
     private imagesService: ImagesService,
     private nextRequestState: NextRequestState) {
     super(injector);
@@ -98,7 +96,7 @@ export class UserRegistrationComponent
       }
       if (wizard) {
         // Redirect to the wizard execution page
-        this.router.navigate(['/wizards', 'registration', ApiHelper.internalNameOrId(wizard)], {
+        this.router.navigate(['wizards', 'registration', ApiHelper.internalNameOrId(wizard)], {
           replaceUrl: true
         });
         return;
@@ -194,7 +192,7 @@ export class UserRegistrationComponent
             // Data for the registration form
             this.identityProviderRequestId = callback.requestId;
             // No captcha is needed when using an identity provider
-            this.data.captchaInput = null;
+            this.data.captchaType = null;
             // Fill in the user fields
             const user = this.data.user;
             if (callback.name) {
@@ -332,8 +330,8 @@ export class UserRegistrationComponent
     }
 
     // Captcha
-    if (data.captchaInput) {
-      this.confirmForm.setControl('captcha', this.captchaHelper.captchaFormGroup(data.captchaInput));
+    if (data.captchaType != null) {
+      this.confirmForm.setControl('captcha', this.authHelper.captchaFormGroup());
     }
 
     this.step = 'confirm';
@@ -394,7 +392,7 @@ export class UserRegistrationComponent
   viewProfile() {
     const result = this.result;
     if (result) {
-      this.router.navigate(['/users', result.user.id, 'profile']);
+      this.router.navigate(['users', result.user.id, 'profile']);
     }
   }
 

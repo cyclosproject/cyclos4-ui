@@ -1,7 +1,7 @@
 <page-layout [ready]="data$ | async">
   <page-content mode="filters" [heading]="i18n.userAlert.title"
     [mobileHeading]="i18n.userAlert.mobileTitle">
-    <div [formGroup]="form" class="filters-form filters-form-separator">
+    <form [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row">
         <div class="col-12 col-md-6">
           <date-field labelPosition="side" formControlName="beginDate"
@@ -64,7 +64,7 @@
             [label]="i18n.general.user"></user-field>
         </div>
       </div>
-    </div>
+    </form>
   </page-content>
   <results-layout resultType="list" [results]="results$ | async"
     (update)="update($event)" [rendering$]="rendering$">

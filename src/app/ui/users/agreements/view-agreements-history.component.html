@@ -42,9 +42,8 @@
           <td *ngIf="hasRemoteAddress" class="align-center">
             {{ row.remoteAddress }}</td>
           <td class="actions">
-            <button *ngIf="row.accepted" type="button"
-              [tooltip]="i18n.general.view" class="btn btn-icon"
-              (click)="showAgreement(row)">
+            <button *ngIf="row.accepted" [tooltip]="i18n.general.view"
+              class="btn btn-icon" (click)="showAgreement(row)">
               <icon [icon]="SvgIcon.Search"></icon>
             </button>
           </td>

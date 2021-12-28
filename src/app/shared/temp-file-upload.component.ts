@@ -6,8 +6,6 @@ import {
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { CustomFieldDetailed, InputErrorCode, StoredFile } from 'app/api/models';
 import { FilesService } from 'app/api/services/files.service';
-import { AuthHelperService } from 'app/core/auth-helper.service';
-import { StoredFileCacheService } from 'app/core/stored-file-cache.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty, urlJoin } from 'app/shared/helper';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
@@ -83,9 +81,7 @@ export class TempFileUploadComponent extends BaseComponent {
     private http: HttpClient,
     private filesService: FilesService,
     private apiConfiguration: ApiConfiguration,
-    private changeDetector: ChangeDetectorRef,
-    private authHelper: AuthHelperService,
-    private storedFileCacheService: StoredFileCacheService) {
+    private changeDetector: ChangeDetectorRef) {
     super(injector);
   }
 
@@ -177,7 +173,6 @@ export class TempFileUploadComponent extends BaseComponent {
           file.uploadDone = true;
           this.addSub(this.filesService.viewRawFile({ id: event.body }).subscribe(storedFile => {
             file.storedFile = storedFile;
-            this.storedFileCacheService.write(storedFile);
             // Complete the observer
             observer.next(storedFile);
             observer.complete();

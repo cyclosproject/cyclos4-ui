@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { BuyVoucher, CreateDeviceConfirmation, CustomField, CustomFieldDetailed, CustomFieldTypeEnum, DeviceConfirmationTypeEnum, VoucherBuyingPreview } from 'app/api/models';
-import { AuthHelperService } from 'app/core/auth-helper.service';
-import { FieldHelperService } from 'app/core/field-helper.service';
-import { Enter } from 'app/core/shortcut.service';
+import {
+  BuyVoucher, CreateDeviceConfirmation, CustomField, CustomFieldTypeEnum, DeviceConfirmationTypeEnum,
+  PasswordInput, VoucherDataForBuy,
+} from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
+import { Enter } from 'app/core/shortcut.service';
 
 @Component({
   selector: 'buy-vouchers-step-confirm',
@@ -14,22 +15,18 @@ import { ConfirmationMode } from 'app/shared/confirmation-mode';
 })
 export class BuyVouchersStepConfirmComponent extends BaseComponent implements OnInit {
 
-  @Input() preview: VoucherBuyingPreview;
-  @Input() paymentCustomFields: CustomFieldDetailed[];
-  @Input() voucherCustomFields: CustomFieldDetailed[];
-
+  @Input() confirmationPasswordInput: PasswordInput;
   @Input() confirmationPassword: FormControl;
+  @Input() buyVoucher: BuyVoucher;
+  @Input() data: VoucherDataForBuy;
+
   @Output() confirmationModeChanged = new EventEmitter<ConfirmationMode>();
   @Output() confirmed = new EventEmitter<string>();
 
-  buyVoucher: BuyVoucher;
   form: FormGroup;
   createDeviceConfirmation: () => CreateDeviceConfirmation;
 
-  constructor(
-    injector: Injector,
-    public authHelper: AuthHelperService,
-    public fieldHelper: FieldHelperService) {
+  constructor(injector: Injector) {
     super(injector);
   }
 
@@ -38,18 +35,17 @@ export class BuyVouchersStepConfirmComponent extends BaseComponent implements On
 
     this.form = this.formBuilder.group({});
     this.form.setControl('confirmationPassword', this.confirmationPassword);
-    this.buyVoucher = this.preview.buyVoucher;
 
     this.createDeviceConfirmation = () => {
       return {
         type: DeviceConfirmationTypeEnum.BUY_VOUCHERS,
         amount: this.buyVoucher.amount,
-        voucherType: this.preview.buyVoucher.type,
+        voucherType: this.data.type.id,
         numberOfVouchers: this.buyVoucher.count,
       };
     };
     // When there's no confirmation password, the Enter key will confirm
-    if (!this.preview.confirmationPasswordInput) {
+    if (!this.confirmationPasswordInput) {
       this.addShortcut(Enter, () => this.confirmed.emit());
     }
   }

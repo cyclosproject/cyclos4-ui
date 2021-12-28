@@ -5,7 +5,7 @@
 <ng-template #content>
   <page-content [heading]="title" [mobileHeading]="mobileTitle">
     <ng-container *ngIf="data.user && !self">
-      <user-info [user]="data.user"></user-info>
+      <user-info [user]="data.user" labelCols="2"></user-info>
       <hr>
     </ng-container>
     <ng-container *ngIf="data.identityProviders.length > 0; else noResults">
@@ -24,8 +24,7 @@
               {{ uip.identityProvider.name }}</h2>
             <div class="mt-2">
               <div *ngIf="uip.linkDate">
-                {{ i18n.identityProvider.connectedOn(uip.linkDate | dateTime)
-                }}
+                {{ i18n.identityProvider.connectedOn(uip.linkDate | dateTime) }}
               </div>
               <div *ngIf="uip.status !== 'linked'">
                 {{ i18n.identityProvider.disconnected }}

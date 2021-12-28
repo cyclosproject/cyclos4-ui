@@ -25,8 +25,14 @@
 
   <ng-container *ngIf="typeData?.customFields?.length > 0"
     [formGroup]="form.controls.customValues">
-    <custom-field-input *ngFor="let cf of typeData.customFields"
-      [formControlName]="cf.internalName" [field]="cf"></custom-field-input>
+    <label-value *ngFor="let cf of typeData.customFields" [label]="cf.name"
+      [kind]="'field'"
+      [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'"
+      [fieldSize]="fieldSize(cf)" [required]="cf.required">
+      <custom-field-input [field]="cf" hideLabel
+        [formControlName]="cf.internalName">
+      </custom-field-input>
+    </label-value>
   </ng-container>
 
   <textarea-field *ngIf="typeData?.descriptionAvailability !== 'disabled'"

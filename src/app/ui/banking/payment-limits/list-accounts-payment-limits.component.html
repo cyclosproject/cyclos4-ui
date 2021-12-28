@@ -20,42 +20,22 @@
 
             <label-value [label]="i18n.account.paymentLimits.paymentLimit"
               labelPosition="sideForced">
-              {{ row.amountLimit ? (row.amountLimit |
-              currency:row.account.currency) :
-              i18n.account.paymentLimits.definedInPaymentType
-              }}
+              {{ row.amountLimit ? (row.amountLimit | currency:row.account.currency) : i18n.account.limits.unlimited }}
             </label-value>
 
             <label-value [label]="i18n.account.paymentLimits.dailyLimit"
               labelPosition="sideForced">
-              {{ row.amountPerDayLimit ? (row.amountPerDayLimit |
-              currency:row.account.currency) :
-              i18n.account.paymentLimits.definedInPaymentType
-              }}
+              {{ row.amountPerDayLimit ? (row.amountPerDayLimit | currency:row.account.currency) : i18n.account.limits.unlimited }}
             </label-value>
 
             <label-value [label]="i18n.account.paymentLimits.weeklyLimit"
               labelPosition="sideForced">
-              {{ row.amountPerWeekLimit ? (row.amountPerWeekLimit |
-              currency:row.account.currency) :
-              i18n.account.paymentLimits.definedInPaymentType
-              }}
+              {{ row.amountPerWeekLimit ? (row.amountPerWeekLimit | currency:row.account.currency) : i18n.account.limits.unlimited }}
             </label-value>
 
             <label-value [label]="i18n.account.paymentLimits.monthlyLimit"
               labelPosition="sideForced">
-              {{ row.amountPerMonthLimit ? (row.amountPerMonthLimit |
-              currency:row.account.currency) :
-              i18n.account.paymentLimits.definedInPaymentType
-              }}
-            </label-value>
-
-            <label-value [label]="i18n.account.paymentLimits.yearlyLimit"
-              labelPosition="sideForced">
-              {{ row.amountPerYearLimit ? (row.amountPerYearLimit |
-              currency:row.account.currency) :
-              i18n.account.paymentLimits.definedInPaymentType
-              }}
+              {{ row.amountPerMonthLimit ? (row.amountPerMonthLimit | currency:row.account.currency) : i18n.account.limits.unlimited }}
             </label-value>
 
           </div>
@@ -69,41 +49,22 @@
           <th>{{ i18n.account.paymentLimits.dailyLimit }}</th>
           <th>{{ i18n.account.paymentLimits.weeklyLimit }}</th>
           <th>{{ i18n.account.paymentLimits.monthlyLimit }}</th>
-          <th>{{ i18n.account.paymentLimits.yearlyLimit }}</th>
         </thead>
         <tbody>
           <tr *ngFor="let row of data.accountLimits"
             (click)="router.navigate(path(row.account.type)); $event.stopPropagation()">
             <td width="20%">{{ row.account.type.name }}</td>
             <td>
-              {{ row.amountLimit ? (row.amountLimit |
-              currency:row.account.currency) :
-              i18n.account.paymentLimits.definedInPaymentType
-              }}
+              {{ row.amountLimit ? (row.amountLimit | currency:row.account.currency) : i18n.account.limits.unlimited }}
             </td>
             <td>
-              {{ row.amountPerDayLimit ? (row.amountPerDayLimit |
-              currency:row.account.currency) :
-              i18n.account.paymentLimits.definedInPaymentType
-              }}
+              {{ row.amountPerDayLimit ? (row.amountPerDayLimit | currency:row.account.currency) : i18n.account.limits.unlimited }}
             </td>
             <td>
-              {{ row.amountPerWeekLimit ? (row.amountPerWeekLimit |
-              currency:row.account.currency) :
-              i18n.account.paymentLimits.definedInPaymentType
-              }}
+              {{ row.amountPerWeekLimit ? (row.amountPerWeekLimit | currency:row.account.currency) : i18n.account.limits.unlimited }}
             </td>
             <td>
-              {{ row.amountPerMonthLimit ? (row.amountPerMonthLimit |
-              currency:row.account.currency) :
-              i18n.account.paymentLimits.definedInPaymentType
-              }}
-            </td>
-            <td>
-              {{ row.amountPerYearLimit ? (row.amountPerYearLimit |
-              currency:row.account.currency) :
-              i18n.account.paymentLimits.definedInPaymentType
-              }}
+              {{ row.amountPerMonthLimit ? (row.amountPerMonthLimit | currency:row.account.currency) : i18n.account.limits.unlimited }}
             </td>
           </tr>
         </tbody>

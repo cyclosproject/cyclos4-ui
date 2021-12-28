@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   AccountType, OperatorGroupAccountAccessEnum, OperatorGroupDataForEdit,
-  OperatorGroupDataForNew, OperatorGroupManage, TransferTypeWithCurrency, User,
+  OperatorGroupDataForNew, TransferTypeWithCurrency, User,
 } from 'app/api/models';
 import { OperatorGroupsService } from 'app/api/services/operator-groups.service';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
@@ -11,8 +11,6 @@ import { FieldOption } from 'app/shared/field-option';
 import { empty, enumValues, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { Observable } from 'rxjs';
-
-export type TokenPermission = "enable" | "block" | "unblock" | "cancel";
 
 /**
  * Operator group form - either to create or edit
@@ -32,7 +30,6 @@ export class OperatorGroupFormComponent
   self: boolean;
   singleAccount: boolean;
   form: FormGroup;
-  tokenPermissions: FormControl;
   accountAccessOptions: FieldOption[];
 
   constructor(
@@ -89,8 +86,8 @@ export class OperatorGroupFormComponent
         const paymentValue = (group.payments[pt.id] || group.payments[pt.internalName]) || {};
         paymentControls.setControl(pt.id, this.formBuilder.group({
           perform: paymentValue.perform,
-          maxAmountPerDay: paymentValue.perform ? paymentValue.maxAmountPerDay : null,
-          requiresAuthorization: paymentValue.perform && paymentValue.requiresAuthorization,
+          maxAmountPerDay: paymentValue.maxAmountPerDay,
+          requiresAuthorization: paymentValue.requiresAuthorization,
           authorize: paymentValue.authorize,
         }));
       }
@@ -104,48 +101,14 @@ export class OperatorGroupFormComponent
     if (data.canChargebackPayments) {
       this.form.addControl('chargebackPayments', new FormControl(group.chargebackPayments));
     }
-    if (data.canReceivePayments) {
-      this.form.addControl('receivePayments', new FormControl(group.receivePayments));
-    }
-    if (data.canRequestPayments) {
-      this.form.addControl('requestPayments', new FormControl(group.requestPayments));
-    }
     if (data.canViewAdvertisements) {
       this.form.addControl('viewAdvertisements', new FormControl(group.viewAdvertisements));
-    }
-    if (data.canManageAdvertisements) {
-      this.form.addControl('manageAdvertisements', new FormControl(group.manageAdvertisements));
-    }
-    if (data.canHaveMessages) {
-      this.form.addControl('messages', new FormControl(group.messages));
-    }
-
-    let tokenOptions: TokenPermission[] = [];
-    if (group.enableToken) {
-      tokenOptions.push("enable");
-    }
-    if (group.blockToken) {
-      tokenOptions.push("block");
-    }
-    if (group.unblockToken) {
-      tokenOptions.push("unblock");
-    }
-    if (group.cancelToken) {
-      tokenOptions.push("cancel");
-    }
-    this.tokenPermissions = new FormControl(tokenOptions);
-
-    if (data.canPerformVoucherTransactions) {
-      this.form.addControl('voucherTransactions', new FormControl(group.voucherTransactions));
     }
     if (data.broker) {
       this.form.addControl('brokering', new FormControl(group.brokering));
     }
     if (!empty(data.operations)) {
       this.form.addControl('operations', new FormControl(group.operations));
-    }
-    if (!empty(data.recordTypes)) {
-      this.form.addControl('records', new FormControl(group.records));
     }
     if (group['version']) {
       this.form.addControl('version', new FormControl(group['version']));
@@ -161,12 +124,7 @@ export class OperatorGroupFormComponent
     if (!this.form.valid) {
       return;
     }
-    const value = this.form.value as OperatorGroupManage;
-    const tokenPermissions = this.tokenPermissions.value as TokenPermission[];
-    value.enableToken = tokenPermissions.includes("enable");
-    value.blockToken = tokenPermissions.includes("block");
-    value.unblockToken = tokenPermissions.includes("unblock");
-    value.cancelToken = tokenPermissions.includes("cancel");
+    const value = this.form.value;
     const request: Observable<string | void> = this.create
       ? this.operatorGroupsService.createOperatorGroup({ user: this.user, body: value })
       : this.operatorGroupsService.updateOperatorGroup({ id: this.id, body: value });
@@ -182,13 +140,6 @@ export class OperatorGroupFormComponent
     return (this.data as OperatorGroupDataForEdit).restrictPaymentsToUsers;
   }
 
-  resolveVoucherTransactionsLabel(): string {
-    return this.data.topUpEnabled ? this.i18n.operatorGroup.voucherTransactions : this.i18n.operatorGroup.voucherTransactionsRedeems;
-  }
-
-  hasTokenPermissions(): boolean {
-    return this.data.canEnableToken || this.data.canBlockToken || this.data.canUnblockToken || this.data.canCancelToken;
-  }
   resolveMenu(data: OperatorGroupDataForEdit | OperatorGroupDataForNew) {
     return this.menu.userMenu(data.user, Menu.OPERATOR_GROUPS);
   }

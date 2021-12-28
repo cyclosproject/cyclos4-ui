@@ -155,7 +155,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
   protected acceptByBuyer() {
     this.addSub(this.orderService.getOrderDataForAcceptByBuyer({ order: this.id }).subscribe(
       data => {
-        this.confirmation.confirm({
+        this.notification.confirm({
           title: this.i18n.ad.acceptOrder,
           labelPosition: 'above',
           customFields: this.orderFields(data),
@@ -202,11 +202,11 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
     const dm = this.data.deliveryMethod || {};
     const ref = this.modal.show(SetDeliveryMethodComponent, {
       class: 'modal-form', initialState: {
+        title: this.i18n.ad.deliveryMethod,
         name: dm.name,
-        chargeAmount: parseFloat(dm.price),
+        chargeAmount: dm.price,
         minTime: dm.minTime,
         maxTime: dm.maxTime,
-        deliveryType: dm.deliveryType,
         currency: this.data.currency,
       },
     });
@@ -243,7 +243,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
    * Rejects the order and allows to enter remarks
    */
   reject() {
-    this.confirmation.confirm({
+    this.notification.confirm({
       title: this.i18n.ad.rejectOrder,
       labelPosition: 'above',
       customFields: this.orderFields(),

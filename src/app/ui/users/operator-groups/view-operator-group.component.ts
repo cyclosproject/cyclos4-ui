@@ -26,8 +26,8 @@ export class ViewOperatorGroupComponent
   self: boolean;
   singleAccount: boolean;
   visibleAccounts: OperatorGroupAccountView[];
-  paymentsByAccount: { [key: string]: OperatorGroupPaymentView[]; };
-  authorizeByAccount: { [key: string]: TransferTypeWithCurrency[]; };
+  paymentsByAccount: { [key: string]: OperatorGroupPaymentView[] };
+  authorizeByAccount: { [key: string]: TransferTypeWithCurrency[] };
 
   constructor(
     injector: Injector,
@@ -78,35 +78,8 @@ export class ViewOperatorGroupComponent
     }
   }
 
-  hasGeneralAccountOperations(): boolean {
-    return this.group.restrictPaymentsToUsers?.length > 0 || this.group.chargebackPayments || this.group.receivePayments
-      || this.group.requestPayments;
-  }
-
-  hasTokenPermissions(): boolean {
-    return this.group.enableToken || this.group.blockToken || this.group.unblockToken || this.group.cancelToken;
-  }
-
-  getTokenPermissions(): string[] {
-    let permissions = [];
-    if (this.group.enableToken) {
-      permissions.push(this.i18n.operatorGroup.tokens.enable);
-    }
-    if (this.group.blockToken) {
-      permissions.push(this.i18n.operatorGroup.tokens.block);
-    }
-    if (this.group.unblockToken) {
-      permissions.push(this.i18n.operatorGroup.tokens.unblock);
-    }
-    if (this.group.cancelToken) {
-      permissions.push(this.i18n.operatorGroup.tokens.cancel);
-    }
-
-    return permissions;
-  }
-
   remove() {
-    this.confirmation.confirm({
+    this.notification.confirm({
       message: this.i18n.general.removeConfirm(this.group.name),
       callback: () => this.doRemove(),
     });
@@ -115,7 +88,7 @@ export class ViewOperatorGroupComponent
   private doRemove() {
     this.addSub(this.operatorGroupsService.deleteOperatorGroup({ id: this.id }).subscribe(() => {
       this.notification.snackBar(this.i18n.general.removeDone(this.group.name));
-      this.router.navigate(['/users', this.authHelper.orSelf(this.group.user), 'operator-groups']);
+      this.router.navigate(['users', this.authHelper.orSelf(this.group.user), 'operator-groups']);
     }));
   }
 

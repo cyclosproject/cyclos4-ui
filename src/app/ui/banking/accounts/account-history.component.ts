@@ -9,12 +9,11 @@ import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
-import { empty, truncate } from 'app/shared/helper';
+import { empty } from 'app/shared/helper';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { SvgIcon } from 'app/core/svg-icon';
-import { FormControl, FormGroup } from '@angular/forms';
 
 type AccountHistorySearchParams = AccountHistoryQueryFilters & {
   owner: string;
@@ -34,8 +33,6 @@ export class AccountHistoryComponent
   extends BaseSearchPageComponent<DataForAccountHistory, AccountHistorySearchParams, AccountHistoryResult>
   implements OnInit {
 
-  truncate = truncate;
-
   ownerParam: string;
   typeParam: string;
   self: boolean;
@@ -44,7 +41,6 @@ export class AccountHistoryComponent
   multipleAccounts: boolean;
   showForm$ = new BehaviorSubject(false);
   exportActions: HeadingAction[];
-  statusForm: FormGroup;
 
   constructor(
     injector: Injector,
@@ -85,8 +81,8 @@ export class AccountHistoryComponent
 
   getFormControlNames() {
     return [
-      'transferFilters', 'preselectedPeriod', 'periodBegin', 'periodEnd', 'minAmount', 'maxAmount', 'transactionNumber',
-      'direction', 'user', 'by', 'groups', 'channels', 'description', 'orderBy', 'customFields'
+      'transferFilters', 'preselectedPeriod', 'periodBegin', 'periodEnd', 'minAmount', 'maxAmount', 'transactionNumber', 'direction',
+      'user', 'by', 'orderBy', 'groups', 'channels', 'description'
     ];
   }
 
@@ -108,7 +104,6 @@ export class AccountHistoryComponent
         owner: this.ownerParam, accountType: this.typeParam,
       }),
     ).subscribe(data => {
-      this.form.setControl('customFields', this.fieldHelper.customFieldsForSearchFormGroup(data.customFieldsInSearch));
       this.data = data;
     });
   }
@@ -118,13 +113,6 @@ export class AccountHistoryComponent
     if (!this.form.controls['preselectedPeriod'].value) {
       this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
     }
-
-    this.statusForm = new FormGroup({});
-    for (const flow of data.transferStatusFlows || []) {
-      this.statusForm.addControl(flow.id, new FormControl(null));
-    }
-    this.form.addControl('statuses', this.statusForm);
-
 
     this.exportActions = this.exportHelper.headingActions(data.exportFormats, f =>
       this.accountsService.exportAccountHistory$Response({
@@ -144,16 +132,13 @@ export class AccountHistoryComponent
 
   toSearchParams(value: any): AccountHistorySearchParams {
     const query: AccountHistorySearchParams = value;
-    const statuses = value.statuses;
-
     query.datePeriod = this.bankingHelper.resolveDatePeriod(value);
     query.amountRange = ApiHelper.rangeFilter(value.minAmount, value.maxAmount);
 
     query.fields = [];
     query.owner = this.ownerParam;
     query.accountType = this.typeParam;
-    query.statuses = Object.values(statuses);
-    query.customFields = this.fieldHelper.toCustomValuesFilter(value.customFields);
+
     return query;
   }
 
@@ -184,7 +169,7 @@ export class AccountHistoryComponent
   }
 
   subjectName(row: AccountHistoryResult): string {
-    return row.relatedName ?? this.bankingHelper.subjectName(row.relatedAccount);
+    return row.relatedName || this.bankingHelper.subjectName(row.relatedAccount);
   }
 
   /**
@@ -208,9 +193,6 @@ export class AccountHistoryComponent
    * @param row The row
    */
   avatarImage(row: AccountHistoryResult): Image {
-    if (row.image) {
-      return row.image;
-    }
     return row.relatedAccount.kind === 'user' ? row.relatedAccount.user.image : null;
   }
 
@@ -233,23 +215,5 @@ export class AccountHistoryComponent
       return menu;
     }
     return this.menu.userMenu(data.account.user, menu);
-  }
-
-  statuses(row: AccountHistoryResult) {
-    const keys = Object.keys(row.statuses || {});
-    if (keys.length === 0) {
-      return '';
-    }
-    const statuses = [];
-    for (const flow of this.data.transferStatusFlows) {
-      const statusKey = row.statuses[flow.id] || row.statuses[flow.internalName];
-      if (statusKey) {
-        const statusValue = flow.statuses.find(st => [st.id, st.internalName].includes(statusKey));
-        if (statusValue) {
-          statuses.push(statusValue.name);
-        }
-      }
-    }
-    return statuses.join(', ');
   }
 }

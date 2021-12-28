@@ -1,0 +1,3 @@
+files:
+  - source: /src/i18n/i18n.json
+    translation: /src/i18n/i18n.%osx_locale%.json

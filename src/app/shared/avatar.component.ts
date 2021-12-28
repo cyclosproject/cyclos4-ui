@@ -1,18 +1,19 @@
 import {
   AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef,
   Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output,
-  SimpleChanges
+  SimpleChanges, ViewChild,
 } from '@angular/core';
 import { Image } from 'app/api/models';
 import { SvgIcon } from 'app/core/svg-icon';
-import { truthyAttr } from 'app/shared/helper';
+import { galleryImage, truthyAttr } from 'app/shared/helper';
+import { NgxGalleryComponent, NgxGalleryImage, NgxGalleryOptions } from 'ngx-gallery-9';
 
 /**
  * The size for rendered avatars.
  * Profile is a special value that adapts to the max image width / height and layout size
  */
 export type AvatarSize = 'small' | 'small-medium' | 'medium' | 'medium-large' | 'large' | 'xlarge' | 'huge' | 'full';
-export const SIZES: { [key: string]: number; } = {
+export const SIZES: { [key: string]: number } = {
   small: 24,
   'small-medium': 30,
   medium: 36,
@@ -53,6 +54,14 @@ export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
     this._roundBorders = truthyAttr(rb);
   }
 
+  private _useLightbox = false;
+  @Input() get useLightbox(): boolean | string {
+    return this._useLightbox;
+  }
+  set useLightbox(use: boolean | string) {
+    this._useLightbox = truthyAttr(use);
+  }
+
   fullSize = false;
   private _size: number = SIZES.medium;
   /**
@@ -90,10 +99,22 @@ export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
    */
   @Input() image: Image;
 
+  /**
+   * Other images in the collection
+   */
+  @Input() additionalImages: Image[];
+
+  allImages: Image[];
+
+  galleryImages: NgxGalleryImage[];
+
   @Input() imageSize: number = null;
 
   url: string;
   visible = false;
+  @ViewChild(NgxGalleryComponent) gallery: NgxGalleryComponent;
+
+  galleryOptions: NgxGalleryOptions[];
 
   constructor(
     private element: ElementRef,
@@ -105,7 +126,7 @@ export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.image || changes.additionalImages || changes.size) {
+    if (changes.image || changes.additionalImages || changes.useLightbox || changes.size) {
       this.update();
     }
   }
@@ -113,7 +134,33 @@ export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
   private update() {
     if (this.image) {
       this.initImage();
+      const additional = (this.additionalImages || []);
+      this.allImages = [...additional];
+      if (this.allImages.findIndex(i => i.url === this.image.url) < 0) {
+        this.allImages.unshift(this.image);
+      }
+      if (this.useLightbox) {
+        this.galleryImages = this.allImages.map(galleryImage);
+        this.galleryOptions = [{
+          width: '0',
+          height: '0',
+          image: false,
+          thumbnails: false,
+          previewKeyboardNavigation: true,
+          previewCloseOnClick: true,
+          previewCloseOnEsc: true,
+          previewArrows: additional.length > 0,
+        }];
+        if (this.gallery) {
+          this.gallery.images = this.galleryImages;
+          this.gallery.options = this.galleryOptions;
+        }
+      } else {
+        this.galleryImages = null;
+      }
     } else {
+      this.allImages = [];
+      this.galleryImages = null;
       this.initIcon();
     }
   }
@@ -162,6 +209,14 @@ export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
         const urlSize = Math.round(imageSize * (window.devicePixelRatio || 1));
         this.url = `${image.url}?${param}=${urlSize}`;
       }
+    }
+  }
+
+  showLightbox(index?: number) {
+    if (this.image && this.useLightbox) {
+      const images = this.galleryImages || [];
+      const toShow = index == null ? images.findIndex(li => li.big === this.image.url) : index;
+      this.gallery.openPreview(toShow);
     }
   }
 

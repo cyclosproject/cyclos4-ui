@@ -27,8 +27,6 @@ type PaymentLimitsSearchParams = QueryFilters & {
   customAmountPerWeekLimitRange?: Array<string>;
   customAmountPerMonthLimit?: boolean;
   customAmountPerMonthLimitRange?: Array<string>;
-  customAmountPerYearLimit?: boolean;
-  customAmountPerYearLimitRange?: Array<string>;
   groups?: Array<string>;
   user?: string;
 };
@@ -49,7 +47,6 @@ export class SearchPaymentLimitsOverviewComponent
   isCustomDailyLimit$ = new BehaviorSubject<boolean>(false);
   isCustomWeeklyLimit$ = new BehaviorSubject<boolean>(false);
   isCustomMonthlyLimit$ = new BehaviorSubject<boolean>(false);
-  isCustomYearlyLimit$ = new BehaviorSubject<boolean>(false);
   currencies: Currency[] = [];
   singleCurrency: Currency;
 
@@ -63,8 +60,7 @@ export class SearchPaymentLimitsOverviewComponent
   protected getFormControlNames() {
     return ['accountType', 'broker', 'by', 'currency', 'customAmountLimit', 'paymentLimitFrom', 'paymentLimitTo',
       'dailyLimitFrom', 'dailyLimitTo', 'customAmountPerDayLimit', 'customAmountPerWeekLimit', 'weeklyLimitFrom', 'weeklyLimitTo',
-      'customAmountPerMonthLimit', 'monthlyLimitFrom', 'monthlyLimitTo', 'yearlyLimitFrom', 'yearlyLimitTo', 'customAmountPerYearLimit',
-      'groups', 'user'];
+      'customAmountPerMonthLimit', 'monthlyLimitFrom', 'monthlyLimitTo', 'groups', 'user'];
   }
 
   ngOnInit() {
@@ -81,7 +77,6 @@ export class SearchPaymentLimitsOverviewComponent
     this.form.get('customAmountPerDayLimit').valueChanges.subscribe(value => this.isCustomDailyLimit$.next(value === 'yes'));
     this.form.get('customAmountPerWeekLimit').valueChanges.subscribe(value => this.isCustomWeeklyLimit$.next(value === 'yes'));
     this.form.get('customAmountPerMonthLimit').valueChanges.subscribe(value => this.isCustomMonthlyLimit$.next(value === 'yes'));
-    this.form.get('customAmountPerYearLimit').valueChanges.subscribe(value => this.isCustomYearlyLimit$.next(value === 'yes'));
     this.addSub(this.form.controls.currency.valueChanges.subscribe(currencyId => this.updateAccountTypes(currencyId)));
     this.headingActions = [this.moreFiltersAction];
   }
@@ -119,14 +114,6 @@ export class SearchPaymentLimitsOverviewComponent
     } else {
       // if there is a customLimit it means "no" because "yes" is already handled
       params.customAmountPerMonthLimit = value.customAmountPerMonthLimit ? false : null;
-    }
-
-    if (this.isCustomYearlyLimit$.value) {
-      params.customAmountPerYearLimit = true;
-      params.customAmountPerYearLimitRange = ApiHelper.rangeFilter(value.yearlyLimitFrom, value.yearlyLimitTo);
-    } else {
-      // if there is a customLimit it means "no" because "yes" is already handled
-      params.customAmountPerYearLimit = value.customAmountPerYearLimit ? false : null;
     }
 
     if (value.broker) {

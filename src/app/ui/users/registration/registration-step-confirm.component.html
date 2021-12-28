@@ -1,13 +1,12 @@
 <div *ngIf="image && (layout.ltsm$ | async)"
   class="image d-flex justify-content-center mt-2 mb-4">
-  <avatar-lightbox size="160" imageSize="200" [image]="image">
-  </avatar-lightbox>
+  <avatar size="160" imageSize="200" useLightbox [image]="image"></avatar>
 </div>
 
 <div class="d-flex flex-row-reverse">
   <div *ngIf="image && (layout.gtxs$ | async)" class="image ml-4 mb-3">
-    <avatar-lightbox [size]="image ? 200 : 128" iconSize="128px"
-      [image]="image"></avatar-lightbox>
+    <avatar [size]="image ? 200 : 128" iconSize="128px" useLightbox
+      [image]="image"></avatar>
   </div>
   <div class="flex-grow-1 mb-ls">
     <label-value [label]="i18n.user.group" *ngIf="group" [value]="group.name">
@@ -30,13 +29,12 @@
       [value]="landLine"></label-value>
     <label-value [label]="i18n.address.address" *ngIf="address"
       valueFormat="component">
-      <address-details-with-custom-fields [address]="address">
-      </address-details-with-custom-fields>
+      <address-details [address]="address"></address-details>
     </label-value>
   </div>
 </div>
 
-<ng-container [formGroup]="form">
+<form [formGroup]="form">
   <ng-container *ngFor="let pt of data.passwordTypes; let i = index">
     <h2>{{ pt.name }}</h2>
     <ng-container [formGroup]="passwordForm(i)">
@@ -85,20 +83,22 @@
         {{ i18n.user.title.registrationConfirmation }}
       </h2>
 
-      <div *ngIf="data.agreements?.length > 0">
-        <div class="mb-3">{{ i18n.pendingAgreements.preface }}</div>
-        <accept-agreements [agreements]="data.agreements"
-          formControlName="acceptAgreements"></accept-agreements>
-      </div>
+      <div class="row no-gutters">
+        <div class="col-12 col-sm-6 col-md-7"
+          *ngIf="data.agreements?.length > 0">
+          <div class="mb-3">{{ i18n.pendingAgreements.preface }}</div>
+          <accept-agreements [agreements]="data.agreements"
+            formControlName="acceptAgreements"></accept-agreements>
+        </div>
 
-      <div *ngIf="data.captchaType != null"
-        [ngClass]="{'mt-3': data.agreements?.length > 0}">
-        <div class="mb-3">{{ i18n.user.captcha }}</div>
-        <div class="mb-3">
-          <captcha [captchaInput]="data.captchaInput"
-            [form]="form.get('captcha')"></captcha>
+        <div class="col-12 col-sm-6 col-md-5"
+          *ngIf="data.captchaType != null">
+          <div class="mb-3">{{ i18n.user.captcha }}</div>
+          <div class="mb-3">
+            <captcha [form]="form.get('captcha')"></captcha>
+          </div>
         </div>
       </div>
     </ng-container>
   </ng-container>
-</ng-container>
+</form>

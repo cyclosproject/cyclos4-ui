@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
 import { User } from 'app/api/models';
-import { AuthHelperService } from 'app/core/auth-helper.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { LabelValueKind } from 'app/shared/label-value.component';
 
@@ -19,15 +18,15 @@ import { LabelValueKind } from 'app/shared/label-value.component';
 })
 export class UserInfoComponent extends BaseComponent {
 
-  constructor(
-    injector: Injector,
-    public authHelper: AuthHelperService) {
+  constructor(injector: Injector) {
     super(injector);
   }
 
   @Input() user: User;
 
   @Input() kind: LabelValueKind = 'view';
+
+  @Input() labelCols: number | string;
 
   get operator(): boolean {
     return !!this.user.user;

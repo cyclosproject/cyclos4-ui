@@ -1,13 +1,12 @@
 import { HttpResponse } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ExportFormat } from 'app/api/models';
 import { SvgIcon } from 'app/core/svg-icon';
-import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
+import { I18n } from 'app/i18n/i18n';
 import { Action, HeadingAction } from 'app/shared/action';
 import { downloadResponse, empty, setRootSpinnerVisible } from 'app/shared/helper';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-
 
 /**
  * Helper service for handling file exports
@@ -17,9 +16,7 @@ import { first } from 'rxjs/operators';
 })
 export class ExportHelperService {
 
-  static EXPORT_ACTION = 'exportAction';
-
-  constructor(@Inject(I18nInjectionToken) private i18n: I18n) {
+  constructor(private i18n: I18n) {
   }
 
   /**
@@ -34,20 +31,15 @@ export class ExportHelperService {
       const format = formats[0];
       // When there's a single export format, and is PDF, display as 'Print'
       if (format.internalName === 'pdf') {
-        const action = new HeadingAction(SvgIcon.Printer, this.i18n.general.print, this.downloadHandler(format, callback), true);
-        action.id = ExportHelperService.EXPORT_ACTION;
-        return [action];
+        return [new HeadingAction(SvgIcon.Printer, this.i18n.general.print, this.downloadHandler(format, callback), true)];
       } else {
-        const action = new HeadingAction(SvgIcon.Download, this.i18n.general.downloadAs(format.name),
-          this.downloadHandler(format, callback), true);
-        action.id = ExportHelperService.EXPORT_ACTION;
-        return [action];
+        return [new HeadingAction(SvgIcon.Download, this.i18n.general.downloadAs(format.name),
+          this.downloadHandler(format, callback), true)];
       }
     } else {
       // When multiple export formats, handle them as sub-actions
-      const action = new HeadingAction(SvgIcon.Download, this.i18n.general.download, () => null, true);
+      const action = new HeadingAction(SvgIcon.Download, this.i18n.general.download, () => null);
       action.subActions = formats.map(f => new Action(f.name, this.downloadHandler(f, callback)));
-      action.id = ExportHelperService.EXPORT_ACTION;
       return [action];
     }
   }

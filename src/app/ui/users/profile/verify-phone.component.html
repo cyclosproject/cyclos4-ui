@@ -9,14 +9,13 @@
     </label>
   </div>
   <div class="col-6">
-    <input-field #codeField id="smsCode" [formControl]="code"
-      fieldSize="small" type="number" focused></input-field>
+    <input-field #codeField id="smsCode" [formControl]="code" fieldSize="4"
+      type="number" focused></input-field>
   </div>
   <div class="col-3">
-    <countdown-button class="d-block w-100" (action)="sendCode()"
-      [label]="i18n.phone.verify.send" [disabledKey]="disableLabel"
-      [disabledSeconds]="30">
-    </countdown-button>
+    <action-button class="d-block w-100" (action)="sendCode()"
+      [label]="i18n.phone.verify.send">
+    </action-button>
   </div>
 </div>
 

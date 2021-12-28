@@ -1,10 +1,7 @@
-import {
-  ChangeDetectionStrategy, Component, ElementRef, HostBinding, Inject,
-  Input, OnChanges, OnInit, SimpleChanges
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { LayoutService } from 'app/core/layout.service';
 import { SvgIcon } from 'app/core/svg-icon';
-import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
+import { I18n } from 'app/i18n/i18n';
 import { HeadingAction } from 'app/shared/action';
 import { blank, truthyAttr } from 'app/shared/helper';
 import { CardMode } from 'app/ui/content/card-mode';
@@ -60,7 +57,7 @@ export class PageContentComponent implements OnInit, OnChanges {
     public layoutService: LayoutService,
     public uiLayout: UiLayoutService,
     public breadcrumb: BreadcrumbService,
-    @Inject(I18nInjectionToken) public i18n: I18n,
+    public i18n: I18n,
     public element: ElementRef,
   ) { }
 

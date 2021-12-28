@@ -54,7 +54,7 @@ export class ListTokenComponent
 
     if (this.canActivate()) {
       this.headingActions = [new HeadingAction(SvgIcon.CheckCircle, this.i18n.token.action.activate, () => {
-        this.confirmation.confirm({
+        this.notification.confirm({
           title: this.i18n.token.action.activate,
           customFields: [{
             internalName: 'value',

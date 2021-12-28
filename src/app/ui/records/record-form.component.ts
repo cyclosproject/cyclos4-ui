@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
+  CustomFieldDetailed,
   RecordCustomField, RecordCustomFieldDetailed, RecordDataForEdit, RecordDataForNew,
   RecordLayoutEnum, RecordSection,
 } from 'app/api/models';
@@ -10,6 +11,7 @@ import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { cloneDeep } from 'lodash-es';
 import { Observable } from 'rxjs';
+import { CustomFieldValue } from '../../api/models/custom-field-value';
 
 @Component({
   selector: 'record-form',
@@ -64,8 +66,17 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
     // Set the custom fields control
     this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.fields, {
       currentValues: data.record.customValues,
-      disabledProvider: cf => !this.create && ((data as RecordDataForEdit).editableFields || []).indexOf(cf.internalName) === -1,
+      disabledProvider: cf => !this.canEditInternal(cf, data),
+      requiredProvider: cf => this.canEditInternal(cf, data) && cf.required
     }));
+  }
+
+  canEdit(cf: RecordCustomFieldDetailed) {
+    return this.canEditInternal(cf, this.data);
+  }
+
+  private canEditInternal(cf: RecordCustomFieldDetailed, data: RecordDataForEdit | RecordDataForNew) {
+    return this.create || ((data as RecordDataForEdit).editableFields || []).indexOf(cf.internalName) !== -1;
   }
 
   resolveColumnClass(field: RecordCustomField): string {
@@ -85,8 +96,7 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
   }
 
   save() {
-    validateBeforeSubmit(this.form);
-    if (!this.form.valid) {
+    if (!validateBeforeSubmit(this.form)) {
       return;
     }
 
@@ -112,5 +122,32 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
       }
       this.router.navigate(['/records', 'view', id || this.id], { replaceUrl: firstTime });
     }));
+  }
+
+  fieldSize(cf: CustomFieldDetailed) {
+    return this.fieldHelper.fieldSize(cf);
+  }
+
+  fieldValue(cf: RecordCustomFieldDetailed): CustomFieldValue {
+    const value = this.form.get('customValues').get(cf.internalName).value;
+    return this.fieldHelper.asFieldValue(cf, value, this.binaryValues);
+  }
+
+  private fieldName(field: string | RecordCustomFieldDetailed): string {
+    if (typeof field === 'string') {
+      return field;
+    } else {
+      return field.internalName;
+    }
+  }
+
+  isEmpty(field: string | RecordCustomFieldDetailed): boolean {
+    const name = this.fieldName(field);
+    if (typeof field === 'string') {
+      return empty(this.form.get(name).value);
+    } else {
+      const customValues = this.form.get('customValues');
+      return customValues ? empty(customValues.get(name).value) : true;
+    }
   }
 }

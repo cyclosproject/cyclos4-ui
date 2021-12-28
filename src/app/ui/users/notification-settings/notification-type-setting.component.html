@@ -1,5 +1,4 @@
-<div class="d-flex flex-wrap flex-xs-nowrap"
-  [ngClass]="'has-buttons-' + buttonCount" [formGroup]="form">
+<div class="d-flex flex-wrap flex-xs-nowrap" [formGroup]="form">
   <single-selection-field *ngIf="adminType && !options" class="flex-grow-1"
     [emptyOption]="false" formControlName="internal" [disabled]="disabled">
     <field-option [value]="true" [text]="i18n.general.enabled">
@@ -7,7 +6,7 @@
     <field-option [value]="false" [text]="i18n.general.disabled">
     </field-option>
   </single-selection-field>
-  <multi-selection-field *ngIf="adminType && options" class="flex-grow-1"
+  <multi-selection-field *ngIf="options" class="flex-grow-1"
     [formControl]="multiSelectionControl" [fieldOptions]="options"
     [disabled]="disabled">
   </multi-selection-field>

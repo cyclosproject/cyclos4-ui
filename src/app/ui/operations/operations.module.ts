@@ -14,7 +14,7 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
   ],
   imports: [
     OperationsRoutingModule,
-    UiSharedModule
-  ]
+    UiSharedModule,
+  ],
 })
 export class OperationsModule { }

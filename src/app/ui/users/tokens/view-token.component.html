@@ -21,20 +21,18 @@
           {{ data.creationDate | date }}
         </label-value>
         <label-value *ngIf="data.activationDate"
-          [label]="i18n.general.category">
-          {{ data.activationDate | date }}
+          [label]="i18n.document.category">
+          {{ data.activationDate | date  }}
         </label-value>
         <label-value *ngIf="data.status" [label]="i18n.general.status">
           {{ statusDisplay(data.status) }}
         </label-value>
         <label-value *ngIf="showDeadLine()"
           [label]="i18n.token.activationDeadline">
-          {{ data.activationDeadline ? (data.activationDeadline | date) :
-          i18n.token.noDeadline }}
+          {{ data.activationDeadline ? (data.activationDeadline | date) :  i18n.token.noDeadline }}
         </label-value>
         <label-value *ngIf="showExpiryDate()" [label]="i18n.token.expiryDate">
-          {{ data.expiryDate ? (data.expiryDate | date) :
-          i18n.token.noExpiryDate }}
+          {{ data.expiryDate ? (data.expiryDate | date) :  i18n.token.noExpiryDate }}
         </label-value>
         <div *ngIf="isQrCode(data)">
           <hr class="mt-3" />

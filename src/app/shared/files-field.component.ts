@@ -1,16 +1,15 @@
 import {
   ChangeDetectorRef, Component, ElementRef, EventEmitter, Host,
-  Injector, Input, OnInit, Optional, Output, SkipSelf, ViewChild
+  Injector, Input, OnInit, Optional, Output, SkipSelf, ViewChild,
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomField, StoredFile } from 'app/api/models';
 import { FilesService } from 'app/api/services/files.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
-import { LayoutService } from 'app/core/layout.service';
 import { NextRequestState } from 'app/core/next-request-state';
-import { StoredFileCacheService } from 'app/core/stored-file-cache.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
+import { LayoutService } from 'app/core/layout.service';
 import { ManageFilesComponent } from 'app/shared/manage-files.component';
 import download from 'downloadjs';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -70,9 +69,7 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
     private errorHandler: ErrorHandlerService,
     private filesService: FilesService,
     private changeDetector: ChangeDetectorRef,
-    private modal: BsModalService,
-    private storedFileCacheService: StoredFileCacheService
-  ) {
+    private modal: BsModalService) {
     super(injector, controlContainer);
   }
 
@@ -144,7 +141,6 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
         this.files = this.files.filter(i => !result.removedFiles.includes(i.id));
         this.uploadedFiles = this.uploadedFiles.filter(i => !result.removedFiles.includes(i.id));
         value = value.filter(id => !result.removedFiles.includes(id));
-        result.removedFiles.forEach(id => this.storedFileCacheService.delete(id));
       }
       this.files = value.map(id => this.files.find(i => i.id === id));
       this.value = value;
@@ -162,20 +158,12 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
         this.addSub(this.filesService.deleteRawFile({ id: f.id }).subscribe());
       });
     });
-    this.files.forEach(f => this.storedFileCacheService.delete(f.id));
+
     this.files = [];
     this.value = [];
     // Manually mark the control as touched, as there's no native inputs
     this.notifyTouched();
   }
-
-  onValueInitialized(_value: string | string[]) {
-    this.fileIds
-      .map(id => this.storedFileCacheService.read(id))
-      .filter(sf => sf)
-      .forEach(sf => this.files.push(sf));
-  }
-
 
   notifyTouched() {
     super.notifyTouched();

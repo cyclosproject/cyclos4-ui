@@ -1,5 +1,5 @@
 <h1 *ngIf="title">{{ title }}</h1>
-<ng-container [formGroup]="form">
+<form [formGroup]="form">
   <div *ngIf="message && canConfirm" class="mb-1"
     [ngClass]="{'mt-3': title != null}" [innerHTML]="message | trust"></div>
 
@@ -12,8 +12,7 @@
     formControlName="confirmationPassword" [focused]="!hasFields"
     [createDeviceConfirmation]="createDeviceConfirmation"
     (confirmationModeChanged)="confirmationMode$.next($event)"
-    (createDeviceConfirmationError)="hide()" (confirmed)="confirm($event)"
-    [passwordInput]="passwordInput" [ngClass]="{
+    (confirmed)="confirm($event)" [passwordInput]="passwordInput" [ngClass]="{
       'mt-3': hasFields || message == null,
       'mt-4': !hasFields && message != null
     }">
@@ -26,7 +25,7 @@
       [label]="confirmLabel">
     </action-button>
     <ng-template #blank>&nbsp;</ng-template>
-    <action-button outline (action)="hide()" [label]="cancelLabel">
+    <action-button outline (action)="modalRef.hide()" [label]="cancelLabel">
     </action-button>
   </actions>
-</ng-container>
+</form>

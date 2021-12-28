@@ -19,7 +19,7 @@ export class PickContactComponent extends BaseComponent implements OnInit {
 
   currentPage = 0;
 
-  @Input() usersToExclude: string[];
+  @Input() exclude: string[];
   @Output() select = new EventEmitter<User>();
 
   results$ = new BehaviorSubject<PagedResults<ContactResult>>(null);
@@ -47,18 +47,23 @@ export class PickContactComponent extends BaseComponent implements OnInit {
       user: ApiHelper.SELF,
       fields: ['contact'],
       pageSize: this.layout.ltmd ? 6 : this.layout.md ? 10 : 20,
-      page: this.currentPage,
-      usersToExclude: this.usersToExclude
+      page: this.currentPage
     }).subscribe(response => this.results = PagedResults.from(response)));
   }
 
   emit(row: ContactResult) {
-    this.select.emit(row.contact);
-    this.modalRef.hide();
+    if (!this.isExcluded(row)) {
+      this.select.emit(row.contact);
+      this.modalRef.hide();
+    }
   }
 
   get onClick() {
     return (row: ContactResult) => this.emit(row);
+  }
+
+  isExcluded(row: ContactResult) {
+    return (this.exclude || []).includes(row.id);
   }
 
   get results(): PagedResults<ContactResult> {

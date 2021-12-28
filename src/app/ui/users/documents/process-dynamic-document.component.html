@@ -2,12 +2,14 @@
 
   <page-content *ngSwitchCase="'form'" [heading]="data.document.name"
     [mobileHeading]="data.document.name">
-    <ng-container *ngFor="let cf of formFields; let first = first">
-      <custom-field-input [field]="cf"
-        [formControl]="formControl(cf.internalName)" [focused]="first"
-        [labelPosition]="'auto'">
+    <label-value *ngFor="let cf of formFields; let first = first"
+      [label]="cf.name" [kind]="'field'" [fieldSize]="fieldSize(cf)"
+      [required]="cf.required" [focused]="first"
+      [labelPosition]="cf.type === 'boolean' ? 'sideForced' : 'auto'">
+      <custom-field-input [field]="cf" hideLabel
+        [formControl]="formControl(cf.internalName)">
       </custom-field-input>
-    </ng-container>
+    </label-value>
     <actions>
       <action-button (action)="process()" [disabled]="requesting$ | async"
         [label]="i18n.general.submit">

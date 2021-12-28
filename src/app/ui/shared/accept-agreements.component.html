@@ -3,18 +3,16 @@
 </label-value>
 
 <ng-template #widget>
-  <div class="optional-agreements">
-    <ng-container *ngFor="let agreement of agreements; let i = index">
-      <div class="d-flex mb-2">
-        <div>
-          <boolean-field [formControl]="agreementsControl.at(i)">
-          </boolean-field>
-        </div>
-        <agreement-link class="ml-2 flex-grow-1" [agreement]="agreement">
-        </agreement-link>
+  <ng-container *ngFor="let agreement of agreements; let i = index">
+    <div class="d-flex mb-2">
+      <div>
+        <boolean-field [formControl]="agreementsControl.at(i)">
+        </boolean-field>
       </div>
-    </ng-container>
-  </div>
+      <agreement-link class="ml-2 flex-grow-1" [agreement]="agreement">
+      </agreement-link>
+    </div>
+  </ng-container>
 
   <field-errors [control]="formControl"></field-errors>
 </ng-template>

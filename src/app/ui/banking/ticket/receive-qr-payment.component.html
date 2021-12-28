@@ -32,6 +32,22 @@
     </actions>
   </page-content>
 
+  <page-content *ngSwitchCase="'done'" hideBack
+    [heading]="i18n.transaction.title.receiveQrPayment"
+    [mobileHeading]="i18n.transaction.mobileTitle.receiveQrPayment"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+    <receive-qr-payment-step-done [payment]="payment$ | async">
+    </receive-qr-payment-step-done>
+    <actions forceRow>
+      <action-button (action)="viewPerformed()"
+        [label]="i18n.transaction.doneView">
+      </action-button>
+      <action-button outline (action)="reload()"
+        [label]="i18n.transaction.doneNew">
+      </action-button>
+    </actions>
+  </page-content>
+
   <page-content *ngSwitchDefault>
     <spinner></spinner>
   </page-content>

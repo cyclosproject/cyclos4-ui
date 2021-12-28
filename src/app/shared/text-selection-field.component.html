@@ -1,5 +1,4 @@
-<label-value *ngIf="label; else widget" [formField]="self"
-  [informationText]="informationText">
+<label-value *ngIf="label; else widget" [formField]="self">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
@@ -10,7 +9,7 @@
       </input-field>
     </div>
     <div class="d-flex ml-2">
-      <button type="button" class="btn btn-icon" [tooltip]="i18n.general.add"
+      <button class="btn btn-icon" [tooltip]="i18n.general.add"
         (click)="add()">
         <icon [icon]="SvgIcon.PlusCircle"></icon>
       </button>

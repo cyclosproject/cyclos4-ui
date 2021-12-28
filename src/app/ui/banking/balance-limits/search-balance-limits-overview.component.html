@@ -7,7 +7,7 @@
     [heading]="i18n.account.balanceLimits.title.overview"
     [mobileHeading]="i18n.account.balanceLimits.mobileTitle.overview"
     [headingActions]="headingActions$ | async">
-    <div [formGroup]="form" class="filters-form filters-form-separator">
+    <form [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row no-gutters">
         <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
           <multi-selection-field labelPosition="side"
@@ -108,7 +108,7 @@
           </div>
         </ng-container>
       </div>
-    </div>
+    </form>
   </page-content>
 
   <results-layout [results]="results$ | async" [rendering$]="rendering$"
@@ -127,15 +127,13 @@
           <label-value [label]="i18n.account.balanceLimits.negative"
             labelPosition="sideForced">
             {{ row.customCreditLimit ?
-            (row.creditLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+              (row.creditLimit | currency:row.account.currency) : i18n.account.limits.productDefault }}
           </label-value>
           <label-value [label]="i18n.account.balanceLimits.positive"
             labelPosition="sideForced">
             {{ row.customUpperCreditLimit ?
-            (row.upperCreditLimit ? (row.upperCreditLimit |
-            currency:row.account.currency) : i18n.account.limits.unlimited) :
-            i18n.account.limits.productDefault}}
+              (row.upperCreditLimit ? (row.upperCreditLimit | currency:row.account.currency) : i18n.account.limits.unlimited) :
+                i18n.account.limits.productDefault}}
           </label-value>
         </div>
       </div>
@@ -155,14 +153,12 @@
           <td width="25%">{{ row.account.type.name }}</td>
           <td>
             {{ row.customCreditLimit ?
-            (row.creditLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+              (row.creditLimit | currency:row.account.currency) : i18n.account.limits.productDefault }}
           </td>
           <td>
             {{ row.customUpperCreditLimit ?
-            (row.upperCreditLimit ? (row.upperCreditLimit |
-            currency:row.account.currency) : i18n.account.limits.unlimited) :
-            i18n.account.limits.productDefault}}
+              (row.upperCreditLimit ? (row.upperCreditLimit | currency:row.account.currency) : i18n.account.limits.unlimited) :
+                i18n.account.limits.productDefault}}
           </td>
         </tr>
       </tbody>

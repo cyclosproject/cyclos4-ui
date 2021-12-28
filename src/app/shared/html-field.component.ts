@@ -13,6 +13,7 @@ import { InsertImageDialogComponent } from 'app/shared/insert-image-dialog.compo
 import { LinkProperties } from 'app/shared/link-properties';
 import { LinkPropertiesDialogComponent } from 'app/shared/link-properties-dialog.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import * as rangy from 'rangy';
 import { BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 
@@ -111,7 +112,7 @@ export class HtmlFieldComponent
 
   source$ = new BehaviorSubject(false);
 
-  selection: Range;
+  selection: RangyRange[];
 
   constructor(
     injector: Injector,
@@ -280,14 +281,14 @@ export class HtmlFieldComponent
       action.callback();
     }
     if (expandedRange && action instanceof Command) {
-      const sel = window.getSelection();
+      const sel = rangy.getSelection();
       sel.collapseToEnd();
     }
   }
 
   private expandSelection(): boolean {
-    if (this.selection) {
-      const range = this.selection;
+    if (!empty(this.selection)) {
+      const range = this.selection[0];
       if (range && range.collapsed) {
         // Expand the range
         const content = range.startContainer.textContent;
@@ -300,11 +301,11 @@ export class HtmlFieldComponent
           while (end <= content.length && /\w/.test(content.charAt(end))) {
             end++;
           }
-          window.getSelection().removeAllRanges();
-          const newRange = document.createRange();
+          const newRange = rangy.createRangyRange();
           newRange.setStart(range.startContainer, start);
           newRange.setEnd(range.startContainer, end);
-          window.getSelection().addRange(newRange);
+          newRange.select();
+          this.selection = [newRange];
           return true;
         }
       }
@@ -324,12 +325,11 @@ export class HtmlFieldComponent
     this.editor.nativeElement.focus();
     switch (selection) {
       case 'store':
-        this.selection = window.getSelection().rangeCount === 0 ? null : window.getSelection().getRangeAt(0);
+        this.selection = rangy.getSelection().getAllRanges();
         break;
       case 'restore':
-        if (this.selection) {
-          window.getSelection().removeAllRanges();
-          window.getSelection().addRange(this.selection);
+        if (!empty(this.selection)) {
+          rangy.getSelection().setRanges(this.selection);
         }
         break;
     }
@@ -359,7 +359,7 @@ export class HtmlFieldComponent
     if (empty(this.selection)) {
       return;
     }
-    const sel = window.getSelection();
+    const sel = rangy.getSelection();
     if (sel.isCollapsed) {
       // First expand up to the parent anchor
       let el: Node = sel.focusNode;
@@ -371,11 +371,10 @@ export class HtmlFieldComponent
         // No <a> to unlink
         return;
       }
-      const range = document.createRange();
+      const range = rangy.createRangyRange();
       range.selectNode(el);
-      window.getSelection().removeAllRanges();
-      window.getSelection().addRange(range);
-      this.selection = range;
+      range.select();
+      this.selection = [range];
     }
     this.doRunCommand('unlink');
   }

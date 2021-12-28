@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import {
-  DeviceConfirmationView, IdentityProviderCallbackResult, NewMessagePush, NewNotificationPush,
+  DeviceConfirmationView, IdentityProviderCallbackResult, NewNotificationPush,
   PushNotificationEventKind, TransactionView
 } from 'app/api/models';
 import { NextRequestState } from 'app/core/next-request-state';
@@ -15,8 +15,7 @@ export const Kinds: PushNotificationEventKind[] = [
   PushNotificationEventKind.NEW_NOTIFICATION,
   PushNotificationEventKind.DEVICE_CONFIRMATION,
   PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK,
-  PushNotificationEventKind.TICKET,
-  PushNotificationEventKind.NEW_MESSAGE,
+  PushNotificationEventKind.TICKET
 ];
 export const ClientId = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
 
@@ -33,7 +32,6 @@ export class PushNotificationsService {
   public loggedOut$ = new Subject<void>();
   public permissionsChanged$ = new Subject<void>();
   public newNotifications$ = new Subject<NewNotificationPush>();
-  public newMessages$ = new Subject<NewMessagePush>();
   public deviceConfirmations$ = new Subject<DeviceConfirmationView>();
   public identityProviderCallback$ = new Subject<IdentityProviderCallbackResult>();
   public ticket$ = new Subject<TransactionView>();
@@ -64,7 +62,6 @@ export class PushNotificationsService {
     this.setupListener(PushNotificationEventKind.LOGGED_OUT, this.loggedOut$);
     this.setupListener(PushNotificationEventKind.PERMISSIONS_CHANGED, this.permissionsChanged$);
     this.setupListener(PushNotificationEventKind.NEW_NOTIFICATION, this.newNotifications$);
-    this.setupListener(PushNotificationEventKind.NEW_MESSAGE, this.newMessages$);
     this.setupListener(PushNotificationEventKind.DEVICE_CONFIRMATION, this.deviceConfirmations$);
     this.setupListener(PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK, this.identityProviderCallback$);
     this.setupListener(PushNotificationEventKind.TICKET, this.ticket$);

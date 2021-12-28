@@ -1,6 +1,5 @@
 <label-value *ngIf="label; else widget" [formField]="self"
-  labelPosition="sideForced" maximizeLabel
-  [informationText]="informationText">
+  labelPosition="sideForced" maximizeLabel>
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
@@ -10,9 +9,9 @@
     'custom-switch': switch
    }">
     <input #checkbox type="checkbox" [name]="name"
-      class="custom-control-input" [id]="id" (click)="onClick.emit($event)"
-      (keyup.enter)="toggle(); onClick.emit($event)"
-      [formControl]="formControl" [checked]="isTrue(value)">
+      class="custom-control-input" [id]="id" (click)="click.emit($event)"
+      (keyup.enter)="toggle(); click.emit($event)" [formControl]="formControl"
+      [checked]="isTrue(value)">
     <label class="custom-control-label" [for]="id">
       <ng-content></ng-content>
     </label>

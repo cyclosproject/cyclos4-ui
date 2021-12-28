@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Inject, Injectable, Injector } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
+import { environment } from 'app/../environments/environment';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import {
   Auth, DataForFrontend, DataForUi, FrontendBanner, FrontendEnum,
@@ -9,9 +10,8 @@ import { AuthService } from 'app/api/services/auth.service';
 import { FrontendService } from 'app/api/services/frontend.service';
 import { ErrorStatus } from 'app/core/error-status';
 import { NextRequestState } from 'app/core/next-request-state';
-import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
+import { I18n } from 'app/i18n/i18n';
 import { setReloadButton, setRootAlert, urlJoin } from 'app/shared/helper';
-import { environment } from 'environments/environment';
 import moment from 'moment-mini-ts';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
@@ -30,7 +30,7 @@ export class DataForFrontendHolder {
   constructor(
     private frontendService: FrontendService,
     private authService: AuthService,
-    @Inject(I18nInjectionToken) private i18n: I18n,
+    private i18n: I18n,
     private injector: Injector,
     private apiConfiguration: ApiConfiguration,
     private nextRequestState: NextRequestState) {
@@ -60,14 +60,28 @@ export class DataForFrontendHolder {
       screenSize: this.screenSize
     }).pipe(
       switchMap(dataForFrontend => {
+        this.dataForFrontend = dataForFrontend;
+        const dataForUi = (dataForFrontend || {}).dataForUi;
+        if (dataForUi.auth == null || dataForUi.auth.user == null) {
+          // When not logged-in, clear any previous cruft on the stored session token
+          nextRequestState.setSessionToken(null);
+        }
+
         if (dataForFrontend.frontend === FrontendEnum.CLASSIC && !environment.standalone && dataForFrontend?.dataForUi?.auth?.user) {
           // Redirect logged users to the classic frontend
           this.redirectToClassicFrontend();
           return of(null);
         }
 
+        this.updateIcons(dataForFrontend.icons);
 
-        return this.performInitialize(dataForFrontend);
+        // Apply the load hook
+        let result: Observable<DataForFrontend> = of(dataForFrontend);
+        this.loadHooks.forEach(hook => {
+          result = result.pipe(switchMap(hook));
+        });
+
+        return result;
       }),
       catchError((resp: HttpErrorResponse) => {
         // Maybe we're using an old session data. In that case, we have to clear the session and try again
@@ -92,22 +106,6 @@ export class DataForFrontendHolder {
     );
   }
 
-  private performInitialize(dataForFrontend: DataForFrontend): Observable<DataForFrontend> {
-    this.dataForFrontend = dataForFrontend;
-
-    if (dataForFrontend?.dataForUi?.auth?.user == null) {
-      // When not logged-in, clear any previous cruft on the stored session token
-      this.nextRequestState.setSessionToken(null);
-    }
-
-    // Apply the load hooks
-    let result: Observable<DataForFrontend> = of(dataForFrontend);
-    this.loadHooks.forEach(hook => {
-      result = result.pipe(switchMap(hook));
-    });
-    return result;
-  }
-
   get dataForUi(): DataForUi {
     return (this.dataForFrontend || {}).dataForUi;
   }
@@ -119,15 +117,6 @@ export class DataForFrontendHolder {
   set dataForFrontend(dataForFrontend: DataForFrontend) {
     if (dataForFrontend != null) {
       this.dataForFrontend$.next(dataForFrontend);
-
-      // Make sure the logo has a size restriction. The 128x128 is probably already picked by the browser
-      if (!dataForFrontend.logoUrl.includes('width=')) {
-        dataForFrontend.logoUrl += '?width=128&height=128';
-      }
-
-      // Get the needed icons
-      this.updateIcons(dataForFrontend.icons);
-
       const dataForUi = (dataForFrontend || {}).dataForUi;
       // Store the time diff
       this.timeDiff = new Date().getTime() - moment(dataForUi.currentClientTime).toDate().getTime();
@@ -152,6 +141,14 @@ export class DataForFrontendHolder {
 
   get banners(): FrontendBanner[] {
     return (this.dataForFrontend || {}).banners || [];
+  }
+
+  /**
+   * Returns a page by internal name
+   */
+  page(slug: string) {
+    const pages = (this.dataForFrontend || {}).pages || [];
+    return pages.find(p => p.internalName === slug || p.id === slug);
   }
 
   /**

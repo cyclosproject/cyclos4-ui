@@ -4,7 +4,7 @@ import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { FormatService } from 'app/core/format.service';
 import { Shortcut, ShortcutService } from 'app/core/shortcut.service';
 import { SvgIcon } from 'app/core/svg-icon';
-import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
+import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { Subscription } from 'rxjs';
 
@@ -31,7 +31,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
 
   constructor(injector: Injector) {
     this.injector = injector;
-    this.i18n = injector.get(I18nInjectionToken);
+    this.i18n = injector.get(I18n);
     this.apiI18n = injector.get(ApiI18nService);
     this.dataForFrontendHolder = injector.get(DataForFrontendHolder);
     this.format = injector.get(FormatService);

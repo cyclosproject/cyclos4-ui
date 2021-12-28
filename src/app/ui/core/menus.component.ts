@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { LayoutService } from 'app/core/layout.service';
 import { AbstractComponent } from 'app/shared/abstract.component';
 import { blurIfClick } from 'app/shared/helper';
@@ -57,6 +57,8 @@ export class MenusComponent extends AbstractComponent implements OnInit {
     return this.activeMenu == null ? null : this.activeMenu.menu.root;
   }
 
+  @ViewChild('dropdown') dropdown: BsDropdownDirective;
+
   ngOnInit() {
     super.ngOnInit();
     this.onTop = !this.dataForFrontendHolder.dataForFrontend.menuBar;
@@ -73,20 +75,22 @@ export class MenusComponent extends AbstractComponent implements OnInit {
     return res;
   }
 
-  onClick(event: MouseEvent, element: HTMLElement, base: BaseMenuEntry, dropdown?: BsDropdownDirective) {
+  onClick(event: MouseEvent, element: HTMLElement, base: BaseMenuEntry) {
     event.stopPropagation();
     event.preventDefault();
 
     blurIfClick(element, event);
 
-    if (base instanceof RootMenuEntry && dropdown) {
-      dropdown.show();
-      return;
+    if (base instanceof RootMenuEntry) {
+      if (base.dropdown) {
+        this.dropdown.show();
+        return;
+      }
     }
 
     // Hide the dropdown, if any
-    if (dropdown) {
-      dropdown.hide();
+    if (this.dropdown) {
+      this.dropdown.hide();
     }
 
     let entry: MenuEntry = null;

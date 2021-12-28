@@ -10,17 +10,18 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
  * Records module
  */
 @NgModule({
+  imports: [
+    RecordsRoutingModule,
+    UiSharedModule,
+  ],
+  exports: [],
   declarations: [
     SearchRecordsComponent,
     TiledRecordsComponent,
     ViewRecordComponent,
     RecordFormComponent,
   ],
-  imports: [
-    RecordsRoutingModule,
-    UiSharedModule
-  ],
-  exports: [],
+  entryComponents: [],
 })
 export class RecordsModule {
 }

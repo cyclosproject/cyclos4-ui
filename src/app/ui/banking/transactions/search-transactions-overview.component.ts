@@ -1,15 +1,14 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AccountType, Currency,
-  ExternalPaymentStatusEnum,
   PaymentRequestStatusEnum, RoleEnum, TransactionAuthorizationStatusEnum, TransactionDataForSearch,
   TransactionKind, TransactionOverviewDataForSearch, TransactionOverviewQueryFilters, TransactionOverviewResult
 } from 'app/api/models';
 import { TransactionsService } from 'app/api/services/transactions.service';
-import { ApiHelper } from 'app/shared/api-helper';
-import { FieldOption } from 'app/shared/field-option';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
+import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
+import { FieldOption } from 'app/shared/field-option';
 import { Menu } from 'app/ui/shared/menu';
 
 /**
@@ -24,7 +23,7 @@ export class SearchTransactionsOverviewComponent
   extends BaseSearchPageComponent<TransactionOverviewDataForSearch, TransactionOverviewQueryFilters, TransactionOverviewResult>
   implements OnInit {
 
-  kind: 'authorized' | 'myAuth' | 'payment-request' | 'external-payment';
+  kind: 'authorized' | 'myAuth' | 'payment-request';
   heading: string;
   mobileHeading: string;
   usePeriod = true;
@@ -59,10 +58,6 @@ export class SearchTransactionsOverviewComponent
         this.heading = this.i18n.transaction.title.paymentRequestsOverview;
         this.mobileHeading = this.i18n.transaction.mobileTitle.paymentRequestsOverview;
         break;
-      case 'external-payment':
-        this.heading = this.i18n.transaction.title.externalPaymentsOverview;
-        this.mobileHeading = this.i18n.transaction.mobileTitle.externalPaymentsOverview;
-        break;
     }
 
     // Get the transactions search data
@@ -84,7 +79,7 @@ export class SearchTransactionsOverviewComponent
     this.currencies = [...new Set(data.accountTypes.map(at => at.currency))];
     this.currencies.sort((c1, c2) => c1.name.localeCompare(c2.name));
     this.currenciesByKey = new Map();
-    this.currencies.forEach(c => this.currenciesByKey.set(ApiHelper.internalNameOrId(c), c));
+    this.currencies.forEach(c => this.currenciesByKey.set(c.id, c));
     const transactionNumberPatterns = this.currencies
       .map(c => c.transactionNumberPattern)
       .filter(p => p)
@@ -131,9 +126,6 @@ export class SearchTransactionsOverviewComponent
       case 'payment-request':
         value.status = PaymentRequestStatusEnum.OPEN;
         break;
-      case 'external-payment':
-        value.status = ExternalPaymentStatusEnum.PENDING;
-        break;
     }
     return value;
   }
@@ -151,11 +143,6 @@ export class SearchTransactionsOverviewComponent
           value: st,
           text: this.apiI18n.paymentRequestStatus(st)
         }));
-      case 'external-payment':
-        return (Object.values(ExternalPaymentStatusEnum) as ExternalPaymentStatusEnum[]).map(st => ({
-          value: st,
-          text: this.apiI18n.externalPaymentStatus(st)
-        }));
       case 'myAuth':
         // Isn't filtered by status
         return null;
@@ -170,8 +157,6 @@ export class SearchTransactionsOverviewComponent
     }
     if (this.isPaymentRequest()) {
       params.paymentRequestExpiration = ApiHelper.dateRangeFilter(value.expirationBegin, value.expirationEnd);
-    } else if (this.isExternalPayment()) {
-      params.externalPaymentExpiration = ApiHelper.dateRangeFilter(value.expirationBegin, value.expirationEnd);
     }
     switch (this.kind) {
       case 'authorized':
@@ -184,10 +169,6 @@ export class SearchTransactionsOverviewComponent
       case 'payment-request':
         params.paymentRequestStatuses = [value.status];
         params.kinds = [TransactionKind.PAYMENT_REQUEST];
-        break;
-      case 'external-payment':
-        params.externalPaymentStatuses = [value.status];
-        params.kinds = [TransactionKind.EXTERNAL_PAYMENT];
         break;
     }
     return params;
@@ -204,10 +185,6 @@ export class SearchTransactionsOverviewComponent
 
   isPaymentRequest(): boolean {
     return this.kind === 'payment-request';
-  }
-
-  isExternalPayment(): boolean {
-    return this.kind === 'external-payment';
   }
 
   isMyAuth(): boolean {
@@ -241,9 +218,6 @@ export class SearchTransactionsOverviewComponent
         break;
       case 'payment-request':
         menu = Menu.PAYMENT_REQUESTS_OVERVIEW;
-        break;
-      case 'external-payment':
-        menu = Menu.EXTERNAL_PAYMENTS_OVERVIEW;
         break;
     }
     return this.menu.userMenu(data.user, menu);

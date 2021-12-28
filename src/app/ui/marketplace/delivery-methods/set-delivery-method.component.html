@@ -1,6 +1,6 @@
 <h1>{{ i18n.ad.deliveryMethod }}</h1>
 
-<ng-container [formGroup]="form">
+<form [formGroup]="form">
   <input-field *ngIf="!name" formControlName="name"
     [label]="i18n.general.name" required>
   </input-field>
@@ -17,7 +17,7 @@
   </time-interval-field>
   <textarea-field formControlName="remarks" [label]="i18n.ad.remarks">
   </textarea-field>
-</ng-container>
+</form>
 <actions forceRow>
   <action-button [disabled]="requesting$ | async" (action)="submit()"
     [label]="i18n.general.submit">

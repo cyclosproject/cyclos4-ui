@@ -1,10 +1,15 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [mode]="self ? 'empty' : 'normal'"
+    <page-content [mode]="self ? 'empty' : 'filters'"
       [heading]="i18n.operatorGroup.title.list"
       [mobileHeading]="i18n.operatorGroup.mobileTitle.list"
       [headingActions]="headingActions$ | async">
-      <user-info *ngIf="!self" [user]="data.user"></user-info>
+      <div class="col-12 col-md-6" *ngIf="!self">
+        <label-value [label]="i18n.general.user" kind="fieldView"
+          labelPosition="side">
+          <user-link [user]="data.user"></user-link>
+        </label-value>
+      </div>
     </page-content>
 
     <results-layout [results]="data.operatorGroups" [toLink]="toLink">
@@ -22,8 +27,7 @@
                 </a>
               </td>
               <td class="actions">
-                <button type="button"
-                  [tooltip]="i18n.general.removeTooltip(row.name)"
+                <button [tooltip]="i18n.general.removeTooltip(row.name)"
                   class="btn btn-icon"
                   (click)="remove(row); $event.stopPropagation()">
                   <icon [icon]="SvgIcon.Trash"></icon>

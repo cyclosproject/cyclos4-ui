@@ -1,6 +1,7 @@
 <ng-container *ngIf="image; else iconTemplate">
   <ng-container *ngIf="url">
-    <div class="avatar-container" [ngClass]="{
+    <div class="avatar-container" (click)="showLightbox()" [ngClass]="{
+      'with-lightbox': url != null && useLightbox,
       'round-borders': url != null && roundBorders,
       'full-size': fullSize
     }" [ngStyle]="{
@@ -11,6 +12,9 @@
         height: fullSize ? '' : size + 'px'
       }">
     </div>
+    <ngx-gallery *ngIf="useLightbox" [options]="galleryOptions"
+      [images]="galleryImages">
+    </ngx-gallery>
   </ng-container>
 </ng-container>
 

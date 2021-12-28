@@ -5,8 +5,6 @@
 
     <user-info *ngIf="!self" [user]="data.user"></user-info>
 
-    <div *ngIf="self" class="mb-3">{{ i18n.agreements.message }}</div>
-
     <!-- Show the field if the optional agreements are editable -->
     <accept-agreements *ngIf="optionalControl; else optionalNotEditable"
       [label]="i18n.agreements.optional" [formControl]="optionalControl"

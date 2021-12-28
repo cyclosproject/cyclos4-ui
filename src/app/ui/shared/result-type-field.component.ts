@@ -49,9 +49,9 @@ export class ResultTypeFieldComponent
   ngOnInit() {
     super.ngOnInit();
 
-    const mapIndex = this.allowedResultTypes.indexOf(ResultType.MAP);
-    if (!this.maps.enabled && mapIndex !== -1) {
+    if (!this.maps.enabled) {
       // If maps would be allowed but is not enabled by configuration, remove it
+      const mapIndex = this.allowedResultTypes.indexOf(ResultType.MAP);
       this.allowedResultTypes.splice(mapIndex, 1);
     }
   }
@@ -66,19 +66,6 @@ export class ResultTypeFieldComponent
         return SvgIcon.GridList;
       case ResultType.MAP:
         return SvgIcon.GeoAlt;
-    }
-  }
-
-  tooltip(resultType: ResultType): String {
-    switch (resultType) {
-      case ResultType.CATEGORIES:
-        return this.i18n.general.categoriesView;
-      case ResultType.TILES:
-        return this.i18n.general.tiledView;
-      case ResultType.LIST:
-        return this.i18n.general.listView;
-      case ResultType.MAP:
-        return this.i18n.general.map;
     }
   }
 

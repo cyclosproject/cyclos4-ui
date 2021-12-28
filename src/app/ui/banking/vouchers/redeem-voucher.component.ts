@@ -1,57 +1,118 @@
-import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { VoucherDataForRedeem, VoucherInitialDataForTransaction, VoucherRedeemPreview, VoucherTransactionResult } from 'app/api/models';
-import { validateBeforeSubmit } from 'app/shared/helper';
-import { BaseVoucherTransactionComponent } from 'app/ui/banking/vouchers/base-voucher-transaction.component';
-import { Observable } from 'rxjs';
+import { CustomFieldDetailed, VoucherDataForRedeem, VoucherInitialDataForRedeem } from 'app/api/models';
+import { VouchersService } from 'app/api/services/vouchers.service';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
+import { focus, validateBeforeSubmit } from 'app/shared/helper';
+import { InputFieldComponent } from 'app/shared/input-field.component';
+import { Menu } from 'app/ui/shared/menu';
+import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BehaviorSubject } from 'rxjs';
+import { first } from 'rxjs/operators';
+
+export type RedeemStep = 'form' | 'confirm';
 
 @Component({
-  selector: 'redeem-voucher',
+  selector: 'app-redeem-voucher',
   templateUrl: './redeem-voucher.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RedeemVoucherComponent extends BaseVoucherTransactionComponent<VoucherDataForRedeem, VoucherRedeemPreview> implements OnInit {
-  // Pin when in preview
-  pin = new FormControl('', Validators.required);
+export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialDataForRedeem> implements OnInit {
 
-  constructor(injector: Injector) {
+  step$ = new BehaviorSubject<RedeemStep>(null);
+  token = new FormControl('', Validators.required);
+  mask = '';
+  dataForRedeem$ = new BehaviorSubject<VoucherDataForRedeem>(null);
+  form: FormGroup;
+  userId: string;
+  self: boolean;
+
+  @ViewChild('inputField') inputField: ElementRef<InputFieldComponent>;
+
+  get dataForRedeem(): VoucherDataForRedeem {
+    return this.dataForRedeem$.value;
+  }
+
+  set dataForRedeem(dataForRedeem: VoucherDataForRedeem) {
+    this.dataForRedeem$.next(dataForRedeem);
+  }
+
+  constructor(
+    injector: Injector,
+    private voucherService: VouchersService,
+    private modal: BsModalService,
+  ) {
     super(injector);
   }
 
-  protected getInitialData(user: string): Observable<VoucherInitialDataForTransaction> {
-    return this.vouchersService.getVoucherInitialDataForRedeem({ user });
+  get step(): RedeemStep {
+    return this.step$.value;
+  }
+  set step(step: RedeemStep) {
+    this.step$.next(step);
   }
 
-  protected getVoucherTransactionData(params: { user: string; token: string; }): Observable<VoucherDataForRedeem> {
-    return this.vouchersService.getVoucherDataForRedeem(params);
-  }
-  protected setupForm(form: FormGroup, data: VoucherDataForRedeem): void {
-    if (data.type.allowPartialRedeems) {
-      form.addControl('amount', new FormControl(data.balance, Validators.required));
+  submit() {
+    if (this.step === 'form') {
+      if (!validateBeforeSubmit(this.token)) {
+        return;
+      }
+
+      this.addSub(this.voucherService.getVoucherDataForRedeem({ user: this.userId, token: this.token.value })
+        .subscribe(data => {
+          this.dataForRedeem = data;
+          // Custom fields
+          this.form = this.fieldHelper.customValuesFormGroup(this.dataForRedeem.customFields);
+          this.step = 'confirm';
+        }));
+    } else {
+      const params = { user: this.userId, token: this.token.value, body: { customValues: this.form.value } };
+      this.addSub(this.voucherService.redeemVoucher(params)
+        .subscribe(data => {
+          this.router.navigate(['banking', 'vouchers', 'view', data.voucherId]);
+          this.notification.info(this.i18n.voucher.redeem.done);
+        }));
     }
-    if (data.pinInput) {
-      form.addControl('pin', new FormControl(null, Validators.required));
-    }
   }
 
-  protected previewTransaction(params: { user: string; token: string; body: any; }): Observable<VoucherRedeemPreview> {
-    return this.vouchersService.previewVoucherRedeem(params);
+  backToForm() {
+    this.step = 'form';
   }
 
-  protected performTransaction(preview: VoucherRedeemPreview | null, params: { user: string, token: string, body?: any; }):
-    Observable<VoucherTransactionResult> {
-    if (preview) {
-      params.body = preview.redeem;
-      params.body.pin = this.pin.value;
-    }
-    return this.vouchersService.redeemVoucher(params);
+  ngOnInit() {
+    super.ngOnInit();
+    this.userId = this.route.snapshot.paramMap.get('user');
+    this.addSub(this.voucherService.getVoucherInitialDataForRedeem({ user: this.userId }).subscribe(data => {
+      this.data = data;
+      this.mask = this.data.mask ? this.data.mask : '';
+      this.self = this.authHelper.isSelf(data.user);
+    }));
+    this.step = 'form';
   }
 
-  validatePerformFromForm(_data: VoucherDataForRedeem, form: FormGroup): boolean {
-    return !!validateBeforeSubmit(form);
+  reload() {
+    this.step = 'form';
+    super.reload();
   }
 
-  protected validatePerformFromPreview(preview: VoucherRedeemPreview): boolean {
-    return !preview.pinInput || !!validateBeforeSubmit(this.pin);
+  resolveMenu(data: VoucherInitialDataForRedeem) {
+    return this.menu.userMenu(data.user, Menu.REDEEM_VOUCHER);
+  }
+
+  showScanQrCode() {
+    const ref = this.modal.show(ScanQrCodeComponent, {
+      class: 'modal-form',
+    });
+    const component = ref.content as ScanQrCodeComponent;
+    component.select.pipe(first()).subscribe(value => {
+      this.token.setValue(value);
+      this.submit();
+    });
+    this.modal.onHide.pipe(first()).subscribe(() => focus(this.inputField, true));
+  }
+
+  fieldSize(cf: CustomFieldDetailed) {
+    return this.fieldHelper.fieldSize(cf);
   }
 }

@@ -1,4 +1,4 @@
-/// <reference types="@types/google-maps" />
+/// <reference types="@types/googlemaps" />
 
 import { Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';

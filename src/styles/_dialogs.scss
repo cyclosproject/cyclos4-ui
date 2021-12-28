@@ -2,25 +2,13 @@
 
 .dropdown-menu {
   min-width: 100%;
-  max-height:  13rem;
+  max-height: 16rem;
   overflow-x: hidden;
   overflow-y: auto;
   visibility: hidden;
 
   .custom-checkbox {
     margin-left: 0.6rem;
-    
-    .custom-control-label{
-      padding-right: 0.2rem;
-
-      &:hover, &:focus {
-        color: $list-group-hover-color;
-        background-color: $list-group-hover-bg;
-        text-decoration: none;
-        outline: none !important;
-        box-shadow: none !important;
-      }
-    }
   }
 }
 .dropdown-menu.show {
@@ -145,17 +133,6 @@ body.dark {
     color: $dropdown-color-dark;
     background-color: $dropdown-bg-dark;
     border-color: $dropdown-border-color-dark;
-
-      .custom-checkbox {
-        .custom-control-label:hover, .custom-control-label:focus {
-            color: $list-group-hover-color-dark;
-            background-color: $list-group-hover-bg-dark;
-            text-decoration: none;
-            outline: none !important;
-            box-shadow: none !important;
-        }
-      }
-
   }
 
   .dropdown-item {
@@ -191,16 +168,6 @@ body.dark {
     button.close {
       color: $push-notification-title-color-dark;
     }
-  }
-}
-
-not-found {
-  margin: 1rem;
-}
-
-@include media-breakpoint-up(md) {
-  not-found {
-    margin: 0 1.5rem 0 1.5rem;
   }
 }
 
@@ -247,7 +214,7 @@ push-notification {
   width: 100%;
   margin-bottom: 0.5rem;
   a {
-    color: $body-color !important;
+    color: $body-color;
   }
   .subject {
     font-weight: $font-weight-bold;
@@ -276,7 +243,7 @@ push-notification {
 }
 body.dark push-notification {
   a {
-    color: $body-color-dark !important;
+    color: $body-color-dark;
   }
 }
 

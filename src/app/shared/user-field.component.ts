@@ -1,11 +1,10 @@
 import {
   ChangeDetectionStrategy, Component, ElementRef, Host, Injector,
-  Input, OnDestroy, OnInit, Optional, SkipSelf, ViewChild
+  Input, OnDestroy, OnInit, Optional, SkipSelf, ViewChild,
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { PrincipalType, User, UserQueryFilters } from 'app/api/models';
+import { PrincipalType, RoleEnum, User, UserQueryFilters } from 'app/api/models';
 import { UsersService } from 'app/api/services/users.service';
-import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { UserCacheService } from 'app/core/user-cache.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -46,14 +45,12 @@ export class UserFieldComponent
   @Input() allowSearch = true;
   @Input() allowContacts = true;
   @Input() allowQrCode = false;
-  @Input() allowSelf = false;
-  @Input() allowLocate = true;
   @Input() filters: UserQueryFilters;
 
   @ViewChild('contactListButton') contactListButton: ElementRef;
   private fieldSub: Subscription;
 
-  placeholder = "";
+  placeholder: string;
 
   constructor(
     injector: Injector,
@@ -61,15 +58,14 @@ export class UserFieldComponent
     private userCache: UserCacheService,
     private usersService: UsersService,
     private nextRequestState: NextRequestState,
-    private modal: BsModalService,
-    private errorHandler: ErrorHandlerService) {
+    private modal: BsModalService) {
     super(injector, controlContainer);
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.fieldSub = this.inputFieldControl.valueChanges
-      .pipe(distinctUntilChanged((l1, l2) => ApiHelper.locatorEquals(l1, l2)))
+      .pipe(distinctUntilChanged())
       .subscribe(value => this.setAsPrincipal(value));
     if (this.allowSearch) {
       this.placeholder = this.i18n.field.user.placeholderAllowSearch;
@@ -101,19 +97,6 @@ export class UserFieldComponent
     }
   }
 
-  locateUser() {
-    let text = this.inputFieldControl.value as string;
-    text = (text || '').trim();
-    if (text.startsWith('*:')) {
-      text = text.substr(2);
-    }
-    if (text) {
-      return this.errorHandler.requestWithCustomErrorHandler(() =>
-        this.addSub(this.usersService.locateUser({ user: text }).subscribe(user => this.select(user),
-          () => this.select(null))));
-    }
-  }
-
   ngOnDestroy() {
     super.ngOnDestroy();
     this.fieldSub.unsubscribe();
@@ -139,11 +122,12 @@ export class UserFieldComponent
       return of([]);
     }
 
+    const role = this.dataForFrontendHolder.role;
     const filters: UserQueryFilters = this.filters ? { ...this.filters } : {};
     filters.ignoreProfileFieldsInList = true;
     filters.pageSize = PageSize;
     filters.keywords = text;
-    if (!this.allowSelf) {
+    if ([RoleEnum.MEMBER, RoleEnum.BROKER].includes(role)) {
       filters.usersToExclude = [...(filters.usersToExclude || []), ApiHelper.SELF];
     }
     this.nextRequestState.leaveNotification = true;
@@ -155,9 +139,6 @@ export class UserFieldComponent
   }
 
   toValue(user: User): string {
-    if (user.locator) {
-      return user.locator;
-    }
     return `id:${user.id}`;
   }
 
@@ -165,11 +146,11 @@ export class UserFieldComponent
     const ref = this.modal.show(PickContactComponent, {
       class: 'modal-form',
       initialState: {
-        usersToExclude: (this.filters || {}).usersToExclude || [],
+        exclude: (this.filters || {}).usersToExclude || [],
       },
     });
     const component = ref.content as PickContactComponent;
-    component.select.pipe(first()).subscribe(u => this.user = u);
+    component.select.pipe(first()).subscribe(u => this.select(u));
     this.modal.onHide.pipe(first()).subscribe(() => focus(this.inputField, true));
   }
 
@@ -209,7 +190,7 @@ export class UserFieldComponent
     if (this.allowPrincipal) {
       this.close();
     } else {
-      this.user = null;
+      this.select(null);
     }
   }
 

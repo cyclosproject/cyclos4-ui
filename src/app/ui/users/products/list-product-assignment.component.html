@@ -24,8 +24,7 @@
       <div *ngFor="let prod of products" class="d-flex mb-2">
         <div class="cell-main">{{ prod.name }}</div>
         <div *ngIf="!readOnly && canRemove(prod)" class="ml-auto text-right">
-          <button type="button" [tooltip]="i18n.general.remove"
-            class="btn btn-icon"
+          <button [tooltip]="i18n.general.remove" class="btn btn-icon"
             (click)="remove(prod); $event.stopPropagation(); $event.preventDefault()">
             <icon [icon]="SvgIcon.Trash"></icon>
           </button>
@@ -54,7 +53,7 @@
                 {{ prod.userAccount?.name }}
               </td>
               <td [ngClass]="{'no-border': last}" class="actions">
-                <button *ngIf="!readOnly && canRemove(prod)" type="button"
+                <button *ngIf="!readOnly && canRemove(prod)"
                   [tooltip]="i18n.general.remove" class="btn btn-icon"
                   (click)="remove(prod); $event.stopPropagation()">
                   <icon [icon]="SvgIcon.Trash"></icon>

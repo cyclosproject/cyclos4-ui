@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import { NotificationsStatus } from 'app/api/models';
+import { CreateDeviceConfirmation, CustomFieldDetailed, NotificationsStatus, PasswordInput } from 'app/api/models';
 import { NotificationsService } from 'app/api/services/notifications.service';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { NextRequestState } from 'app/core/next-request-state';
 import { PushNotificationProvider } from 'app/core/push-notification-provider';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
-import { SnackBarOptions, SnackBarProvider } from 'app/shared/snack-bar-provider';
+import { SnackBarOptions, SnackBarProvider } from 'app/core/snack-bar-provider';
+import { FieldLabelPosition } from 'app/shared/base-form-field.component';
+import { ConfirmationComponent } from 'app/shared/confirmation.component';
 import { NotificationType } from 'app/shared/notification-type';
 import { NotificationComponent } from 'app/shared/notification.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { CaptureCameraComponent } from 'app/shared/capture-camera.component';
 
 /**
  * Reference to a notification
@@ -42,6 +45,14 @@ export class NotificationRef {
   close() {
     this._ref.hide();
   }
+}
+
+/**
+ * The confirm calls its callback using this parameter
+ */
+export interface ConfirmCallbackParams {
+  confirmationPassword?: string;
+  customValues?: { [key: string]: string };
 }
 
 /**
@@ -112,6 +123,41 @@ export class NotificationService {
   }
 
   /**
+   * Shows a confirmation dialog, invoking a callback when the user confirms.
+   * Supports a confirmation password.
+   * @param options The confirmation options:
+   * - title: An optional title for the dialog
+   * - message: An optional message
+   * - cancelLabel: Allows overriding the cancel label
+   * - confirmLabel: Allows overriding the confirm label
+   * - customFields: When set, shows additional fields in the confirmation dialog
+   * - labelPosition: When additional fields are shown, represents their label's position
+   * - passwordInput: If a confirmation password is required to confirm
+   * - createDeviceConfirmation: Required if passwordInput is not null. Is the callback that will create the DeviceConfirmation.
+   * - callback: Function called when confirming. When a confirmation password is used,
+   *   the typed password is passed as parameter.
+   */
+  confirm(options: {
+    title?: string,
+    message?: string,
+    cancelLabel?: string,
+    confirmLabel?: string,
+    labelPosition?: FieldLabelPosition,
+    customFields?: CustomFieldDetailed[],
+    createDeviceConfirmation?: () => CreateDeviceConfirmation,
+    passwordInput?: PasswordInput,
+    callback: (params: ConfirmCallbackParams) => void,
+  }): void {
+    if (options.passwordInput && !options.createDeviceConfirmation) {
+      throw new Error('When there\'s a passwordInput it is also required to set the createDeviceConfirmation callback');
+    }
+    this.modal.show(ConfirmationComponent, {
+      class: 'modal-form',
+      initialState: options,
+    });
+  }
+
+  /**
    * Shows an error notification
    * @param message The notification message
    * @returns The dialog reference
@@ -173,4 +219,19 @@ export class NotificationService {
       this.currentNotification.close();
     }
   }
+
+  /**
+   * Opens a dialog to capture an image from the device camera
+   */
+  captureCamera(callback: (file: File) => any) {
+    const ref = this.modal.show(CaptureCameraComponent, {
+      class: 'modal-form',
+      initialState: {
+        errorHandler: (msg: string) => this.error(msg)
+      }
+    });
+    const component = ref.content as CaptureCameraComponent;
+    component.select.pipe(first()).subscribe(callback);
+  }
+
 }

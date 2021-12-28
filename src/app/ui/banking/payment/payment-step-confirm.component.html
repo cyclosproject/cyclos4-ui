@@ -25,10 +25,9 @@
   {{ preview.mainAmount | currency:preview.currency }}
 </label-value>
 <label-value *ngIf="fees?.length > 0" [label]="i18n.transaction.appliedFees">
-  <div class="row no-gutters align-items-end" *ngFor="let feePreview of fees">
-    <div class="col-3">{{ feePreview.fee.name }}:</div>
-    <div class="col pl-1">{{ feePreview.amount |
-      currency:preview.currency }}</div>
+  <div *ngFor="let feePreview of fees">
+    {{ feePreview.fee.name }}:
+    {{ feePreview.amount | currency:preview.currency }}
   </div>
 </label-value>
 <custom-field-value *ngFor="let fv of preview.customValues" [fieldValue]="fv">
@@ -84,17 +83,9 @@
       i18n.transaction.recurringPaymentDateFixed({
       date: preview.payment.firstOccurrenceDate | date,
       count: preview.payment.occurrencesCount
-      })
-      }}
+      }) }}
     </ng-container>
   </ng-template>
-  <ng-container>
-    <br>
-    {{
-    i18n.transaction.recurringPaymentOccurrenceInterval(
-    format.formatTimeInterval(preview.payment.occurrenceInterval) )
-    }}
-  </ng-container>
 </label-value>
 <label-value [label]="i18n.general.description"
   *ngIf="preview.payment.description" [value]="preview.payment.description"
@@ -109,11 +100,12 @@
 </ng-container>
 <ng-container *ngIf="preview.confirmationPasswordInput">
   <hr *ngIf="layout.gtxxs$ | async">
-  <confirmation-password focused
-    [formControl]="form.get('confirmationPassword')" [pos]="pos"
-    [passwordInput]="preview.confirmationPasswordInput"
-    [createDeviceConfirmation]="createDeviceConfirmation"
-    (confirmationModeChanged)="confirmationModeChanged.emit($event)"
-    (confirmed)="confirmed.emit($event)" [paymentPreview]="preview">
-  </confirmation-password>
+  <form [formGroup]="form">
+    <confirmation-password focused formControlName="confirmationPassword"
+      [pos]="pos" [passwordInput]="preview.confirmationPasswordInput"
+      [createDeviceConfirmation]="createDeviceConfirmation"
+      (confirmationModeChanged)="confirmationModeChanged.emit($event)"
+      (confirmed)="confirmed.emit($event)" [paymentPreview]="preview">
+    </confirmation-password>
+  </form>
 </ng-container>

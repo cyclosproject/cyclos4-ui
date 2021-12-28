@@ -43,7 +43,7 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
     });
     this.headingActions = [
       new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
-        this.router.navigate(['/users', this.param, 'status', 'history']), true),
+        this.router.navigate(['users', this.param, 'status', 'history']), true),
     ];
   }
 
@@ -84,7 +84,7 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
         ? this.i18n.userStatus.mobileTitle.changeUser
         : this.i18n.userStatus.title.changeUser;
     }
-    this.confirmation.confirm({
+    this.notification.confirm({
       title,
       message,
       callback: () => this.submit(status),

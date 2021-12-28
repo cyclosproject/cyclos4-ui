@@ -14,7 +14,7 @@
       [heading]="data.name" [mobileHeading]="data.label"
       [headingActions]="headingActions$ | async">
       <ng-container *ngTemplateOutlet="theForm"></ng-container>
-      <actions kind="secondary" *ngIf="!runDirectly" class="mb-3 mt-0">
+      <actions *ngIf="!runDirectly" class="mb-3 mt-0">
         <action-button [disabled]="requesting$ | async" (action)="run()"
           [label]="data.customSubmitLabel || i18n.general.submit">
         </action-button>
@@ -48,8 +48,7 @@
             (click)="rowClick(row)">
             <td *ngFor="let col of (result$ | async)?.columns" [ngStyle]="{
                     textAlign: col.align
-                  }"
-              [innerHTML]="formatCell(row[col.property], col) | trust">
+                  }" [innerHTML]="row[col.property] | trust">
             </td>
           </tr>
         </tbody>
@@ -60,22 +59,12 @@
 
 <ng-template #regular>
   <page-content *ngIf="data && !runDirectly && (result$ | async) === null"
-    [heading]="data.name" [mobileHeading]="data.label"
-    [headingActions]="headingActions$ | async" last>
+    [heading]="data.name" [mobileHeading]="data.label" last>
     <alert type="info" *ngIf="data.informationText">
       <div [innerHTML]="data.informationText | trust"></div>
     </alert>
     <ng-container *ngTemplateOutlet="theForm"></ng-container>
-    <div *ngIf="data.submitWithQrCodeScan" class="operation-qr-code-scan">
-      <button type="button" class="btn btn-icon operation-qr-code-scan-button"
-        (click)="run()">
-        <icon [icon]="SvgIcon.QrCodeScan"></icon>
-      </button>
-      <div class="operation-qr-code-scan-label"
-        *ngIf="data.customSubmitLabel">{{ data.customSubmitLabel }}</div>
-    </div>
-    <actions
-      *ngIf="!data.submitWithQrCodeScan && (redirecting$ | async) === false">
+    <actions *ngIf="(redirecting$ | async) === false">
       <action-button [disabled]="requesting$ | async" (action)="run()"
         [label]="data.customSubmitLabel || i18n.general.submit">
       </action-button>
@@ -108,23 +97,24 @@
 </ng-template>
 
 <ng-template #theForm>
-  <ng-container [formGroup]="form">
+  <form [formGroup]="form">
     <!-- Show the context of the operation -->
     <ng-container *ngTemplateOutlet="operationContext"></ng-container>
 
     <!-- For fields -->
-    <ng-container *ngFor="let cf of formFields; let first = first">
-      <custom-field-input [field]="cf" [formControlName]="cf.internalName"
-        [focused]="!isSearch && first" [submitAction]="runAction"
-        [labelPosition]="isSearch ? 'left' : 'auto'">
+    <label-value *ngFor="let cf of formFields; let first = first"
+      [label]="cf.name" [kind]="'field'" [fieldSize]="fieldSize(cf)"
+      [required]="cf.required" [labelPosition]="isSearch ? 'left' : 'auto'">
+      <custom-field-input [field]="cf" hideLabel
+        [focused]="!isSearch && first" [formControlName]="cf.internalName">
       </custom-field-input>
-    </ng-container>
+    </label-value>
 
     <!-- File upload -->
     <file-field *ngIf="data.hasFileUpload" [label]="i18n.operation.fileUpload"
       [formControl]="fileControl">
     </file-field>
-  </ng-container>
+  </form>
 </ng-template>
 
 <ng-template #operationContext>

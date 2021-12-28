@@ -1,5 +1,4 @@
-<label-value *ngIf="label; else widget" [formField]="self"
-  [informationText]="informationText">
+<label-value *ngIf="label; else widget" [formField]="self">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
@@ -12,13 +11,7 @@
 
         <chip *ngIf="selection$ | async" [image]="user.image"
           [icon]="SvgIcon.Person" (close)="select(null)">
-          <ng-container
-            *ngIf="user?.locatorPrincipal?.value; else displayOnly">
-            {{ user.locatorPrincipal.value }} - {{ user.display }}
-          </ng-container>
-          <ng-template #displayOnly>
-            {{ user.display }}
-          </ng-template>
+          {{ user.display }}
         </chip>
 
         <input #inputField *ngIf="(selection$ | async) == null"
@@ -39,23 +32,17 @@
         </div>
       </div>
     </div>
-    <div
-      *ngIf="user == null && (allowContacts || allowQrCode || !allowSearch)"
+    <div *ngIf="user == null && (allowContacts || allowQrCode)"
       class="d-flex">
-      <button type="button" class="btn btn-icon ml-2"
-        *ngIf="allowLocate && !allowSearch"
-        [tooltip]="i18n.field.user.locateTooltip" (click)="locateUser()">
-        <icon [icon]="SvgIcon.Search"></icon>
-      </button>
-      <button type="button" class="btn btn-icon ml-2" *ngIf="allowContacts"
+      <button class="btn btn-icon ml-2" *ngIf="allowContacts"
         #contactListButton [tooltip]="i18n.field.user.contactTooltip"
         (click)="showContactList()">
         <icon [icon]="SvgIcon.Book"></icon>
       </button>
-      <button type="button" class="btn btn-icon ml-2" *ngIf="allowQrCode"
-        #scanQrCodeButton [tooltip]="i18n.field.user.scanQrCodeTooltip"
+      <button class="btn btn-icon ml-2" *ngIf="allowQrCode" #scanQrCodeButton
+        [tooltip]="i18n.field.user.scanQrCodeTooltip"
         (click)="showScanQrCode()">
-        <icon [icon]="SvgIcon.QrCodeScan"></icon>
+        <icon [icon]="SvgIcon.QrcodeScan"></icon>
       </button>
     </div>
   </div>

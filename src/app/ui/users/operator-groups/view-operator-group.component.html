@@ -14,59 +14,6 @@
         valueFormat="break">
       </label-value>
 
-      <!-- General -->
-      <h2 class="mt-3 mb-0" *ngIf="group.editOwnProfile
-            || group.notifications
-            || group.viewAdvertisements
-            || group.manageAdvertisements
-            || group.messages
-            || group.brokering
-            || group.records?.length > 0
-            || group.operations?.length > 0">{{
-        (layout.ltsm$ | async)
-        ? i18n.operatorGroup.mobileTitle.general
-        : i18n.operatorGroup.title.general }}
-      </h2>
-      <label-value *ngIf="group.editOwnProfile"
-        [label]="i18n.operatorGroup.editOwnProfile"
-        [value]="i18n.general.yes">
-      </label-value>
-      <label-value *ngIf="group.notifications"
-        [label]="i18n.operatorGroup.notifications" [value]="i18n.general.yes">
-      </label-value>
-      <label-value *ngIf="group.viewAdvertisements"
-        [label]="i18n.operatorGroup.viewAdvertisements"
-        [value]="i18n.general.yes">
-      </label-value>
-      <label-value *ngIf="group.manageAdvertisements"
-        [label]="i18n.operatorGroup.manageAdvertisements"
-        [value]="i18n.general.yes">
-      </label-value>
-      <label-value *ngIf="group.messages"
-        [label]="i18n.operatorGroup.messages" [value]="i18n.general.yes">
-      </label-value>
-      <label-value *ngIf="hasTokenPermissions()"
-        [label]="i18n.operatorGroup.tokens.label">
-        <ng-container *ngFor="let p of getTokenPermissions(); let last=last">
-          {{p}}<ng-container *ngIf="!last">, </ng-container>
-        </ng-container>
-      </label-value>
-      <label-value *ngIf="group.records?.length > 0"
-        [label]="i18n.operatorGroup.records">
-        <ng-container *ngFor="let r of group.records; let last = last">{{
-          r.name }}<ng-container *ngIf="!last">, </ng-container>
-        </ng-container>
-      </label-value>
-      <label-value *ngIf="group.operations?.length > 0"
-        [label]="i18n.operatorGroup.runOperations">
-        <ng-container *ngFor="let op of group.operations; let last = last">{{
-          op.name }}<ng-container *ngIf="!last">, </ng-container>
-        </ng-container>
-      </label-value>
-      <label-value *ngIf="group.brokering"
-        [label]="i18n.operatorGroup.brokering" [value]="i18n.general.yes">
-      </label-value>
-
       <ng-container *ngIf="visibleAccounts?.length > 0">
         <h2 class="mt-3 mb-0">{{ (layout.ltsm$ | async)
           ? i18n.operatorGroup.mobileTitle.accountAccess
@@ -87,12 +34,12 @@
               {{ pmt.paymentType.name }}<ng-container
                 *ngIf="pmt.requiresAuthorization">{{
                 i18n.operatorGroup.performPaymentsRequiresAuthorizationView
-                }}</ng-container>
+              }}</ng-container>
               <ng-container *ngIf="pmt.maxAmountPerDay">{{
                 i18n.operatorGroup.performPaymentsMaxAmountPerDayView(
-                pmt.maxAmountPerDay | currency:pmt.paymentType.currency
+                  pmt.maxAmountPerDay | currency:pmt.paymentType.currency
                 )
-                }}</ng-container><br *ngIf="!last">
+              }}</ng-container><br *ngIf="!last">
             </ng-container>
           </label-value>
           <label-value
@@ -112,28 +59,21 @@
           </label-value>
 
         </ng-container>
-
-        <ng-container *ngIf="hasGeneralAccountOperations()">
+        <!--
+          TODO: In the future, add more conditions as more operations are supported in this frontend
+        <ng-container *ngIf="group.restrictPaymentsToUsers?.length > 0
+          || group.requestPayments
+          || group.redeemVouchers">
+        -->
+        <ng-container *ngIf="group.restrictPaymentsToUsers?.length > 0
+          || group.chargebackPayments">
           <h3 class="mt-3 mb-0" *ngIf="!singleAccount">
             {{ (layout.ltsm$ | async)
-            ? i18n.operatorGroup.mobileTitle.generalAccount
-            : i18n.operatorGroup.title.generalAccount }}
+                  ? i18n.operatorGroup.mobileTitle.generalAccount
+                  : i18n.operatorGroup.title.generalAccount }}
           </h3>
           <label-value *ngIf="group.chargebackPayments"
             [label]="i18n.operatorGroup.chargebackPayments"
-            [value]="i18n.general.yes">
-          </label-value>
-          <label-value *ngIf="group.receivePayments"
-            [label]="i18n.operatorGroup.receivePayments"
-            [value]="i18n.general.yes">
-          </label-value>
-          <label-value *ngIf="group.requestPayments"
-            [label]="i18n.operatorGroup.requestPayments"
-            [value]="i18n.general.yes">
-          </label-value>
-
-          <label-value *ngIf="group.voucherTransactions"
-            [label]="i18n.operatorGroup.voucherTransactions"
             [value]="i18n.general.yes">
           </label-value>
 
@@ -146,6 +86,36 @@
           </label-value>
         </ng-container>
       </ng-container>
+
+      <h2 class="mt-3 mb-0" *ngIf="group.editOwnProfile
+        || group.notifications
+        || group.viewAdvertisements
+        || group.brokering
+        || group.operations?.length > 0">{{
+        (layout.ltsm$ | async)
+          ? i18n.operatorGroup.mobileTitle.permissions
+          : i18n.operatorGroup.title.permissions }}
+      </h2>
+      <label-value *ngIf="group.editOwnProfile"
+        [label]="i18n.operatorGroup.editOwnProfile"
+        [value]="i18n.general.yes">
+      </label-value>
+      <label-value *ngIf="group.notifications"
+        [label]="i18n.operatorGroup.notifications" [value]="i18n.general.yes">
+      </label-value>
+      <label-value *ngIf="group.viewAdvertisements"
+        [label]="i18n.operatorGroup.viewAdvertisements"
+        [value]="i18n.general.yes">
+      </label-value>
+      <label-value *ngIf="group.operations?.length > 0"
+        [label]="i18n.operatorGroup.runOperations">
+        <ng-container *ngFor="let op of group.operations; let last = last">{{
+          op.name }}<ng-container *ngIf="!last">, </ng-container>
+        </ng-container>
+      </label-value>
+      <label-value *ngIf="group.brokering"
+        [label]="i18n.operatorGroup.brokering" [value]="i18n.general.yes">
+      </label-value>
     </page-content>
   </ng-container>
 </page-layout>

@@ -1,4 +1,4 @@
-/// <reference types="@types/google-maps" />
+/// <reference types="@types/googlemaps" />
 /// <reference types="@types/markerclustererplus" />
 
 import {

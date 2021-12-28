@@ -1,64 +1,34 @@
-<ng-container *ngIf="preview.user && !authHelper.isSelf(preview.user)">
-  <user-info [user]="preview.user">
+<ng-container *ngIf="data.user && !authHelper.isSelf(data.user)">
+  <user-info [user]="data.user">
   </user-info>
 </ng-container>
 <!-- description + image -->
-<label-value [label]="i18n.voucher.voucher">
-  {{ preview.type.voucherTitle }}
+<label-value [label]="i18n.general.type">
+  {{ data.type.voucherTitle }}
 </label-value>
-<ng-container *ngIf="buyVoucher.count === 1; else multiple">
-  <label-value [label]="i18n.transaction.amount">
-    {{ buyVoucher.amount | currency:preview.type.configuration.currency }}
-  </label-value>
-</ng-container>
-<ng-template #multiple>
-  <label-value [label]="i18n.voucher.numberOfVouchers">
-    {{ buyVoucher.count }}
-  </label-value>
-  <label-value [label]="i18n.voucher.amountPerVoucher">
-    {{ buyVoucher.amount | currency:preview.type.configuration.currency }}
-  </label-value>
-  <label-value [label]="i18n.voucher.totalAmount">
-    {{ preview.totalAmount | currency:preview.type.configuration.currency }}
-  </label-value>
-</ng-template>
-<label-value *ngIf="preview.type.gift === 'choose'" kind="fieldView"
-  [label]="i18n.voucher.buy.usage"
-  [value]="buyVoucher.gift ? i18n.voucher.buy.usageGift : i18n.voucher.buy.usageSelf">
+<label-value [label]="i18n.voucher.numberOfVouchers">
+  {{ buyVoucher.count }}
 </label-value>
-<label-value *ngIf="preview.type.gift === 'never'" kind="fieldView"
-  [label]="i18n.voucher.buy.usage" [value]="i18n.voucher.buy.usageAlwaysSelf">
+<label-value [label]="i18n.voucher.amountPerVoucher">
+  {{ buyVoucher.amount | currency:data.account.currency }}
 </label-value>
-<!-- payment fields -->
-<ng-container *ngFor="let cf of paymentCustomFields">
-  <label-value
-    [hidden]="!fieldHelper.hasValue(cf.internalName, buyVoucher.paymentCustomValues)"
-    [label]="cf.name"
+<ng-container *ngFor="let cf of data.customFields">
+  <label-value [hidden]="!formatFieldValue.hasValue" [label]="cf.name"
     [labelPosition]="labelOnTop((layout.ltsm$ | async), cf) ? 'top' : 'auto'">
-    <format-field-value [customValues]="buyVoucher.paymentCustomValues"
-      [fields]="paymentCustomFields" [fieldName]="cf.internalName">
-    </format-field-value>
-  </label-value>
-</ng-container>
-<!-- custom fields -->
-<ng-container *ngFor="let cf of voucherCustomFields">
-  <label-value
-    [hidden]="!fieldHelper.hasValue(cf.internalName, buyVoucher.voucherCustomValues)"
-    [label]="cf.name"
-    [labelPosition]="labelOnTop((layout.ltsm$ | async), cf) ? 'top' : 'auto'">
-    <format-field-value [customValues]="buyVoucher.voucherCustomValues"
-      [fields]="voucherCustomFields" [fieldName]="cf.internalName">
+    <format-field-value #formatFieldValue [object]="buyVoucher"
+      [fields]="data.customFields" [fieldName]="cf.internalName">
     </format-field-value>
   </label-value>
 </ng-container>
 
-<ng-container *ngIf="preview.confirmationPasswordInput">
+<ng-container *ngIf="confirmationPasswordInput">
   <hr *ngIf="layout.gtxxs$ | async">
-  <confirmation-password focused
-    [formControl]="form.get('confirmationPassword')"
-    [passwordInput]="preview.confirmationPasswordInput"
-    [createDeviceConfirmation]="createDeviceConfirmation"
-    (confirmationModeChanged)="confirmationModeChanged.emit($event)"
-    (confirmed)="confirmed.emit($event)">
-  </confirmation-password>
+  <form [formGroup]="form">
+    <confirmation-password focused formControlName="confirmationPassword"
+      [passwordInput]="confirmationPasswordInput"
+      [createDeviceConfirmation]="createDeviceConfirmation"
+      (confirmationModeChanged)="confirmationModeChanged.emit($event)"
+      (confirmed)="confirmed.emit($event)">
+    </confirmation-password>
+  </form>
 </ng-container>

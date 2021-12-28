@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CreateDeviceConfirmation, CustomField, CustomFieldTypeEnum, DeviceConfirmationTypeEnum, GenerateVoucher, PasswordInput, User, VoucherDataForGenerate, VoucherGenerationAmountEnum } from 'app/api/models';
-import { FieldHelperService } from 'app/core/field-helper.service';
+import { CreateDeviceConfirmation, DeviceConfirmationTypeEnum, GenerateVoucher, PasswordInput, VoucherDataForGenerate, User } from 'app/api/models';
 import { Enter } from 'app/core/shortcut.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
@@ -22,19 +21,15 @@ export class GenerateVouchersStepConfirmComponent extends BaseComponent implemen
   @Output() confirmationModeChanged = new EventEmitter<ConfirmationMode>();
   @Output() confirmed = new EventEmitter<string>();
 
-  showAmount: boolean;
   form: FormGroup;
   createDeviceConfirmation: () => CreateDeviceConfirmation;
 
-  constructor(injector: Injector,
-    public fieldHelper: FieldHelperService) {
+  constructor(injector: Injector) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
-
-    this.showAmount = this.data.generationAmount === VoucherGenerationAmountEnum.GENERATION;
 
     this.form = this.formBuilder.group({});
     this.form.setControl('confirmationPassword', this.confirmationPassword);
@@ -51,13 +46,5 @@ export class GenerateVouchersStepConfirmComponent extends BaseComponent implemen
     if (!this.confirmationPasswordInput) {
       this.addShortcut(Enter, () => this.confirmed.emit());
     }
-  }
-
-  labelOnTop(ltsm: boolean, field: CustomField): boolean {
-    if (!ltsm) {
-      return false;
-    }
-    const type = field ? field.type : null;
-    return [CustomFieldTypeEnum.RICH_TEXT, CustomFieldTypeEnum.TEXT].includes(type);
   }
 }

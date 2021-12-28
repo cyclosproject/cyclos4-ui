@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { isDevServer } from 'app/shared/helper';
+import { Injectable, isDevMode } from '@angular/core';
 import lscache from 'lscache';
 import { EMPTY, Observable, of } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
@@ -48,7 +47,7 @@ export class CacheService {
    * @param producer The producer function, called when the value for the given key is not found
    */
   get<T>(key: string, producer: (key: string) => Observable<T>, timeoutSeconds = DEFAULT_CACHE_SECONDS): Observable<T> {
-    if (timeoutSeconds === 0 || isDevServer()) {
+    if (timeoutSeconds === 0 || isDevMode()) {
       // Don't cache
       return producer(key);
     }
