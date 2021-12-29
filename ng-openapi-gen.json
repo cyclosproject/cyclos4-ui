@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
-  "input": "../cyclos4-web/build/generated/resources/openapi/main/openapi/cyclos-openapi.yaml",
+  "input": "src/openapi/cyclos-openapi.yaml",
   "output": "src/app/api",
   "includeTags": [
     "Frontend",
