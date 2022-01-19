@@ -28,17 +28,11 @@ body.gt-md {
 }
 
 @mixin theme-transitions() {
-  transition:
-    background-color ease-in-out 0.4s,
-    color ease-in-out 0.4s,
-    border-color ease-in-out 0.4s !important;
+  transition: all ease-in-out 0.4s !important
 }
 
-top-bar nav {
-  @include theme-transitions()
-}
 body.theme-transition {
-  &, .main-container * {
+  &, & .main-container * {
     @include theme-transitions()
   }
 }

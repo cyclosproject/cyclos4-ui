@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding,
+  Inject,
   Injector, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild
 } from '@angular/core';
 import { Event, Router } from '@angular/router';
@@ -8,7 +9,7 @@ import { AuthHelperService } from 'app/core/auth-helper.service';
 import { Breakpoint, LayoutService } from 'app/core/layout.service';
 import { NotificationService } from 'app/core/notification.service';
 import { SvgIcon } from 'app/core/svg-icon';
-import { I18n } from 'app/i18n/i18n';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { AbstractComponent } from 'app/shared/abstract.component';
 import { HeadingAction } from 'app/shared/action';
 import { blurIfClick, empty, words } from 'app/shared/helper';
@@ -18,13 +19,15 @@ import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service
 import { MenuDensity } from 'app/ui/core/menu-density';
 import { MenuService } from 'app/ui/core/menu.service';
 import { menuAnchorId } from 'app/ui/core/menus.component';
+import { MessageHelperService } from 'app/ui/core/message-helper.service';
 import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 import { ActiveMenu, Menu, MenuType, RootMenu, RootMenuEntry } from 'app/ui/shared/menu';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, fromEvent } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 const MaxUserDisplaySize = 30;
 const MaxUserDisplaySizeMenu = 15;
-const MenuThesholdLarge = 3;
+const MenuThesholdLarge = 4;
 const MenuThesholdExtraLarge = 5;
 const ProfileMenus = [Menu.MY_PROFILE, Menu.EDIT_MY_PROFILE];
 
@@ -72,13 +75,14 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnDest
     public authHelper: AuthHelperService,
     public layout: LayoutService,
     public uiLayout: UiLayoutService,
-    public i18n: I18n,
+    @Inject(I18nInjectionToken) public i18n: I18n,
     public notification: NotificationService,
     public menu: MenuService,
     public router: Router,
     public breadcrumb: BreadcrumbService,
     public login: LoginService,
-    public marketplaceHelper: MarketplaceHelperService) {
+    public marketplaceHelper: MarketplaceHelperService,
+    public messageHelper: MessageHelperService) {
     super(injector);
   }
 
@@ -95,20 +99,22 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnDest
     const maxDisplaySize = this.hasMenu ? MaxUserDisplaySizeMenu : MaxUserDisplaySize;
     this.addSub(this.login.user$.subscribe(user => {
       this.userName = user == null ? '' : words(user.display, maxDisplaySize);
-      const marketplace = this.dataForFrontendHolder.auth.permissions.marketplace || {};
-      this.shoppingCart = marketplace.userWebshop.purchase;
+      this.shoppingCart = this.dataForFrontendHolder.auth.permissions?.marketplace?.userWebshop?.purchase;
       this.updateTitle();
     }));
     this.addSub(this.uiLayout.currentPage$.subscribe(() => this.updateTitle()));
-    this.resizeListener = () => this.updateTitle();
-    window.addEventListener('resize', this.resizeListener, false);
+
+    this.addSub(fromEvent(window, 'resize').pipe(
+      debounceTime(50)
+    ).subscribe(() => this.updateTitle()));
+
+    setTimeout(() => this.updateTitle(), 10);
   }
 
   ngOnDestroy() {
     super.ngOnDestroy();
     window.removeEventListener('resize', this.resizeListener);
   }
-
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.activeMenu) {
@@ -146,15 +152,15 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnDest
     if (isHome) {
       // User is on home. Show either the login or logout action
       if (user) {
-        addAction('logout', SvgIcon.BoxArrowRight, this.i18n.menu.logout, Menu.LOGOUT);
+        addAction('logout', SvgIcon.Logout2, this.i18n.menu.logout, Menu.LOGOUT);
       } else {
-        addAction('login', SvgIcon.BoxArrowInRight, this.i18n.menu.login, Menu.LOGIN);
+        addAction('login', SvgIcon.Login2, this.i18n.menu.login, Menu.LOGIN);
       }
     } else {
       // If there's a breadcrumb, show the back action, otherwise, home
       const home = user ? Menu.DASHBOARD : Menu.HOME;
       if (this.breadcrumb.empty) {
-        addAction('home', SvgIcon.HouseDoor, this.i18n.menu.home, home);
+        addAction('home', SvgIcon.HouseDoor2, this.i18n.menu.home, home);
       } else {
         addAction('back', SvgIcon.ArrowLeft, this.i18n.general.back, () => {
           if (!this.breadcrumb.back()) {

@@ -22,7 +22,7 @@
       </div>
       <div class="cell-text">
         {{ i18n.general.performedBy }}:
-        {{ row.by ? row.by.display : i18n.brokers.administration}}
+        {{ row.by ? row.by.display : i18n.general.administration}}
       </div>
     </mobile-result>
     <table *resultTable class="table table-hover">
@@ -45,7 +45,7 @@
           <td>{{ row.date | date }}</td>
           <td>{{ showActionLabel(row) }}</td>
           <td>
-            {{ row.by ? row.by.display : i18n.brokers.administration}}
+            {{ row.by ? row.by.display : i18n.general.administration}}
           </td>
         </tr>
       </tbody>

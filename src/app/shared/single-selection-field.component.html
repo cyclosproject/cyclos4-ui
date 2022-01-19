@@ -1,10 +1,10 @@
-<label-value *ngIf="label; else widget" [formField]="self">
+<label-value *ngIf="label; else widget" [formField]="self"
+  [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
 <ng-template #widget>
-  <div style="position: relative" class="w-100" dropdown
-    #dropdown="bs-dropdown" (onShown)="onShown();"
+  <div class="w-100" dropdown #dropdown="bs-dropdown" (onShown)="onShown();"
     (onHidden)="onHidden(); toggleButton.focus()">
     <button #toggleButton dropdownToggle [id]="id" type="button"
       class="form-control text-left custom-select w-100"

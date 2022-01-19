@@ -8,6 +8,7 @@
     "Localization",
     "Push",
     "DeviceConfirmations",
+    "Messages",
     "Notifications",
     "NotificationSettings",
     "Passwords",
@@ -26,12 +27,14 @@
     "Installments",
     "ScheduledPayments",
     "RecurringPayments",
+    "ExternalPayments",
     "PendingPayments",
     "Transfers",
     "Payments",
     "Tickets",
     "POS",
     "Accounts",
+    "AccountVisibility",
     "Marketplace",
     "AdQuestions",
     "AdInterests",
@@ -44,6 +47,7 @@
     "Wizards",
     "Sessions",
     "Vouchers",
+    "VoucherInfo",
     "Alerts",
     "Brokering",
     "Records",
@@ -58,9 +62,12 @@
     "PaymentLimits",
     "PrivacySettings",
     "References",
-    "PaymentRequests"
+    "PaymentFeedbacks",
+    "PaymentRequests",
+    "Invite"
   ],
   "enumStyle": "upper",
   "skipJsonSuffix": true,
-  "serviceIndex": false
+  "serviceIndex": false,
+  "module": false
 }

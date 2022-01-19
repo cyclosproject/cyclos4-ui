@@ -1,6 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy, Component, EventEmitter, Host, Injector, Input,
-  OnChanges, OnDestroy, OnInit, Optional, Output, SkipSelf, ViewChild,
+  OnDestroy, OnInit, Optional, Output, SkipSelf, ViewChild,
 } from '@angular/core';
 import {
   AbstractControl, ControlContainer, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR,
@@ -8,7 +10,7 @@ import {
 } from '@angular/forms';
 import {
   CreateDeviceConfirmation, DeviceConfirmationStatusEnum, DeviceConfirmationView,
-  ImageSizeEnum, PasswordInput, PasswordModeEnum, PaymentPreview, PerformPayment,
+  ImageSizeEnum, PasswordInput, PasswordInputMethodEnum, PasswordModeEnum, PaymentPreview, PerformPayment,
 } from 'app/api/models';
 import { DeviceConfirmationsService } from 'app/api/services/device-confirmations.service';
 import { PosService } from 'app/api/services/pos.service';
@@ -33,21 +35,24 @@ import { first } from 'rxjs/operators';
     { provide: NG_VALIDATORS, useExisting: ConfirmationPasswordComponent, multi: true },
   ],
 })
-export class ConfirmationPasswordComponent extends BaseControlComponent<string> implements OnInit, OnDestroy, OnChanges, Validator {
+export class ConfirmationPasswordComponent extends BaseControlComponent<string> implements OnInit, OnDestroy, AfterViewInit, Validator {
 
   ConfirmationMode = ConfirmationMode;
+  PasswordInputMethodEnum = PasswordInputMethodEnum;
 
-  @Input() pos: boolean;
   @Input() paymentPreview: PaymentPreview;
+  @Input() pos: boolean;
   @Input() passwordInput: PasswordInput;
   @Input() createDeviceConfirmation: () => CreateDeviceConfirmation | PerformPayment;
   @Output() confirmationModeChanged = new EventEmitter<ConfirmationMode>();
   @Output() confirmed = new EventEmitter<string>();
+  @Output() createDeviceConfirmationError = new EventEmitter<HttpErrorResponse>();
+  @Input() alertMessage: string;
 
   canConfirm: boolean;
   allowDevice: boolean;
   allowPassword: boolean;
-  confirmationMessage: string;
+  confirmationMessage$ = new BehaviorSubject<string>(null);
   otpRenewable: boolean;
   confirmationModeControl: FormControl;
   deviceConfirmationId: string;
@@ -75,7 +80,7 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
     this.canConfirm = this.authHelper.canConfirm(this.passwordInput);
     this.allowDevice = this.authHelper.canConfirmWithDevice(this.passwordInput);
     this.allowPassword = this.authHelper.canConfirmWithPassword(this.passwordInput);
-    this.confirmationMessage = this.authHelper.getConfirmationMessage(this.passwordInput);
+    this.confirmationMessage$.next(this.authHelper.getConfirmationMessage(this.passwordInput, this.pos));
     this.confirmationModeControl = new FormControl(null);
     this.addSub(this.confirmationModeControl.valueChanges.subscribe(mode => {
       if (mode === ConfirmationMode.Device && !this.deviceConfirmationId) {
@@ -102,12 +107,17 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
     this.revokeCurrent();
   }
 
-  ngOnChanges() {
+  ngAfterViewInit() {
     if (this.otpSubscription == null && this.passwordComponent) {
       this.otpSubscription = this.passwordComponent.otpSent.subscribe(() => {
         this.passwordInput.hasActivePassword = true;
+        this.confirmationMessage$.next(this.authHelper.getConfirmationMessage(this.passwordInput, this.pos));
       });
     }
+  }
+
+  get confirmPasswordPlaceholder(): string {
+    return this.i18n.password.confirmPasswordPlaceholder(this.passwordInput.name);
   }
 
   get activePassword(): boolean {
@@ -127,7 +137,8 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
 
   // Validator methods
   validate(c: AbstractControl): ValidationErrors {
-    if (this.passwordComponent) {
+    if (this.confirmationModeControl.value === ConfirmationMode.Password &&
+      this.passwordComponent) {
       return this.passwordComponent.validate(c);
     }
     return null;
@@ -177,6 +188,8 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
         this.revokeCurrent();
         this.currentUrl$.next(URL.createObjectURL(blob));
       });
+    }, error => {
+      this.createDeviceConfirmationError.emit(error);
     });
   }
 

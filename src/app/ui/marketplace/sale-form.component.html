@@ -21,7 +21,7 @@
         <h2
           class="mt-3 mb-2 d-flex flex-column flex-xs-row justify-content-between">
           <div class="mb-2 mb-xs-0">
-            {{ i18n.ad.products  }}
+            {{ i18n.ad.products }}
           </div>
           <div [ngClass]="{'section-title-action': layout.gtsm$ | async}">
             <action-button outline (action)="addProducts()"
@@ -41,9 +41,23 @@
         </single-selection-field>
         <div class="any-label-value"></div>
         <div [formGroup]="deliveryForm">
-          <input-field formControlName="name" [label]="i18n.general.name"
-            required>
+          <input-field
+            *ngIf="(form.value || (form.valueChanges | async))?.deliveryMethod == null"
+            formControlName="name" [label]="i18n.general.name" required>
           </input-field>
+          <radio-group-field
+            *ngIf="(form.value || (form.valueChanges | async))?.deliveryMethod == null"
+            [label]="i18n.ad.deliveryType" formControlName="deliveryType">
+            <field-option value="deliver" [text]="i18n.ad.deliver">
+            </field-option>
+            <field-option value="pickup" [text]="i18n.ad.pickup">
+            </field-option>
+          </radio-group-field>
+          <label-value kind="fieldView"
+            *ngIf="(form.value || (form.valueChanges | async))?.deliveryMethod != null"
+            [label]="i18n.ad.deliveryType"
+            [value]="deliveryForm.controls.deliveryType.value === 'deliver' ? i18n.ad.deliver : i18n.ad.pickup">
+          </label-value>
           <decimal-field formControlName="price"
             [label]="i18n.ad.deliveryPrice" [scale]="currency.decimalDigits"
             [prefix]="currency.prefix" [suffix]="currency.suffix"
@@ -55,17 +69,30 @@
           <time-interval-field formControlName="maxTime"
             [label]="i18n.ad.maxDeliveryTime" required>
           </time-interval-field>
+          <label-value kind="fieldView"
+            *ngIf="(deliveryMethod$ | async) && deliveryMethod?.description"
+            [label]="i18n.general.description" valueFormat="break"
+            [value]="deliveryMethod.description">
+          </label-value>
         </div>
         <h2 class="mt-2">{{ i18n.ad.deliveryAddress }}</h2>
-        <single-selection-field [emptyOption]="i18n.ad.customAddress"
+        <!-- Address field should be selectable when the delivery type is deliver or when there is a custom delivery method -->
+        <single-selection-field *ngIf="(addresses$ | async) &&
+        deliveryForm.controls.deliveryType.value === 'pickup' ?
+        form.value?.deliveryMethod == null : true "
+          [emptyOption]="deliveryForm.controls.deliveryType.value === 'pickup' ? false : i18n.ad.customAddress"
           [label]="i18n.ad.chooseDeliveryAddress" formControlName="address">
-          <field-option *ngFor="let a of data.addresses"
+          <field-option *ngFor="let a of addresses"
             [value]="resolveAddressId(a)" [text]="a.name"></field-option>
         </single-selection-field>
         <div class="any-label-value"></div>
-        <address-form [addressForm]="addressForm"
-          [configuration]="data.addressConfiguration">
+        <address-form *ngIf="(addresses$ | async) && !readOnly"
+          [addressForm]="addressForm"
+          [configuration]="addressConfiguration$ | async">
         </address-form>
+        <address-details *ngIf="(addresses$ | async) && readOnly"
+          [address]="addressForm.value">
+        </address-details>
         <h2>{{ i18n.ad.remarks }}</h2>
         <textarea-field formControlName="remarks">
         </textarea-field>

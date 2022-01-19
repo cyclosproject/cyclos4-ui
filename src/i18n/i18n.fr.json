@@ -44,13 +44,6 @@
       "message": "Vous avez été déconnecté.<br>Vous pouvez continuer à consulter cette page ou vous identifier à nouveau.",
       "loginAgain": "Se reconneter"
     },
-    "datePart": {
-      "long": {
-        "year": "Année",
-        "month": "Mois",
-        "day": "Jour"
-      }
-    },
     "month": {
       "long": {
         "jan": "Janvier",
@@ -112,10 +105,6 @@
     "login": "Le nom / mot de passe donné est incorrect. Veuillez réessayer.",
     "remoteAddressBlocked": "Votre adresse IP est bloquée si le nombre de tentatives de connexion est supérieur",
     "permission": "Vous ne disposez pas des autorisations suffisantes pour effectuer l'action demandée",
-    "unauthorized": {
-      "address": "Votre adresse IP n'est pas autorisée à vous connecter",
-      "url": "L'accès n'est pas autorisé depuis cette URL"
-    },
     "loggedOut": "Vous avez été déconnecté. Veuillez vous reconnecter et répéter l'opération.",
     "securityAnswer": {
       "invalid": "La réponse de sécurité donnée est invalide",
@@ -144,7 +133,6 @@
     "banking.paySelf": "Paiement à soi-même",
     "banking.scheduledPayments": "Paiements planifiés",
     "banking.authorizations": "Autorisations de paiement",
-    "banking.boughtVouchers": "View buys",
     "marketplace": "Place de marché",
     "marketplace.directory": "Annuaire",
     "marketplace.businessDirectory": "Annuaire professionnel",
@@ -160,26 +148,17 @@
     "message": "Vous pouvez vous connecter avec votre identifiant et votre mot de passe.",
     "disconnected": "Vous avez été déconnecté.<br>Veuillez vous identifier à nouveau pour afficher la page demandée.",
     "principal": "Utilisateur",
-    "forgotPassword": "Mot de passe oublié ?",
     "register": "Pas encore de compte ? Créez-en un maintenant."
   },
   "password": {
-    "confirmationMessage": "Fournissez votre {passwordType} pour confirmer cette opération.",
-    "confirm.noPassword": "Pour confirmer, vous avez besoin d’un {passwordType}, mais vous n’en avez pas.",
-    "confirm.otp.noMediums": "Pour confirmer, vous avez besoin d'un mot de passe de confirmation, mais il n'y a pas de moyen possible pour le recevoir. <br> Contactez l'administration.",
-    "confirm.otp.active": "Vous pouvez utiliser le mot de passe de confirmation envoyé précédemment ou en demander un nouveau.",
-    "confirm.otp.request": "Veuillez demander un mot de passe de confirmation ci-dessous afin de confirmer",
     "otp.sent": "Le mot de passe a été envoyé à {dest}",
     "oldPassword": "Ancien mot de passe",
     "newPassword": "Nouveau mot de passe",
     "passwordConfirmation": "Confirmer le mot de passe",
     "error": {
-      "disabled": "Votre mot de passe a été désactivé. S'il vous plaît, contactez l'administration.",
-      "reset": "Votre mot de passe a été réinitialisé.",
       "indefinitelyBlocked": "Votre mot de passe a été désactivé en dépassant le nombre maximal d'essais. S'il vous plaît, contactez l'administration.",
       "temporarilyBlocked": "Votre mot de passe est temporairement bloqué en dépassant le nombre maximal d'essais.",
-      "expired": "Votre mot de passe a expiré. S'il vous plaît, contactez l'administration.",
-      "pending": "Votre mot de passe est en attente d'activation. S'il vous plaît, contactez l'administration."
+      "expired": "Votre mot de passe a expiré. S'il vous plaît, contactez l'administration."
     },
     "title": {
       "change.self": "Modifier votre mot de passe",
@@ -188,7 +167,6 @@
     },
     "forgotten": {
       "principal": "Utilisateur",
-      "generated.message": "Une fois que vous avez soumis, un nouveau mot de passe sera généré et envoyé à votre adresse e-mail.",
       "generated.done.email": "Vous devriez recevoir sous peu un e-mail avec votre nouveau mot de passe.",
       "manual.done": "Votre mot de passe a été changé avec succès. Vous pouvez maintenant l'utiliser pour vous connecter.",
       "title.changePassword": "Modifier votre mot de passe"
@@ -232,8 +210,7 @@
       "previouslyAccepted": "Accord mis à jour",
       "firstTime": "Contrat d'inscription"
     },
-    "message.previouslyAccepted": "Le contrat d’enregistrement a été mis à jour. Pour continuer, vous devez accepter les nouveaux termes.",
-    "agree": "Je suis d'accord avec les accords d'enregistrement suivants: {agreements}"
+    "message.previouslyAccepted": "Le contrat d’enregistrement a été mis à jour. Pour continuer, vous devez accepter les nouveaux termes."
   },
   "securityQuestion": {
     "question": "Question de sécurité",
@@ -268,7 +245,6 @@
     "totalIncome": "Revenu total",
     "totalOutflow": "Dépense totale",
     "netInflow": "Flux net",
-    "noAccounts": "Vous n'avez pas de compte",
     "system": "Compte système"
   },
   "transaction": {
@@ -302,7 +278,6 @@
     "scheduling.direct": "Payer maintenant",
     "scheduling.single": "Planifié",
     "scheduling.installments": "Versements mensuels",
-    "scheduling.recurring": "Répéter tous les mois",
     "schedulingStatus": {
       "direct": "Paiement direct",
       "scheduledToDate": "Prévu pour le {date}",
@@ -327,10 +302,7 @@
     "firstOccurrence": "Première occurence",
     "firstOccurrence.date": "Date de première occurrence",
     "processed": "Le paiement a été traité avec succès",
-    "processed.withNumber": "Le paiement avec le numéro de transaction {number} a été traité avec succès",
     "pending": "Le paiement a été soumis pour une nouvelle autorisation",
-    "pending.withNumber": "Le paiement avec le numéro de transaction {number} a été soumis pour une nouvelle autorisation.",
-    "done.view": "Voir le paiement",
     "done.new": "Nouveau paiement",
     "status": {
       "open": "Ouvert",
@@ -340,7 +312,6 @@
       "approved": "Approuvé",
       "processed": "Traité",
       "authorized": "Autorisé",
-      "pending": "En attente d'autorisation",
       "denied": "Refusé",
       "blocked": "Bloqué",
       "scheduled": "Planifié",
@@ -352,8 +323,6 @@
       "paymentToSelf": "Paiement entre vos comptes",
       "paymentToUser": "Paiement à l'utilisateur",
       "paymentConfirmation": "Confirmation de paiement",
-      "pendingPayment": "Paiement soumis pour autorisation",
-      "processedPayment": "Paiement effectué",
       "authorizations": "Autorisations de paiement",
       "authorizationHistory": "Historique d'autorisation",
       "scheduled": "Paiements planifiés",
@@ -444,8 +413,7 @@
       "placeholder.allowSearch": "Tapez pour rechercher",
       "placeholder.principal": "Tapez l'identifiant de l'utilisateur",
       "contact.tooltip": "Choisissez parmi votre liste de contacts",
-      "contact.title": "Selectionner un contact",
-      "contact.empty": "Votre liste de contact est vide"
+      "contact.title": "Selectionner un contact"
     }
   },
   "user": {
@@ -482,13 +450,11 @@
     "contactInfo.add": "Ajouter le contact",
     "contactInfo.remove": "Supprimer le contact",
     "contactInfo.none": "Il n'y a actuellement aucun contact supplémentaire",
-    "confirmation.message": "Pour enregistrer votre profil, indiquez votre {type}",
     "profileSaved": "Le profil a été enregistré",
     "newEmailConfirmed": "Votre nouvelle adresse e-mail a été confirmée avec succès",
     "passwordConfirmation": "Confirmation {type}",
     "securityQuestion.message": "Si vous oubliez votre mot de passe, vous devrez répondre correctement à la question de sécurité pour pouvoir le réinitialiser. <br> Cette option peut être définie ultérieurement, mais gardez à l'esprit que la récupération du mot de passe ne fonctionnera pas sans elle.",
     "securityQuestion.empty": "Laisser vide",
-    "captcha": "Validation visuelle",
     "profile": {
       "noPermission": "Vous n'avez pas la permission de voir le profil de cet utilisateur",
       "addContact.done": "{user} a été ajouté à votre liste de contacts",
@@ -522,7 +488,6 @@
     "landLine": "Téléphone fixe",
     "name.mobile": "Nom du téléphone portable",
     "name.landLine": "Nom du téléphone fixe",
-    "number": "Numéro",
     "number.mobile": "Numéro de téléphone portable",
     "number.landLine": "Numéro de téléphone fixe",
     "phoneNumber": "Numéro de téléphone",
@@ -560,7 +525,6 @@
     "name": "Titre",
     "owner": "Éditeur",
     "price": "Prix",
-    "category": "Catégorie",
     "categories": "Catégories",
     "byOwner": "Par {owner}",
     "showAllCategories": "Afficher tout",

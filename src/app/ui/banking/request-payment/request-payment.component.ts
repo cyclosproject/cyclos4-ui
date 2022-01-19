@@ -1,23 +1,19 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import {
-  AccountWithCurrency, AvailabilityEnum, Currency, CustomFieldDetailed,
-  DataForTransaction,
-  PaymentRequestSchedulingEnum, PaymentSchedulingEnum,
-  SendPaymentRequest, Transaction, TransactionTypeData, TransferType
+  AccountWithCurrency, AvailabilityEnum, Currency, CustomFieldDetailed, DataForTransaction, PaymentRequestSchedulingEnum,
+  PaymentSchedulingEnum, SendPaymentRequest, TransactionTypeData, TransferType
 } from 'app/api/models';
 import { PaymentRequestsService } from 'app/api/services/payment-requests.service';
-import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
-import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
+import { clearValidatorsAndErrors, empty, locateControl, validateBeforeSubmit } from 'app/shared/helper';
+import { BankingHelperService } from 'app/ui/core/banking-helper.service';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
-
-export type PaymentStep = 'form' | 'done';
 
 /** Validates that occurrences count is required and > 2 when payment is recurring and not until manually cancel */
 const OCCURRENCES_COUNT_VAL: ValidatorFn = control => {
@@ -58,8 +54,6 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
   toSelf: boolean;
   toSystem: boolean;
 
-  steps: PaymentStep[] = ['form', 'done'];
-  step$ = new BehaviorSubject<PaymentStep>(null);
   form: FormGroup;
   currency$ = new BehaviorSubject<Currency>(null);
   title: string;
@@ -67,19 +61,11 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
   actualData: DataForTransaction;
   preview: SendPaymentRequest;
   canConfirm: boolean;
-  performed: Transaction;
   paymentTypeData$ = new BehaviorSubject<TransactionTypeData>(null);
   availablePaymentTypes: TransferType[];
   lastPaymentTypeData: TransactionTypeData;
   lastValue: any;
   customValuesControls = new Map<string, FormControl>();
-
-  get step(): PaymentStep {
-    return this.step$.value;
-  }
-  set step(step: PaymentStep) {
-    this.step$.next(step);
-  }
 
   get currency(): Currency {
     return this.currency$.value;
@@ -222,8 +208,6 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
       // No accounts
       this.notification.error(this.i18n.transaction.noAccounts);
     } else {
-      // Set the initial step
-      this.step = 'form';
       // Set the from account type
       const type = data.accounts[0].type.id;
       this.form.patchValue({ account: type }, { emitEvent: false });
@@ -245,7 +229,7 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
 
   perform() {
     // Before proceeding, copy the value of all valid custom fields
-    const customValueControls: { [key: string]: AbstractControl } = {};
+    const customValueControls: { [key: string]: AbstractControl; } = {};
     const typeData = this.paymentTypeData;
     if (typeData && typeData.customFields) {
       for (const cf of typeData.customFields) {
@@ -256,7 +240,7 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
     if (!validateBeforeSubmit(this.form)) {
       return;
     }
-    this.notification.confirm({
+    this.confirmation.confirm({
       title: this.i18n.general.confirm,
       message: this.i18n.transaction.confirmPaymentRequest,
       callback: () =>
@@ -264,9 +248,8 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
           owner: this.fromParam,
           body: this.confirmDataRequest(),
         }).pipe(first()).subscribe(performed => {
-          this.performed = performed;
-          this.step = 'done';
-          scrollTop();
+          this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(performed)],
+            { state: { url: this.router.url } });
         })
     });
 
@@ -299,17 +282,6 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
     return payment;
   }
 
-  viewPerformed() {
-    this.router.navigate(['banking', 'transaction', this.bankingHelper.transactionNumberOrId(this.performed)]);
-  }
-
-  reload() {
-    this.step = null;
-    this.currency = null;
-    this.paymentTypeData = null;
-    super.reload();
-  }
-
   locateControl(locator: FormControlLocator) {
     return locateControl(this.form, locator);
   }
@@ -329,11 +301,10 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
   resolveMenu(data: DataForTransaction) {
     if (this.fromSystem) {
       // Payment from system
-      return Menu.PAYMENT_REQUEST_TO_USER;
+      return Menu.PAYMENT_REQUESTS;
     } else {
       // Payment from user
-      const ownMenu = this.toSystem ? Menu.PAYMENT_REQUEST_TO_SYSTEM : Menu.PAYMENT_REQUEST_TO_USER;
-      return this.menu.userMenu(data.fromUser, ownMenu);
+      return this.menu.userMenu(data.fromUser, Menu.PAYMENT_REQUESTS);
     }
   }
 

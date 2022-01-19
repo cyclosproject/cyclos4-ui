@@ -5,7 +5,7 @@
       [heading]="sales ? i18n.ad.title.sales : i18n.ad.title.purchases"
       [mobileHeading]="sales ? i18n.ad.mobileTitle.sales : i18n.ad.mobileTitle.purchases"
       [headingActions]="headingActions$ | async">
-      <form
+      <div
         *ngIf="(moreFilters$ | async) || (this.layout.ltsm$ | async) === false"
         [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row">
@@ -89,7 +89,7 @@
               [label]="i18n.ad.productNumber" fieldSize="full"></input-field>
           </div>
         </div>
-      </form>
+      </div>
     </page-content>
 
     <results-layout resultType="list" [results]="results$ | async"
@@ -101,7 +101,7 @@
             <div class="cell-main">
               {{ row.number }}
             </div>
-            <div class="cell-cell-date">
+            <div class="cell-date">
               {{ row.creationDate | date }}
             </div>
             <div class="cell-text">

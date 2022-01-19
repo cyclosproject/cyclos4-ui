@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AdKind, BasicProfileFieldEnum, PhoneKind, PhoneView, RoleEnum,
-  UserProfileSectionEnum, UserRelationshipEnum, UserView
+  AdKind, BasicProfileFieldEnum,
+  FieldSection, PhoneKind, PhoneView, RoleEnum,
+  UserCustomField, UserProfileSectionEnum, UserRelationshipEnum, UserView
 } from 'app/api/models';
 import { ContactsService } from 'app/api/services/contacts.service';
 import { UsersService } from 'app/api/services/users.service';
@@ -10,10 +11,10 @@ import { ErrorStatus } from 'app/core/error-status';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
-import { words } from 'app/shared/helper';
+import { empty, words } from 'app/shared/helper';
 import { MapsService } from 'app/ui/core/maps.service';
-import { OperationHelperService } from 'app/ui/core/operation-helper.service';
 import { RecordHelperService } from 'app/ui/core/records-helper.service';
+import { RunOperationHelperService } from 'app/ui/core/run-operation-helper.service';
 import { TokenHelperService } from 'app/ui/core/token-helper.service';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { WizardHelperService } from 'app/ui/core/wizard-helper.service';
@@ -36,7 +37,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     injector: Injector,
     private usersService: UsersService,
     private contactsService: ContactsService,
-    private operationHelper: OperationHelperService,
+    private runOperationHelper: RunOperationHelperService,
     private wizardHelper: WizardHelperService,
     private recordHelper: RecordHelperService,
     private tokenHelper: TokenHelperService,
@@ -56,6 +57,9 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
   showActions$ = new BehaviorSubject(false);
   bankingActions: HeadingAction[] = [];
   managementActions: HeadingAction[] = [];
+
+  fieldsWithoutSection: Array<UserCustomField>;
+  fieldsWithSection = new Map<FieldSection, UserCustomField[]>();
 
   get user(): UserView {
     return this.data;
@@ -109,11 +113,13 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const passwords = permissions.passwords || {};
     const identityProviders = permissions.identityProviders || {};
     const accountTypes = (permissions.accounts || []).map(a => a.type);
+    const accountVisibilitySettings = permissions.accountVisibilitySettings || {};
     const contact = permissions.contact || {};
     const payment = permissions.payment || {};
-    const paymentRequests = permissions.paymentRequests || {};
     const scheduledPayments = permissions.scheduledPayments || {};
     const authorizedPayments = permissions.authorizedPayments || {};
+    const paymentRequests = permissions.paymentRequests || {};
+    const externalPayments = permissions.externalPayments || {};
     const marketplace = permissions.marketplace || {};
     const simpleAds = marketplace.simple || {};
     const webshop = marketplace.webshop || {};
@@ -127,18 +133,42 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const documents = permissions.documents || {};
     const tokens = permissions.tokens || [];
     const products = permissions.products || {};
+    const messages = permissions.messages || {};
 
     const manager = [UserRelationshipEnum.ADMINISTRATOR, UserRelationshipEnum.BROKER, UserRelationshipEnum.OWNER]
       .includes(user.relationship);
 
+    const customValues = user.customValues || [];
+    this.fieldsWithoutSection = customValues.filter(v => v.field.section == null) || [];
+    const sections = new Map();
+    customValues.map(v => v.field.section).forEach(s => {
+      if (s != null) {
+        sections.set(s.id, s);
+      }
+    });
+    sections.forEach(s => {
+      const filter = customValues.filter(v => v.field.section != null && v.field.section.id === s.id);
+      if (!empty(filter)) {
+        this.fieldsWithSection.set(s, filter);
+      }
+    });
+
     if (user.relationship === UserRelationshipEnum.SELF) {
-      // For the own user, we just show the edit as a top-level action
-      if (profile.editProfile) {
+      // For the own user, we just show the edit or privacy settings as a top-level actions
+      const headingActions: HeadingAction[] = [];
+      const myPermissions = this.dataForFrontendHolder.auth?.permissions || {};
+      if (myPermissions.myProfile?.editProfile) {
         const edit = new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => {
           this.router.navigateByUrl(this.router.url + '/edit');
         }, true);
-        this.headingActions = [edit];
+        headingActions.push(edit);
       }
+      if (myPermissions.privacySettings?.view) {
+        headingActions.push(new HeadingAction(SvgIcon.EyeSlash, this.i18n.user.profile.privacySettings, () => {
+          this.router.navigate(['/users', this.param, 'privacy-settings']);
+        }));
+      }
+      this.headingActions = headingActions;
     } else {
       // For others, will have actions in sections
       if (accountTypes.length > 6) {
@@ -152,7 +182,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           }));
         }
       }
-
+      if (accountVisibilitySettings.view) {
+        this.bankingActions.push(new HeadingAction(SvgIcon.Eye, this.i18n.user.profile.accountVisibility, () => {
+          this.router.navigate(['/banking', this.param, 'account-visibility']);
+        }));
+      }
       if (payment.userToUser) {
         this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowRight, this.i18n.user.profile.pay, () => {
           this.router.navigate(['/banking', ApiHelper.SELF, 'payment', this.param]);
@@ -178,35 +212,25 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SYSTEM]);
         }));
       }
-      if (paymentRequests.sendFromSystem) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowLeft, this.i18n.user.profile.requestPaymentFromSystem, () => {
-          this.router.navigate(['/banking', ApiHelper.SYSTEM, 'payment-request', this.param]);
+      if (scheduledPayments.view) {
+        this.bankingActions.push(new HeadingAction(SvgIcon.Clock, this.i18n.user.profile.viewScheduledPayments, () => {
+          this.router.navigate(['/banking', this.param, 'installments']);
+        }));
+      }
+      if (paymentRequests.view) {
+        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowLeft, this.i18n.user.profile.paymentRequests, () => {
+          this.router.navigate(['/banking', this.param, 'payment-requests']);
         }));
       }
       if (paymentRequests.sendFromUser) {
-        const label = manager ? this.i18n.user.profile.requestPaymentFromUser : this.i18n.user.profile.requestPayment;
+        const label = manager ? this.i18n.user.profile.requestPayment : this.i18n.user.profile.requestPayment;
         this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowLeft, label, () => {
           this.router.navigate(['/banking', ApiHelper.SELF, 'payment-request', this.param]);
         }));
       }
-      if (paymentRequests.sendAsUserToUser) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowLeft, this.i18n.user.profile.requestPaymentAsUserFromUser, () => {
-          this.router.navigate(['/banking', this.param, 'payment-request']);
-        }));
-      }
-      if (paymentRequests.sendAsUserToSystem) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowLeft, this.i18n.user.profile.requestPaymentAsUserFromSystem, () => {
-          this.router.navigate(['/banking', this.param, 'payment-request', ApiHelper.SYSTEM]);
-        }));
-      }
-      if (paymentRequests.view) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowLeft, this.i18n.user.profile.viewPaymentRequests, () => {
-          this.router.navigate(['/banking', this.param, 'payment-requests']);
-        }));
-      }
-      if (scheduledPayments.view) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Clock, this.i18n.user.profile.viewScheduledPayments, () => {
-          this.router.navigate(['/banking', this.param, 'installments']);
+      if (externalPayments.view) {
+        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowUpRight, this.i18n.user.profile.externalPayments, () => {
+          this.router.navigate(['/banking', this.param, 'external-payments']);
         }));
       }
       const balanceLimitsPermissions = permissions.balanceLimits || {};
@@ -226,26 +250,37 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/banking', this.param, 'authorized-payments']);
         }));
       }
-      if (vouchers.viewBought) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Ticket, this.i18n.user.profile.viewBoughtVouchers, () => {
-          this.router.navigate(['/banking', this.param, 'vouchers', 'bought']);
+      if (vouchers.view) {
+        this.bankingActions.push(new HeadingAction(SvgIcon.Ticket, this.i18n.user.profile.vouchers, () => {
+          this.router.navigate(['/banking', this.param, 'vouchers']);
         }));
+        if (vouchers.buy) {
+          this.bankingActions.push(new HeadingAction(SvgIcon.TicketArrowLeft, this.i18n.user.profile.voucherBuy, () => {
+            this.router.navigate(['/banking', this.param, 'vouchers', 'buy']);
+          }));
+        }
+        if (vouchers.send) {
+          this.bankingActions.push(new HeadingAction(SvgIcon.TicketArrowRight, this.i18n.user.profile.voucherSend, () => {
+            this.router.navigate(['/banking', this.param, 'vouchers', 'send']);
+          }));
+        }
       }
-      if (vouchers.buy) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Ticket, this.i18n.user.profile.buyVouchers, () => {
-          this.router.navigate(['/banking', this.param, 'vouchers', 'buy']);
+      if (vouchers.viewTransactions) {
+        const voucherTransactionsLabel = vouchers.topUpEnabled ? this.i18n.user.profile.voucherTransactions :
+          this.i18n.user.profile.voucherTransactionsRedeems;
+        this.bankingActions.push(new HeadingAction(SvgIcon.TicketDetailed, voucherTransactionsLabel, () => {
+          this.router.navigate(['/banking', this.param, 'voucher-transactions']);
         }));
-      }
-
-      if (vouchers.viewRedeemed) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Ticket, this.i18n.user.profile.viewRedeemedVouchers, () => {
-          this.router.navigate(['/banking', this.param, 'vouchers', 'redeemed']);
-        }));
-      }
-      if (vouchers.redeem) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Ticket, this.i18n.user.profile.redeemVoucher, () => {
-          this.router.navigate(['/banking', this.param, 'vouchers', 'redeem']);
-        }));
+        if (vouchers.redeem) {
+          this.bankingActions.push(new HeadingAction(SvgIcon.TicketArrowDown, this.i18n.user.profile.voucherRedeem, () => {
+            this.router.navigate(['/banking', this.param, 'vouchers', 'redeem']);
+          }));
+        }
+        if (vouchers.topUp) {
+          this.bankingActions.push(new HeadingAction(SvgIcon.TicketArrowUp, this.i18n.user.profile.voucherTopUp, () => {
+            this.router.navigate(['/banking', this.param, 'vouchers', 'top-up']);
+          }));
+        }
       }
       if (profile.editProfile) {
         this.managementActions.push(new HeadingAction(SvgIcon.Pencil, this.i18n.user.profile.edit, () => {
@@ -297,6 +332,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/users', this.param, 'operators']);
         }));
       }
+      if (operators.viewGroups) {
+        this.managementActions.push(new HeadingAction(SvgIcon.People, this.i18n.user.profile.viewOperatorGroups, () => {
+          this.router.navigate(['/users', this.param, 'operator-groups']);
+        }));
+      }
       if (products.view) {
         this.managementActions.push(new HeadingAction(SvgIcon.Shield, this.i18n.user.profile.products, () => {
           this.router.navigate(['/users', this.param, 'product-assignment']);
@@ -312,6 +352,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.removeContact();
         }));
       }
+      if (messages.send) {
+        this.managementActions.push(new HeadingAction(SvgIcon.Envelope, this.i18n.user.profile.sendMessage, () => {
+          this.router.navigate(['/users', 'messages', 'send'], { queryParams: { to: this.param } });
+        }));
+      }
       if (simpleAds.view) {
         this.managementActions.push(new HeadingAction(SvgIcon.Basket, this.i18n.user.profile.viewAds, () => {
           this.router.navigate(['/marketplace', this.param, AdKind.SIMPLE, 'list']);
@@ -323,7 +368,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
         }));
       }
       if (webshop.viewPurchases) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Cart3, this.i18n.user.profile.purchases, () => {
+        this.managementActions.push(new HeadingAction(SvgIcon.Bag2, this.i18n.user.profile.purchases, () => {
           this.router.navigate(['/marketplace', this.param, 'purchases']);
         }));
       }
@@ -366,6 +411,12 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/users', this.param, 'references', 'search']);
         }));
       }
+      // Feedbacks
+      if (permissions.paymentFeedbacks?.view) {
+        this.managementActions.push(new HeadingAction(SvgIcon.Award, this.i18n.user.profile.feedbacks, () => {
+          this.router.navigate(['/users', this.param, 'feedbacks', 'search']);
+        }));
+      }
       // Documents
       if (documents.view) {
         this.managementActions.push(new HeadingAction(SvgIcon.FileEarmarkText, this.i18n.document.action(user.documents?.count), () => {
@@ -388,7 +439,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       for (const operation of permissions.operations || []) {
         const addTo = operation.userProfileSection === UserProfileSectionEnum.BANKING
           ? this.bankingActions : this.managementActions;
-        addTo.push(this.operationHelper.headingAction(operation, user.id));
+        addTo.push(this.runOperationHelper.headingAction(operation, user.id));
       }
       // Wizards
       for (const wizard of permissions.wizards || []) {
@@ -399,7 +450,12 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       const actionsCount = this.bankingActions.length + this.managementActions.length;
       if (actionsCount > 0) {
         if (manager) {
-          this.updateHeadingActions();
+          if (this.bankingActions.length < 10 && this.managementActions.length < 10) {
+            // when there are less than 10 options per category, show the actions directly
+            this.showActions$.next(true);
+          } else {
+            this.updateHeadingActions();
+          }
         } else {
           this.headingActions = [...this.bankingActions, ...this.managementActions];
         }
@@ -410,6 +466,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
   referencesPath() {
     return ['/users', this.param, 'references', 'search'];
   }
+
+  feedbackPath() {
+    return ['/users', this.param, 'feedbacks', 'search'];
+  }
+
 
   private updateHeadingActions() {
     const show = !this.showActions$.value;
@@ -468,6 +529,8 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
 
   resolveMenu(user: UserView) {
     switch (user.relationship) {
+      case UserRelationshipEnum.SELF:
+        return Menu.MY_PROFILE;
       case UserRelationshipEnum.OWNER:
       case UserRelationshipEnum.SAME_OWNER:
         return Menu.MY_OPERATORS;
@@ -476,5 +539,9 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       default:
         return this.login.user ? Menu.SEARCH_USERS : Menu.PUBLIC_DIRECTORY;
     }
+  }
+
+  get hasAccountWithStatus(): boolean {
+    return this.data.accounts?.filter(acc => acc.status != null).length > 0;
   }
 }

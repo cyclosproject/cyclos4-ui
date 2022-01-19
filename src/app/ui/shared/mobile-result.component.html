@@ -7,13 +7,16 @@
     </avatar>
   </div>
   <div class="mobile-result-content">
-    <ng-container *ngIf="amount || date">
+    <ng-container *ngIf="amount || date || topLeft">
       <div class="cell-date-amount">
         <div *ngIf="amount" class="cell-amount" [ngClass]="amountClass">
           {{ amount | currency:currency:forceSign }}
         </div>
         <div *ngIf="date" class="cell-date">
           {{ date | date }}
+        </div>
+        <div *ngIf="topLeft" class="cell-top-left">
+          {{ topLeft }}
         </div>
       </div>
       <div class="clearfix"></div>

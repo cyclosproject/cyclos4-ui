@@ -7,7 +7,7 @@
     [heading]="i18n.transaction.title.transfersOverview"
     [mobileHeading]="i18n.transaction.mobileTitle.transfersOverview"
     [headingActions]="headingActions$ | async">
-    <form [formGroup]="form" class="filters-form filters-form-separator">
+    <div [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row">
         <div *ngIf="data.preselectedPeriods?.length > 1"
           class="col-12 col-md-6">
@@ -169,7 +169,7 @@
           </div>
         </ng-container>
       </div>
-    </form>
+    </div>
   </page-content>
 
   <results-layout resultType="list" [results]="results$ | async"
@@ -179,8 +179,8 @@
       [amount]="row.amount" [currency]="row.currency" forceSign>
       <div class="cell-text">
         {{ i18n.transaction.fromToText({
-          from: bankingHelper.ownerName(row.from),
-          to: bankingHelper.ownerName(row.to)
+        from: bankingHelper.ownerName(row.from),
+        to: bankingHelper.ownerName(row.to)
         }) }}</div>
     </mobile-result>
 

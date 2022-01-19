@@ -1,15 +1,18 @@
-import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
-import { Address, AdResult, DeliveryMethod, OrderDataForEdit, OrderDataForNew, OrderDeliveryMethod, OrderItem } from 'app/api/models';
+import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  Address, AddressConfiguration, AdResult, DeliveryMethod,
+  DeliveryMethodTypeEnum, OrderDataForEdit, OrderDataForNew, OrderDeliveryMethod, OrderItem
+} from 'app/api/models';
 import { OrdersService } from 'app/api/services/orders.service';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { SearchProductsComponent } from 'app/ui/marketplace/search/search-products.component';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
-import { empty } from 'app/shared/helper';
+import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 /**
  * Create or edit a sale (initiated by seller) for an specific user and currency
@@ -21,7 +24,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class SaleFormComponent
   extends BasePageComponent<OrderDataForNew | OrderDataForEdit>
-  implements OnInit {
+  implements OnInit, OnDestroy {
 
   id: string;
   user: string;
@@ -29,11 +32,19 @@ export class SaleFormComponent
 
   form: FormGroup;
   deliveryForm: FormGroup;
+  deliveryField: FormControl;
+  deliveryFieldChangeSubscription: Subscription;
+  deliveryTypeChangeSubscription: Subscription;
   addressForm: FormGroup;
+  addressField: FormControl;
+  addressFieldChangeSubscription: Subscription;
 
   products$ = new BehaviorSubject<OrderItem[]>(null);
   deliveryMethod$ = new BehaviorSubject<OrderDeliveryMethod>(null);
   address$ = new BehaviorSubject<Address>(null);
+  addresses$ = new BehaviorSubject<Address[]>(null);
+  addressConfiguration$ = new BehaviorSubject<AddressConfiguration>(null);
+  readOnly$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     injector: Injector,
@@ -87,37 +98,29 @@ export class SaleFormComponent
       price: [null, Validators.required],
       minTime: null,
       maxTime: [null, Validators.required],
+      deliveryType: [DeliveryMethodTypeEnum.DELIVER, Validators.required]
     });
-    this.addSub(this.deliveryForm.valueChanges.subscribe(value => this.deliveryMethod = value));
+    this.addSub(this.deliveryForm.valueChanges.subscribe(value =>
+      this.deliveryMethod = value
+    ));
+
+    this.deliveryField = this.formBuilder.control({});
+    this.form.addControl('deliveryMethod', this.deliveryField);
+
+    const deliveryMethod = data.deliveryMethods.find(a => data.order.deliveryMethod.name === a.name);
+    if (deliveryMethod) {
+      this.deliveryField.setValue(deliveryMethod.name);
+    } else {
+      this.deliveryField.reset();
+    }
+    // Addresses
+    this.addressField = this.formBuilder.control({});
+    this.form.addControl('address', this.addressField);
+
     this.deliveryForm.patchValue(data.order.deliveryMethod);
 
-    const deliveryField = this.formBuilder.control(data.deliveryMethods);
-    this.form.addControl('deliveryMethod', deliveryField);
-    if (data.order.deliveryMethod) {
-      deliveryField.setValue(data.order.deliveryMethod.name);
-    }
-    this.addSub(deliveryField.valueChanges.subscribe(a => this.updateDelivery(a, data)));
-
-    // Addresses
-    if (this.create && !empty(data.addresses) && data.addresses.length === 1) {
-      // Preselect first address in case there is a single
-      // one and the order is being created
-      data.order.deliveryAddress = data.addresses[0];
-    }
-
-    this.addressForm = this.addressHelper.addressFormGroup(data.addressConfiguration);
-    this.addressForm.patchValue(data.order.deliveryAddress);
-
-    const addressField = this.formBuilder.control(data.addresses);
-    this.form.addControl('address', addressField);
-    this.address = data.order.deliveryAddress;
-    const currentAddressId = this.resolveAddressId(this.address);
-    // Match current address by fields
-    addressField.setValue(
-      data.addresses.find(a => currentAddressId === this.resolveAddressId(a)) ?
-        currentAddressId : null,
-    );
-    this.addSub(addressField.valueChanges.subscribe(a => this.updateAddress(a, data)));
+    this.subscribeToDeliveryAndAddressFieldsChange(true, data);
+    this.updateDeliveryAddress(data, true);
 
     // Products
     const ads = (data as OrderDataForEdit).items || [];
@@ -137,12 +140,14 @@ export class SaleFormComponent
   /**
    * Change the address and updates the fields section
    */
-  protected updateAddress(id: string, data: OrderDataForNew | OrderDataForEdit) {
+  protected updateAddress(id: string) {
+    this.addressForm.reset();
     if (id == null) {
-      this.addressForm.reset();
       this.address = null;
     } else {
-      this.address = data.addresses.find(a => id === this.resolveAddressId(a));
+      this.address = this.addresses.find(a => id === this.resolveAddressId(a));
+    }
+    if (this.address) {
       this.addressForm.patchValue(this.address);
     }
   }
@@ -207,21 +212,67 @@ export class SaleFormComponent
       address.zip].join('');
   }
 
+  protected updateDeliveryAddress(data: OrderDataForNew | OrderDataForEdit, init = false) {
+    const deliveryMethod = data.deliveryMethods.find(a => this.form.controls.deliveryMethod.value === a.name);
+    const pickup = this.deliveryForm.controls.deliveryType.value === DeliveryMethodTypeEnum.PICKUP;
+    this.addressConfiguration = pickup ? data.sellerAddressConfiguration : data.addressConfiguration;
+    this.addresses = pickup ? data.sellerAddresses : data.addresses;
+
+    let address = null;
+    if (pickup) {
+      // When setup a custom pickup method preselect first seller address
+      address = deliveryMethod ? deliveryMethod.address : data.sellerAddresses.length > 0 ? data.sellerAddresses[0] : null;
+    } else if (init && data.order.deliveryAddress) {
+      address = data.order.deliveryAddress;
+    }
+
+    if (!this.addressForm || this.readOnly) {
+      this.addressForm = this.addressHelper.addressFormGroup(this.addressConfiguration, true);
+    }
+    this.addressForm.reset();
+    if (address != null) {
+      this.addressForm.patchValue(address);
+    }
+
+    this.address = address;
+    const currentAddressId = this.resolveAddressId(this.address);
+    // Match current address by fields
+    const existingAddress = this.addresses.find(a => currentAddressId === this.resolveAddressId(a));
+    this.addressField.reset();
+    if (existingAddress) {
+      this.addressField.setValue(currentAddressId);
+    }
+    this.readOnly = this.deliveryForm.controls.deliveryType.value === DeliveryMethodTypeEnum.PICKUP;
+  }
+
   /**
    * Changes the delivery method and updates the fields section
    */
   protected updateDelivery(name: string, data: OrderDataForNew | OrderDataForEdit) {
+    let deliveryMethod = null;
     if (name == null) {
-      this.deliveryForm.reset();
+      this.deliveryForm.reset({
+        deliveryType: DeliveryMethodTypeEnum.DELIVER
+      });
     } else {
-      const deliveryMethod = data.deliveryMethods.find(a => name === a.name);
+      deliveryMethod = data.deliveryMethods.find(a => name === a.name);
       this.deliveryForm.patchValue(this.deliveryMethod ? {
         name: deliveryMethod.name,
         price: deliveryMethod.chargeAmount || null,
         minTime: deliveryMethod.minDeliveryTime,
         maxTime: deliveryMethod.maxDeliveryTime,
+        deliveryType: deliveryMethod.deliveryType || DeliveryMethodTypeEnum.DELIVER
       } : null);
     }
+    this.deliveryMethod$.next(deliveryMethod);
+  }
+
+  get readOnly(): boolean {
+    return this.readOnly$.value;
+  }
+
+  set readOnly(readOnly: boolean) {
+    this.readOnly$.next(readOnly);
   }
 
   get address(): Address {
@@ -238,6 +289,20 @@ export class SaleFormComponent
     this.products$.next(value);
   }
 
+  get addresses(): Address[] {
+    return this.addresses$.value;
+  }
+  set addresses(value: Address[]) {
+    this.addresses$.next(value);
+  }
+
+  get addressConfiguration(): AddressConfiguration {
+    return this.addressConfiguration$.value;
+  }
+  set addressConfiguration(addressConfiguration: AddressConfiguration) {
+    this.addressConfiguration$.next(addressConfiguration);
+  }
+
   get deliveryMethod(): DeliveryMethod {
     return this.deliveryMethod$.value;
   }
@@ -251,9 +316,35 @@ export class SaleFormComponent
   }
 
   /**
+   * We use subscriptions to prevent values modification when validiting the forms before submit
+   */
+  subscribeToDeliveryAndAddressFieldsChange(subscribe: boolean, data?: OrderDataForNew | OrderDataForEdit) {
+    if (subscribe) {
+      this.deliveryFieldChangeSubscription = this.deliveryField.valueChanges.subscribe(a => this.updateDelivery(a, data));
+      this.deliveryTypeChangeSubscription =
+        this.deliveryForm.controls.deliveryType.valueChanges.subscribe(() => this.updateDeliveryAddress(data));
+      this.addressFieldChangeSubscription = this.addressField.valueChanges.subscribe(a => this.updateAddress(a));
+    } else if (!this.deliveryFieldChangeSubscription.closed && !this.deliveryTypeChangeSubscription.closed
+      && !this.addressFieldChangeSubscription.closed) {
+      this.deliveryFieldChangeSubscription.unsubscribe();
+      this.deliveryTypeChangeSubscription.unsubscribe();
+      this.addressFieldChangeSubscription.unsubscribe();
+    }
+  }
+
+  /**
    * Submits the order to buyer or saves it as draft based on the given flag
    */
   save(asDraft?: boolean) {
+    this.subscribeToDeliveryAndAddressFieldsChange(false);
+    const validForm = validateBeforeSubmit(this.form);
+    const validAddress = validateBeforeSubmit(this.addressForm);
+    const validDelivery = validateBeforeSubmit(this.deliveryForm);
+    this.subscribeToDeliveryAndAddressFieldsChange(true, this.data);
+    if (!(validForm && validAddress && validDelivery)) {
+      return;
+    }
+
     const order = this.data.order;
 
     // Initialize order items (as this.products already has the updated information)
@@ -282,13 +373,18 @@ export class SaleFormComponent
         this.orderService.updateOrder({ order: this.id, body: order }).subscribe(onFinish));
     };
     if (!asDraft) {
-      this.notification.confirm({
+      this.confirmation.confirm({
         message: this.i18n.ad.submitToBuyerConfirmation,
         callback: request
       });
     } else {
       request();
     }
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    this.subscribeToDeliveryAndAddressFieldsChange(false);
   }
 
   resolveStatusLabel() {

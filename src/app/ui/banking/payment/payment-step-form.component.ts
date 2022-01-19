@@ -3,18 +3,19 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnIn
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   AccountWithStatus, Currency, CustomFieldDetailed, DataForTransaction,
-  NotFoundError, TransactionTypeData, TransferType, User,
+  NotFoundError, TransactionTypeData, TransferType, User
 } from 'app/api/models';
 import { PaymentsService } from 'app/api/services/payments.service';
 import { PosService } from 'app/api/services/pos.service';
-import { BankingHelperService } from 'app/ui/core/banking-helper.service';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 import { ErrorStatus } from 'app/core/error-status';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
 import { blank, empty, focus } from 'app/shared/helper';
 import { UserFieldComponent } from 'app/shared/user-field.component';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BankingHelperService } from 'app/ui/core/banking-helper.service';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
 
 const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, ErrorStatus.NOT_FOUND];
@@ -50,6 +51,10 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
   toParam: string;
   toUser: User;
 
+  accountChangeSubscription: Subscription;
+  typeChangeSubscription: Subscription;
+  subjectChangeSubscription: Subscription;
+
   fetchedPaymentTypes: TransferType[];
   paymentTypes$ = new BehaviorSubject<TransferType[]>(null);
   private dataCache: Map<string, TransactionTypeData>;
@@ -60,7 +65,8 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     injector: Injector,
     public bankingHelper: BankingHelperService,
     private paymentsService: PaymentsService,
-    private posService: PosService) {
+    private posService: PosService,
+    private authHelper: AuthHelperService) {
     super(injector);
   }
 
@@ -79,26 +85,44 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     if (this.fixedDestination) {
       // When there's a fixed destination, the payment types are already present in the initial data
       this.setFetchedPaymentTypes(this.data);
-    } else {
-      // Whenever the subject changes, fetch the payment types, if needed
-      this.addSub(this.form.get('subject').valueChanges
-        .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
-        .subscribe(() => this.fetchPaymentTypes()),
-      );
     }
 
-    // Whenever the account changes, filter out the available types
-    this.addSub(this.form.get('account').valueChanges
-      .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
-      .subscribe(() => this.adjustPaymentTypes()),
-    );
-    // Whenever the payment type changes, fetch the payment type data for it
-    this.addSub(this.form.get('type').valueChanges
-      .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
-      .subscribe(type => this.fetchPaymentTypeData(type)));
+    this.createSubscriptions();
 
     this.addSub(this.layout.xxs$.subscribe(() => this.updateAccountBalanceLabel()));
     this.updateAccountBalanceLabel();
+
+    // When coming back from confirm payment (the type is set in the form)
+    // update the payment types control with the selected type
+    if (this.form.value?.type) {
+      this.setFetchedPaymentTypes(this.data);
+    }
+  }
+
+  public createSubscriptions() {
+    if (!this.fixedDestination) {
+      // Whenever the subject changes, fetch the payment types, if needed
+      this.subjectChangeSubscription = this.form.get('subject').valueChanges
+        .pipe(debounceTime(ApiHelper.DEBOUNCE_TIME), distinctUntilChanged((l1, l2) => ApiHelper.locatorEquals(l1, l2)))
+        .subscribe(() => this.fetchPaymentTypes());
+    }
+
+    // Whenever the account changes, filter out the available types
+    this.accountChangeSubscription = this.form.get('account').valueChanges
+      .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
+      .subscribe(() => this.adjustPaymentTypes());
+    // Whenever the payment type changes, fetch the payment type data for it
+    this.typeChangeSubscription = this.form.get('type').valueChanges
+      .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
+      .subscribe(type => this.fetchPaymentTypeData(type));
+  }
+
+  public removeSubscriptions() {
+    if (this.subjectChangeSubscription) {
+      this.subjectChangeSubscription.unsubscribe();
+    }
+    this.accountChangeSubscription.unsubscribe();
+    this.typeChangeSubscription.unsubscribe();
   }
 
   private updateAccountBalanceLabel() {
@@ -269,10 +293,6 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
       }
     }
     this.paymentTypeData$.next(typeData);
-  }
-
-  fieldSize(cf: CustomFieldDetailed) {
-    return this.fieldHelper.fieldSize(cf);
   }
 
   get fixedUsersList(): boolean {

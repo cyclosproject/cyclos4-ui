@@ -25,6 +25,7 @@ heading-actions {
 
   .heading-actions-plain-buttons {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     height: 100%;
 
@@ -213,21 +214,16 @@ notification-type-setting {
   width: 100%;
 
   button-toggle {
-    width: auto;
-    flex-grow: 0 !important;
-    margin-top: 0.5rem;
-    margin-right: 0.5rem;
+    margin-top: 0;
+    margin-right: 0;
+    margin-left: 0.5rem;
   }
 
-  @include media-breakpoint-up(sm) {
-    button-toggle {
-      margin-top: 0;
-      margin-right: 0;
-      margin-left: 0.5rem;
-    }
-    multi-selection-field,
-    single-selection-field {
-      width: 75% !important;
+  @for $b from 0 through 3 {
+    .has-buttons-#{$b} {
+      .form-field {
+        max-width: calc(100% - #{$b} * calc(#{$button-icon-width} + 0.5rem));
+      }
     }
   }
 }
@@ -327,7 +323,8 @@ body.dark profile-images {
 
 ///////////////////////////////////////////////////////////
 
-search-references {
+search-references,
+search-feedbacks {
   .bar {
     display: inline-block;
     background-color: #fdce7e;
@@ -353,4 +350,53 @@ view-profile {
       opacity: 0.30;
     }
   }
+}
+
+///////////////////////////////////////////////////////////
+
+receive-qr-payment {
+  spinner {
+    height: auto !important;
+    padding: 0 !important;
+    color: $accent !important;
+    transform: translateY(-0.2rem);
+  }
+}
+
+body.dark receive-qr-payment spinner {
+  color: $accent-dark !important;
+}
+
+///////////////////////////////////////////////////////////
+
+.operation-qr-code-scan {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  align-items: center;
+
+  .operation-qr-code-scan-button {
+    width: 4rem;
+    height: 4rem;
+
+    icon {
+      width: calc(100% - 1rem);
+      height: calc(100% - 1rem);
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .operation-qr-code-scan-label {
+    font-size: 1.1em;
+    color: $h2-color;
+    margin-top: 1rem;
+  }
+}
+
+body.dark .operation-qr-code-scan .operation-qr-code-scan-label {
+  color: $h2-color;
 }

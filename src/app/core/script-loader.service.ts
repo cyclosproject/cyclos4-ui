@@ -6,9 +6,11 @@ import { DOCUMENT } from '@angular/common';
  * Helper service that loads external scripts on demand
  * Based on https://gist.github.com/alexzuza/55f1c7567a0fede48403a5a791661bb7
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ScriptLoaderService {
-  _loadedLibraries: { [url: string]: ReplaySubject<any> } = {};
+  _loadedLibraries: { [url: string]: ReplaySubject<any>; } = {};
 
   constructor(@Inject(DOCUMENT) private readonly document: HTMLDocument) { }
 

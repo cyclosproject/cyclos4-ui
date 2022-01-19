@@ -2,14 +2,15 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnIn
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   AccountKind, CreateDeviceConfirmation, DeviceConfirmationTypeEnum,
-  PaymentPreview, PerformPayment, TransferFeePreview, User,
+  PaymentPreview, PerformPayment, TransferFeePreview, User
 } from 'app/api/models';
-import { BankingHelperService } from 'app/ui/core/banking-helper.service';
+import { AuthHelperService } from 'app/core/auth-helper.service';
+import { Enter } from 'app/core/shortcut.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { empty } from 'app/shared/helper';
-import { Enter } from 'app/core/shortcut.service';
+import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 
 /**
  * Payment step: confirm the payment
@@ -40,8 +41,10 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
 
   createDeviceConfirmation: () => CreateDeviceConfirmation | PerformPayment;
 
-  constructor(injector: Injector,
-    public bankingHelper: BankingHelperService) {
+  constructor(
+    injector: Injector,
+    public bankingHelper: BankingHelperService,
+    private authHelper: AuthHelperService) {
     super(injector);
   }
 

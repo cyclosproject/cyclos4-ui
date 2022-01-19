@@ -60,25 +60,12 @@
 
   </style>
   <meta charset="utf-8">
-  <base id="baseTag" href="/">
-  <script>
-    var href = window.location.pathname;
-    if (!href.endsWith('/')) {
-      href = href + '/';
-    }
-    var pos = href.indexOf('/ui/')
-    if (pos >= 0) {
-      document.getElementById('baseTag').href = href.substr(0, pos + ('/ui/'.length));
-    }
-  </script>
+  <meta id="themeColorMeta" name="theme-color" content="#0278ae">
+  <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta id="themeColorMeta" name="theme-color" content="">
-  <link rel="stylesheet" href="fonts/roboto.css">
-  <link rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body
+<body class="ui"
   onload="self.cyclosLoaded === true ? null : document.getElementById('rootSpinner').style.display = ''">
   <div id="rootSpinner">
     <svg viewBox="0 0 40 40" fill="currentColor">

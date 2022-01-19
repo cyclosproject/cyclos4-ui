@@ -7,7 +7,7 @@
   <page-content mode="filters" [heading]="i18n.account.userBalances.title"
     [mobileHeading]="i18n.account.userBalances.mobileTitle"
     [headingActions]="headingActions$ | async">
-    <form [formGroup]="form"
+    <div [formGroup]="form"
       class="filters-form filters-form-separator border-bottom">
       <div class="row filters-row">
         <div class="col-12 col-md-6">
@@ -20,19 +20,28 @@
             </field-option>
           </single-selection-field>
         </div>
+        <div class="col-12 col-md-6" *ngFor="let f of fieldsInBasicSearch">
+          <basic-profile-field-filter *ngIf="!(f.id)" labelPosition="side"
+            [field]="f"
+            [formControl]="form.get('profileFields').get(f.field)">
+          </basic-profile-field-filter>
+          <custom-field-filter *ngIf="f.id" labelPosition="side" [field]="f"
+            [formControl]="form.get('profileFields').get(f.internalName)">
+          </custom-field-filter>
+        </div>
         <ng-container *ngIf="(moreFilters$ | async)">
           <!-- Force a new line to keep range in same row -->
           <div class="w-100"></div>
           <div class="col-12 col-md-6">
             <decimal-field labelPosition="side" formControlName="minBalance"
               [label]="i18n.account.userBalances.minBalance" fieldSize="full"
-              [scale]="0" allowNegative>
+              [scale]="currencyDecimalDigits()" allowNegative>
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
             <decimal-field labelPosition="side" formControlName="maxBalance"
               [label]="i18n.account.userBalances.maxBalance" fieldSize="full"
-              [scale]="0" allowNegative>
+              [scale]="currencyDecimalDigits()" allowNegative>
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
@@ -50,11 +59,11 @@
             </decimal-field>
           </div>
           <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
-            <max-distance-field labelPosition="side"
+            <distance-selection-field labelPosition="side"
               [data]="data.searchByDistanceData"
               formControlName="distanceFilter"
               [label]="i18n.general.distanceFilter">
-            </max-distance-field>
+            </distance-selection-field>
           </div>
           <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
             <multi-selection-field labelPosition="side"
@@ -178,20 +187,19 @@
               [filters]="userSearchFilters()">
             </user-field>
           </div>
-          <div class="col-12 col-md-6" *ngFor="let f of data.basicFields">
-            <basic-profile-field-filter labelPosition="side" [field]="f"
+          <div class="col-12 col-md-6"
+            *ngFor="let f of fieldsInAdvancedSearch">
+            <basic-profile-field-filter *ngIf="!(f.id)" labelPosition="side"
+              [field]="f"
               [formControl]="form.get('profileFields').get(f.field)">
             </basic-profile-field-filter>
-          </div>
-          <div class="col-12 col-md-6"
-            *ngFor="let cf of customFieldsInSearch">
-            <custom-field-filter labelPosition="side" [field]="cf"
-              [formControl]="form.get('profileFields').get(cf.internalName)">
+            <custom-field-filter *ngIf="f.id" labelPosition="side" [field]="f"
+              [formControl]="form.get('profileFields').get(f.internalName)">
             </custom-field-filter>
           </div>
         </ng-container>
       </div>
-    </form>
+    </div>
     <div class="row filters-row">
       <div class="col-12 col-md-9 col-xs-5">
         <result-type-field [allowedResultTypes]="allowedResultTypes$ | async"

@@ -28,7 +28,13 @@ export class NextRequestState {
   /**
    * Flag to disable default error handling on next request
    */
-  ignoreNextError: boolean;
+  private _ignoreNextError: boolean;
+  get ignoreNextError(): boolean {
+    return this._ignoreNextError;
+  }
+  set ignoreNextError(flag: boolean) {
+    this._ignoreNextError = flag;
+  }
 
   /**
    * Flag to not close notification on next request
@@ -47,6 +53,7 @@ export class NextRequestState {
 
   private pending$ = new BehaviorSubject<HttpRequest<any>[]>([]);
   private nextAuth: string;
+  private nextHeaders: { [key: string]: string; };
 
   constructor(
     private authService: AuthService) {
@@ -87,6 +94,13 @@ export class NextRequestState {
           headers[key] = toApply[key];
         }
       }
+    }
+
+    if (this.nextHeaders) {
+      for (const key of Object.keys(this.nextHeaders)) {
+        headers[key] = this.nextHeaders[key];
+      }
+      this.nextHeaders = null;
     }
     // Clear the nextAuth flag, so the next request is normal
     this.nextAuth = null;
@@ -152,6 +166,17 @@ export class NextRequestState {
     this.nextAuth = 'GUEST';
   }
 
+  addNextHeader(header: string, value: string): void {
+    if (!this.nextHeaders) {
+      this.nextHeaders = {};
+    }
+    this.nextHeaders[header] = value;
+  }
+
+  setNextHeaders(headers: { [key: string]: string; }): void {
+    this.nextHeaders = headers;
+  }
+
   /**
    * Sets the value of the session token
    */
@@ -215,8 +240,8 @@ export class NextRequestState {
   /**
    * Returns headers for requests using the current session
    */
-  get headers(): { [key: string]: string } {
-    const result: { [key: string]: string } = {};
+  get headers(): { [key: string]: string; } {
+    const result: { [key: string]: string; } = {};
     const token = localStorage.getItem(SessionToken);
     if (!empty(token)) {
       result[SessionToken] = token;

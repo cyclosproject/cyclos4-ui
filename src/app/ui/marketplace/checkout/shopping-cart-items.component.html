@@ -21,11 +21,13 @@
           </div>
         </div>
         <div *ngIf="detailed" class="ml-auto text-right d-flex flex-column">
-          <button [tooltip]="i18n.ad.changeQuantity" class="btn btn-icon"
+          <button type="button" [tooltip]="i18n.ad.changeQuantity"
+            class="btn btn-icon"
             (click)="changeQuantity.emit([null, row, false]); $event.stopPropagation(); $event.preventDefault()">
             <icon [icon]="SvgIcon.Pencil"></icon>
           </button>
-          <button [tooltip]="i18n.general.remove" class="btn btn-icon mt-2"
+          <button type="button" [tooltip]="i18n.general.remove"
+            class="btn btn-icon mt-2"
             (click)="remove.emit(row); $event.stopPropagation(); $event.preventDefault()">
             <icon [icon]="SvgIcon.Trash"></icon>
           </button>
@@ -65,13 +67,14 @@
         <td [ngClass]="{'border-bottom-0': last}">
           {{ row.product.productNumber }}</td>
         <td [ngClass]="{'border-bottom-0': last}">
-          <form *ngIf="useForm(layout.gtsm$ | async)" [formGroup]="form">
+          <ng-container *ngIf="useForm(layout.gtsm$ | async)"
+            [formGroup]="form">
             <decimal-field *ngIf="isAvailable(row)" [formControlName]="row.id"
               [minRange]="minItemsRange(row)" [maxRange]="maxItemsRange(row)"
               [customValueLabel]="i18n.ad.customQuantity"
               [scale]="row.product.allowDecimalQuantity ? 2 : 0">
             </decimal-field>
-          </form>
+          </ng-container>
           <ng-container *ngIf="!useForm(layout.gtsm$ | async)">
             {{ resolveQuantityLabel(row) }}
           </ng-container>
@@ -83,12 +86,14 @@
           {{ row.totalPrice | currency: currency }}</td>
         <td *ngIf="detailed" class="actions actions-multiple"
           [ngClass]="{'border-bottom-0': last}">
-          <button *ngIf="!useForm(layout.gtsm$ | async) && isAvailable(row)"
+          <button type="button"
+            *ngIf="!useForm(layout.gtsm$ | async) && isAvailable(row)"
             [tooltip]="i18n.ad.changeQuantity" class="btn btn-icon"
             (click)="changeQuantity.emit([null, row, false]); $event.stopPropagation()">
             <icon [icon]="SvgIcon.Pencil"></icon>
           </button>
-          <button [tooltip]="i18n.general.remove" class="btn btn-icon"
+          <button type="button" [tooltip]="i18n.general.remove"
+            class="btn btn-icon"
             [ngClass]="{'ml-3' : !useForm(layout.gtsm$ | async) && isAvailable(row)}"
             (click)="remove.emit(row); $event.stopPropagation()">
             <icon [icon]="SvgIcon.Trash"></icon>

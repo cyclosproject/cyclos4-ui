@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { I18n } from 'app/i18n/i18n';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 
 /**
  * Shows errors in a field.
@@ -16,7 +16,7 @@ import { I18n } from 'app/i18n/i18n';
 export class FieldErrorsComponent {
   @Input() control: FormControl;
 
-  constructor(private i18n: I18n) {
+  constructor(@Inject(I18nInjectionToken) private i18n: I18n) {
   }
 
   get message(): string {
@@ -44,6 +44,8 @@ export class FieldErrorsComponent {
       return this.i18n.error.field.required;
     } else if (errors.passwordsMatch) {
       return this.i18n.error.field.passwordsMatch;
+    } else if (errors.invalidValuePattern) {
+      return this.i18n.error.field.invalidValuePattern;
     } else {
       return this.i18n.error.field.invalid;
     }

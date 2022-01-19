@@ -1,14 +1,14 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [heading]="i18n.brokers.title.new"
-      [mobileHeading]="i18n.brokers.mobileTitle.new">
-      <form [formGroup]="form">
+    <page-content [heading]="i18n.brokers.title['new']"
+      [mobileHeading]="i18n.brokers.mobileTitle['new']">
+      <ng-container [formGroup]="form">
         <user-field [filters]="userQuery" [allowContacts]="false"
           formControlName="broker" [label]="i18n.brokers.broker">
         </user-field>
         <boolean-field *ngIf="data.brokers" [label]="i18n.brokers.mainBroker"
           formControlName="mainBroker"></boolean-field>
-      </form>
+      </ng-container>
       <actions>
         <action-button (action)="save()" [disabled]="requesting$ | async"
           [label]="i18n.general.save">

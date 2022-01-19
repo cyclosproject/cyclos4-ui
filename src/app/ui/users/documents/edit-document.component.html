@@ -1,35 +1,52 @@
 <page-layout [ready]="data$ | async">
   <page-content
-    [heading]="create ? i18n.document.title.new : i18n.document.title.edit"
-    [mobileHeading]="create ? i18n.document.mobileTitle.new : i18n.document.mobileTitle.edit">
+    [heading]="create ? i18n.document.title['new'] : i18n.document.title.edit"
+    [mobileHeading]="create ? i18n.document.mobileTitle['new']: i18n.document.mobileTitle.edit">
     <ng-container *ngIf="data" [formGroup]="form">
-      <label-value [label]="i18n.general.user" kind="fieldView"
-        labelPosition="side">
+      <label-value *ngIf="data.user" [label]="i18n.general.user"
+        kind="fieldView" labelPosition="side">
         <user-link [user]="data.user"></user-link>
       </label-value>
       <input-field fieldSize="full" required formControlName="name"
         [label]="i18n.general.name">
       </input-field>
+      <input-field *ngIf="data.kind !== DocumentKind.USER" fieldSize="full"
+        formControlName="internalName" [label]="i18n.general.internalName">
+      </input-field>
       <textarea-field formControlName="description"
         [label]="i18n.general.description">
       </textarea-field>
+      <single-selection-field *ngIf="data.kind != DocumentKind.USER" required
+        formControlName="category" [label]="i18n.general.category">
+        <field-option *ngFor="let c of data.categories" [value]="c.id"
+          [internalName]="c.internalName" [text]="c.name"></field-option>
+      </single-selection-field>
       <boolean-field formControlName="enabled" [label]="i18n.document.enable">
       </boolean-field>
-      <boolean-field formControlName="userVisible"
-        [label]="i18n.document.userVisible">
+      <boolean-field *ngIf="data.kind === DocumentKind.STATIC"
+        formControlName="publiclyAccessible"
+        [label]="i18n.document.publiclyAccessible">
       </boolean-field>
-      <boolean-field #brokerVisible formControlName="brokerVisible"
-        [label]="i18n.document.brokerVisible">
+      <label-value *ngIf="downloadUrl$ | async"
+        [label]="i18n.general.downloadUrl">
+        {{ downloadUrl }}
+      </label-value>
+      <boolean-field *ngIf="data.kind === DocumentKind.USER"
+        formControlName="userVisible" [label]="i18n.document.userVisible">
       </boolean-field>
-      <boolean-field *ngIf="brokerVisible.value"
+      <boolean-field *ngIf="data.kind === DocumentKind.USER"
+        formControlName="brokerVisible" [label]="i18n.document.brokerVisible">
+      </boolean-field>
+      <boolean-field *ngIf="form.controls.brokerVisible.value"
         formControlName="brokerManageable"
         [label]="i18n.document.brokerManageable">
       </boolean-field>
       <label-value *ngIf="!create && (fileName$ | async)"
-        [label]="i18n.document.document">
+        [label]="i18n.document.document" kind="field">
         <div>
           <span> {{ fileName$ | async }} </span>
-          <button [tooltip]="i18n.general.download" class="btn btn-icon ml-2"
+          <button type="button" [tooltip]="i18n.general.download"
+            class="btn btn-icon ml-2"
             (click)="download(); $event.stopPropagation()">
             <icon [icon]="SvgIcon.Download"></icon>
           </button>

@@ -7,7 +7,7 @@
   <page-content mode="filters" [heading]="title"
     [mobileHeading]="(layout.xxs$ | async) ? i18n.account.mobileTitle.account : title"
     [headingActions]="headingActions$ | async">
-    <form *ngIf="showForm$ | async" [formGroup]="form" class="filters-form"
+    <div *ngIf="showForm$ | async" [formGroup]="form" class="filters-form"
       [ngClass]="{ 'border-0': noStatus$ | async }">
       <div class="row">
         <ng-container *ngIf="data.account.user && !self">
@@ -75,8 +75,9 @@
               [scale]="currency.decimalDigits">
             </decimal-field>
           </div>
-          <div class="col-12 col-md-6">
-            <input-field type="text" [label]="i18n.general.description"
+          <div *ngIf="data.showDescriptionInFilters" class="col-12 col-md-6">
+            <input-field type="text" labelPosition="side"
+              [label]="i18n.general.description"
               formControlName="description">
             </input-field>
           </div>
@@ -132,6 +133,23 @@
               </field-option>
             </single-selection-field>
           </div>
+          <div *ngFor="let flow of data.transferStatusFlows"
+            class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              [formControl]="statusForm.get(flow.id)" [label]="flow.name"
+              [emptyOption]="i18n.general.notApplied">
+              <field-option *ngFor="let status of flow.statuses"
+                [value]="status.id" [text]="status.name"
+                [internalName]="status.internalName" [id]="status.id">
+              </field-option>
+            </single-selection-field>
+          </div>
+          <div class="col-12 col-md-6"
+            *ngFor="let f of data.customFieldsInSearch">
+            <custom-field-filter labelPosition="side" [field]="f"
+              [formControl]="form.get('customFields').get(f.internalName)">
+            </custom-field-filter>
+          </div>
           <div class="col-12 col-md-6">
             <single-selection-field labelPosition="side"
               formControlName="orderBy" [label]="i18n.general.orderBy">
@@ -147,7 +165,7 @@
           </div>
         </ng-container>
       </div>
-    </form>
+    </div>
 
     <!-- Account status -->
     <ng-container *ngIf="(noStatus$ | async) === false">
@@ -179,8 +197,14 @@
         <th class="avatar"></th>
         <th>{{ i18n.general.date }}</th>
         <th>{{ i18n.transaction.fromTo }}</th>
-        <th *ngIf="layout.gtsm$ | async" width="30%">{{
-            i18n.general.description }}</th>
+        <th *ngIf="data.showDescriptionInList && (layout.gtsm$ | async)"
+          width="40%">
+          {{ i18n.general.description }}</th>
+        <th *ngIf="data.transferStatusFlows?.length > 0">
+          {{ i18n.transaction.transferStatus }}</th>
+        <th *ngFor="let field of data.customFieldsInList">
+          {{ field.name }}
+        </th>
         <th class="amount">{{ i18n.transaction.amount }}</th>
       </thead>
       <tbody>
@@ -200,11 +224,19 @@
                 {{ subjectName(row) }}
               </a>
             </td>
-            <td *ngIf="layout.gtsm$ | async">
-              <a *ngIf="row.description" class="d-inline-block"
-                [routerLink]="path(row)">
-                {{ row.description }}
+            <td *ngIf="data.showDescriptionInList && (layout.gtsm$ | async)">
+              <a *ngIf="row.description" [routerLink]="path(row)">
+                {{ truncate(row.description, 100) }}
               </a>
+            </td>
+            <td *ngIf="data.transferStatusFlows?.length > 0">
+              {{ statuses(row) }}
+            </td>
+            <td *ngFor="let field of data.customFieldsInList">
+              <format-field-value [fields]="data.customFieldsInList"
+                [plainText]="true" [fieldName]="field.internalName"
+                [object]="row">
+              </format-field-value>
             </td>
             <td class="amount">
               <a [routerLink]="path(row)" [ngClass]="{

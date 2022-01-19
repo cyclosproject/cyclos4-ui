@@ -4,15 +4,15 @@
     [headingActions]="headingActions$ | async">
     <div *ngIf="data.image && (layout.ltsm$ | async)"
       class="d-flex justify-content-center mt-2 mb-4">
-      <avatar [roundBorders]="false" [zoom]="false" size="140" useLightbox
-        [image]="data.image"></avatar>
+      <avatar-lightbox [roundBorders]="false" [zoom]="false" size="140"
+        [image]="data.image"></avatar-lightbox>
     </div>
 
     <div class="d-flex flex-row-reverse">
       <div *ngIf="data.image && (layout.gtxs$ | async)" class="image ml-4">
-        <avatar [roundBorders]="false" [zoom]="false" size="140" useLightbox
+        <avatar-lightbox [roundBorders]="false" [zoom]="false" size="140"
           [image]="data.image">
-        </avatar>
+        </avatar-lightbox>
       </div>
       <div class="d-flex flex-grow-1 flex-column">
         <label-value [label]="i18n.ad.order">
@@ -74,7 +74,7 @@
             {{ i18n.ad.deliveryMethod + ': ' + resolveDeliveryLabel() }}
           </td>
           <td class="text-right">
-            {{ data.deliveryPrice | currency:data.currency }}</td>
+            {{ data.deliveryMethod.price | currency:data.currency }}</td>
         </tr>
         <tr class="totalAmount no-hover">
           <td class="border-bottom-0 label label-value-label"
@@ -86,16 +86,16 @@
       </tbody>
     </table>
     <h2 class="mb-2">{{ i18n.ad.deliveryInformation }}</h2>
-    <label-value *ngIf="data.minDeliveryTime"
+    <label-value *ngIf="data.deliveryMethod.minTime"
       [label]="i18n.ad.minDeliveryTime">
-      {{  format.formatTimeInterval(data.minDeliveryTime) }}
+      {{ format.formatTimeInterval(data.deliveryMethod.minTime) }}
     </label-value>
-    <label-value *ngIf="data.maxDeliveryTime"
+    <label-value *ngIf="data.deliveryMethod.maxTime"
       [label]="i18n.ad.maxDeliveryTime">
-      {{ format.formatTimeInterval(data.maxDeliveryTime) }}
+      {{ format.formatTimeInterval(data.deliveryMethod.maxTime) }}
     </label-value>
-    <label-value *ngIf="data.deliveryPrice" [label]="i18n.ad.price">
-      {{ data.deliveryPrice |currency: data.currency }}
+    <label-value *ngIf="data.deliveryMethod.price" [label]="i18n.ad.price">
+      {{ data.deliveryMethod.price |currency: data.currency }}
     </label-value>
     <label-value *ngIf="hasAddressFields" [label]="i18n.ad.deliveryAddress"
       class="align-items-baseline">
@@ -104,9 +104,9 @@
     <h2 *ngIf="remarks || canSetRemarks" class="mb-2">{{ i18n.ad.remarks }}
     </h2>
     <label class="any-label-value" *ngIf="remarks">{{ remarks }}</label>
-    <form *ngIf="canSetRemarks" [ngClass]="{'mt-4': remarks}"
+    <div *ngIf="canSetRemarks" [ngClass]="{'mt-4': remarks}"
       [formGroup]="form">
       <textarea-field formControlName="remarks"></textarea-field>
-    </form>
+    </div>
   </page-content>
 </page-layout>

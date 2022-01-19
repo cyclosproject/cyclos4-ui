@@ -1,4 +1,5 @@
-<label-value *ngIf="label; else widget" [formField]="self">
+<label-value *ngIf="label; else widget" [formField]="self"
+  [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
@@ -7,7 +8,7 @@
     (change)="filesSelected(inputField.files)" [accept]="accept"
     [multiple]="maxFiles > 1">
   <div class="d-flex flex-wrap">
-    <button *ngIf="!disabled"
+    <button type="button" *ngIf="!disabled"
       class="btn btn-icon d-flex align-content-center flex-grow-0 mr-3"
       [tooltip]="i18n.field.file.upload" (click)="inputField.click()">
       <icon [icon]="SvgIcon.Upload"></icon>

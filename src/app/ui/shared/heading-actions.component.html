@@ -4,7 +4,7 @@
     *ngIf="(groupActions$ | async); else rootActions" dropdown
     placement="bottom right" #dropdown="bs-dropdown"
     (onShown)="onShown(dropdown)" (onHidden)="onHidden()">
-    <button dropdownToggle id="heading-action-toggle"
+    <button type="button" dropdownToggle id="heading-action-toggle"
       class="heading-action heading-action-dropdown" [ngClass]="{
           'dropdown-toggle': layout.gtxxs$ | async
         }" (click)="blurIfClick('heading-action-toggle', $event)">
@@ -37,7 +37,7 @@
     *ngIf="(groupActions$ | async) || (layout.ltsm$ | async); else plainButtons"
     class="d-flex heading-actions">
     <button #actionButton *ngFor="let action of visibleActions$.value"
-      class="heading-action heading-action-with-icon d-flex"
+      type="button" class="heading-action heading-action-with-icon d-flex"
       (click)="action.onClick($event, actionButton)">
       <icon size="1.3rem" [icon]="action.icon"></icon>
       <div class="action-label">{{ action.label }}</div>
@@ -46,7 +46,7 @@
 </ng-template>
 <ng-template #plainButtons>
   <!-- Show separated buttons -->
-  <div class="d-flex heading-actions-plain-buttons">
+  <div class="heading-actions-plain-buttons">
     <heading-action-button *ngFor="let action of visibleActions$.value"
       [action]="action"></heading-action-button>
   </div>

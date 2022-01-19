@@ -2,7 +2,7 @@
   <ng-container *ngIf="data">
     <page-content mode="filters" [heading]="i18n.connectedUser.title"
       [mobileHeading]="i18n.connectedUser.mobileTitle">
-      <form [formGroup]="form" class="filters-form filters-form-separator">
+      <div [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row">
           <div *ngIf="data.channels?.length > 1" class="col-12 col-md-6">
             <multi-selection-field labelPosition="side"
@@ -27,7 +27,7 @@
               [label]="i18n.general.user"></user-field>
           </div>
         </div>
-      </form>
+      </div>
     </page-content>
 
     <results-layout resultType="list" [results]="results$ | async"
@@ -48,9 +48,10 @@
             </div>
           </div>
           <div class="ml-auto">
-            <button *ngIf="canDisconnect(row)" class="btn btn-icon"
+            <button *ngIf="canDisconnect(row)" type="button"
+              class="btn btn-icon"
               (click)="disconnect(row); $event.stopPropagation(); $event.preventDefault()">
-              <icon [icon]="SvgIcon.BoxArrowRight"></icon>
+              <icon [icon]="SvgIcon.Logout2"></icon>
             </button>
           </div>
         </div>
@@ -80,11 +81,11 @@
               <td>{{ row.creationDate | dateTime }}</td>
               <td>{{ row.remoteAddress }}</td>
               <td class="actions">
-                <button *ngIf="canDisconnect(row)"
+                <button *ngIf="canDisconnect(row)" type="button"
                   [tooltip]="i18n.connectedUser.disconnect"
                   class="btn btn-icon"
                   (click)="disconnect(row); $event.stopPropagation()">
-                  <icon [icon]="SvgIcon.BoxArrowRight"></icon>
+                  <icon [icon]="SvgIcon.Logout2"></icon>
                 </button>
               </td>
             </tr>

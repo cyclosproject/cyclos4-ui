@@ -1,0 +1,30 @@
+<page-content [heading]="i18n.dashboard.accounts" hideBack>
+  <div class="row no-gutters flex-grow-1">
+    <ng-container *ngFor="let account of accounts; let i = index">
+      <div class="mt-1 col-12" *ngIf="lineBreak(i)"></div>
+      <div class="col" [ngClass]="cellClass(i)">
+        <div class="balance">
+          <div class="balance-label">
+            <a href="#" class="account-name" (click)="menu.navigate({
+                entry: this.menu.accountEntry(account.account.type),
+                clear: false,
+                event: $event
+              })" [tooltip]="account.account.type.name">
+              {{ account.account.type.name }}
+            </a>
+          </div>
+          <div class="balance-value" *ngIf="account.account.status" [ngClass]="{
+            negative: format.isNegative(account.account.status.balance),
+            positive: format.isPositive(account.account.status.balance)
+            }">
+            {{ account.account.status.balance |
+            currency:account.account.currency }}
+          </div>
+        </div>
+        <div class="px-3">
+          <balance-history-graph [account]="account"></balance-history-graph>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</page-content>

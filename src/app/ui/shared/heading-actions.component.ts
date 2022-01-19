@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { HeadingAction } from 'app/shared/action';
 import { BaseComponent } from 'app/shared/base.component';
-import { blurIfClick } from 'app/shared/helper';
+import { blurIfClick, truthyAttr } from 'app/shared/helper';
 import { ActionsRight, Escape } from 'app/core/shortcut.service';
-import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 import { HeadingSubActionsComponent } from 'app/ui/shared/heading-sub-actions.component';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -26,6 +25,14 @@ export class HeadingActionsComponent extends BaseComponent implements OnInit {
 
   visibleActions$ = new BehaviorSubject<HeadingAction[]>([]);
 
+  private _root: boolean | string = false;
+  @Input() get root(): boolean | string {
+    return this._root;
+  }
+  set root(flag: boolean | string) {
+    this._root = truthyAttr(flag);
+  }
+
   private _actions: HeadingAction[] = [];
   @Input() get headingActions(): HeadingAction[] {
     return this._actions;
@@ -35,20 +42,19 @@ export class HeadingActionsComponent extends BaseComponent implements OnInit {
     this.updateVisible();
   }
 
+  @Output() visibleActions = new EventEmitter<HeadingAction[]>();
+
   groupActions$ = new BehaviorSubject(false);
   shortcutsSub: Subscription;
 
   constructor(
     injector: Injector,
-    private modal: BsModalService,
-    private uiLayout: UiLayoutService) {
+    private modal: BsModalService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
-
-    this.uiLayout.headingActions = this.headingActions;
 
     this.addSub(this.shortcut.subscribe(ActionsRight, () => {
       if (this.layout.gtxs) {
@@ -71,19 +77,47 @@ export class HeadingActionsComponent extends BaseComponent implements OnInit {
     }));
 
     // Update the visible actions when conditions change
-    const update = () => this.updateVisible();
-    this.addSub(this.layout.breakpointChanges$.subscribe(update));
-    update();
+    this.addSub(this.layout.breakpointChanges$.subscribe(() => this.updateVisible()));
+    this.updateVisible();
   }
 
   private updateVisible() {
     const activeBreakpoints = this.layout.activeBreakpoints;
-    const actions = (this.headingActions || [])
+    let actions = (this.headingActions || [])
       .filter(action => action.showOn(activeBreakpoints));
+    const hasRoot = actions.findIndex(a => a.maybeRoot) >= 0;
+    if (activeBreakpoints.has('gt-xs')) {
+      if (this.root) {
+        // This is the root heading actions
+        if (hasRoot) {
+          // There are root actions: show only those that can actually be root
+          actions = actions.filter(a => a.maybeRoot);
+        } else {
+          // No root actions. Still, if less than 3, they will be shown in the title
+          if (actions.length >= 3) {
+            actions = [];
+          }
+        }
+      } else {
+        // This is the heading actions in a toolbar
+        if (hasRoot) {
+          // There is at least one root action: show in the toolbar only the non-root
+          actions = actions.filter(a => !a.maybeRoot);
+        } else {
+          // No root actions. Still, if less than 3, they will be shown in the root
+          if (actions.length <= 3) {
+            actions = [];
+          }
+        }
+      }
+    }
     this.visibleActions$.next(actions);
 
+    // Emit the output property change
+    this.visibleActions.emit(actions);
+
     // Only group actions on mobile
-    const groupActions = activeBreakpoints.has('lt-sm') && actions.length > 0 && actions.findIndex(a => !a.maybeRoot) >= 0;
+    const groupActions = activeBreakpoints.has('lt-sm') && actions.length > 0;
     this.groupActions$.next(groupActions);
   }
 

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnIn
 import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ChangePassword, PasswordType, User } from 'app/api/models';
 import { PasswordsService } from 'app/api/services/passwords.service';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalRef } from 'ngx-bootstrap/modal';
@@ -43,7 +44,8 @@ export class ChangePasswordDialogComponent extends BaseComponent implements OnIn
   constructor(
     injector: Injector,
     public modalRef: BsModalRef,
-    private passwordsService: PasswordsService) {
+    private passwordsService: PasswordsService,
+    private authHelper: AuthHelperService) {
     super(injector);
   }
 

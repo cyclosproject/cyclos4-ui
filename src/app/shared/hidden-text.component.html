@@ -1,0 +1,5 @@
+<div class="hidden-text-label">{{ display$ | async }}</div>
+<a class="plain hidden-text-icon" href="#"
+  (click)="toggle(); $event.preventDefault()">
+  <icon [icon]="(hidden$ | async) ? SvgIcon.Eye : SvgIcon.EyeSlash"></icon>
+</a>

@@ -62,6 +62,10 @@ table.table {
     padding-right: 0.9rem;
     text-align: right;
   }
+  td.amount {
+    white-space: nowrap;
+  }
+
   td.avatar {
     padding-left: 0.9rem;
     padding-right: 0.1rem;
@@ -102,6 +106,13 @@ table.table {
   border-top-style: solid;
 }
 
+table.compact-height {
+  td, th {
+    height: calc(#{$input-height}) !important;
+    padding: 0.2rem !important;
+  }
+}
+
 @include media-breakpoint-up(md) {
   table.table {
     th {
@@ -135,6 +146,7 @@ table.table {
     }
   }
 }
+
 
 .paginator-container {
   border: none !important;

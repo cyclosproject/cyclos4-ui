@@ -1,0 +1,19 @@
+<ng-container *ngIf="!self">
+  <user-info [user]="data.user"></user-info>
+  <hr>
+</ng-container>
+<div class="d-flex flex-grow-1">
+  <div class="flex-grow-1">
+    <label-value kind="field" [label]="i18n.voucher.token">
+      <input-field #inputField type="text" focused [mask]="data.mask"
+        [formControl]="token" [placeholder]="data.mask"
+        (keyup.enter)="maybeSubmit()">
+      </input-field>
+      <button type="button" *extraCell class="btn btn-icon" #scanQrCodeButton
+        [tooltip]="i18n.field.user.scanQrCodeTooltip"
+        (click)="showScanQrCode()">
+        <icon [icon]="SvgIcon.QrCodeScan"></icon>
+      </button>
+    </label-value>
+  </div>
+</div>

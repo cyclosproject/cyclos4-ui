@@ -4,9 +4,9 @@
   <div class="row">
     <div class="col-12 col-sm-4">
       <div class="d-flex justify-content-center justify-content-sm-start">
-        <avatar *ngIf="image$ | async; else noImage" [image]="image"
-          size="huge" useLightbox>
-        </avatar>
+        <avatar-lightbox *ngIf="image$ | async; else noImage" [image]="image"
+          size="huge">
+        </avatar-lightbox>
         <ng-template #noImage>
           {{ i18n.user.noImage }}
         </ng-template>
@@ -54,19 +54,42 @@
 </ng-container>
 
 <!-- Custom profile fields -->
-<ng-container *ngFor="let cf of data.customFields"
+<ng-container *ngFor="let cf of fieldsWithoutSection"
   [formGroup]="form.get('customValues')">
   <label-value *ngIf="canEdit(cf)" [label]="cf.name" kind="field"
     [ignoreExtraCell]="!canManagePrivacy(cf)" [fieldSize]="cf.size"
-    [required]="cf.required">
+    [required]="cf.required" [informationText]="cf.informationText">
     <custom-field-input [field]="cf" hideLabel
-      [formControlName]="cf.internalName"
+      [formControlName]="cf.internalName" hideInformationText
       (imagesUploaded)="customImagesUploaded.emit($event)"
       (filesUploaded)="customFilesUploaded.emit($event)">
     </custom-field-input>
     <field-privacy *extraCell [field]="cf.internalName"
       [control]="form.get('hiddenFields')"></field-privacy>
   </label-value>
+</ng-container>
+<ng-container *ngFor="let key of fieldsWithSection.keys()">
+  <h2>{{ key.name }}</h2>
+  <div class="mb-3" *ngIf="key.informationText">
+    {{ key.informationText }}</div>
+  <ng-container *ngFor="let cf of fieldsWithSection.get(key)"
+    [formGroup]="form.get('customValues')">
+    <label-value *ngIf="canEdit(cf)" [label]="cf.name" kind="field"
+      [ignoreExtraCell]="!canManagePrivacy(cf)" [fieldSize]="cf.size"
+      [required]="cf.required" [informationText]="cf.informationText">
+      <custom-field-input [field]="cf" hideLabel
+        [formControlName]="cf.internalName" hideInformationText
+        (imagesUploaded)="customImagesUploaded.emit($event)"
+        (filesUploaded)="customFilesUploaded.emit($event)">
+      </custom-field-input>
+      <field-privacy *extraCell [field]="cf.internalName"
+        [control]="form.get('hiddenFields')"></field-privacy>
+    </label-value>
+  </ng-container>
+
+  <!-- Add a separator for next sections -->
+  <hr
+    *ngIf="mobileAvailability !== 'disabled' || landLineAvailability !== 'disabled' || addressAvailability !== 'disabled'" />
 </ng-container>
 
 <!-- Mobile phone -->

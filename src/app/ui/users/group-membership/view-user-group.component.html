@@ -11,9 +11,9 @@
 
     <ng-container *ngIf="editable">
       <hr>
-      <form [formGroup]="form">
+      <ng-container [formGroup]="form">
         <single-selection-field formControlName="group"
-          [label]="i18n.groupMembership.new" [required]="!allowEmptyGroup"
+          [label]="i18n.groupMembership['new']" [required]="!allowEmptyGroup"
           [emptyOption]="allowEmptyGroup ? i18n.user.operatorNoGroup : null">
           <field-option *ngFor="let group of data.possibleNewGroups"
             [value]="ApiHelper.internalNameOrId(group)" [id]="group.id"
@@ -22,7 +22,7 @@
         </single-selection-field>
         <textarea-field formControlName="comment"
           [label]="i18n.general.comments"></textarea-field>
-      </form>
+      </ng-container>
       <actions>
         <action-button (action)="save()" [label]="i18n.general.submit">
         </action-button>

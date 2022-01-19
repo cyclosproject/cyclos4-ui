@@ -11,16 +11,16 @@
 
     <ng-container *ngIf="editable">
       <hr>
-      <form [formGroup]="form">
+      <ng-container [formGroup]="form">
         <single-selection-field formControlName="status"
-          [label]="i18n.userStatus.new" required>
+          [label]="i18n.userStatus['new']" required>
           <field-option *ngFor="let status of data.possibleNewStatuses"
             [value]="status" [text]="userHelper.userStatus(status)">
           </field-option>
         </single-selection-field>
         <textarea-field formControlName="comment"
           [label]="i18n.general.comments"></textarea-field>
-      </form>
+      </ng-container>
       <actions>
         <action-button (action)="save()" [label]="i18n.general.submit">
         </action-button>

@@ -107,6 +107,25 @@ h4, h5, h6 {
   margin-bottom: 0.2rem;
 }
 
+@include media-breakpoint-down(xs) {
+  h1, h2, h3 {
+    &.header-root {
+      margin-left: 0;
+    }
+  }
+
+  h1.header-root {
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-bottom-style: none;
+    margin: 1em 0;
+  }
+}
+
+h1.header-root {
+  padding-top: 1em;
+}
+
 body.dark {
   h1, h2, h3 {
     border-color: $border-color-dark;

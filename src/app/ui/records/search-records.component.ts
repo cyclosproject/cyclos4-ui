@@ -3,9 +3,10 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import {
   BaseRecordDataForSearch, BasicProfileFieldInput, CustomFieldDetailed, GeneralRecordsDataForSearch,
   GeneralRecordsQueryFilters, Group, RecordDataForSearch, RecordLayoutEnum,
-  RecordQueryFilters, RecordResult, RecordWithOwnerResult
+  RecordQueryFilters, RecordResult, RecordWithOwnerResult, UserStatusEnum
 } from 'app/api/models';
 import { RecordsService } from 'app/api/services/records.service';
+import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -32,12 +33,14 @@ export class SearchRecordsComponent
   fieldsInSearch: CustomFieldDetailed[];
   fieldsInList: CustomFieldDetailed[];
   groups: Group[];
+  userStatuses: UserStatusEnum[];
   basicProfileFields: BasicProfileFieldInput[];
   customProfileFields: CustomFieldDetailed[];
 
   constructor(
     injector: Injector,
-    private recordsService: RecordsService
+    private recordsService: RecordsService,
+    public userHelper: UserHelperService
   ) {
     super(injector);
   }
@@ -71,6 +74,7 @@ export class SearchRecordsComponent
       this.basicProfileFields = general.basicProfileFields;
       this.customProfileFields = general.customProfileFields;
       this.groups = general.groups || [];
+      this.userStatuses = general.userStatuses || [];
       this.form.setControl('profileFields',
         this.fieldHelper.profileFieldsForSearchFormGroup(this.basicProfileFields, this.customProfileFields));
     }
@@ -104,7 +108,7 @@ export class SearchRecordsComponent
   }
 
   remove(record: RecordResult) {
-    this.notification.confirm({
+    this.confirmation.confirm({
       message: this.i18n.general.removeItemConfirm,
       callback: () => this.doRemove(record),
     });
@@ -162,7 +166,7 @@ export class SearchRecordsComponent
   }
 
   protected getFormControlNames(): string[] {
-    return ['keywords', 'customValues', 'createdBy', 'beginDate', 'endDate', 'broker', 'groups', 'user', 'profileFields'];
+    return ['keywords', 'customValues', 'createdBy', 'beginDate', 'endDate', 'broker', 'groups', 'user', 'profileFields', 'userStatuses'];
   }
 
   resolveMenu(data: BaseRecordDataForSearch) {

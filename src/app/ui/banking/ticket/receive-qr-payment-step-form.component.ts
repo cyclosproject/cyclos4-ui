@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { CustomFieldDetailed, DataForTransaction, TransactionTypeData, TransferType } from 'app/api/models';
+import { DataForTransaction, TransactionTypeData, TransferType } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
 
@@ -32,9 +32,5 @@ export class ReceiveQrPaymentStepFormComponent extends BaseComponent {
 
   get currency() {
     return this.typeData == null ? null : this.typeData.currency;
-  }
-
-  fieldSize(cf: CustomFieldDetailed) {
-    return this.fieldHelper.fieldSize(cf);
   }
 }

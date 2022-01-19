@@ -35,7 +35,7 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
 @NgModule({
   imports: [
     MarketplaceRoutingModule,
-    UiSharedModule,
+    UiSharedModule
   ],
   exports: [],
   declarations: [
@@ -72,7 +72,7 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
     SetDeliveryMethodComponent,
     SearchProductsComponent,
     OrderProductsComponent,
-  ],
+  ]
 })
 export class MarketplaceModule {
 }

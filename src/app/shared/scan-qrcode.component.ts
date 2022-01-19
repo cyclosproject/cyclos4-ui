@@ -38,9 +38,8 @@ export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit,
         this.qrScanner = new QrScanner(this.video.nativeElement,
           result => this.emit(result));
         this.qrScanner.start()
-          .then(() => this.ready$.next(true))
-          .catch(e => {
-            console.log(e);
+          .then(() => this.initialize())
+          .catch(_e => {
             this.noPermission();
           });
       }
@@ -62,9 +61,13 @@ export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit,
     this.modalRef.hide();
   }
 
-
   initialize() {
     this.ready$.next(true);
+    const style = this.video.nativeElement.style;
+    style.opacity = '';
+    style.width = '';
+    style.height = '';
+    style.transform = '';
   }
 
   private destroy() {

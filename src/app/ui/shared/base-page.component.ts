@@ -1,19 +1,22 @@
 import { Directive, HostBinding, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 import { CacheService } from 'app/core/cache.service';
-import { MenuService } from 'app/ui/core/menu.service';
+import { ConfirmationService } from 'app/core/confirmation.service';
+import { FieldHelperService } from 'app/core/field-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
+import { ArrowsHorizontal, ArrowsVertical, End, Home, PageDown, PageUp } from 'app/core/shortcut.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { handleKeyboardFocus, handleKeyboardScroll, scrollTop } from 'app/shared/helper';
-import { ActiveMenu, Menu } from 'app/ui/shared/menu';
-import { ArrowsHorizontal, ArrowsVertical, End, Home, PageDown, PageUp } from 'app/core/shortcut.service';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { LoginService } from 'app/ui/core/login.service';
-import { ExportHelperService } from 'app/ui/core/export-helper.service';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
+import { ExportHelperService } from 'app/ui/core/export-helper.service';
+import { LoginService } from 'app/ui/core/login.service';
+import { MenuService } from 'app/ui/core/menu.service';
 import { UiLayoutService } from 'app/ui/core/ui-layout.service';
+import { ActiveMenu, Menu } from 'app/ui/shared/menu';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 export type UpdateTitleFrom = 'menu' | 'content';
 
@@ -25,12 +28,15 @@ export type UpdateTitleFrom = 'menu' | 'content';
 @Directive()
 export abstract class BasePageComponent<D> extends BaseComponent implements OnInit, OnDestroy {
 
+  confirmation: ConfirmationService;
   uiLayout: UiLayoutService;
   cache: CacheService;
   menu: MenuService;
   login: LoginService;
   exportHelper: ExportHelperService;
   breadcrumb: BreadcrumbService;
+  authHelper: AuthHelperService;
+  fieldHelper: FieldHelperService;
 
   @HostBinding('style.display') styleDisplay = 'flex';
   @HostBinding('style.flex-direction') styleFlexDirection = 'column';
@@ -103,12 +109,15 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
 
   constructor(injector: Injector) {
     super(injector);
+    this.confirmation = injector.get(ConfirmationService);
     this.uiLayout = injector.get(UiLayoutService);
     this.cache = injector.get(CacheService);
     this.menu = injector.get(MenuService);
     this.login = injector.get(LoginService);
     this.exportHelper = injector.get(ExportHelperService);
     this.breadcrumb = injector.get(BreadcrumbService);
+    this.authHelper = injector.get(AuthHelperService);
+    this.fieldHelper = injector.get(FieldHelperService);
   }
 
   ngOnInit() {

@@ -7,7 +7,7 @@
       <label-value *ngIf="!self" [label]="i18n.general.user">
         <user-link [user]="data.user"></user-link>
       </label-value>
-      <form [formGroup]="form">
+      <ng-container [formGroup]="form">
         <input-field formControlName="name" [label]="i18n.general.name"
           required></input-field>
         <text-selection-field formControlName="keywords"
@@ -23,7 +23,7 @@
         <user-field formControlName="user" [label]="i18n.general.by">
         </user-field>
         <single-selection-field formControlName="category"
-          [label]="i18n.ad.category">
+          [label]="i18n.general.category">
           <field-option *ngFor="let cat of categories"
             [value]="ApiHelper.internalNameOrId(cat)" [id]="cat.id"
             [internalName]="cat.internalName" [text]="cat.name"
@@ -49,7 +49,7 @@
           [scale]="currency.decimalDigits" [prefix]="currency.prefix"
           [suffix]="currency.suffix">
         </decimal-field>
-      </form>
+      </ng-container>
       <actions forceRow>
         <action-button [disabled]="requesting$ | async" (action)="save()"
           [label]="i18n.general.submit">

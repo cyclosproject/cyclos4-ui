@@ -119,15 +119,20 @@ export class Mask {
         break;
       } else if (field.accepted(c)) {
         result.push(c);
+        f++;
       } else {
-        while (field && field.literal) {
-          result.push(field.allowed);
-          field = this.fields[++f];
+        if (field.literal) {
+          while (field && field.literal) {
+            result.push(field.allowed);
+            field = this.fields[++f];
+          }
+        } else {
+          // The value is wrong
+          return '';
         }
         // Don't increment the value
         pos--;
       }
-      f++;
     }
     return result.join('');
   }

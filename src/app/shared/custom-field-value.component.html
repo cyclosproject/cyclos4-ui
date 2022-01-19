@@ -1,6 +1,7 @@
 <ng-container
   *ngIf="value != null && (value.length === undefined || value.length > 0)">
-  <label-value [label]="fieldValue?.field?.name">
+  <label-value [label]="fieldValue?.field?.name"
+    [labelPosition]="['text','richText'].includes(fieldValue?.field?.type) ? 'above' : 'auto'">
     <format-field-value #formatFieldValue [fieldValue]="fieldValue">
     </format-field-value>
   </label-value>
