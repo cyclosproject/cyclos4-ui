@@ -164,8 +164,10 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     setTimeout(() => {
       const menu = document.getElementById(this.dropdownMenuId);
 
-      // Workaround: ngx-bootstrap sets top sometimes when we set dropup, which causes a position error
+      // Workaround: ngx-bootstrap sets top, bottom, transform sometimes when we set dropup, which causes a position error
       menu.style.top = '';
+      menu.style.bottom = '';
+      menu.style.transform = '';
 
       // Make sure the menu is at least the same width as the input
       menu.style.minWidth = `${input.getBoundingClientRect().width}px`;

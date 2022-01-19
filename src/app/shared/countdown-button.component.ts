@@ -19,6 +19,7 @@ export class CountdownButtonComponent implements OnInit {
   text$ = new BehaviorSubject<string>(null);
   disabled$ = new BehaviorSubject<boolean>(false);
 
+
   private _outline: boolean | string = false;
   @Input() get outline(): boolean | string {
     return this._outline;
@@ -27,10 +28,12 @@ export class CountdownButtonComponent implements OnInit {
     this._outline = truthyAttr(show);
   }
 
+  @Input() inputDisabled: boolean | string;
   @Input() label: string;
   @Input() icon: SvgIcon | string;
   @Input() disabledSeconds: number;
   @Input() disabledKey: (remainingSeconds: number) => string;
+  @Input() countdownAction: (remainingSeconds: number) => void;
   @Output() action = new EventEmitter<any>();
 
   remaining: number;
@@ -57,6 +60,9 @@ export class CountdownButtonComponent implements OnInit {
   tick() {
     if (this.disabled$.value === false) {
       return;
+    }
+    if (this.countdownAction) {
+      this.countdownAction(this.remaining);
     }
     if (this.remaining <= 0) {
       this.reenable();

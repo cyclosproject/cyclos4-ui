@@ -54,7 +54,7 @@ export class ViewUserGroupComponent extends BaseViewPageComponent<GroupMembershi
     });
     this.headingActions = [
       new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
-        this.router.navigate(['users', this.param, 'group', 'history']), true),
+        this.router.navigate(['/users', this.param, 'group', 'history']), true),
     ];
   }
 
@@ -84,7 +84,7 @@ export class ViewUserGroupComponent extends BaseViewPageComponent<GroupMembershi
     } else {
       message = this.i18n.groupMembership.confirmAliasOperator(this.data.user.display);
     }
-    this.notification.confirm({
+    this.confirmation.confirm({
       title,
       message,
       callback: () => this.submit(),

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { VoucherCreationTypeEnum, VoucherOrderByEnum, VouchersDataForSearch, VoucherStatusEnum } from 'app/api/models';
+import { CustomFieldDetailed, GeneralVouchersDataForSearch, VoucherCreationTypeEnum, VoucherOrderByEnum, VoucherStatusEnum } from 'app/api/models';
 import { HeadingAction } from 'app/shared/action';
 import { BaseComponent } from 'app/shared/base.component';
 import { FieldOption } from 'app/shared/field-option';
@@ -12,12 +12,13 @@ import { FieldOption } from 'app/shared/field-option';
 })
 export class VoucherFiltersComponent extends BaseComponent implements OnInit {
 
-  @Input() data: VouchersDataForSearch;
+  @Input() data: GeneralVouchersDataForSearch;
   @Input() heading: string;
   @Input() mobileHeading: string;
   @Input() form: FormGroup;
   @Input() moreFilters: boolean;
   @Input() headingActions: HeadingAction[];
+  @Input() customFieldsInSearch: CustomFieldDetailed[];
 
   mask: string;
   constructor(injector: Injector) {
@@ -35,9 +36,12 @@ export class VoucherFiltersComponent extends BaseComponent implements OnInit {
   }
 
   get creationTypeOptions(): FieldOption[] {
-    const statuses = Object.values(VoucherCreationTypeEnum) as VoucherCreationTypeEnum[];
-    const result = [];
-    return result.concat(statuses.map(st => ({ value: st, text: this.apiI18n.voucherCreationType(st) })));
+    const statuses = [
+      VoucherCreationTypeEnum.GENERATED,
+      VoucherCreationTypeEnum.BOUGHT,
+      VoucherCreationTypeEnum.SENT
+    ];
+    return statuses.map(st => ({ value: st, text: this.apiI18n.voucherCreationType(st) }));
   }
 
   get maxScale(): number {

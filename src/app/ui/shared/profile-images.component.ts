@@ -54,6 +54,14 @@ export class ProfileImagesComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
 
+    let fontAwesomeLink = document.getElementById('fontAwesomeLink') as HTMLLinkElement;
+    if (!fontAwesomeLink) {
+      fontAwesomeLink = document.createElement('link');
+      fontAwesomeLink.rel = 'stylesheet';
+      fontAwesomeLink.href = 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
+      document.head.appendChild(fontAwesomeLink);
+    }
+
     if (this.image) {
       const images: Image[] = [this.image, ...(this.additionalImages || [])];
       this.galleryImages = images.map(galleryImage);

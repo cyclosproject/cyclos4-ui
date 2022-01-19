@@ -4,7 +4,7 @@
       [heading]="create ? i18n.ad.title.deliveryMethodNew : i18n.ad.title.deliveryMethod"
       [mobileHeading]="create ? i18n.ad.mobileTitle.deliveryMethodNew : i18n.ad.mobileTitle.deliveryMethod"
       [headingActions]="headingActions$ | async">
-      <form [formGroup]="form">
+      <ng-container [formGroup]="form">
         <input-field formControlName="name" [label]="i18n.general.name"
           required>
         </input-field>
@@ -14,10 +14,27 @@
           <field-option value="negotiated" [text]="i18n.ad.negotiated">
           </field-option>
         </radio-group-field>
-        <label-value *ngIf="!create" [label]="i18n.ad.chargeType">
-          {{ data.deliveryMethod.chargeType === DeliveryMethodChargeTypeEnum.FIXED ?
+        <label-value *ngIf="!create" [label]="i18n.ad.chargeType"
+          kind="fieldView">
+          {{ data.deliveryMethod.chargeType ===
+          DeliveryMethodChargeTypeEnum.FIXED ?
           i18n.ad.fixed : i18n.ad.negotiated }}
         </label-value>
+        <radio-group-field [label]="i18n.ad.deliveryType"
+          formControlName="deliveryType">
+          <field-option value="deliver" [text]="i18n.ad.deliver">
+          </field-option>
+          <field-option value="pickup" [text]="i18n.ad.pickup">
+          </field-option>
+        </radio-group-field>
+        <single-selection-field
+          *ngIf="((form.get('deliveryType').valueChanges | async) || form.get('deliveryType').value) === 'pickup'"
+          formControlName="address" [label]="i18n.address.address" required>
+          <field-option *ngFor="let a of data.addresses"
+            [value]="ApiHelper.internalNameOrId(a)" [id]="a.id"
+            [text]="a.name">
+          </field-option>
+        </single-selection-field>
         <single-selection-field *ngIf="((form.get('chargeType').valueChanges | async) || form.get('chargeType').value) === 'fixed' &&
           data.currencies && data.currencies.length > 1"
           formControlName="chargeCurrency" [label]="i18n.general.currency"
@@ -43,7 +60,7 @@
         <textarea-field formControlName="description"
           [label]="i18n.general.details" required>
         </textarea-field>
-      </form>
+      </ng-container>
       <actions forceRow>
         <action-button [disabled]="requesting$ | async" (action)="save()"
           [label]="i18n.general.submit">

@@ -27,7 +27,7 @@
         {{ amountPerDayLimitValue() }}
       </label-value>
       <label-value [label]="i18n.account.limits.mode">
-        {{ limitMode(data.customAmountLimit) }}
+        {{ limitMode(data.customAmountPerDayLimit) }}
       </label-value>
       <!-- Weekly limit -->
       <h2 class="mb-2">{{ i18n.account.paymentLimits.weeklyLimit }}</h2>
@@ -35,7 +35,7 @@
         {{ amountPerWeekLimitValue() }}
       </label-value>
       <label-value [label]="i18n.account.limits.mode">
-        {{ limitMode(data.customAmountLimit) }}
+        {{ limitMode(data.customAmountPerWeekLimit) }}
       </label-value>
       <!-- Montly limit -->
       <h2 class="mb-2">{{ i18n.account.paymentLimits.monthlyLimit }}</h2>
@@ -43,7 +43,15 @@
         {{ amountPerMonthLimitValue() }}
       </label-value>
       <label-value [label]="i18n.account.limits.mode">
-        {{ limitMode(data.customAmountLimit) }}
+        {{ limitMode(data.customAmountPerMonthLimit) }}
+      </label-value>
+      <!-- Yearly limit -->
+      <h2 class="mb-2">{{ i18n.account.paymentLimits.yearlyLimit }}</h2>
+      <label-value [label]="i18n.account.paymentLimits.yearlyLimit">
+        {{ amountPerYearLimitValue() }}
+      </label-value>
+      <label-value [label]="i18n.account.limits.mode">
+        {{ limitMode(data.customAmountPerYearLimit) }}
       </label-value>
     </ng-container>
   </page-content>
@@ -75,25 +83,36 @@
             <label-value [label]="i18n.account.paymentLimits.paymentLimit"
               labelPosition="sideForced">
               {{ row.customAmountLimit ?
-                (row.amountLimit | currency:data.account.currency) : i18n.account.limits.productDefault }}
+              (row.amountLimit | currency:data.account.currency) :
+              i18n.account.limits.productDefault }}
             </label-value>
 
             <label-value [label]="i18n.account.paymentLimits.dailyLimit"
               labelPosition="sideForced">
               {{ row.customAmountPerDayLimit ?
-                (row.amountPerDayLimit | currency:data.account.currency) : i18n.account.limits.productDefault }}
+              (row.amountPerDayLimit | currency:data.account.currency) :
+              i18n.account.limits.productDefault }}
             </label-value>
 
             <label-value [label]="i18n.account.paymentLimits.weeklyLimit"
               labelPosition="sideForced">
               {{ row.customAmountPerWeekLimit ?
-                (row.amountPerWeekLimit | currency:data.account.currency) : i18n.account.limits.productDefault }}
+              (row.amountPerWeekLimit | currency:data.account.currency) :
+              i18n.account.limits.productDefault }}
             </label-value>
 
             <label-value [label]="i18n.account.paymentLimits.monthlyLimit"
               labelPosition="sideForced">
               {{ row.customAmountPerMonthLimit ?
-                (row.amountPerMonthLimit | currency:data.account.currency) : i18n.account.limits.productDefault }}
+              (row.amountPerMonthLimit | currency:data.account.currency) :
+              i18n.account.limits.productDefault }}
+            </label-value>
+
+            <label-value [label]="i18n.account.paymentLimits.yearlyLimit"
+              labelPosition="sideForced">
+              {{ row.customAmountPerYearLimit ?
+              (row.amountPerYearLimit | currency:data.account.currency) :
+              i18n.account.limits.productDefault }}
             </label-value>
 
             <label-value *ngIf="row.comment" [label]="i18n.general.comments"
@@ -113,6 +132,7 @@
           <th>{{ i18n.account.paymentLimits.dailyLimit }}</th>
           <th>{{ i18n.account.paymentLimits.weeklyLimit }}</th>
           <th>{{ i18n.account.paymentLimits.monthlyLimit }}</th>
+          <th>{{ i18n.account.paymentLimits.yearlyLimit }}</th>
           <th>{{ i18n.general.comments }}</th>
         </thead>
         <tbody>
@@ -121,19 +141,28 @@
             <td>{{ row.by.display }}</td>
             <td>
               {{ row.customAmountLimit ?
-                (row.amountLimit | currency:data.account.currency) : i18n.account.limits.productDefault }}
+              (row.amountLimit | currency:data.account.currency) :
+              i18n.account.limits.productDefault }}
             </td>
             <td>
               {{ row.customAmountPerDayLimit ?
-                (row.amountPerDayLimit | currency:data.account.currency) : i18n.account.limits.productDefault }}
+              (row.amountPerDayLimit | currency:data.account.currency) :
+              i18n.account.limits.productDefault }}
             </td>
             <td>
               {{ row.customAmountPerWeekLimit ?
-                (row.amountPerWeekLimit | currency:data.account.currency) : i18n.account.limits.productDefault }}
+              (row.amountPerWeekLimit | currency:data.account.currency) :
+              i18n.account.limits.productDefault }}
             </td>
             <td>
               {{ row.customAmountPerMonthLimit ?
-                (row.amountPerMonthLimit | currency:data.account.currency) : i18n.account.limits.productDefault }}
+              (row.amountPerMonthLimit | currency:data.account.currency) :
+              i18n.account.limits.productDefault }}
+            </td>
+            <td>
+              {{ row.customAmountPerYearLimit ?
+              (row.amountPerYearLimit | currency:data.account.currency) :
+              i18n.account.limits.productDefault }}
             </td>
             <td>{{ row.comment }}</td>
           </tr>

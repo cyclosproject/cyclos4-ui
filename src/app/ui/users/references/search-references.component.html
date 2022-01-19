@@ -1,11 +1,12 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content mode="filters" [heading]="i18n.reference.title.search"
-      [mobileHeading]="i18n.reference.mobileTitle.search"
+    <page-content
+      [mode]="userFilter || directionsFilter ? 'filters' : 'emptyFilters' "
+      [heading]="resolveHeading()" [mobileHeading]="resolveHeading(true)"
       [headingActions]="headingActions$ | async">
-      <form [formGroup]="form" class="filters-form filters-form-separator">
+      <div [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row">
-          <ng-container *ngIf="data.user && !isOwner">
+          <ng-container *ngIf="userFilter">
             <div class="col-12 col-md-6">
               <label-value [label]="i18n.general.user" labelPosition="side"
                 kind="fieldView">
@@ -15,31 +16,33 @@
             <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
             </div>
           </ng-container>
-          <div class="col-12 col-md-6">
-            <radio-group-field formControlName="direction"
-              [label]="i18n.reference.direction.direction">
-              <field-option [value]="ReferenceDirectionEnum.GIVEN"
-                [text]="i18n.reference.direction.given"></field-option>
-              <field-option [value]="ReferenceDirectionEnum.RECEIVED"
-                [text]="i18n.reference.direction.received"></field-option>
-            </radio-group-field>
-          </div>
+          <ng-container *ngIf="directionsFilter">
+            <div class="col-12 col-md-6">
+              <radio-group-field formControlName="direction"
+                [label]="i18n.reference.direction.direction">
+                <field-option [value]="ReferenceDirectionEnum.GIVEN"
+                  [text]="i18n.reference.direction.given"></field-option>
+                <field-option [value]="ReferenceDirectionEnum.RECEIVED"
+                  [text]="i18n.reference.direction.received"></field-option>
+              </radio-group-field>
+            </div>
+          </ng-container>
         </div>
-      </form>
+      </div>
     </page-content>
 
     <page-content *ngIf="(layout.gtsm$ | async) && (stats$ | async)"
       mode="table">
       <table class="table table-hover small-height">
         <thead>
-          <th width="33%">{{ i18n.reference.value }}</th>
-          <th>{{ i18n.reference.allTime }}</th>
-          <th>{{ i18n.reference.last30Days }}</th>
+          <th width="40%">{{ i18n.reference.value }}</th>
+          <th width="30%">{{ i18n.reference.allTime }}</th>
+          <th width="30%">{{ i18n.reference.last30Days }}</th>
         </thead>
         <tbody>
           <tr *ngFor="let entry of levels">
             <td>
-              <rating-stats class="w-100" [level]="entry.level"
+              <rating-stats class="w-100 pr-3" [level]="entry.level"
                 [textLeft]="entry.text">
               </rating-stats>
             </td>
@@ -113,8 +116,9 @@
                 <rating-stats [level]="row.level"></rating-stats>
               </td>
               <td class="actions actions-multiple">
-                <button *ngIf="data.manage" [tooltip]="i18n.general.remove"
-                  class="btn btn-icon" (click)="remove(row)">
+                <button *ngIf="data.manage" type="button"
+                  [tooltip]="i18n.general.remove" class="btn btn-icon"
+                  (click)="remove(row)">
                   <icon [icon]="SvgIcon.Trash"></icon>
                 </button>
               </td>

@@ -1,0 +1,159 @@
+@import 'src/definitions';
+
+body.consent {
+  .card {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin: auto;
+  }
+
+  .title {
+    font-size: 1.1em;
+    line-height: 1.2em;
+    text-align: center;
+    margin: 1.25rem 1rem;
+  }
+
+  .auth-container, .client-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .auth, .client {
+    flex-grow: 1;
+    width: 100%;
+  }
+
+  .expiration {
+    margin-top: 0.5rem;
+    font-size: 0.9em;
+  }
+
+  .actions.openid-only {
+    margin-top: 1.75rem;
+  }
+
+  .details-openid-only {
+    opacity: 0.8;
+    margin-top: 1rem;
+  }
+
+  .system {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .system-image {
+    max-width: 12rem;
+    max-height: 3rem;
+  }
+
+  .client {
+    margin-top: 2rem;
+    border-top: 1px solid $border-color;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .client-title {
+    display: flex;
+    flex-direction: row;
+
+    img {
+      max-width: 6rem;
+      max-height: 3rem;
+    }
+  }
+  .client-image-holder {
+    margin-right: 1rem;
+  }
+  .client-title-holder, .client-image-holder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .client-title-holder a {
+    margin-top: 0.25rem;
+  }
+  .client-name {
+    font-size: 1.1em;
+    line-height: 1.1em;
+    display: flex;
+    align-items: center;
+  }
+
+  .client-description {
+    margin-top: 1rem;
+    white-space: pre-wrap;
+    font-size: 0.9em;
+  }
+
+  .client-link {
+    margin-top: 1rem;
+    line-height: 1em;
+    display: block;
+  }
+
+  .permissions {
+    margin-top: 1.5rem;
+    margin-bottom: 0.25rem;
+    font-weight: bold;
+  }
+
+  ul {
+    padding-inline-start: 1.1rem;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  body.consent {
+    .form-container {
+      padding: 0 30px;
+    }
+
+    .client {
+      border-top: none;
+      padding: 0;
+      margin: 0;
+    }
+  }
+}
+
+
+@include media-breakpoint-up(md) {
+  body.consent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .form {
+      padding: 0 1rem;
+      margin-top: 1rem;
+    }
+
+    .title {
+      font-size: 1.4em;
+      line-height: 1.2em;
+    }
+
+    .card {
+      max-width: 44rem;
+      padding: 2rem 0;
+    }
+
+    .title {
+      margin: 2rem 1.2rem;
+    }
+
+    input[type=password] {
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
+body.consent.dark {
+  .client {
+    border-color: $border-color;
+  }
+}

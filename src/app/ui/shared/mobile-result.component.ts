@@ -18,6 +18,7 @@ export class MobileResultComponent implements OnInit {
   @Input() avatarIcon: string;
   @Input() avatarRoundBorders: boolean;
   @Input() date: string;
+  @Input() topLeft: string;
   @Input() amount: string;
   @Input() amountColor = true;
   @Input() currency: Currency;

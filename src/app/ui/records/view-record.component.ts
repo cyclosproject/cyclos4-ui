@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { RecordCustomFieldValue, RecordSection, RecordView } from 'app/api/models';
 import { RecordsService } from 'app/api/services/records.service';
-import { OperationHelperService } from 'app/ui/core/operation-helper.service';
-import { RecordHelperService } from 'app/ui/core/records-helper.service';
-import { HeadingAction } from 'app/shared/action';
-import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
-import { empty as isEmpty } from 'app/shared/helper';
 import { SvgIcon } from 'app/core/svg-icon';
+import { HeadingAction } from 'app/shared/action';
+import { empty as isEmpty } from 'app/shared/helper';
+import { RecordHelperService } from 'app/ui/core/records-helper.service';
+import { RunOperationHelperService } from 'app/ui/core/run-operation-helper.service';
+import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 
 @Component({
   selector: 'view-record',
@@ -24,7 +24,7 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
     injector: Injector,
     private recordsService: RecordsService,
     private recordsHelper: RecordHelperService,
-    private operationHelper: OperationHelperService,
+    private runOperationHelper: RunOperationHelperService,
   ) {
     super(injector);
   }
@@ -57,7 +57,7 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
       );
     }
     for (const operation of record.operations || []) {
-      this.headingActions.push(this.operationHelper.headingAction(operation, record.id));
+      this.headingActions.push(this.runOperationHelper.headingAction(operation, record.id));
     }
   }
 

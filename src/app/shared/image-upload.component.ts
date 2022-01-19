@@ -6,7 +6,9 @@ import {
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { CustomField, Image, ImageKind, TempImageTargetEnum, UserImageKind } from 'app/api/models';
 import { ImagesService } from 'app/api/services/images.service';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
+import { StoredFileCacheService } from 'app/core/stored-file-cache.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { resizeImage, ResizeResult, truthyAttr, urlJoin } from 'app/shared/helper';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
@@ -80,7 +82,10 @@ export class ImageUploadComponent extends BaseComponent implements OnDestroy {
     private apiConfiguration: ApiConfiguration,
     private imagesService: ImagesService,
     private changeDetector: ChangeDetectorRef,
-    private nextRequestState: NextRequestState) {
+    private nextRequestState: NextRequestState,
+    private authHelper: AuthHelperService,
+    private storedFileCacheService: StoredFileCacheService
+  ) {
     super(injector);
   }
 
@@ -251,6 +256,7 @@ export class ImageUploadComponent extends BaseComponent implements OnDestroy {
           file.uploadDone = true;
           this.addSub(this.imagesService.viewImage({ idOrKey: event.body }).pipe(first()).subscribe(image => {
             file.image = image;
+            this.storedFileCacheService.write(image);
             observer.next(file.image);
             observer.complete();
             this.changeDetector.detectChanges();

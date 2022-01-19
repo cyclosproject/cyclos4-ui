@@ -69,7 +69,7 @@ export class TiledRecordsComponent
   }
 
   remove(record: RecordResult) {
-    this.notification.confirm({
+    this.confirmation.confirm({
       message: this.i18n.general.removeItemConfirm,
       callback: () => this.doRemove(record),
     });

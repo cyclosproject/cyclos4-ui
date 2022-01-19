@@ -6,6 +6,13 @@ import { BaseComponent } from 'app/shared/base.component';
 import { truthyAttr } from 'app/shared/helper';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
+export type ActionKind
+  /** Primary actions like submit. Default kind */
+  = 'primary'
+
+  /** Actions "inside" a page which are not primary, like actions over images editing the profile or the button to add new addresses */
+  | 'secondary';
+
 /**
  * A button that displays a spinner, before the icon and/or text, if it is disabled.
  */
@@ -27,6 +34,7 @@ export class ActionButtonComponent extends BaseComponent implements OnChanges {
     this._outline = truthyAttr(show);
   }
 
+  @Input() actionKind: ActionKind;
   @Input() disabled: boolean;
   @Input() label: string;
   @Input() icon: SvgIcon | string;

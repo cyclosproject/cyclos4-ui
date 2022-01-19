@@ -67,21 +67,24 @@ export class ChangeExpiredPasswordComponent
     this.addSub(this.passwordsService.getUserPasswordsData({
       user: ApiHelper.SELF,
       type: this.typeId,
-      fields: ['status', 'permissions'],
+      fields: ['type.name', 'type.mode', 'status', 'permissions', 'requireOldPasswordForChange'],
     }).subscribe(data => {
       this.data = data;
-      this.typeName = data.type.name;
-      this.generated = data.type.mode === PasswordModeEnum.GENERATED;
-      if (!this.generated) {
-        this.form.setControl('checkConfirmation', this.formBuilder.control(true));
-        if (data.requireOldPasswordForChange) {
-          this.form.setControl('oldPassword', this.formBuilder.control('', Validators.required));
-        }
-        this.form.setControl('newPassword', this.formBuilder.control('', Validators.required));
-        this.form.setControl('newPasswordConfirmation', this.formBuilder.control('',
-          Validators.compose([Validators.required, PASSWORDS_MATCH_VAL])));
-      }
     }));
+  }
+
+  onDataInitialized(data: PasswordStatusAndActions) {
+    this.typeName = data.type.name;
+    this.generated = data.type.mode === PasswordModeEnum.GENERATED;
+    if (!this.generated) {
+      this.form.setControl('checkConfirmation', this.formBuilder.control(true));
+      if (data.requireOldPasswordForChange) {
+        this.form.setControl('oldPassword', this.formBuilder.control('', Validators.required));
+      }
+      this.form.setControl('newPassword', this.formBuilder.control('', Validators.required));
+      this.form.setControl('newPasswordConfirmation', this.formBuilder.control('',
+        Validators.compose([Validators.required, PASSWORDS_MATCH_VAL])));
+    }
   }
 
   submit() {

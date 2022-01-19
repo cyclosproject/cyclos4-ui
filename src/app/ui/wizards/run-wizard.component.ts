@@ -8,6 +8,7 @@ import {
   WizardResultTypeEnum, WizardStepKind, WizardStepTransition
 } from 'app/api/models';
 import { WizardsService } from 'app/api/services/wizards.service';
+import { CaptchaHelperService } from 'app/core/captcha-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { empty, focusFirstInvalid, mergeValidity, validateBeforeSubmit } from 'app/shared/helper';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
@@ -63,6 +64,7 @@ export class RunWizardComponent
   constructor(
     injector: Injector,
     private userHelper: UserHelperService,
+    private captchaHelper: CaptchaHelperService,
     private nextRequestState: NextRequestState,
     private wizardsService: WizardsService) {
     super(injector);
@@ -110,7 +112,7 @@ export class RunWizardComponent
     if (route.params.key !== data.key) {
       // Redirect to the execution with the current key
       this.breadcrumb.pop();
-      this.router.navigate(['wizards', 'run', data.key], { replaceUrl: true });
+      this.router.navigate(['/wizards', 'run', data.key], { replaceUrl: true });
       return;
     }
     this.key = data.key;
@@ -245,12 +247,8 @@ export class RunWizardComponent
             }
 
             // Captcha
-            if (dataForNew.captchaType) {
-              const captcha = this.authHelper.captchaFormGroup();
-              if (user.captcha) {
-                captcha.patchValue(user.captcha);
-              }
-              this.user.setControl('captcha', captcha);
+            if (dataForNew.captchaInput) {
+              this.user.setControl('captcha', this.captchaHelper.captchaFormGroup(dataForNew.captchaInput));
             }
           }
           break;
@@ -298,6 +296,22 @@ export class RunWizardComponent
         this.nextRequestState.willExternalRedirect();
         window.location.assign(url);
       })));
+  }
+
+  resolveSubmitAction(): Function {
+    switch (this.data.action) {
+      case WizardActionEnum.FINISH:
+        return () => this.transition(this.singleTransition);
+      case WizardActionEnum.ALREADY_EXECUTED:
+      case WizardActionEnum.STEP:
+        if (this.singleTransition) {
+          return () => this.transition(this.singleTransition);
+        } else {
+          return null;
+        }
+      case WizardActionEnum.EXTERNAL_REDIRECT:
+        return () => this.externalRedirect();
+    }
   }
 
   private validateAndSubmit(proceed: () => any) {

@@ -4,8 +4,6 @@
   --theme-color: #{$theme-color};
   --theme-color-dark: #{$theme-color-dark};
   --primary-dark: #{$primary-dark};
-  --chart-color: #{$chart-color};
-  --chart-color-dark: #{$chart-color-dark};
   --body-color: #{$body-color};
   --body-color-dark: #{$body-color-dark};
   --border-color: #{$border-color};
@@ -14,10 +12,6 @@
   --text-muted-dark: #{$text-muted-dark};
   // Will be updated dynamically
   --window-width: "1000px";
-}
-
-.max-container-widths {
-  @include make-container-max-widths();
 }
 
 b, strong {
@@ -188,6 +182,11 @@ body.dark {
   &:focus {
     outline: none;
   }
+}
+
+.data-item {
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
 @media print {

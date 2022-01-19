@@ -63,7 +63,7 @@ export class UserCacheService {
         this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
           this.usersService.viewUser({
             user: key, fields: [
-              'id', 'display', 'shortDisplay', 'image',
+              'id', 'display', 'image'
             ],
           }).subscribe(user => {
             this.cache.set(key, user);

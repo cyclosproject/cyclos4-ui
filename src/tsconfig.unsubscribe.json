@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/unsubscribe",
+    "types": []
+  },
+  "files": [
+    "unsubscribe/main.ts",
+    "polyfills.ts"
+  ],
+  "include": [
+    "*.d.ts"
+  ]
+}

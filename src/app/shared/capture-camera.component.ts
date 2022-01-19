@@ -1,6 +1,6 @@
-import { AfterViewChecked, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewChecked, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Inject, Input, Output, ViewChild } from '@angular/core';
 import { FormatService } from 'app/core/format.service';
-import { I18n } from 'app/i18n/i18n';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import b64toBlob from 'b64-to-blob';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { WebcamImage, WebcamInitError } from 'ngx-webcam';
@@ -27,7 +27,7 @@ export class CaptureCameraComponent implements AfterViewChecked {
   constructor(
     public modalRef: BsModalRef,
     public format: FormatService,
-    public i18n: I18n
+    @Inject(I18nInjectionToken) public i18n: I18n
   ) {
   }
 

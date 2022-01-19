@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { DeliveryMethodChargeTypeEnum, DeliveryMethodView } from 'app/api/models';
+import { DeliveryMethodChargeTypeEnum, DeliveryMethodTypeEnum, DeliveryMethodView } from 'app/api/models';
 import { DeliveryMethodsService } from 'app/api/services/delivery-methods.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
@@ -55,6 +55,19 @@ export class ViewDeliveryMethodComponent extends BaseViewPageComponent<DeliveryM
         return this.i18n.ad.fixed;
       case DeliveryMethodChargeTypeEnum.NEGOTIATED:
         return this.i18n.ad.negotiated;
+    }
+    return '';
+  }
+
+  /**
+   * Resolves the label for deliver or pickup delivery method type
+   */
+  resolveDeliveryTypeLabel(): string {
+    switch (this.data.deliveryType) {
+      case DeliveryMethodTypeEnum.DELIVER:
+        return this.i18n.ad.deliver;
+      case DeliveryMethodTypeEnum.PICKUP:
+        return this.i18n.ad.pickup;
     }
     return '';
   }

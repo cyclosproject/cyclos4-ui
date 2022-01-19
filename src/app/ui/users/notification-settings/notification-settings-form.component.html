@@ -2,11 +2,25 @@
   <ng-container *ngIf="data">
     <page-content [heading]="i18n.notificationSettings.title"
       [mobileHeading]="i18n.notificationSettings.mobileTitle">
-      <form [formGroup]="form">
+      <ng-container [formGroup]="form">
         <label-value *ngIf="data.forwardMessagesAllowed"
+          [forId]="'forwardMessages'"
           [label]="i18n.notificationSettings.forwardMessages" kind="view">
           <boolean-field formControlName="forwardMessages" switch
-            [disabled]="!data.editable">
+            [disabled]="!data.canEdit" [id]="'forwardMessages'">
+          </boolean-field>
+        </label-value>
+        <label-value *ngIf="data.emailMailingsAllowed"
+          [forId]="'emailMailings'"
+          [label]="i18n.notificationSettings.emailMailings" kind="view">
+          <boolean-field formControlName="emailMailings" switch
+            [disabled]="!data.canEdit" [id]="'emailMailings'">
+          </boolean-field>
+        </label-value>
+        <label-value *ngIf="data.smsMailingsAllowed" [forId]="'smsMailings'"
+          [label]="i18n.notificationSettings.smsMailings" kind="view">
+          <boolean-field formControlName="smsMailings" switch
+            [disabled]="!data.canEdit" [id]="'smsMailings'">
           </boolean-field>
         </label-value>
         <ng-container *ngFor="let at of data.userAccounts; let first = first">
@@ -45,7 +59,7 @@
               {{section}}
             </div>
             <div [ngClass]="{'section-title-action': layout.gtsm$ | async}"
-              *ngIf="!adminSettings && notificationSections.get(section).length > 3 && data.editable">
+              *ngIf="!adminSettings && notificationSections.get(section).length > 3 && data.canEdit">
               <action-button outline
                 [ngClass]="{'mr-3': !(layout.ltxs$ | async), 'mb-2': layout.ltxs$ | async}"
                 (action)="enableNotifications(section, true)"
@@ -62,21 +76,22 @@
             <label-value [label]="resolveNotificationLabel(notification)"
               kind="field">
               <notification-type-setting [setting]="notification"
-                [options]="kindFieldOptionsMap.get(notification.kind)"
-                [form]="resolveControl(notification.kind)"
-                [multiSelectionControl]="kindControlsMap.get(notification.kind)"
-                [disabled]="!data.editable">
+                [options]="typeFieldOptionsMap.get(notification.type)"
+                [form]="resolveControl(notification.type)"
+                [multiSelectionControl]="typeControlsMap.get(notification.type)"
+                [disabled]="!data.canEdit">
               </notification-type-setting>
             </label-value>
           </ng-container>
         </ng-container>
         <ng-container *ngIf="data.smsAllowed">
           <h2>{{i18n.general.sendMedium.sms}}</h2>
-          <label>{{i18n.notificationSettings.smsCount({ count: data.smsCountThisMonth, total: data.maxSmsPerMonth })}}</label>
+          <label>{{i18n.notificationSettings.smsCount({ count:
+            data.smsCountThisMonth, total: data.maxSmsPerMonth })}}</label>
         </ng-container>
-      </form>
+      </ng-container>
       <actions>
-        <action-button *ngIf="data.editable" [disabled]="requesting$ | async"
+        <action-button *ngIf="data.canEdit" [disabled]="requesting$ | async"
           (action)="save()" [label]="i18n.general.save">
         </action-button>
       </actions>
@@ -91,12 +106,12 @@
       [label]="i18n.notificationSettings.paymentNotificationsAbove"
       formControlName="min" [scale]="at.currency.decimalDigits"
       [prefix]="at.currency.prefix" [suffix]="at.currency.suffix"
-      [disabled]="!data.editable" [emptyLabel]="i18n.general.notSet">
+      [disabled]="!data.canEdit" [emptyLabel]="i18n.general.notSet">
     </decimal-field>
     <decimal-field
       [label]="i18n.notificationSettings.paymentNotificationsBelow"
       formControlName="max" [scale]="at.currency.decimalDigits"
       [prefix]="at.currency.prefix" [suffix]="at.currency.suffix"
-      [disabled]="!data.editable" [emptyLabel]="i18n.general.notSet">
+      [disabled]="!data.canEdit" [emptyLabel]="i18n.general.notSet">
     </decimal-field>
   </ng-container>

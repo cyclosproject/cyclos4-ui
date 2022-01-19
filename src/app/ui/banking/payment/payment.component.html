@@ -2,8 +2,8 @@
   <page-content *ngSwitchCase="'form'" [heading]="title"
     [mobileHeading]="mobileTitle"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
-    <payment-step-form class="flex-grow-1 d-flex flex-column" [data]="data"
-      [pos]="pos" [form]="form" [currency]="currency$ | async"
+    <payment-step-form #paymentStepForm class="flex-grow-1 d-flex flex-column"
+      [data]="data" [pos]="pos" [form]="form" [currency]="currency$ | async"
       [paymentTypeData$]="paymentTypeData$"
       (availablePaymentTypes)="availablePaymentTypes = $event"
       [customValuesControlGetter]="customValuesControlGetter">
@@ -32,21 +32,6 @@
       <ng-template #spacer>&nbsp;</ng-template>
       <action-button outline (action)="backToForm()"
         [label]="i18n.general.previous">
-      </action-button>
-    </actions>
-  </page-content>
-
-  <page-content *ngSwitchCase="'done'" hideBack [heading]="doneTitle"
-    [mobileHeading]="doneMobileTitle"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
-    <payment-step-done class="flex-grow-1 d-flex flex-column"
-      [performed]="performed"></payment-step-done>
-    <actions forceRow>
-      <action-button (action)="viewPerformed()"
-        [label]="i18n.transaction.doneView">
-      </action-button>
-      <action-button outline (action)="reload()"
-        [label]="i18n.transaction.doneNew">
       </action-button>
     </actions>
   </page-content>

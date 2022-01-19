@@ -15,7 +15,7 @@ import { ReferenceHelperService } from 'app/ui/users/references/reference-helper
 import { BehaviorSubject, Observable } from 'rxjs';
 
 type SearchReferencesParams = UserReferenceQueryFilters & {
-  user: string
+  user: string;
 };
 
 /**
@@ -69,9 +69,9 @@ export class SearchReferencesComponent
         new HeadingAction(SvgIcon.Star, this.i18n.reference.set,
           () => {
             if (data.current) {
-              this.router.navigate(['users', 'references', 'edit', data.current.id]);
+              this.router.navigate(['/users', 'references', 'edit', data.current.id]);
             } else {
-              this.router.navigate(['users', 'references', 'set', 'self', this.param]);
+              this.router.navigate(['/users', 'references', 'set', 'self', this.param]);
             }
           }, true)];
     }
@@ -128,7 +128,7 @@ export class SearchReferencesComponent
    * Removes the given reference
    */
   remove(row: UserReferenceResult) {
-    this.notification.confirm({
+    this.confirmation.confirm({
       message: this.i18n.general.removeItemConfirm,
       callback: () => {
         this.addSub(this.referencesService.deleteReference({ id: row.id }).subscribe(() => {
@@ -145,6 +145,30 @@ export class SearchReferencesComponent
 
   resolveMenu(data: UserReferenceDataForSearch) {
     return this.isOwner ? Menu.REFERENCES : this.menu.searchUsersMenu(data.user);
+  }
+
+  resolveHeading(mobile: boolean = false): string {
+    const singleDirection = this.data.directions?.length === 1;
+    const onlyGiven = singleDirection && this.data.directions?.includes(ReferenceDirectionEnum.GIVEN);
+    const onlyReceived = singleDirection && this.data.directions?.includes(ReferenceDirectionEnum.RECEIVED);
+    if (onlyGiven) {
+      return mobile ? this.i18n.reference.mobileTitle.searchGiven :
+        this.i18n.reference.title.searchGiven;
+    } else if (onlyReceived) {
+      return mobile ? this.i18n.reference.mobileTitle.searchReceived :
+        this.i18n.reference.title.searchReceived;
+    } else {
+      return mobile ? this.i18n.reference.mobileTitle.search :
+        this.i18n.reference.title.search;
+    }
+  }
+
+  get userFilter(): boolean {
+    return this.data.user && !this.isOwner;
+  }
+
+  get directionsFilter(): boolean {
+    return this.data.directions?.length === 2;
   }
 
 }

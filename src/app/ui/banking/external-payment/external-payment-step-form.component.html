@@ -1,0 +1,117 @@
+<ng-container [formGroup]="form">
+  <!-- From user (only shown when is not self) -->
+  <label-value *ngIf="fromUser && !fromSelf" kind="fieldView"
+    [label]="toSystem ? i18n.transaction.receiver : i18n.transaction.fromUser">
+    <user-link [user]="fromUser"></user-link>
+  </label-value>
+
+  <!-- From Accounts -->
+  <ng-container *ngIf="singleAccount; else multipleAccounts">
+    <label-value *ngIf="singleAccount.status"
+      [label]="accountBalanceLabel$ | async" kind="fieldView"
+      labelPosition="sideForced" noWrapLabel>
+      <!-- Single account -->
+      <div class="w-100 text-nowrap text-right text-xs-left font-weight-bold"
+        [ngClass]="{
+          positive: format.isPositive(singleAccount.status.balance),
+          negative: format.isNegative(singleAccount.status.balance),
+          'text-right': layout.ltsm$ | async
+        }">
+        {{ singleAccount.status.balance | currency: singleAccount.currency }}
+      </div>
+    </label-value>
+  </ng-container>
+
+  <ng-template #multipleAccounts>
+    <!-- Multiple accounts -->
+    <label-value [label]="i18n.transaction.fromAccount" required kind="field">
+      <div class="w-100 row no-gutters mb-2"
+        *ngFor="let account of data.accounts">
+        <div [class]="'col-7 col-sm-8 col-md-5'">
+          <div class="custom-control custom-radio">
+            <input #radio type="radio" formControlName="account"
+              class="custom-control-input" [id]="'from_' + account.id"
+              (keyup.enter)="radio.click()" [value]="account.type.id" />
+            <label class="custom-control-label" [for]="'from_' + account.id">
+              <div class="ml-1">
+                {{ account.type.name }}
+                <ng-container *ngIf="account.number">
+                  <br *ngIf="layout.ltsm$ | async; else separator" />
+                  <ng-template #separator> - </ng-template>
+                  {{ account.number }}
+                </ng-container>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div *ngIf="account.status" class="
+            col-5 col-sm-4 col-md-7
+            pl-2
+            text-right text-xs-left
+            font-weight-bold
+          " [ngClass]="{
+            positive: format.isPositive(account.status.balance),
+            negative: format.isNegative(account.status.balance)
+          }">
+          {{ account.status.balance | currency: account.currency }}
+        </div>
+      </div>
+      <field-errors [control]="form.get('account')"></field-errors>
+    </label-value>
+  </ng-template>
+
+  <!-- To principal -->
+  <radio-group-field #toPrincipalType formControlName="toPrincipalType"
+    [label]="i18n.transaction.receiver">
+    <field-option *ngFor="let pt of data.principalTypes" [value]="pt.id"
+      [text]="pt.name"></field-option>
+  </radio-group-field>
+
+  <label-value required kind="field"
+    [label]="(toPrincipalType$ | async)?.name">
+    <input-field #toPrincipalValue formControlName="toPrincipalValue"
+      [placeholder]="(toPrincipalType$ | async)?.example"
+      [mask]="(toPrincipalType$ | async)?.mask"></input-field>
+  </label-value>
+
+  <!-- Payment types -->
+  <single-selection-field #type formControlName="type"
+    *ngIf="(paymentTypes$ | async)?.length > 1" required
+    [label]="i18n.transaction.type">
+    <field-option *ngFor="let pt of paymentTypes$ | async" [value]="pt.id"
+      [text]="pt.name"></field-option>
+  </single-selection-field>
+
+  <!-- Amount -->
+  <label-value kind="fieldView"
+    *ngIf="(paymentTypeData$ | async)?.fixedAmount; else amountTemplate"
+    [label]="i18n.transaction.amount">
+    {{
+    paymentTypeData$.value.fixedAmount
+    | currency: paymentTypeData$.value.currency
+    }}
+  </label-value>
+
+  <ng-template #amountTemplate>
+    <decimal-field #amount focused formControlName="amount" required
+      [label]="i18n.transaction.amount" [scale]="currency?.decimalDigits"
+      [prefix]="currency?.prefix" [suffix]="currency?.suffix">
+    </decimal-field>
+  </ng-template>
+
+  <!--Custom fields -->
+  <custom-field-input
+    *ngFor="let cf of (paymentTypeData$ | async)?.customFields" [field]="cf"
+    [formControl]="customValuesControlGetter(cf)"></custom-field-input>
+
+  <!-- Description -->
+  <ng-container *ngIf="
+      (paymentTypeData$ | async)?.descriptionAvailability ||
+      'disabled' as descriptionAvailability
+    ">
+    <textarea-field *ngIf="descriptionAvailability !== 'disabled'"
+      [required]="descriptionAvailability === 'required'"
+      formControlName="description" required
+      [label]="i18n.general.description"></textarea-field>
+  </ng-container>
+</ng-container>

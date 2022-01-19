@@ -1,66 +1,13 @@
-<label-value *ngIf="label; else widget" [formField]="self">
+<label-value *ngIf="label; else widget" [formField]="self"
+  [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
 <ng-template #widget>
-  <input *ngIf="layout.ltsm$ | async; else customWidget" [id]="id"
-    [formControl]="formControl" [name]="name" type="date"
+  <input #input [id]="id" [formControl]="formControl" [name]="name"
+    type="date" [attr.min]="minValue" [attr.max]="maxValue"
     class="form-control flex-grow-1" [ngClass]="{
       'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
     }">
   <field-errors [control]="formControl"></field-errors>
-</ng-template>
-<ng-template #customWidget>
-  <!-- Need a relatively-positioned element to position the dropdown corretcly -->
-  <div class="date-field-wrapper" style="position:relative" dropdown
-    #dropdown="bs-dropdown" (onShown)="onShown()"
-    (onHidden)="onHidden(); toggleButton.focus()">
-    <div class="date-field d-flex align-items-center">
-      <ng-container
-        *ngFor="let control of partControls.controls; let index = index">
-        <div *ngIf="index > 0 && (layout.gtxs$ | async)" class="mx-1">
-          {{ format.dateSeparator }}
-        </div>
-        <select #part class="custom-select" [attr.id]="id + '_' + index"
-          [formControl]="control" (click)="dropdown.hide()"
-          (input)="onPartChanged($event)" [ngClass]="{
-            'mx-1': index === 1 && (layout.ltsm$ | async),
-            'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched,
-            'field-year': format.dateFields[index] === 'year',
-            'field-month': format.dateFields[index] === 'month',
-            'field-date': format.dateFields[index] === 'date'
-          }">
-          <option value="">{{ fieldInitials[index] }}</option>
-          <option *ngFor="let opt of options[index]; let ix = index"
-            [value]="opt">
-            {{ optionLabels[index][ix] }}
-          </option>
-        </select>
-      </ng-container>
-      <button #toggleButton dropdownToggle [id]="id"
-        class="calendar-toggle btn btn-icon">
-        <icon [icon]="SvgIcon.CalendarEvent"></icon>
-      </button>
-      <div class="dropdown-menu dropdown-menu-right calendar-dropdown-menu"
-        *dropdownMenu role="dialog" attr.id="'calendar-' + id"
-        attr.aria-labelledby="id"
-        (click)="$event.preventDefault(); $event.stopPropagation();">
-        <calendar class="flex-grow-1" [id]="id" [formControl]="formControl"
-          [minDate]="minDate" [maxDate]="maxDate"
-          (select)="selectFromCalendar($event)">
-        </calendar>
-        <actions forceRow class="mt-0 p-2" minimal>
-          <action-button *ngIf="todayEnabled" outline (action)="setToday()"
-            [label]="i18n.field.date.today">
-          </action-button>
-          <action-button outline (action)="value = null; hide()"
-            [label]="i18n.field.date.clear">
-          </action-button>
-          <action-button outline (action)="dropdown.hide()"
-            [label]="i18n.general.close">
-          </action-button>
-        </actions>
-      </div>
-    </div>
-  </div>
 </ng-template>

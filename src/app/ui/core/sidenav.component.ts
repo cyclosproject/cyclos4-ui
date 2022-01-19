@@ -22,6 +22,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 export class SidenavComponent extends AbstractComponent implements OnInit {
 
   @HostBinding('class.has-top-bar') hasTopBar = true;
+  @HostBinding('class.is-sidenav') isSidenav = true;
 
   @ViewChild('sidenavMenu', { static: true }) sidenavMenu: ElementRef;
 
@@ -133,7 +134,7 @@ export class SidenavComponent extends AbstractComponent implements OnInit {
   icon(entry: BaseMenuEntry) {
     if (entry instanceof MenuEntry && entry.menu === Menu.DASHBOARD && this.layout.ltmd) {
       // For mobile, the dashboard is shown as home
-      return SvgIcon.HouseDoor;
+      return SvgIcon.HouseDoor2;
     }
     return entry.icon;
   }

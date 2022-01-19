@@ -35,5 +35,6 @@
   <h3 *ngIf="addresses.length > 1" class="mt-3">
     {{ address.name }}
   </h3>
-  <address-details [address]="address"></address-details>
+  <address-details-with-custom-fields [address]="address">
+  </address-details-with-custom-fields>
 </ng-template>

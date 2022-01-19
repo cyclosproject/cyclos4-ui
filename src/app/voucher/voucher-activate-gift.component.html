@@ -1,0 +1,45 @@
+<div class="content" *ngIf="state.voucher">
+  <div class="message">{{
+    i18n.voucher.info.activateGift.message(state.voucher.blockedGiftBy) }}
+  </div>
+  <label-value class="voucher-token" kind="fieldView"
+    [label]="i18n.voucher.token" [value]="state.token"></label-value>
+  <label-value kind="field" [label]="i18n.voucher.pin" required>
+    <password-input focused [passwordInput]="state.pinInput"
+      [formControl]="form.get('pin').get('newPin')"
+      (enter)="focus(pinConfirmation)">
+    </password-input>
+  </label-value>
+  <label-value kind="field" #pinConfirmation
+    [label]="i18n.voucher.changePin.pinConfirmation" required>
+    <password-input [passwordInput]="state.pinInput"
+      [formControl]="form.get('pin').get('newPinConfirmation')"
+      (enter)="proceed()">
+    </password-input>
+  </label-value>
+  <boolean-field
+    [formControl]="form.get('notification').get('enableNotifications')" switch
+    [label]="i18n.voucher.enableNotifications">
+  </boolean-field>
+  <input-field [label]="i18n.voucher.email"
+    [required]="!state.voucher.phoneConfiguration"
+    [formControl]="form.get('notification').get('email')"
+    *ngIf="enableNotifications$ | async">
+  </input-field>
+  <input-field [formControl]="form.get('notification').get('mobilePhone')"
+    *ngIf="state.voucher.phoneConfiguration && (enableNotifications$ | async)"
+    [placeholder]="state.voucher.phoneConfiguration.mobileExample"
+    [label]="i18n.voucher.mobilePhone"></input-field>
+  <div class="mt-5">{{
+    i18n.voucher.info.activateGift.agreement(state.voucher.blockedGiftBy) }}
+  </div>
+</div>
+<div class="actions actions-primary">
+  <action-button [label]="i18n.general.submit"
+    [disabled]="state.processing$ | async" (action)="proceed()">
+  </action-button>
+  <!-- For breakpoints <= xs the logout button is shown in the top bar -->
+  <action-button *ngIf="layout.gtxs$ | async" [label]="i18n.general.cancel"
+    outline [disabled]="state.processing$ | async" (action)="state.exit()">
+  </action-button>
+</div>

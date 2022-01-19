@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from '@angular/forms';
-import { CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum } from 'app/api/models';
+import { CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum, UserQueryFilters, UserStatusEnum } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
@@ -111,7 +111,8 @@ export class CustomFieldFilterComponent
 
   get input(): boolean {
     return INPUT.includes(this.type)
-      || (this.type === CustomFieldTypeEnum.DYNAMIC_SELECTION && !this.field.hasValuesList)
+      || ((this.type === CustomFieldTypeEnum.DYNAMIC_SELECTION || this.type === CustomFieldTypeEnum.DYNAMIC_MULTI_SELECTION)
+        && !this.field.hasValuesList)
       || (this.type === CustomFieldTypeEnum.LINKED_ENTITY && !this.user);
   }
 
@@ -126,6 +127,10 @@ export class CustomFieldFilterComponent
   get hasValuesList(): boolean {
     // Don't handle enumerated as with values list because they are already rendered correctly, and have categories
     return this.field.hasValuesList && !this.enumerated;
+  }
+
+  userSearchFilters(): UserQueryFilters {
+    return { statuses: [UserStatusEnum.ACTIVE, UserStatusEnum.BLOCKED, UserStatusEnum.DISABLED] };
   }
 
   // Validator methods

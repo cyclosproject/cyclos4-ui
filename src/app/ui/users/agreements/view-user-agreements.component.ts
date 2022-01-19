@@ -57,7 +57,7 @@ export class ViewUserAgreementsComponent extends BaseViewPageComponent<UserAgree
     if (!this.noAgreements) {
       this.headingActions = [
         new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
-          this.router.navigate(['users', this.param, 'agreements', 'history']), true),
+          this.router.navigate(['/users', this.param, 'agreements', 'history']), true),
       ];
     }
   }

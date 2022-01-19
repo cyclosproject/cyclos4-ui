@@ -1,0 +1,92 @@
+<page-content [mode]="showForm ? 'filters' : 'empty'" [heading]="heading"
+  [mobileHeading]="mobileHeading" [headingActions]="headingActions$ | async">
+  <div [formGroup]="form" class="filters-form filters-form-separator"
+    [ngClass]="{'border-bottom': hasCategories }">
+    <user-info *ngIf="user && !authHelper.isSelf(user)" [user]="user">
+    </user-info>
+    <input-field *ngIf="showForm" formControlName="keywords"
+      (oninput)="resultType = ResultType.LIST"
+      [label]="i18n.general.keywords"></input-field>
+  </div>
+  <div class="row no-gutters filters-row" *ngIf="hasCategories">
+    <div class="col-xs-7 col-sm-3">
+      <result-type-field [allowedResultTypes]="allowedResultTypes$ | async"
+        [formControl]="resultTypeControl">
+      </result-type-field>
+    </div>
+    <div class="d-flex col-xs-5 col-sm-9 justify-content-end">
+      <div *ngIf="layout.gtxs$ | async" class="d-flex justify-content-end">
+        <heading-action-button
+          *ngIf="(resultType$ | async) !== ResultType.CATEGORIES"
+          class="heading-action-button pl-2 w-auto flex-grow-0"
+          [action]="showCategoriesAction">
+        </heading-action-button>
+        <heading-action-button
+          *ngIf="(resultType$ | async) === ResultType.CATEGORIES"
+          class="heading-action-button pl-2 w-auto flex-grow-0"
+          [action]="showTypesAction">
+        </heading-action-button>
+      </div>
+    </div>
+  </div>
+</page-content>
+
+<page-content
+  *ngIf="(form.controls.category.valueChanges | async) as category">
+  <nav class="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="#" (click)="$event.preventDefault(); selectCategory(null)">{{
+          i18n.ad.rootCategory }}</a>
+      </li>
+      <li class="breadcrumb-item active">
+        {{ currentCategory?.name }}
+      </li>
+    </ol>
+  </nav>
+</page-content>
+
+<results-layout resultType="list" [results]="types" [onClick]="selectType"
+  [resultType]="resultType" [categories]="categories">
+
+  <a *resultCategory="let cat" class="category-result" href="#"
+    (click)="selectCategory(cat); $event.preventDefault()">
+    <tiled-result [image]="cat.image" [zoom]="true" [icon]="SvgIcon.Ticket">
+      <div class="card-title">
+        {{ cat.name }}
+      </div>
+    </tiled-result>
+  </a>
+
+  <mobile-result *mobileResult="let row" [avatarImage]="row.image"
+    avatarRoundBorders="false" [avatarIcon]="SvgIcon.Person">
+    <div class="cell-text cell-main">
+      {{ row.voucherTitle }}
+    </div>
+  </mobile-result>
+
+  <table *resultTable
+    class="table table-no-header table-hover cursor-pointer">
+    <tbody>
+      <ng-container *ngFor="let type of (results$ | async)?.results">
+        <tr (click)="selectType(type)">
+          <td class="avatar">
+            <avatar [image]="type.image" [icon]="SvgIcon.Ticket" size="xlarge"
+              roundBorders="false">
+            </avatar>
+          </td>
+          <td>
+            <div>
+              <a ngClass="font-weight-bold">
+                {{ type.voucherTitle }}
+              </a>
+              <div>
+                {{ type.voucherDescription }}
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</results-layout>

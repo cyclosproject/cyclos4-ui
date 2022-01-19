@@ -58,7 +58,7 @@ export class ListAdInterestsComponent
   }
 
   remove(adInterest: AdInterest) {
-    this.notification.confirm({
+    this.confirmation.confirm({
       message: this.i18n.general.removeConfirm(adInterest.name),
       callback: () => this.doRemove(adInterest),
     });

@@ -67,6 +67,9 @@ export class ButtonToggleComponent extends BaseControlComponent<boolean> {
   }
 
   get tooltip(): string {
+    if (!this.iconTooltip) {
+      return null;
+    }
     const currentState = this.state ? this.i18n.general.enabled : this.i18n.general.disabled;
     return this.iconTooltip + ': ' + currentState.toLowerCase();
   }

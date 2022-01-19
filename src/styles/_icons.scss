@@ -91,17 +91,19 @@ avatar {
   .avatar-container.round-borders {
     border-radius: 50%;
   }
-  .avatar-container.with-lightbox {
+  &.management icon {
+    color: $management-icon-color;
+  }
+}
+avatar-lightbox {
+  .avatar-container {
     cursor: pointer;
     -webkit-transition: all ease-out 0.4s;
     transition: all ease-out 0.4s;
   }
-  .avatar-container.with-lightbox:hover {
+  .avatar-container:hover {
     -webkit-filter: brightness(90%);
     filter: brightness(90%);
-  }
-  &.management icon {
-    color: $management-icon-color;
   }
 }
 body.dark {

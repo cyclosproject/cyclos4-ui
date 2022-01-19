@@ -1,16 +1,21 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
-  Account, AccountHistoryResult, AccountKind, AccountType, AccountWithOwner,
+  Account, AccountKind, AccountType, AccountWithOwner,
   BaseTransferDataForSearch, Image, PreselectedPeriod, RecurringPaymentStatusEnum,
-  Transaction, TransactionDataForSearch, TransactionKind, TransactionResult, Transfer
+  TransactionDataForSearch, TransactionKind, TransactionResult
 } from 'app/api/models';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { FormatService } from 'app/core/format.service';
 import { SvgIcon } from 'app/core/svg-icon';
-import { I18n } from 'app/i18n/i18n';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { blank, empty } from 'app/shared/helper';
+
+export interface HasTransactionNumberAndId {
+  id?: string;
+  transactionNumber?: string;
+}
 
 /**
  * Helper service for banking functions
@@ -23,7 +28,7 @@ export class BankingHelperService {
   constructor(
     private dataForFrontendHolder: DataForFrontendHolder,
     private format: FormatService,
-    private i18n: I18n,
+    @Inject(I18nInjectionToken) private i18n: I18n,
   ) { }
 
   /**
@@ -65,7 +70,7 @@ export class BankingHelperService {
    * Otherwise, returns the id.
    * @param trans Either the transfer or transaction
    */
-  transactionNumberOrId(trans: Transfer | Transaction | AccountHistoryResult): string {
+  transactionNumberOrId(trans: HasTransactionNumberAndId): string {
     if (trans == null) {
       return null;
     }
@@ -151,9 +156,9 @@ export class BankingHelperService {
   }
 
   /**
-   * Returns the path components to navigate to the details of a givne transaction
+   * Returns the path components to navigate to the details of a given transaction
    */
-  transactionPath(tx: TransactionResult): string[] {
+  transactionPath(tx: HasTransactionNumberAndId): string[] {
     return ['/banking', 'transaction', this.transactionNumberOrId(tx)];
   }
 

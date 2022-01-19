@@ -23,7 +23,7 @@ export class BooleanFieldComponent
 
   /** Whether the value type is boolean or string */
   @Input() type: 'boolean' | 'string' = 'boolean';
-  @Output() click = new EventEmitter<Event>();
+  @Output() onClick = new EventEmitter<Event>();
   @ViewChild('checkbox') checkbox: ElementRef;
   _switch: boolean | string = false;
   @HostBinding('class.switch') @Input() get switch(): boolean | string {

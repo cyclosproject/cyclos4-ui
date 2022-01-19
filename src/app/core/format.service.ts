@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { Currency, DataForFrontend, TimeFieldEnum, TimeInterval, WeekDayEnum } from 'app/api/models';
+import { Address, AddressFieldEnum, Currency, DataForUi, TimeFieldEnum, TimeInterval, WeekDayEnum } from 'app/api/models';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
-import { I18n } from 'app/i18n/i18n';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { empty, urlJoin } from 'app/shared/helper';
-import Big from 'big.js';
 import moment from 'moment-mini-ts';
 import { DataForFrontendHolder } from './data-for-frontend-holder';
 
@@ -21,14 +20,14 @@ export class FormatService {
     dataForFrontendHolder: DataForFrontendHolder,
     i18nLoading: I18nLoadingService,
     private apiConfiguration: ApiConfiguration,
-    private i18n: I18n) {
-    dataForFrontendHolder.subscribe(dataForFrontend => this.initialize(dataForFrontend));
+    @Inject(I18nInjectionToken) private i18n: I18n) {
+    dataForFrontendHolder.subscribe(dataForFrontend => this.initialize(dataForFrontend?.dataForUi));
     // If already loaded, initialize right away
     if (dataForFrontendHolder.dataForFrontend) {
-      this.initialize(dataForFrontendHolder.dataForFrontend);
+      this.initialize(dataForFrontendHolder.dataForUi);
     }
     i18nLoading.subscribeForLocale(() => {
-      this.initialize(dataForFrontendHolder.dataForFrontend);
+      this.initialize(dataForFrontendHolder.dataForUi);
     });
   }
 
@@ -68,7 +67,7 @@ export class FormatService {
   /** Time field in plural form. Eg. days */
   pluralTimeFieldNames: Map<TimeFieldEnum, string>;
 
-  private _dataForFrontend: DataForFrontend;
+  private _dataForUi: DataForUi;
 
   /**
    * Sorts the given array according to the current date fields order.
@@ -91,11 +90,10 @@ export class FormatService {
     });
   }
 
-  initialize(dataForFrontend: DataForFrontend): void {
-    if (dataForFrontend == null) {
+  initialize(dataForUi: DataForUi): void {
+    if (dataForUi == null) {
       return;
     }
-    const dataForUi = dataForFrontend.dataForUi;
     // Cyclos uses Java format, such as dd/MM/yyyy. Moment uses all uppercase for those.
     this.dateFormat = (dataForUi.dateFormat || ISO_DATE).toUpperCase();
     let arr = /(\w+)(.)(\w+)(.)(\w+)/.exec(this.dateFormat);
@@ -174,7 +172,7 @@ export class FormatService {
     this.pluralTimeFieldNames.set(TimeFieldEnum.WEEKS, this.i18n.general.timeField.plural.weeks);
     this.pluralTimeFieldNames.set(TimeFieldEnum.YEARS, this.i18n.general.timeField.plural.years);
 
-    this._dataForFrontend = dataForFrontend;
+    this._dataForUi = dataForUi;
   }
 
   /**
@@ -182,7 +180,50 @@ export class FormatService {
    */
   getLogoUrl(id: string): string {
     return urlJoin(this.apiConfiguration.rootUrl, '..', 'content', 'images', 'currentConfiguration', id) + '?'
-      + this._dataForFrontend.dataForUi.resourceCacheKey;
+      + this._dataForUi.resourceCacheKey;
+  }
+
+  /**
+   * Formats an address by displaying "address line 1, address line 2"
+   * Otherwise displays the first address field set
+   */
+  formatAddress(value: Address): string {
+    let result = '';
+    if (!empty(value.addressLine1)) {
+      result += value.addressLine1;
+    }
+    if (!empty(value.addressLine2)) {
+      if (!empty(result)) {
+        result += ', ';
+      }
+      result += value.addressLine2;
+    }
+    if (empty(result)) {
+      [
+        AddressFieldEnum.STREET,
+        AddressFieldEnum.BUILDING_NUMBER,
+        AddressFieldEnum.COMPLEMENT,
+        AddressFieldEnum.NEIGHBORHOOD,
+        AddressFieldEnum.CITY,
+        AddressFieldEnum.PO_BOX,
+        AddressFieldEnum.COUNTRY,
+        AddressFieldEnum.REGION].forEach(field => {
+          const fieldValue = value[field];
+          if (!empty(fieldValue)) {
+            if (!empty(result)) {
+              result += ', ';
+            }
+            result += fieldValue;
+          }
+        });
+    } else if (!empty(value.city)) {
+      // Also add the city
+      if (!empty(result)) {
+        result += ', ';
+      }
+      result += value.city;
+    }
+    return result;
   }
 
   /**
@@ -251,23 +292,23 @@ export class FormatService {
 
   /**
    * Returns a string representing a number with a fixed number of decimals
-   * @param num The number (or string)
+   * @param input The number (or string)
    * @param scale The number of decimal digits
    * @returns The string representing the number, or `undefined` if the input is invalid
    */
-  numberToFixed(num: number | string, scale: number): string {
-    if (num == null) {
+  numberToFixed(input: number | string, scale: number): string {
+    if (input == null) {
       return null;
     }
 
-    let bignum: any;
+    let num: number;
     try {
-      bignum = Big(num);
+      num = Number(input);
     } catch (Error) {
       return undefined;
     }
 
-    return bignum.toFixed(scale == null ? 0 : scale);
+    return num.toFixed(scale == null ? 0 : scale);
   }
 
   /**
@@ -326,11 +367,11 @@ export class FormatService {
   /**
    * Formats the given number (or string) as number according to the current settings
    * @param num The input number or string representation of a number
-   * @param scale The number of decimal digits
+   * @param scale The number of decimal digits. When negative will just toString() the number
    * @param forceSign If true will output + for positive numbers
    */
   formatAsNumber(num: number | string, scale: number, forceSign: boolean = false): string {
-    const fixed = this.numberToFixed(num, scale);
+    const fixed = scale < 0 ? String(num) : this.numberToFixed(num, scale);
     if (fixed == null) {
       return '';
     }
@@ -409,7 +450,7 @@ export class FormatService {
    * Formats a range of values
    * @param range The range, with min and max values
    */
-  formatRange(range: { min?: any, max?: any }, currency?: Currency): string {
+  formatRange(range: { min?: any, max?: any; }, currency?: Currency): string {
     if (range == null || range.min == null && range.max == null) {
       return '';
     }
@@ -440,7 +481,7 @@ export class FormatService {
    * Formats a boolean value, returning a key for yes / no
    * @param value The boolean value
    */
-  formatBoolean(value: boolean | string): string {
+  formatBoolean(value: any): string {
     if (empty(value)) {
       return '';
     }
@@ -472,6 +513,20 @@ export class FormatService {
    */
   minWeekdayName(weekday: number): string {
     return this.minWeekdayNames[weekday];
+  }
+
+  /**
+   * Returns the formatted week days separated by comma 
+   */
+  formatWeekDays(weekDays: WeekDayEnum[]) {
+    if (!empty(weekDays)) {
+      const days = weekDays.length;
+      if (![0, 7].includes(days)) {
+        // When there is a specified subset for redeeming, show the days
+        return weekDays.map(d => this.weekDay(d)).join(', ');
+      }
+    }
+    return null;
   }
 
   weekDay(day: WeekDayEnum): string {
