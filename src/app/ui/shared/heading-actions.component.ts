@@ -94,7 +94,7 @@ export class HeadingActionsComponent extends BaseComponent implements OnInit {
           actions = actions.filter(a => a.maybeRoot);
         } else {
           // No root actions. Still, if less than 3, they will be shown in the title
-          if (actions.length >= 3) {
+          if (actions.length > 3) {
             actions = [];
           }
         }

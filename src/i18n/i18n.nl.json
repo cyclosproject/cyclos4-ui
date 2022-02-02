@@ -1322,7 +1322,7 @@
       "myProfile": "Mijn profiel",
       "editProfile": "Profiel bewerken",
       "image": "Profiel afbeelding",
-      "images": "Afbeeldingsprofiel",
+      "images": "Afbeeldingen",
       "fields": "Aangepaste profiel velden",
       "phones": "Telefoons",
       "addresses": "Adressen",
@@ -1662,11 +1662,11 @@
   },
   "phone": {
     "mobile": "Mobiele telefoon",
-    "landLine": "Land-line telefoon",
+    "landLine": "Vaste telefoon",
     "name.mobile": "Mobiele telefoon naam",
-    "name.landLine": "Land-line telefoon naam",
+    "name.landLine": "Vaste telefoon naam",
     "number.mobile": "Mobiel telefoonnummer",
-    "number.landLine": "Land-line telefoon nummer",
+    "number.landLine": "Vaste telefoon nummer",
     "phoneNumber": "Telefoonnummer",
     "extension": "Land-line extensie",
     "numberExtensionValue": "{number} ext. {extension}",
@@ -1697,7 +1697,7 @@
     "complement": "Aanvulling",
     "country": "Land",
     "neighborhood": "Wijk",
-    "poBox": "Post office box",
+    "poBox": "Postbus",
     "region": "Regio / staat",
     "street": "Straat",
     "zip": "Postcode"
@@ -2197,10 +2197,7 @@
     "transfer": "Overdracht",
     "fileUpload": "Bestand uploaden",
     "redirecting": "U wordt omleiden...",
-    "alreadyExecuted": "Deze actie is al uitgevoerd. Herstart de actie aub.",
-    "mobileTitle": {
-      "result": "Resultaat"
-    }
+    "alreadyExecuted": "Deze actie is al uitgevoerd. Herstart de actie aub."
   },
   "wizard": {
     "alreadyExecuted": "Deze stap is al uitgevoerd",

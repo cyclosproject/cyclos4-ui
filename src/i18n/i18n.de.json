@@ -1783,10 +1783,7 @@
     "transfer": "Überweisung",
     "fileUpload": "Datei hochladen",
     "redirecting": "Sie werden umgeleitet...",
-    "alreadyExecuted": "Dieser Vorgang wurde bereits ausgeführt. Bitte starten Sie den Vorgang neu.",
-    "mobileTitle": {
-      "result": "Ergebnis"
-    }
+    "alreadyExecuted": "Dieser Vorgang wurde bereits ausgeführt. Bitte starten Sie den Vorgang neu."
   },
   "wizard": {
     "alreadyExecuted": "Diese Aktion wurde bereits ausgeführt",

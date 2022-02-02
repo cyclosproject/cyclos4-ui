@@ -267,6 +267,8 @@ export class ApiHelper {
         return `/records/view/${id}`;
       case 'token':
         return `/users/tokens/view/${id}`;
+      case 'publicUserRegistration':
+        return `/users/registration`;
       default:
         return null;
     }

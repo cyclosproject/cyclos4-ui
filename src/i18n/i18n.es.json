@@ -2206,10 +2206,7 @@
     "transfer": "Transferencia",
     "fileUpload": "Cargar archivo",
     "redirecting": "Esta siendo redirigido...",
-    "alreadyExecuted": "Esta acción ya ha sido ejecutada. Por favor, reinicie la operación.",
-    "mobileTitle": {
-      "result": "Resultado"
-    }
+    "alreadyExecuted": "Esta acción ya ha sido ejecutada. Por favor, reinicie la operación."
   },
   "wizard": {
     "alreadyExecuted": "Este paso ya fue ejecutado",

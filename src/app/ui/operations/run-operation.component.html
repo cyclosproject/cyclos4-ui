@@ -87,7 +87,6 @@
 
   <page-content *ngIf="isContent && (result$ | async)"
     [heading]="result.title || data.name"
-    [mobileHeading]="i18n.operation.mobileTitle.result"
     [headingActions]="headingActions$ | async" last>
 
     <!-- Show the context of the operation if running directly. Otherwise, this data was already presented. -->

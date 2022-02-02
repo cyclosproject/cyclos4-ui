@@ -1377,10 +1377,7 @@
     "ad": "Annunci",
     "transfer": "Trasferimenti",
     "fileUpload": "Carica file",
-    "redirecting": "Stai per essere reindirizzato...",
-    "mobileTitle": {
-      "result": "Risultato"
-    }
+    "redirecting": "Stai per essere reindirizzato..."
   },
   "setting": {
     "title": "Impostazioni",
