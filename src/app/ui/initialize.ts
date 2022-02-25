@@ -63,7 +63,8 @@ export function initialize(
         .pipe(switchMap(() => of(d)));
     });
     dataForFrontendHolder.registerLoadHook(d => {
-      return iconLoading.load(d?.svgIconNames || [])
+      const icons = ['qr-code', 'calendar-week', 'question', ...(d?.svgIconNames || [])];
+      return iconLoading.load(icons)
         .pipe(
           switchMap(() => of(d)),
           catchError(() => of(d)));
