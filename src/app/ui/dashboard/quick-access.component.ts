@@ -14,6 +14,7 @@ import { BehaviorSubject } from 'rxjs';
 
 export const ConsumersConfig = '-8370399924608672754';
 export const MerchantsConfig = '-8370399924608672498';
+export const CityConfig = '-8370399924608673010';
 export const OrganizationsConfig = '-8370399924608672242';
 export const QrCodeToken = 'tk_cccard';
 export const ExpiryDatesRecordType = 'rtu_expirylog';
@@ -21,6 +22,7 @@ export const HelpOperation = 'co_helpnfe21';
 export const MemberRewardOperation = 'co_cashback';
 export const MemberRewardNonMemberOperation = 'co_cashbacknotmember';
 export const QuickScanOperation = 'co_quickscan';
+export const CheckUserBalanceOperation = 'co_check_user_balance';
 
 export interface QuickAccessAction {
   icon: string;
@@ -273,12 +275,17 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
         break;
       case MerchantsConfig:
       case OrganizationsConfig:
+      case CityConfig:
         const memberReward = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === MemberRewardOperation)
         addAction(SvgIcon.PersonCheck, memberReward.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberReward }));
         const memberRewardNonMember = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === MemberRewardNonMemberOperation)
         addAction(SvgIcon.PersonPlus, memberRewardNonMember.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberRewardNonMember }));
         const quickScan = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === QuickScanOperation)
         addAction(SvgIcon.People, quickScan.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: quickScan }));
+        if (config === CityConfig) {
+          const checkUserBalance = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === QuickScanOperation)
+          addAction(SvgIcon.Search, checkUserBalance.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: checkUserBalance }));
+        }
         break;
     }
 
