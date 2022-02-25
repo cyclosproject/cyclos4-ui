@@ -24,7 +24,7 @@
     "lint": "npm run ng -- lint",
     "ng-build": "ng build --configuration production",
     "ng-build-dev": "ng build --source-map=false",
-    "ng-build-dev-sm": "ng build --source-map=true",
+    "ng-build-dev-sm": "ng build --source-map=true"
   },
   "private": true,
   "dependencies": {

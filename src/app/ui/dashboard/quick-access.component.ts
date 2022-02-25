@@ -12,8 +12,18 @@ import { ActiveMenu, Menu, MenuEntry } from 'app/ui/shared/menu';
 import { environment } from 'environments/environment';
 import { BehaviorSubject } from 'rxjs';
 
+export const ConsumersConfig = '-8370399924608672754';
+export const MerchantsConfig = '-8370399924608672498';
+export const OrganizationsConfig = '-8370399924608672242';
+export const QrCodeToken = 'tk_cccard';
+export const ExpiryDatesRecordType = 'rtu_expirylog';
+export const HelpOperation = 'co_helpnfe21';
+export const MemberRewardOperation = 'co_cashback';
+export const MemberRewardNonMemberOperation = 'co_cashbacknotmember';
+export const QuickScanOperation = 'co_quickscan';
+
 export interface QuickAccessAction {
-  icon: SvgIcon;
+  icon: string;
   label: string;
   entry: MenuEntry;
   onClick?: () => void;
@@ -53,7 +63,7 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
     const types = new Set(this.data.quickAccess);
 
     const addAction = (
-      icon: SvgIcon, label: string, activeMenu: ActiveMenu, onClick?: () => void): void => {
+      icon: string, label: string, activeMenu: ActiveMenu, onClick?: () => void): void => {
       const entry = this.menu.menuEntry(activeMenu);
       if (entry) {
         this.actions.push({
@@ -248,6 +258,28 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
     }
     if (types.has(FrontendQuickAccessTypeEnum.SETTINGS)) {
       addAction(SvgIcon.Gear, this.i18n.dashboard.action.settings, new ActiveMenu(Menu.SETTINGS));
+    }
+
+    // Customizations for stniklaas
+    const config = this.dataForFrontendHolder.auth.configuration.id;
+    switch (config) {
+      case ConsumersConfig:
+        const qrCode = auth.permissions.tokens.my.map(t => t.type).find(t => t.internalName === QrCodeToken);
+        addAction('qr-code', 'QR-code', new ActiveMenu(Menu.MY_TOKENS, { tokenType: qrCode }));
+        const expiryDates = auth.permissions.records.user.map(rt => rt.type).find(rt => rt.internalName === ExpiryDatesRecordType);
+        addAction('calendar-week', 'Vervaldata', new ActiveMenu(Menu.SEARCH_RECORDS_BANKING, { recordType: expiryDates }));
+        const help = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === HelpOperation)
+        addAction('question', 'Help', new ActiveMenu(Menu.RUN_OPERATION_PERSONAL, { operation: help }));
+        break;
+      case MerchantsConfig:
+      case OrganizationsConfig:
+        const memberReward = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === MemberRewardOperation)
+        addAction(SvgIcon.PersonCheck, memberReward.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberReward }));
+        const memberRewardNonMember = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === MemberRewardNonMemberOperation)
+        addAction(SvgIcon.PersonPlus, memberRewardNonMember.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberRewardNonMember }));
+        const quickScan = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === QuickScanOperation)
+        addAction(SvgIcon.People, quickScan.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: quickScan }));
+        break;
     }
 
     // Handle keyboard shortcuts: arrows to navigate correctly on the grid
