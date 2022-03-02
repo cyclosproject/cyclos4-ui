@@ -8,6 +8,21 @@
           size="huge">
         </avatar-lightbox>
         <ng-template #noImage>
+          <div class="d-flex flex-column">
+            <ng-container *ngIf="
+              data.imageConfiguration.availability === 'required'; 
+              else noImageOptional">
+              <div tabindex="0"
+                [ngClass]="{'is-invalid': imageControl.hasError}">
+                {{ i18n.user.noImageRequired }}
+                <span class="required-marker">&nbsp;*</span>
+                <field-errors *ngIf="imageControl" [control]="imageControl">
+                </field-errors>
+              </div>
+            </ng-container>
+          </div>
+        </ng-template>
+        <ng-template #noImageOptional>
           {{ i18n.user.noImage }}
         </ng-template>
       </div>

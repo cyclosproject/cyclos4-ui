@@ -105,7 +105,7 @@ export class UserFieldComponent
     let text = this.inputFieldControl.value as string;
     text = (text || '').trim();
     if (text.startsWith('*:')) {
-      text = text.substr(2);
+      text = text.substring(2);
     }
     if (text) {
       return this.errorHandler.requestWithCustomErrorHandler(() =>
@@ -133,7 +133,7 @@ export class UserFieldComponent
   protected query(text: string): Observable<User[]> {
     text = (text || '').trim();
     if (text.startsWith('*:')) {
-      text = text.substr(2);
+      text = text.substring(2);
     }
     if (!this.allowSearch || empty(text)) {
       return of([]);

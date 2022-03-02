@@ -86,7 +86,7 @@ export class ImagePropertiesDialogComponent
           val = '0';
         }
       } else if (endsWith(val, 'px')) {
-        val = val.substr(0, val.length - 'px'.length);
+        val = val.substring(0, val.length - 'px'.length);
       }
       value[key] = val;
     }

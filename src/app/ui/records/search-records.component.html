@@ -15,7 +15,7 @@
             <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
             </div>
           </ng-container>
-          <div class="col-12 col-md-6">
+          <div *ngIf="showKeywords()" class="col-12 col-md-6">
             <input-field labelPosition="side" formControlName="keywords"
               [label]="i18n.general.keywords" fieldSize="full"></input-field>
           </div>
@@ -50,25 +50,27 @@
                 [label]="i18n.general.user"></user-field>
             </div>
           </ng-container>
-          <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="createdBy"
-              [label]="i18n.record.createdBy"></user-field>
-          </div>
-          <!-- Force a new line to keep date range in same row -->
-          <ng-container *ngIf="!data.hideDateOnList">
-            <div class="w-100"></div>
+          <ng-container *ngIf="this.generalSearch || !isOwnRecords()">
             <div class="col-12 col-md-6">
-              <date-field labelPosition="side" formControlName="beginDate"
-                [label]="i18n.general.beginDate" minDate="past100"
-                maxDate="todayEnd" fieldSize="full">
-              </date-field>
+              <user-field labelPosition="side" formControlName="createdBy"
+                [label]="i18n.record.createdBy"></user-field>
             </div>
-            <div class="col-12 col-md-6">
-              <date-field labelPosition="side" formControlName="endDate"
-                [label]="i18n.general.endDate" minDate="past100"
-                maxDate="todayEnd" fieldSize="full">
-              </date-field>
-            </div>
+            <!-- Force a new line to keep date range in same row -->
+            <ng-container *ngIf="!data.hideDateOnList">
+              <div class="w-100"></div>
+              <div class="col-12 col-md-6">
+                <date-field labelPosition="side" formControlName="beginDate"
+                  [label]="i18n.general.beginDate" minDate="past100"
+                  maxDate="todayEnd" fieldSize="full">
+                </date-field>
+              </div>
+              <div class="col-12 col-md-6">
+                <date-field labelPosition="side" formControlName="endDate"
+                  [label]="i18n.general.endDate" minDate="past100"
+                  maxDate="todayEnd" fieldSize="full">
+                </date-field>
+              </div>
+            </ng-container>
           </ng-container>
           <div class="col-12 col-md-6" *ngFor="let cf of fieldsInSearch">
             <custom-field-filter labelPosition="side" [field]="cf"

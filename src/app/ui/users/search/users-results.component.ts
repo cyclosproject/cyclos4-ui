@@ -64,7 +64,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
     const auth = this.dataForFrontendHolder.auth || {};
     const permissions = auth.permissions || {};
     const users = (permissions.users || {});
-    this.canViewProfile = users.viewProfile === true;
+    this.canViewProfile = users.viewProfile === true || this.resultKind === 'operator';
   }
 
   /**

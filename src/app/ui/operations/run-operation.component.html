@@ -98,8 +98,14 @@
       [innerHTML]="result.content | trust"></div>
     <div *ngIf="result.resultType === 'plainText'" class="break-nl">
       {{ result.content }}</div>
-    <actions *ngIf="!runDirectly">
-      <action-button [disabled]="requesting$ | async" (action)="reload()"
+    <actions [reverseRow]="primaryActions.length == 0">
+      <ng-container *ngFor="let a of primaryActions">
+        <action-button [disabled]="requesting$ | async"
+          (action)="runPrimaryAction(a)" [label]="a.action.label">
+        </action-button>
+      </ng-container>
+      <action-button *ngIf="!runDirectly" outline
+        [disabled]="requesting$ | async" (action)="reload()"
         [label]="i18n.general.close">
       </action-button>
     </actions>

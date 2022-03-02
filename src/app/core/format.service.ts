@@ -336,7 +336,7 @@ export class FormatService {
     if (typeof (num) === 'number') {
       return Math.abs(num).toFixed();
     }
-    return num.startsWith('-') ? num.substr(1) : num;
+    return num.startsWith('-') ? num.substring(1) : num;
   }
 
   /**

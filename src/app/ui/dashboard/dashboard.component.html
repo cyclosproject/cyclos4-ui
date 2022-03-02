@@ -24,7 +24,9 @@
       </div>
 
       <div class="dashboard-cards">
-        <quick-access [data]="data"></quick-access>
+        <quick-access *ngIf="actions?.length > 0" [data]="data"
+          [actions]="actions">
+        </quick-access>
         <ng-container *ngFor="let accts of accounts">
           <account-status *ngIf="!data.mergeAccounts" [account]="accts[0]">
           </account-status>

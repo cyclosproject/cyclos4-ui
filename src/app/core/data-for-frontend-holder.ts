@@ -224,7 +224,7 @@ export class DataForFrontendHolder {
     const url = window.location.href;
     const pos = url.indexOf('/ui/');
     if (pos >= 0) {
-      window.location.assign(`${url.substr(0, pos)}/classic`);
+      window.location.assign(`${url.substring(0, pos)}/classic`);
     } else {
       window.location.assign(urlJoin(this.apiConfiguration.rootUrl, '..', 'classic'));
     }

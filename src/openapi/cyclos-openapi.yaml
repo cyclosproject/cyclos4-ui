@@ -70113,6 +70113,11 @@ components:
                 The records owner. Only returned if is not system.
               allOf:
                 - $ref: '#/components/schemas/User'
+            hideKeywordsSearch:
+              description: >-
+                Whether the keywords search filter should be hidden. Only returned
+                if is not system.
+              type: boolean
             query:
               description: >-
                 Default query filters for searching records
@@ -70902,6 +70907,10 @@ components:
           type: object
           additionalProperties:
             type: string
+        primary:
+          description: >-
+            Indicates whether this action is a primary one.
+          type: boolean
 
     RunOperationResult:
       description: >-

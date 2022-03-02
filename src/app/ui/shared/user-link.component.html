@@ -1,5 +1,5 @@
-<maybe-link *ngIf="path != null; else displayTpl" [link]="path"
-  class="d-flex flex-row">
+<maybe-link *ngIf="path != null && canViewProfile(); else displayTpl"
+  [link]="path" class="d-flex flex-row">
   <ng-container *ngTemplateOutlet="displayTpl"></ng-container>
 </maybe-link>
 

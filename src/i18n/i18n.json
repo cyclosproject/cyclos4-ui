@@ -1387,6 +1387,7 @@
     "operator.registration.inactive": "The operator {operator} has been registered, however, still needs activatation by the administration.",
     "operator.registration.pending": "The operator {operator} has been registered, however, still needs to validate their registration by confirming the e-mail.",
     "operator.registration.addAnother": "Register another operator",
+    "noImageRequired": "Please, upload your profile image",
     "noImage": "No profile image",
     "noImages": "No profile images",
     "address.define": "Define address",

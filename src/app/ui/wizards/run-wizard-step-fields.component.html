@@ -1,38 +1,30 @@
-<ng-container
-  *ngIf="user && data.step.dataForNew as dataForNew; else customFieldsTpl">
+<ng-container *ngIf="user && data.step.dataForNew as dataForNew; else customFieldsTpl">
   <ng-container *ngIf="dataForNew.profileFieldActions?.image?.edit">
     <images-field [label]="dataForNew.imageConfiguration.maxImages === 1
-        ? i18n.user.title.image : i18n.user.title.images" avatarSize="large"
-      [formControl]="user.controls.images"
-      [maxFiles]="dataForNew.imageConfiguration.maxImages"
-      [initialImages]="dataForNew.images"
+        ? i18n.user.title.image : i18n.user.title.images" avatarSize="large" [formControl]="user.controls.images"
+      [required]="dataForNew.imageConfiguration.availability === 'required'"
+      [maxFiles]="dataForNew.imageConfiguration.maxImages" [initialImages]="dataForNew.images"
       [target]="TempImageTargetEnum.USER_REGISTRATION"></images-field>
   </ng-container>
 
   <ng-container *ngIf="dataForNew.profileFieldActions?.name?.edit">
-    <label-value *ngIf="data.step.dataForNew.broker"
-      [label]="i18n.user.broker">
+    <label-value *ngIf="data.step.dataForNew.broker" [label]="i18n.user.broker">
       <user-link [user]="data.step.dataForNew.broker" hideLink></user-link>
     </label-value>
 
-    <input-field [formControl]="user.controls.name" required
-      [label]="dataForNew.nameLabel"></input-field>
+    <input-field [formControl]="user.controls.name" required [label]="dataForNew.nameLabel"></input-field>
   </ng-container>
 
-  <ng-container
-    *ngIf="dataForNew.profileFieldActions?.username?.edit && !dataForNew.generatedUsername">
-    <input-field [formControl]="user.controls.username" required
-      [label]="i18n.user.username"></input-field>
+  <ng-container *ngIf="dataForNew.profileFieldActions?.username?.edit && !dataForNew.generatedUsername">
+    <input-field [formControl]="user.controls.username" required [label]="i18n.user.username"></input-field>
   </ng-container>
 
   <ng-container *ngIf="emailAvailability !== AvailabilityEnum.DISABLED">
-    <label-value [label]="i18n.user.email" kind="field"
-      [ignoreExtraCell]="!emailPrivacy"
+    <label-value [label]="i18n.user.email" kind="field" [ignoreExtraCell]="!emailPrivacy"
       [required]="emailAvailability === AvailabilityEnum.REQUIRED">
       <input-field [formControl]="user.controls.email">
       </input-field>
-      <field-privacy *extraCell field="email"
-        [control]="user.controls.hiddenFields"></field-privacy>
+      <field-privacy *extraCell field="email" [control]="user.controls.hiddenFields"></field-privacy>
     </label-value>
     <label-value *ngIf="step.validateEmail && !runWizard.emailAlreadyVerified"
       [label]="i18n.wizard.emailVerificationCode" kind="field" required>
@@ -42,9 +34,8 @@
           </input-field>
         </div>
         <div class="col-6 col-md-8 pl-2">
-          <countdown-button #emailCode [label]="i18n.general.sendCode"
-            [disabledSeconds]="5" [disabledKey]="codeSentMessage"
-            (action)="sendEmailCode(emailCode)">
+          <countdown-button #emailCode [label]="i18n.general.sendCode" [disabledSeconds]="5"
+            [disabledKey]="codeSentMessage" (action)="sendEmailCode(emailCode)">
           </countdown-button>
         </div>
       </div>
@@ -52,26 +43,24 @@
   </ng-container>
 
   <ng-container *ngIf="mobileAvailability !== AvailabilityEnum.DISABLED">
-    <label-value [label]="i18n.phone.mobile"
-      [required]="mobileAvailability === AvailabilityEnum.REQUIRED"
-      kind="field" [ignoreExtraCell]="!phonePrivacy">
+    <label-value [label]="i18n.phone.mobile" [required]="mobileAvailability === AvailabilityEnum.REQUIRED" kind="field"
+      [ignoreExtraCell]="!phonePrivacy">
       <input-field [formControl]="mobilePhone.controls.number"
         [placeholder]="dataForNew.phoneConfiguration.mobileExample">
       </input-field>
       <field-privacy *extraCell [control]="mobilePhone.controls.hidden">
       </field-privacy>
     </label-value>
-    <label-value *ngIf="step.validateSms && !runWizard.smsAlreadyVerified"
-      [label]="i18n.wizard.smsVerificationCode" kind="field" required>
+    <label-value *ngIf="step.validateSms && !runWizard.smsAlreadyVerified" [label]="i18n.wizard.smsVerificationCode"
+      kind="field" required>
       <div class="row no-gutters w-100">
         <div class="col-6 col-md-4">
           <input-field [formControl]="smsValidation" size="full">
           </input-field>
         </div>
         <div class="col-6 col-md-8 pl-2">
-          <countdown-button #smsCode [label]="i18n.general.sendCode"
-            [disabledSeconds]="30" [disabledKey]="codeSentMessage"
-            (action)="sendSmsCode(smsCode)">
+          <countdown-button #smsCode [label]="i18n.general.sendCode" [disabledSeconds]="30"
+            [disabledKey]="codeSentMessage" (action)="sendSmsCode(smsCode)">
           </countdown-button>
         </div>
       </div>
@@ -79,8 +68,7 @@
   </ng-container>
 
   <ng-container *ngIf="landLineAvailability !== AvailabilityEnum.DISABLED">
-    <label-value [label]="i18n.phone.landLine"
-      [required]="landLineAvailability === AvailabilityEnum.REQUIRED"
+    <label-value [label]="i18n.phone.landLine" [required]="landLineAvailability === AvailabilityEnum.REQUIRED"
       kind="field" [ignoreExtraCell]="!phonePrivacy">
       <input-field [formControl]="landLinePhone.controls.number"
         [placeholder]="dataForNew.phoneConfiguration.landLineExample">
@@ -88,38 +76,31 @@
       <field-privacy *extraCell [control]="landLinePhone.controls.hidden">
       </field-privacy>
     </label-value>
-    <input-field *ngIf="dataForNew.phoneConfiguration.extensionEnabled"
-      [formControl]="landLinePhone.controls.extension" fieldSize="tiny"
-      [label]="i18n.phone.extension"></input-field>
+    <input-field *ngIf="dataForNew.phoneConfiguration.extensionEnabled" [formControl]="landLinePhone.controls.extension"
+      fieldSize="tiny" [label]="i18n.phone.extension"></input-field>
   </ng-container>
 
-  <ng-container
-    *ngIf="defineAddress && addressAvailability !== AvailabilityEnum.DISABLED">
-    <boolean-field *ngIf="addressAvailability === AvailabilityEnum.OPTIONAL"
-      [formControl]="defineAddress" [label]="i18n.user.addressDefine" switch>
+  <ng-container *ngIf="defineAddress && addressAvailability !== AvailabilityEnum.DISABLED">
+    <boolean-field *ngIf="addressAvailability === AvailabilityEnum.OPTIONAL" [formControl]="defineAddress"
+      [label]="i18n.user.addressDefine" switch>
     </boolean-field>
-    <address-form *ngIf="defineAddress.value" [addressForm]="address"
-      ignoreContactFields [configuration]="dataForNew.addressConfiguration"
-      [managePrivacy]="dataForNew.addressConfiguration.managePrivacy">
+    <address-form *ngIf="defineAddress.value" [addressForm]="address" ignoreContactFields
+      [configuration]="dataForNew.addressConfiguration" [managePrivacy]="dataForNew.addressConfiguration.managePrivacy">
     </address-form>
-    <label-value [label]="i18n.general.map" kind="field"
-      *ngIf="defineAddress.value && maps.enabled">
-      <static-map
-        *ngIf="address.get('location').value.latitude != null; else viewMap"
-        (imageLoaded)="mapShown()" [address]="address.value"></static-map>
+    <label-value [label]="i18n.general.map" kind="field" *ngIf="defineAddress.value && maps.enabled">
+      <static-map *ngIf="address.get('location').value.latitude != null; else viewMap" (imageLoaded)="mapShown()"
+        [address]="address.value"></static-map>
       <ng-template #viewMap>
-        <action-button outline [disabled]="locatingAddress$ | async"
-          (action)="locateAddress()" [label]="i18n.general.mapView">
+        <action-button outline [disabled]="locatingAddress$ | async" (action)="locateAddress()"
+          [label]="i18n.general.mapView">
         </action-button>
       </ng-template>
     </label-value>
   </ng-container>
 
   <ng-container *ngIf="customProfileValues">
-    <custom-field-input *ngFor="let cf of dataForNew.customFields"
-      [field]="cf"
-      [formControl]="customProfileValues.controls[cf.internalName]"
-      [binaryValues]="dataForNew.binaryValues">
+    <custom-field-input *ngFor="let cf of dataForNew.customFields" [field]="cf"
+      [formControl]="customProfileValues.controls[cf.internalName]" [binaryValues]="dataForNew.binaryValues">
     </custom-field-input>
   </ng-container>
 
@@ -127,13 +108,10 @@
 
   <ng-container *ngIf="dataForNew.passwordTypes?.length > 0">
     <ng-container *ngFor="let pt of dataForNew.passwordTypes; let i = index">
-      <ng-container *ngIf="passwordForm(i) as password"
-        [formGroup]="password">
-        <input-field required formControlName="value" type="password"
-          autocomplete="new-password" [label]="pt.name">
+      <ng-container *ngIf="passwordForm(i) as password" [formGroup]="password">
+        <input-field required formControlName="value" type="password" autocomplete="new-password" [label]="pt.name">
         </input-field>
-        <input-field required formControlName="confirmationValue"
-          type="password" autocomplete="new-password"
+        <input-field required formControlName="confirmationValue" type="password" autocomplete="new-password"
           [label]="i18n.user.passwordConfirmation(pt.name)">
         </input-field>
         <boolean-field *ngIf="pt.canForceChange" formControlName="forceChange"
@@ -144,31 +122,26 @@
   </ng-container>
 
   <ng-container *ngIf="dataForNew.securityQuestions?.length > 0">
-    <single-selection-field [formControl]="user.controls.securityQuestion"
-      [label]="i18n.securityQuestion.question"
+    <single-selection-field [formControl]="user.controls.securityQuestion" [label]="i18n.securityQuestion.question"
       [emptyOption]="i18n.user.securityQuestionEmpty">
-      <field-option *ngFor="let q of dataForNew.securityQuestions"
-        [value]="q.internalName" [text]="q.name">
+      <field-option *ngFor="let q of dataForNew.securityQuestions" [value]="q.internalName" [text]="q.name">
       </field-option>
     </single-selection-field>
-    <input-field #securityAnswer
-      *ngIf="!empty(user.get('securityQuestion').valueChanges | async)"
-      [formControl]="user.controls.securityAnswer"
-      [label]="i18n.securityQuestion.answer">
+    <input-field #securityAnswer *ngIf="!empty(user.get('securityQuestion').valueChanges | async)"
+      [formControl]="user.controls.securityAnswer" [label]="i18n.securityQuestion.answer">
     </input-field>
   </ng-container>
 
   <ng-container *ngIf="!empty(dataForNew.agreements)">
     <label-value kind="field" [label]="i18n.user.profile.agreements">
-      <accept-agreements [agreements]="dataForNew.agreements"
-        [formControl]="user.controls.acceptAgreements"></accept-agreements>
+      <accept-agreements [agreements]="dataForNew.agreements" [formControl]="user.controls.acceptAgreements">
+      </accept-agreements>
     </label-value>
   </ng-container>
 
   <ng-container *ngIf="dataForNew.captchaType">
     <label-value kind="field" [label]="i18n.user.captcha" required>
-      <captcha [captchaInput]="dataForNew.captchaInput"
-        [form]="user.controls.captcha"></captcha>
+      <captcha [captchaInput]="dataForNew.captchaInput" [form]="user.controls.captcha"></captcha>
     </label-value>
   </ng-container>
 </ng-container>
@@ -176,8 +149,8 @@
 <ng-template #customFieldsTpl>
   <ng-container *ngIf="customValues">
     <custom-field-input *ngFor="let cf of data.step.customFields" [field]="cf"
-      [formControl]="customValues.controls[cf.internalName]"
-      [binaryValues]="data.binaryValues" [submitAction]="submitAction">
+      [formControl]="customValues.controls[cf.internalName]" [binaryValues]="data.binaryValues"
+      [submitAction]="submitAction">
     </custom-field-input>
   </ng-container>
 </ng-template>
