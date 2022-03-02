@@ -8,6 +8,8 @@ import { BehaviorSubject } from 'rxjs';
 
 QrScanner.WORKER_PATH = './qr-scanner-worker.min.js';
 
+export const Timeout = 60_000;
+
 /**
  * A component to be shown in a dialog, opening the camera to scan a QR-code
  */
@@ -23,6 +25,7 @@ export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit,
   qrScanner: QrScanner;
   cameras$ = new BehaviorSubject<Array<QrScanner.Camera>>([]);
   cameraControl: FormControl;
+  timerControl: any;
 
   @ViewChild('video', { static: true }) video: ElementRef<HTMLVideoElement>;
 
@@ -38,6 +41,7 @@ export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit,
   ngOnInit(): void {
     super.ngOnInit();
     this.cameraControl = new FormControl();
+    this.timerControl = setTimeout(() => this.close(), Timeout);
   }
 
   ngAfterViewInit() {
@@ -75,6 +79,7 @@ export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit,
   ngOnDestroy() {
     super.ngOnDestroy();
     this.destroy();
+    clearTimeout(this.timerControl);
   }
 
   emit(qrCode: string) {
@@ -120,6 +125,4 @@ export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit,
   private set preferredCamera(id: string) {
     localStorage.setItem(ScanQrCodeComponent.PreferredCameraKey, id);
   }
-
-
 }
