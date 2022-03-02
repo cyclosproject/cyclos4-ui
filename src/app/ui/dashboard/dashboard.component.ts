@@ -326,24 +326,38 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
     switch (config) {
       case ConsumersConfig:
         const qrCode = auth.permissions.tokens.my.map(t => t.type).find(t => t.internalName === QrCodeToken);
-        addAction('qr-code', 'QR-code', new ActiveMenu(Menu.MY_TOKENS, { tokenType: qrCode }));
+        if (qrCode) {
+          addAction('qr-code', 'QR-code', new ActiveMenu(Menu.MY_TOKENS, { tokenType: qrCode }));
+        }
         const expiryDates = auth.permissions.records.user.map(rt => rt.type).find(rt => rt.internalName === ExpiryDatesRecordType);
-        addAction('calendar-week', 'Vervaldata', new ActiveMenu(Menu.SEARCH_RECORDS_BANKING, { recordType: expiryDates }));
+        if (expiryDates) {
+          addAction('calendar-week', 'Vervaldata', new ActiveMenu(Menu.SEARCH_RECORDS_BANKING, { recordType: expiryDates }));
+        }
         const help = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === HelpOperation)
-        addAction('question', 'Help', new ActiveMenu(Menu.RUN_OPERATION_PERSONAL, { operation: help }));
+        if (help) {
+          addAction('question', 'Help', new ActiveMenu(Menu.RUN_OPERATION_PERSONAL, { operation: help }));
+        }
         break;
       case MerchantsConfig:
       case OrganizationsConfig:
       case CityConfig:
         const memberReward = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === MemberRewardOperation)
-        addAction(SvgIcon.PersonCheck, memberReward.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberReward }));
+        if (memberReward) {
+          addAction(SvgIcon.PersonCheck, memberReward.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberReward }));
+        }
         const memberRewardNonMember = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === MemberRewardNonMemberOperation)
-        addAction(SvgIcon.PersonPlus, memberRewardNonMember.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberRewardNonMember }));
+        if (memberRewardNonMember) {
+          addAction(SvgIcon.PersonPlus, memberRewardNonMember.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberRewardNonMember }));
+        }
         const quickScan = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === QuickScanOperation)
-        addAction(SvgIcon.People, quickScan.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: quickScan }));
+        if (quickScan) {
+          addAction(SvgIcon.People, quickScan.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: quickScan }));
+        }
         if (config === CityConfig) {
           const checkUserBalance = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === CheckUserBalanceOperation)
-          addAction(SvgIcon.Search, checkUserBalance.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: checkUserBalance }));
+          if (checkUserBalance) {
+            addAction(SvgIcon.Search, checkUserBalance.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: checkUserBalance }));
+          }
         }
         break;
     }
