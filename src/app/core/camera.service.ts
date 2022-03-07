@@ -9,7 +9,7 @@ import { first } from 'rxjs/operators';
  */
 export interface ConfirmCallbackParams {
   confirmationPassword?: string;
-  customValues?: { [key: string]: string };
+  customValues?: { [key: string]: string; };
 }
 
 /**

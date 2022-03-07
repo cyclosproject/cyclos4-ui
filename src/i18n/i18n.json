@@ -1036,7 +1036,10 @@
       "payment": "Payment",
       "kind": "Transaction type",
       "redeem": "Redeem",
-      "topUp": "Top-up"
+      "topUp": "Top-up",
+      "chargebackOf": "Chargeback of",
+      "chargedBackBy": "Charged back by",
+      "viewTransaction": "View transaction"
     },
     "status": {
       "redeemed": "Redeemed",
@@ -1057,6 +1060,7 @@
       "topUp": "Top-up voucher",
       "redeemDetails": "Voucher redeem",
       "topUpDetails": "Voucher top-up",
+      "chargebackDetails": "Voucher chargeback",
       "transactions": "Voucher transactions",
       "transactionsRedeems": "Voucher redeems",
       "search": "Search vouchers",
@@ -1072,6 +1076,7 @@
       "topUp": "Top-up voucher",
       "redeemDetails": "Voucher redeem details",
       "topUpDetails": "Voucher top-up details",
+      "chargebackDetails": "Voucher chargeback",
       "transactions": "Search voucher transactions",
       "transactionsRedeems": "Search voucher redeems",
       "search": "Search vouchers",
@@ -1387,6 +1392,7 @@
     "operator.registration.inactive": "The operator {operator} has been registered, however, still needs activatation by the administration.",
     "operator.registration.pending": "The operator {operator} has been registered, however, still needs to validate their registration by confirming the e-mail.",
     "operator.registration.addAnother": "Register another operator",
+    "noImageRequired": "Please, upload your profile image",
     "noImage": "No profile image",
     "noImages": "No profile images",
     "address.define": "Define address",

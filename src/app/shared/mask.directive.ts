@@ -56,20 +56,20 @@ export class MaskDirective {
     let selectionEnd = el.selectionEnd;
     if (caret >= this.fields.length) {
       // Already at the end of the mask
-      value = value.substr(0, this.fields.length);
+      value = value.substring(0, this.fields.length);
       event.preventDefault();
       return;
     }
     if (selectionEnd > caret) {
       // Remove the content within the selection
-      value = value.substr(0, caret) + value.substr(selectionEnd + 1);
+      value = value.substring(0, caret) + value.substring(selectionEnd + 1);
       selectionEnd = caret;
     }
 
     // While the field is literal, just fill the value
     let field = this.fields[caret];
     while (field && field.literal) {
-      value = value.substring(0, caret) + field.allowed + value.substr(caret + 1);
+      value = value.substring(0, caret) + field.allowed + value.substring(caret + 1);
       field = this.fields[++caret];
     }
 
@@ -77,7 +77,7 @@ export class MaskDirective {
     if (field && field.accepted(event.key)) {
       const key = field.transform(event.key);
       value = value.substring(0, caret)
-        + key + value.substr(caret + 1);
+        + key + value.substring(caret + 1);
       el.selectionStart = el.selectionEnd = ++caret;
 
       // If inserting chars before the end of the string, ensure the rest is still valid
@@ -85,11 +85,11 @@ export class MaskDirective {
         const f = this.fields[i];
         if (i < value.length && !f.accepted(value.charAt(i))) {
           // No longer valid
-          value = value.substr(0, i);
+          value = value.substring(0, i);
           break;
         } else if (caret === value.length && f.literal) {
           value = value.substring(0, caret)
-            + f.allowed + value.substr(caret + 1);
+            + f.allowed + value.substring(caret + 1);
           caret++;
         }
       }
@@ -118,7 +118,7 @@ export class MaskDirective {
     const selectionEnd = el.selectionEnd || el.value.length;
 
     const value = el.value;
-    const text = value.substr(0, caret) + (event.clipboardData.getData('text/plain') || '').trim() + value.substr(selectionEnd);
+    const text = value.substring(0, caret) + (event.clipboardData.getData('text/plain') || '').trim() + value.substring(selectionEnd);
     const masked = this._mask.apply(text);
 
     event.preventDefault();

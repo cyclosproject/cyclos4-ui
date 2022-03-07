@@ -89,7 +89,15 @@ After running this command, the Cyclos web directory will be updated to include 
 customized frontend. The content of the web directory can then be deployed to the
 application server (such as Tomcat) as usual.
 
-## Contributing translations
+## Translations
+
+### Custom translations
+No new translation keys can be customized through Cyclos, only the existing ones for the release being customized. 
+In case the frontend  is served by Cyclos you should use the translated value directly in the code, otherwise, if the 
+frontend will be hosted separatedly from Cyclos, you could add the new keys to src/i18n/i18n.json and use the 
+TypeScript interface generated using ng-translation-gen.
+ 
+### Contributing translations
 
 If you wish to contribute to the translations, not only for this frontend, but to
 Cyclos in general, please, request access on

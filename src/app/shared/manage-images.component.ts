@@ -24,6 +24,7 @@ export class ManageImagesComponent extends BaseComponent implements OnInit {
 
   @Input() images: Image[] = [];
   @Input() manageAfterConfirm = false;
+  @Input() requireAtLeastOne = false;
   @Output() result = new EventEmitter<ManageImagesResult>();
 
   removedIds: string[];

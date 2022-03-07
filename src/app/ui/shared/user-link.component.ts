@@ -58,4 +58,10 @@ export class UserLinkComponent extends BaseComponent implements OnInit {
       this.display = (this.account.type || {}).name;
     }
   }
+
+  canViewProfile(): boolean {
+    return this.authHelper.isSelfOrOwner(this.user) || (((this.dataForFrontendHolder.auth || {}).permissions || {}).users || {}).viewProfile
+      && (this.operator || !!this.user.id);
+  }
+
 }

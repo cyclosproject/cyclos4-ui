@@ -218,8 +218,11 @@ export class RunWizardComponent
             // The profile fields and phones are handled by the helper
             [this.mobilePhone, this.landLinePhone] = this.userHelper.setupRegistrationForm(
               this.user, dataForNew, true);
-            if (dataForNew.imageConfiguration.availability !== AvailabilityEnum.DISABLED) {
-              this.user.addControl('images', new FormControl([]));
+
+            const imageAvailability = dataForNew.imageConfiguration.availability;
+            if (imageAvailability !== AvailabilityEnum.DISABLED) {
+              this.user.addControl('images', new FormControl(user.images,
+                imageAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null));
             }
 
             // Address

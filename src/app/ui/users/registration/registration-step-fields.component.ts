@@ -27,6 +27,7 @@ export class RegistrationStepFieldsComponent
   @Input() landLineForm: FormGroup;
   @Input() addressForm: FormGroup;
   @Input() defineAddress: FormControl;
+  @Input() imageControl: FormControl;
   @Output() imageUploaded = new EventEmitter<Image>();
   @Output() imageRemoved = new EventEmitter<Image>();
   @Output() customImagesUploaded = new EventEmitter<Image[]>();
@@ -113,6 +114,7 @@ export class RegistrationStepFieldsComponent
     // First remove any previous image, then emit that a new image is uploaded
     this.addSub(this.doRemoveImage().subscribe(() => {
       this.image = image;
+      this.imageControl.setValue(this.image.id);
       this.imageUploaded.emit(this.image);
       this.changeDetector.detectChanges();
     }));
@@ -123,6 +125,7 @@ export class RegistrationStepFieldsComponent
   }
 
   private doRemoveImage(): Observable<Image> {
+    this.imageControl.setValue(null);
     if (this.image) {
       const result = this.image;
       return this.errorHandler.requestWithCustomErrorHandler(() => {

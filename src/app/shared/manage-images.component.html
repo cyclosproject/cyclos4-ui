@@ -9,7 +9,9 @@
       {{ item.value.name }}
     </div>
     <div class="ml-2">
-      <button type="button" class="btn btn-icon" (click)="remove(item.value)">
+      <button
+        *ngIf="!(requireAtLeastOne && ((order.valueChanges | async) || order.value)?.length === 1)"
+        type="button" class="btn btn-icon" (click)="remove(item.value)">
         <icon [icon]="SvgIcon.X"></icon>
       </button>
     </div>

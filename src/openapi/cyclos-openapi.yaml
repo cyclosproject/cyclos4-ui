@@ -54944,11 +54944,14 @@ components:
 
         Possible values are:
         
+        - `chargeback`: A voucher transaction was charged back
+        
         - `redeem`: A voucher was redeemed, that means there was a payment from system to a user
         
         - `topUp`: A voucher was topped-up, that means there was a payment from a user to system
       type: string
       enum:
+        - chargeback
         - redeem
         - topUp
 
@@ -70113,6 +70116,11 @@ components:
                 The records owner. Only returned if is not system.
               allOf:
                 - $ref: '#/components/schemas/User'
+            hideKeywordsSearch:
+              description: >-
+                Whether the keywords search filter should be hidden. Only returned
+                if is not system.
+              type: boolean
             query:
               description: >-
                 Default query filters for searching records
@@ -70902,6 +70910,10 @@ components:
           type: object
           additionalProperties:
             type: string
+        primary:
+          description: >-
+            Indicates whether this action is a primary one.
+          type: boolean
 
     RunOperationResult:
       description: >-
@@ -77367,6 +77379,18 @@ components:
         - $ref: '#/components/schemas/VoucherTransactionResult'
         - type: object
           properties:
+            chargebackOf:
+              description:
+                When this voucher transaction is a chargeback, is a reference to
+                the voucher transaction that was charged back.
+              allOf:
+                - $ref: '#/components/schemas/VoucherTransaction'
+            chargedBackBy:
+              description:
+                When this voucher transaction was charged back, is a reference to
+                the corresponding chargeback transaction.
+              allOf:
+                - $ref: '#/components/schemas/VoucherTransaction'
             exportFormats:
               description: >-
                 The formats which the data can be exported

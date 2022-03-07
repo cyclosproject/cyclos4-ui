@@ -919,7 +919,8 @@ export class EditProfileComponent
     const ref = this.modal.show(ManageImagesComponent, {
       class: 'modal-form',
       initialState: {
-        images: this.images
+        images: this.images,
+        requireAtLeastOne: this.data.imageConfiguration?.availability === AvailabilityEnum.REQUIRED
       },
     });
     const component = ref.content as ManageImagesComponent;

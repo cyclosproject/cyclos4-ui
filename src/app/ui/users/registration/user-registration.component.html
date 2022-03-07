@@ -41,8 +41,8 @@
       <registration-step-fields [data]="data" [form]="form"
         [mobileForm]="mobileForm" [landLineForm]="landLineForm"
         [defineAddress]="defineAddress" [addressForm]="addressForm"
-        [image]="image" (imageUploaded)="image = $event"
-        (imageRemoved)="image = null"
+        [imageControl]="imageControl" [image]="image"
+        (imageUploaded)="image = $event" (imageRemoved)="image = null"
         (customImagesUploaded)="addCustomImages($event)"
         (customFilesUploaded)="addCustomFiles($event)">
       </registration-step-fields>

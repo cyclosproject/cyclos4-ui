@@ -1,10 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Output, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Injector, OnDestroy, Output, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { BaseComponent } from 'app/shared/base.component';
+import { empty } from 'app/shared/helper';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { BehaviorSubject } from 'rxjs';
 import QrScanner from 'qr-scanner';
+import { BehaviorSubject } from 'rxjs';
 
 QrScanner.WORKER_PATH = './qr-scanner-worker.min.js';
+
+export const Timeout = 60_000;
 
 /**
  * A component to be shown in a dialog, opening the camera to scan a QR-code
@@ -15,9 +19,13 @@ QrScanner.WORKER_PATH = './qr-scanner-worker.min.js';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit, OnDestroy {
+  static PreferredCameraKey = 'preferredCamera';
 
   ready$ = new BehaviorSubject(false);
   qrScanner: QrScanner;
+  cameras$ = new BehaviorSubject<Array<QrScanner.Camera>>([]);
+  cameraControl: FormControl;
+  timerControl: any;
 
   @ViewChild('video', { static: true }) video: ElementRef<HTMLVideoElement>;
 
@@ -25,9 +33,15 @@ export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit,
 
   constructor(
     injector: Injector,
-    public modalRef: BsModalRef,
+    public modalRef: BsModalRef
   ) {
     super(injector);
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    this.cameraControl = new FormControl();
+    this.timerControl = setTimeout(() => this.close(), Timeout);
   }
 
   ngAfterViewInit() {
@@ -35,20 +49,37 @@ export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit,
       if (!hasCamera) {
         this.noCameras();
       } else {
-        this.qrScanner = new QrScanner(this.video.nativeElement,
-          result => this.emit(result));
-        this.qrScanner.start()
-          .then(() => this.initialize())
-          .catch(_e => {
-            this.noPermission();
-          });
+        QrScanner.listCameras(true)
+          .then(cams => this.setupQrScanner(cams))
+          .catch(() => this.noPermission());
       }
     });
+  }
+
+  private setupQrScanner(cams: QrScanner.Camera[]) {
+    this.cameras$.next(cams);
+    const preferredCamera = this.preferredCamera;
+    this.qrScanner = new QrScanner(this.video.nativeElement,
+      result => this.emit(result), undefined, undefined, preferredCamera);
+    this.qrScanner.start()
+      .then(() => this.initialize())
+      .catch(() => this.noPermission());
+    this.addSub(this.cameras$.subscribe(cams => {
+      if (empty(this.cameraControl.value)) {
+        const cam = cams.find(cam => cam.id === preferredCamera) ?? cams[0];
+        this.cameraControl.setValue(cam?.id);
+      }
+    }));
+    this.addSub(this.cameraControl.valueChanges.subscribe((cam: string) => {
+      this.preferredCamera = cam;
+      this.qrScanner.setCamera(cam);
+    }));
   }
 
   ngOnDestroy() {
     super.ngOnDestroy();
     this.destroy();
+    clearTimeout(this.timerControl);
   }
 
   emit(qrCode: string) {
@@ -86,4 +117,12 @@ export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit,
     this.close();
   }
 
+
+  private get preferredCamera(): string {
+    return localStorage.getItem(ScanQrCodeComponent.PreferredCameraKey);
+  }
+
+  private set preferredCamera(id: string) {
+    localStorage.setItem(ScanQrCodeComponent.PreferredCameraKey, id);
+  }
 }

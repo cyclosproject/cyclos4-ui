@@ -56,6 +56,7 @@ export class RunOperationComponent
   leaveNotification: boolean;
   alreadyExecuted: boolean;
   closeTimer: any;
+  primaryActions: RunOperationAction[];
   private createDeviceConfirmation: () => CreateDeviceConfirmation;
 
   get result(): RunOperationResult {
@@ -340,20 +341,30 @@ export class RunOperationComponent
           exportFormat: f
         })).forEach(a => headingActions.push(a));
     }
+    this.primaryActions = [];
     for (const action of actions || []) {
       // Register each custom operation action
       const op = action.action;
       if (op) {
-        this.operationHelper.register(op);
-        headingActions.push(new HeadingAction(this.operationHelper.icon(op), op.label, () => {
-          this.runOperationHelper.run(op, null, action.parameters);
-        }));
+        if (action.primary) {
+          this.primaryActions.push(action);
+        } else {
+          this.operationHelper.register(op);
+          headingActions.push(new HeadingAction(this.operationHelper.icon(op), op.label, () => {
+            this.runOperationHelper.run(op, null, action.parameters);
+          }));
+        }
       }
     }
     if (headingActions.length === 1) {
       headingActions[0].maybeRoot = true;
     }
     this.headingActions = headingActions;
+  }
+
+
+  runPrimaryAction(action: RunOperationAction) {
+    this.runOperationHelper.run(action.action, null, action.parameters);
   }
 
   /** Handle the row action */

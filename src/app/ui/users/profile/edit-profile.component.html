@@ -27,8 +27,10 @@
           <action-button outline (action)="captureCamera(singleUpload)"
             [label]="i18n.field.image.camera">
           </action-button>
-          <action-button *ngIf="images.length > 0" outline
-            (action)="removeAllImages()" [label]="i18n.field.image.remove">
+          <action-button
+            *ngIf="images.length > 0 && data.imageConfiguration.availability !== 'required'"
+            outline (action)="removeAllImages()"
+            [label]="i18n.field.image.remove">
           </action-button>
         </actions>
       </ng-container>

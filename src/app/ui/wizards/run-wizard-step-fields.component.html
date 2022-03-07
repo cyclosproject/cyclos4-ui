@@ -4,6 +4,7 @@
     <images-field [label]="dataForNew.imageConfiguration.maxImages === 1
         ? i18n.user.title.image : i18n.user.title.images" avatarSize="large"
       [formControl]="user.controls.images"
+      [required]="dataForNew.imageConfiguration.availability === 'required'"
       [maxFiles]="dataForNew.imageConfiguration.maxImages"
       [initialImages]="dataForNew.images"
       [target]="TempImageTargetEnum.USER_REGISTRATION"></images-field>

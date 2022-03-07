@@ -1036,7 +1036,10 @@
       "payment": "Pagamento",
       "kind": "Tipo de transação",
       "redeem": "Resgatar",
-      "topUp": "Recarregar"
+      "topUp": "Recarregar",
+      "chargebackOf": "Estorno de",
+      "chargedBackBy": "Estornado por",
+      "viewTransaction": "Ver transação"
     },
     "status": {
       "redeemed": "Resgatado",
@@ -1057,6 +1060,7 @@
       "topUp": "Recarregar cupom",
       "redeemDetails": "Cupom resgatado",
       "topUpDetails": "Recarga do cupom",
+      "chargebackDetails": "Estorno de cupom",
       "transactions": "Transações de cupons",
       "transactionsRedeems": "Cupons resgatados",
       "search": "Busca de cupons",
@@ -1072,6 +1076,7 @@
       "topUp": "Recarregar cupon",
       "redeemDetails": "Detalhes do resgate do cupom",
       "topUpDetails": "Detalhes da recarga do cupom",
+      "chargebackDetails": "Estorno de cupom",
       "transactions": "Procurar transações de cupom",
       "transactionsRedeems": "Pesquisar cupons resgatados",
       "search": "Busca de cupons",
@@ -1387,6 +1392,7 @@
     "operator.registration.inactive": "O operador {operator} foi registrado, no entanto, ainda precisa ser ativado pela administração.",
     "operator.registration.pending": "O operador {operator} foi registrado, no entanto, ainda precisa validar seu registro confirmando o e-mail.",
     "operator.registration.addAnother": "Registrar outro operador",
+    "noImageRequired": "Por favor, envie a sua imagem de perfil",
     "noImage": "Nenhuma imagem de perfil",
     "noImages": "Nenhuma imagem de perfil",
     "address.define": "Definir endereço",

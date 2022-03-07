@@ -30,7 +30,7 @@ export class ConsentComponent implements OnInit {
     public state: ConsentState,
     private oidcService: OidcService,
   ) {
-    oidcService.rootUrl = apiRoot.endsWith('/') ? apiRoot.substr(0, apiRoot.length - 1) : apiRoot;
+    oidcService.rootUrl = apiRoot.endsWith('/') ? apiRoot.substring(0, apiRoot.length - 1) : apiRoot;
     state.redirecting$.subscribe(flag => {
       if (flag) {
         // When redirecting back, set the initialized to false, which will show the spinner

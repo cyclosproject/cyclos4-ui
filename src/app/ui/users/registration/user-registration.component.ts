@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  AddressNew, Group, GroupForRegistration, GroupKind,
+  AddressNew, AvailabilityEnum, Group, GroupForRegistration, GroupKind,
   IdentityProvider, IdentityProviderCallbackStatusEnum, Image, PhoneNew, RoleEnum,
   StoredFile, UserDataForNew, UserNew, UserRegistrationResult, Wizard
 } from 'app/api/models';
@@ -40,6 +40,7 @@ export class UserRegistrationComponent
   steps: RegistrationStep[] = ['group', 'idp', 'fields', 'confirm', 'done'];
   group: FormControl;
   form: FormGroup;
+  imageControl: FormControl;
   mobileForm: FormGroup;
   landLineForm: FormGroup;
   defineAddress: FormControl;
@@ -268,6 +269,11 @@ export class UserRegistrationComponent
       hiddenFields: [user.hiddenFields || []],
     });
 
+    const imageAvailability = data.imageConfiguration.availability;
+    if (imageAvailability !== AvailabilityEnum.DISABLED) {
+      this.imageControl = new FormControl(null, imageAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null);
+    }
+
     // The profile fields and phones are handled by the helper
     [this.mobileForm, this.landLineForm] = this.userHelper.setupRegistrationForm(
       this.form, data, !this.login.user);
@@ -288,6 +294,9 @@ export class UserRegistrationComponent
     const fullForm = new FormGroup({
       user: this.form,
     });
+    if (this.data.imageConfiguration.availability === AvailabilityEnum.REQUIRED) {
+      fullForm.setControl('image', this.imageControl);
+    }
     if (this.mobileForm) {
       fullForm.setControl('mobile', this.mobileForm);
     }

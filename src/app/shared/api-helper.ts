@@ -98,7 +98,7 @@ export class ApiHelper {
    */
   static shiftToDayEnd(date: string): string {
     if (date) {
-      const newDate = date.substr(0, 10);
+      const newDate = date.substring(0, 10);
       return newDate.concat('T23:59:59.999');
     } else {
       return date;
@@ -114,9 +114,9 @@ export class ApiHelper {
       return '';
     }
     const pos = value.trim().indexOf(':');
-    value = pos >= 0 ? value.substr(pos + 1) : value;
+    value = pos >= 0 ? value.substring(pos + 1) : value;
     if (value.startsWith('\'')) {
-      value = value.substr(1);
+      value = value.substring(1);
     }
     return value;
   }

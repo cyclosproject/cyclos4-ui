@@ -1036,7 +1036,10 @@
       "payment": "Pago",
       "kind": "Tipo de transacción",
       "redeem": "Canjear",
-      "topUp": "Recargar"
+      "topUp": "Recargar",
+      "chargebackOf": "Devolución de",
+      "chargedBackBy": "Devuelto por",
+      "viewTransaction": "Ver transacción"
     },
     "status": {
       "redeemed": "Canjeado",
@@ -1057,6 +1060,7 @@
       "topUp": "Recargar cupón",
       "redeemDetails": "Detalles de canje",
       "topUpDetails": "Detalles de recarga",
+      "chargebackDetails": "Devolución de cupón",
       "transactions": "Transacciones de cupón",
       "transactionsRedeems": "Cupones recibidos",
       "search": "Buscar cupones",
@@ -1072,6 +1076,7 @@
       "topUp": "Cupón recargable",
       "redeemDetails": "Detalles de canje de cupón",
       "topUpDetails": "Detalles de recarga de cupón",
+      "chargebackDetails": "Devolución de cupón",
       "transactions": "Buscar transacciones de cupón",
       "transactionsRedeems": "Ver canjes de cupon",
       "search": "Buscar cupones",
@@ -1387,6 +1392,7 @@
     "operator.registration.inactive": "El operador {operator} se ha registrado, sin embargo, todavía necesita ser activado por la administración.",
     "operator.registration.pending": "El operador {operator} ha sido registrado, sin embargo, todavía necesita validar su registro mediante la confirmación del correo.",
     "operator.registration.addAnother": "Registrar otro operador",
+    "noImageRequired": "Por favor, cargue su imagen de perfil",
     "noImage": "No ha cargado imagen de perfil",
     "noImages": "No se han cargado imágenes de perfil",
     "address.define": "Definir dirección",

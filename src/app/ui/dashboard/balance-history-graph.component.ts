@@ -78,9 +78,9 @@ export class BalanceHistoryGraphComponent extends BaseComponent implements After
     // For example, from 1345 to 1378, consider from 1300 to 1400.
     let rangeStr = String(Math.floor(valueRange));
     if (rangeStr.startsWith('-')) {
-      rangeStr = rangeStr.substr(1);
+      rangeStr = rangeStr.substring(1);
     }
-    const rangePower = Math.pow(10, rangeStr.length);
+    const rangePower = Math.pow(10, Math.max(0, rangeStr.length - 2));
     maxValue = Math.floor(maxValue / rangePower) * rangePower + rangePower;
     minValue = Math.floor(minValue / rangePower) * rangePower;
     valueRange = maxValue - minValue;

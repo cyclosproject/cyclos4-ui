@@ -62,6 +62,14 @@ export class SearchRecordsComponent
     }
   }
 
+  showKeywords(): boolean {
+    return !(this.data as RecordDataForSearch).hideKeywordsSearch || !this.isOwnRecords();
+  }
+
+  isOwnRecords(): boolean {
+    return !this.generalSearch && this.authHelper.isSelfOrOwner((this.data as RecordDataForSearch).user);
+  }
+
   onDataInitialized(data: GeneralRecordsDataForSearch | RecordDataForSearch) {
     if (!this.generalSearch && data.type.layout !== RecordLayoutEnum.LIST) {
       throw new Error(`Invalid record layout: ${data.type.layout}`);

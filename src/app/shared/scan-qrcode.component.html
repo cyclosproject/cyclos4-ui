@@ -4,6 +4,13 @@
 
 <spinner *ngIf="(ready$ | async) === false"></spinner>
 
+<ng-container *ngIf="(cameras$ | async).length > 1">
+  <select class="mt-3 custom-select" [formControl]="cameraControl">
+    <option *ngFor="let cam of cameras$.value" [value]="cam.id"
+      [text]="cam.label"></option>
+  </select>
+</ng-container>
+
 <actions>
   <span></span>
   <action-button outline (action)="modalRef.hide()"
