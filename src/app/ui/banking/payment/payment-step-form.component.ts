@@ -50,6 +50,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
   fromSelf: boolean;
   toParam: string;
   toUser: User;
+  toSelf: boolean;
 
   accountChangeSubscription: Subscription;
   typeChangeSubscription: Subscription;
@@ -80,10 +81,14 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     this.fixedDestination = this.data.toKind != null;
     this.fromUser = this.data.fromUser;
     this.fromSelf = this.authHelper.isSelf(this.fromUser);
-    this.toUser = this.data.toUser;
 
-    if (this.fixedDestination) {
-      // When there's a fixed destination, the payment types are already present in the initial data
+    this.toUser = this.data.toUser;
+    this.toSelf = this.authHelper.isSelf(this.toUser);
+
+    if (this.fixedDestination || this.form.value?.type) {
+      // When there's a fixed destination, the payment types are already present in the initial data |
+      // When coming back from confirm payment (the type is set in the form)
+      // update the payment types control with the selected type
       this.setFetchedPaymentTypes(this.data);
     }
 
@@ -91,12 +96,6 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
     this.addSub(this.layout.xxs$.subscribe(() => this.updateAccountBalanceLabel()));
     this.updateAccountBalanceLabel();
-
-    // When coming back from confirm payment (the type is set in the form)
-    // update the payment types control with the selected type
-    if (this.form.value?.type) {
-      this.setFetchedPaymentTypes(this.data);
-    }
   }
 
   public createSubscriptions() {
@@ -137,6 +136,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     // Clear the cached data when the destination user changes
     this.dataCache.clear();
     this.fetchedPaymentTypes = null;
+    this.paymentTypes$.next(null);
 
     // Get the payment subject
     const value = this.form.value;
@@ -161,6 +161,8 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
         });
       }
       request.pipe(first()).subscribe(data => {
+        // Update payment types
+        this.data.paymentTypes = data.paymentTypes;
         this.setFetchedPaymentTypes(data);
       }, (err: HttpErrorResponse) => {
         if (this.allowPrincipal && this.userField && err.status === ErrorStatus.NOT_FOUND) {

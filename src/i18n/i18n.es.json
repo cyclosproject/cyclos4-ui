@@ -726,6 +726,7 @@
     "occurrences": "Ocurrencias",
     "occurrenceInterval": "Ejecutar cada",
     "noAccounts": "No posee ninguna cuenta para poder realizar el pago",
+    "noVisibleAccounts": "No tienes ninguna cuenta visible para realizar el pago, por favor revise la página {0}. En el caso de que la cuenta ya se encuentre marcada como visible, por favor contacte a la administración",
     "noExternalPaymentPrincipalTypes": "No hay métodos de identificación de usuario compatibles para realizar el pago",
     "noTypes": "No hay tipos de transacción posibles",
     "noTypesSelection": "No hay tipos de transacción posibles desde esta cuenta al usuario seleccionado",
@@ -1037,6 +1038,8 @@
       "kind": "Tipo de transacción",
       "redeem": "Canjear",
       "topUp": "Recargar",
+      "chargeback": "Devolución",
+      "searchResultChargebackTitle": "Devolución:",
       "chargebackOf": "Devolución de",
       "chargedBackBy": "Devuelto por",
       "viewTransaction": "Ver transacción"
@@ -1539,7 +1542,7 @@
       "generalAccount": "Operaciones generales"
     },
     "accountAccess": "Visibilidad de la cuenta",
-    "accountAccess.full": "Completo",
+    "accountAccess.full": "Todos los pagos",
     "accountAccess.incoming": "Recibir pagos únicamente",
     "accountAccess.outgoing": "Realizar pagos únicamente",
     "accountAccess.own": "Recibido o pagado por operador",

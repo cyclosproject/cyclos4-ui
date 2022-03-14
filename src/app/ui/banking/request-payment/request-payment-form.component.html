@@ -1,6 +1,6 @@
 <ng-container [formGroup]="form">
   <label-value *ngIf="fromUser && !fromSelf" kind="fieldView"
-    [label]="i18n.transaction.fromUser">
+    [label]="i18n.transaction.sender">
     <user-link [user]="fromUser"></user-link>
   </label-value>
 

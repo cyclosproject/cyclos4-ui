@@ -1524,7 +1524,6 @@
       "generalAccount": "Algemene operaties"
     },
     "accountAccess": "Rekening zichtbaarheid",
-    "accountAccess.full": "Volledig",
     "accountAccess.incoming": "Alleen binnenkomende betalingen",
     "accountAccess.outgoing": "Alleen uitgaande betalingen",
     "accountAccess.own": "Ontvangen of betaald door de operator",

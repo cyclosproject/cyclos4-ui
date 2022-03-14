@@ -32,7 +32,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
   }
 
   get balance() {
-    return (this.account.account.status || {}).balance;
+    return this.account.balance;
   }
 
   constructor(
@@ -55,9 +55,9 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
     }
 
     // Prepare the balances data
-    if (this.account.balances?.length > 0) {
+    if (this.account.balanceHistory?.length > 0) {
       const formatter = (value: number) => this.format.formatAsCurrency(this.account.account.currency, value);
-      this.chartData = this.account.balances.map(b => ({
+      this.chartData = this.account.balanceHistory.map(b => ({
         label: this.format.formatAsDate(b.date),
         value: parseFloat(b.amount),
         formatter
@@ -83,7 +83,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
   viewTransfer(row: AccountHistoryResult, event: MouseEvent) {
     const tx = this.bankingHelper.transactionNumberOrId(row);
     this.menu.navigate({
-      url: `/banking/transfer/${this.account.id}/${tx}`,
+      url: `/banking/transfer/${this.account.account.id}/${tx}`,
       menu: new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType: this.type }),
       clear: false,
       event,

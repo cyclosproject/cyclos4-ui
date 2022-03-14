@@ -206,7 +206,7 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
   onDataInitialized(data: DataForTransaction) {
     if (empty(data.accounts)) {
       // No accounts
-      this.notification.error(this.i18n.transaction.noAccounts);
+      this.notification.error(this.bankingHelper.noAccountForPaymentErrorMessage());
     } else {
       // Set the from account type
       const type = data.accounts[0].type.id;

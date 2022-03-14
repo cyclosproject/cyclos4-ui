@@ -56,11 +56,11 @@
   </label-value>
 
   <label-value *ngIf="transaction.by" [label]="i18n.general.performedBy">
-    {{ transaction.by.display }}
+    <user-link [user]="transaction.by"></user-link>
   </label-value>
   <label-value *ngIf="transaction?.receivedBy"
     [label]="i18n.transaction.receivedBy">
-    {{ transaction.receivedBy.display }}
+    <user-link [user]="transaction.receivedBy"></user-link>
   </label-value>
   <label-value [label]="i18n.general.date">
     {{ transaction.date | dateTime }}
@@ -109,7 +109,8 @@
   <ng-template #transactionFromOrReceiver>
     <label-value *ngIf="transaction.fromName; else transactionFrom"
       [label]="isPaymentRequest() ? i18n.transaction.receiver : i18n.transaction.from">
-      {{ transaction.fromName }}
+      <user-link [user]="transaction.from?.user"
+        [display]="transaction.fromName"></user-link>
     </label-value>
     <ng-template #transactionFrom>
       <label-value *ngIf="transaction.from"
@@ -129,7 +130,8 @@
   <ng-template #transactionToOrSender>
     <label-value *ngIf="transaction.toName; else transactionTo"
       [label]="isPaymentRequest() ? i18n.transaction.sender : i18n.transaction.to">
-      {{ transaction.toName }}
+      <user-link [user]="transaction.to?.user" [display]="transaction.toName">
+      </user-link>
     </label-value>
     <ng-template #transactionTo>
       <label-value *ngIf="transaction.to"

@@ -64,7 +64,7 @@ export class BalanceHistoryGraphComponent extends BaseComponent implements After
     this.yMax = this.height - 40;
 
     const currency = this.account.account.currency;
-    const balances = (this.account?.balances || []);
+    const balances = (this.account?.balanceHistory || []);
     if (balances.length <= 1) {
       // Won't show a graph with a single data point
       return;

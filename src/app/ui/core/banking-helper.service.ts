@@ -11,6 +11,7 @@ import { SvgIcon } from 'app/core/svg-icon';
 import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { blank, empty } from 'app/shared/helper';
+import { LoginService } from 'app/ui/core/login.service';
 
 export interface HasTransactionNumberAndId {
   id?: string;
@@ -28,6 +29,7 @@ export class BankingHelperService {
   constructor(
     private dataForFrontendHolder: DataForFrontendHolder,
     private format: FormatService,
+    private loginService: LoginService,
     @Inject(I18nInjectionToken) private i18n: I18n,
   ) { }
 
@@ -195,5 +197,14 @@ export class BankingHelperService {
       default:
         return this.i18n.transaction.schedulingStatus.direct;
     }
+  }
+
+  /**
+   * Returns the error message to be shown when there are no accounts to perform a pamtment, taking into account if the user
+   * can manage its account visibility.
+   */
+  noAccountForPaymentErrorMessage() {
+    return this.loginService.permissions.banking.accountVisibilitySettings ? 
+      this.i18n.transaction.noVisibleAccounts(this.i18n.user.profile.accountVisibility) : this.i18n.transaction.noAccounts;
   }
 }

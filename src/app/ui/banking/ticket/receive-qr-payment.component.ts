@@ -60,7 +60,7 @@ export class ReceiveQrPaymentComponent
   onDataInitialized(data: DataForTransaction) {
     if (empty(data.accounts) || empty(data.paymentTypes)) {
       // No accounts
-      this.notification.error(this.i18n.transaction.noAccounts);
+      this.notification.error(this.bankingHelper.noAccountForPaymentErrorMessage());
     } else {
       // Create the form
       this.form = this.formBuilder.group({

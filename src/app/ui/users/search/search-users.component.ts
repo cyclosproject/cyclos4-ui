@@ -133,15 +133,6 @@ export class SearchUsersComponent
       this.errorHandler.handleForbiddenError({});
       return;
     }
-    const allowedResultTypes = [];
-    if (this.canSearch) {
-      allowedResultTypes.push(ResultType.TILES);
-      allowedResultTypes.push(ResultType.LIST);
-    }
-    if (this.canViewMap || this.manager) {
-      allowedResultTypes.push(ResultType.MAP);
-    }
-    this.allowedResultTypes = allowedResultTypes;
 
     this.countries$ = this.countriesResolve.data;
 
@@ -183,6 +174,18 @@ export class SearchUsersComponent
         this.resultType = this.getResultType(data.resultType);
       }
       this.doIgnoringUpdate(() => {
+        const allowedResultTypes = [];
+        if (this.canSearch) {
+          if (data.canViewImages) {
+            allowedResultTypes.push(ResultType.TILES);
+          }
+          allowedResultTypes.push(ResultType.LIST);
+        }
+        if (this.canViewMap || this.manager) {
+          allowedResultTypes.push(ResultType.MAP);
+        }
+        this.allowedResultTypes = allowedResultTypes;
+
         this.customFieldsInSearch = [];
         this.basicFieldsInSearch = [];
         this.fieldsInBasicSearch = [];

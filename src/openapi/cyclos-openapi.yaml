@@ -63540,17 +63540,28 @@ components:
     FrontendDashboardAccount:
       description: >-
         Account information displayed on the dashboard
-      allOf:
-        - $ref: '#/components/schemas/AccountBalanceHistoryResult'
-        - type: object
-          properties:
-            lastTransfers:
-              description: >-
-                The last transfers to show for this account.
-                Only returned if not merging accounts
-              type: array
-              items:
-                $ref: '#/components/schemas/AccountHistoryResult'
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/AccountWithCurrency'
+        balance:
+          description: >-
+            The current balance
+          type: string
+          format: number
+        balanceHistory:
+          description: >-
+            The balance at each data point
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountBalanceEntry'
+        lastTransfers:
+          description: >-
+            The last transfers to show for this account.
+            Only returned if not merging accounts
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountHistoryResult'
 
     FrontendHomeContent:
       description: >-
@@ -73502,6 +73513,19 @@ components:
       allOf:
         - $ref: '#/components/schemas/Transfer'
         - type: object
+          properties:
+            fromName:
+              description: >-
+                The custom name for the debited account.
+                Only returned if a custom name was given when performing the
+                payment.
+              type: string
+            toName:
+              description: >-
+                The custom name for the credited account.
+                Only returned if a custom name was given when performing the
+                payment.
+              type: string
 
     TransferStatus:
       description: >-

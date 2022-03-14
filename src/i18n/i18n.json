@@ -726,6 +726,7 @@
     "occurrences": "Ocurrences",
     "occurrenceInterval": "Process every",
     "noAccounts": "You don't have any accounts to perform the payment",
+    "noVisibleAccounts": "You don't have any visible accounts to perform the payment, please check the {0} page. In case the account was already marked as visible please contact the administration. ",
     "noExternalPaymentPrincipalTypes": "There are no compatible user identification methods to perform the payment",
     "noTypes": "There are no possible payment types",
     "noTypesSelection": "There are no possible payment types for this account and user",
@@ -1037,6 +1038,8 @@
       "kind": "Transaction type",
       "redeem": "Redeem",
       "topUp": "Top-up",
+      "chargeback": "Chargeback",
+      "searchResultChargebackTitle": "Chargeback:",
       "chargebackOf": "Chargeback of",
       "chargedBackBy": "Charged back by",
       "viewTransaction": "View transaction"
@@ -1539,7 +1542,7 @@
       "generalAccount": "General operations"
     },
     "accountAccess": "Account visibility",
-    "accountAccess.full": "Full",
+    "accountAccess.full": "All payments",
     "accountAccess.incoming": "Only incoming payments",
     "accountAccess.outgoing": "Only outgoing payments",
     "accountAccess.own": "Received or paid by operator",

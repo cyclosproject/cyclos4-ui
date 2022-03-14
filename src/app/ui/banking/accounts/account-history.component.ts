@@ -1,20 +1,20 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import {
   AccountHistoryQueryFilters, AccountHistoryResult, AccountKind,
   AccountWithHistoryStatus, Currency, DataForAccountHistory,
   EntityReference, Image, PreselectedPeriod, TransferFilter
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services/accounts.service';
-import { BankingHelperService } from 'app/ui/core/banking-helper.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { empty, truncate } from 'app/shared/helper';
+import { BankingHelperService } from 'app/ui/core/banking-helper.service';
+import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
-import { BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { SvgIcon } from 'app/core/svg-icon';
-import { FormControl, FormGroup } from '@angular/forms';
+import { BehaviorSubject, forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 type AccountHistorySearchParams = AccountHistoryQueryFilters & {
   owner: string;
@@ -158,10 +158,13 @@ export class AccountHistoryComponent
   }
 
   doSearch(query: AccountHistorySearchParams) {
-    return this.accountsService.searchAccountHistory$Response(query).pipe(tap(() => {
-      query.fields = ['status'];
-      this.addSub(this.accountsService.getAccountStatusByOwnerAndType(query).subscribe(status => {
-        const accountWithStatus = { ...this.data.account, status: (status || {}).status };
+    // Fetch both the status and the entries in parallel
+    const entries = this.accountsService.searchAccountHistory$Response(query);
+    const status = this.accountsService.getAccountStatusByOwnerAndType({ ...query, fields: ['status'] });
+    return forkJoin([entries, status])
+      .pipe(map(res => {
+        const [entriesResult, statusResult] = res;
+        const accountWithStatus = { ...this.data.account, status: statusResult?.status };
         if (accountWithStatus.status == null) {
           // When there's no status (is not visible), show the filters directly
           this.noStatus$.next(true);
@@ -174,8 +177,8 @@ export class AccountHistoryComponent
           ];
         }
         this.status$.next(accountWithStatus);
+        return entriesResult;
       }));
-    }));
   }
 
   private get accountTypes(): EntityReference[] {

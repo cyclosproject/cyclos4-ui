@@ -36,10 +36,13 @@ export class UserLinkComponent extends BaseComponent implements OnInit {
   @Input()
   account: AccountWithOwner;
 
-  path: string;
-
+  @Input()
   display: string;
 
+  @Input()
+  hideIcon;
+
+  path: string;
   operator: boolean;
 
   ngOnInit() {
@@ -52,10 +55,12 @@ export class UserLinkComponent extends BaseComponent implements OnInit {
       const param = this.authHelper.isSelf(this.user) ? this.ApiHelper.SELF : this.user.id;
       this.path = `/users/${param}/profile`;
     }
-    if (this.user != null) {
-      this.display = this.user.display;
-    } else if (this.account != null) {
-      this.display = (this.account.type || {}).name;
+    if (!this.display) {
+      if (this.user != null) {
+        this.display = this.user.display;
+      } else if (this.account != null) {
+        this.display = (this.account.type || {}).name;
+      }
     }
   }
 

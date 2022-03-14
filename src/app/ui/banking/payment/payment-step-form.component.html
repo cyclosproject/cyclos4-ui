@@ -75,7 +75,7 @@
     </ng-template>
   </label-value>
 
-  <label-value *ngIf="fixedDestination && toUser" kind="fieldView"
+  <label-value *ngIf="fixedDestination && toUser && !toSelf" kind="fieldView"
     [label]="i18n.transaction.toUser">
     <user-link [user]="toUser"></user-link>
   </label-value>

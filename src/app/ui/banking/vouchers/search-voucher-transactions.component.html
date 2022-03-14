@@ -37,6 +37,9 @@
             <field-option [value]="VoucherTransactionKind.TOP_UP"
               [text]="i18n.voucher.transaction.topUp">
             </field-option>
+            <field-option [value]="VoucherTransactionKind.CHARGEBACK"
+              [text]="i18n.voucher.transaction.chargeback">
+            </field-option>
           </single-selection-field>
         </div>
         <div class="row no-gutters col-12">
@@ -83,19 +86,16 @@
               <avatar [image]="row.type.image" [icon]="SvgIcon.Ticket">
               </avatar>
             </td>
-            <td>
-              <a [routerLink]="path(row)"> {{ row.date | dateTime }}
-              </a>
-            </td>
+            <td> {{ row.date | dateTime }} </td>
             <td *ngIf="data.topUpEnabled">
-              <a [routerLink]="path(row)">
-                {{ apiI18n.voucherTransactionKind(row.kind) }}
-              </a>
-            </td>
+              {{ apiI18n.voucherTransactionKind(row.kind) }} </td>
             <td>
-              <a [routerLink]="path(row)">
-                {{ row.type.voucherTitle }}
-              </a>
+              <ng-container
+                *ngIf="!data.topUpEnabled && row.kind === VoucherTransactionKind.CHARGEBACK">
+                {{ i18n.voucher.transaction.searchResultChargebackTitle }}
+                <br>
+              </ng-container>
+              {{ row.type.voucherTitle }}
             </td>
             <td class="amount">
               {{ format.abs(row.amount) |

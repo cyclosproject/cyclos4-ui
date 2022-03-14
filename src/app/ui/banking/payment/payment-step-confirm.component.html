@@ -3,19 +3,55 @@
   {{ i18n.transaction.requiresAuthorization }}
 </notification>
 
-<label-value *ngIf="!fromSelf && fromUser"
-  [label]="i18n.transaction.fromUser">
-  <user-link [user]="fromUser"></user-link>
+<ng-container *ngIf="fromSelf && toSelf">
+  <!-- For payments between own accounts, show the account names -->
+  <label-value [label]="i18n.transaction.fromAccount">
+    {{ preview.fromAccount.type.name }}
+  </label-value>
+  <label-value [label]="i18n.transaction.toAccount">
+    {{ preview.toAccount.type.name }}
+  </label-value>
+</ng-container>
+
+<!-- From -->
+<label-value *ngIf="preview.payment.fromName; else fromUserTemplate"
+  [label]="i18n.transaction.from">
+  <user-link [user]="fromUser" [hideLink]="fromSelf" [hideIcon]="fromSelf"
+    [display]="preview.payment.fromName">
+  </user-link>
 </label-value>
-<label-value *ngIf="fromSystem" [label]="i18n.transaction.fromAccount">
-  {{ preview.fromAccount.type.name }}
+<ng-template #fromUserTemplate>
+  <ng-container *ngIf="fromUser; else fromSystemTemplate">
+    <label-value *ngIf="!fromSelf" [label]="i18n.transaction.fromUser">
+      <user-link [user]="fromUser"></user-link>
+    </label-value>
+  </ng-container>
+</ng-template>
+<ng-template #fromSystemTemplate>
+  <label-value [label]="i18n.transaction.fromAccount">
+    {{ preview.fromAccount.type.name }}
+  </label-value>
+</ng-template>
+
+<!-- To -->
+<label-value *ngIf="preview.payment.toName; else toUserTemplate"
+  [label]="i18n.transaction.to">
+  <user-link [user]="toUser" [display]="preview.payment.toName"></user-link>
 </label-value>
-<label-value *ngIf="toUser" [label]="i18n.transaction.toUser">
-  <user-link [user]="toUser"></user-link>
-</label-value>
-<label-value *ngIf="toSystem" [label]="i18n.transaction.toAccount">
-  {{ preview.toAccount.type.name }}
-</label-value>
+<ng-template #toUserTemplate>
+  <ng-container *ngIf="!toSelf">
+    <label-value *ngIf="toUser; else toSystemTemplate"
+      [label]="i18n.transaction.toUser">
+      <user-link [user]="toUser"></user-link>
+    </label-value>
+  </ng-container>
+</ng-template>
+<ng-template #toSystemTemplate>
+  <label-value [label]="i18n.transaction.toAccount">
+    {{ preview.toAccount.type.name }}
+  </label-value>
+</ng-template>
+
 <label-value *ngIf="showPaymentType" [label]="i18n.transaction.type">
   {{ preview.paymentType.name }}
 </label-value>

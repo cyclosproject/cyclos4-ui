@@ -3,18 +3,19 @@
 </label-value>
 <label-value *ngIf="transfer.transaction?.by"
   [label]="i18n.general.performedBy">
-  {{ transfer.transaction.by.display }}
+  <user-link [user]="transfer.transaction.by"></user-link>
 </label-value>
 <label-value *ngIf="transfer.transaction?.receivedBy"
   [label]="i18n.transaction.receivedBy">
-  {{ transfer.transaction.receivedBy.display }}
+  <user-link [user]="transfer.transaction.receivedBy"></user-link>
 </label-value>
 <label-value [label]="i18n.general.date">
   {{ transfer.date | dateTime }}
 </label-value>
 <label-value [label]="i18n.transaction.from">
   <ng-container *ngIf="transfer.transaction?.fromName; else fromUser">
-    {{ transfer.transaction.fromName }}
+    <user-link [account]="transfer.from"
+      [display]="transfer.transaction.fromName"></user-link>
   </ng-container>
   <ng-template #fromUser>
     <user-link [account]="transfer.from"></user-link>
@@ -22,7 +23,8 @@
 </label-value>
 <label-value [label]="i18n.transaction.to">
   <ng-container *ngIf="transfer.transaction?.toName; else toUser">
-    {{ transfer.transaction.toName }}
+    <user-link [account]="transfer.to"
+      [display]="transfer.transaction.toName"></user-link>
   </ng-container>
   <ng-template #toUser>
     <user-link [account]="transfer.to"></user-link>
