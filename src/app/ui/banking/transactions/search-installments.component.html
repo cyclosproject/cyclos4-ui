@@ -57,6 +57,7 @@
               *ngIf="data.preselectedPeriods?.length > 0">
               <single-selection-field labelPosition="side"
                 formControlName="preselectedPeriod"
+                [emptyOption]="i18n.general.notApplied"
                 [label]="i18n.general.period">
                 <field-option *ngFor="let period of data.preselectedPeriods"
                   [id]="period['id']" [value]="period" [text]="period.name">

@@ -61,7 +61,7 @@ export class UserCacheService {
     } else {
       return new Observable(observer => {
         this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
-          this.usersService.viewUser({
+          this.usersService.locateUser({
             user: key, fields: [
               'id', 'display', 'image'
             ],

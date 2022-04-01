@@ -51,6 +51,9 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
     super(injector);
   }
 
+  CustomFieldTypeEnum = CustomFieldTypeEnum;
+  LinkedEntityTypeEnum = LinkedEntityTypeEnum;
+
   /**
    * Either this has to be specified or the other 3: fields + fieldName + object
    */
@@ -281,6 +284,10 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
         break;
     }
     return fieldValue;
+  }
+
+  isLinkedUser(): boolean {
+    return this.type === CustomFieldTypeEnum.LINKED_ENTITY && this.fieldValue.field.linkedEntityType === LinkedEntityTypeEnum.USER;
   }
 
   appendAuth(url: string): string {

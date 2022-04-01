@@ -725,6 +725,7 @@
     "installmentNumberOfTotal": "{number} of {total}",
     "occurrences": "Ocurrences",
     "occurrenceInterval": "Process every",
+    "feesOnAuthorization": "Fees to be applied when authorized",
     "noAccounts": "You don't have any accounts to perform the payment",
     "noVisibleAccounts": "You don't have any visible accounts to perform the payment, please check the {0} page. In case the account was already marked as visible please contact the administration. ",
     "noExternalPaymentPrincipalTypes": "There are no compatible user identification methods to perform the payment",
@@ -741,6 +742,7 @@
       "transferFee": "Transfer fee"
     },
     "transferStatus": "Status",
+    "authorizationRoles": "Authorization roles",
     "scheduling": "Scheduling",
     "scheduling.direct": "Pay now",
     "scheduling.single": "Scheduled",

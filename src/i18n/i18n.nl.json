@@ -215,7 +215,7 @@
       "type": "De gevraagde gegevens kunnen niet worden gevonden: {type}",
       "typeKey": "De gevraagde gegevens kunnen niet worden gevonden: {type} met de sleutel {key}"
     },
-    "login": "De opgegeven naam / wachtwoord is onjuist. Probeer het opnieuw.",
+    "login": "De opgegeven combinatie van gebruikersnaam en wachtwoord is onjuist. Probeer het opnieuw.",
     "remoteAddressBlocked": "Uw IP-adres is geblokkeerd wegens het overschrijden van inlogpogingen",
     "permission": "U heeft niet voldoende rechten om de gevraagde actie uit te voeren",
     "unauthorized": {
@@ -418,6 +418,7 @@
       "captcha": "Captcha validatie",
       "code": "Verificatiecode",
       "code.sent": "De verificatiecode is verzonden naar {to}",
+      "code.blocked": "Door het aantal pogingen te overschrijden, is dit verzoek geannuleerd en uw wachtwoord is nu {status}.",
       "sendMedium": "Ontvang code via",
       "generate": "Wachtwoord genereren",
       "generated.done.email": "U ontvangt binnenkort een e-mail met uw nieuwe wachtwoord.",
@@ -724,7 +725,9 @@
     "installmentNumberOfTotal": "{number} van {total}",
     "occurrences": "Valuta",
     "occurrenceInterval": "Verwerk alle",
+    "feesOnAuthorization": "Heffingen die toegepast moeten worden wanneer geautoriseerd",
     "noAccounts": "U heeft geen rekeningen om de betaling uit te voeren",
+    "noVisibleAccounts": "U heeft geen zichtbare accounts om de betaling uit te voeren, controleer de pagina {0} . In het geval dat het account al als zichtbaar is gemarkeerd, neem dan contact op met de administratie. ",
     "noExternalPaymentPrincipalTypes": "Er zijn geen compatibele gebruikersidentificatiemethoden om de betaling uit te voeren",
     "noTypes": "Er zijn geen mogelijke betaalwijzen",
     "noTypesSelection": "Er zijn geen mogelijke betalingwijzen van deze rekening naar de geselecteerde gebruiker",
@@ -739,6 +742,7 @@
       "transferFee": "Overschrijvingskosten"
     },
     "transferStatus": "Status",
+    "authorizationRoles": "Rechtenniveaus",
     "scheduling": "Agendering",
     "scheduling.direct": "Betaal nu",
     "scheduling.single": "Geagendeerde",
@@ -1035,7 +1039,12 @@
       "payment": "Betaling",
       "kind": "Transactie type",
       "redeem": "Inwisselen",
-      "topUp": "Opwaarderen"
+      "topUp": "Opwaarderen",
+      "chargeback": "Terugboeking",
+      "searchResultChargebackTitle": "Terugboeking",
+      "chargebackOf": "Terugboeking van",
+      "chargedBackBy": "Teruggeboekt door",
+      "viewTransaction": "Transactie weergeven"
     },
     "status": {
       "redeemed": "Ingewisseld",
@@ -1056,6 +1065,7 @@
       "topUp": "Waardebon opwaarderen",
       "redeemDetails": "Waardebon ontvangst",
       "topUpDetails": "Waardebon opwaardering",
+      "chargebackDetails": "Waardebon terugboeking",
       "transactions": "Waardebon transacties",
       "transactionsRedeems": "Waardebon inwisselingen",
       "search": "Zoek waardebonnen",
@@ -1071,6 +1081,7 @@
       "topUp": "Waardebon opwaarderen",
       "redeemDetails": "Details waardebon ontvangst",
       "topUpDetails": "Details waardebon opwaardering",
+      "chargebackDetails": "Waardebon terugboeking\n",
       "transactions": "Zoek waardebon transacties",
       "transactionsRedeems": "Zoek waardebon inwisselingen",
       "search": "Zoek waardebonnen",
@@ -1164,11 +1175,13 @@
     },
     "token": "Waardebonnummer",
     "transactions": "Transacties",
+    "transactionsRedeems": "Inwissels",
     "owner": "Eigenaar",
     "sentToEmail": "Verzonden naar e-mail",
     "email": "E-mail",
     "mobilePhone": "Mobiele telefoon",
     "enableNotifications": "Meldingen inschakelen",
+    "notificationsEnabled": "Meldingen ingeschaked",
     "expirationDateComments": "Vervaldatum opmerkingen",
     "changeExpirationDate": "Verander vervaldatum",
     "expirationDateChanged": "Vervaldatum gewijzigd",
@@ -1191,6 +1204,11 @@
         "title": "PIN-code vergeten",
         "action": "PIN-code vergeten",
         "pinSentTo": "De pincode is verzonden naar {to}"
+      },
+      "activateGift": {
+        "title": "Waardebon activering",
+        "message": "Dit is een cadeaubon van {issuer}. Om deze te activeren, moet u een pincode invullen.",
+        "agreement": "Door verder te gaan, verklaar ik dat ik deze waardebon van {issuer} heb ontvangen."
       },
       "changePin": {
         "pinChanged": "De pincode is gewijzigd",
@@ -1357,6 +1375,7 @@
       "myBrokerings": "Toegewezen gebruikers",
       "userBrokerings": "Makelaar leden"
     },
+    "statusEmptyLabel": "Toon alle actieve of geblokkeerde gebruikers",
     "connected": "Online",
     "connectionStatus": "Verbindingstatus",
     "disconnectedStatus": "Off-line (laatste login: {date})",
@@ -1369,7 +1388,7 @@
     "registrationDate": "Registratiedatum",
     "activationDate": "Activeringsdatum",
     "name": "Volledige naam",
-    "username": "Inlognaam",
+    "username": "Gebruikersnaam",
     "email": "E-mail",
     "email.pending": "In afwachting van validatie van uw e-mailadres",
     "operator.owner": "Operator eigenaar",
@@ -1378,6 +1397,7 @@
     "operator.registration.inactive": "De operator {operator} is geregistreerd maar moet nog door de administratie geactiveerd worden.",
     "operator.registration.pending": "De operator {operator} is geregistreerd, maar moet de registratie nog valideren door de e-mail te bevestigen.",
     "operator.registration.addAnother": "Nog een operator registreren",
+    "noImageRequired": "Upload uw profielfoto",
     "noImage": "Nog geen profiel afbeelding",
     "noImages": "Geen profiel foto ' s",
     "address.define": "Definiëren adres",
@@ -1524,6 +1544,7 @@
       "generalAccount": "Algemene operaties"
     },
     "accountAccess": "Rekening zichtbaarheid",
+    "accountAccess.full": "Alle betalingen",
     "accountAccess.incoming": "Alleen binnenkomende betalingen",
     "accountAccess.outgoing": "Alleen uitgaande betalingen",
     "accountAccess.own": "Ontvangen of betaald door de operator",

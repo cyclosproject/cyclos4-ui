@@ -42,6 +42,7 @@ import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { NgxGalleryModule } from 'ngx-gallery-9';
+import { UserLinkComponent } from 'app/shared/user-link.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { NgxGalleryModule } from 'ngx-gallery-9';
     AvatarComponent,
     NumberPipe,
     AvatarLightboxComponent,
+    UserLinkComponent
   ],
   imports: [
     BrowserModule,

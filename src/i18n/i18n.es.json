@@ -725,6 +725,7 @@
     "installmentNumberOfTotal": "{number} de {total}",
     "occurrences": "Ocurrencias",
     "occurrenceInterval": "Ejecutar cada",
+    "feesOnAuthorization": "Cargos que serán aplicados al autorizar",
     "noAccounts": "No posee ninguna cuenta para poder realizar el pago",
     "noVisibleAccounts": "No tienes ninguna cuenta visible para realizar el pago, por favor revise la página {0}. En el caso de que la cuenta ya se encuentre marcada como visible, por favor contacte a la administración",
     "noExternalPaymentPrincipalTypes": "No hay métodos de identificación de usuario compatibles para realizar el pago",
@@ -741,6 +742,7 @@
       "transferFee": "Cargo de transferencia"
     },
     "transferStatus": "Estado",
+    "authorizationRoles": "Roles de autorización",
     "scheduling": "Agendado",
     "scheduling.direct": "No agendar (pagar de inmediato)",
     "scheduling.single": "Agendado a futuro",

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Injector, Input, OnInit, Output } from '@angular/core';
-import { Address, ContactListDataForSearch, ContactResult, User, UserDataForMap, UserDataForSearch, UserResult } from 'app/api/models';
+import { Address, BaseUserDataForSearch, ContactListDataForSearch, ContactResult, User, UserDataForMap, UserDataForSearch, UserResult } from 'app/api/models';
 import { OperatorResult } from 'app/api/models/operator-result';
 import { BaseComponent } from 'app/shared/base.component';
 import { MaxDistance } from 'app/ui/shared/max-distance';
@@ -179,5 +179,12 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
 
   get toLink() {
     return (row: any) => this.path(row);
+  }
+
+  /**
+   * Returns if the user can view images so the avatar columns is displayed
+   */
+  get canViewImages(): boolean {
+    return this.data != null && (this.data as BaseUserDataForSearch).canViewImages;
   }
 }

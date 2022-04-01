@@ -53,7 +53,7 @@ export class UserFieldComponent
   @ViewChild('contactListButton') contactListButton: ElementRef;
   private fieldSub: Subscription;
 
-  placeholder = "";
+  placeholder = '';
 
   constructor(
     injector: Injector,

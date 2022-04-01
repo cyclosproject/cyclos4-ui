@@ -36,7 +36,8 @@
         [control]="user.controls.hiddenFields"></field-privacy>
     </label-value>
     <label-value *ngIf="step.validateEmail && !runWizard.emailAlreadyVerified"
-      [label]="i18n.wizard.emailVerificationCode" kind="field" required>
+      [label]="i18n.wizard.emailVerificationCode" kind="field"
+      [required]="emailAvailability === AvailabilityEnum.REQUIRED || !!user.controls.email.value">
       <div class="row no-gutters w-100">
         <div class="col-6 col-md-4">
           <input-field [formControl]="emailValidation" size="full">
@@ -63,7 +64,8 @@
       </field-privacy>
     </label-value>
     <label-value *ngIf="step.validateSms && !runWizard.smsAlreadyVerified"
-      [label]="i18n.wizard.smsVerificationCode" kind="field" required>
+      [label]="i18n.wizard.smsVerificationCode" kind="field"
+      [required]="mobileAvailability === AvailabilityEnum.REQUIRED || !!mobilePhone.controls.number.value">
       <div class="row no-gutters w-100">
         <div class="col-6 col-md-4">
           <input-field [formControl]="smsValidation" size="full">

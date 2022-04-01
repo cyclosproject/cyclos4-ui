@@ -118,6 +118,7 @@ export class UserHelperService {
     // Custom fields
     form.setControl('customValues',
       this.fieldHelper.customValuesFormGroup(data.customFields, {
+        currentValues: user.customValues,
         asyncValProvider: validateServerSide ? cf => this.serverSideValidator(group, cf.internalName) : null,
       }));
 

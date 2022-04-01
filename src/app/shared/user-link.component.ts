@@ -12,7 +12,7 @@ import { truthyAttr } from 'app/shared/helper';
 @Component({
   selector: 'user-link',
   templateUrl: 'user-link.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserLinkComponent extends BaseComponent implements OnInit {
 
@@ -33,14 +33,19 @@ export class UserLinkComponent extends BaseComponent implements OnInit {
     this._hideLink = truthyAttr(hideLink);
   }
 
+  private _hideIcon: boolean | string = false;
+  @Input() get hideIcon() {
+    return this._hideIcon;
+  }
+  set hideIcon(hideIcon: boolean | string) {
+    this._hideIcon = truthyAttr(hideIcon);
+  }
+
   @Input()
   account: AccountWithOwner;
 
   @Input()
   display: string;
-
-  @Input()
-  hideIcon;
 
   path: string;
   operator: boolean;

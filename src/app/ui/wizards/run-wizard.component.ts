@@ -190,11 +190,42 @@ export class RunWizardComponent
             const dataForNew = step.dataForNew;
             const user = data.params.user;
             dataForNew.user = user;
+
+            this.user = this.formBuilder.group({
+              group: user.group,
+              hiddenFields: [user.hiddenFields || []],
+            });
+            // The profile fields and phones are handled by the helper
+            [this.mobilePhone, this.landLinePhone] = this.userHelper.setupRegistrationForm(
+              this.user, dataForNew, true);
+
             if (data.step.validateEmail) {
-              this.emailValidation = new FormControl(null, Validators.required);
+              this.emailValidation = new FormControl(null);
+              if (dataForNew.emailRequired) {
+                this.emailValidation.addValidators(Validators.required);
+              } else {
+                this.addSub(this.user.controls.email?.valueChanges.subscribe(() => {
+                  if (this.user.controls.email.value) {
+                    this.emailValidation.addValidators(Validators.required);
+                  } else {
+                    this.emailValidation.removeValidators(Validators.required);
+                  }
+                }));
+              }
             }
             if (data.step.validateSms) {
-              this.smsValidation = new FormControl(null, Validators.required);
+              this.smsValidation = new FormControl(null);
+              if (dataForNew.phoneConfiguration.mobileAvailability === AvailabilityEnum.REQUIRED) {
+                this.smsValidation.addValidators(Validators.required);
+              } else {
+                this.addSub(this.mobilePhone.controls.number?.valueChanges.subscribe(() => {
+                  if (this.mobilePhone.controls.number.value) {
+                    this.smsValidation.addValidators(Validators.required);
+                  } else {
+                    this.smsValidation.removeValidators(Validators.required);
+                  }
+                }));
+              }
             }
 
             if (dataForNew.phoneConfiguration) {
@@ -210,15 +241,6 @@ export class RunWizardComponent
                 dataForNew.addressConfiguration.address = user.addresses[0];
               }
             }
-            this.user = this.formBuilder.group({
-              group: user.group,
-              hiddenFields: [user.hiddenFields || []],
-            });
-
-            // The profile fields and phones are handled by the helper
-            [this.mobilePhone, this.landLinePhone] = this.userHelper.setupRegistrationForm(
-              this.user, dataForNew, true);
-
             const imageAvailability = dataForNew.imageConfiguration.availability;
             if (imageAvailability !== AvailabilityEnum.DISABLED) {
               this.user.addControl('images', new FormControl(user.images,

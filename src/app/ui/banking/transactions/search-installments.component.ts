@@ -5,9 +5,9 @@ import {
 } from 'app/api/models';
 import { InstallmentQueryFilters } from 'app/api/models/installment-query-filters';
 import { InstallmentsService } from 'app/api/services/installments.service';
+import { empty } from 'app/shared/helper';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
-import { empty } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { Observable } from 'rxjs';
 
@@ -47,7 +47,6 @@ export class SearchInstallmentsComponent
         fields: ['accountTypes', 'preselectedPeriods', 'query'],
       }),
     ).subscribe(data => {
-      this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
 
       // Initialize the currencies Map to make lookups easier
       (data.accountTypes || []).forEach(at => {

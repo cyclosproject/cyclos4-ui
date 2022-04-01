@@ -3,24 +3,30 @@
     <ng-container *ngIf="!link && !externalLink">
       {{ value }}
     </ng-container>
-    <ng-container *ngIf="link">
+    <ng-container *ngIf="isLinkedUser()">
+      <user-link [user]="fieldValue.userValue" hideIcon></user-link>
+    </ng-container>
+    <ng-container *ngIf="!isLinkedUser() && link">
       <a [routerLink]="link">{{ value }}</a>
     </ng-container>
     <ng-container *ngIf="externalLink">
       <a [href]="externalLink">{{ value }}</a>
     </ng-container>
   </ng-container>
-  <div *ngIf="type == 'text'" class="break-nl"
+  <div *ngIf="type === CustomFieldTypeEnum.TEXT " class="break-nl"
     [ngClass]="{'d-inline': inline}">{{ value }}</div>
-  <rich-text-container *ngIf="type == 'richText'" [value]="value">
+  <rich-text-container *ngIf="type === CustomFieldTypeEnum.RICH_TEXT"
+    [value]="value">
   </rich-text-container>
-  <ng-container *ngIf="type == 'singleSelection' || type == 'multiSelection'">
+  <ng-container
+    *ngIf="type === CustomFieldTypeEnum.SINGLE_SELECTION || type === CustomFieldTypeEnum.MULTI_SELECTION ">
     <span *ngFor="let pv of value; let last = last;">
       <span *ngIf="pv.category">{{ pv.category.name }} - </span>{{ pv.value +
       (last ? '' : ', ') }}
     </span>
   </ng-container>
-  <ng-container *ngIf="type == 'file' && (value || []).length > 0">
+  <ng-container
+    *ngIf="type === CustomFieldTypeEnum.FILE && (value || []).length > 0">
     <ng-container *ngFor="let file of value; let last = last;">
       <a [href]="appendAuth(file.url)" [type]="file.contentType"
         target="_blank" (click)="downloadFile($event, file)"
@@ -29,7 +35,8 @@
       <ng-container *ngIf="!last">, </ng-container>
     </ng-container>
   </ng-container>
-  <ng-container *ngIf="type == 'image' && (value || []).length > 0">
+  <ng-container
+    *ngIf="type === CustomFieldTypeEnum.IMAGE && (value || []).length > 0">
     <div class="flex-wrap"
       [ngClass]="{'d-flex': !inline, 'd-inline-flex': inline}">
       <avatar-lightbox class="d-block mr-1" *ngFor="let img of value"

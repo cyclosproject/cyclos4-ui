@@ -44,7 +44,7 @@
             <div class="w-100 d-none d-sm-block"></div>
             <div class="col-12 col-md-6">
               <single-selection-field labelPosition="side"
-                formControlName="fromAccountType"
+                formControlName="fromAccountTypes"
                 [emptyOption]="i18n.general.notApplied"
                 [label]="i18n.transaction.fromAccount">
                 <field-option *ngFor="let at of accountTypes()"
@@ -55,7 +55,7 @@
             </div>
             <div class="col-12 col-md-6">
               <single-selection-field labelPosition="side"
-                formControlName="toAccountType"
+                formControlName="toAccountTypes"
                 [emptyOption]="i18n.general.notApplied"
                 [label]="i18n.transaction.toAccount">
                 <field-option *ngFor="let at of accountTypes()"

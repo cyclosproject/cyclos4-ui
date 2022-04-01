@@ -24,7 +24,14 @@
     {{ authorizer }}
   </label-value>
   <label-value [label]="i18n.transaction.amount">
-    {{ transaction.amount | currency:transaction.currency }}
+    {{ (transaction.feesOnAuthorization?.mainAmount || transaction.amount) |
+    currency:transaction.currency }}
+  </label-value>
+  <label-value
+    *ngIf="transaction.feesOnAuthorization && transaction.feesOnAuthorization.mainAmount != transaction.feesOnAuthorization.totalAmount"
+    [label]="i18n.transaction.totalAmount">
+    {{ transaction.feesOnAuthorization.totalAmount |
+    currency:transaction.currency }}
   </label-value>
 
   <label-value *ngIf="transaction.kind === 'recurringPayment'"
@@ -302,4 +309,42 @@
       </tbody>
     </table>
   </ng-container>
+
+  <ng-container *ngIf="transaction.feesOnAuthorization?.fees?.length > 0">
+    <h2 class="border-0 mt-4 mb-0">
+      {{ i18n.transaction.feesOnAuthorization }}
+    </h2>
+    <ng-container *ngFor="let fee of transaction.feesOnAuthorization.fees">
+      <h3>{{ fee.fee.name }}</h3>
+      <label-value [label]="i18n.transaction.amount">
+        {{ fee.amount | currency:fee.currency }}
+      </label-value>
+      <label-value [label]="i18n.transaction.type">
+        {{ fee.type.name }}
+      </label-value>
+      <label-value [label]="i18n.transaction.from">
+        <user-link *ngIf="fee.from.user; else feeFromSystem"
+          [user]="fee.from.user"></user-link>
+        <ng-template #feeFromSystem>
+          {{ fee.from.type.name }}
+        </ng-template>
+      </label-value>
+      <label-value *ngIf="fee.from?.number"
+        [label]="i18n.transaction.fromAccount">
+        {{ fee.from.number}}
+      </label-value>
+      <label-value [label]="i18n.transaction.to">
+        <user-link *ngIf="fee.to.user; else feeToSystem" [user]="fee.to.user">
+        </user-link>
+        <ng-template #feeToSystem>
+          {{ fee.to.type.name }}
+        </ng-template>
+      </label-value>
+      <label-value *ngIf="fee.to?.number"
+        [label]="i18n.transaction.toAccount">
+        {{ fee.to.number}}
+      </label-value>
+    </ng-container>
+  </ng-container>
+
 </ng-template>
