@@ -30,7 +30,7 @@ export function apiUrl() {
   }
   const pos = href.indexOf('/ui/');
   if (pos >= 0) {
-    return href.substr(0, pos) + '/api';
+    return href.substring(0, pos) + '/api';
   } else {
     // How is the frontend being served if not from /ui/*?
     // Fallback to the environment
@@ -48,10 +48,10 @@ export function urlJoin(...parts: string[]) {
   const prefix = parts[0].startsWith('/') ? '/' : '';
   return prefix + parts.map(p => {
     if (p.startsWith('/')) {
-      p = p.substr(1);
+      p = p.substring(1);
     }
     if (p.endsWith('/')) {
-      p = p.substr(0, p.length - 1);
+      p = p.substring(0, p.length - 1);
     }
     return p;
   }).join('/');
@@ -973,7 +973,7 @@ export function truncate(str: string, maxLength: number): string {
   if (str.length < maxLength || maxLength < 0) {
     if (!str.includes(' ') && str.length > 50) {
       // if the word has no space and it is too big
-      str = str.substr(0, 50) + '…';
+      str = str.substring(0, 50) + '…';
     }
     return str;
   }
@@ -992,15 +992,15 @@ export function truncate(str: string, maxLength: number): string {
       }
     }
     if (pos <= 0) {
-      str = str.substr(0, maxLength);
+      str = str.substring(0, maxLength);
     } else {
-      str = str.substr(0, pos).trim() + '…';
+      str = str.substring(0, pos).trim() + '…';
     }
   }
 
   if (!str.includes(' ') && str.length > 50) {
     // if the word has no space and it is too big
-    str = str.substr(0, 50) + '…';
+    str = str.substring(0, 50) + '…';
   }
 
   return str;

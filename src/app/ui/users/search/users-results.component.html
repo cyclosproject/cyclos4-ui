@@ -3,7 +3,8 @@
   [referencePoint]="referencePoint" [toMarkerTitle]="displayFunction()"
   [toLink]="canViewProfile ? toLink : null">
 
-  <mobile-result *mobileResult="let row" [avatarImage]="user(row).image"
+  <mobile-result *mobileResult="let row"
+    [avatarImage]="canViewImages ? user(row).image : null"
     [avatarIcon]="resultKind === 'operator' ? null : SvgIcon.Person">
     <ng-container *ngFor="let field of fieldsInTile; let first = first">
       <div [ngClass]="{
@@ -23,14 +24,15 @@
   <table *resultTable class="table table-hover"
     [ngClass]="{'cursor-pointer': canViewProfile}">
     <thead>
-      <th *ngIf="resultKind !== 'operator'" class="avatar"></th>
+      <th *ngIf="canViewImages && resultKind !== 'operator'" class="avatar">
+      </th>
       <th *ngFor="let field of fieldsInList">{{ fieldName(field) }}</th>
       <th *ngIf="resultKind === 'operator'">{{ i18n.user.group }}</th>
     </thead>
     <tbody>
       <tr *ngFor="let row of results?.results"
         (click)="canViewProfile ? router.navigate(path(row)) : null">
-        <td *ngIf="resultKind !== 'operator'" class="avatar">
+        <td *ngIf="canViewImages && resultKind !== 'operator'" class="avatar">
           <avatar [image]="user(row).image"></avatar>
         </td>
         <td *ngFor="let field of fieldsInList">

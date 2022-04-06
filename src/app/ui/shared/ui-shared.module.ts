@@ -71,7 +71,7 @@ import { StaticMapComponent } from 'app/ui/shared/static-map.component';
 import { TiledResultComponent } from 'app/ui/shared/tiled-result.component';
 import { UiLayoutModule } from 'app/ui/shared/ui-layout.module';
 import { UserInfoComponent } from 'app/ui/shared/user-info.component';
-import { UserLinkComponent } from 'app/ui/shared/user-link.component';
+import { UserLinkComponent } from 'app/shared/user-link.component';
 import { NotificationTypeSettingComponent } from 'app/ui/users/notification-settings/notification-type-setting.component';
 import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 import { BsModalService } from 'ngx-bootstrap/modal';

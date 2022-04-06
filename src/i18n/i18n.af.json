@@ -428,7 +428,6 @@
       "accountAccess": "Rekening toegang"
     },
     "accountAccess": "Sigbaarheid van rekening",
-    "accountAccess.full": "Vol",
     "performPayments.requiresAuthorization.view": ", vereis magtiging",
     "performPayments.maxAmountPerDay.view": ", maks. {max} per dag",
     "performPayments.maxAmountPerDay": "Daaglikse perk",

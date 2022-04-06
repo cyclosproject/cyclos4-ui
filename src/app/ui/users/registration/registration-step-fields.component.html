@@ -101,11 +101,10 @@
         [control]="form.get('hiddenFields')"></field-privacy>
     </label-value>
   </ng-container>
-
-  <!-- Add a separator for next sections -->
-  <hr
-    *ngIf="mobileAvailability !== 'disabled' || landLineAvailability !== 'disabled' || addressAvailability !== 'disabled'" />
 </ng-container>
+<!-- Add a separator for next sections -->
+<hr
+  *ngIf="(fieldsWithSection.size > 0 || fieldsWithoutSection.length > 0) && (mobileAvailability !== 'disabled' || landLineAvailability !== 'disabled' || addressAvailability !== 'disabled')" />
 
 <!-- Mobile phone -->
 <label-value *ngIf="mobileAvailability !== 'disabled'"

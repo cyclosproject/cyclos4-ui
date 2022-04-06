@@ -271,6 +271,8 @@ export class ApiI18nService {
         return this.i18n.voucher.transaction.redeem;
       case VoucherTransactionKind.TOP_UP:
         return this.i18n.voucher.transaction.topUp;
+      case VoucherTransactionKind.CHARGEBACK:
+        return this.i18n.voucher.transaction.chargeback;
     }
   }
 

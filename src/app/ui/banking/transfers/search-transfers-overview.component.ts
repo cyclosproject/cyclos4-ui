@@ -50,7 +50,7 @@ export class SearchTransfersOverviewComponent
       'preselectedPeriod',
       'periodBegin', 'periodEnd',
       'groups', 'currency', 'channels',
-      'fromAccountType', 'toAccountType',
+      'fromAccountTypes', 'toAccountTypes',
       'transferFilters',
       'kinds', 'chargedBack',
       'minAmount', 'maxAmount',
@@ -88,7 +88,7 @@ export class SearchTransfersOverviewComponent
     this.hasTransactionNumber = transactionNumberPatterns.length > 0;
     this.transactionNumberPattern = transactionNumberPatterns.length === 1 ? transactionNumberPatterns[0] : null;
     this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
-    this.addSub(this.form.controls.fromAccountType.valueChanges.subscribe(accountTypeId => this.updateTransferFilters(accountTypeId)));
+    this.addSub(this.form.controls.fromAccountTypes.valueChanges.subscribe(accountTypeId => this.updateTransferFilters(accountTypeId)));
     this.addSub(this.form.controls.currency.valueChanges.subscribe(currencyId => this.updateAccountTypes(currencyId)));
 
     this.headingActions = [this.moreFiltersAction];
@@ -108,15 +108,15 @@ export class SearchTransfersOverviewComponent
   }
 
   updateAccountTypes(currencyId: string) {
-    const selectedFrom = this.form.controls.fromAccountType.value;
-    const selectedTo = this.form.controls.toAccountType.value;
+    const selectedFrom = this.form.controls.fromAccountTypes.value;
+    const selectedTo = this.form.controls.toAccountTypes.value;
     if (currencyId && selectedFrom) {
       const fromCurrency = (this.data.accountTypes.find(at => at.id === selectedFrom) as AccountType).currency;
-      this.form.controls.fromAccountType.setValue(!fromCurrency || fromCurrency.id === currencyId ? selectedFrom : null);
+      this.form.controls.fromAccountTypes.setValue(!fromCurrency || fromCurrency.id === currencyId ? selectedFrom : null);
     }
     if (currencyId && selectedTo) {
       const toCurrency = (this.data.accountTypes.find(at => at.id === selectedTo) as AccountType).currency;
-      this.form.controls.toAccountType.setValue(!toCurrency || toCurrency.id === currencyId ? selectedTo : null);
+      this.form.controls.toAccountTypes.setValue(!toCurrency || toCurrency.id === currencyId ? selectedTo : null);
     }
   }
 
@@ -132,7 +132,7 @@ export class SearchTransfersOverviewComponent
     if (currency) {
       return this.data.currencies.find(c => c.id === currency);
     }
-    const fromAccountId = this.form.controls.fromAccountType.value;
+    const fromAccountId = this.form.controls.fromAccountTypes.value;
     if (useAccountType && fromAccountId) {
       return (this.data.accountTypes.find(at => at.id === fromAccountId) as AccountType)?.currency;
     }
@@ -140,7 +140,7 @@ export class SearchTransfersOverviewComponent
   }
 
   transferFilters(): TransferFilter[] {
-    const fromAccount = this.form.controls.fromAccountType.value;
+    const fromAccount = this.form.controls.fromAccountTypes.value;
     const filters = (this.data.transferFilters || []);
     if (fromAccount) {
       return filters.filter(f => f.accountType.id === fromAccount);
@@ -179,6 +179,7 @@ export class SearchTransfersOverviewComponent
 
   toSearchParams(value: any): TransferSearchParams {
     const query: TransferSearchParams = value;
+    query.currencies = value.currency ? [value.currency] : [];
     query.datePeriod = this.bankingHelper.resolveDatePeriod(value);
     query.amountRange = ApiHelper.rangeFilter(value.minAmount, value.maxAmount);
     query.fields = [];

@@ -22,7 +22,7 @@
         <label-value [labelPosition]="labelPosition"
           [class]="resolveColumnClass()" *ngIf="data.createdBy"
           [label]="i18n.record.createdBy">
-          {{ data.createdBy.display }}
+          <user-link [user]="data.createdBy"></user-link>
         </label-value>
         <label-value [labelPosition]="labelPosition"
           [class]="resolveColumnClass()" *ngIf="data.lastModificationDate"
@@ -32,7 +32,7 @@
         <label-value [labelPosition]="labelPosition"
           [class]="resolveColumnClass()" *ngIf="data.lastModifiedBy"
           [label]="i18n.record.lastModifiedBy">
-          {{ data.lastModifiedBy.display }}
+          <user-link [user]="data.lastModifiedBy"></user-link>
         </label-value>
         <ng-container *ngIf="data.type.informationText">
           <hr *ngIf="hasPreviousFields">

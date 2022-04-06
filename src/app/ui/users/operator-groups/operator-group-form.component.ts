@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   AccountType, OperatorGroupAccountAccessEnum, OperatorGroupDataForEdit,
-  OperatorGroupDataForNew, OperatorGroupManage, TransferTypeWithCurrency, User,
+  OperatorGroupDataForNew, OperatorGroupManage, TransferTypeWithCurrency, User
 } from 'app/api/models';
 import { OperatorGroupsService } from 'app/api/services/operator-groups.service';
+import { FieldOption } from 'app/shared/field-option';
+import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
-import { FieldOption } from 'app/shared/field-option';
-import { empty, enumValues, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { Observable } from 'rxjs';
 
@@ -53,7 +53,13 @@ export class OperatorGroupFormComponent
     this.addSub(request.subscribe(data => {
       this.data = data;
     }));
-    const values = enumValues<OperatorGroupAccountAccessEnum>(OperatorGroupAccountAccessEnum);
+    const values = [
+      OperatorGroupAccountAccessEnum.NONE,
+      OperatorGroupAccountAccessEnum.OWN,
+      OperatorGroupAccountAccessEnum.INCOMING,
+      OperatorGroupAccountAccessEnum.OUTGOING,
+      OperatorGroupAccountAccessEnum.FULL,
+    ];
     this.accountAccessOptions = values.map(value => ({
       value,
       text: this.userHelper.operatorGroupAccountAccess(value),
@@ -153,7 +159,11 @@ export class OperatorGroupFormComponent
   }
 
   paymentTypes(at: AccountType): TransferTypeWithCurrency[] {
-    return (this.data.paymentTypes || []).filter(pt => pt.from.id === at.id);
+    return this.paymentTypesFromId(at.id);
+  }
+
+  paymentTypesFromId(atId: string): TransferTypeWithCurrency[] {
+    return (this.data.paymentTypes || []).filter(pt => pt.from.id === atId);
   }
 
   save() {
@@ -162,6 +172,10 @@ export class OperatorGroupFormComponent
       return;
     }
     const value = this.form.value as OperatorGroupManage;
+    Object.keys(value.accounts)
+      .filter(key => value.accounts[key].access === OperatorGroupAccountAccessEnum.NONE)
+      .forEach(key => this.paymentTypesFromId(key).forEach(pt => delete value.payments[pt.id]));
+
     const tokenPermissions = this.tokenPermissions.value as TokenPermission[];
     value.enableToken = tokenPermissions.includes("enable");
     value.blockToken = tokenPermissions.includes("block");

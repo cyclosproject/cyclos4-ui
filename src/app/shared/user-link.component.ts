@@ -12,7 +12,7 @@ import { truthyAttr } from 'app/shared/helper';
 @Component({
   selector: 'user-link',
   templateUrl: 'user-link.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserLinkComponent extends BaseComponent implements OnInit {
 
@@ -33,13 +33,21 @@ export class UserLinkComponent extends BaseComponent implements OnInit {
     this._hideLink = truthyAttr(hideLink);
   }
 
+  private _hideIcon: boolean | string = false;
+  @Input() get hideIcon() {
+    return this._hideIcon;
+  }
+  set hideIcon(hideIcon: boolean | string) {
+    this._hideIcon = truthyAttr(hideIcon);
+  }
+
   @Input()
   account: AccountWithOwner;
 
-  path: string;
-
+  @Input()
   display: string;
 
+  path: string;
   operator: boolean;
 
   ngOnInit() {
@@ -52,10 +60,12 @@ export class UserLinkComponent extends BaseComponent implements OnInit {
       const param = this.authHelper.isSelf(this.user) ? this.ApiHelper.SELF : this.user.id;
       this.path = `/users/${param}/profile`;
     }
-    if (this.user != null) {
-      this.display = this.user.display;
-    } else if (this.account != null) {
-      this.display = (this.account.type || {}).name;
+    if (!this.display) {
+      if (this.user != null) {
+        this.display = this.user.display;
+      } else if (this.account != null) {
+        this.display = (this.account.type || {}).name;
+      }
     }
   }
 

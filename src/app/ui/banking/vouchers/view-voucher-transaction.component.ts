@@ -44,6 +44,10 @@ export class ViewVoucherTransactionComponent extends BaseViewPageComponent<Vouch
         this.title = this.i18n.voucher.title.topUpDetails;
         this.mobileTitle = this.i18n.voucher.mobileTitle.topUpDetails;
         break;
+      case VoucherTransactionKind.CHARGEBACK:
+        this.title = this.i18n.voucher.title.chargebackDetails;
+        this.mobileTitle = this.i18n.voucher.mobileTitle.chargebackDetails;
+        break;
     }
   }
 

@@ -15,6 +15,17 @@
             [emptyOption]="i18n.general.notApplied">
           </single-selection-field>
         </div>
+        <div *ngIf="data.authorizationRoles?.length > 0"
+          class="col-12 col-md-6">
+          <multi-selection-field labelPosition="side"
+            formControlName="authorizationRoles"
+            [label]="i18n.transaction.authorizationRoles">
+            <field-option *ngFor="let role of data.authorizationRoles"
+              [value]="role.id" [id]="role.id"
+              [internalName]="role.internalName" [text]="role.name">
+            </field-option>
+          </multi-selection-field>
+        </div>
         <div *ngIf="!isMyAuth() && currencies?.length > 1"
           class="col-12 col-md-6">
           <single-selection-field labelPosition="side"
@@ -24,6 +35,37 @@
               [value]="currency.id" [text]="currency.name"></field-option>
           </single-selection-field>
         </div>
+        <ng-container *ngIf="usePeriod">
+          <div class="col-12 col-md-6"
+            *ngIf="usePreselectedPeriod && data.preselectedPeriods?.length > 0">
+            <single-selection-field labelPosition="side"
+              formControlName="preselectedPeriod"
+              [label]="i18n.general.period">
+              <field-option *ngFor="let period of data.preselectedPeriods"
+                [id]="period['id']" [value]="period" [text]="period.name">
+              </field-option>
+            </single-selection-field>
+          </div>
+          <ng-container
+            *ngIf="!usePreselectedPeriod || (form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null">
+            <!-- Force a line break on sm and up -->
+            <div class="w-100 d-none d-sm-block"></div>
+            <div class="col-12 col-md-6">
+              <date-field labelPosition="side" formControlName="periodBegin"
+                [label]="i18n.general.beginDate" minDate="past5"
+                maxDate="today" fieldSize="full">
+              </date-field>
+            </div>
+          </ng-container>
+          <div
+            *ngIf="!usePreselectedPeriod || (form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
+            class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="periodEnd"
+              [label]="i18n.general.endDate" minDate="past5" maxDate="today"
+              fieldSize="full">
+            </date-field>
+          </div>
+        </ng-container>
         <ng-container *ngIf="(moreFilters$ | async) || isMyAuth()">
           <ng-container
             *ngIf="(isAuthorized() || isPaymentRequest() || isExternalPayment()) && data.accountTypes?.length > 1">
@@ -59,37 +101,6 @@
               [mask]="transactionNumberPattern"
               [label]="i18n.transaction.number"></input-field>
           </div>
-          <ng-container *ngIf="usePeriod">
-            <div class="col-12 col-md-6"
-              *ngIf="usePreselectedPeriod && data.preselectedPeriods?.length > 0">
-              <single-selection-field labelPosition="side"
-                formControlName="preselectedPeriod"
-                [label]="i18n.general.period">
-                <field-option *ngFor="let period of data.preselectedPeriods"
-                  [id]="period['id']" [value]="period" [text]="period.name">
-                </field-option>
-              </single-selection-field>
-            </div>
-            <ng-container
-              *ngIf="!usePreselectedPeriod || (form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null">
-              <!-- Force a line break on sm and up -->
-              <div class="w-100 d-none d-sm-block"></div>
-              <div class="col-12 col-md-6">
-                <date-field labelPosition="side" formControlName="periodBegin"
-                  [label]="i18n.general.beginDate" minDate="past5"
-                  maxDate="today" fieldSize="full">
-                </date-field>
-              </div>
-            </ng-container>
-            <div
-              *ngIf="!usePreselectedPeriod || (form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
-              class="col-12 col-md-6">
-              <date-field labelPosition="side" formControlName="periodEnd"
-                [label]="i18n.general.endDate" minDate="past5" maxDate="today"
-                fieldSize="full">
-              </date-field>
-            </div>
-          </ng-container>
           <div *ngIf="isMyAuth() && data.authorizablePaymentTypes?.length > 0"
             class="col-12 col-md-6">
             <multi-selection-field labelPosition="side"

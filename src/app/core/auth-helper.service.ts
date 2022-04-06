@@ -88,7 +88,7 @@ export class AuthHelperService {
           }
         } else {
           // key is a user
-          return key.id === user.id;
+          return key.id === user.id || key.id === user?.user?.id;
         }
       }
     } else {

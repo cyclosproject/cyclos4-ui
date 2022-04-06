@@ -44,7 +44,7 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
 
   private _moreFiltersAction: HeadingAction;
 
-  protected getInitialFormValue(data: D): { [key: string]: any } {
+  protected getInitialFormValue(data: D): { [key: string]: any; } {
     return data['query'] || {};
   }
 
@@ -197,6 +197,7 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
 
   /**
    * Returns the current result type based on the given enum
+   * filtering by the available ones
    */
   protected getResultType(resultType: ResultTypeEnum): ResultType {
     let rt: ResultType = null;
@@ -206,13 +207,15 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
         rt = ResultType.LIST;
         break;
       case ResultTypeEnum.MAP:
-        // When map is not available select other type as fallback
-        rt = this.allowedResultTypes.includes(ResultType.MAP) ?
-          ResultType.MAP : ResultType.TILES;
+        rt = ResultType.MAP;
         break;
       case ResultTypeEnum.TILED:
         rt = ResultType.TILES;
         break;
+    }
+    if (!this.allowedResultTypes.includes(rt)) {
+      // When the selected result type is not available, use the first available
+      rt = this.allowedResultTypes[0];
     }
     return rt;
   }

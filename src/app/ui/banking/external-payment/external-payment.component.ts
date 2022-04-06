@@ -160,7 +160,7 @@ export class ExternalPaymentComponent extends BasePageComponent<DataForTransacti
   onDataInitialized(data: DataForTransaction) {
     if (empty(data.accounts)) {
       this.step = 'error';
-      this._generalError = this.i18n.transaction.noAccounts;
+      this._generalError = this.bankingHelper.noAccountForPaymentErrorMessage();
     } else if (empty(data.principalTypes)) {
       this.step = 'error';
       this._generalError = this.i18n.transaction.noExternalPaymentPrincipalTypes;

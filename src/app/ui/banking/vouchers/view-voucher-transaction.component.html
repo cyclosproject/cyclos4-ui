@@ -33,6 +33,20 @@
           {{ transaction.payment.display }}
         </maybe-link>
       </label-value>
+      <label-value *ngIf="transaction.chargebackOf"
+        [label]="i18n.voucher.transaction.chargebackOf">
+        <a
+          [routerLink]="['/banking', 'voucher-transactions', 'view', transaction.chargebackOf.id]">
+          {{ i18n.voucher.transaction.viewTransaction}}
+        </a>
+      </label-value>
+      <label-value *ngIf="transaction.chargedBackBy"
+        [label]="i18n.voucher.transaction.chargedBackBy">
+        <a
+          [routerLink]="['/banking', 'voucher-transactions', 'view', transaction.chargedBackBy.id]">
+          {{ i18n.voucher.transaction.viewTransaction}}
+        </a>
+      </label-value>
       <!-- Custom values -->
       <custom-field-value *ngFor="let value of data.customValues"
         [fieldValue]="value">

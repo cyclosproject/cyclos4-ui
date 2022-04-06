@@ -21164,6 +21164,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "Id or other identifier (login name, email, etc) of the user that performed an authorization action (authorize, deny or cancel)."
           schema:
             type: string
+        - name: authorizationRoles
+          in: query
+          required: false
+          description: "Either internal names or ids of authorization roles. To match, transactions must be pending authorization in a level which can be authorized by any of the given roles."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: authorizationStatuses
           in: query
           required: false
@@ -21512,6 +21521,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "Id or other identifier (login name, email, etc) of the user that performed an authorization action (authorize, deny or cancel)."
           schema:
             type: string
+        - name: authorizationRoles
+          in: query
+          required: false
+          description: "Either internal names or ids of authorization roles. To match, transactions must be pending authorization in a level which can be authorized by any of the given roles."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: authorizationStatuses
           in: query
           required: false
@@ -21897,6 +21915,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "Id or other identifier (login name, email, etc) of the user that performed an authorization action (authorize, deny or cancel)."
           schema:
             type: string
+        - name: authorizationRoles
+          in: query
+          required: false
+          description: "Either internal names or ids of authorization roles. To match, transactions must be pending authorization in a level which can be authorized by any of the given roles."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: authorizationStatuses
           in: query
           required: false
@@ -22263,6 +22290,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "Id or other identifier (login name, email, etc) of the user that performed an authorization action (authorize, deny or cancel)."
           schema:
             type: string
+        - name: authorizationRoles
+          in: query
+          required: false
+          description: "Either internal names or ids of authorization roles. To match, transactions must be pending authorization in a level which can be authorized by any of the given roles."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: authorizationStatuses
           in: query
           required: false
@@ -54944,11 +54980,14 @@ components:
 
         Possible values are:
         
+        - `chargeback`: A voucher transaction was charged back
+        
         - `redeem`: A voucher was redeemed, that means there was a payment from system to a user
         
         - `topUp`: A voucher was topped-up, that means there was a payment from a user to system
       type: string
       enum:
+        - chargeback
         - redeem
         - topUp
 
@@ -58554,6 +58593,13 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/AccountType'
+            authorizationRoles:
+              description: >-
+                Visible authorization roles which can be used for filter.
+                Only returned for admins.
+              type: array
+              items:
+                $ref: '#/components/schemas/EntityReference'
             canViewAuthorized:
               description: >-
                 Can the authenticated user view authorized transactions of this
@@ -58629,6 +58675,15 @@ components:
         - $ref: '#/components/schemas/BaseTransactionOrInstallmentQueryFilters'
         - type: object
           properties:
+            authorizationRoles:
+              description: >-
+                Either internal names or ids of authorization roles.
+                To match, transactions must be pending authorization in a level
+                which can be authorized by any of the given roles.
+              type: array
+              items:
+                type: string
+
             ticketStatuses:
               description: >-
                 Statuses used as search criteria applied only to transactions of
@@ -63537,17 +63592,28 @@ components:
     FrontendDashboardAccount:
       description: >-
         Account information displayed on the dashboard
-      allOf:
-        - $ref: '#/components/schemas/AccountBalanceHistoryResult'
-        - type: object
-          properties:
-            lastTransfers:
-              description: >-
-                The last transfers to show for this account.
-                Only returned if not merging accounts
-              type: array
-              items:
-                $ref: '#/components/schemas/AccountHistoryResult'
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/AccountWithCurrency'
+        balance:
+          description: >-
+            The current balance
+          type: string
+          format: number
+        balanceHistory:
+          description: >-
+            The balance at each data point
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountBalanceEntry'
+        lastTransfers:
+          description: >-
+            The last transfers to show for this account.
+            Only returned if not merging accounts
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountHistoryResult'
 
     FrontendHomeContent:
       description: >-
@@ -73320,6 +73386,13 @@ components:
                 `recurringPayment` and is a user-to.user payment.
               allOf:
                 - $ref: '#/components/schemas/PaymentFeedbacksPermissions'
+            feesOnAuthorization:
+              description: >-
+                Only returned for direct payments which are in pending
+                authorization status. Contains the (visible) transfer fees that
+                would be triggered once the payment is authorized
+              allOf:
+                - $ref: '#/components/schemas/TransferFeesPreview'
 
     Transfer:
       description: >-
@@ -73452,6 +73525,50 @@ components:
             The transfer fee currency
           allOf:
             - $ref: '#/components/schemas/Currency'
+        from:
+          description: >-
+            The account from which funds will be transferred
+          allOf:
+            - $ref: '#/components/schemas/AccountWithOwner'
+        to:
+          description: >-
+            The account to which funds will be transferred
+          allOf:
+            - $ref: '#/components/schemas/AccountWithOwner'
+        type:
+          description: >-
+            The payment type of the generated fee
+          allOf:
+            - $ref: '#/components/schemas/TransferType'
+
+    TransferFeesPreview:
+      description: >-
+        Preview of applied fees
+      type: object
+      properties:
+        mainAmount:
+          description: >-
+            This reflects the new transaction amount. Depending on the
+            configured fees, it could happen that the fee amount is deducted
+            from transaction amount. If no fees deduct, it will be the same as
+            transaction amount.  E.g: payment from A to B by 100 units with
+            two fees: 10 units deducted from payment amount and other of 15
+            not deducted. Then the `totalAmount` will be 115, 90 for the
+            `mainAmount`, 10 for the first fee and 15 for  the other fee.
+          type: string
+          format: number
+        totalAmount:
+          description: >-
+            Indicates the total amount to be paid, including fees.
+          type: string
+          format: number
+        fees:
+          description: >-
+            Only returned for direct payments. Contains the fees that would be
+            paid by the payer if the payment is confirmed.
+          type: array
+          items:
+            $ref: '#/components/schemas/TransferFeePreview'
 
     TransferFilter:
       description: >-
@@ -73499,6 +73616,19 @@ components:
       allOf:
         - $ref: '#/components/schemas/Transfer'
         - type: object
+          properties:
+            fromName:
+              description: >-
+                The custom name for the debited account.
+                Only returned if a custom name was given when performing the
+                payment.
+              type: string
+            toName:
+              description: >-
+                The custom name for the credited account.
+                Only returned if a custom name was given when performing the
+                payment.
+              type: string
 
     TransferStatus:
       description: >-
@@ -77376,6 +77506,18 @@ components:
         - $ref: '#/components/schemas/VoucherTransactionResult'
         - type: object
           properties:
+            chargebackOf:
+              description:
+                When this voucher transaction is a chargeback, is a reference to
+                the voucher transaction that was charged back.
+              allOf:
+                - $ref: '#/components/schemas/VoucherTransaction'
+            chargedBackBy:
+              description:
+                When this voucher transaction was charged back, is a reference to
+                the corresponding chargeback transaction.
+              allOf:
+                - $ref: '#/components/schemas/VoucherTransaction'
             exportFormats:
               description: >-
                 The formats which the data can be exported

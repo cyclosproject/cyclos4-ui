@@ -1194,7 +1194,6 @@
       "generalAccount": "Allgemeine Operationen"
     },
     "accountAccess": "Sichtbarkeit des Kontos",
-    "accountAccess.full": "Voll",
     "accountAccess.incoming": "Nur eingehende Zahlungen",
     "accountAccess.outgoing": "Nur ausgehende Zahlungen",
     "accountAccess.own": "Erhalten oder bezahlt durch Betreiber",

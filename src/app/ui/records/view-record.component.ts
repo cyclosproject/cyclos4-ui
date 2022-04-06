@@ -44,8 +44,9 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
     const customValues = record.customValues || [];
     this.valuesWithoutSection = customValues.filter(value => value.field.section == null) || [];
     (record.type.sections || []).forEach(s => {
-      const filter = customValues.filter(value => value.field.section != null && value.field.section.id === s.id);
-      if (filter) {
+      const filter = customValues.filter(
+        value => value.field.section != null && value.field.section.id === s.id && (record.canEdit || this.fieldHelper.getValue(value)));
+      if (filter.length > 0) {
         this.valuesWithSection.set(s, filter);
       }
     });

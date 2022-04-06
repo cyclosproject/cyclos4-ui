@@ -73,10 +73,6 @@ export class SearchUsersComponent
       'acceptedAgreements', 'products', 'brokers', 'invitedBy', 'invitedByMe'];
   }
 
-  getInitialResultType() {
-    return this.doCanSearch() ? this.layout.xxs ? ResultType.LIST : ResultType.TILES : ResultType.MAP;
-  }
-
   doCanSearch() {
     const usersSearch = this.login.auth?.permissions?.users?.search;
     return this.router.url.includes('brokerings') || (!this.dataForFrontendHolder.dataForUi.hideUserSearchInMenu && usersSearch);
@@ -133,20 +129,11 @@ export class SearchUsersComponent
       this.errorHandler.handleForbiddenError({});
       return;
     }
-    const allowedResultTypes = [];
-    if (this.canSearch) {
-      allowedResultTypes.push(ResultType.TILES);
-      allowedResultTypes.push(ResultType.LIST);
-    }
-    if (this.canViewMap || this.manager) {
-      allowedResultTypes.push(ResultType.MAP);
-    }
-    this.allowedResultTypes = allowedResultTypes;
 
     this.countries$ = this.countriesResolve.data;
 
     // Get data for search
-    this.onResultTypeChanged(this.getInitialResultType() === ResultType.MAP ? ResultType.MAP : null, null);
+    this.onResultTypeChanged(this.doCanSearch() ? null : ResultType.MAP, null);
   }
 
   get statusOptions(): FieldOption[] {
@@ -178,17 +165,32 @@ export class SearchUsersComponent
         // When there are no fields in list, set the display
         data.fieldsInList = ['display'];
       }
-      if (resultType == null) {
-        // Update default only first time
-        this.resultType = this.getResultType(data.resultType);
-      }
       this.doIgnoringUpdate(() => {
+        const allowedResultTypes = [];
+        if (this.canSearch) {
+          if (data.canViewImages) {
+            allowedResultTypes.push(ResultType.TILES);
+          }
+          allowedResultTypes.push(ResultType.LIST);
+        }
+        if (this.canViewMap || this.manager) {
+          allowedResultTypes.push(ResultType.MAP);
+        }
+        this.allowedResultTypes = allowedResultTypes;
+
+        if (resultType == null) {
+          // Update default only first time
+          this.resultType = this.getResultType(data.resultType);
+        } else if (force) {
+          this.resultType = resultType;
+        }
+
         this.customFieldsInSearch = [];
         this.basicFieldsInSearch = [];
         this.fieldsInBasicSearch = [];
         this.fieldsInAdvancedSearch = [];
         data.fieldsInBasicSearch?.forEach(f => {
-          var field: any = data.customFields.find(cf => cf.internalName === f);
+          let field: any = data.customFields.find(cf => cf.internalName === f);
           if (field) {
             this.customFieldsInSearch.push(field);
           } else {
@@ -198,7 +200,7 @@ export class SearchUsersComponent
           this.fieldsInBasicSearch.push(field);
         });
         data.fieldsInAdvancedSearch?.forEach(f => {
-          var field: any = data.customFields.find(cf => cf.internalName === f);
+          let field: any = data.customFields.find(cf => cf.internalName === f);
           if (field) {
             this.customFieldsInSearch.push(field);
           } else {

@@ -821,7 +821,6 @@
       "generalAccount": "Operazioni generali"
     },
     "accountAccess": "Visibilità conto",
-    "accountAccess.full": "Completa",
     "accountAccess.incoming": "Solo pagamenti in arrivo",
     "accountAccess.outgoing": "Solo pagamenti in uscita",
     "accountAccess.own": "Ricevuto o pagato dall'operatore",

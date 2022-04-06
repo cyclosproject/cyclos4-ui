@@ -68,7 +68,8 @@ export class SearchTransactionsOverviewComponent
     // Get the transactions search data
     this.stateManager.cache('data',
       this.transactionsService.getTransactionsOverviewDataForSearch({
-        fields: ['user', 'accountTypes', ...(this.usePreselectedPeriod ? ['preselectedPeriods'] : []), 'query'],
+        fields: ['user', 'accountTypes', ...(this.usePreselectedPeriod ? ['preselectedPeriods'] : []), 'query',
+          ...(this.kind === 'authorized' ? ['authorizationRoles'] : [])],
         pendingMyAuthorization: this.kind === 'myAuth'
       }),
     ).subscribe(data => {
@@ -119,7 +120,7 @@ export class SearchTransactionsOverviewComponent
 
   getFormControlNames() {
     return ['status', 'currency', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd', 'transactionNumber', 'expirationBegin',
-      'expirationEnd', 'transferTypes', 'authorizationPerformedBy', 'fromAccountTypes', 'toAccountTypes'];
+      'expirationEnd', 'transferTypes', 'authorizationPerformedBy', 'fromAccountTypes', 'toAccountTypes', 'authorizationRoles'];
   }
 
   getInitialFormValue(data: TransactionDataForSearch) {

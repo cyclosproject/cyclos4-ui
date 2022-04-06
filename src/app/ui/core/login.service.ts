@@ -12,6 +12,7 @@ import { empty } from 'app/shared/helper';
 import { LoginState } from 'app/ui/core/login-state';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
+import { ApiHelper } from 'app/shared/api-helper';
 
 /**
  * Service used to manage the login status
@@ -53,7 +54,13 @@ export class LoginService {
 
     // Reload the data for UI whenever the permissions change
     pushNotifications.permissionsChanged$.subscribe(() =>
-      this.dataForFrontendHolder.reload().pipe(first()).subscribe(() => this.router.navigateByUrl(this.router.url))
+      this.dataForFrontendHolder.reload().pipe(first()).subscribe(() => {
+        if (!ApiHelper.isRestrictedAccess(this.dataForFrontendHolder.dataForFrontend)) {
+          // Navigate to the URL whenever there is not a restricted access otherwise it may give
+          // PDE exceptions. Restricted access is handled by initialze.ts service
+          this.router.navigateByUrl(this.router.url);
+        }
+      })
     );
   }
 
@@ -158,7 +165,7 @@ export class LoginService {
         // Then reload the DataForFrontend instance (as user)
         return this.dataForFrontendHolder.reload();
       }));
-  }
+  };
 
   /**
    * Directly clears the logged user state
@@ -166,7 +173,7 @@ export class LoginService {
   clear(): void {
     this.loginState.redirectUrl = null;
     this.nextRequestState.setSessionToken(null);
-  }
+  };
 
   /**
    * Performs the logout, optionally redirecting to a custom URL

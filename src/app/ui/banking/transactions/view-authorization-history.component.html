@@ -15,7 +15,7 @@
         {{ actionLabel(auth) }}
       </label-value>
       <label-value *ngIf="auth.by" [label]="i18n.general.performedBy">
-        {{ auth.by.display}}
+        <user-link [user]="auth.by"></user-link>
       </label-value>
       <label-value [label]="i18n.general.date">
         {{ auth.date | dateTime}}

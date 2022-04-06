@@ -55,7 +55,6 @@ export class EditProfileComponent
   enabledFields: Set<string>;
   editableFields: Set<string>;
   managePrivacyFields: Set<string>;
-  userCustomFields: Map<string, UserCustomFieldDetailed>;
   fieldsWithoutSection: Array<UserCustomFieldDetailed>;
   fieldsWithSection = new Map<FieldSection, UserCustomFieldDetailed[]>();
   canConfirm: boolean;
@@ -175,7 +174,7 @@ export class EditProfileComponent
     } else if (name === 'email') {
       return this.data.userConfiguration.emailRequired;
     } else {
-      const customField = this.userCustomFields.get(name);
+      const customField = (this.data.userConfiguration?.customFields || []).find(c => c.internalName === name || c.id === name);
       return customField && customField.required;
     }
   }
@@ -301,7 +300,7 @@ export class EditProfileComponent
     });
 
     // If the main image has changed reload the user version
-    if (this.mainImageChanged() && false) {
+    if (this.mainImageChanged()) {
       this.addSub(this.usersService.getDataForEditFullProfile({ user: this.param, fields: ['user.version'] })
         .subscribe(data => {
           body.user.version = data.user.version;
@@ -390,7 +389,6 @@ export class EditProfileComponent
   }
 
   private initialize(data: DataForEditFullProfile) {
-    this.userCustomFields = new Map();
     this.enabledFields = new Set();
     this.editableFields = new Set();
     this.managePrivacyFields = new Set();
@@ -418,10 +416,6 @@ export class EditProfileComponent
       }
       if (actions.managePrivacy) {
         this.managePrivacyFields.add(name);
-      }
-      const customField = this.data.userConfiguration.customFields.find(cf => cf.internalName === name);
-      if (customField) {
-        this.userCustomFields.set(name, customField);
       }
     }
 
@@ -515,7 +509,7 @@ export class EditProfileComponent
     });
     this.contactInfos = (data.contactInfos || []).slice();
 
-    const fields = Array.from(this.userCustomFields.values());
+    const fields = (data.userConfiguration?.customFields || []);
     this.fieldsWithoutSection = fields.filter(field => field.section == null) || [];
     const sections = new Map();
     fields.map(v => v.section).forEach(s => {

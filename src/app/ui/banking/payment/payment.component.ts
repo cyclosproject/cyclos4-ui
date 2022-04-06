@@ -294,7 +294,7 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
   onDataInitialized(data: DataForTransaction) {
     if (empty(data.accounts)) {
       // No accounts
-      this.notification.error(this.i18n.transaction.noAccounts);
+      this.notification.error(this.bankingHelper.noAccountForPaymentErrorMessage());
     } else {
       // Set the initial step
       this.step = 'form';
