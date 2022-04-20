@@ -5,7 +5,8 @@
       <ng-container *ngFor="let action of actions">
         <div *ngIf="action.entry" class="quick-access-item-container"
           [ngClass]="itemClass$ | async">
-          <a #anchor [href]="action.entry.url" class="quick-access-item"
+          <a #anchor [routerLink]="action.url ? action.url : action.entry.url"
+            class="quick-access-item"
             (click)="navigate(action, $event); blurIfClick(anchor, $event);">
             <div class="quick-access-icon">
               <icon [icon]="action.icon" size="2.2rem"></icon>

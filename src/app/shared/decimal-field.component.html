@@ -16,9 +16,9 @@
       <div class="input-group-prepend" *ngIf="prefix">
         <span class="input-group-text">{{ prefix }}</span>
       </div>
-      <!-- Using type="tel" instead of "number" because maxLength doesn't work with type="number" -->
-      <input #inputField [id]="id" type="tel" numbersOnly
-        [allowNegative]="allowNegative" allowDecimalSeparator
+      <!-- Use type text in iOS devices otherwise the user cannot enter comma or dot for decimals -->
+      <input #inputField [id]="id" [type]="isIos() ? 'text' : 'tel'"
+        numbersOnly [allowNegative]="allowNegative" allowDecimalSeparator
         autocomplete="off" [formControl]="internalControl"
         class="form-control" [placeholder]="format.formatAsNumber('0', scale)"
         (blur)="onBlur()" [ngClass]="{

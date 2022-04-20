@@ -6,4 +6,5 @@ export interface QuickAccessAction {
   label: string;
   entry: MenuEntry;
   onClick?: () => void;
+  url?: string;
 }
