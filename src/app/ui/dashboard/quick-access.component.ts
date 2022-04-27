@@ -4,7 +4,7 @@ import { Breakpoint } from 'app/core/layout.service';
 import { Arrows } from 'app/core/shortcut.service';
 import { blurIfClick, handleKeyboardFocus } from 'app/shared/helper';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
-import { MenuService } from 'app/ui/core/menu.service';
+import { MenuService, NavigateParams } from 'app/ui/core/menu.service';
 import { BaseDashboardComponent } from 'app/ui/dashboard/base-dashboard.component';
 import { QuickAccessAction } from 'app/ui/dashboard/quick-access-action';
 import { BehaviorSubject } from 'rxjs';
@@ -91,11 +91,14 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
     } else {
       this.breadcrumb.clear();
       this.breadcrumb.breadcrumb$.next(['/']);
-      this.menu.navigate({
-        entry: action.entry,
-        clear: false,
-        event,
-      });
+      let params: NavigateParams = { clear: false, event };
+      if (action.url) {
+        params.url = action.url;
+        params.menu = action.entry.activeMenu;
+      } else {
+        params.entry = action.entry;
+      }
+      this.menu.navigate(params);
     }
   }
 

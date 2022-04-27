@@ -246,4 +246,9 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
     return null;
   }
 
+  isIos() {
+    var ua = navigator.userAgent.toLowerCase();
+    return ua.indexOf("ipad") > -1 || ua.indexOf("iphone") > -1 || ua.indexOf("ipod") > -1;
+  }
+
 }

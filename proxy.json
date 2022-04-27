@@ -4,7 +4,8 @@
       "/api",
       "/ui",
       "/consent",
-      "/unsubscribe"
+      "/unsubscribe",
+      "/identity"
     ],
     "target": "https://app.sengzen.be/sint_niklaas",
     "cookieDomainRewrite": "localhost",

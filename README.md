@@ -135,6 +135,7 @@ or CORS. Here is an explanation of each of them:
   latency on every request. Also it requires the Cyclos backend server to allow CORS.
 
 More detail for each option is given below.
+
 ### Setup the server-side proxy for /api
 
 This section applies the frontend will use proxy for the API.
@@ -206,7 +207,17 @@ location / {
 }
 ```
 
+### Using external identity providers
+
+In order to use external identity providers, so you users can login with their
+Google, Facebook, etc, account, if the frontend is hosted separatedly, then it
+must proxy requests to `/identity` and forward them to Cyclos.
+
+The proxy should be configured in a similar as for `/api`, however, proxying 
+the `/identity` path.
+
 ### Generate correct links from Cyclos
+
 In Cyclos you need a script to generate links to the new frontend for users.
 For this, as a global administrator (which may be switched to the network),
 in 'System > Tools > Script', create a script of type 'Link generation',
@@ -225,6 +236,8 @@ if (user != null && user.admin && user.group.adminType != null) {
 
 String root = scriptParameters.rootUrl
 switch (type) {
+    case LinkType.ROOT:
+        return root
     case LinkType.REGISTRATION_VALIDATION:
         return "${root}/users/validate-registration/${validationKey}"
     case LinkType.EMAIL_CHANGE:
@@ -242,7 +255,12 @@ switch (type) {
     case LinkType.NOTIFICATION:
         def l = StringHelper.camelize(location.name())
         return "${root}/redirect/${l}" + entityId ? "?id=${maskId(entityId)}" : ""
-}
+    // Those 2 should only be used if proxying the /identity path
+    case LinkType.IDENTITY_PROVIDER_REDIRECT:
+        return "${root}/identity/redirect/${requestId}"
+    case LinkType.IDENTITY_PROVIDER_CALLBACK:
+        return "${root}/identity/callback"
+}}
 ```
 
 Then, in 'System > System configuration > Configurations' select the configuration
