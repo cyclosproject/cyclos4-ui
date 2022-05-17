@@ -50,7 +50,9 @@ export class ViewUserAgreementsComponent extends BaseViewPageComponent<UserAgree
     this.acceptedOptional = accepted.filter(a => !a.required);
     this.acceptedRequired = accepted.filter(a => a.required);
     if (data.canEdit) {
-      this.optionalControl = this.formBuilder.control(this.acceptedOptional.map(a => a.id));
+      if (this.allOptional.length > 0) {
+        this.optionalControl = this.formBuilder.control(this.acceptedOptional.map(a => a.id));
+      }
     } else {
       this.noAgreements = accepted.length === 0;
     }
