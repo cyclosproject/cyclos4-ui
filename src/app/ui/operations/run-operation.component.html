@@ -13,8 +13,12 @@
     <page-content [mode]="hasSearchFields ? 'filters' : 'emptyFilters'"
       [heading]="data.name" [mobileHeading]="data.label"
       [headingActions]="headingActions$ | async">
+      <alert type="info" *ngIf="data.informationText"
+        [ngClass]="{'mt-3': hasSearchFields}">
+        <div [innerHTML]="data.informationText | trust"></div>
+      </alert>
       <ng-container *ngTemplateOutlet="theForm"></ng-container>
-      <actions kind="secondary" *ngIf="!runDirectly" class="mb-3 mt-0">
+      <actions kind="secondary" *ngIf="!runDirectly" class="mb-3">
         <action-button [disabled]="requesting$ | async" (action)="run()"
           [label]="data.customSubmitLabel || i18n.general.submit">
         </action-button>

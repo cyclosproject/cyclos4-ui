@@ -106,15 +106,18 @@ export class AuthHelperService {
       return true;
     }
     const loggedUser = this.dataForFrontendHolder.user;
-    const possibleIds = [];
-    if (user.id) {
-      possibleIds.push(user.id);
+    if (loggedUser) {
+      const possibleIds = [];
+      if (user.id) {
+        possibleIds.push(user.id);
+      }
+      if (user.user && user.user.id) {
+        possibleIds.push(user.user.id);
+      }
+      return loggedUser.user && possibleIds.includes(loggedUser.user.id)
+        || possibleIds.includes(loggedUser.id);
     }
-    if (user.user && user.user.id) {
-      possibleIds.push(user.user.id);
-    }
-    return loggedUser.user && possibleIds.includes(loggedUser.user.id)
-      || possibleIds.includes(loggedUser.id);
+    return false;
   }
 
   /**

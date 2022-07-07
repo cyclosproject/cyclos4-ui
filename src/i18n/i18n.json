@@ -2291,6 +2291,7 @@
       "accountFeeChargedWithFailures": "Account fee has finished with at least one failure",
       "applicationRestarted": "Application restarted",
       "custom": "Custom",
+      "customTranslationsInvalidated": "Custom translations invalidated",
       "emailSendingFailed": "An e-mail couldn't be sent",
       "inconsistentDbSchema": "The database schema contains unexpected changes",
       "maxBlockedUsersReached": "The maximum blocked users from the same IP has been reached",

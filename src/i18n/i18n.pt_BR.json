@@ -2291,6 +2291,7 @@
       "accountFeeChargedWithFailures": "Taxa de conta terminada com ao menos uma falha",
       "applicationRestarted": "Aplicativo reiniciado",
       "custom": "Personalizado",
+      "customTranslationsInvalidated": "Traduções personalizadas invalidadas",
       "emailSendingFailed": "Não foi possível enviar um e-mail ",
       "inconsistentDbSchema": "O esquema da base de dados contém alterações inesperadas",
       "maxBlockedUsersReached": "O máximo de usuários bloqueados desde o mesmo IP foi alcançado.",

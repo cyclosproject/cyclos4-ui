@@ -77596,6 +77596,11 @@ components:
               description: >-
                 The voucher description when it was created.
               type: string
+            sendMessage:
+              description: >-
+                The message from the user that sent the voucher.
+                Only for sent vouchers.
+              type: string
             buy:
               description: >-
                 The transaction which bought this voucher, if any and visible.
@@ -77617,6 +77622,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/User'
+            allowPartialRedeems:
+              description: >-
+                Indicates whether partial redeems can occur, that is, a redeem
+                with an amount which is not the total voucher amount.
+              type: boolean
             pinStatusForRedeem:
               $ref: '#/components/schemas/VoucherPinStatusForRedeemEnum'
             pin:

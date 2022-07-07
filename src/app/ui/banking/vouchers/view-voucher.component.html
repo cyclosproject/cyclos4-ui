@@ -72,6 +72,9 @@
               [value]="data.expirationDateComments" valueFormat="break">
             </label-value>
           </ng-container>
+          <label-value *ngIf="data.sendMessage"
+            [label]="i18n.voucher.send.message" [value]="data.sendMessage"
+            valueFormat="break"></label-value>
           <ng-container *ngIf="data.singleRedeem as singleRedeem">
             <label-value *ngIf="singleRedeem.date"
               [label]="i18n.voucher.redeem.date"

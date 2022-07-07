@@ -198,7 +198,11 @@
               </a>
             </td>
             <td>
-              <a [routerLink]="bankingHelper.transactionPath(row)">
+              <div *ngIf="isExternalPayment()">
+                {{ row.toPrincipalValue }}
+              </div>
+              <a *ngIf="!isExternalPayment()"
+                [routerLink]="bankingHelper.transactionPath(row)">
                 {{ bankingHelper.subjectName( isPaymentRequest() ? row.from :
                 row.to) }}
               </a>
