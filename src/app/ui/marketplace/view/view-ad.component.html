@@ -28,7 +28,7 @@
             </div>
           </ng-container>
         </label-value>
-        <label-value [label]="i18n.ad.owner">
+        <label-value *ngIf="ad.user" [label]="i18n.ad.owner">
           <user-link [user]="ad.user"></user-link>
         </label-value>
         <label-value *ngIf="status" [label]="i18n.general.status">

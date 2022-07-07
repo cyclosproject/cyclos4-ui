@@ -34,6 +34,7 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
       new HeadingAction(SvgIcon.Search, this.i18n.general.view,
         event => this.menu.navigate({
           menu: new ActiveMenu(Menu.SEARCH_ADS),
+          url: '/marketplace/search?latest=true',
           clear: false,
           event,
         }),

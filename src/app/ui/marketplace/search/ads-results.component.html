@@ -40,7 +40,7 @@
     <div class="cell-text">
       {{ ad.name }}
     </div>
-    <div class="cell-text">
+    <div *ngIf="ad.user" class="cell-text">
       {{ i18n.ad.byOwner(ad.user.display) }}
     </div>
     <div *ngFor="let field of data.fieldsInList" class="cell-small">
@@ -54,9 +54,10 @@
     <thead>
       <th class="avatar"></th>
       <th>{{ i18n.ad.name }}</th>
-      <th *ngIf="!singleUser" colspan="2">{{ i18n.ad.owner }}</th>
+      <th *ngIf="!singleUser && !data.hideOwner" colspan="2">{{ i18n.ad.owner
+        }}</th>
       <th *ngFor="let field of data.fieldsInList">{{ fieldName(field) }}</th>
-      <th class="text-right">{{ i18n.ad.price }}</th>
+      <th *ngIf="!data.hidePrice" class="text-right">{{ i18n.ad.price }}</th>
     </thead>
     <tbody>
       <tr *ngFor="let ad of results?.results"
@@ -67,7 +68,7 @@
         <td>
           {{ ad.name }}
         </td>
-        <ng-container *ngIf="!singleUser">
+        <ng-container *ngIf="!singleUser && ad.user">
           <td class="avatar">
             <avatar [image]="ad.user.image"></avatar>
           </td>
@@ -82,7 +83,7 @@
             </format-field-value>
           </td>
         </ng-container>
-        <td class="text-right">
+        <td *ngIf="!data.hidePrice" class="text-right">
           <span *ngIf="ad.promotionalPrice" class="promo-price">
             {{ ad.price | number:decimals(ad) }}
           </span>
@@ -95,7 +96,7 @@
 
   <tiled-result *resultTile="let ad" [image]="ad.image" [zoom]="true"
     [icon]="SvgIcon.Basket">
-    <ng-container *ngIf="!singleUser">
+    <ng-container *ngIf="!singleUser && ad.user">
       <div class="tile-floating-avatar">
         <avatar class="solid-icon" [image]="ad.user.image"
           [tooltip]="ad.user.display" size="medium-large"
@@ -132,7 +133,7 @@
       {{ (ad.promotionalPrice || ad.price) | currency:lookupCurrency(ad) }}
     </div>
 
-    <div>{{ i18n.ad.byOwner(ad.user.display) }}</div>
+    <div *ngIf="ad.user">{{ i18n.ad.byOwner(ad.user.display) }}</div>
   </map-result>
 
 </results-layout>

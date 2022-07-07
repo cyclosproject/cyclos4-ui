@@ -92,11 +92,15 @@ application server (such as Tomcat) as usual.
 ## Translations
 
 ### Custom translations
-No new translation keys can be customized through Cyclos, only the existing ones for the release being customized. 
-In case the frontend  is served by Cyclos you should use the translated value directly in the code, otherwise, if the 
-frontend will be hosted separatedly from Cyclos, you could add the new keys to src/i18n/i18n.json and use the 
+No new translation keys can be customized through Cyclos, only the existing ones for the release being customized.
+In case the frontend  is served by Cyclos you should use the translated value directly in the code, otherwise, if the
+frontend will be hosted separatedly from Cyclos, you could add the new keys to src/i18n/i18n.json and use the
 TypeScript interface generated using ng-translation-gen.
- 
+
+To add a new language locally, simply add the locale to the locales array in ng-translation-gen.json. Then, to create
+the file with defaults, or update it with new translation keys, run npm run merge-translations. Finally, either
+reference it as a static translation, or, if the locale matches the language set in Cyclos, it will be automatically used.
+
 ### Contributing translations
 
 If you wish to contribute to the translations, not only for this frontend, but to

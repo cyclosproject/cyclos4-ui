@@ -104,7 +104,11 @@ export class SearchAdsComponent
       this.currency = data.currencies[0];
     }
 
-    if (data.adInitialSearchType === AdInitialSearchTypeEnum.CATEGORIES) {
+    const latestAds = this.route.snapshot.queryParams.latest;
+    if (latestAds) {
+      // Ads are already ordered by publish date as default
+      this.resultType = this.allowedResultTypes.find(rt => rt !== ResultType.CATEGORIES);
+    } else if (data.adInitialSearchType === AdInitialSearchTypeEnum.CATEGORIES) {
       this.resultType = ResultType.CATEGORIES;
     } else {
       this.resultType = this.getResultType(data.resultType);

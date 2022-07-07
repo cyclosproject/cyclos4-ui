@@ -1,8 +1,7 @@
 <label-value [label]="i18n.transaction.amount">
   {{ transfer.amount | currency:transfer.currency }}
 </label-value>
-<label-value *ngIf="transfer.transaction?.by"
-  [label]="i18n.general.performedBy">
+<label-value *ngIf="showBy()" [label]="i18n.general.performedBy">
   <user-link [user]="transfer.transaction.by"></user-link>
 </label-value>
 <label-value *ngIf="transfer.transaction?.receivedBy"

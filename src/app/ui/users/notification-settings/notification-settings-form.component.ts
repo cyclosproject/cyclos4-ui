@@ -48,12 +48,18 @@ export class NotificationSettingsFormComponent
       version: data.settings.version,
     });
 
+    if (!data.smsAllowed) {
+      data.settings.notifications = data.settings.notifications.filter(setting =>
+        setting.type !== NotificationTypeEnum.SMS_PERFORMED_PAYMENT && setting.type !== NotificationTypeEnum.MAX_SMS_PER_MONTH_REACHED);
+    }
+
     if (this.adminSettings) {
       if (!this.hasSettings(data)) {
         // Display a notification when there aren't any admin settings to show
         this.notification.info(this.i18n.notificationSettings.notAvailableSettings);
         return;
       }
+
       // Add all notifications without section
       this.notificationSections.set('', data.settings.notifications);
 
@@ -634,6 +640,8 @@ export class NotificationSettingsFormComponent
         return this.i18n.systemAlert.type.applicationRestarted;
       case SystemAlertTypeEnum.CUSTOM:
         return this.i18n.systemAlert.type.custom;
+      case SystemAlertTypeEnum.CUSTOM_TRANSLATIONS_INVALIDATED:
+        return this.i18n.systemAlert.type.customTranslationsInvalidated;
       case SystemAlertTypeEnum.EMAIL_SENDING_FAILED:
         return this.i18n.systemAlert.type.emailSendingFailed;
       case SystemAlertTypeEnum.INCONSISTENT_DB_SCHEMA:

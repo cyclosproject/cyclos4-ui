@@ -112,7 +112,7 @@ export class SearchOwnerTransactionsComponent
       .reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], []);
     this.hasTransactionNumber = transactionNumberPatterns.length > 0;
     this.transactionNumberPattern = transactionNumberPatterns.length === 1 ? transactionNumberPatterns[0] : null;
-    const headingActions: HeadingAction[] = [];
+    const headingActions: HeadingAction[] = [this.moreFiltersAction];
     const bankingPermissions = this.dataForFrontendHolder.auth?.permissions?.banking || {};
     const userPermissions = data.userPermissions || {};
 

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { ContactNew, TransactionSubjectsEnum, Transfer, TransferView, User, Voucher, VoucherCreationTypeEnum, VoucherStatusEnum, VoucherTransactionKind } from 'app/api/models';
 import { ContactsService } from 'app/api/services/contacts.service';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
@@ -35,6 +36,7 @@ export class TransferDetailsComponent extends BaseComponent implements OnInit {
     injector: Injector,
     public login: LoginService,
     private contactService: ContactsService,
+    private authHelperService: AuthHelperService,
     private bankingHelper: BankingHelperService) {
     super(injector);
   }
@@ -51,6 +53,11 @@ export class TransferDetailsComponent extends BaseComponent implements OnInit {
 
     this.canAddReceiverToContacts$ = new BehaviorSubject(this.usersWhichCanAddToContacts === TransactionSubjectsEnum.TO
       || this.usersWhichCanAddToContacts === TransactionSubjectsEnum.BOTH);
+  }
+
+  showBy(): boolean {
+    return this.transfer.transaction?.by
+      && (!this.authHelperService.isSelf(this.transfer.transaction.by.id) || !this.authHelperService.isSelf(this.transfer.from.user?.id));
   }
 
   path(transfer: Transfer): string[] {
