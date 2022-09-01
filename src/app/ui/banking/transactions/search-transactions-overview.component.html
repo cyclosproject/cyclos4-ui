@@ -9,16 +9,14 @@
     <div [formGroup]="form" class="filters-form">
       <div class="row">
         <div *ngIf="statusOptions?.length > 0" class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="status" [label]="i18n.general.status"
-            [fieldOptions]="statusOptions"
+          <single-selection-field formControlName="status"
+            [label]="i18n.general.status" [fieldOptions]="statusOptions"
             [emptyOption]="i18n.general.notApplied">
           </single-selection-field>
         </div>
         <div *ngIf="data.authorizationRoles?.length > 0"
           class="col-12 col-md-6">
-          <multi-selection-field labelPosition="side"
-            formControlName="authorizationRoles"
+          <multi-selection-field formControlName="authorizationRoles"
             [label]="i18n.transaction.authorizationRoles">
             <field-option *ngFor="let role of data.authorizationRoles"
               [value]="role.id" [id]="role.id"
@@ -28,8 +26,8 @@
         </div>
         <div *ngIf="!isMyAuth() && currencies?.length > 1"
           class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="currency" [label]="i18n.general.currency"
+          <single-selection-field formControlName="currency"
+            [label]="i18n.general.currency"
             [emptyOption]="i18n.general.notApplied">
             <field-option *ngFor="let currency of currencies"
               [value]="currency.id" [text]="currency.name"></field-option>
@@ -38,8 +36,7 @@
         <ng-container *ngIf="usePeriod">
           <div class="col-12 col-md-6"
             *ngIf="usePreselectedPeriod && data.preselectedPeriods?.length > 0">
-            <single-selection-field labelPosition="side"
-              formControlName="preselectedPeriod"
+            <single-selection-field formControlName="preselectedPeriod"
               [label]="i18n.general.period">
               <field-option *ngFor="let period of data.preselectedPeriods"
                 [id]="period['id']" [value]="period" [text]="period.name">
@@ -51,7 +48,7 @@
             <!-- Force a line break on sm and up -->
             <div class="w-100 d-none d-sm-block"></div>
             <div class="col-12 col-md-6">
-              <date-field labelPosition="side" formControlName="periodBegin"
+              <date-field formControlName="periodBegin"
                 [label]="i18n.general.beginDate" minDate="past5"
                 maxDate="today" fieldSize="full">
               </date-field>
@@ -60,7 +57,7 @@
           <div
             *ngIf="!usePreselectedPeriod || (form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
             class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="periodEnd"
+            <date-field formControlName="periodEnd"
               [label]="i18n.general.endDate" minDate="past5" maxDate="today"
               fieldSize="full">
             </date-field>
@@ -72,8 +69,7 @@
             <!-- Force a line break on sm and up -->
             <div class="w-100 d-none d-sm-block"></div>
             <div class="col-12 col-md-6">
-              <single-selection-field labelPosition="side"
-                formControlName="fromAccountTypes"
+              <single-selection-field formControlName="fromAccountTypes"
                 [emptyOption]="i18n.general.notApplied"
                 [label]="i18n.transaction.fromAccount">
                 <field-option *ngFor="let at of accountTypes()"
@@ -83,8 +79,7 @@
               </single-selection-field>
             </div>
             <div class="col-12 col-md-6">
-              <single-selection-field labelPosition="side"
-                formControlName="toAccountTypes"
+              <single-selection-field formControlName="toAccountTypes"
                 [emptyOption]="i18n.general.notApplied"
                 [label]="i18n.transaction.toAccount">
                 <field-option *ngFor="let at of accountTypes()"
@@ -96,15 +91,13 @@
           </ng-container>
           <div *ngIf="!isMyAuth() && hasTransactionNumber"
             class="col-12 col-md-6">
-            <input-field labelPosition="side"
-              formControlName="transactionNumber"
+            <input-field formControlName="transactionNumber"
               [mask]="transactionNumberPattern"
               [label]="i18n.transaction.number"></input-field>
           </div>
           <div *ngIf="isMyAuth() && data.authorizablePaymentTypes?.length > 0"
             class="col-12 col-md-6">
-            <multi-selection-field labelPosition="side"
-              formControlName="transferTypes"
+            <multi-selection-field formControlName="transferTypes"
               [emptyLabel]="i18n.general.notApplied"
               [label]="i18n.account.transferFilter">
               <field-option
@@ -118,27 +111,24 @@
           </div>
           <ng-container *ngIf="isPaymentRequest() || isExternalPayment()">
             <div class="col-12 col-md-6">
-              <date-field labelPosition="side"
-                formControlName="expirationBegin"
+              <date-field formControlName="expirationBegin"
                 [label]="i18n.general.expirationBeginDate" minDate="past100"
                 maxDate="future100" fieldSize="full">
               </date-field>
             </div>
             <div class="col-12 col-md-6">
-              <date-field labelPosition="side" formControlName="expirationEnd"
+              <date-field formControlName="expirationEnd"
                 [label]="i18n.general.expirationEndDate" minDate="past100"
                 maxDate="future100" fieldSize="full">
               </date-field>
             </div>
           </ng-container>
           <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="user"
-              [label]="i18n.general.user">
+            <user-field formControlName="user" [label]="i18n.general.user">
             </user-field>
           </div>
           <div *ngIf="isAuthorized()" class="col-12 col-md-6">
-            <user-field labelPosition="side"
-              formControlName="authorizationPerformedBy"
+            <user-field formControlName="authorizationPerformedBy"
               [label]="i18n.transaction.actionPerformedBy">
             </user-field>
           </div>

@@ -5,8 +5,8 @@
       <div [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row">
           <div *ngIf="data.channels?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field labelPosition="side"
-              formControlName="channels" [label]="i18n.connectedUser.channel">
+            <multi-selection-field formControlName="channels"
+              [label]="i18n.connectedUser.channel">
               <field-option *ngFor="let channel of data.channels"
                 [value]="channel.id" [internalName]="channel.internalName"
                 [id]="channel.id" [text]="channel.name">
@@ -14,8 +14,7 @@
             </multi-selection-field>
           </div>
           <div *ngIf="data.roles?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field labelPosition="side"
-              formControlName="roles"
+            <multi-selection-field formControlName="roles"
               [label]="i18n.connectedUser.showConnected">
               <field-option *ngFor="let role of data.roles" [value]="role"
                 [text]="showConnectedLabel(role)">
@@ -23,8 +22,8 @@
             </multi-selection-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="user"
-              [label]="i18n.general.user"></user-field>
+            <user-field formControlName="user" [label]="i18n.general.user">
+            </user-field>
           </div>
         </div>
       </div>

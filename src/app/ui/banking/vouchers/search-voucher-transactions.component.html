@@ -10,8 +10,7 @@
       <div class="row no-gutters">
         <ng-container *ngIf="data.user && !self">
           <div class="col-12 col-md-6">
-            <label-value [label]="i18n.general.user" labelPosition="side"
-              kind="fieldView">
+            <label-value [label]="i18n.general.user" kind="fieldView">
               <user-link [user]="data.user"></user-link>
             </label-value>
           </div>
@@ -19,7 +18,7 @@
           </div>
         </ng-container>
         <div *ngIf="data.types?.length > 1" class="col-12 col-md-6">
-          <multi-selection-field labelPosition="side" formControlName="types"
+          <multi-selection-field formControlName="types"
             [label]="i18n.general.type">
             <field-option *ngFor="let type of data.types" [value]="type.id"
               [internalName]="type.internalName" [id]="type.id"
@@ -28,9 +27,8 @@
           </multi-selection-field>
         </div>
         <div *ngIf="data.topUpEnabled" class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            [emptyOption]="i18n.general.notApplied" formControlName="kind"
-            [label]="i18n.voucher.transaction.kind">
+          <single-selection-field [emptyOption]="i18n.general.notApplied"
+            formControlName="kind" [label]="i18n.voucher.transaction.kind">
             <field-option [value]="VoucherTransactionKind.REDEEM"
               [text]="i18n.voucher.transaction.redeem">
             </field-option>
@@ -44,13 +42,13 @@
         </div>
         <div class="row no-gutters col-12">
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="periodBegin"
+            <date-field formControlName="periodBegin"
               [label]="i18n.general.beginDate" minDate="past100"
               maxDate="todayEnd" fieldSize="full" class>
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="periodEnd"
+            <date-field formControlName="periodEnd"
               [label]="i18n.general.endDate" minDate="past100"
               maxDate="todayEnd" fieldSize="full">
             </date-field>

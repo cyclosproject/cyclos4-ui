@@ -88,6 +88,9 @@ export class RunOperationHelperService {
         case OperationScopeEnum.RECORD:
           parts.push('record', scopeId);
           break;
+        case OperationScopeEnum.TRANSFER:
+          parts.push('transfer', scopeId);
+          break;
         case OperationScopeEnum.INTERNAL:
         case OperationScopeEnum.MENU:
           parts.push('action');

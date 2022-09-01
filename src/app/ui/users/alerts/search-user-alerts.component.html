@@ -4,19 +4,18 @@
     <div [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row">
         <div class="col-12 col-md-6">
-          <date-field labelPosition="side" formControlName="beginDate"
+          <date-field formControlName="beginDate"
             [label]="i18n.general.beginDate" minDate="past5" maxDate="today"
             fieldSize="full">
           </date-field>
         </div>
         <div class="col-12 col-md-6">
-          <date-field labelPosition="side" formControlName="endDate"
-            [label]="i18n.general.endDate" minDate="past5" maxDate="today"
-            fieldSize="full">
+          <date-field formControlName="endDate" [label]="i18n.general.endDate"
+            minDate="past5" maxDate="today" fieldSize="full">
           </date-field>
         </div>
         <div class="col-12 col-md-6">
-          <single-selection-field labelPosition="side" formControlName="types"
+          <single-selection-field formControlName="types"
             [label]="i18n.userAlert.type.title"
             [emptyOption]="i18n.general.notApplied">
             <field-option value="custom" [text]="i18n.userAlert.type.custom">
@@ -60,8 +59,8 @@
           </single-selection-field>
         </div>
         <div class="col-12 col-md-6">
-          <user-field labelPosition="side" formControlName="user"
-            [label]="i18n.general.user"></user-field>
+          <user-field formControlName="user" [label]="i18n.general.user">
+          </user-field>
         </div>
       </div>
     </div>

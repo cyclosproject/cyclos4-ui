@@ -88,7 +88,8 @@
         <user-link [user]="data.userConfiguration.details.user"></user-link>
       </label-value>
       <input-field *ngIf="hasField('name')" formControlName="name"
-        [label]="i18n.user.name" [required]="canEdit('name')">
+        [label]="data.userConfiguration.nameLabel || i18n.user.name"
+        [required]="canEdit('name')">
       </input-field>
       <input-field *ngIf="hasField('username')" formControlName="username"
         [label]="i18n.user.username" [required]="canEdit('username')">

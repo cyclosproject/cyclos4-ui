@@ -7,8 +7,7 @@
         <div class="row">
           <ng-container *ngIf="!authHelper.isSelf(data.user)">
             <div class="col-12 col-md-6">
-              <label-value [label]="i18n.general.user" kind="fieldView"
-                labelPosition="side">
+              <label-value [label]="i18n.general.user" kind="fieldView">
                 <user-link [user]="data.user"></user-link>
               </label-value>
             </div>
@@ -16,7 +15,7 @@
             </div>
           </ng-container>
           <div class="col-12 col-md-6">
-            <input-field labelPosition="side" formControlName="keywords"
+            <input-field formControlName="keywords"
               [label]="i18n.general.keywords" fieldSize="full"></input-field>
           </div>
         </div>

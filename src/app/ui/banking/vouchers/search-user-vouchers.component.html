@@ -19,7 +19,7 @@
           </div>
         </ng-container>
         <div *ngIf="data.types?.length > 0" class="col-12 col-md-6">
-          <multi-selection-field labelPosition="side" formControlName="types"
+          <multi-selection-field formControlName="types"
             [emptyLabel]="i18n.general.notApplied"
             [label]="i18n.general.type">
             <field-option *ngFor="let type of data.types" [value]="type.id"
@@ -29,19 +29,19 @@
           </multi-selection-field>
         </div>
         <div class="col-12 col-md-6">
-          <multi-selection-field labelPosition="side"
-            formControlName="statuses" [emptyLabel]="i18n.general.notApplied"
+          <multi-selection-field formControlName="statuses"
+            [emptyLabel]="i18n.general.notApplied"
             [label]="i18n.general.status" [fieldOptions]="statusOptions">
           </multi-selection-field>
         </div>
         <div class="col-12 col-md-6">
-          <input-field labelPosition="side" formControlName="token"
-            [label]="i18n.voucher.token" [mask]="data.mask">
+          <input-field formControlName="token" [label]="i18n.voucher.token"
+            [mask]="data.mask">
           </input-field>
         </div>
         <div *ngIf="data.canBuy && data.canSend" class="col-12">
-          <radio-group-field labelPosition="side"
-            formControlName="creationType" [asColumn]="layout.ltsm$ | async"
+          <radio-group-field formControlName="creationType"
+            [asColumn]="layout.ltsm$ | async"
             [label]="i18n.voucher.creationType.userLabel"
             [fieldOptions]="creationTypeOptions">
           </radio-group-field>

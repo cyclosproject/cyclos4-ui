@@ -10,7 +10,7 @@
       class="filters-form filters-form-separator border-bottom">
       <div class="row">
         <div class="col-12 col-md-6" *ngIf="!self && broker">
-          <label-value [label]="i18n.general.user" labelPosition="side">
+          <label-value [label]="i18n.general.user">
             <user-link [user]="broker"></user-link>
           </label-value>
         </div>
@@ -18,14 +18,13 @@
           *ngIf="(layout.gtsm$ | async) && !self && broker">
         </div>
         <div *ngIf="data.allowKeywords" class="col-12 col-md-6">
-          <input-field labelPosition="side" formControlName="keywords"
+          <input-field formControlName="keywords"
             [label]="i18n.general.keywords"></input-field>
         </div>
         <ng-container *ngIf="layout.gtxxs$ | async">
           <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field labelPosition="side"
-              hierarchyProperty="groupSet" formControlName="groups"
-              [label]="i18n.user.groupFilter">
+            <multi-selection-field hierarchyProperty="groupSet"
+              formControlName="groups" [label]="i18n.user.groupFilter">
               <field-option *ngFor="let group of data.groups"
                 [value]="ApiHelper.internalNameOrId(group)"
                 [internalName]="group.internalName" [id]="group.id"
@@ -34,26 +33,23 @@
             </multi-selection-field>
           </div>
           <div class="col-12 col-md-6" *ngFor="let f of fieldsInBasicSearch">
-            <basic-profile-field-filter *ngIf="!(f.id)" labelPosition="side"
-              [field]="f"
+            <basic-profile-field-filter *ngIf="!(f.id)" [field]="f"
               [formControl]="form.get('profileFields').get(f.field)">
             </basic-profile-field-filter>
-            <custom-field-filter *ngIf="f.id" labelPosition="side" [field]="f"
+            <custom-field-filter *ngIf="f.id" [field]="f"
               [formControl]="form.get('profileFields').get(f.internalName)">
             </custom-field-filter>
           </div>
           <ng-container *ngIf="moreFilters$ | async">
             <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
-              <distance-selection-field labelPosition="side"
-                [data]="data.searchByDistanceData"
+              <distance-selection-field [data]="data.searchByDistanceData"
                 formControlName="distanceFilter"
                 [label]="i18n.general.distanceFilter">
               </distance-selection-field>
             </div>
             <div *ngIf="byManager && data.products?.length > 1"
               class="col-12 col-md-6">
-              <multi-selection-field labelPosition="side"
-                formControlName="products"
+              <multi-selection-field formControlName="products"
                 [emptyLabel]="i18n.general.notApplied"
                 [label]="i18n.user.assignedProducts">
                 <field-option *ngFor="let prod of data.products"
@@ -65,8 +61,7 @@
             </div>
             <div *ngIf="byManager && data.agreements?.length > 1"
               class="col-12 col-md-6">
-              <multi-selection-field labelPosition="side"
-                formControlName="acceptedAgreements"
+              <multi-selection-field formControlName="acceptedAgreements"
                 [emptyLabel]="i18n.general.notApplied"
                 [label]="i18n.user.acceptedAgreements">
                 <field-option *ngFor="let agr of data.agreements"
@@ -78,8 +73,7 @@
             </div>
             <div *ngIf="byManager && data.agreements?.length > 1"
               class="col-12 col-md-6">
-              <multi-selection-field labelPosition="side"
-                formControlName="notAcceptedAgreements"
+              <multi-selection-field formControlName="notAcceptedAgreements"
                 [emptyLabel]="i18n.general.notApplied"
                 [label]="i18n.user.notAcceptedAgreements">
                 <field-option *ngFor="let agr of data.agreements"
@@ -91,15 +85,14 @@
             </div>
             <!-- Statuses -->
             <div *ngIf="byManager" class="col-12 col-md-6">
-              <multi-selection-field labelPosition="side"
-                formControlName="statuses" [label]="i18n.general.status"
-                [fieldOptions]="statusOptions"
+              <multi-selection-field formControlName="statuses"
+                [label]="i18n.general.status" [fieldOptions]="statusOptions"
                 [emptyLabel]="i18n.user.statusEmptyLabel">
               </multi-selection-field>
             </div>
             <!-- Invited by -->
             <div *ngIf="byManager" class="col-12 col-md-6">
-              <user-field labelPosition="side" formControlName="invitedBy"
+              <user-field formControlName="invitedBy"
                 [label]="i18n.user.invitedBy" [allowSelf]="true" [filters]="{
                   includeGlobal: true
                 }">
@@ -109,22 +102,20 @@
             <div
               *ngIf="!byManager && dataForFrontendHolder.auth?.permissions?.invite"
               class="col-12 col-md-6">
-              <boolean-field labelPosition="side"
-                formControlName="invitedByMe" [label]="i18n.user.invitedByMe">
+              <boolean-field formControlName="invitedByMe"
+                [label]="i18n.user.invitedByMe">
               </boolean-field>
             </div>
             <!-- Creation date -->
             <div *ngIf="byManager" class="row no-gutters col-12">
               <div class="col-12 col-md-6">
-                <date-field labelPosition="side"
-                  formControlName="beginCreationPeriod"
+                <date-field formControlName="beginCreationPeriod"
                   [label]="i18n.user.creationBegin" minDate="past100"
                   maxDate="todayEnd" fieldSize="full" class>
                 </date-field>
               </div>
               <div class="col-12 col-md-6">
-                <date-field labelPosition="side"
-                  formControlName="endCreationPeriod"
+                <date-field formControlName="endCreationPeriod"
                   [label]="i18n.user.creationEnd" minDate="past100"
                   maxDate="todayEnd" fieldSize="full">
                 </date-field>
@@ -133,15 +124,13 @@
             <!-- Activation date -->
             <div *ngIf="byManager" class="row no-gutters col-12">
               <div class="col-12 col-md-6">
-                <date-field labelPosition="side"
-                  formControlName="beginActivationPeriod"
+                <date-field formControlName="beginActivationPeriod"
                   [label]="i18n.user.beginUserActivationDate"
                   minDate="past100" maxDate="todayEnd" fieldSize="full" class>
                 </date-field>
               </div>
               <div class="col-12 col-md-6">
-                <date-field labelPosition="side"
-                  formControlName="endActivationPeriod"
+                <date-field formControlName="endActivationPeriod"
                   [label]="i18n.user.endUserActivationDate" minDate="past100"
                   maxDate="todayEnd" fieldSize="full">
                 </date-field>
@@ -150,22 +139,20 @@
             <!-- Last login date -->
             <div *ngIf="byManager" class="row no-gutters col-12">
               <div class="col-12 col-md-6">
-                <date-field labelPosition="side"
-                  formControlName="beginLastLoginPeriod"
+                <date-field formControlName="beginLastLoginPeriod"
                   [label]="i18n.user.beginLastLoginDate" minDate="past100"
                   maxDate="todayEnd" fieldSize="full" class>
                 </date-field>
               </div>
               <div class="col-12 col-md-6">
-                <date-field labelPosition="side"
-                  formControlName="endLastLoginPeriod"
+                <date-field formControlName="endLastLoginPeriod"
                   [label]="i18n.user.endLastLoginDate" minDate="past100"
                   maxDate="todayEnd" fieldSize="full">
                 </date-field>
               </div>
             </div>
             <div *ngIf="byManager" class="col-12 col-md-6">
-              <user-field labelPosition="side" formControlName="brokers"
+              <user-field formControlName="brokers"
                 [label]="i18n.general.usersOfBroker"
                 [filters]="userSearchFilters()" [allowContacts]="false">
               </user-field>
@@ -173,12 +160,10 @@
 
             <div class="col-12 col-md-6"
               *ngFor="let f of fieldsInAdvancedSearch">
-              <basic-profile-field-filter *ngIf="!(f.id)" labelPosition="side"
-                [field]="f"
+              <basic-profile-field-filter *ngIf="!(f.id)" [field]="f"
                 [formControl]="form.get('profileFields').get(f.field)">
               </basic-profile-field-filter>
-              <custom-field-filter *ngIf="f.id" labelPosition="side"
-                [field]="f"
+              <custom-field-filter *ngIf="f.id" [field]="f"
                 [formControl]="form.get('profileFields').get(f.internalName)">
               </custom-field-filter>
             </div>

@@ -144,16 +144,18 @@
     </chip>
   </label-value>
   <label-value *ngIf="data.ad" [label]="i18n.operation.ad" kind="field">
-    <chip [image]="data.ad.image" [closeable]="true">
+    <chip [image]="data.ad.image" [closeable]="false">
       {{ data.ad.name }}
     </chip>
   </label-value>
   <label-value *ngIf="data.transfer" [label]="i18n.operation.transfer"
     kind="fieldView">
-    <chip>
-      {{ data.transfer.display }}
-    </chip>
+    {{ data.transfer.display }}
+  </label-value>
+  <label-value *ngIf="data.record && data.recordType"
+    [label]="data.recordType.name" kind="fieldView">
+    {{ data.record.display }}
   </label-value>
   <hr
-    *ngIf="data.user && data.user.id !== login.user.id || data.ad || data.transfer">
+    *ngIf="data.user && data.user.id !== login.user.id || data.ad || data.transfer || data.record">
 </ng-template>

@@ -18,14 +18,13 @@
           </div>
         </ng-container>
         <div class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="status" [label]="i18n.general.status"
-            [fieldOptions]="statusOptions">
+          <single-selection-field formControlName="status"
+            [label]="i18n.general.status" [fieldOptions]="statusOptions">
           </single-selection-field>
         </div>
         <div class="col-12 col-md-6" *ngIf="data.accountTypes?.length > 1">
-          <single-selection-field labelPosition="side"
-            formControlName="accountType" [label]="i18n.transaction.account"
+          <single-selection-field formControlName="accountType"
+            [label]="i18n.transaction.account"
             [emptyOption]="i18n.general.notApplied">
             <field-option *ngFor="let at of data.accountTypes" [value]="at.id"
               [text]="at.name"></field-option>
@@ -33,8 +32,8 @@
         </div>
         <ng-container *ngIf="(moreFilters$ | async)">
           <div class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
-              formControlName="direction" [label]="i18n.account.direction"
+            <single-selection-field formControlName="direction"
+              [label]="i18n.account.direction"
               [emptyOption]="i18n.general.notApplied">
               <field-option value="credit" [text]="i18n.account.incoming">
               </field-option>
@@ -43,26 +42,24 @@
             </single-selection-field>
           </div>
           <div *ngIf="hasTransactionNumber" class="col-12 col-md-6">
-            <input-field labelPosition="side"
-              formControlName="transactionNumber"
+            <input-field formControlName="transactionNumber"
               [mask]="transactionNumberPattern"
               [label]="i18n.transaction.number"></input-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="periodBegin"
+            <date-field formControlName="periodBegin"
               [label]="i18n.general.beginDate" minDate="past5"
               maxDate="future5" fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="periodEnd"
+            <date-field formControlName="periodEnd"
               [label]="i18n.general.endDate" minDate="past5" maxDate="future5"
               fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="user"
-              [label]="i18n.general.user">
+            <user-field formControlName="user" [label]="i18n.general.user">
             </user-field>
           </div>
         </ng-container>

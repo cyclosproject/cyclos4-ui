@@ -10,14 +10,13 @@
     <div [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row">
         <div class="col-12 col-md-6" *ngIf="!self">
-          <label-value [label]="i18n.general.user" kind="fieldView"
-            labelPosition="side">
+          <label-value [label]="i18n.general.user" kind="fieldView">
             <user-link [user]="data.user"></user-link>
           </label-value>
         </div>
         <div class="col-12 col-md-6" *ngIf="data.groups?.length > 1">
-          <multi-selection-field labelPosition="side"
-            formControlName="operatorGroups" [label]="i18n.user.groupFilter">
+          <multi-selection-field formControlName="operatorGroups"
+            [label]="i18n.user.groupFilter">
             <field-option *ngFor="let group of data.groups"
               [value]="ApiHelper.internalNameOrId(group)"
               [internalName]="group.internalName" [id]="group.id"
@@ -27,18 +26,17 @@
         </div>
         <ng-container *ngIf="layout.gtxxs$ | async">
           <div class="col-12 col-md-6">
-            <multi-selection-field labelPosition="side"
-              formControlName="statuses" [label]="i18n.general.status"
-              [fieldOptions]="statusOptions">
+            <multi-selection-field formControlName="statuses"
+              [label]="i18n.general.status" [fieldOptions]="statusOptions">
             </multi-selection-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="creationBegin"
+            <date-field formControlName="creationBegin"
               [label]="i18n.user.creationBegin" fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="creationEnd"
+            <date-field formControlName="creationEnd"
               [label]="i18n.user.creationEnd" fieldSize="full">
             </date-field>
           </div>

@@ -44,8 +44,9 @@
         [value]="user.group.name"></label-value>
       <label-value *ngIf="user.status" [label]="i18n.general.status"
         [value]="userHelper.userStatus(user.status)"></label-value>
-      <label-value *ngIf="user.name" [label]="i18n.user.name"
-        [value]="user.name"></label-value>
+      <label-value *ngIf="user.name"
+        [label]="data.nameLabel || i18n.user.name" [value]="user.name">
+      </label-value>
       <label-value *ngIf="user.username" [label]="i18n.user.username"
         [value]="user.username"></label-value>
       <label-value *ngIf="user.registrationDate"

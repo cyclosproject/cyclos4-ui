@@ -2291,6 +2291,7 @@
       "accountFeeChargedWithFailures": "Rekening heffing is afgewerkt met één of meer fouten",
       "applicationRestarted": "Apllicatie opnieuw gestart",
       "custom": "Aangepast",
+      "customTranslationsInvalidated": "Aangepaste vertalingen ongeldig gemaakt",
       "emailSendingFailed": "Een e-mail kon niet worden verzonden",
       "inconsistentDbSchema": "Het databaseschema bevat onverwachte wijzigingen",
       "maxBlockedUsersReached": "De maximaal geblokkeerde gebruikers van hetzelfde IP is bereikt",

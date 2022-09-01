@@ -11,8 +11,8 @@
       class="filters-form filters-form-separator border-bottom">
       <div class="row filters-row">
         <div class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="accountType" [label]="i18n.account.account">
+          <single-selection-field formControlName="accountType"
+            [label]="i18n.account.account">
             <field-option *ngFor="let accountType of data.accountTypes"
               [id]="accountType.id" [value]="accountType.id"
               [internalName]="accountType.internalName"
@@ -21,11 +21,10 @@
           </single-selection-field>
         </div>
         <div class="col-12 col-md-6" *ngFor="let f of fieldsInBasicSearch">
-          <basic-profile-field-filter *ngIf="!(f.id)" labelPosition="side"
-            [field]="f"
+          <basic-profile-field-filter *ngIf="!(f.id)" [field]="f"
             [formControl]="form.get('profileFields').get(f.field)">
           </basic-profile-field-filter>
-          <custom-field-filter *ngIf="f.id" labelPosition="side" [field]="f"
+          <custom-field-filter *ngIf="f.id" [field]="f"
             [formControl]="form.get('profileFields').get(f.internalName)">
           </custom-field-filter>
         </div>
@@ -33,42 +32,38 @@
           <!-- Force a new line to keep range in same row -->
           <div class="w-100"></div>
           <div class="col-12 col-md-6">
-            <decimal-field labelPosition="side" formControlName="minBalance"
+            <decimal-field formControlName="minBalance"
               [label]="i18n.account.userBalances.minBalance" fieldSize="full"
               [scale]="currencyDecimalDigits()" allowNegative>
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
-            <decimal-field labelPosition="side" formControlName="maxBalance"
+            <decimal-field formControlName="maxBalance"
               [label]="i18n.account.userBalances.maxBalance" fieldSize="full"
               [scale]="currencyDecimalDigits()" allowNegative>
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
-            <decimal-field labelPosition="side"
-              formControlName="minMediumRange"
+            <decimal-field formControlName="minMediumRange"
               [label]="i18n.account.userBalances.fromYellowBalance"
               fieldSize="full" [scale]="0">
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
-            <decimal-field labelPosition="side"
-              formControlName="maxMediumRange"
+            <decimal-field formControlName="maxMediumRange"
               [label]="i18n.account.userBalances.toYellowBalance"
               fieldSize="full" [scale]="0">
             </decimal-field>
           </div>
           <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
-            <distance-selection-field labelPosition="side"
-              [data]="data.searchByDistanceData"
+            <distance-selection-field [data]="data.searchByDistanceData"
               formControlName="distanceFilter"
               [label]="i18n.general.distanceFilter">
             </distance-selection-field>
           </div>
           <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field labelPosition="side"
-              hierarchyProperty="groupSet" formControlName="groups"
-              [emptyLabel]="i18n.general.notApplied"
+            <multi-selection-field hierarchyProperty="groupSet"
+              formControlName="groups" [emptyLabel]="i18n.general.notApplied"
               [label]="i18n.user.groupFilter">
               <field-option *ngFor="let group of data.groups"
                 [value]="ApiHelper.internalNameOrId(group)"
@@ -78,8 +73,7 @@
             </multi-selection-field>
           </div>
           <div *ngIf="data.products?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field labelPosition="side"
-              formControlName="products"
+            <multi-selection-field formControlName="products"
               [emptyLabel]="i18n.general.notApplied"
               [label]="i18n.user.assignedProducts">
               <field-option *ngFor="let prod of data.products"
@@ -90,8 +84,7 @@
             </multi-selection-field>
           </div>
           <div *ngIf="data.agreements?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field labelPosition="side"
-              formControlName="acceptedAgreements"
+            <multi-selection-field formControlName="acceptedAgreements"
               [emptyLabel]="i18n.general.notApplied"
               [label]="i18n.user.acceptedAgreements">
               <field-option *ngFor="let agr of data.agreements"
@@ -102,8 +95,7 @@
             </multi-selection-field>
           </div>
           <div *ngIf="data.agreements?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field labelPosition="side"
-              formControlName="notAcceptedAgreements"
+            <multi-selection-field formControlName="notAcceptedAgreements"
               [emptyLabel]="i18n.general.notApplied"
               [label]="i18n.user.notAcceptedAgreements">
               <field-option *ngFor="let agr of data.agreements"
@@ -116,15 +108,13 @@
           <!-- Creation date -->
           <div class="row no-gutters col-12">
             <div class="col-12 col-md-6">
-              <date-field labelPosition="side"
-                formControlName="beginCreationPeriod"
+              <date-field formControlName="beginCreationPeriod"
                 [label]="i18n.user.creationBegin" minDate="past100"
                 maxDate="todayEnd" fieldSize="full" class>
               </date-field>
             </div>
             <div class="col-12 col-md-6">
-              <date-field labelPosition="side"
-                formControlName="endCreationPeriod"
+              <date-field formControlName="endCreationPeriod"
                 [label]="i18n.user.creationEnd" minDate="past100"
                 maxDate="todayEnd" fieldSize="full">
               </date-field>
@@ -133,15 +123,13 @@
           <!-- Activation date -->
           <div class="row no-gutters col-12">
             <div class="col-12 col-md-6">
-              <date-field labelPosition="side"
-                formControlName="beginActivationPeriod"
+              <date-field formControlName="beginActivationPeriod"
                 [label]="i18n.user.beginUserActivationDate" minDate="past100"
                 maxDate="todayEnd" fieldSize="full" class>
               </date-field>
             </div>
             <div class="col-12 col-md-6">
-              <date-field labelPosition="side"
-                formControlName="endActivationPeriod"
+              <date-field formControlName="endActivationPeriod"
                 [label]="i18n.user.endUserActivationDate" minDate="past100"
                 maxDate="todayEnd" fieldSize="full">
               </date-field>
@@ -150,15 +138,13 @@
           <!-- Last login date -->
           <div class="row no-gutters col-12">
             <div class="col-12 col-md-6">
-              <date-field labelPosition="side"
-                formControlName="beginLastLoginPeriod"
+              <date-field formControlName="beginLastLoginPeriod"
                 [label]="i18n.user.beginLastLoginDate" minDate="past100"
                 maxDate="todayEnd" fieldSize="full" class>
               </date-field>
             </div>
             <div class="col-12 col-md-6">
-              <date-field labelPosition="side"
-                formControlName="endLastLoginPeriod"
+              <date-field formControlName="endLastLoginPeriod"
                 [label]="i18n.user.endLastLoginDate" minDate="past100"
                 maxDate="todayEnd" fieldSize="full">
               </date-field>
@@ -167,33 +153,30 @@
           <!-- Negative since -->
           <div class="row no-gutters col-12">
             <div class="col-12 col-md-6">
-              <date-field labelPosition="side"
-                formControlName="beginNegativeSincePeriod"
+              <date-field formControlName="beginNegativeSincePeriod"
                 [label]="i18n.account.userBalances.beginNegativeSince"
                 minDate="past100" maxDate="todayEnd" fieldSize="full" class>
               </date-field>
             </div>
             <div class="col-12 col-md-6">
-              <date-field labelPosition="side"
-                formControlName="endNegativeSincePeriod"
+              <date-field formControlName="endNegativeSincePeriod"
                 [label]="i18n.account.userBalances.endNegativeSince"
                 minDate="past100" maxDate="todayEnd" fieldSize="full">
               </date-field>
             </div>
           </div>
           <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="brokers"
+            <user-field formControlName="brokers"
               [label]="i18n.general.usersOfBroker"
               [filters]="userSearchFilters()">
             </user-field>
           </div>
           <div class="col-12 col-md-6"
             *ngFor="let f of fieldsInAdvancedSearch">
-            <basic-profile-field-filter *ngIf="!(f.id)" labelPosition="side"
-              [field]="f"
+            <basic-profile-field-filter *ngIf="!(f.id)" [field]="f"
               [formControl]="form.get('profileFields').get(f.field)">
             </basic-profile-field-filter>
-            <custom-field-filter *ngIf="f.id" labelPosition="side" [field]="f"
+            <custom-field-filter *ngIf="f.id" [field]="f"
               [formControl]="form.get('profileFields').get(f.internalName)">
             </custom-field-filter>
           </div>
