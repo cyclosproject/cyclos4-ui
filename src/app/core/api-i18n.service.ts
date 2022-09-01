@@ -72,6 +72,8 @@ export class ApiI18nService {
         return this.i18n.transaction.status.canceled;
       case RecurringPaymentStatusEnum.CLOSED:
         return this.i18n.transaction.status.closed;
+      case RecurringPaymentStatusEnum.BLOCKED:
+        return this.i18n.transaction.status.blocked;
     }
   }
 

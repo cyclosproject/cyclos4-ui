@@ -10,19 +10,18 @@
       class="filters-form filters-form-separator border-bottom">
       <div class="row no-gutters">
         <div class="col-12 col-md-6">
-          <input-field labelPosition="side" formControlName="keywords"
+          <input-field formControlName="keywords"
             [label]="i18n.general.keywords"></input-field>
         </div>
         <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
-          <distance-selection-field labelPosition="side"
-            [data]="data.searchByDistanceData"
+          <distance-selection-field [data]="data.searchByDistanceData"
             formControlName="distanceFilter"
             [label]="i18n.general.distanceFilter">
           </distance-selection-field>
         </div>
         <div class="col-12 col-md-6" *ngIf="manager">
-          <multi-selection-field labelPosition="side"
-            formControlName="statuses" [label]="i18n.general.status">
+          <multi-selection-field formControlName="statuses"
+            [label]="i18n.general.status">
             <field-option value="active" [text]="i18n.ad.status.active">
             </field-option>
             <field-option value="disabled" [text]="i18n.ad.status.disabled">
@@ -40,34 +39,34 @@
         </div>
         <ng-container *ngIf="layout.gtxxs$ | async">
           <div class="col-12 col-md-6" *ngFor="let cf of basicFields">
-            <custom-field-filter labelPosition="side" [field]="cf"
+            <custom-field-filter [field]="cf"
               [formControl]="form.get('customValues').get(cf.internalName)">
             </custom-field-filter>
           </div>
         </ng-container>
         <ng-container *ngIf="moreFilters$ | async">
           <div class="col-12 col-md-6" *ngFor="let cf of advancedFields">
-            <custom-field-filter labelPosition="side" [field]="cf"
+            <custom-field-filter [field]="cf"
               [formControl]="form.get('customValues').get(cf.internalName)">
             </custom-field-filter>
           </div>
           <div class="col-12 col-md-6"
             *ngFor="let bf of data.basicProfileFields">
-            <basic-profile-field-filter labelPosition="side" [field]="bf"
+            <basic-profile-field-filter [field]="bf"
               [formControl]="form.get('profileFields').get(bf.field)">
             </basic-profile-field-filter>
           </div>
           <div class="col-12 col-md-6"
             *ngFor="let cf of data.customProfileFields">
-            <custom-field-filter labelPosition="side" [field]="cf"
+            <custom-field-filter [field]="cf"
               [formControl]="form.get('profileFields').get(cf.internalName)">
             </custom-field-filter>
           </div>
           <div
             *ngIf="marketplacePermissions.userSimple.view || marketplacePermissions.userWebshop.view"
             class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
-              formControlName="kind" [label]="i18n.general.type"
+            <single-selection-field formControlName="kind"
+              [label]="i18n.general.type"
               [emptyOption]="i18n.general.notApplied">
               <field-option *ngIf="marketplacePermissions.userSimple.view"
                 [text]="i18n.ad.type.simple" value="simple">
@@ -78,9 +77,8 @@
             </single-selection-field>
           </div>
           <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field labelPosition="side"
-              hierarchyProperty="groupSet" formControlName="groups"
-              [label]="i18n.user.groupFilter">
+            <multi-selection-field hierarchyProperty="groupSet"
+              formControlName="groups" [label]="i18n.user.groupFilter">
               <field-option *ngFor="let group of data.groups"
                 [value]="ApiHelper.internalNameOrId(group)"
                 [internalName]="group.internalName" [id]="group.id"
@@ -96,8 +94,8 @@
           <ng-container *ngIf="!hidePrice">
             <ng-container *ngIf="data.currencies.length > 1">
               <div class="col-12 col-md-6">
-                <single-selection-field labelPosition="side"
-                  formControlName="currency" [label]="i18n.general.currency"
+                <single-selection-field formControlName="currency"
+                  [label]="i18n.general.currency"
                   [emptyOption]="i18n.general.notApplied">
                   <field-option *ngFor="let c of data.currencies"
                     [value]="ApiHelper.internalNameOrId(c)"
@@ -111,17 +109,17 @@
               <!-- Force a new line to keep price range in same row -->
               <div class="w-100"></div>
               <div class="col-12 col-md-6">
-                <decimal-field labelPosition="side"
-                  formControlName="minAmount" [label]="i18n.ad.minPrice"
-                  fieldSize="full" [scale]="currency.decimalDigits"
-                  [prefix]="currency.prefix" [suffix]="currency.suffix">
+                <decimal-field formControlName="minAmount"
+                  [label]="i18n.ad.minPrice" fieldSize="full"
+                  [scale]="currency.decimalDigits" [prefix]="currency.prefix"
+                  [suffix]="currency.suffix">
                 </decimal-field>
               </div>
               <div class="col-12 col-md-6">
-                <decimal-field labelPosition="side"
-                  formControlName="maxAmount" [label]="i18n.ad.maxPrice"
-                  fieldSize="full" [scale]="currency.decimalDigits"
-                  [prefix]="currency.prefix" [suffix]="currency.suffix">
+                <decimal-field formControlName="maxAmount"
+                  [label]="i18n.ad.maxPrice" fieldSize="full"
+                  [scale]="currency.decimalDigits" [prefix]="currency.prefix"
+                  [suffix]="currency.suffix">
                 </decimal-field>
               </div>
             </ng-container>
@@ -129,15 +127,14 @@
           <!-- Force a new line to keep date range in same row -->
           <div class="w-100"></div>
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="beginDate"
+            <date-field formControlName="beginDate"
               [label]="i18n.ad.beginDate" minDate="past100" maxDate="todayEnd"
               fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="endDate"
-              [label]="i18n.ad.endDate" minDate="past100" maxDate="todayEnd"
-              fieldSize="full">
+            <date-field formControlName="endDate" [label]="i18n.ad.endDate"
+              minDate="past100" maxDate="todayEnd" fieldSize="full">
             </date-field>
           </div>
         </ng-container>

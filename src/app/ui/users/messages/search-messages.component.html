@@ -18,8 +18,8 @@
           </div>
           <div class="col-12 col-md-6"
             *ngIf="(data.visibleCategories || []).length > 0">
-            <single-selection-field labelPosition="side"
-              formControlName="category" [label]="i18n.general.category"
+            <single-selection-field formControlName="category"
+              [label]="i18n.general.category"
               [emptyOption]="i18n.general.all">
               <field-option *ngFor="let category of data.visibleCategories"
                 [id]="category.id" [value]="category.id"
@@ -31,11 +31,10 @@
             *ngIf="
             dataForFrontendHolder.role !== RoleEnum.ADMINISTRATOR && (
             (data.destinations || []).length > 0 || ((form.controls.messageBox.valueChanges | async) && (data.destinations || []).length > 0))">
-            <!-- Use label-value otherwise when we use label attr of the single-selection itself 
+            <!-- Use label-value otherwise when we use label attr of the single-selection itself
               the label would not be updated when messageBox changes -->
             <label-value [label]="resolveProfileTitle()">
-              <single-selection-field labelPosition="side"
-                formControlName="destination"
+              <single-selection-field formControlName="destination"
                 [emptyOption]="i18n.general.all">
                 <field-option *ngFor="let destination of destinations"
                   [value]="destination"
@@ -45,12 +44,12 @@
             </label-value>
           </div>
           <div class="col-12 col-md-6">
-            <input-field labelPosition="side" formControlName="keywords"
+            <input-field formControlName="keywords"
               [label]="i18n.general.keywords"></input-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="user"
-              [label]="i18n.general.user"></user-field>
+            <user-field formControlName="user" [label]="i18n.general.user">
+            </user-field>
           </div>
         </div>
       </div>

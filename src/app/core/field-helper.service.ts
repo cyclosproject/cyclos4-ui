@@ -40,7 +40,7 @@ export class FieldHelperService {
   }
 
   hasValue(customFieldInternalName: string, valuesMap: { [key: string]: string; }): boolean {
-    const value = valuesMap ? [customFieldInternalName] : null;
+    const value = valuesMap ? valuesMap[customFieldInternalName] : null;
     return value != null && (value.length === undefined || value.length > 0);
   }
 
@@ -225,7 +225,7 @@ export class FieldHelperService {
    *
    * - `currentValues`: If provided will contain the field values by internal name. If not, use the default value
    * - `useDefaults`: When set to false will not use the default values for fields. Defaults to true.
-   * - `requiredProvider`: If provided will be called for each custom field to determine whether the field is required. 
+   * - `requiredProvider`: If provided will be called for each custom field to determine whether the field is required.
    *                       Otherwise, the CustomFieldDetailed.required flag will be used to add the corresponding validation.
    * - `disabledProvider`: If provided will be called for each custom field to determine whether the field should be disabled
    * - `asyncValProvider`: If provided will be called for each custom field to provide an additional, asynchronous validation

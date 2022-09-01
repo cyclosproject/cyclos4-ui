@@ -10,22 +10,21 @@
       class="filters-form filters-form-separator border-bottom">
       <div class="row">
         <div class="col-12 col-md-6" *ngIf="!self">
-          <label-value [label]="i18n.general.user" kind="fieldView"
-            labelPosition="side">
+          <label-value [label]="i18n.general.user" kind="fieldView">
             <user-link [user]="data.user"></user-link>
           </label-value>
         </div>
         <div class="col-12 col-md-6">
-          <input-field labelPosition="side" formControlName="keywords"
+          <input-field formControlName="keywords"
             [label]="i18n.general.keywords" fieldSize="full"></input-field>
         </div>
         <div *ngIf="!simple" class="col-12 col-md-6">
-          <input-field labelPosition="side" formControlName="productNumber"
+          <input-field formControlName="productNumber"
             [label]="i18n.ad.productNumber" fieldSize="full"></input-field>
         </div>
         <div class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="orderBy" [label]="i18n.general.orderBy"
+          <single-selection-field formControlName="orderBy"
+            [label]="i18n.general.orderBy"
             [emptyOption]="i18n.general.noOptionSelected">
             <field-option value="date" [text]="i18n.ad.orderBy.date">
             </field-option>
@@ -42,9 +41,8 @@
           </single-selection-field>
         </div>
         <div class="col-12 col-md-6">
-          <multi-selection-field labelPosition="side"
-            formControlName="statuses" [label]="i18n.general.status"
-            [emptyLabel]="i18n.general.all">
+          <multi-selection-field formControlName="statuses"
+            [label]="i18n.general.status" [emptyLabel]="i18n.general.all">
             <field-option value="active" [text]="i18n.ad.status.active">
             </field-option>
             <field-option *ngIf="isManager" value="disabled"

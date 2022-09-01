@@ -4,7 +4,7 @@
     <div class="row no-gutters">
       <!-- Types -->
       <div *ngIf="data.types?.length > 1" class="col-12 col-md-6">
-        <multi-selection-field labelPosition="side" formControlName="types"
+        <multi-selection-field formControlName="types"
           [label]="i18n.general.type">
           <field-option *ngFor="let type of data.types" [value]="type.id"
             [internalName]="type.internalName" [id]="type.id"
@@ -14,22 +14,20 @@
       </div>
       <!-- Statuses -->
       <div class="col-12 col-md-6">
-        <multi-selection-field labelPosition="side" formControlName="statuses"
+        <multi-selection-field formControlName="statuses"
           [label]="i18n.general.status" [fieldOptions]="statusOptions"
           [emptyLabel]="i18n.general.notApplied">
         </multi-selection-field>
       </div>
       <!-- Token -->
       <div class="col-12 col-md-6">
-        <input-field type="text" labelPosition="side"
-          [label]="i18n.voucher.token" [mask]="mask" formControlName="token"
-          [placeholder]="mask">
+        <input-field type="text" [label]="i18n.voucher.token" [mask]="mask"
+          formControlName="token" [placeholder]="mask">
         </input-field>
       </div>
       <!-- Creation type -->
       <div class="col-12 col-md-6">
-        <single-selection-field labelPosition="side"
-          formControlName="creationType"
+        <single-selection-field formControlName="creationType"
           [label]="i18n.voucher.creationType.label"
           [fieldOptions]=creationTypeOptions
           [emptyOption]="this.i18n.general.all">
@@ -37,7 +35,7 @@
       </div>
       <!-- Printed -->
       <div class="col-12 col-md-6">
-        <single-selection-field labelPosition="side" formControlName="printed"
+        <single-selection-field formControlName="printed"
           [label]="i18n.general.printed" [emptyOption]="i18n.general.all">
           <field-option [value]="'true'" [text]="i18n.general.yes">
           </field-option>
@@ -50,13 +48,13 @@
         <!-- Creation date -->
         <div class="row no-gutters col-12">
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="creationBegin"
+            <date-field formControlName="creationBegin"
               [label]="i18n.general.creationDate" minDate="past100"
               maxDate="todayEnd" fieldSize="full" class>
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="creationEnd"
+            <date-field formControlName="creationEnd"
               [label]="i18n.general.to" minDate="past100" maxDate="todayEnd"
               fieldSize="full">
             </date-field>
@@ -65,13 +63,13 @@
         <!-- Expiration date -->
         <div class="row no-gutters col-12">
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="expirationBegin"
+            <date-field formControlName="expirationBegin"
               [label]="i18n.general.expirationDate" minDate="past100"
               maxDate="todayEnd" fieldSize="full" class>
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="expirationEnd"
+            <date-field formControlName="expirationEnd"
               [label]="i18n.general.to" minDate="past100" maxDate="todayEnd"
               fieldSize="full">
             </date-field>
@@ -80,16 +78,15 @@
         <!-- Transaction date date -->
         <div class="row no-gutters col-12">
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side"
-              formControlName="transactionDateBegin"
+            <date-field formControlName="transactionDateBegin"
               [label]="i18n.voucher.transaction.date" minDate="past100"
               maxDate="todayEnd" fieldSize="full" class>
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field labelPosition="side"
-              formControlName="transactionDateEnd" [label]="i18n.general.to"
-              minDate="past100" maxDate="todayEnd" fieldSize="full">
+            <date-field formControlName="transactionDateEnd"
+              [label]="i18n.general.to" minDate="past100" maxDate="todayEnd"
+              fieldSize="full">
             </date-field>
           </div>
         </div>
@@ -107,9 +104,8 @@
         </div>
         <!-- Buyer groups -->
         <div *ngIf="data.userGroups?.length > 1" class="col-12 col-md-6">
-          <multi-selection-field labelPosition="side"
-            hierarchyProperty="groupSet" formControlName="buyerGroups"
-            [label]="i18n.voucher.buyerGroups">
+          <multi-selection-field hierarchyProperty="groupSet"
+            formControlName="buyerGroups" [label]="i18n.voucher.buyerGroups">
             <field-option *ngFor="let group of data.userGroups"
               [value]="group.id" [internalName]="group.internalName"
               [id]="group.id" [text]="group.name" [parent]="group.groupSet">
@@ -126,8 +122,7 @@
         </div>
         <!-- Transaction user groups  -->
         <div *ngIf="data.userGroups?.length > 1" class="col-12 col-md-6">
-          <multi-selection-field labelPosition="side"
-            hierarchyProperty="groupSet"
+          <multi-selection-field hierarchyProperty="groupSet"
             formControlName="transactionUserGroups"
             [label]="i18n.voucher.transaction.userGroups">
             <field-option *ngFor="let group of data.userGroups"
@@ -158,14 +153,14 @@
 
         <!-- Custom fields -->
         <div class="col-12 col-md-6" *ngFor="let cf of customFieldsInSearch">
-          <custom-field-filter labelPosition="side" [field]="cf"
+          <custom-field-filter [field]="cf"
             [formControl]="form.get('customFields').get(cf.internalName)">
           </custom-field-filter>
         </div>
       </ng-container>
       <!-- Order by -->
       <div class="col-12 col-md-6">
-        <single-selection-field labelPosition="side" formControlName="orderBy"
+        <single-selection-field formControlName="orderBy"
           [label]="i18n.general.orderBy">
           <field-option *ngFor="let order of orderByOptions()" [value]="order"
             [text]="orderBy(order)">

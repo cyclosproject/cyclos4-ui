@@ -197,8 +197,8 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   /**
-   * Returns whether, for the given breakpoint, labels should be rendered on side.
-   */
+    * Returns whether, for the given breakpoint, labels should be rendered on side.
+    */
   private isLabelOnSide(breakpoint: Breakpoint): boolean {
     if (this.labelPosition === 'sideForced') {
       return true;
@@ -209,7 +209,16 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
         return false;
       case 'xs':
         // For xs, the labelPosition 'auto' will render on side for view or fieldView
-        return this.labelPosition === 'side' || this.labelPosition === 'auto' && ['view', 'fieldView'].includes(this.kind);
+        let isFilter = false;
+        let element = this.element.nativeElement;
+        while (element) {
+          if (element.tagName === 'PAGE-CONTENT') {
+            isFilter = element.attributes.getNamedItem('mode')?.value === 'filters';
+            break;
+          }
+          element = element.parentElement;
+        }
+        return isFilter || this.labelPosition === 'side' || this.labelPosition === 'auto' && ['view', 'fieldView'].includes(this.kind);
       default:
         // For larger resolutions, will always use labels on side, unless explicitly stated as above
         return this.labelPosition !== 'above';

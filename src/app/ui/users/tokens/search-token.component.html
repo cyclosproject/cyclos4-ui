@@ -9,21 +9,19 @@
     <div [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row no-gutters">
         <div class="col-12 col-md-6">
-          <user-field labelPosition="side" formControlName="user"
-            [label]="i18n.general.user">
+          <user-field formControlName="user" [label]="i18n.general.user">
           </user-field>
         </div>
         <!-- Force a new line to keep date range in same row -->
         <div class="w-100"></div>
         <div class="col-12 col-md-6">
-          <date-field labelPosition="side"
-            formControlName="activationBeginDate"
+          <date-field formControlName="activationBeginDate"
             [label]="i18n.token.activationBeginDate" minDate="past100"
             maxDate="today" fieldSize="full">
           </date-field>
         </div>
         <div class="col-12 col-md-6">
-          <date-field labelPosition="side" formControlName="activationEndDate"
+          <date-field formControlName="activationEndDate"
             [label]="i18n.token.activationEndDate" minDate="past100"
             fieldSize="full">
           </date-field>
@@ -31,28 +29,27 @@
         <!-- Force a new line to keep date range in same row -->
         <div class="w-100"></div>
         <div class="col-12 col-md-6">
-          <date-field labelPosition="side" formControlName="expiryBeginDate"
+          <date-field formControlName="expiryBeginDate"
             [label]="i18n.token.expiryBeginDate" minDate="past100"
             fieldSize="full">
           </date-field>
         </div>
         <div class="col-12 col-md-6">
-          <date-field labelPosition="side" formControlName="expiryEndDate"
+          <date-field formControlName="expiryEndDate"
             [label]="i18n.token.expiryEndDate" minDate="past100"
             fieldSize="full">
           </date-field>
         </div>
       </div>
       <div class="col-12 col-md-6">
-        <multi-selection-field labelPosition="side" formControlName="statuses"
+        <multi-selection-field formControlName="statuses"
           [emptyLabel]="i18n.general.notApplied" [label]="i18n.general.status"
           [fieldOptions]="statusOptions">
         </multi-selection-field>
       </div>
       <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
-        <multi-selection-field labelPosition="side"
-          hierarchyProperty="groupSet" formControlName="groups"
-          [label]="i18n.user.groupFilter">
+        <multi-selection-field hierarchyProperty="groupSet"
+          formControlName="groups" [label]="i18n.user.groupFilter">
           <field-option *ngFor="let group of data.groups"
             [value]="ApiHelper.internalNameOrId(group)"
             [internalName]="group.internalName" [id]="group.id"

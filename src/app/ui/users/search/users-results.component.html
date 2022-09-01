@@ -6,7 +6,8 @@
   <mobile-result *mobileResult="let row"
     [avatarImage]="canViewImages ? user(row).image : null"
     [avatarIcon]="resultKind === 'operator' ? null : SvgIcon.Person">
-    <ng-container *ngFor="let field of fieldsInTile; let first = first">
+    <ng-container
+      *ngFor="let field of fieldsWithValue(row); let first = first">
       <div [ngClass]="{
         'cell-main': first,
         'cell-text': !first
@@ -47,20 +48,23 @@
 
   <tiled-result *resultTile="let row" [image]="user(row).image"
     [icon]="SvgIcon.PersonCircle" zoom>
-    <div *ngFor="let field of fieldsInTile; let first = first"
-      [ngClass]="first ? 'card-title' : 'card-text'">
-      <format-field-value class="d-block text-truncate"
-        [fields]="data.customFields" plainText [fieldName]="field"
-        [object]="user(row)" [customValues]="customValues(row)">
-        &nbsp;
-      </format-field-value>
-    </div>
+    <ng-container *ngIf="fieldsWithValue(row) as withValue">
+      <div *ngFor="let field of withValue; let first = first"
+        [ngClass]="first ? 'card-title' : 'card-text'">
+        <format-field-value class="d-block text-truncate"
+          [fields]="data.customFields" plainText [fieldName]="field"
+          [object]="user(row)" [customValues]="customValues(row)">
+        </format-field-value>
+      </div>
+      <div *ngFor="let _ of blankSpaces(withValue)" class="card-text">&nbsp;
+      </div>
+    </ng-container>
   </tiled-result>
 
   <map-result *resultInfoWindow="let row; let addr = address"
     [image]="user(row).image" [address]="addr">
     <div
-      *ngFor="let field of fieldsInTile; let first = first; let last = last;"
+      *ngFor="let field of fieldsWithValue(row); let first = first; let last = last;"
       [ngClass]="{
           'font-weight-bold': first,
           'mb-2': last

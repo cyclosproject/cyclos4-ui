@@ -18,15 +18,14 @@
           </div>
         </ng-container>
         <div class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="status" [label]="i18n.general.status"
-            [fieldOptions]="statusOptions"
+          <single-selection-field formControlName="status"
+            [label]="i18n.general.status" [fieldOptions]="statusOptions"
             [emptyOption]="i18n.general.notApplied">
           </single-selection-field>
         </div>
         <div *ngIf="isPaymentRequest()" class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="direction" [label]="i18n.transaction.direction"
+          <single-selection-field formControlName="direction"
+            [label]="i18n.transaction.direction"
             [emptyOption]="i18n.general.all">
             <field-option value="credit" [text]="i18n.transaction.sent">
             </field-option>
@@ -36,15 +35,14 @@
         </div>
         <ng-container *ngIf="(moreFilters$ | async)">
           <div *ngIf="hasTransactionNumber" class="col-12 col-md-6">
-            <input-field labelPosition="side"
-              formControlName="transactionNumber"
+            <input-field formControlName="transactionNumber"
               [mask]="transactionNumberPattern"
               [label]="i18n.transaction.number"></input-field>
           </div>
           <div class="col-12 col-md-6"
             *ngIf="!isPaymentRequest() && (data.accountTypes?.length > 1)">
-            <single-selection-field labelPosition="side"
-              formControlName="accountType" [label]="i18n.transaction.account"
+            <single-selection-field formControlName="accountType"
+              [label]="i18n.transaction.account"
               [emptyOption]="i18n.general.notApplied">
               <field-option *ngFor="let at of data.accountTypes"
                 [value]="at.id" [text]="at.name"></field-option>
@@ -52,8 +50,7 @@
           </div>
           <div class="col-12 col-md-6"
             *ngIf="usePreselectedPeriods && data.preselectedPeriods?.length > 0">
-            <single-selection-field labelPosition="side"
-              formControlName="preselectedPeriod"
+            <single-selection-field formControlName="preselectedPeriod"
               [label]="i18n.general.period">
               <field-option *ngFor="let period of data.preselectedPeriods"
                 [id]="period['id']" [value]="period" [text]="period.name">
@@ -65,7 +62,7 @@
             <!-- Force a line break on sm and up -->
             <div class="w-100 d-none d-sm-block"></div>
             <div class="col-12 col-md-6">
-              <date-field labelPosition="side" formControlName="periodBegin"
+              <date-field formControlName="periodBegin"
                 [label]="i18n.general.beginDate" minDate="past5"
                 maxDate="today" fieldSize="full">
               </date-field>
@@ -74,15 +71,14 @@
           <div
             *ngIf="!usePreselectedPeriods || (form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
             class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="periodEnd"
+            <date-field formControlName="periodEnd"
               [label]="i18n.general.endDate" minDate="past5" maxDate="today"
               fieldSize="full">
             </date-field>
           </div>
           <div *ngIf="(transferFilters$ | async).length > 0"
             class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
-              formControlName="transferFilter"
+            <single-selection-field formControlName="transferFilter"
               [label]="i18n.account.transferFilter"
               [emptyOption]="i18n.general.notApplied">
               <field-option *ngFor="let filter of transferFilters$.value"
@@ -91,8 +87,7 @@
             </single-selection-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="user"
-              [label]="i18n.general.user">
+            <user-field formControlName="user" [label]="i18n.general.user">
             </user-field>
           </div>
         </ng-container>

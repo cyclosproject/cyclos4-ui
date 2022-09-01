@@ -9,17 +9,15 @@
     <div [formGroup]="form" class="filters-form">
       <div class="row">
         <div class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="status" [label]="i18n.general.status"
-            [fieldOptions]="statusOptions">
+          <single-selection-field formControlName="status"
+            [label]="i18n.general.status" [fieldOptions]="statusOptions">
           </single-selection-field>
         </div>
         <ng-container *ngIf="data.accountTypes?.length > 1">
           <!-- Force a line break on sm and up -->
           <div class="w-100 d-none d-sm-block"></div>
           <div class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
-              formControlName="fromAccountType"
+            <single-selection-field formControlName="fromAccountType"
               [emptyOption]="i18n.general.notApplied"
               [label]="i18n.transaction.fromAccount">
               <field-option *ngFor="let at of data.accountTypes"
@@ -29,8 +27,7 @@
             </single-selection-field>
           </div>
           <div class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
-              formControlName="toAccountType"
+            <single-selection-field formControlName="toAccountType"
               [emptyOption]="i18n.general.notApplied"
               [label]="i18n.transaction.toAccount">
               <field-option *ngFor="let at of data.accountTypes"
@@ -42,21 +39,18 @@
         </ng-container>
         <ng-container *ngIf="(moreFilters$ | async)">
           <div *ngIf="hasTransactionNumber" class="col-12 col-md-6">
-            <input-field labelPosition="side"
-              formControlName="transactionNumber"
+            <input-field formControlName="transactionNumber"
               [mask]="transactionNumberPattern"
               [label]="i18n.transaction.number"></input-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="user"
-              [label]="i18n.general.user">
+            <user-field formControlName="user" [label]="i18n.general.user">
             </user-field>
           </div>
           <ng-container>
             <div class="col-12 col-md-6"
               *ngIf="data.preselectedPeriods?.length > 0">
-              <single-selection-field labelPosition="side"
-                formControlName="preselectedPeriod"
+              <single-selection-field formControlName="preselectedPeriod"
                 [emptyOption]="i18n.general.notApplied"
                 [label]="i18n.general.period">
                 <field-option *ngFor="let period of data.preselectedPeriods"
@@ -69,7 +63,7 @@
               <!-- Force a line break on sm and up -->
               <div class="w-100 d-none d-sm-block"></div>
               <div class="col-12 col-md-6">
-                <date-field labelPosition="side" formControlName="periodBegin"
+                <date-field formControlName="periodBegin"
                   [label]="i18n.general.beginDate" minDate="past5"
                   maxDate="today" fieldSize="full">
                 </date-field>
@@ -78,7 +72,7 @@
             <div
               *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
               class="col-12 col-md-6">
-              <date-field labelPosition="side" formControlName="periodEnd"
+              <date-field formControlName="periodEnd"
                 [label]="i18n.general.endDate" minDate="past5" maxDate="today"
                 fieldSize="full">
               </date-field>

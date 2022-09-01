@@ -10,9 +10,8 @@
     <div [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row no-gutters">
         <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
-          <multi-selection-field labelPosition="side"
-            hierarchyProperty="groupSet" formControlName="groups"
-            [label]="i18n.user.groupFilter">
+          <multi-selection-field hierarchyProperty="groupSet"
+            formControlName="groups" [label]="i18n.user.groupFilter">
             <field-option *ngFor="let group of data.groups"
               [value]="ApiHelper.internalNameOrId(group)"
               [internalName]="group.internalName" [id]="group.id"
@@ -21,8 +20,8 @@
           </multi-selection-field>
         </div>
         <div *ngIf="currencies?.length > 1" class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="currency" [label]="i18n.general.currency"
+          <single-selection-field formControlName="currency"
+            [label]="i18n.general.currency"
             [emptyOption]="i18n.general.notApplied">
             <field-option *ngFor="let currency of currencies"
               [value]="currency.id" [text]="currency.name"></field-option>
@@ -30,9 +29,8 @@
         </div>
         <ng-container *ngIf="(moreFilters$ | async)">
           <div *ngIf="data.accountTypes?.length > 1" class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
-              formControlName="accountType" [label]="i18n.account.account"
-              [emptyOption]="i18n.general.all">
+            <single-selection-field formControlName="accountType"
+              [label]="i18n.account.account" [emptyOption]="i18n.general.all">
               <field-option *ngFor="let accountType of accountTypes()"
                 [id]="accountType.id" [value]="accountType.id"
                 [text]="accountType.name">
@@ -41,8 +39,7 @@
           </div>
           <!-- Payment limit filter -->
           <div class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
-              formControlName="customAmountLimit"
+            <single-selection-field formControlName="customAmountLimit"
               [fieldOptions]="customLimitOptions"
               [emptyOption]="i18n.general.all"
               [label]="i18n.account.paymentLimits.personalizedPaymentLimit">
@@ -69,8 +66,7 @@
           </div>
           <!-- Daily limit filter -->
           <div class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
-              formControlName="customAmountPerDayLimit"
+            <single-selection-field formControlName="customAmountPerDayLimit"
               [fieldOptions]="customLimitOptions"
               [emptyOption]="i18n.general.all"
               [label]="i18n.account.paymentLimits.personalizedDailyLimit">
@@ -96,8 +92,7 @@
           </div>
           <!-- Weekly limit filter -->
           <div class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
-              formControlName="customAmountPerWeekLimit"
+            <single-selection-field formControlName="customAmountPerWeekLimit"
               [fieldOptions]="customLimitOptions"
               [emptyOption]="i18n.general.all"
               [label]="i18n.account.paymentLimits.personalizedWeeklyLimit">
@@ -123,7 +118,7 @@
           </div>
           <!-- Monthly limit filter -->
           <div class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
+            <single-selection-field
               formControlName="customAmountPerMonthLimit"
               [fieldOptions]="customLimitOptions"
               [emptyOption]="i18n.general.all"
@@ -151,8 +146,7 @@
           </div>
           <!-- Yearly limit filter -->
           <div class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
-              formControlName="customAmountPerYearLimit"
+            <single-selection-field formControlName="customAmountPerYearLimit"
               [fieldOptions]="customLimitOptions"
               [emptyOption]="i18n.general.all"
               [label]="i18n.account.paymentLimits.personalizedYearlyLimit">
@@ -179,19 +173,18 @@
           </div>
 
           <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="user"
-              [label]="i18n.general.user" [allowContacts]="false">
+            <user-field formControlName="user" [label]="i18n.general.user"
+              [allowContacts]="false">
             </user-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="broker"
+            <user-field formControlName="broker"
               [label]="i18n.general.usersOfBroker"
               [filters]="userSearchFilters(true)" [allowContacts]="false">
             </user-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="by"
-              [label]="i18n.general.changedBy"
+            <user-field formControlName="by" [label]="i18n.general.changedBy"
               [filters]="userSearchFilters(false)" [allowContacts]="false">
             </user-field>
           </div>

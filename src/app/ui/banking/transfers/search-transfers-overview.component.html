@@ -11,17 +11,16 @@
       <div class="row">
         <div *ngIf="data.preselectedPeriods?.length > 1"
           class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="preselectedPeriod" [label]="i18n.general.period">
+          <single-selection-field formControlName="preselectedPeriod"
+            [label]="i18n.general.period">
             <field-option *ngFor="let period of data.preselectedPeriods"
               [id]="period['id']" [value]="period" [text]="period.name">
             </field-option>
           </single-selection-field>
         </div>
         <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
-          <multi-selection-field labelPosition="side"
-            hierarchyProperty="groupSet" formControlName="groups"
-            [emptyLabel]="i18n.general.notApplied"
+          <multi-selection-field hierarchyProperty="groupSet"
+            formControlName="groups" [emptyLabel]="i18n.general.notApplied"
             [label]="i18n.user.groupFilter">
             <field-option *ngFor="let group of data.groups"
               [value]="ApiHelper.internalNameOrId(group)"
@@ -31,8 +30,8 @@
           </multi-selection-field>
         </div>
         <div *ngIf="data.currencies?.length > 1" class="col-12 col-md-6">
-          <single-selection-field labelPosition="side"
-            formControlName="currency" [label]="i18n.general.currency"
+          <single-selection-field formControlName="currency"
+            [label]="i18n.general.currency"
             [emptyOption]="i18n.general.notApplied">
             <field-option *ngFor="let currency of data.currencies"
               [value]="currency.id" [text]="currency.name"></field-option>
@@ -43,8 +42,7 @@
             <!-- Force a line break on sm and up -->
             <div class="w-100 d-none d-sm-block"></div>
             <div class="col-12 col-md-6">
-              <single-selection-field labelPosition="side"
-                formControlName="fromAccountTypes"
+              <single-selection-field formControlName="fromAccountTypes"
                 [emptyOption]="i18n.general.notApplied"
                 [label]="i18n.transaction.fromAccount">
                 <field-option *ngFor="let at of accountTypes()"
@@ -54,8 +52,7 @@
               </single-selection-field>
             </div>
             <div class="col-12 col-md-6">
-              <single-selection-field labelPosition="side"
-                formControlName="toAccountTypes"
+              <single-selection-field formControlName="toAccountTypes"
                 [emptyOption]="i18n.general.notApplied"
                 [label]="i18n.transaction.toAccount">
                 <field-option *ngFor="let at of accountTypes()"
@@ -66,8 +63,7 @@
             </div>
           </ng-container>
           <div class="col-12 col-md-6" *ngIf="transferFilters().length > 0">
-            <multi-selection-field labelPosition="side"
-              formControlName="transferFilters"
+            <multi-selection-field formControlName="transferFilters"
               [emptyLabel]="i18n.general.notApplied"
               [label]="i18n.account.transferFilter">
               <field-option *ngFor="let filter of transferFilters()"
@@ -78,8 +74,7 @@
             </multi-selection-field>
           </div>
           <div class="col-12 col-md-6" *ngIf="data.channels?.length > 1">
-            <multi-selection-field labelPosition="side"
-              formControlName="channels"
+            <multi-selection-field formControlName="channels"
               [emptyLabel]="i18n.general.notApplied"
               [label]="i18n.transaction.channel">
               <field-option *ngFor="let ch of data.channels" [id]="ch.id"
@@ -93,7 +88,7 @@
           <div
             *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
             class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="periodBegin"
+            <date-field formControlName="periodBegin"
               [label]="i18n.general.beginDate" minDate="past5"
               maxDate="todayEnd" fieldSize="full" class>
             </date-field>
@@ -101,51 +96,49 @@
           <div
             *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
             class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="periodEnd"
+            <date-field formControlName="periodEnd"
               [label]="i18n.general.endDate" minDate="past5"
               maxDate="todayEnd" fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <decimal-field labelPosition="side" formControlName="minAmount"
+            <decimal-field formControlName="minAmount"
               [label]="i18n.account.minAmount" fieldSize="full"
               [scale]="currencyDecimalDigits()" [prefix]="currencyPrefix()"
               [suffix]="currencySuffix()">
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
-            <decimal-field labelPosition="side" formControlName="maxAmount"
+            <decimal-field formControlName="maxAmount"
               [label]="i18n.account.maxAmount" fieldSize="full"
               [scale]="currencyDecimalDigits()" [prefix]="currencyPrefix()"
               [suffix]="currencySuffix()">
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="user"
-              [label]="i18n.general.user"></user-field>
+            <user-field formControlName="user" [label]="i18n.general.user">
+            </user-field>
           </div>
           <div *ngIf="hasTransactionNumber" class="col-12 col-md-6">
-            <input-field labelPosition="side"
-              formControlName="transactionNumber"
+            <input-field formControlName="transactionNumber"
               [mask]="transactionNumberPattern"
               [label]="i18n.transaction.number"></input-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="brokers"
+            <user-field formControlName="brokers"
               [label]="i18n.general.usersOfBroker"
               [filters]="userSearchFilters()" [allowContacts]="false">
             </user-field>
           </div>
           <div class="col-12 col-md-6">
-            <multi-selection-field labelPosition="side"
-              formControlName="kinds" [emptyLabel]="i18n.general.notApplied"
+            <multi-selection-field formControlName="kinds"
+              [emptyLabel]="i18n.general.notApplied"
               [label]="i18n.transaction.transferKinds"
               [fieldOptions]="kindOptions">
             </multi-selection-field>
           </div>
           <div class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
-              formControlName="chargedBack"
+            <single-selection-field formControlName="chargedBack"
               [label]="i18n.transaction.chargedBack"
               [emptyOption]="i18n.general.all">
               <field-option value="yes" [text]="i18n.general.yes">
@@ -155,8 +148,8 @@
             </single-selection-field>
           </div>
           <div class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
-              formControlName="orderBy" [label]="i18n.general.orderBy">
+            <single-selection-field formControlName="orderBy"
+              [label]="i18n.general.orderBy">
               <field-option value="dateDesc"
                 [text]="i18n.account.orderBy.dateDesc"></field-option>
               <field-option value="dateAsc"

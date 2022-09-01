@@ -12,7 +12,8 @@
   <div class="flex-grow-1 mb-ls">
     <label-value [label]="i18n.user.group" *ngIf="group" [value]="group.name">
     </label-value>
-    <label-value [label]="i18n.user.name" *ngIf="!empty(name)" [value]="name">
+    <label-value [label]="data.nameLabel || i18n.user.name"
+      *ngIf="!empty(name)" [value]="name">
     </label-value>
     <label-value [label]="i18n.user.username" *ngIf="!empty(username)"
       [value]="username"></label-value>

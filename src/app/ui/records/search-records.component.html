@@ -7,8 +7,7 @@
         <div class="row">
           <ng-container *ngIf="user && !authHelper.isSelf(user)">
             <div class="col-12 col-md-6">
-              <label-value [label]="i18n.general.user" labelPosition="side"
-                kind="fieldView">
+              <label-value [label]="i18n.general.user" kind="fieldView">
                 <user-link [user]="user"></user-link>
               </label-value>
             </div>
@@ -16,13 +15,12 @@
             </div>
           </ng-container>
           <div *ngIf="showKeywords()" class="col-12 col-md-6">
-            <input-field labelPosition="side" formControlName="keywords"
+            <input-field formControlName="keywords"
               [label]="i18n.general.keywords" fieldSize="full"></input-field>
           </div>
           <ng-container *ngIf="generalSearch">
             <div *ngIf="userStatuses.length > 1" class="col-12 col-md-6">
-              <multi-selection-field labelPosition="side"
-                formControlName="userStatuses"
+              <multi-selection-field formControlName="userStatuses"
                 [label]="i18n.user.profile.statusUser">
                 <field-option *ngFor="let status of userStatuses"
                   [value]="status" [text]="userHelper.userStatus(status)">
@@ -30,9 +28,8 @@
               </multi-selection-field>
             </div>
             <div *ngIf="groups.length > 1" class="col-12 col-md-6">
-              <multi-selection-field labelPosition="side"
-                hierarchyProperty="groupSet" formControlName="groups"
-                [label]="i18n.user.groups">
+              <multi-selection-field hierarchyProperty="groupSet"
+                formControlName="groups" [label]="i18n.user.groups">
                 <field-option *ngFor="let group of groups"
                   [value]="ApiHelper.internalNameOrId(group)"
                   [internalName]="group.internalName" [id]="group.id"
@@ -41,31 +38,31 @@
               </multi-selection-field>
             </div>
             <div class="col-12 col-md-6">
-              <user-field labelPosition="side" [label]="i18n.user.broker"
-                formControlName="broker" [filters]="{roles: ['broker']}">
+              <user-field [label]="i18n.user.broker" formControlName="broker"
+                [filters]="{roles: ['broker']}">
               </user-field>
             </div>
             <div class="col-12 col-md-6">
-              <user-field labelPosition="side" formControlName="user"
-                [label]="i18n.general.user"></user-field>
+              <user-field formControlName="user" [label]="i18n.general.user">
+              </user-field>
             </div>
           </ng-container>
           <ng-container *ngIf="this.generalSearch || !isOwnRecords()">
             <div class="col-12 col-md-6">
-              <user-field labelPosition="side" formControlName="createdBy"
+              <user-field formControlName="createdBy"
                 [label]="i18n.record.createdBy"></user-field>
             </div>
             <!-- Force a new line to keep date range in same row -->
             <ng-container *ngIf="!data.hideDateOnList">
               <div class="w-100"></div>
               <div class="col-12 col-md-6">
-                <date-field labelPosition="side" formControlName="beginDate"
+                <date-field formControlName="beginDate"
                   [label]="i18n.general.beginDate" minDate="past100"
                   maxDate="todayEnd" fieldSize="full">
                 </date-field>
               </div>
               <div class="col-12 col-md-6">
-                <date-field labelPosition="side" formControlName="endDate"
+                <date-field formControlName="endDate"
                   [label]="i18n.general.endDate" minDate="past100"
                   maxDate="todayEnd" fieldSize="full">
                 </date-field>
@@ -73,20 +70,20 @@
             </ng-container>
           </ng-container>
           <div class="col-12 col-md-6" *ngFor="let cf of fieldsInSearch">
-            <custom-field-filter labelPosition="side" [field]="cf"
+            <custom-field-filter [field]="cf"
               [formControl]="form.get('customValues').get(cf.internalName)">
             </custom-field-filter>
           </div>
           <ng-container *ngIf="generalSearch">
             <div class="col-12 col-md-6"
               *ngFor="let bf of basicProfileFields">
-              <basic-profile-field-filter labelPosition="side" [field]="bf"
+              <basic-profile-field-filter [field]="bf"
                 [formControl]="form.get('profileFields').get(bf.field)">
               </basic-profile-field-filter>
             </div>
             <div class="col-12 col-md-6"
               *ngFor="let cf of customProfileFields">
-              <custom-field-filter labelPosition="side" [field]="cf"
+              <custom-field-filter [field]="cf"
                 [formControl]="form.get('profileFields').get(cf.internalName)">
               </custom-field-filter>
             </div>

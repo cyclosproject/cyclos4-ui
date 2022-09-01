@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Injector, Input, OnInit, Output } from '@angular/core';
 import { Address, BaseUserDataForSearch, ContactListDataForSearch, ContactResult, User, UserDataForMap, UserDataForSearch, UserResult } from 'app/api/models';
 import { OperatorResult } from 'app/api/models/operator-result';
-import { BaseComponent } from 'app/shared/base.component';
-import { MaxDistance } from 'app/ui/shared/max-distance';
-import { PageData } from 'app/ui/shared/page-data';
-import { PagedResults } from 'app/shared/paged-results';
-import { ResultType } from 'app/ui/shared/result-type';
-import { BehaviorSubject } from 'rxjs';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
+import { BaseComponent } from 'app/shared/base.component';
+import { PagedResults } from 'app/shared/paged-results';
+import { MaxDistance } from 'app/ui/shared/max-distance';
+import { PageData } from 'app/ui/shared/page-data';
+import { ResultType } from 'app/ui/shared/result-type';
+import { BehaviorSubject } from 'rxjs';
 
 export const MAX_COLUMNS = 7;
 export const MAX_TILE_FIELDS = 2;
@@ -186,5 +186,29 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
    */
   get canViewImages(): boolean {
     return this.data != null && (this.data as BaseUserDataForSearch).canViewImages;
+  }
+
+  /**
+   * Returns the fields in tile that have an actual value
+   */
+  fieldsWithValue(row: any): string[] {
+    const user = this.user(row);
+    const customValues = this.customValues(row);
+    const allValues = { ...user, ...customValues };
+    const fields = (this.fieldsInTile || [])
+      .filter(f => this.fieldHelper.hasValue(f, allValues));
+    return fields;
+  }
+
+  /**
+   * Returns an array with the number of elements corresponding to the number of blank spaces that should be added to the tile
+   */
+  blankSpaces(withValue: string[]): string[] {
+    const times = (this.fieldsInList || []).length - (withValue || []).length;
+    const result: string[] = [];
+    for (let i = 0; i < times; i++) {
+      result.push('');
+    }
+    return result;
   }
 }
