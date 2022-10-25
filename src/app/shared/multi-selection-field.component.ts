@@ -1,10 +1,9 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, Host, Injector, Input, Optional, SkipSelf, ViewChild,
+  ChangeDetectionStrategy, Component, ElementRef, Host, Injector, Input, Optional, SkipSelf, ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FIELD_OPTIONS_SORTER, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { BaseSelectionFieldComponent } from 'app/shared/base-selection-field.component';
-import { FieldOption } from 'app/shared/field-option';
 import { blank, empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
 
 /**
@@ -101,10 +100,6 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
       const option = this.allOptions[this.optionIndex];
       this.toggle(option.value);
     });
-  }
-
-  resolveStyle(option: FieldOption) {
-    return option.style + ' level' + (option.level || 0);
   }
 
   hasEmptyOption() {

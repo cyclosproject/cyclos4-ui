@@ -34,8 +34,8 @@
         </div>
         <a *ngFor="let option of category.options | async; let firstOpt = first"
           tabindex="0" href="#" class="select-option"
-          [class]="resolveStyle(option)" [id]="id + '_' + option.value"
-          [ngClass]="{
+          [class]="resolveStyle(option, category.name)"
+          [id]="id + '_' + option.value" [ngClass]="{
             'mt-1': emptyLabel != null || !(firstCat && firstOpt),
             'pl-3': category.name,
             selected: isSelected(option)

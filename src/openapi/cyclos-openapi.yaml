@@ -27653,7 +27653,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /mobile/page/{id}:
+  /mobile/page/{key}:
     get:
       operationId: mobilePageContent
       summary: >-
@@ -27663,13 +27663,13 @@ A note for dynamic custom fields: If a script is used to generate possible value
       tags:
         - Mobile
       parameters:
-        - name: id
+        - name: key
           in: path
           required: true
-          description: >-
-            The mobile page id
           schema:
             type: string
+          description: >-
+            Either id or internal name of the mobile page.
       responses:
         '200':
           description: >-

@@ -1,13 +1,16 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { OperatorResult, TokenType, User } from 'app/api/models';
+import { OperatorResult, PhysicalTokenTypeEnum, TokenType, User } from 'app/api/models';
 import { OperatorsService } from 'app/api/services/operators.service';
 import { TokensService } from 'app/api/services/tokens.service';
 import { BaseComponent } from 'app/shared/base.component';
-import { validateBeforeSubmit } from 'app/shared/helper';
+import { focus, validateBeforeSubmit } from 'app/shared/helper';
+import { InputFieldComponent } from 'app/shared/input-field.component';
+import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
 import { cloneDeep } from 'lodash-es';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 /**
  * Used in a popup to create a token
@@ -19,10 +22,14 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class CreateTokenComponent extends BaseComponent implements OnInit {
 
+  physicalType = PhysicalTokenTypeEnum;
+
   @Input() type: TokenType;
   @Input() user: User;
   @Input() required: boolean;
   @Input() updateAction: () => void;
+
+  @ViewChild('inputField') inputField: ElementRef<InputFieldComponent>;
 
   form: FormGroup;
   operators$ = new BehaviorSubject<OperatorResult[]>(null);
@@ -32,7 +39,8 @@ export class CreateTokenComponent extends BaseComponent implements OnInit {
     injector: Injector,
     public modalRef: BsModalRef,
     private tokensService: TokensService,
-    private operatorsService: OperatorsService) {
+    private operatorsService: OperatorsService,
+    private modal: BsModalService) {
     super(injector);
   }
 
@@ -65,6 +73,13 @@ export class CreateTokenComponent extends BaseComponent implements OnInit {
       this.canActivate$.next(false);
       this.operators$.next(null);
     }
+  }
+
+  showScanQrCode() {
+    const ref = this.modal.show(ScanQrCodeComponent, { class: 'modal-form' });
+    const component = ref.content as ScanQrCodeComponent;
+    component.select.pipe(first()).subscribe(value => this.form.controls['value'].setValue(value));
+    this.modal.onHide.pipe(first()).subscribe(() => focus(this.inputField, true));
   }
 
   submit() {

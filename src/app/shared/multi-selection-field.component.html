@@ -30,8 +30,8 @@
         <div #check
           *ngFor="let option of category.options | async; let firstOpt = first"
           class="custom-control custom-checkbox d-flex align-content-center"
-          [class]="resolveStyle(option)" [ngClass]="{
-            'mt-1': !(firstCat &&  !category.name && firstOpt)
+          [class]="resolveStyle(option, category.name)" [ngClass]="{
+            'mt-1': !(firstCat &&  !category.name )
           }" (click)="toggle(option.value)"
           (keydown.space)="$event.preventDefault(); $event.stopPropagation()"
           (keyup.enter)="toggle(option.value)" (keyup.esc)="close()">
