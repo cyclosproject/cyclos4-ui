@@ -64,8 +64,4 @@ export class SingleSelectionFieldComponent extends BaseSelectionFieldComponent<s
   hasEmptyOption() {
     return !(this.emptyOption == null || this.emptyOption === false);
   }
-
-  resolveStyle(option: FieldOption) {
-    return option.style + ' level' + option.level;
-  }
 }

@@ -14,9 +14,19 @@
       [value]="operator.id" [text]="operator.name">
     </field-option>
   </single-selection-field>
-  <input-field required formControlName="value" [mask]="type.mask"
-    [label]="i18n.token.value" [placeholder]="type.mask? type.mask : ''">
-  </input-field>
+  <label-value kind="field" [label]="i18n.token.value">
+    <input-field #inputField required formControlName="value"
+      [mask]="type.mask" [placeholder]="type.mask? type.mask : ''">
+    </input-field>
+    <div *extraCell>
+      <button *ngIf="type.physicalType === physicalType.QR_CODE" type="button"
+        class="btn btn-icon" #scanQrCodeButton
+        [tooltip]="i18n.field.user.scanQrCodeTooltip"
+        (click)="showScanQrCode()">
+        <icon [icon]="SvgIcon.QrCodeScan"></icon>
+      </button>
+    </div>
+  </label-value>
   <boolean-field *ngIf="canActivate$ | async" formControlName="activateNow"
     [label]="i18n.token.action.activate">
   </boolean-field>

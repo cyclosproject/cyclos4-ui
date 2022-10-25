@@ -29,7 +29,7 @@
           </single-selection-field>
         </div>
         <div
-          *ngIf="(layout.gtxxs$ | async) && data.transferFilters?.length > 1; else noTransferFilters"
+          *ngIf="(layout.gtxxs$ | async) && data.transferFilters?.length > 0; else noTransferFilters"
           class="col-12 col-md-6">
           <multi-selection-field formControlName="transferFilters"
             [label]="i18n.account.transferFilter">

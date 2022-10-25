@@ -10,11 +10,11 @@
 <ng-template #content>
   <ng-container *ngIf="isSearch; else regular">
     <!-- When a result page, render a filters section -->
-    <page-content [mode]="hasSearchFields ? 'filters' : 'emptyFilters'"
+    <page-content
+      [mode]="hasSearchFields || data.informationText ? 'filters' : 'emptyFilters'"
       [heading]="data.name" [mobileHeading]="data.label"
       [headingActions]="headingActions$ | async">
-      <alert type="info" *ngIf="data.informationText"
-        [ngClass]="{'mt-3': hasSearchFields}">
+      <alert type="info" *ngIf="data.informationText" class="mt-3">
         <div [innerHTML]="data.informationText | trust"></div>
       </alert>
       <ng-container *ngTemplateOutlet="theForm"></ng-container>

@@ -154,6 +154,10 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
     }
   }
 
+  resolveStyle(option: FieldOption, hasCategory: boolean) {
+    return option.style + ' level' + (hasCategory ? option.level || 0 : 0);
+  }
+
   /**
    * Must be implemented to indicate whether the field has an empty option in the beginning.
    */
