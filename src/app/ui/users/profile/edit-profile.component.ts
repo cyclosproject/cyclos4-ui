@@ -645,6 +645,9 @@ export class EditProfileComponent
       address: null,
     });
     form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields));
+    if (!this.data.contactInfoConfiguration.edit) {
+      form.disable();
+    }
     this.stampDataAndInitForm(contactInfo, form);
     return form;
   }
@@ -715,7 +718,7 @@ export class EditProfileComponent
   }
 
   get canCreateContactInfo(): boolean {
-    if (this.contactInfoAvailability !== 'multiple') {
+    if (!this.data.contactInfoConfiguration.edit || this.contactInfoAvailability !== 'multiple') {
       return false;
     }
     const max = this.data.contactInfoConfiguration.maxContactInfos;

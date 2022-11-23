@@ -5,16 +5,22 @@ body {
   padding-left: 0 !important;
   padding-top: 0 !important;
 }
-body.lt-md, body.full-width, body.full-width.md {
+
+body.lt-md,
+body.full-width,
+body.full-width.md {
   background-color: $card-bg;
   overflow-x: hidden;
 }
+
 body.gt-sm {
   padding-bottom: 1rem;
 }
+
 body.full-width {
   padding-bottom: 0;
 }
+
 body.full-width .main-container {
   margin: 0;
 }
@@ -23,6 +29,7 @@ body.lt-sm {
   overflow: auto;
   scrollbar-width: thin;
 }
+
 body.gt-md {
   overflow-y: scroll;
 }
@@ -32,7 +39,9 @@ body.gt-md {
 }
 
 body.theme-transition {
-  &, & .main-container * {
+
+  &,
+  & .main-container * {
     @include theme-transitions()
   }
 }
@@ -47,6 +56,9 @@ body.dark {
   color: $body-color-dark;
 }
 
-body.lt-sm.dark {
+body.lt-sm.dark,
+body.lt-md.dark,
+body.full-width.dark,
+body.full-width.md.dark {
   background-color: $card-bg-dark;
 }
