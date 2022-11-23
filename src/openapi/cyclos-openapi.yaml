@@ -66770,6 +66770,10 @@ components:
                 If it is present, it indicates the id of the action that should be
                 executed automatically.
               type: string
+            reRun:
+              description: >-
+                A boolean value indicating if the custom operation must be re-run when going back to it before displaying it.
+              type: boolean
             actions:
               description: >-
                 Actions are other internal custom operations that can be executed from

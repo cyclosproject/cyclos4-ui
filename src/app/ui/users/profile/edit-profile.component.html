@@ -416,13 +416,17 @@
         <label-value *ngIf="canManagePrivacy('contactInfo')" [label]="i18n.field.privacy.name" kind="field"
           labelPosition="sideForced">
           <div class="d-flex w-100 justify-content-between">
-            <field-privacy [control]="contactInfo['form'].get('hidden')" justifyStart></field-privacy>
-            <action-button *ngIf="(layout.gtxxs$ | async)" outline (action)="removeContactInfo(contactInfo)"
+            <field-privacy [control]="contactInfo['form'].get('hidden')"
+              justifyStart></field-privacy>
+            <action-button
+              *ngIf="(layout.gtxxs$ | async) && data.contactInfoConfiguration.edit"
+              outline (action)="removeContactInfo(contactInfo)"
               [label]="i18n.user.contactInfoRemove">
             </action-button>
           </div>
         </label-value>
-        <div *ngIf="(layout.xxs$ | async) || !data.contactInfoConfiguration.managePrivacy"
+        <div
+          *ngIf="((layout.xxs$ | async) || !data.contactInfoConfiguration.managePrivacy) && data.contactInfoConfiguration.edit"
           class="d-flex justify-content-end">
           <action-button outline (action)="removeContactInfo(contactInfo)" [label]="i18n.user.contactInfoRemove">
           </action-button>

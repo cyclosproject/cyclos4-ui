@@ -282,7 +282,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           }));
         }
       }
-      if (profile.editProfile) {
+      if (profile.editProfile || profile.manageContactInfos) {
         this.managementActions.push(new HeadingAction(SvgIcon.Pencil, this.i18n.user.profile.edit, () => {
           this.router.navigateByUrl(this.router.url + '/edit');
         }));
