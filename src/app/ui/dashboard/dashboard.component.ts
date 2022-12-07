@@ -30,6 +30,7 @@ export const MemberRewardOperation = 'co_cashback';
 export const MemberRewardNonMemberOperation = 'co_cashbacknotmember';
 export const QuickScanOperation = 'co_quickscan';
 export const CheckUserBalanceOperation = 'co_check_user_balance';
+export const BuyGiftCardOperation = 'co_buy_giftcard';
 
 /**
  * Displays the dashboard page (home for logged users)
@@ -267,43 +268,39 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
 
     // Customizations for stniklaas
     const config = this.dataForFrontendHolder.auth.configuration.id;
-    switch (config) {
-      case ConsumersConfig:
-        const qrCode = auth.permissions.tokens.my.map(t => t.type).find(t => t.internalName === QrCodeToken);
-        if (qrCode) {
-          addAction('qr-code', 'QR-code', new ActiveMenu(Menu.MY_TOKENS, { tokenType: qrCode }));
-        }
-        const expiryDates = auth.permissions.records.user.map(rt => rt.type).find(rt => rt.internalName === ExpiryDatesRecordType);
-        if (expiryDates) {
-          addAction('calendar-week', 'Vervaldata', new ActiveMenu(Menu.SEARCH_RECORDS_BANKING, { recordType: expiryDates }));
-        }
-        const help = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === HelpOperation)
-        if (help) {
-          addAction('question', 'Help', new ActiveMenu(Menu.RUN_OPERATION_PERSONAL, { operation: help }));
-        }
-        break;
-      case MerchantsConfig:
-      case OrganizationsConfig:
-      case CityConfig:
-        const memberReward = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === MemberRewardOperation)
-        if (memberReward) {
-          addAction(SvgIcon.PersonCheck, memberReward.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberReward }));
-        }
-        const memberRewardNonMember = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === MemberRewardNonMemberOperation)
-        if (memberRewardNonMember) {
-          addAction(SvgIcon.PersonPlus, memberRewardNonMember.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberRewardNonMember }));
-        }
-        const quickScan = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === QuickScanOperation)
-        if (quickScan) {
-          addAction(SvgIcon.People, quickScan.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: quickScan }));
-        }
-        if (config === CityConfig) {
-          const checkUserBalance = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === CheckUserBalanceOperation)
-          if (checkUserBalance) {
-            addAction(SvgIcon.Search, checkUserBalance.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: checkUserBalance }));
-          }
-        }
-        break;
+    if (config === ConsumersConfig) {
+      const qrCode = auth.permissions.tokens.my.map(t => t.type).find(t => t.internalName === QrCodeToken);
+      if (qrCode) {
+        addAction('qr-code', 'QR-code', new ActiveMenu(Menu.MY_TOKENS, { tokenType: qrCode }));
+      }
+      const expiryDates = auth.permissions.records.user.map(rt => rt.type).find(rt => rt.internalName === ExpiryDatesRecordType);
+      if (expiryDates) {
+        addAction('calendar-week', 'Vervaldata', new ActiveMenu(Menu.SEARCH_RECORDS_BANKING, { recordType: expiryDates }));
+      }
+    }
+    const memberReward = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === MemberRewardOperation)
+    if (memberReward) {
+      addAction(memberReward.icon, memberReward.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberReward }));
+    }
+    const memberRewardNonMember = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === MemberRewardNonMemberOperation)
+    if (memberRewardNonMember) {
+      addAction(memberRewardNonMember.icon, memberRewardNonMember.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberRewardNonMember }));
+    }
+    const quickScan = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === QuickScanOperation)
+    if (quickScan) {
+      addAction(quickScan.icon, quickScan.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: quickScan }));
+    }
+    const checkUserBalance = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === CheckUserBalanceOperation)
+    if (checkUserBalance) {
+      addAction(checkUserBalance.icon, checkUserBalance.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: checkUserBalance }));
+    }
+    const buyGiftCard = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === BuyGiftCardOperation)
+    if (buyGiftCard) {
+      addAction(buyGiftCard.icon, buyGiftCard.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: buyGiftCard }));
+    }
+    const help = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === HelpOperation)
+    if (help) {
+      addAction(help.icon, help.label, new ActiveMenu(Menu.RUN_OPERATION_PERSONAL, { operation: help }));
     }
   }
 }
