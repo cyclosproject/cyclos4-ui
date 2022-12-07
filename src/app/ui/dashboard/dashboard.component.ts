@@ -280,27 +280,27 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
     }
     const memberReward = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === MemberRewardOperation)
     if (memberReward) {
-      addAction(memberReward.icon, memberReward.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberReward }));
+      addAction(memberReward.svgIcon, memberReward.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberReward }));
     }
     const memberRewardNonMember = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === MemberRewardNonMemberOperation)
     if (memberRewardNonMember) {
-      addAction(memberRewardNonMember.icon, memberRewardNonMember.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberRewardNonMember }));
+      addAction(memberRewardNonMember.svgIcon, memberRewardNonMember.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberRewardNonMember }));
     }
     const quickScan = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === QuickScanOperation)
     if (quickScan) {
-      addAction(quickScan.icon, quickScan.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: quickScan }));
+      addAction(quickScan.svgIcon, quickScan.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: quickScan }));
     }
     const checkUserBalance = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === CheckUserBalanceOperation)
     if (checkUserBalance) {
-      addAction(checkUserBalance.icon, checkUserBalance.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: checkUserBalance }));
+      addAction(checkUserBalance.svgIcon, checkUserBalance.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: checkUserBalance }));
     }
     const buyGiftCard = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === BuyGiftCardOperation)
     if (buyGiftCard) {
-      addAction(buyGiftCard.icon, buyGiftCard.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: buyGiftCard }));
+      addAction(buyGiftCard.svgIcon, buyGiftCard.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: buyGiftCard }));
     }
     const help = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === HelpOperation)
     if (help) {
-      addAction(help.icon, help.label, new ActiveMenu(Menu.RUN_OPERATION_PERSONAL, { operation: help }));
+      addAction(help.svgIcon, help.label, new ActiveMenu(Menu.RUN_OPERATION_PERSONAL, { operation: help }));
     }
   }
 }
