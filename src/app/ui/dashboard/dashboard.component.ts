@@ -296,7 +296,7 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
     }
     const buyGiftCard = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === BuyGiftCardOperation)
     if (buyGiftCard) {
-      addAction(buyGiftCard.svgIcon, buyGiftCard.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: buyGiftCard }));
+      addAction(buyGiftCard.svgIcon, buyGiftCard.label, new ActiveMenu(Menu.RUN_OPERATION_MARKETPLACE, { operation: buyGiftCard }));
     }
     const help = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === HelpOperation)
     if (help) {
