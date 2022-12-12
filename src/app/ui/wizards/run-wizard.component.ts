@@ -146,8 +146,10 @@ export class RunWizardComponent
         case WizardResultTypeEnum.REGISTRATION:
           const result = data.registrationResult;
           this.registrationMessage = this.userHelper.registrationMessageHtml(result, false);
-          this.registrationPrincipals = this.userHelper.registrationPrincipalsHtml(result);
-          this.registrationPasswords = this.userHelper.registrationPasswordsMessage(result);
+          if (this.login.user == null && result.status == 'active') {
+            this.registrationPrincipals = this.userHelper.registrationPrincipalsHtml(result);
+            this.registrationPasswords = this.userHelper.registrationPasswordsMessage(result);
+          }
           Cookies.remove('inviteToken', { path: '/' });
           break;
         case WizardResultTypeEnum.PLAIN_TEXT:
@@ -177,7 +179,7 @@ export class RunWizardComponent
       const step = data.step;
       switch (step.kind) {
         case WizardStepKind.GROUP:
-          this.group = this.formBuilder.control(data.params.group, Validators.required);
+          this.group = this.formBuilder.control(data.params.group || data.step.groups[0].internalName || data.step.groups[0].id, Validators.required);
           break;
         case WizardStepKind.FORM_FIELDS:
           // Wizard custom fields

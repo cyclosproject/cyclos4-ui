@@ -1,6 +1,7 @@
 <radio-group-field *ngIf="singleLine; else multiLine" [formControl]="control">
-  <field-option *ngFor="let group of groups" [value]="group.id"
-    [id]="group.id" [internalName]="group.internalName" [text]="group.name">
+  <field-option *ngFor="let group of groups"
+    [value]="group.internalName || group.id" [id]="group.id"
+    [internalName]="group.internalName" [text]="group.name">
   </field-option>
 </radio-group-field>
 <ng-template #multiLine>

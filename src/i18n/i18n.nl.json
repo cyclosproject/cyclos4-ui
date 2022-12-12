@@ -224,7 +224,7 @@
     },
     "emailSending": "Er is een fout opgetreden bij het verzenden van de e-mail. Probeer het later opnieuw.",
     "smsSending": "Er is een fout opgetreden bij het verzenden van het SMS-bericht. Probeer het later opnieuw.",
-    "loggedOut": "De verbinding is verbroken. Gelieve opnieuw in te loggen en de bewerking te herhalen.",
+    "loggedOut": "U bent uitgelogd. <br>Log weer in om verder te gaan waar u was gebleven.",
     "securityAnswer": {
       "invalid": "Het veiligheidsantwoord is ongeldig",
       "disabled": "Wegens overschrijding van het aantal pogingen om de beveiligingsvraag te beantwoorden, is dit verzoek afgebroken. Neem contact op met de administratie."
@@ -329,7 +329,7 @@
     "title.confirmation": "Login bevestiging",
     "mobileTitle.confirmation": "Login bevestiging",
     "message": "U kunt inloggen met uw gebruikersnaam en wachtwoord",
-    "disconnected": "U is verbroken.<br>Gelieve in te loggen om te geven de gevraagde pagina.",
+    "disconnected": "U bent uitgelogd.<br>Log opnieuw in om de gevraagde pagina weer te geven.",
     "principal": "Gebruiker",
     "password": "Wachtwoord",
     "forgotPassword": "Wachtwoord of gebruiker vergeten?",
@@ -1231,8 +1231,8 @@
     },
     "privacy": {
       "name": "Privacy",
-      "private.tooltip": "Dit veld is privé. Klik op toestaan om het te bekijken.",
-      "public.tooltip": "Dit veld is zichtbaar door anderen. Klik op maken."
+      "private.tooltip": "Dit veld is privé. Klik om het zichtbaar te maken voor andere deelnemers.",
+      "public.tooltip": "Dit veld is zichtbaar voor andere deelnemers. Klik om het als privé in te stellen."
     },
     "image": {
       "upload": "Het uploaden van een nieuwe afbeelding",

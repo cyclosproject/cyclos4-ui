@@ -80,8 +80,7 @@
       </input-field>
     </ng-container>
 
-    <ng-container
-      *ngIf="data.agreements?.length > 0 || data.captchaType != null">
+    <ng-container *ngIf="data.agreements?.length > 0 || data.captchaInput">
       <h2>
         {{ i18n.user.title.registrationConfirmation }}
       </h2>
@@ -92,7 +91,7 @@
           formControlName="acceptAgreements"></accept-agreements>
       </div>
 
-      <div *ngIf="data.captchaType != null"
+      <div *ngIf="data.captchaInput"
         [ngClass]="{'mt-3': data.agreements?.length > 0}">
         <div class="mb-3">{{ i18n.user.captcha }}</div>
         <div class="mb-3">

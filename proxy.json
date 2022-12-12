@@ -7,7 +7,7 @@
       "/unsubscribe",
       "/identity"
     ],
-    "target": "https://app.sengzen.be/sint_niklaas",
+    "target": "http://localhost:8888",
     "cookieDomainRewrite": "localhost",
     "secure": false,
     "changeOrigin": true

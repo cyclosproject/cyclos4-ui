@@ -81,8 +81,9 @@
 
     <ng-container *ngSwitchCase="WizardResultTypeEnum.REGISTRATION">
       <p [innerHTML]="registrationMessage | trust"></p>
-      <p [innerHTML]="registrationPrincipals | trust"></p>
-      <p>{{ registrationPasswords }}</p>
+      <p *ngIf="registrationPrincipals"
+        [innerHTML]="registrationPrincipals | trust"></p>
+      <p *ngIf="registrationPasswords">{{ registrationPasswords }}</p>
     </ng-container>
 
     <div *ngSwitchCase="WizardResultTypeEnum.PLAIN_TEXT" class="break-nl">{{

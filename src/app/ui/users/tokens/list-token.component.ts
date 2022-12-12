@@ -41,15 +41,6 @@ export class ListTokenComponent
   }
 
   onDataInitialized(data: UserTokensListData) {
-
-    // Customization for stniklaas: if there's a single token, go directly to details
-    if (data.tokens?.length === 1) {
-      this.router.navigate(['/users', 'tokens', 'view', data.tokens[0].id], {
-        replaceUrl: true
-      });
-      return;
-    }
-
     super.onDataInitialized(data);
     this.self = this.authHelper.isSelf(data.user);
     if (this.canCreate() && data.type.physicalType !== PhysicalTokenTypeEnum.NFC_TAG) {
@@ -121,6 +112,4 @@ export class ListTokenComponent
     }
     return Menu.SEARCH_USERS;
   }
-
-
 }
