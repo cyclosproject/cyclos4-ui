@@ -18,6 +18,20 @@ export const PasswordStatusNeedingAttention = [
   PasswordStatusEnum.PENDING, PasswordStatusEnum.NEVER_CREATED,
 ];
 
+// Customizations for stniklaas
+export const ConsumersConfig = '-8370399924608672754';
+export const MerchantsConfig = '-8370399924608672498';
+export const CityConfig = '-8370399924608673010';
+export const OrganizationsConfig = '-8370399924608672242';
+export const QrCodeToken = 'tk_cccard';
+export const ExpiryDatesRecordType = 'rtu_expirylog';
+export const HelpOperation = 'co_helpnfe21';
+export const MemberRewardOperation = 'co_cashback';
+export const MemberRewardNonMemberOperation = 'co_cashbacknotmember';
+export const QuickScanOperation = 'co_quickscan';
+export const CheckUserBalanceOperation = 'co_check_user_balance';
+export const BuyGiftCardOperation = 'co_buy_giftcard';
+
 /**
  * Displays the dashboard page (home for logged users)
  */
@@ -250,6 +264,43 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
     }
     if (types.has(FrontendQuickAccessTypeEnum.SETTINGS)) {
       addAction(SvgIcon.Gear, this.i18n.dashboard.action.settings, new ActiveMenu(Menu.SETTINGS));
+    }
+
+    // Customizations for stniklaas
+    const config = this.dataForFrontendHolder.auth.configuration.id;
+    if (config === ConsumersConfig) {
+      const qrCode = auth.permissions.tokens.my.map(t => t.type).find(t => t.internalName === QrCodeToken);
+      if (qrCode) {
+        addAction('qr-code', 'QR-code', new ActiveMenu(Menu.MY_TOKENS, { tokenType: qrCode }));
+      }
+      const expiryDates = auth.permissions.records.user.map(rt => rt.type).find(rt => rt.internalName === ExpiryDatesRecordType);
+      if (expiryDates) {
+        addAction('calendar-week', 'Vervaldata', new ActiveMenu(Menu.SEARCH_RECORDS_BANKING, { recordType: expiryDates }));
+      }
+    }
+    const memberReward = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === MemberRewardOperation)
+    if (memberReward) {
+      addAction(memberReward.svgIcon, memberReward.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberReward }));
+    }
+    const memberRewardNonMember = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === MemberRewardNonMemberOperation)
+    if (memberRewardNonMember) {
+      addAction(memberRewardNonMember.svgIcon, memberRewardNonMember.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: memberRewardNonMember }));
+    }
+    const quickScan = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === QuickScanOperation)
+    if (quickScan) {
+      addAction(quickScan.svgIcon, quickScan.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: quickScan }));
+    }
+    const checkUserBalance = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === CheckUserBalanceOperation)
+    if (checkUserBalance) {
+      addAction(checkUserBalance.svgIcon, checkUserBalance.label, new ActiveMenu(Menu.RUN_OPERATION_BANKING, { operation: checkUserBalance }));
+    }
+    const buyGiftCard = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === BuyGiftCardOperation)
+    if (buyGiftCard) {
+      addAction(buyGiftCard.svgIcon, buyGiftCard.label, new ActiveMenu(Menu.RUN_OPERATION_MARKETPLACE, { operation: buyGiftCard }));
+    }
+    const help = auth.permissions.operations.user.filter(o => o.run).map(o => o.operation).find(o => o.internalName === HelpOperation)
+    if (help) {
+      addAction(help.svgIcon, help.label, new ActiveMenu(Menu.RUN_OPERATION_PERSONAL, { operation: help }));
     }
   }
 }
