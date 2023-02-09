@@ -362,7 +362,6 @@ export class RunOperationComponent
     this.headingActions = headingActions;
   }
 
-
   runPrimaryAction(action: RunOperationAction) {
     this.runOperationHelper.run(action.action, null, action.parameters);
   }
