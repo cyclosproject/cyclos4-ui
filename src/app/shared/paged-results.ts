@@ -1,4 +1,4 @@
-import { HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 
 /**
  * Contains an array of results, plus pagination data
@@ -57,5 +57,19 @@ export class PagedResults<T> {
     paged.totalCount = parseInt(response.headers.get('X-Total-Count'), 10) ?? paged.totalCount;
     paged.pageCount = parseInt(response.headers.get('X-Page-Count'), 10) ?? paged.pageCount;
     paged.hasNext = [true, 'true'].includes(response.headers.get('X-Has-Next-Page') ?? paged.hasNext);
+  }
+
+  toHttpResponse(): HttpResponse<T[]> {
+    return new HttpResponse({
+      body: this.results,
+      status: 200,
+      headers: new HttpHeaders({
+        'X-Current-Page': String(this.page),
+        'X-Page-Size': String(this.pageSize),
+        'X-Total-Count': String(this.totalCount),
+        'X-Page-Count': String(this.pageCount),
+        'X-Has-Next-Page': String(this.hasNext)
+      })
+    });
   }
 }

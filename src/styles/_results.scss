@@ -1,34 +1,44 @@
 @use 'sass:math';
 @import 'src/definitions';
 
-.tiled-results, .category-results {
-  width: 100%;
+.tiled-results {
   margin-top: $layout-spacer-xxs;
+}
+
+.tiled-results,
+.category-results {
+  width: 100%;
   margin-right: math.div(-$tiled-results-spacing-xxs, 2);
   margin-left: math.div(-$tiled-results-spacing-xxs, 2);
   padding-left: $tiled-results-spacing-xxs;
 
-  > .col,
-  > [class*="col-"] {
+  >.col,
+  >[class*="col-"] {
     padding-right: math.div($tiled-results-spacing-xxs, 2);
     padding-left: math.div($tiled-results-spacing-xxs, 2);
   }
 
-  a, a:hover {
+  a,
+  a:hover {
     color: $body-color;
     text-decoration: none !important;
   }
 
-  tiled-result, .category-result {
+  tiled-result,
+  .category-result {
     display: flex;
     justify-content: stretch;
     width: 100%;
   }
 
   .tiled-result {
-    &:hover, &:focus {
-      &, * {
-        filter: brightness(95%);
+
+    &:hover,
+    &:focus {
+
+      &,
+      * {
+        filter: brightness(99.4%);
       }
     }
   }
@@ -52,7 +62,9 @@
         margin-bottom: 0;
         color: $tiled-results-color;
       }
-      .card-title, .card-text {
+
+      .card-title,
+      .card-text {
         text-align: center;
         @include text-truncate();
       }
@@ -60,6 +72,7 @@
 
     icon {
       color: $tiled-results-icon-color;
+
       svg.bi-basket {
         width: 80%;
         height: 80%;
@@ -82,9 +95,16 @@
   .cell-date {
     float: left;
   }
+
   .cell-top-left {
     float: left;
   }
+
+  .cell-top-right {
+    float: right;
+    text-align: right;
+  }
+
   .cell-amount {
     float: right;
   }
@@ -94,10 +114,13 @@
   a:hover {
     background-color: $tiled-results-hover-bg;
   }
+
   .card-body {
     padding: 0.3rem 0 !important;
   }
-  svg.ci-fork-knife, svg.bi-tools {
+
+  svg.ci-fork-knife,
+  svg.bi-tools {
     width: 94%;
     height: 94%;
   }
@@ -106,14 +129,18 @@
 .mobile-results {
   border-top: 1px solid $mobile-results-border-color;
 
-  &, a, a:hover {
+  &,
+  a,
+  a:hover {
     color: $mobile-results-color;
     text-decoration: none;
   }
+
   a:focus {
     box-shadow: none;
     outline: none;
   }
+
   .avatar {
     color: $mobile-results-icon-color;
     flex-grow: 0;
@@ -123,26 +150,34 @@
     flex-direction: column;
     justify-content: center;
   }
+
   .mobile-result-container {
     padding: $layout-spacer-xxs;
     display: flex;
   }
+
   .mobile-result-content {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
+
   .mobile-result {
     border-bottom: 1px solid $mobile-results-border-color;
     display: block;
+
     &:focus-within {
       box-shadow: none;
       outline: none;
       background-color: $mobile-results-focus-bg;
-      &, .cell-main, a {
+
+      &,
+      .cell-main,
+      a {
         color: $mobile-results-focus-color;
       }
+
       .avatar {
         color: $mobile-results-focus-icon-color;
       }
@@ -151,14 +186,18 @@
 }
 
 @include media-breakpoint-up(xs) {
-  .tiled-results, .category-results {
+  .tiled-results {
     margin-top: $layout-spacer-xs;
+  }
+
+  .tiled-results,
+  .category-results {
     margin-right: math.div(-$tiled-results-spacing-xs, 2);
     margin-left: math.div(-$tiled-results-spacing-xs, 2);
     padding-left: $tiled-results-spacing-xs;
 
-    > .col,
-    > [class*="col-"] {
+    >.col,
+    >[class*="col-"] {
       padding-right: math.div($tiled-results-spacing-xs, 2);
       padding-left: math.div($tiled-results-spacing-xs, 2);
     }
@@ -168,10 +207,12 @@
       height: calc(100% - #{$tiled-results-spacing-xs});
     }
   }
+
   .mobile-results {
     .mobile-result-container {
       padding: $layout-spacer-xs;
     }
+
     .avatar {
       padding-right: $layout-spacer-xs;
     }
@@ -179,14 +220,16 @@
 }
 
 @include media-breakpoint-up(sm) {
-  .tiled-results, .category-results {
+
+  .tiled-results,
+  .category-results {
     margin-top: $tiled-results-spacing;
     margin-right: math.div(-$tiled-results-spacing, 2);
     margin-left: math.div(-$tiled-results-spacing, 2);
     padding-left: $tiled-results-spacing;
 
-    > .col,
-    > [class*="col-"] {
+    >.col,
+    >[class*="col-"] {
       padding-right: math.div($tiled-results-spacing, 2);
       padding-left: math.div($tiled-results-spacing, 2);
     }
@@ -203,13 +246,17 @@
     max-width: 70%;
     margin: auto;
   }
-  .tiled-result, .category-result {
+
+  .tiled-result,
+  .category-result {
     margin-bottom: 1rem;
   }
 }
 
 @include media-breakpoint-up(md) {
-  .tiled-results, .category-results {
+
+  .tiled-results,
+  .category-results {
     width: auto;
     padding-left: 22px;
     padding-right: 14px;
@@ -219,8 +266,8 @@
     padding-right: 0;
     margin-top: 0;
 
-    > .col,
-    > [class*="col-"] {
+    >.col,
+    >[class*="col-"] {
       padding-right: math.div($tiled-results-spacing, 2);
       padding-left: math.div($tiled-results-spacing, 2);
     }
@@ -239,9 +286,11 @@
     justify-content: center;
     align-items: center;
   }
+
   avatar {
     margin-right: 0.6rem;
   }
+
   .category-title-text {
     flex-grow: 1;
     padding: 0.1rem 0 0 0.5rem;
@@ -251,14 +300,18 @@
     align-items: center;
     line-height: 1em;
   }
-  .category-title, .category-title-text {
+
+  .category-title,
+  .category-title-text {
     border-top-left-radius: $card-border-radius;
     border-top-right-radius: $card-border-radius;
   }
+
   .sub-category-text {
     display: block;
     padding: 0.3rem 0.7rem;
   }
+
   .category-footer {
     display: block;
     border-top: 1px solid $card-border-color;
@@ -279,33 +332,44 @@ ul.pagination {
 }
 
 body.dark {
-  .tiled-results, .category-results {
-    a, a:hover {
+
+  .tiled-results,
+  .CATEGORY-RESULTs {
+
+    a,
+    a:hover {
       color: $body-color-dark;
     }
+
     .card {
       color: $tiled-results-color-dark;
       background-color: $tiled-results-bg-dark;
       border-color: $tiled-results-border-color-dark;
+
       .card-body .card-title {
         color: $tiled-results-color-dark;
       }
     }
+
     icon {
       color: $tiled-results-icon-color-dark;
     }
   }
+
   .category-results {
     a:hover {
       background-color: $tiled-results-hover-bg-dark;
     }
+
     .category-title {
       border-color: $card-border-color-dark;
     }
+
     .category-footer {
       border-top: 1px solid $card-border-color-dark;
     }
   }
+
   .paginator-container {
     border-color: 1px solid $border-color-dark;
   }
@@ -316,25 +380,76 @@ body.dark {
 
   .mobile-results {
     border-color: $mobile-results-border-color-dark;
-    &, & a, & a:hover {
+
+    &,
+    & a,
+    & a:hover {
       color: $mobile-results-color-dark;
     }
+
     .avatar {
       color: $mobile-results-icon-color-dark;
     }
+
     .mobile-result {
       border-color: $mobile-results-border-color-dark;
+
       &:focus-within {
         background-color: $mobile-results-focus-bg-dark;
-        &, .cell-main, a {
+
+        &,
+        .cell-main,
+        a {
           color: $mobile-results-focus-color-dark;
         }
+
         .avatar {
           color: $mobile-results-focus-icon-color-dark;
         }
       }
     }
   }
+
+  .tiled-result {
+
+    &:hover,
+    &:focus {
+
+      &,
+      * {
+        filter: brightness(95%);
+      }
+    }
+  }
+}
+
+category-hierarchy {
+  display: block;
+
+  &.level-0+&.level-0 {
+    margin-top: 0.5rem;
+  }
+}
+
+.category-level-1 {
+  margin-left: 1rem;
+}
+
+.category-level-2 {
+  margin-left: 2rem;
+}
+
+.category-level-3 {
+  margin-left: 3rem;
+}
+
+.category-level-1::before,
+.category-level-2::before,
+.category-level-3::before {
+  content: "↳";
+  transform: scale(1, 0.7);
+  display: inline-block;
+  height: 12px;
 }
 
 ///////////////////////////////////////////////////////////
@@ -358,6 +473,7 @@ body.dark paginator {
       background-color: $pagination-active-bg-dark;
       border-color: $pagination-active-border-color-dark;
     }
+
     &.disabled .page-link {
       color: $pagination-disabled-color-dark;
       background-color: $pagination-disabled-bg-dark;
@@ -372,6 +488,7 @@ results-layout {
   display: flex;
   flex-grow: 1;
 }
+
 @include media-breakpoint-up(sm) {
   results-layout {
     margin-top: 0;

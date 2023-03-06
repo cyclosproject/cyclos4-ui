@@ -40,7 +40,7 @@
               [label]="i18n.transaction.number"></input-field>
           </div>
           <div class="col-12 col-md-6"
-            *ngIf="!isPaymentRequest() && (data.accountTypes?.length > 1)">
+            *ngIf="(data.accountTypes?.length > 1)">
             <single-selection-field formControlName="accountType"
               [label]="i18n.transaction.account"
               [emptyOption]="i18n.general.notApplied">
@@ -90,6 +90,12 @@
             <user-field formControlName="user" [label]="i18n.general.user">
             </user-field>
           </div>
+
+          <div class="col-12 col-md-6" *ngFor="let f of fieldsInSearch">
+            <custom-field-filter [field]="f"
+              [formControl]="form.get('customFields').get(f.internalName)">
+            </custom-field-filter>
+          </div>
         </ng-container>
       </div>
     </div>
@@ -104,28 +110,36 @@
       [amount]="row.amount" [currency]="currencies.get(row.currency)"
       forceSign>
       <div class="cell-text cell-main">
-        {{ bankingHelper.subjectName(row.related) }}
+        {{ isTicket() && hasTransactionNumber ? row.transactionNumber :
+        bankingHelper.subjectName(row.related) }}
       </div>
     </mobile-result>
 
     <table *resultTable class="table table-hover cursor-pointer">
       <thead>
-        <th *ngIf="!isExternalPayment()" class="avatar"></th>
+        <th *ngIf="!isExternalPayment() && !isTicket()" class="avatar"></th>
         <th>{{ i18n.general.date }}</th>
-        <th *ngIf="!isPaymentRequest()">{{ isExternalPayment() ?
+        <th *ngIf="isTicket() && hasTransactionNumber">{{
+          i18n.transaction.number }}</th>
+        <th *ngIf="!isPaymentRequest() && !isTicket()">{{ isExternalPayment()
+          ?
           i18n.transaction.to : i18n.transaction.fromTo }}</th>
         <th *ngIf="isPaymentRequest()">{{ i18n.transaction.senderOrReceiver }}
         </th>
-        <th *ngIf="isPaymentRequest() || isExternalPayment()">{{
+        <th *ngIf="isPaymentRequest() || isExternalPayment() || isTicket()">{{
           i18n.general.status }}</th>
-        <th *ngIf="!isExternalPayment()">{{ i18n.transaction.scheduling }}
+        <th *ngIf="!isExternalPayment() && !isTicket()">{{
+          i18n.transaction.scheduling }}
+        </th>
+        <th *ngFor="let field of fieldsInList">
+          {{ field.name }}
         </th>
         <th class="amount">{{ i18n.transaction.amount }}</th>
       </thead>
       <tbody>
         <ng-container *ngFor="let row of (results$ | async)?.results">
           <tr (click)="router.navigate(bankingHelper.transactionPath(row))">
-            <td *ngIf="!isExternalPayment()" class="avatar">
+            <td *ngIf="!isExternalPayment() && !isTicket()" class="avatar">
               <avatar [image]="bankingHelper.avatarImage(row.related)"
                 [icon]="bankingHelper.avatarIcon(row.related)">
               </avatar>
@@ -133,16 +147,24 @@
             <td>
               {{ row.date | date }}
             </td>
-            <td>
+            <td *ngIf="isTicket() && hasTransactionNumber">{{
+              row.transactionNumber }}</td>
+            <td *ngIf="!isPaymentRequest() && !isTicket()">
               {{ isExternalPayment()
               ? row.toPrincipalValue
               : bankingHelper.subjectName(row.related) }}
             </td>
-            <td *ngIf="isPaymentRequest() || isExternalPayment()">
+            <td
+              *ngIf="isPaymentRequest() || isExternalPayment() || isTicket()">
               {{ apiI18n.transactionStatus(row) }}
             </td>
-            <td *ngIf="!isExternalPayment()">
+            <td *ngIf="!isExternalPayment() && !isTicket()">
               {{ bankingHelper.scheduling(row) }}
+            </td>
+            <td *ngFor="let field of fieldsInList">
+              <format-field-value [fields]="fieldsInList" [plainText]="true"
+                [fieldName]="field.internalName" [object]="row">
+              </format-field-value>
             </td>
             <td class="amount" [ngClass]="{
               'pb-0': layout.xxs$ | async,

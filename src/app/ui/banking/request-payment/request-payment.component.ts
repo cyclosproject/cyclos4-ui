@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import {
   AccountWithCurrency, AvailabilityEnum, Currency, CustomFieldDetailed, DataForTransaction, PaymentRequestSchedulingEnum,
-  PaymentSchedulingEnum, SendPaymentRequest, TransactionTypeData, TransferType
+  PaymentSchedulingEnum, SendPaymentRequest, TimeFieldEnum, TimeInterval, TransactionTypeData, TransferType
 } from 'app/api/models';
 import { PaymentRequestsService } from 'app/api/services/payment-requests.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -155,6 +155,7 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
       repeatUntilCanceled: true,
       occurrencesCount: [null, OCCURRENCES_COUNT_VAL],
       firstOccurrenceIsImmediate: false,
+      occurrenceInterval: [{ amount: 1, field: TimeFieldEnum.MONTHS } as TimeInterval, Validators.required]
     });
   }
 

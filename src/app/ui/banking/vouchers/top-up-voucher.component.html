@@ -34,14 +34,13 @@
         <confirmation-password focused [formControl]="confirmationPassword"
           [passwordInput]="dataForTransaction.confirmationPasswordInput"
           [createDeviceConfirmation]="createDeviceConfirmation"
-          (confirmationModeChanged)="confirmationMode$.next($event)"
+          (showSubmit)="showSubmit$.next($event)"
           (confirmed)="confirmationPassword.setValue($event); performFromForm()">
         </confirmation-password>
       </ng-container>
 
       <actions>
-        <action-button
-          *ngIf="(confirmationMode$ | async) === ConfirmationMode.Password; else emptyDiv"
+        <action-button *ngIf="showSubmit$ | async; else emptyDiv"
           [disabled]="requesting$ | async" (action)="maybePreview()"
           [label]="dataForTransaction.shouldPreview ? i18n.general.next : i18n.general.submit">
         </action-button>
@@ -71,14 +70,13 @@
         <confirmation-password focused [formControl]="confirmationPassword"
           [passwordInput]="preview.confirmationPasswordInput"
           [createDeviceConfirmation]="createDeviceConfirmation"
-          (confirmationModeChanged)="confirmationMode$.next($event)"
+          (showSubmit)="showSubmit$.next($event)"
           (confirmed)="confirmationPassword.setValue($event); performFromPreview()">
         </confirmation-password>
       </ng-container>
 
       <actions>
-        <action-button
-          *ngIf="(confirmationMode$ | async) === ConfirmationMode.Password; else emptyDiv"
+        <action-button *ngIf="showSubmit$ | async; else emptyDiv"
           [disabled]="requesting$ | async" (action)="performFromPreview()"
           [label]="i18n.general.submit">
         </action-button>

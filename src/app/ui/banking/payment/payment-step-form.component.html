@@ -4,57 +4,55 @@
     <user-link [user]="fromUser"></user-link>
   </label-value>
 
-  <ng-container *ngIf="singleAccount; else multipleAccounts">
-    <label-value *ngIf="singleAccount.status"
-      [label]="accountBalanceLabel$ | async" kind="fieldView"
-      labelPosition="sideForced" noWrapLabel>
-      <!-- Single account -->
-      <div class="w-100 text-nowrap text-right text-xs-left font-weight-bold"
-        [ngClass]="{
-          positive: format.isPositive(singleAccount.status.balance),
-          negative: format.isNegative(singleAccount.status.balance),
-          'text-right': layout.ltsm$ | async
-        }">
-        {{ singleAccount.status.balance | currency:singleAccount.currency }}
-      </div>
-    </label-value>
-  </ng-container>
-  <ng-template #multipleAccounts>
+  <ng-container *ngIf="!singleAccount">
     <!-- Multiple accounts -->
     <label-value
       [label]="pos ? i18n.transaction.toAccount : i18n.transaction.fromAccount"
       required kind="field">
       <div class="w-100 row no-gutters mb-2"
         *ngFor="let account of data.accounts">
-        <div [class]="pos ? 'col' : 'col-7 col-sm-8 col-md-5'">
+        <div class="col">
           <div class="custom-control custom-radio">
             <input #radio type="radio" formControlName="account"
               class="custom-control-input" [id]="'from_' + account.id"
               (keyup.enter)="radio.click()" [value]="account.type.id">
             <label class="custom-control-label" [for]="'from_' + account.id">
               <div class="ml-1">
-                {{ account.type.name }}
+                <div class="d-inline-block">{{ account.type.name }}</div>
                 <ng-container *ngIf="account.number">
-                  <br *ngIf="layout.ltsm$ | async; else separator">
-                  <ng-template #separator> - </ng-template>
-                  {{ account.number }}
+                  <div class="d-inline-block">&nbsp;-&nbsp;</div>
+                  <div class="d-inline-block text-nowrap">{{ account.number }}
+                  </div>
                 </ng-container>
               </div>
             </label>
           </div>
         </div>
-        <div *ngIf="!pos && account.status"
-          class="col-5 col-sm-4 col-md-7 pl-2 text-right text-xs-left font-weight-bold"
-          [ngClass]="{
-            positive: format.isPositive(account.status.balance),
-            negative: format.isNegative(account.status.balance)
-          }">
-          {{ account.status.balance | currency:account.currency }}
-        </div>
       </div>
       <field-errors [control]="form.get('account')"></field-errors>
     </label-value>
-  </ng-template>
+  </ng-container>
+
+  <ng-container *ngIf="(account$ | async) as account">
+    <label-value *ngIf="account.status?.balance"
+      [label]="i18n.account.balance" kind="fieldView"
+      labelPosition="sideForced" noWrapLabel>
+      <div class="w-100 text-nowrap text-right text-xs-left font-weight-bold"
+        [ngClass]="{
+          positive: format.isPositive(account.status.balance),
+          negative: format.isNegative(account.status.balance),
+          'text-right': layout.ltsm$ | async
+        }">
+        {{ account.status.balance | currency:account.currency }}
+      </div>
+    </label-value>
+    <label-value
+      *ngIf="account.status?.availableBalance && !format.sameNumbers(account.status.balance, account.status.availableBalance)"
+      [label]="i18n.account.availableBalance" kind="fieldView"
+      labelPosition="sideForced" noWrapLabel>
+      {{ account.status.availableBalance | currency:account.currency }}
+    </label-value>
+  </ng-container>
 
   <label-value *ngIf="!fixedDestination" kind="field" required
     [label]="pos ? i18n.transaction.fromUser : i18n.transaction.toUser">

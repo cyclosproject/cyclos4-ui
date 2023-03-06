@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Currency, VoucherDataForGenerate, VoucherGenerationAmountEnum, VoucherTypeDetailed } from 'app/api/models';
 import { VouchersService } from 'app/api/services/vouchers.service';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
@@ -22,15 +21,13 @@ export type GenerateVouchersStep = 'select-type' | 'form' | 'confirm';
 export class GenerateVouchersComponent extends BasePageComponent<VoucherDataForGenerate>
   implements OnInit {
 
-  ConfirmationMode = ConfirmationMode;
-
   step$ = new BehaviorSubject<GenerateVouchersStep>(null);
 
   singleType = false;
   form: FormGroup;
 
   confirmationPassword: FormControl;
-  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
+  showSubmit$ = new BehaviorSubject(true);
 
   // The data for a specific voucher type
   dataTypeForGenerate: VoucherDataForGenerate;
@@ -140,7 +137,7 @@ export class GenerateVouchersComponent extends BasePageComponent<VoucherDataForG
   }
 
   private get confirmationPasswordInput() {
-    return this.dataTypeForGenerate.confirmationPasswordInput;
+    return this.dataTypeForGenerate?.confirmationPasswordInput;
   }
 
   private buildForm(): void {

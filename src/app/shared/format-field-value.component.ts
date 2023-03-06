@@ -52,7 +52,6 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
   }
 
   CustomFieldTypeEnum = CustomFieldTypeEnum;
-  LinkedEntityTypeEnum = LinkedEntityTypeEnum;
 
   /**
    * Either this has to be specified or the other 3: fields + fieldName + object
@@ -112,7 +111,7 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
 
   field: CustomField;
   type: CustomFieldTypeEnum;
-  value: any;
+  internalValue: any;
   hasValue$ = new BehaviorSubject(false);
   link: string;
   externalLink: string;
@@ -142,8 +141,8 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
     if (this.plainText && [CustomFieldTypeEnum.RICH_TEXT, CustomFieldTypeEnum.TEXT].includes(this.type)) {
       this.type = CustomFieldTypeEnum.STRING;
     }
-    this.value = valueAndLink.value;
-    this.hasValue$.next(this.value != null && (this.value.length === undefined || this.value.length > 0));
+    this.internalValue = valueAndLink.value;
+    this.hasValue$.next(this.internalValue != null && (this.internalValue.length === undefined || this.internalValue.length > 0));
     if (valueAndLink.link) {
       if (valueAndLink.link.includes('://')) {
         this.externalLink = valueAndLink.link;
@@ -188,7 +187,9 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
     }
     switch (fieldValue.field.type) {
       case CustomFieldTypeEnum.BOOLEAN:
-        fieldValue.booleanValue = value === 'true';
+        if (value) {
+          fieldValue.booleanValue = value === 'true';
+        }
         break;
       case CustomFieldTypeEnum.DATE:
         fieldValue.dateValue = value;
@@ -308,5 +309,13 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
     }));
     event.stopPropagation();
     event.preventDefault();
+  }
+
+  get value() {
+    switch (this.field.type) {
+      case CustomFieldTypeEnum.URL:
+        return this.internalValue.replace('http://', '').replace('https://', '');
+    }
+    return this.internalValue;
   }
 }

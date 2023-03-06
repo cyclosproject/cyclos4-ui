@@ -2,18 +2,19 @@
 
 .dropdown-menu {
   min-width: 100%;
-  max-height:  13rem;
+  max-height: 13rem;
   overflow-x: hidden;
   overflow-y: auto;
   visibility: hidden;
 
   .custom-checkbox {
     margin-left: 0.6rem;
-    
-    .custom-control-label{
+
+    .custom-control-label {
       padding-right: 0.2rem;
 
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         color: $list-group-hover-color;
         background-color: $list-group-hover-bg;
         text-decoration: none;
@@ -23,6 +24,7 @@
     }
   }
 }
+
 .dropdown-menu.show {
   visibility: unset;
 }
@@ -38,6 +40,7 @@ alert .close {
   right: 1rem !important;
   width: auto !important;
   height: auto !important;
+
   span {
     vertical-align: top;
   }
@@ -108,18 +111,74 @@ alert .close {
 }
 
 .modal-dialog.modal-form {
+
   h1 {
     border-bottom-width: 1px;
     border-bottom-style: solid;
     margin: 0 -1rem 1rem -1rem;
     padding: 0 1rem 1rem 1rem;
   }
+
+  actions {
+    margin: 1rem -1rem 0 -1rem;
+    padding: 1rem 1rem 0 1rem;
+  }
+
   hr {
     margin: 1rem -1rem;
     padding: 0 1rem;
   }
+
   .modal-content {
     padding: 1rem;
+  }
+}
+
+
+.modal-content {
+  max-height: 98vh;
+  overflow-y: auto;
+}
+
+@include media-breakpoint-up(md) {
+  .modal-content {
+    max-height: 94vh;
+  }
+}
+
+.modal-sticky {
+
+  .modal-content {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .modal-header,
+  .modal-footer {
+    background-color: $modal-content-bg;
+    position: sticky;
+    z-index: $zindex-modal + 1;
+  }
+
+  .modal-header {
+    top: 0;
+    padding-top: 1rem !important;
+  }
+
+  .modal-footer {
+    bottom: 0;
+    padding-bottom: 1rem !important;
+  }
+}
+
+body.dark {
+  .modal-sticky {
+
+    .modal-header,
+    .modal-footer {
+      background-color: $modal-content-bg-dark;
+      border-color: $border-color-dark;
+    }
   }
 }
 
@@ -130,7 +189,8 @@ notification data {
 }
 
 // Force navigation on lightbox to be always visible
-.lb-prev, .lb-next {
+.lb-prev,
+.lb-next {
   opacity: 0.7 !important;
 }
 
@@ -146,25 +206,30 @@ body.dark {
     background-color: $dropdown-bg-dark;
     border-color: $dropdown-border-color-dark;
 
-      .custom-checkbox {
-        .custom-control-label:hover, .custom-control-label:focus {
-            color: $list-group-hover-color-dark;
-            background-color: $list-group-hover-bg-dark;
-            text-decoration: none;
-            outline: none !important;
-            box-shadow: none !important;
-        }
+    .custom-checkbox {
+
+      .custom-control-label:hover,
+      .custom-control-label:focus {
+        color: $list-group-hover-color-dark;
+        background-color: $list-group-hover-bg-dark;
+        text-decoration: none;
+        outline: none !important;
+        box-shadow: none !important;
       }
+    }
 
   }
 
   .dropdown-item {
     color: $dropdown-link-color-dark;
+
     @include hover-focus {
       color: $dropdown-link-hover-color-dark;
       @include gradient-bg($dropdown-link-hover-bg-dark);
     }
-    &.active, &:active {
+
+    &.active,
+    &:active {
       color: $dropdown-link-active-color-dark;
       @include gradient-bg($dropdown-link-active-bg-dark);
     }
@@ -213,9 +278,11 @@ notification {
     margin: 0rem !important;
     padding: 0.4rem;
   }
+
   icon {
     margin-bottom: 0.4rem;
   }
+
   .close {
     width: auto;
   }
@@ -230,11 +297,13 @@ notification {
     text-align: start;
   }
 }
+
 @include media-breakpoint-up(xs) {
   notification {
     .alert {
       padding: 0.75rem 1.25rem;
     }
+
     icon {
       margin-bottom: 0;
     }
@@ -246,27 +315,34 @@ notification {
 push-notification {
   width: 100%;
   margin-bottom: 0.5rem;
+
   a {
     color: $body-color !important;
   }
+
   .subject {
     font-weight: $font-weight-bold;
     flex-grow: 1;
     padding: 0 0.5rem;
   }
+
   .toast {
     max-width: 100%;
   }
+
   .toast-body {
     display: none;
   }
+
   .close {
     cursor: pointer;
   }
 }
+
 @include media-breakpoint-up(sm) {
   push-notification {
     max-width: 20rem;
+
     .toast-body {
       max-height: 6rem;
       overflow: auto;
@@ -274,6 +350,7 @@ push-notification {
     }
   }
 }
+
 body.dark push-notification {
   a {
     color: $body-color-dark !important;
@@ -292,6 +369,7 @@ push-notifications {
   justify-content: flex-end;
   z-index: $zindex-tooltip;
 }
+
 @include media-breakpoint-up(sm) {
   push-notifications {
     left: unset;
@@ -313,18 +391,21 @@ snack-bar {
   border-top-right-radius: 0.2rem;
   padding: 1rem 2rem;
   position: fixed;
-  z-index: 9999; /* Ensure it's always at front (e.g modal dialog uses z-index:1050 */
+  z-index: 9999;
+  /* Ensure it's always at front (e.g modal dialog uses z-index:1050 */
   left: 50%;
   bottom: 0;
   transform: translate(-50%, 100%);
   transition: transform 0.3s, opacity 0.3s;
   cursor: pointer;
 }
+
 @include media-breakpoint-up(sm) {
   snack-bar {
     width: auto;
   }
 }
+
 body.dark snack-bar {
   background-color: $snack-bar-bg-dark;
   color: $snack-bar-color-dark;

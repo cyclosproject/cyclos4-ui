@@ -41,7 +41,8 @@
             </custom-field-filter>
           </div>
           <ng-container *ngIf="moreFilters$ | async">
-            <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
+            <div class="col-12 col-md-6"
+              *ngIf="data.searchByDistanceData && !pendingSearch">
               <distance-selection-field [data]="data.searchByDistanceData"
                 formControlName="distanceFilter"
                 [label]="i18n.general.distanceFilter">
@@ -84,7 +85,7 @@
               </multi-selection-field>
             </div>
             <!-- Statuses -->
-            <div *ngIf="byManager" class="col-12 col-md-6">
+            <div *ngIf="byManager && !pendingSearch" class="col-12 col-md-6">
               <multi-selection-field formControlName="statuses"
                 [label]="i18n.general.status" [fieldOptions]="statusOptions"
                 [emptyLabel]="i18n.user.statusEmptyLabel">
@@ -196,6 +197,6 @@
   <users-results [results]="results$ | async" [rendering$]="rendering$"
     [data]="data$ | async" [resultType]="resultType$ | async"
     [referencePoint]="((form.valueChanges | async) || form.value).distanceFilter"
-    (update)="update($event)">
+    (update)="update($event)" [removeAction]="removeAction">
   </users-results>
 </ng-template>

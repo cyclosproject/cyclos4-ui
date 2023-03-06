@@ -23,6 +23,12 @@
             [disabled]="!data.canEdit" [id]="'smsMailings'">
           </boolean-field>
         </label-value>
+        <label-value *ngIf="data.appMailingsAllowed" [forId]="'appMailings'"
+          [label]="i18n.notificationSettings.appMailings" kind="view">
+          <boolean-field formControlName="appMailings" switch
+            [disabled]="!data.canEdit" [id]="'appMailings'">
+          </boolean-field>
+        </label-value>
         <ng-container *ngFor="let at of data.userAccounts; let first = first">
           <ng-container
             *ngIf="form.get('userAccounts').get(at.id) as accountForm">

@@ -6,12 +6,11 @@
     <accept-payment-request-confirm class="flex-grow-1 d-flex flex-column"
       [transaction]="transactionKey" [preview]="data"
       [confirmationPassword]="confirmationPassword"
-      (confirmationModeChanged)="confirmationMode$.next($event)" [form]="form"
+      (showSubmit)="showSubmit$.next($event)" [form]="form"
       (confirmed)="perform($event)" [showPaymentType]="true">
     </accept-payment-request-confirm>
     <actions forceRow>
-      <action-button
-        *ngIf="(confirmationMode$ | async) != ConfirmationMode.Device; else spacer"
+      <action-button *ngIf="showSubmit$ | async; else spacer"
         [disabled]="!canConfirm || (requesting$ | async)" (action)="perform()"
         [label]="i18n.general.confirm"></action-button>
       <ng-template #spacer>&nbsp;</ng-template>

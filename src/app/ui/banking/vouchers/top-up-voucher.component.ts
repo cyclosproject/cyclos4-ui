@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { CreateDeviceConfirmation, DeviceConfirmationTypeEnum, TopUpVoucher, VoucherDataForTopUp, VoucherGenerationAmountEnum, VoucherInitialDataForTransaction, VoucherPinOnActivationEnum, VoucherTopUpPreview, VoucherTransactionResult } from 'app/api/models';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { BaseVoucherTransactionComponent } from 'app/ui/banking/vouchers/base-voucher-transaction.component';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -27,7 +26,7 @@ export class TopUpVoucherComponent extends BaseVoucherTransactionComponent<Vouch
   VoucherGenerationAmountEnum = VoucherGenerationAmountEnum;
 
   confirmationPassword = new FormControl('', Validators.required);
-  confirmationMode$ = new BehaviorSubject(ConfirmationMode.Password);
+  showSubmit$ = new BehaviorSubject(true);
 
   customFieldControlsMap: Map<string, FormControl>;
 
@@ -75,16 +74,6 @@ export class TopUpVoucherComponent extends BaseVoucherTransactionComponent<Vouch
       params.body = preview.topUp;
     }
     return this.vouchersService.topUpVoucher(params);
-  }
-
-  backToForm() {
-    this.confirmationMode$.next(ConfirmationMode.Password);
-    super.backToForm();
-  }
-
-  toForm() {
-    this.confirmationMode$.next(ConfirmationMode.Password);
-    super.toForm();
   }
 
   protected validatePerformFromForm(data: VoucherDataForTopUp, form: FormGroup): boolean {

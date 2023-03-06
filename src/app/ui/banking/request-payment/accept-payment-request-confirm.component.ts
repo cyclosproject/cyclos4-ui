@@ -7,7 +7,6 @@ import {
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { Enter } from 'app/core/shortcut.service';
 import { BaseComponent } from 'app/shared/base.component';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { empty } from 'app/shared/helper';
 import { PaymentRequestScheduledTo } from 'app/ui/banking/request-payment/payment-request-scheduled-to';
 
@@ -33,7 +32,7 @@ export class AcceptPaymentRequestConfirmComponent extends BaseComponent implemen
   @Input() transaction: string;
   @Input() confirmationPassword: FormControl;
   @Input() showPaymentType: boolean;
-  @Output() confirmationModeChanged = new EventEmitter<ConfirmationMode>();
+  @Output() showSubmit = new EventEmitter<boolean>();
   @Output() confirmed = new EventEmitter<string>();
 
   scheduleTo: FormControl;

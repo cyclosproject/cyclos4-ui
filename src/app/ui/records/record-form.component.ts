@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
+  DeviceConfirmationTypeEnum,
   RecordCustomField, RecordCustomFieldDetailed, RecordDataForEdit, RecordDataForNew,
-  RecordLayoutEnum, RecordSection,
+  RecordEdit,
+  RecordLayoutEnum, RecordManage, RecordSection,
 } from 'app/api/models';
 import { RecordsService } from 'app/api/services/records.service';
 import { RecordHelperService } from 'app/ui/core/records-helper.service';
@@ -93,9 +95,24 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
     const record = cloneDeep(this.data.record);
     record.customValues = this.form.value.customValues;
 
+    if (this.data.confirmationPasswordInput) {
+      this.confirmation.confirm({
+        passwordInput: this.data.confirmationPasswordInput,
+        createDeviceConfirmation: () => ({
+          type: DeviceConfirmationTypeEnum.MANAGE_RECORD,
+          recordType: this.data.type.id
+        }),
+        callback: result => this.doSave(record, result.confirmationPassword)
+      });
+    } else {
+      this.doSave(record);
+    }
+  }
+
+  private doSave(record: RecordManage | RecordEdit, confirmationPassword?: string) {
     const request: Observable<string | void> = this.create
-      ? this.recordsService.createRecord({ owner: this.param, type: this.type, body: record })
-      : this.recordsService.updateRecord({ id: this.id, body: record });
+      ? this.recordsService.createRecord({ owner: this.param, type: this.type, confirmationPassword, body: record })
+      : this.recordsService.updateRecord({ id: this.id, confirmationPassword, body: record });
     this.addSub(request.subscribe(id => {
       this.notification.snackBar(this.create
         ? this.i18n.record.created(this.data.type.name)

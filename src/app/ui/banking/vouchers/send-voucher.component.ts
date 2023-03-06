@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Currency, SendVoucher, UserMenuEnum, VoucherSendingPreview, VoucherTypeDetailed } from 'app/api/models';
 import { VoucherDataForBuy } from 'app/api/models/voucher-data-for-buy';
 import { VouchersService } from 'app/api/services/vouchers.service';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
@@ -23,8 +22,6 @@ export type SendVouchersStep = 'select-type' | 'form' | 'confirm';
 export class SendVoucherComponent extends BasePageComponent<VoucherDataForBuy>
   implements OnInit {
 
-  ConfirmationMode = ConfirmationMode;
-
   step$ = new BehaviorSubject<SendVouchersStep>(null);
 
   singleType = false;
@@ -33,7 +30,7 @@ export class SendVoucherComponent extends BasePageComponent<VoucherDataForBuy>
 
   preview: VoucherSendingPreview;
   confirmationPassword: FormControl;
-  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
+  showSubmit$ = new BehaviorSubject(true);
 
   // The data for a specific voucher type
   dataTypeForBuy: VoucherDataForBuy;
@@ -53,14 +50,8 @@ export class SendVoucherComponent extends BasePageComponent<VoucherDataForBuy>
   ngOnInit() {
     super.ngOnInit();
     const params = this.route.snapshot.params;
-    this.user = this.authHelper.isSelf(params.user)
-      ? this.ApiHelper.SELF
-      : params.user;
-
-    this.addSub(
-      this.voucherService.getVoucherDataForSend({ user: this.user })
-        .subscribe(data => this.data = data),
-    );
+    this.user = this.authHelper.isSelf(params.user) ? this.ApiHelper.SELF : params.user;
+    this.addSub(this.voucherService.getVoucherDataForSend({ user: this.user }).subscribe(data => this.data = data));
   }
 
   onDataInitialized(data: VoucherDataForBuy) {

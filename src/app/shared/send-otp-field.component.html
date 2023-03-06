@@ -1,0 +1,17 @@
+<label-value *ngIf="label; else widget" [formField]="self"
+  [informationText]="informationText">
+  <ng-container *ngTemplateOutlet="widget"></ng-container>
+</label-value>
+
+<ng-template #widget>
+  <div *ngIf="fieldOptions?.length === 0; else radioTpl">
+    {{ i18n.password.otp.noMediums }}
+  </div>
+</ng-template>
+
+<ng-template #radioTpl>
+  <radio-group-field #radio [formControl]="radioControl" asColumn
+    [fieldOptions]="fieldOptions">
+  </radio-group-field>
+  <field-errors [control]="formControl"></field-errors>
+</ng-template>

@@ -1,0 +1,111 @@
+<page-layout [ready]="data$ | async">
+  <page-content *ngIf="data" last mode="viewForm" [heading]="title"
+    [mobileHeading]="mobileTitle" [headingActions]="headingActions$ | async">
+    <div class="d-flex flex-grow-1 flex-column">
+      <alert type="info" *ngIf="file.status === ImportedFileStatusEnum.READY">
+        <div [innerHTML]="i18n.imports.information.ready | trust">
+        </div>
+      </alert>
+      <user-info *ngIf="file.user && !isSelf" [user]="file.user"></user-info>
+      <label-value *ngIf=" kind" [label]="i18n.imports.kind.label"
+        [value]="kind">
+      </label-value>
+      <label-value [label]="i18n.general.status">
+        {{ importsHelper.fileStatusLabel(file.status) }}
+      </label-value>
+      <label-value
+        *ngIf="showProgressBar && (progressValue$ | async) as progress"
+        [label]="i18n.general.progress">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar"
+            [ngStyle]="{width: progress + '%'}"
+            [attr.aria-valuenow]="progress" aria-valuemin="0"
+            aria-valuemax="100">
+            {{ progress }}%
+          </div>
+        </div>
+      </label-value>
+      <label-value *ngIf="file.errorMessage"
+        [label]="i18n.general.errorMessage" [value]="file.errorMessage"
+        valueFormat="break">
+      </label-value>
+      <label-value *ngIf="file.ignoredFields?.length > 0"
+        [label]="i18n.imports.ignoredFields"
+        [value]="file.ignoredFields.join(', ')" valueFormat="break">
+      </label-value>
+      <label-value *ngIf="file.by" [label]="i18n.general.by">
+        <user-link [user]="file.by"></user-link>
+      </label-value>
+      <label-value [label]="i18n.imports.creationDate">
+        {{ file.creationDate | date }}
+      </label-value>
+      <label-value *ngIf="file.processingDate"
+        [label]="i18n.imports.processingDate">
+        {{ file.processingDate | date }}
+      </label-value>
+      <label-value *ngIf="archiveValue" [label]="i18n.imports.archivingDate"
+        [value]="archiveValue">
+      </label-value>
+      <label-value *ngIf="file.description" [label]="i18n.general.description"
+        [value]="file.description" valueFormat="break"></label-value>
+
+      <label-value *ngIf="file.currency" [label]="i18n.general.currency"
+        [value]="file.currency.name"></label-value>
+      <label-value *ngIf="file.sendNotifications != null"
+        [label]="i18n.imports.sendNotifications"
+        [value]="format.formatBoolean(file.sendNotifications)"></label-value>
+      <label-value *ngIf="file.recordType" [label]="i18n.general.type"
+        [value]="file.recordType.name"></label-value>
+      <label-value *ngIf="file.useGroupFromFile != null"
+        [label]="i18n.imports.useGroupFromFile"
+        [value]=" format.formatBoolean(file.useGroupFromFile)"></label-value>
+      <label-value *ngIf="file.group"
+        [label]="file.useGroupFromFile ? i18n.imports.defaultGroup : i18n.user.group"
+        [value]="file.group.name"></label-value>
+      <label-value *ngIf="file.sendActivationEmail != null"
+        [label]="i18n.imports.sendActivationEmail"
+        [value]="format.formatBoolean(file.sendActivationEmail)">
+      </label-value>
+      <label-value *ngIf="file.paymentType" [label]="i18n.transaction.type"
+        [value]="file.paymentType.name"></label-value>
+      <label-value *ngIf="file.voucherType" [label]="i18n.voucher.voucher"
+        [value]="file.voucherType.voucherTitle"></label-value>
+      <label-value *ngIf="file.useAmountFromFile != null"
+        [label]="i18n.imports.useAmountFromFile"
+        [value]="format.formatBoolean(file.useAmountFromFile)">
+      </label-value>
+      <label-value *ngIf="file.amount"
+        [label]="file.useAmountFromFile ? i18n.imports.defaultAmount : i18n.transaction.amount"
+        [value]="file.amount | currency:file.voucherType.configuration.currency">
+      </label-value>
+      <label-value *ngIf="file.sendMessage"
+        [label]="i18n.voucher.send.message" [value]="file.sendMessage"
+        valueFormat="break"></label-value>
+
+      <ng-container *ngIf="progress$ | async as progress">
+        <ng-container *ngIf="showValidation">
+          <h2 class="border-0 mb-2">{{ i18n.imports.section.validation }}
+          </h2>
+          <label-value [label]="i18n.imports.lineStatus.ready"
+            [value]="progress.linesReady">
+          </label-value>
+          <label-value [label]="i18n.imports.lineStatus.skipped"
+            [value]="progress.linesSkipped">
+          </label-value>
+          <label-value [label]="i18n.imports.lineStatus.validationError"
+            [value]="progress.linesValidationError">
+          </label-value>
+        </ng-container>
+        <ng-container *ngIf="showImport">
+          <h2 class="border-0 mb-2">{{ i18n.imports.section.import }}</h2>
+          <label-value [label]="i18n.imports.lineStatus.imported"
+            [value]="progress.linesImported">
+          </label-value>
+          <label-value [label]="i18n.imports.lineStatus.importError"
+            [value]="progress.linesImportError">
+          </label-value>
+        </ng-container>
+      </ng-container>
+    </div>
+  </page-content>
+</page-layout>

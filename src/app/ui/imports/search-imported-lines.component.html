@@ -1,0 +1,87 @@
+<page-layout [ready]="(data$ | async)">
+  <ng-container *ngIf="data then content">
+  </ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content mode="filters" [heading]="i18n.imports.title.lineSearch"
+    [mobileHeading]="i18n.imports.mobileTitle.lineSearch"
+    [headingActions]="headingActions$ | async">
+    <div [formGroup]="form"
+      class="filters-form filters-form-separator border-bottom">
+      <div class="row filters-row">
+        <div class="col-12">
+          <label-value [label]="i18n.imports.file" labelPosition="side">
+            <a [routerLink]="['/imports', 'files', 'view', id]">{{
+              data.file.fileName }}</a>
+          </label-value>
+        </div>
+        <div class="col-12 col-md-6">
+          <input-field labelPosition="side" formControlName="keywords"
+            [label]="i18n.general.keywords"></input-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <input-field numbersOnly labelPosition="side"
+            formControlName="lineNumber" [label]="i18n.imports.lineNumber">
+          </input-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <multi-selection-field labelPosition="side"
+            [emptyLabel]="i18n.general.notApplied" formControlName="statuses"
+            [label]="i18n.general.status">
+            <field-option *ngFor="let status of statuses" [value]="status"
+              [text]="importsHelper.lineStatusLabel(status)">
+            </field-option>
+          </multi-selection-field>
+        </div>
+      </div>
+    </div>
+  </page-content>
+
+  <results-layout [results]="results$ | async" [toLink]="toLink"
+    (update)="update($event)" [rendering$]="rendering$">
+
+    <mobile-result *mobileResult="let row" [topLeft]="row.lineNumber"
+      [topRight]="importsHelper.lineStatusLabel(row.status)">
+      <div *ngFor="let field of data.fieldsInList" class="cell-text">{{
+        rowValue(field, row)
+        }}</div>
+    </mobile-result>
+
+    <table *resultTable class="table table-hover cursor-pointer">
+      <thead>
+        <th>#</th>
+        <th>{{ i18n.general.status }}</th>
+        <th *ngFor="let field of data.fieldsInList">{{ field.name }}</th>
+        <th class="actions"></th>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of (results$ | async)?.results">
+          <tr (click)="router.navigate(path(row))">
+            <td>{{ row.lineNumber }}</td>
+            <td>{{ importsHelper.lineStatusLabel(row.status) }}</td>
+            <td *ngFor="let field of data.fieldsInList">{{
+              rowValue(field, row)
+              }}</td>
+            <td class="actions">
+              <button *ngIf="row.errorMessage" type="button"
+                class="btn btn-icon"
+                (click)="showError(row); $event.stopPropagation()">
+                <icon [icon]="SvgIcon.ExclamationTriangle"></icon>
+              </button>
+              <button *ngIf="row.importedEntityId" type="button"
+                class="btn btn-icon"
+                (click)="navigate(row); $event.stopPropagation()">
+                <icon [icon]="SvgIcon.Eye"></icon>
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </results-layout>
+</ng-template>
+
+<ng-template #loadingIndicators>
+  <spinner class="p-3"></spinner>
+</ng-template>

@@ -124,11 +124,9 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
         this.dataForFrontendHolder.role === RoleEnum.BROKER));
 
     const headingActions: HeadingAction[] = [];
-    if (ad.canEdit) {
-      const edit = new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => {
-        this.router.navigate(['/marketplace', 'edit', this.id]);
-      }, true);
-      headingActions.push(edit);
+    if (ad.canSetAsFavorite) {
+      const conf = this.getFavoriteConfiguration(ad);
+      headingActions.push(new HeadingAction(conf.icon, conf.label, () => this.markAsFavorite()));
     }
     if (ad.canBuy) {
       headingActions.push(
@@ -178,6 +176,12 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
       headingActions.push(
         new HeadingAction(SvgIcon.HandThumbsDown, this.i18n.ad.reject, () => this.reject()));
     }
+    if (ad.canEdit) {
+      const edit = new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => {
+        this.router.navigate(['/marketplace', 'edit', this.id]);
+      });
+      headingActions.push(edit);
+    }
     if (ad.canRemove) {
       headingActions.push(
         new HeadingAction(SvgIcon.Trash, this.i18n.general.remove, () => {
@@ -196,6 +200,28 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     }
     this.headingActions = headingActions;
     this.title = words(ad.name, 60);
+  }
+
+  protected getFavoriteConfiguration(ad: AdView) {
+    const obj = {
+      icon: ad.favorite ? SvgIcon.HeartFill : SvgIcon.Heart,
+      label: ad.favorite ? this.i18n.ad.removeFromFavorites : this.i18n.ad.addToFavorites
+    };
+    return obj;
+  }
+
+  protected markAsFavorite() {
+    if (this.ad.favorite) {
+      this.addSub(this.marketplaceService.unmarkAsFavorite({ ad: this.ad.id }).subscribe(() => {
+        this.notification.snackBar(this.i18n.ad.removedFromFavorites);
+        this.reload();
+      }));
+    } else {
+      this.addSub(this.marketplaceService.markAsFavorite({ ad: this.ad.id }).subscribe(() => {
+        this.notification.snackBar(this.i18n.ad.addedToFavorites);
+        this.reload();
+      }));
+    }
   }
 
   /**

@@ -117,7 +117,7 @@ export class LoginComponent
   }
 
   loginWith(idp: IdentityProvider) {
-    this.authHelper.identityProviderPopup(idp, 'login').pipe(first()).subscribe(callback => {
+    this.authHelper.identityProviderPopup(idp, 'login', null, null, this.login.getUserAgentId()).pipe(first()).subscribe(callback => {
       switch (callback.status) {
         case IdentityProviderCallbackStatusEnum.LOGIN_LINK:
         case IdentityProviderCallbackStatusEnum.LOGIN_EMAIL:

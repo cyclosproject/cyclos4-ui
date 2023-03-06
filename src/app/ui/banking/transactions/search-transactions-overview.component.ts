@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AccountType, Currency,
+  CustomFieldDetailed,
   ExternalPaymentStatusEnum,
   PaymentRequestStatusEnum, RoleEnum, TransactionAuthorizationStatusEnum, TransactionDataForSearch,
   TransactionKind, TransactionOverviewDataForSearch, TransactionOverviewQueryFilters, TransactionOverviewResult
@@ -27,12 +28,12 @@ export class SearchTransactionsOverviewComponent
   kind: 'authorized' | 'myAuth' | 'payment-request' | 'external-payment';
   heading: string;
   mobileHeading: string;
-  usePeriod = true;
-  usePreselectedPeriod = true;
   currenciesByKey = new Map<string, Currency>();
   currencies: Currency[];
   hasTransactionNumber: boolean;
   transactionNumberPattern: string;
+  fieldsInSearch: CustomFieldDetailed[];
+  fieldsInList: CustomFieldDetailed[];
 
   constructor(
     injector: Injector,
@@ -66,18 +67,19 @@ export class SearchTransactionsOverviewComponent
     }
 
     // Get the transactions search data
-    this.stateManager.cache('data',
-      this.transactionsService.getTransactionsOverviewDataForSearch({
-        fields: ['user', 'accountTypes', ...(this.usePreselectedPeriod ? ['preselectedPeriods'] : []), 'query',
-          ...(this.kind === 'authorized' ? ['authorizationRoles'] : [])],
-        pendingMyAuthorization: this.kind === 'myAuth'
-      }),
-    ).subscribe(data => {
-      if (this.usePeriod) {
-        this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
-      }
-      this.data = data;
-    });
+    this.stateManager.cache('data', this.transactionsService.getTransactionsOverviewDataForSearch({
+      fields: ['user', 'accountTypes', 'preselectedPeriods', 'query', 'fieldsInBasicSearch', 'fieldsInList', 'customFields', 'archivingDate',
+        ...(this.kind === 'authorized' ? ['authorizationRoles'] : [])],
+      pendingMyAuthorization: this.kind === 'myAuth'
+    })).subscribe(data => this.data = data);
+  }
+
+  prepareForm(data: TransactionOverviewDataForSearch) {
+    this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
+
+    this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInBasicSearch.includes(cf.internalName));
+    this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
+    this.form.setControl('customFields', this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields));
   }
 
   onDataInitialized(data: TransactionOverviewDataForSearch) {
@@ -92,13 +94,16 @@ export class SearchTransactionsOverviewComponent
       .reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], []);
     this.hasTransactionNumber = transactionNumberPatterns.length > 0;
     this.transactionNumberPattern = transactionNumberPatterns.length === 1 ? transactionNumberPatterns[0] : null;
-    this.headingActions = this.isMyAuth ? [] : [this.moreFiltersAction];
-    this.exportHelper.headingActions(data.exportFormats,
-      f => this.transactionsService.exportTransactionsOverview$Response({
-        format: f.internalName,
-        ...this.toSearchParams(this.form.value)
-      })).forEach(a => this.headingActions.push(a));
     this.addSub(this.form.controls.currency.valueChanges.subscribe(currencyId => this.updateAccountTypes(currencyId)));
+
+    this.headingActions = [
+      ...(!this.isMyAuth() || this.fieldsInSearch?.length > 0) ? [this.moreFiltersAction] : [],
+      ...this.exportHelper.headingActions(data.exportFormats,
+        f => this.transactionsService.exportTransactionsOverview$Response({
+          format: f.internalName,
+          ...this.toSearchParams(this.form.value)
+        }))
+    ];
   }
 
   updateAccountTypes(currencyId: string) {
@@ -114,13 +119,14 @@ export class SearchTransactionsOverviewComponent
     }
   }
 
-  doSearch(value: TransactionOverviewQueryFilters) {
-    return this.transactionsService.searchTransactionsOverview$Response(value);
+  doSearch(filter: TransactionOverviewQueryFilters) {
+    return this.transactionsService.searchTransactionsOverview$Response(filter);
   }
 
   getFormControlNames() {
-    return ['status', 'currency', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd', 'transactionNumber', 'expirationBegin',
-      'expirationEnd', 'transferTypes', 'authorizationPerformedBy', 'fromAccountTypes', 'toAccountTypes', 'authorizationRoles'];
+    return ['status', 'currency', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd', 'transactionNumber',
+      'expirationBegin', 'expirationEnd', 'transferTypes', 'authorizationPerformedBy', 'fromAccountTypes',
+      'toAccountTypes', 'customFields', 'authorizationRoles'];
   }
 
   getInitialFormValue(data: TransactionDataForSearch) {
@@ -166,9 +172,8 @@ export class SearchTransactionsOverviewComponent
   protected toSearchParams(value: any): TransactionOverviewQueryFilters {
     const params: TransactionOverviewQueryFilters = value;
     params.currencies = value.currency ? [value.currency] : [];
-    if (this.usePeriod) {
-      params.datePeriod = this.bankingHelper.resolveDatePeriod(value);
-    }
+    params.customFields = this.fieldHelper.toCustomValuesFilter(value.customFields);
+    params.datePeriod = this.bankingHelper.resolveDatePeriod(value);
     if (this.isPaymentRequest()) {
       params.paymentRequestExpiration = ApiHelper.dateRangeFilter(value.expirationBegin, value.expirationEnd);
     } else if (this.isExternalPayment()) {

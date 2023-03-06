@@ -39,10 +39,14 @@
       </ng-container>
 
       <actions>
-        <action-button
-          *ngIf="(confirmationMode$ | async) === ConfirmationMode.Password; else emptyDiv"
-          [disabled]="requesting$ | async" (action)="maybePreview()"
+        <action-button [disabled]="requesting$ | async"
+          (action)="maybePreview()"
           [label]="dataForTransaction.shouldPreview ? i18n.general.next : i18n.general.submit">
+        </action-button>
+        <action-button
+          *ngIf="dataForTransaction.canSendPin && dataForTransaction.pinInput"
+          outline (action)="resendPin()"
+          [label]="i18n.voucher.sendPinToClient">
         </action-button>
         <action-button outline (action)="backToToken()"
           [label]="i18n.general.previous">
@@ -62,7 +66,8 @@
       </notification>
 
       <voucher-transaction-step-confirm *ngIf="preview$ | async"
-        [preview]="preview" [transaction]="preview.redeem">
+        [preview]="preview" [transaction]="preview.redeem"
+        [data]="dataForTransaction">
       </voucher-transaction-step-confirm>
 
       <ng-container *ngIf="preview.pinInput">
@@ -75,10 +80,11 @@
       </ng-container>
 
       <actions>
-        <action-button
-          *ngIf="(confirmationMode$ | async) === ConfirmationMode.Password; else emptyDiv"
-          [disabled]="requesting$ | async" (action)="performFromPreview()"
-          [label]="i18n.general.submit">
+        <action-button [disabled]="requesting$ | async"
+          (action)="performFromPreview()" [label]="i18n.general.submit">
+        </action-button>
+        <action-button *ngIf="preview.canSendPin && preview.pinInput" outline
+          (action)="resendPin()" [label]="i18n.voucher.sendPinToClient">
         </action-button>
         <action-button outline (action)="backToForm()"
           [label]="i18n.general.previous">
@@ -91,8 +97,4 @@
 
 <ng-template #loading>
   <spinner></spinner>
-</ng-template>
-
-<ng-template #emptyDiv>
-  <div></div>
 </ng-template>

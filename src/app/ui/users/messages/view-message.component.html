@@ -58,8 +58,10 @@
             <th>{{ i18n.general.date }}</th>
           </thead>
           <tbody>
-            <tr *ngFor="let message of data.replies"
-              [ngClass]="{'cursor-pointer': path(message)}"
+            <tr *ngFor="let message of data.replies" [ngClass]="{
+                'cursor-pointer': path(message),
+                'font-weight-bold': isCurrent(message)
+              }"
               (click)="path(message) ? router.navigate(path(message)) : null">
               <td>
                 <icon

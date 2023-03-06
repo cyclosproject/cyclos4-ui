@@ -21,10 +21,11 @@
           <label-value *ngIf="data.token" [label]="i18n.voucher.token"
             [value]="data.token">
           </label-value>
-          <label-value *ngIf="data.amount" [label]="i18n.transaction.amount"
+          <label-value *ngIf="data.amount"
+            [label]="data.allowPartialRedeems ? i18n.voucher.redeem.amountAtCreation : i18n.transaction.amount"
             [value]="data.amount | currency:data.type.configuration.currency">
           </label-value>
-          <label-value *ngIf="showBalance" [label]="i18n.voucher.balance"
+          <label-value *ngIf="data.balance" [label]="i18n.voucher.balance"
             [value]="data.balance | currency:data.type.configuration.currency">
           </label-value>
           <label-value *ngIf="data.creationType"

@@ -2,41 +2,60 @@
 
 a {
   cursor: pointer;
+
   &:focus:not(:active) {
     outline: none;
     box-shadow: $btn-focus-box-shadow;
   }
 }
+
 a:not(.btn) {
   color: $link-color;
+
   &:hover {
     color: $link-hover-color;
   }
 }
+
+a.undecorated:hover {
+  color: $link-color;
+}
+
+a.body-color,
 a.body-color:hover {
   color: $body-color;
 }
-a.plain, maybe-link.plain a,
-a.undecorated, maybe-link.undecorated a {
+
+a.plain,
+maybe-link.plain a,
+a.undecorated,
+maybe-link.undecorated a {
   color: $body-color;
+
   &:hover {
     text-decoration: none;
   }
 }
-a.plain, maybe-link.plain a {
+
+a.plain,
+maybe-link.plain a {
   cursor: default;
+
   &:focus {
     outline: none;
     box-shadow: none;
   }
 }
+
 a.decorated {
   color: $link-color;
 }
+
 a.icon {
   outline: none;
   text-decoration: none;
 }
+
 a.ngx-gallery-thumbnail:focus {
   outline: none;
   box-shadow: none;
@@ -46,12 +65,14 @@ a.ngx-gallery-thumbnail:focus {
   display: flex;
   flex-direction: row;
   align-items: center;
+
   icon {
     margin-right: 0.5rem;
     width: 1.2rem;
     height: 1.2rem;
   }
 }
+
 .link-with-icon.body-color icon {
   opacity: 0.7;
 }
@@ -59,25 +80,53 @@ a.ngx-gallery-thumbnail:focus {
 body.dark {
   a:not(.btn) {
     color: $link-color-dark;
+
     &:hover {
       color: $link-hover-color-dark;
     }
   }
-  a.body-color:hover, a.plain, maybe-link.plain a,
-  a.undecorated, maybe-link.undecorated a {
+
+  a.body-color,
+  a.body-color:hover,
+  a.plain,
+  maybe-link.plain a,
+  a.undecorated,
+  maybe-link.undecorated a {
     color: $body-color-dark !important;
+  }
+
+  a.undecorated:hover {
+    color: $link-color-dark !important;
   }
 }
 
 @media print {
-  a, a:hover, h1, h2, h3, td, th, tr, table, .positive, .negative {
+
+  a,
+  a:hover,
+  h1,
+  h2,
+  h3,
+  td,
+  th,
+  tr,
+  table,
+  .positive,
+  .negative {
     color: $body-color !important;
     border-color: black !important;
   }
+
   a {
     text-decoration: none !important;
   }
-  .link-with-icon icon, td.avatar, th.avatar, td.actions, th.actions, pagination {
+
+  .link-with-icon icon,
+  td.avatar,
+  th.avatar,
+  td.actions,
+  th.actions,
+  pagination {
     display: none;
   }
 }

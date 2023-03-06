@@ -20,13 +20,10 @@ export class SearchVouchersComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.vouchersService.getGeneralVouchersDataForSearch({})
-      .subscribe(dataForSearch => this.data = dataForSearch));
+    this.addSub(this.vouchersService.getGeneralVouchersDataForSearch({}).subscribe(dataForSearch => this.data = dataForSearch));
   }
 
-  protected onDataInitialized(data: GeneralVouchersDataForSearch) {
-    super.onDataInitialized(data);
-
+  prepareForm(data: GeneralVouchersDataForSearch) {
     this.customFieldsInSearch = [];
     data.fieldsInBasicSearch.forEach(f => {
       var field: any = data.customFields.find(cf => cf.internalName === f);
@@ -35,7 +32,12 @@ export class SearchVouchersComponent
       }
     });
 
-    this.form.setControl('customFields', this.fieldHelper.customFieldsForSearchFormGroup(this.customFieldsInSearch));
+    this.form.setControl('customFields',
+      this.fieldHelper.customFieldsForSearchFormGroup(this.customFieldsInSearch, data.query.customFields));
+  }
+
+  protected onDataInitialized(data: GeneralVouchersDataForSearch) {
+    super.onDataInitialized(data);
 
     const headingActions: HeadingAction[] = [this.moreFiltersAction];
     if (data.canGenerate) {
@@ -59,10 +61,8 @@ export class SearchVouchersComponent
 
   protected getFormControlNames(): string[] {
     return ['types', 'creationBegin', 'creationEnd', 'statuses', 'token', 'creationType', 'printed', 'customFields',
-      'amountMin', 'amountMax', 'expirationBegin', 'expirationEnd',
-      'transactionDateBegin', 'transactionDateEnd', 'buyer',
-      'transactionUser', 'buyerGroups', 'transactionUserGroups',
-      'email', 'mobilePhone', 'orderBy'];
+      'amountMin', 'amountMax', 'expirationBegin', 'expirationEnd', 'transactionDateBegin', 'transactionDateEnd', 'buyer',
+      'transactionUser', 'buyerGroups', 'transactionUserGroups', 'email', 'mobilePhone', 'orderBy'];
   }
 
   protected toSearchParams(value: any): VoucherSearchParams {

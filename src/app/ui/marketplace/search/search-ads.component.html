@@ -13,11 +13,12 @@
           <input-field formControlName="keywords"
             [label]="i18n.general.keywords"></input-field>
         </div>
-        <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
-          <distance-selection-field [data]="data.searchByDistanceData"
-            formControlName="distanceFilter"
-            [label]="i18n.general.distanceFilter">
-          </distance-selection-field>
+        <div
+          *ngIf="dataForFrontendHolder.auth?.permissions?.marketplace?.favorites"
+          class="col-12 col-md-6">
+          <boolean-field formControlName="favoriteFor"
+            [label]="i18n.ad.showFavorites">
+          </boolean-field>
         </div>
         <div class="col-12 col-md-6" *ngIf="manager">
           <multi-selection-field formControlName="statuses"
@@ -45,6 +46,12 @@
           </div>
         </ng-container>
         <ng-container *ngIf="moreFilters$ | async">
+          <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
+            <distance-selection-field [data]="data.searchByDistanceData"
+              formControlName="distanceFilter"
+              [label]="i18n.general.distanceFilter">
+            </distance-selection-field>
+          </div>
           <div class="col-12 col-md-6" *ngFor="let cf of advancedFields">
             <custom-field-filter [field]="cf"
               [formControl]="form.get('customValues').get(cf.internalName)">
@@ -105,24 +112,22 @@
                 </single-selection-field>
               </div>
             </ng-container>
-            <ng-container *ngIf="currency$ | async">
-              <!-- Force a new line to keep price range in same row -->
-              <div class="w-100"></div>
-              <div class="col-12 col-md-6">
-                <decimal-field formControlName="minAmount"
-                  [label]="i18n.ad.minPrice" fieldSize="full"
-                  [scale]="currency.decimalDigits" [prefix]="currency.prefix"
-                  [suffix]="currency.suffix">
-                </decimal-field>
-              </div>
-              <div class="col-12 col-md-6">
-                <decimal-field formControlName="maxAmount"
-                  [label]="i18n.ad.maxPrice" fieldSize="full"
-                  [scale]="currency.decimalDigits" [prefix]="currency.prefix"
-                  [suffix]="currency.suffix">
-                </decimal-field>
-              </div>
-            </ng-container>
+            <!-- Force a new line to keep price range in same row -->
+            <div class="w-100"></div>
+            <div class="col-12 col-md-6">
+              <decimal-field formControlName="minAmount"
+                [label]="i18n.ad.minPrice" fieldSize="full"
+                [scale]="currency?.decimalDigits || 2"
+                [prefix]="currency?.prefix" [suffix]="currency?.suffix">
+              </decimal-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <decimal-field formControlName="maxAmount"
+                [label]="i18n.ad.maxPrice" fieldSize="full"
+                [scale]="currency?.decimalDigits || 2"
+                [prefix]="currency?.prefix" [suffix]="currency?.suffix">
+              </decimal-field>
+            </div>
           </ng-container>
           <!-- Force a new line to keep date range in same row -->
           <div class="w-100"></div>
@@ -141,39 +146,29 @@
       </div>
     </div>
     <div class="row no-gutters filters-row">
-      <div class="col-xs-7 col-sm-3">
-        <result-type-field [allowedResultTypes]="allowedResultTypes$ | async"
+      <div class="d-flex col-xs-7 col-sm-5" [ngClass]="{
+        'col-xs-7 col-sm-5': (resultType$ | async) !== ResultType.CATEGORIES
+      }">
+        <ng-container *ngTemplateOutlet="modeButtons"></ng-container>
+      </div>
+      <div class="col-xs-5 col-sm-7 d-flex justify-content-end"
+        *ngIf="(resultType$ | async) !== ResultType.CATEGORIES">
+        <div *ngIf="layout.gtxs$ | async" class="d-flex pl-3">
+          <ng-container *ngTemplateOutlet="orderBy"></ng-container>
+        </div>
+        <result-type-field *ngIf="layout.gtxxs$ | async"
+          [allowedResultTypes]="allowedResultTypes$ | async"
           [formControl]="resultTypeControl">
         </result-type-field>
       </div>
-      <div class="d-flex col-xs-5 col-sm-9 justify-content-end">
-        <single-selection-field *ngIf="['tiles', 'list'].includes(resultType)"
-          [ngClass]="{'w-25 flex-grow-0': layout.gtxs,
-      'mt-2': layout.ltxs}" [formControl]="form.get('orderBy')"
-          [display]="i18n.general.orderBy"
-          [emptyOption]="i18n.general.orderByRelevance">
-          <field-option value="date" [text]="i18n.ad.orderBy.date">
-          </field-option>
-          <field-option value="priceAsc" [text]="i18n.ad.orderBy.priceAsc">
-          </field-option>
-          <field-option value="priceDesc" [text]="i18n.ad.orderBy.priceDesc">
-          </field-option>
-        </single-selection-field>
-        <div *ngIf="layout.gtxs$ | async" class="d-flex justify-content-end">
-          <heading-action-button
-            *ngIf="(resultType$ | async) !== ResultType.CATEGORIES"
-            class="heading-action-button pl-2 w-auto flex-grow-0"
-            [action]="categoriesAction">
-          </heading-action-button>
-          <heading-action-button
-            *ngIf="(resultType$ | async) === ResultType.CATEGORIES"
-            class="heading-action-button pl-2 w-auto flex-grow-0"
-            [action]="adsAction">
-          </heading-action-button>
-        </div>
-      </div>
     </div>
   </page-content>
+
+  <div
+    *ngIf="(layout.ltsm$ | async) && (resultType$ | async) !== ResultType.CATEGORIES"
+    class="d-flex px-ls pb-1 flex-column">
+    <ng-container *ngTemplateOutlet="orderBy"></ng-container>
+  </div>
 
   <page-content
     [ngClass]="(categoryTrail$ | async)?.length > 1 ? '' : 'd-none'">
@@ -198,4 +193,28 @@
     (update)="update($event)" (categorySelected)="onCategorySelected($event)"
     [defaultResultType]="getDefaultResultType()">
   </ads-results>
+</ng-template>
+
+<ng-template #orderBy>
+  <single-selection-field *ngIf="['tiles', 'list'].includes(resultType)"
+    [ngClass]="{'flex-grow-0 mr-3': layout.gtxs, 'mt-2': layout.ltxs}"
+    [formControl]="form.get('orderBy')" [display]="i18n.general.orderBy"
+    [emptyOption]="i18n.general.orderByRelevance">
+    <field-option value="date" [text]="i18n.ad.orderBy.date">
+    </field-option>
+    <field-option value="priceAsc" [text]="i18n.ad.orderBy.priceAsc">
+    </field-option>
+    <field-option value="priceDesc" [text]="i18n.ad.orderBy.priceDesc">
+    </field-option>
+  </single-selection-field>
+</ng-template>
+
+<ng-template #modeButtons>
+  <action-button *ngIf="(resultType$ | async) !== ResultType.CATEGORIES"
+    actionKind="flat" (action)="categoriesAction.onClick()"
+    [icon]="categoriesAction.icon"
+    [label]="categoriesAction.label"></action-button>
+  <action-button *ngIf="(resultType$ | async) === ResultType.CATEGORIES"
+    actionKind="flat" (action)="adsAction.onClick()" [icon]="adsAction.icon"
+    [label]="adsAction.label"></action-button>
 </ng-template>

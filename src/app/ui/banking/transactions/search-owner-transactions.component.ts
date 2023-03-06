@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   Currency,
+  CustomFieldDetailed,
   ExternalPaymentStatusEnum,
-  PaymentRequestStatusEnum, TransactionAuthorizationStatusEnum, TransactionDataForSearch,
+  PaymentRequestStatusEnum, TicketStatusEnum, TransactionAuthorizationStatusEnum, TransactionDataForSearch,
   TransactionKind, TransactionQueryFilters, TransactionResult, TransferFilter
 } from 'app/api/models';
 import { TransactionsService } from 'app/api/services/transactions.service';
@@ -32,7 +33,7 @@ export class SearchOwnerTransactionsComponent
   extends BaseSearchPageComponent<TransactionDataForSearch, TransactionSearchParams, TransactionResult>
   implements OnInit {
 
-  kind: 'authorized' | 'payment-request' | 'external-payment';
+  kind: 'authorized' | 'payment-request' | 'external-payment' | 'ticket';
   param: string;
   self: boolean;
   heading: string;
@@ -42,6 +43,8 @@ export class SearchOwnerTransactionsComponent
   hasTransactionNumber: boolean;
   usePreselectedPeriods = false;
   transactionNumberPattern: string;
+  fieldsInSearch: CustomFieldDetailed[];
+  fieldsInList: CustomFieldDetailed[];
 
   constructor(
     injector: Injector,
@@ -71,30 +74,18 @@ export class SearchOwnerTransactionsComponent
         this.heading = this.i18n.transaction.title.externalPayments;
         this.mobileHeading = this.i18n.transaction.mobileTitle.externalPayments;
         break;
+      case 'ticket':
+        this.heading = this.i18n.transaction.title.tickets;
+        this.mobileHeading = this.i18n.transaction.mobileTitle.tickets;
+        break;
     }
 
     // Get the transactions search data
-    this.stateManager.cache('data',
-      this.transactionsService.getTransactionsDataForSearch({
-        owner: this.param,
-        fields: ['user', 'userPermissions', 'accountTypes', 'visibleKinds', 'transferFilters',
-          ...(this.usePreselectedPeriods ? ['preselectedPeriods'] : []), 'query'],
-      }),
-    ).subscribe(data => {
-      this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
-
-      // Initialize the currencies Map to make lookups easier
-      (data.accountTypes || []).forEach(at => {
-        const currency = at.currency;
-        this.currencies.set(currency.id, currency);
-        if (!empty(currency.internalName)) {
-          this.currencies.set(currency.internalName, currency);
-        }
-      });
-
-      // Only initialize the data once the form is filled-in
-      this.data = data;
-    });
+    this.stateManager.cache('data', this.transactionsService.getTransactionsDataForSearch({
+      owner: this.param,
+      fields: ['user', 'userPermissions', 'accountTypes', 'visibleKinds', 'transferFilters', 'fieldsInBasicSearch', 'fieldsInList',
+        'customFields', 'archivingDate', ...(this.usePreselectedPeriods ? ['preselectedPeriods'] : []), 'query'],
+    })).subscribe(data => this.data = data);
 
     // Whenever the account type changes, also update the transfer filters
     this.addSub(this.form.get('accountType').valueChanges.subscribe(at => {
@@ -104,8 +95,24 @@ export class SearchOwnerTransactionsComponent
     }));
   }
 
+  prepareForm(data: TransactionDataForSearch) {
+    this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
+
+    this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInBasicSearch.includes(cf.internalName));
+    this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
+    this.form.setControl('customFields', this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields));
+  }
+
   onDataInitialized(data: TransactionDataForSearch) {
     super.onDataInitialized(data);
+    // Initialize the currencies Map to make lookups easier
+    (data.accountTypes || []).forEach(at => {
+      const currency = at.currency;
+      this.currencies.set(currency.id, currency);
+      if (!empty(currency.internalName)) {
+        this.currencies.set(currency.internalName, currency);
+      }
+    });
     const transactionNumberPatterns = Array.from(this.currencies.values())
       .map(c => c.transactionNumberPattern)
       .filter(p => p)
@@ -171,8 +178,12 @@ export class SearchOwnerTransactionsComponent
     return this.kind === 'external-payment';
   }
 
-  doSearch(value: TransactionSearchParams) {
-    return this.transactionsService.searchTransactions$Response(value);
+  isTicket(): boolean {
+    return this.kind === 'ticket';
+  }
+
+  doSearch(filter: TransactionSearchParams) {
+    return this.transactionsService.searchTransactions$Response(filter);
   }
 
   private sendPaymentRequest(from: string, to?: string) {
@@ -189,7 +200,7 @@ export class SearchOwnerTransactionsComponent
 
   getFormControlNames() {
     return ['status', 'accountType', 'transferFilter', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd', 'direction',
-      'transactionNumber'];
+      'transactionNumber', 'customFields'];
   }
 
   getInitialFormValue(data: TransactionDataForSearch) {
@@ -203,6 +214,9 @@ export class SearchOwnerTransactionsComponent
         break;
       case 'external-payment':
         value.status = ExternalPaymentStatusEnum.PENDING;
+        break;
+      case 'ticket':
+        value.status = TicketStatusEnum.OPEN;
         break;
     }
     return value;
@@ -225,6 +239,11 @@ export class SearchOwnerTransactionsComponent
           value: st,
           text: this.apiI18n.externalPaymentStatus(st)
         }));
+      case 'ticket':
+        return (Object.values(TicketStatusEnum) as TicketStatusEnum[]).map(st => ({
+          value: st,
+          text: this.apiI18n.ticketStatus(st)
+        }));
     }
   }
 
@@ -234,6 +253,7 @@ export class SearchOwnerTransactionsComponent
     params.accountTypes = value.accountType ? [value.accountType] : null;
     params.transferFilters = value.transferFilter ? [value.transferFilter] : null;
     params.datePeriod = this.bankingHelper.resolveDatePeriod(value);
+    params.customFields = this.fieldHelper.toCustomValuesFilter(value.customFields);
 
     switch (this.kind) {
       case 'authorized':
@@ -247,6 +267,10 @@ export class SearchOwnerTransactionsComponent
       case 'external-payment':
         params.externalPaymentStatuses = [value.status];
         params.kinds = [TransactionKind.EXTERNAL_PAYMENT];
+        break;
+      case 'ticket':
+        params.ticketStatuses = [value.status];
+        params.kinds = [TransactionKind.TICKET];
         break;
     }
 
@@ -264,6 +288,9 @@ export class SearchOwnerTransactionsComponent
         break;
       case 'external-payment':
         menu = Menu.EXTERNAL_PAYMENTS;
+        break;
+      case 'ticket':
+        menu = Menu.TICKETS;
         break;
     }
     return this.menu.userMenu(data.user, menu);

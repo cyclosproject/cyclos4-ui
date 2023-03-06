@@ -16,7 +16,7 @@
         <h2>{{ i18n.privacySettings.controlsSection }}</h2>
         <boolean-field *ngFor="let control of data.availableControls"
           [formControlName]="control.id" [label]="control.name"
-          [tooltip]="control.informationText" [placement]="'left'">
+          [text]="control.informationText">
         </boolean-field>
       </ng-container>
       <actions>

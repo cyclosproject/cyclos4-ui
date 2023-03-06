@@ -8,6 +8,7 @@ import { ResultType } from 'app/ui/shared/result-type';
 import { ArrowLeft, ArrowsHorizontal } from 'app/core/shortcut.service';
 import { Subscription } from 'rxjs';
 import { SvgIcon } from 'app/core/svg-icon';
+import { TooltipDirective } from 'ngx-bootstrap/tooltip';
 
 /**
  * Renders a widget for a result type field
@@ -82,7 +83,8 @@ export class ResultTypeFieldComponent
     }
   }
 
-  addShortcuts(resultType: ResultType) {
+  onFocus(pop: TooltipDirective, resultType: ResultType) {
+    pop.show();
     const element = this.element;
     const currentEl = element.getElementsByClassName(`resultType-${resultType}`).item(0);
     if (document.activeElement !== currentEl) {
@@ -101,7 +103,8 @@ export class ResultTypeFieldComponent
     this.resultTypeSubs.set(resultType, sub);
   }
 
-  removeShortcuts(resultType: ResultType) {
+  onBlur(pop: TooltipDirective, resultType: ResultType) {
+    pop.hide();
     const sub = this.resultTypeSubs.get(resultType);
     if (sub) {
       sub.unsubscribe();

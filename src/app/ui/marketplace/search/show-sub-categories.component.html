@@ -1,4 +1,4 @@
-<h1 class="d-flex justify-content-center">
+<h1 class="d-flex justify-content-center modal-header">
   <avatar [image]="image" size="medium" [icon]="icon" [iconColor]="color">
   </avatar>
   <a class="ml-3 pt-1 flex-grow-1 undecorated" href="#"
@@ -7,12 +7,10 @@
   </a>
 </h1>
 
-<a *ngFor="let sub of category.children" class="d-block mb-1 undecorated"
-  href="#" (click)="emit(sub, $event)">
-  {{ sub.name }}
-</a>
+<category-hierarchy *ngFor="let sub of category.children" [category]="sub"
+  (select)="emit($event)"></category-hierarchy>
 
-<actions>
+<actions class="modal-footer">
   <span></span>
   <action-button outline (action)="modalRef.hide()"
     [label]="i18n.general.cancel">

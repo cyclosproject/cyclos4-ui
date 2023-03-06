@@ -67,6 +67,9 @@ export class NotificationTypeSettingComponent extends BaseComponent implements O
     if (this.setting.sms != null) {
       count++;
     }
+    if (this.setting.app != null) {
+      count++;
+    }
     return count;
   }
 

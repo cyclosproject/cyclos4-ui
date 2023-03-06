@@ -28,9 +28,9 @@ export class ShowSubCategoriesComponent extends BaseComponent {
     super(injector);
   }
 
-  emit(cat: AdCategoryWithChildren, event: MouseEvent) {
+  emit(cat: AdCategoryWithChildren, event?: MouseEvent) {
     this.select.emit(cat);
-    event.preventDefault();
+    event?.preventDefault();
     this.modalRef.hide();
   }
 

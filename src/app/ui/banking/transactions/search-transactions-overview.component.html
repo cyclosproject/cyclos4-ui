@@ -33,36 +33,34 @@
               [value]="currency.id" [text]="currency.name"></field-option>
           </single-selection-field>
         </div>
-        <ng-container *ngIf="usePeriod">
-          <div class="col-12 col-md-6"
-            *ngIf="usePreselectedPeriod && data.preselectedPeriods?.length > 0">
-            <single-selection-field formControlName="preselectedPeriod"
-              [label]="i18n.general.period">
-              <field-option *ngFor="let period of data.preselectedPeriods"
-                [id]="period['id']" [value]="period" [text]="period.name">
-              </field-option>
-            </single-selection-field>
-          </div>
-          <ng-container
-            *ngIf="!usePreselectedPeriod || (form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null">
-            <!-- Force a line break on sm and up -->
-            <div class="w-100 d-none d-sm-block"></div>
-            <div class="col-12 col-md-6">
-              <date-field formControlName="periodBegin"
-                [label]="i18n.general.beginDate" minDate="past5"
-                maxDate="today" fieldSize="full">
-              </date-field>
-            </div>
-          </ng-container>
-          <div
-            *ngIf="!usePreselectedPeriod || (form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
-            class="col-12 col-md-6">
-            <date-field formControlName="periodEnd"
-              [label]="i18n.general.endDate" minDate="past5" maxDate="today"
+        <div class="col-12 col-md-6"
+          *ngIf="data.preselectedPeriods?.length > 0">
+          <single-selection-field formControlName="preselectedPeriod"
+            [label]="i18n.general.period">
+            <field-option *ngFor="let period of data.preselectedPeriods"
+              [id]="period['id']" [value]="period" [text]="period.name">
+            </field-option>
+          </single-selection-field>
+        </div>
+        <ng-container
+          *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null">
+          <!-- Force a line break on sm and up -->
+          <div class="w-100 d-none d-sm-block"></div>
+          <div class="col-12 col-md-6">
+            <date-field formControlName="periodBegin"
+              [label]="i18n.general.beginDate" minDate="past5" maxDate="today"
               fieldSize="full">
             </date-field>
           </div>
         </ng-container>
+        <div
+          *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
+          class="col-12 col-md-6">
+          <date-field formControlName="periodEnd"
+            [label]="i18n.general.endDate" minDate="past5" maxDate="today"
+            fieldSize="full">
+          </date-field>
+        </div>
         <ng-container *ngIf="(moreFilters$ | async) || isMyAuth()">
           <ng-container
             *ngIf="(isAuthorized() || isPaymentRequest() || isExternalPayment()) && data.accountTypes?.length > 1">
@@ -71,14 +69,14 @@
             <div class="col-12 col-md-6">
               <single-selection-field formControlName="fromAccountTypes"
                 [emptyOption]="i18n.general.notApplied"
-                [label]="i18n.transaction.fromAccount">
+                [label]="isExternalPayment() ? i18n.transaction.account : i18n.transaction.fromAccount">
                 <field-option *ngFor="let at of accountTypes()"
                   [value]="at.id" [internalName]="at.internalName"
                   [id]="at.id" [text]="at.name">
                 </field-option>
               </single-selection-field>
             </div>
-            <div class="col-12 col-md-6">
+            <div *ngIf="!isExternalPayment()" class="col-12 col-md-6">
               <single-selection-field formControlName="toAccountTypes"
                 [emptyOption]="i18n.general.notApplied"
                 [label]="i18n.transaction.toAccount">
@@ -132,6 +130,13 @@
               [label]="i18n.transaction.actionPerformedBy">
             </user-field>
           </div>
+          <ng-container *ngIf="moreFilters$ | async">
+            <div class="col-12 col-md-6" *ngFor="let f of fieldsInSearch">
+              <custom-field-filter [field]="f"
+                [formControl]="form.get('customFields').get(f.internalName)">
+              </custom-field-filter>
+            </div>
+          </ng-container>
         </ng-container>
       </div>
     </div>
@@ -157,15 +162,20 @@
         <ng-container *ngIf="!isPaymentRequest()">
           <th>{{ i18n.transaction.from }}</th>
           <th>{{ i18n.transaction.to }}</th>
-          <th>{{ i18n.transaction.scheduling }}</th>
+          <th *ngIf="!isExternalPayment()">{{ i18n.transaction.scheduling }}
+          </th>
         </ng-container>
         <ng-container *ngIf="isPaymentRequest()">
           <th>{{ i18n.transaction.number }}</th>
           <th>{{ i18n.transaction.sender }}</th>
           <th>{{ i18n.transaction.receiver }}</th>
-          <th>{{ i18n.general.status }}</th>
-          <th>{{ i18n.general.expirationDate }}</th>
         </ng-container>
+        <th *ngIf="isPaymentRequest() || isExternalPayment()">{{
+          i18n.general.status }}</th>
+        <th *ngIf="isPaymentRequest()">{{ i18n.general.expirationDate }}</th>
+        <th *ngFor="let field of fieldsInList">
+          {{ field.name }}
+        </th>
         <th class="amount">{{ i18n.transaction.amount }}</th>
       </thead>
       <tbody>
@@ -197,24 +207,27 @@
                 row.to) }}
               </a>
             </td>
-            <ng-container *ngIf="isPaymentRequest()">
-              <td>
-                <a class="d-inline-block"
-                  [routerLink]="bankingHelper.transactionPath(row)">
-                  {{ apiI18n.transactionStatus(row) }}
-                </a>
-              </td>
-              <td>
-                <a [routerLink]="bankingHelper.transactionPath(row)">
-                  {{ row.expirationDate | date }}
-                </a>
-              </td>
-            </ng-container>
-            <td *ngIf="!isPaymentRequest()">
+            <td *ngIf="isPaymentRequest() || isExternalPayment()">
+              <a class="d-inline-block"
+                [routerLink]="bankingHelper.transactionPath(row)">
+                {{ apiI18n.transactionStatus(row) }}
+              </a>
+            </td>
+            <td *ngIf="isPaymentRequest()">
+              <a [routerLink]="bankingHelper.transactionPath(row)">
+                {{ row.expirationDate | date }}
+              </a>
+            </td>
+            <td *ngIf="!isPaymentRequest() && !isExternalPayment()">
               <a class="d-inline-block"
                 [routerLink]="bankingHelper.transactionPath(row)">
                 {{ bankingHelper.scheduling(row) }}
               </a>
+            </td>
+            <td *ngFor="let field of fieldsInList">
+              <format-field-value [fields]="fieldsInList" [plainText]="true"
+                [fieldName]="field.internalName" [object]="row">
+              </format-field-value>
             </td>
             <td class="amount" [ngClass]="{'pb-0': layout.xxs$ | async}">
               <a [routerLink]="bankingHelper.transactionPath(row)">

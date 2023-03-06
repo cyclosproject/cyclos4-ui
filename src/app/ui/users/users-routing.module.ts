@@ -40,6 +40,7 @@ import { ViewProductAssignmentHistoryComponent } from 'app/ui/users/products/vie
 import { EditProfileComponent } from 'app/ui/users/profile/edit-profile.component';
 import { ValidateEmailChangeComponent } from 'app/ui/users/profile/validate-email-change.component';
 import { ViewProfileComponent } from 'app/ui/users/profile/view-profile.component';
+import { QuickAccessSettingsComponent } from 'app/ui/users/quick-access/quick-access-settings.component';
 import { SearchReferencesComponent } from 'app/ui/users/references/search-references.component';
 import { SetReferenceComponent } from 'app/ui/users/references/set-reference.component';
 import { ViewReferenceComponent } from 'app/ui/users/references/view-reference.component';
@@ -59,6 +60,10 @@ const usersRoutes: Routes = [
     children: [
       {
         path: 'search',
+        component: SearchUsersComponent,
+      },
+      {
+        path: 'search/pending',
         component: SearchUsersComponent,
       },
       {
@@ -237,6 +242,13 @@ const usersRoutes: Routes = [
         },
       },
       {
+        path: 'registration/:externalPaymentToken',
+        component: UserRegistrationComponent,
+        resolve: {
+          countries: CountriesResolve,
+        },
+      },
+      {
         path: 'validate-registration/:key',
         component: ValidateRegistrationComponent,
       },
@@ -370,6 +382,11 @@ const usersRoutes: Routes = [
       {
         path: 'feedbacks/settings',
         component: ListFeedbackIgnoredUsersComponent,
+        canActivate: [LoggedUserGuard],
+      },
+      {
+        path: ':user/quick-access/settings',
+        component: QuickAccessSettingsComponent,
         canActivate: [LoggedUserGuard],
       }
     ],

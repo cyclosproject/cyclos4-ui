@@ -49,9 +49,13 @@ export class ConsentComponent implements OnInit {
     // Initialize the stylesheet links
     initializeStyleLinks();
 
-    // As we only use a single icon for the error dialog, its content is embedded in the index html
-    const icon = document.getElementById('bi-exclamation-triangle');
-    this.iconLoading.store({ 'exclamation-triangle': icon.innerHTML.trim() });
+    // As we only use a few icons, their content are embedded in the index html
+    const iconNames = ['exclamation-triangle', 'eye', 'eye-slash'];
+    iconNames.forEach(name => {
+      const icon = {};
+      icon[name] = document.getElementById(`bi-${name}`).innerHTML.trim();
+      this.iconLoading.store(icon);
+    });
 
     // Indicate that Cyclos has finished loading, to prevent the root spinner from being shown on the onload event
     self['cyclosLoaded'] = true;

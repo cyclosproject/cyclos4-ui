@@ -1,0 +1,16 @@
+<div class="wizard-verification">
+  <icon [icon]="icon"></icon>
+  <div class="message" [innerHTML]="this.message | trust"></div>
+  <div>
+    <input-field [formControl]="control"></input-field>
+  </div>
+  <div class="resend-code">
+    <a *ngIf="allowNewCode | async; else timerMessage" href="#"
+      (click)="sendNewCode($event)">
+      {{ i18n.wizard.verification.new.request }}
+    </a>
+    <ng-template #timerMessage>
+      <div [innerHTML]="sendMessage | async | trust"></div>
+    </ng-template>
+  </div>
+</div>

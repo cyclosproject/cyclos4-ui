@@ -1,0 +1,24 @@
+<page-layout [ready]="data$ | async">
+  <page-content *ngIf="data" last mode="viewForm"
+    [heading]="i18n.imports.title.lineDetails"
+    [mobileHeading]="i18n.imports.mobileTitle.lineDetails"
+    [headingActions]="headingActions$ | async">
+    <div class="d-flex flex-grow-1 flex-column">
+      <label-value [label]="i18n.imports.file">
+        <a [routerLink]="['/imports', 'files', 'view', line.file.id]">{{
+          line.file.fileName }}</a>
+      </label-value>
+      <label-value [label]="i18n.imports.lineNumber"
+        [value]="line.lineNumber">
+      </label-value>
+      <label-value [label]="i18n.general.status">
+        <maybe-link [link]="importedUrl">
+          {{ importsHelper.lineStatusLabel(line.status) }}
+        </maybe-link>
+      </label-value>
+      <label-value *ngFor="let field of line.fields" [label]="field.name"
+        [value]="lineValue(field)" valueFormat="break">
+      </label-value>
+    </div>
+  </page-content>
+</page-layout>

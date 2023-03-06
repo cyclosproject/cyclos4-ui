@@ -69,7 +69,8 @@
                             "b64-to-blob",
                             "downloadjs",
                             "autosize",
-                            "lscache"
+                            "lscache",
+                            "qrcode"
                         ],
                         "vendorChunk": true,
                         "extractLicenses": false,
@@ -92,7 +93,14 @@
                                     "with": "src/environments/environment.prod.ts"
                                 }
                             ],
-                            "optimization": true,
+                            "optimization": {
+                                "scripts": true,
+                                "styles": {
+                                    "minify": true,
+                                    "inlineCritical": false
+                                },
+                                "fonts": false
+                            },
                             "sourceMap": false,
                             "extractLicenses": true,
                             "vendorChunk": false,

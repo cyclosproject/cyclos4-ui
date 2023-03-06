@@ -8,6 +8,7 @@ import { LoggedUserGuard } from 'app/ui/logged-user-guard';
 import { HomeComponent } from 'app/ui/core/home.component';
 import { LoginComponent } from 'app/ui/login/login.component';
 import { RedirectToLocationComponent } from 'app/ui/redirect-to-location-component';
+import { InviteTokenComponent } from 'app/ui/invite/invite-token.component';
 
 const rootRoutes: Routes = [
   {
@@ -34,6 +35,10 @@ const rootRoutes: Routes = [
   {
     path: 'redirect/:location',
     component: RedirectToLocationComponent,
+  },
+  {
+    path: 'invite/:token',
+    component: InviteTokenComponent,
   },
   {
     path: 'banking',
@@ -71,6 +76,10 @@ const rootRoutes: Routes = [
   {
     path: 'wizards',
     loadChildren: () => import('app/ui/wizards/wizards.module').then(m => m.WizardsModule),
+  },
+  {
+    path: 'imports',
+    loadChildren: () => import('app/ui/imports/imports.module').then(m => m.ImportsModule),
   },
   {
     path: '**',

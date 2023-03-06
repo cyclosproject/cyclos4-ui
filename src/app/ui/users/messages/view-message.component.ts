@@ -38,6 +38,11 @@ export class ViewMessageComponent extends BaseViewPageComponent<MessageView> imp
 
   onDataInitialized(data: MessageView) {
 
+    if (data.replies) {
+      // Insert current message into the replies
+      data.replies.splice(data.replyPosition, 0, data);
+    }
+
     const actions = [];
     if (data.canReply) {
       actions.push(
@@ -72,7 +77,7 @@ export class ViewMessageComponent extends BaseViewPageComponent<MessageView> imp
   }
 
   path(message: Message) {
-    return ['/users', 'messages', 'view', message.id];
+    return this.isCurrent(message) ? null : ['/users', 'messages', 'view', message.id];
   }
 
   /**
@@ -129,4 +134,7 @@ export class ViewMessageComponent extends BaseViewPageComponent<MessageView> imp
     return (this.data.toGroups || []).map(g => g.name);
   }
 
+  isCurrent(message: Message): boolean {
+    return (message as MessageView).replyPosition != null;
+  }
 }

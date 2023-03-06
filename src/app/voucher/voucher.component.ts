@@ -68,6 +68,15 @@ export class VoucherComponent implements OnInit {
     let qrCodeScanIcon = document.getElementById('bi-qr-code-scan');
     let logout2Icon = document.getElementById('ci-logout2');
     let houseDoor2Icon = document.getElementById('ci-house-door2');
+	let backspace = document.getElementById('backspace');
+	let x = document.getElementById('x');
+	let lock = document.getElementById('lock');
+	let eyeSlash = document.getElementById('eye-slash');
+	let eye = document.getElementById('eye');
+	let envelope = document.getElementById('envelope');
+	let phone = document.getElementById('phone');
+	let person = document.getElementById('person');
+	let briefcase = document.getElementById('briefcase');
 
     const icons: Record<string, string> = {};
     icons[SvgIcon.ExclamationTriangle] = exclamationTriangleIcon.innerHTML.trim();
@@ -80,6 +89,15 @@ export class VoucherComponent implements OnInit {
     icons[SvgIcon.QrCodeScan] = qrCodeScanIcon.innerHTML.trim();
     icons[SvgIcon.Logout2] = logout2Icon.innerHTML.trim();
     icons[SvgIcon.HouseDoor2] = houseDoor2Icon.innerHTML.trim();
+	icons[SvgIcon.Backspace] = backspace.innerHTML.trim();
+	icons[SvgIcon.X] = x.innerHTML.trim();
+	icons[SvgIcon.Lock] = lock.innerHTML.trim();
+	icons[SvgIcon.EyeSlash] = eyeSlash.innerHTML.trim();
+	icons[SvgIcon.Eye] = eye.innerHTML.trim();
+	icons[SvgIcon.Envelope] = envelope.innerHTML.trim();
+	icons[SvgIcon.Phone] = phone.innerHTML.trim();
+	icons[SvgIcon.Person] = person.innerHTML.trim();
+	icons[SvgIcon.Briefcase] = briefcase.innerHTML.trim();
 
     this.iconLoading.store(icons);
 

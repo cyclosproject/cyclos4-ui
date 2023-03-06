@@ -48,7 +48,18 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
     return data['query'] || {};
   }
 
+  /**
+   * Use this method to add any neccesary control or value to the from before initilize the data.
+   * In the data initilization the form will be updated with the query returned in the data and with the stateManager.
+   * IMPORTANT: Any control or value added after the data intilialization will cause unwanted behaviours with the filters, like don't
+   * remember the filters when going back from a row.
+   */
+  protected prepareForm(_data: D) {
+  }
+
   protected onDataInitialized(data: D) {
+    // First prepare the form, filling all necessary controls
+    this.prepareForm(data);
     // Patch the form value before passing it to stateManager.manager
     this.form.patchValue(this.getInitialFormValue(data));
     this.stateManager.manage(this.form);

@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnIn
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   AccountWithStatus, Currency, CustomFieldDetailed, DataForTransaction,
-  NotFoundError, TransactionTypeData, TransferType, User
+  NotFoundError, TimeFieldEnum, TimeInterval, TransactionTypeData, TransferType, User
 } from 'app/api/models';
 import { PaymentRequestsService } from 'app/api/services/payment-requests.service';
 import { AuthHelperService } from 'app/core/auth-helper.service';
@@ -43,6 +43,7 @@ export class RequestPaymentFormComponent extends BaseComponent implements OnInit
   @ViewChild('amount', { static: true }) amountField: DecimalFieldComponent;
 
   accountBalanceLabel$ = new BehaviorSubject<string>(null);
+  firstOccurrenceAfterIntervalLabel$ = new BehaviorSubject<string>("");
   fixedDestination = false;
   fromParam: string;
   fromUser: User;
@@ -74,6 +75,7 @@ export class RequestPaymentFormComponent extends BaseComponent implements OnInit
     this.fromUser = this.data.fromUser;
     this.fromSelf = this.authHelper.isSelf(this.fromUser);
     this.toUser = this.data.toUser;
+    this.firstOccurrenceAfterIntervalLabel$.next(this.firstOccurrenceAfterIntervalLabel());
 
     if (this.fixedDestination) {
       // When there's a fixed destination, the payment types are already present in the initial data
@@ -97,6 +99,17 @@ export class RequestPaymentFormComponent extends BaseComponent implements OnInit
       .subscribe(type => this.fetchPaymentTypeData(type)));
 
     this.addSub(this.layout.xxs$.subscribe(() => this.updateAccountBalanceLabel()));
+
+    // When the occurrenceInterval changes, update the firstOccurrence after interval label
+    this.addSub(this.form.get('occurrenceInterval').valueChanges.subscribe(
+      interval => {
+        this.firstOccurrenceAfterIntervalLabel$.next(this.firstOccurrenceAfterIntervalLabel(interval));
+        // TODO: review if there is a better way to update the label of the field option "first occurrence after interval label"
+        // Without forcing setting the same value the label view doesn't reflect the new value unless you manually change the selected
+        // option
+        const firstOccurrenceControl = this.form.get('firstOccurrenceIsImmediate');
+        firstOccurrenceControl.setValue(firstOccurrenceControl.value);
+      }));
     this.updateAccountBalanceLabel();
   }
 
@@ -233,6 +246,11 @@ export class RequestPaymentFormComponent extends BaseComponent implements OnInit
         }
       }));
     });
+  }
+
+  firstOccurrenceAfterIntervalLabel(interval?: TimeInterval) {
+    interval = interval ?? this.form.get('occurrenceInterval')?.value ?? { amount: 1, field: TimeFieldEnum.MONTHS } as TimeInterval;
+    return this.i18n.transaction.firstOccurrenceAfterInterval(this.format.formatTimeInterval(interval));
   }
 
   setPaymentTypeData(typeData: TransactionTypeData) {

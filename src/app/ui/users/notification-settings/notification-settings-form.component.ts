@@ -76,6 +76,9 @@ export class NotificationSettingsFormComponent
     if (data.emailMailingsAllowed) {
       this.form.setControl('emailMailings', this.formBuilder.control(data.settings.emailMailings));
     }
+    if (data.appMailingsAllowed) {
+      this.form.setControl('appMailings', this.formBuilder.control(data.settings.appMailings));
+    }
     if (data.smsMailingsAllowed) {
       this.form.setControl('smsMailings', this.formBuilder.control(data.settings.smsMailings));
     }
@@ -88,10 +91,11 @@ export class NotificationSettingsFormComponent
         internal: value.internal,
         type: value.type,
         // Handle null (or undefined) to indicate which fields wont be added in the HTML component
-        sms: value.sms === undefined ? null : value.sms,
         email: value.email === undefined ? null : value.email,
+        sms: value.sms === undefined ? null : value.sms,
+        app: value.app === undefined ? null : value.app
       });
-      // Enable/disable email and sms controls based on internal field
+      // Enable/disable email, sms and app controls based on internal field
       this.addSub(typeForm.controls.internal.valueChanges.subscribe(() => {
         this.updateControls(typeForm);
       }));
@@ -146,19 +150,13 @@ export class NotificationSettingsFormComponent
    */
   private updateControls(typeForm: FormGroup) {
     if (typeForm.controls.internal.value) {
-      if (typeForm.controls.sms) {
-        typeForm.controls.sms.enable();
-      }
-      if (typeForm.controls.email) {
-        typeForm.controls.email.enable();
-      }
+      typeForm.controls.email?.enable();
+      typeForm.controls.sms?.enable();
+      typeForm.controls.app?.enable();
     } else {
-      if (typeForm.controls.sms) {
-        typeForm.controls.sms.disable();
-      }
-      if (typeForm.controls.email) {
-        typeForm.controls.email.disable();
-      }
+      typeForm.controls.email?.disable();
+      typeForm.controls.sms?.disable();
+      typeForm.controls.app?.disable();
     }
   }
 
@@ -214,6 +212,8 @@ export class NotificationSettingsFormComponent
       case NotificationTypeEnum.OPERATOR_AUTHORIZED_PAYMENT_SUCCEEDED:
       case NotificationTypeEnum.OPERATOR_PAYMENT_AWAITING_AUTHORIZATION:
       case NotificationTypeEnum.PAYMENT_AWAITING_AUTHORIZATION:
+      case NotificationTypeEnum.PAYMENT_PERFORMED_CHARGED_BACK:
+      case NotificationTypeEnum.PAYMENT_RECEIVED_CHARGED_BACK:
       case NotificationTypeEnum.PAYMENT_RECEIVED:
       case NotificationTypeEnum.PAYMENT_REQUEST_CANCELED:
       case NotificationTypeEnum.PAYMENT_REQUEST_DENIED:
@@ -421,6 +421,10 @@ export class NotificationSettingsFormComponent
         return this.i18n.notification.user.account.operator.paymentAwaitingAuthorization;
       case NotificationTypeEnum.PAYMENT_AWAITING_AUTHORIZATION:
         return this.i18n.notification.user.account.paymentAwaitingAuthorization;
+      case NotificationTypeEnum.PAYMENT_PERFORMED_CHARGED_BACK:
+        return this.i18n.notification.user.account.paymentPerformedChargedBack;
+      case NotificationTypeEnum.PAYMENT_RECEIVED_CHARGED_BACK:
+        return this.i18n.notification.user.account.paymentReceivedChargedBack;
       case NotificationTypeEnum.PAYMENT_RECEIVED:
         return this.i18n.notification.user.account.paymentReceived;
       case NotificationTypeEnum.PAYMENT_REQUEST_CANCELED:

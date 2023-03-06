@@ -1,5 +1,6 @@
 <page-content [heading]="i18n.dashboard.quickAccess" hideBack
-  [mode]="(layout.xxs$ | async) ? 'fullHeightTight' : 'tight'">
+  [mode]="(layout.xxs$ | async) ? 'fullHeightTight' : 'tight'"
+  [headingActions]="headingActions$ | async">
   <div class="quick-access">
     <div class="quick-access-container">
       <ng-container *ngFor="let action of actions">

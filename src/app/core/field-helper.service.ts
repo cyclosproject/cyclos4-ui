@@ -194,9 +194,16 @@ export class FieldHelperService {
    * @param customFields The custom profile fields
    * @returns The FormGroup
    */
-  customFieldsForSearchFormGroup(customFields: CustomFieldDetailed[]): FormGroup {
+  customFieldsForSearchFormGroup(customFields: CustomFieldDetailed[], defaultValues?: string[]): FormGroup {
+    const defaultValuesMap: { [key: string]: string; } = {};
+    if (defaultValues) {
+      defaultValues.forEach(f => {
+        const keyValue = f.split(':');
+        defaultValuesMap[keyValue[0]] = keyValue[1];
+      });
+    }
+    const customControls = this.customValuesFormControlMap(customFields, { currentValues: defaultValuesMap, useDefaults: false });
     const group = this.formBuilder.group({});
-    const customControls = this.customValuesFormControlMap(customFields, { useDefaults: false });
     for (const [name, control] of customControls) {
       group.addControl(name, control);
     }
@@ -209,8 +216,8 @@ export class FieldHelperService {
    * @param customFields The custom profile fields
    * @returns The FormGroup
    */
-  profileFieldsForSearchFormGroup(basicFields: BasicProfileFieldInput[], customFields: CustomFieldDetailed[]): FormGroup {
-    const group = this.customFieldsForSearchFormGroup(customFields);
+  profileFieldsForSearchFormGroup(basicFields: BasicProfileFieldInput[], customFields: CustomFieldDetailed[], currentValues?: string[]): FormGroup {
+    const group = this.customFieldsForSearchFormGroup(customFields, currentValues);
     // Append the basic profile fields
     for (const bf of basicFields) {
       group.addControl(bf.field, this.formBuilder.control(null));
@@ -271,19 +278,21 @@ export class FieldHelperService {
     const asyncValProvider = options.asyncValProvider;
     const requiredProvider = options.requiredProvider ? options.requiredProvider : ((cf: CustomFieldDetailed) => cf.required);
     const customValuesControlsMap = new Map();
-    for (const cf of customFields) {
-      let value: string = currentValues[cf.internalName];
-      if (value == null && useDefaults) {
-        value = cf.defaultValue;
+    if (customFields) {
+      for (const cf of customFields) {
+        let value: string = currentValues[cf.internalName];
+        if (value == null && useDefaults) {
+          value = cf.defaultValue;
+        }
+        customValuesControlsMap.set(cf.internalName, this.formBuilder.control(
+          {
+            value,
+            disabled: disabledProvider(cf),
+          },
+          requiredProvider(cf) ? Validators.required : null,
+          asyncValProvider ? asyncValProvider(cf) : null,
+        ));
       }
-      customValuesControlsMap.set(cf.internalName, this.formBuilder.control(
-        {
-          value,
-          disabled: disabledProvider(cf),
-        },
-        requiredProvider(cf) ? Validators.required : null,
-        asyncValProvider ? asyncValProvider(cf) : null,
-      ));
     }
 
     return customValuesControlsMap;

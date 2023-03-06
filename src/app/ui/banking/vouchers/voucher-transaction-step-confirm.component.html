@@ -22,7 +22,12 @@
   <label-value [label]="i18n.voucher.voucher"
     [value]="preview.type.voucherTitle" kind="fieldView">
   </label-value>
-  <label-value [label]="i18n.voucher.transaction.amount"
+  <label-value *ngIf="data && data.type.allowPartialRedeems && balance"
+    [label]="i18n.voucher.redeem.voucherBalance"
+    [value]="balance | currency:currency">
+  </label-value>
+  <label-value
+    [label]="data && data.type.allowPartialRedeems ? i18n.voucher.redeem.amountToRedeem : i18n.voucher.transaction.amount"
     [value]="preview.amount | currency:currency">
   </label-value>
   <ng-container *ngIf="topUp?.email">

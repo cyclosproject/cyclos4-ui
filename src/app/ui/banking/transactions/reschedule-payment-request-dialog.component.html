@@ -27,14 +27,13 @@
   <confirmation-password *ngIf="transaction.confirmationPasswordInput"
     formControlName="confirmationPassword"
     [createDeviceConfirmation]="createDeviceConfirmation"
-    (confirmationModeChanged)="confirmationMode$.next($event)"
+    (showSubmit)="showSubmit$.next($event)"
     (createDeviceConfirmationError)="hide()" (confirmed)="confirm($event)"
     [passwordInput]="transaction.confirmationPasswordInput">
   </confirmation-password>
 
   <actions forceRow>
-    <action-button
-      *ngIf="(confirmationMode$ | async) !== ConfirmationMode.Device; else blank"
+    <action-button *ngIf="showSubmit$ | async; else blank"
       [disabled]="!canConfirm || (requesting$ | async)" (action)="confirm()"
       [label]="i18n.general.submit">
     </action-button>

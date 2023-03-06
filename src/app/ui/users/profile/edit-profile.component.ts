@@ -12,7 +12,6 @@ import { CameraService } from 'app/core/camera.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { empty, isTouched, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { ImageUploadComponent } from 'app/shared/image-upload.component';
@@ -44,7 +43,6 @@ export class EditProfileComponent
   extends BasePageComponent<DataForEditFullProfile>
   implements OnInit {
 
-  ConfirmationMode = ConfirmationMode;
   createDeviceConfirmation: () => CreateDeviceConfirmation;
 
   byManager: boolean;
@@ -60,8 +58,6 @@ export class EditProfileComponent
   canConfirm: boolean;
   mainImage: string;
   hasRemovedImages: boolean;
-
-  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
 
   // Forms which will be submitted. Need to keep track in order to match the validation errors
   user: FormGroup;
@@ -115,9 +111,7 @@ export class EditProfileComponent
     super.ngOnInit();
     this.param = this.route.snapshot.params.user || ApiHelper.SELF;
 
-    this.createDeviceConfirmation = () => ({
-      type: DeviceConfirmationTypeEnum.EDIT_PROFILE,
-    });
+    this.createDeviceConfirmation = () => ({ type: DeviceConfirmationTypeEnum.EDIT_PROFILE });
 
     this.headingActions = [
       new HeadingAction(SvgIcon.Search, this.i18n.general.view, () =>
@@ -846,7 +840,7 @@ export class EditProfileComponent
     this.addSub(comp.verified.pipe(take(1)).subscribe(flag => {
       if (flag) {
         // As the phone has been modified, we have to fetch it again (the version have changed)
-        this.phonesService.getPhoneDataForEdit({ id: phone.id, fields: ['phone'] }).subscribe(data => {
+        this.phonesService.getPhoneDataForEdit({ idOrNumber: phone.id, fields: ['phone'] }).subscribe(data => {
           const newPhone = data.phone as PhoneEditWithId;
           newPhone.id = phone.id;
           newPhone.enabledForSms = true;
@@ -922,22 +916,9 @@ export class EditProfileComponent
     });
     const component = ref.content as ManageImagesComponent;
     component.result.pipe(first()).subscribe(result => {
-      this.hasRemovedImages = !empty(result.removedImages);
-      if (this.hasRemovedImages) {
-        // Remove each of the removed images
-        for (const removed of result.removedImages) {
-          this.addSub(this.imagesService.deleteImage({ idOrKey: removed }).subscribe());
-        }
-        // Update the images and uploaded images lists
-        this.images = this.images.filter(i => !result.removedImages.includes(i.id));
-      }
-
-      const hasOrderChanged = !empty(result.order);
-      if (hasOrderChanged) {
+      if (result.order != null) {
         // The order has changed
-        this.images = result.order.map(id => {
-          return this.images.find(i => i.id === id);
-        });
+        this.images = result.order.map(id => this.images.find(i => i.id === id));
         this.addSub(this.imagesService.reorderProfileImages({ ids: result.order, user: this.param }).subscribe());
       }
 
@@ -951,6 +932,7 @@ export class EditProfileComponent
       }
 
       ref.hide();
+      this.changeDetector.detectChanges();
     });
   }
 

@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  AddressNew,
-
-  AvailabilityEnum, IdentityProvider, IdentityProviderCallbackStatusEnum,
-  PhoneNew, UserNew, WizardActionEnum, WizardExecutionData, WizardKind,
-  WizardResultTypeEnum, WizardStepKind, WizardStepTransition
+  AddressNew, AvailabilityEnum, BasicProfileFieldEnum, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, IdentityProvider, IdentityProviderCallbackStatusEnum,
+  PhoneKind,
+  PhoneNew, UserNew, WizardActionEnum, WizardExecutionData, WizardKind, WizardResultTypeEnum, WizardStepKind, WizardStepTransition
 } from 'app/api/models';
 import { WizardsService } from 'app/api/services/wizards.service';
 import { CaptchaHelperService } from 'app/core/captcha-helper.service';
@@ -14,6 +12,7 @@ import { empty, focusFirstInvalid, mergeValidity, validateBeforeSubmit } from 'a
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
+import { WizardStorageKey } from 'app/ui/users/registration/user-registration.component';
 import Cookies from 'js-cookie';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -47,6 +46,7 @@ export class RunWizardComponent
   customValues: FormGroup;
   emailValidation: FormControl;
   smsValidation: FormControl;
+  verificationCode: FormControl;
 
   updating$ = new BehaviorSubject(false);
 
@@ -60,6 +60,7 @@ export class RunWizardComponent
   registrationPasswords: string;
 
   resultMessage: string;
+  private createDeviceConfirmation: () => CreateDeviceConfirmation;
 
   constructor(
     injector: Injector,
@@ -78,6 +79,7 @@ export class RunWizardComponent
     const menu = route.params.menu;
     const wizard = route.params.wizard;
     let request: Observable<WizardExecutionData>;
+
     if (key) {
       // Already in an execution. Maybe the data was cached before?
       const cacheKey = `wizard-execution-${key}`;
@@ -97,7 +99,9 @@ export class RunWizardComponent
       } else {
         request = this.wizardsService.startWizard({
           key: wizard,
-          inviteToken: Cookies.get('inviteToken')
+          inviteToken: localStorage.getItem('inviteToken') || Cookies.get('inviteToken'),
+          userAgentId: this.login.getUserAgentId(),
+          externalPaymentToken: this.route.snapshot.params.externalPaymentToken
         });
       }
       this.addSub(request.subscribe(data => {
@@ -108,6 +112,11 @@ export class RunWizardComponent
   }
 
   onDataInitialized(data: WizardExecutionData) {
+    this.createDeviceConfirmation = () => ({
+      type: DeviceConfirmationTypeEnum.RUN_WIZARD,
+      wizard: this.data.wizard.id
+    });
+
     const route = this.route.snapshot;
     if (route.params.key !== data.key) {
       // Redirect to the execution with the current key
@@ -150,6 +159,7 @@ export class RunWizardComponent
             this.registrationPrincipals = this.userHelper.registrationPrincipalsHtml(result);
             this.registrationPasswords = this.userHelper.registrationPasswordsMessage(result);
           }
+          localStorage.removeItem('inviteToken');
           Cookies.remove('inviteToken', { path: '/' });
           break;
         case WizardResultTypeEnum.PLAIN_TEXT:
@@ -173,6 +183,7 @@ export class RunWizardComponent
     this.customValues = null;
     this.address = null;
     this.defineAddress = null;
+    this.verificationCode = null;
 
     // Then, according to the current step, initialize the corresponding ones
     if (data.step != null) {
@@ -201,7 +212,7 @@ export class RunWizardComponent
             [this.mobilePhone, this.landLinePhone] = this.userHelper.setupRegistrationForm(
               this.user, dataForNew, true);
 
-            if (data.step.validateEmail) {
+            if (data.step.fields?.find(f => f.basicProfileField === BasicProfileFieldEnum.EMAIL && f.requireVerification)) {
               this.emailValidation = new FormControl(null);
               if (dataForNew.emailRequired) {
                 this.emailValidation.addValidators(Validators.required);
@@ -215,7 +226,7 @@ export class RunWizardComponent
                 }));
               }
             }
-            if (data.step.validateSms) {
+            if (data.step.fields?.find(f => f.phoneKind === PhoneKind.MOBILE && f.requireVerification)) {
               this.smsValidation = new FormControl(null);
               if (dataForNew.phoneConfiguration.mobileAvailability === AvailabilityEnum.REQUIRED) {
                 this.smsValidation.addValidators(Validators.required);
@@ -279,6 +290,10 @@ export class RunWizardComponent
             }
           }
           break;
+        case WizardStepKind.EMAIL_VERIFICATION:
+        case WizardStepKind.PHONE_VERIFICATION:
+          this.verificationCode = new FormControl(null, Validators.required);
+          break;
       }
     }
   }
@@ -304,13 +319,27 @@ export class RunWizardComponent
     this.addSub(this.wizardsService.backWizardExecution({ key: this.key }).subscribe(data => this.data = data));
   }
 
-  transition(transition: WizardStepTransition) {
-    this.validateAndSubmit(() =>
+  transition(transition: WizardStepTransition, confirmationPassword?: string) {
+    const params = this.data.params;
+    params.confirmationPassword = confirmationPassword;
+    this.validateAndSubmit(() => {
       this.addSub(this.wizardsService.transitionWizardExecution({
         key: this.key,
         transition: transition ? transition.id : null,
-        body: this.data.params
-      }).subscribe(data => this.data = data)));
+        body: params
+      }
+      ).subscribe(data => {
+        this.confirmation.hide();
+        if (this.data.wizard.kind === WizardKind.REGISTRATION) {
+          if (transition) {
+            localStorage.setItem(WizardStorageKey, this.data.key);
+          } else {
+            localStorage.removeItem(WizardStorageKey);
+          }
+        }
+        this.data = data;
+      }));
+    });
   }
 
   externalRedirect() {
@@ -328,7 +357,16 @@ export class RunWizardComponent
   resolveSubmitAction(): Function {
     switch (this.data.action) {
       case WizardActionEnum.FINISH:
-        return () => this.transition(this.singleTransition);
+        if (this.data.confirmationPasswordInput) {
+          return () => this.confirmation.confirm({
+            title: this.data.wizard.name,
+            createDeviceConfirmation: this.createDeviceConfirmation,
+            passwordInput: this.data.confirmationPasswordInput,
+            callback: conf => this.transition(null, conf.confirmationPassword),
+          });
+        } else {
+          return () => this.transition(null);
+        }
       case WizardActionEnum.ALREADY_EXECUTED:
       case WizardActionEnum.STEP:
         if (this.singleTransition) {
@@ -421,6 +459,18 @@ export class RunWizardComponent
             focusFirstInvalid();
           }
         }));
+        break;
+      case WizardStepKind.EMAIL_VERIFICATION:
+        if (validateBeforeSubmit(this.verificationCode)) {
+          params.emailVerification = this.verificationCode.value;
+          proceed();
+        }
+        break;
+      case WizardStepKind.PHONE_VERIFICATION:
+        if (validateBeforeSubmit(this.verificationCode)) {
+          params.smsVerification = this.verificationCode.value;
+          proceed();
+        }
         break;
     }
   }

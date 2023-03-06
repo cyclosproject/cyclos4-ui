@@ -3,6 +3,7 @@ import { APP_INITIALIZER, Provider } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'app/../environments/environment';
 import { ApiConfiguration } from 'app/api/api-configuration';
+import { DataForFrontend } from 'app/api/models';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { IconLoadingService } from 'app/core/icon-loading.service';
@@ -16,6 +17,7 @@ import { forkJoin, of, timer } from 'rxjs';
 import { catchError, filter, first, switchMap } from 'rxjs/operators';
 
 declare const UpUp: any;
+declare const dataForFrontend: DataForFrontend;
 
 // Initializes the shared services
 export function initialize(
@@ -75,10 +77,16 @@ export function initialize(
         let redirect: string = null;
         if (auth.pendingAgreements) {
           redirect = '/post-login/pending-agreements';
-        } else if (auth.expiredPassword || auth.expiredSecondaryPassword) {
+        } else if (auth.expiredPassword) {
           redirect = '/post-login/expired-password';
-        } else if (auth.pendingSecondaryPassword) {
-          redirect = '/post-login/login-confirmation';
+        } else if (auth.loginConfirmation) {
+          // If the user has no active credentials, redirect to the manage passwords page.
+          // Otherwise, to the login confirmation page
+          if (auth.loginConfirmation?.activeCredentials?.length) {
+            redirect = '/post-login/login-confirmation';
+          } else {
+            redirect = '/users/self/passwords';
+          }
         }
         setTimeout(() => {
           if (redirect && router.url !== redirect) {
@@ -106,7 +114,7 @@ export function initialize(
           }));
       });
     }
-    const dataForFrontend$ = dataForFrontendHolder.initialize();
+    const dataForFrontend$ = dataForFrontendHolder.initialize(dataForFrontend);
     const themeLoaded$ = timer(1000, 500).pipe(filter(() => {
       const style = getComputedStyle(document.body);
       return !empty(style.getPropertyValue('--primary').trim());

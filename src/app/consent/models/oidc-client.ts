@@ -8,7 +8,10 @@ export interface OidcClient {
   name: string;
   internalName: string;
   description?: string;
+  dynamic?: boolean;
   image?: Image;
+  imageUrl?: string;
+  domain?: string;
   privacyPolicyUrl?: string;
   termsOfServiceUrl?: string;
   website?: string;

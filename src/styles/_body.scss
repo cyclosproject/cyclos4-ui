@@ -13,7 +13,7 @@ body.full-width.md {
   overflow-x: hidden;
 }
 
-body.gt-sm {
+body.gt-sm:not(.with-footer) {
   padding-bottom: 1rem;
 }
 

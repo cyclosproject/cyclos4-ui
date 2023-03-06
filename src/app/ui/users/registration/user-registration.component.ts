@@ -17,11 +17,14 @@ import {
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
+import { ConfirmResumeWizardComponent } from 'app/ui/users/registration/confirm-resume-wizard.component';
 import Cookies from 'js-cookie';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 export type RegistrationStep = 'group' | 'idp' | 'fields' | 'confirm' | 'done';
+export const WizardStorageKey = 'publicRegistrationExecution';
 
 /**
  * User registration. Works for guest, by admin and by broker
@@ -75,7 +78,8 @@ export class UserRegistrationComponent
     private userHelper: UserHelperService,
     private captchaHelper: CaptchaHelperService,
     private imagesService: ImagesService,
-    private nextRequestState: NextRequestState) {
+    private nextRequestState: NextRequestState,
+    private modal: BsModalService) {
     super(injector);
   }
 
@@ -99,9 +103,24 @@ export class UserRegistrationComponent
       }
       if (wizard) {
         // Redirect to the wizard execution page
-        this.router.navigate(['/wizards', 'registration', ApiHelper.internalNameOrId(wizard)], {
-          replaceUrl: true
-        });
+        // But first check whether the user wants to resume any previous registration or start a new one
+        const previousKey = localStorage.getItem(WizardStorageKey);
+        if (previousKey) {
+          const ref = this.modal.show(ConfirmResumeWizardComponent, {
+            ignoreBackdropClick: true
+          });
+          const component = ref.content as ConfirmResumeWizardComponent;
+          this.addSub(component.select.subscribe(answer => {
+            if (answer) {
+              this.router.navigate(['/wizards', 'run', previousKey]);
+            } else {
+              localStorage.removeItem(WizardStorageKey);
+              this.goToWizard(wizard);
+            }
+          }));
+        } else {
+          this.goToWizard(wizard);
+        }
         return;
       }
 
@@ -162,7 +181,8 @@ export class UserRegistrationComponent
   showIdentityProviders() {
     this.addSub(this.usersService.getUserDataForNew({
       group: this.group.value,
-      inviteToken: Cookies.get('inviteToken'),
+      inviteToken: localStorage.getItem('inviteToken') || Cookies.get('inviteToken'),
+      externalPaymentToken: this.route.snapshot.params.externalPaymentToken,
       fields: ['-agreements.content']
     }).subscribe(data => {
       this.data = data;
@@ -176,7 +196,7 @@ export class UserRegistrationComponent
 
   continueWithProvider(idp: IdentityProvider) {
     if (idp) {
-      this.authHelper.identityProviderPopup(idp, 'register', this.group.value).pipe(first()).subscribe(callback => {
+      this.authHelper.identityProviderPopup(idp, 'register', this.group.value, null, this.login.getUserAgentId()).pipe(first()).subscribe(callback => {
         switch (callback.status) {
           case IdentityProviderCallbackStatusEnum.REGISTRATION_DONE:
             // Already registered and logged-in
@@ -359,6 +379,7 @@ export class UserRegistrationComponent
           .subscribe(result => {
             this.result = result;
             this.image = null;
+            localStorage.removeItem('inviteToken');
             Cookies.remove('inviteToken', { path: '/' });
             this.step = 'done';
           }));
@@ -393,7 +414,13 @@ export class UserRegistrationComponent
     // The inviteToken isn't stored in the form, but in a cookie
     user.inviteToken = Cookies.get('inviteToken');
 
+    user.externalPaymentToken = this.route.snapshot.params.externalPaymentToken;
+    user.userAgentId = this.login.getUserAgentId();
     return user;
+  }
+
+  fromExternalPayment(): boolean {
+    return !!this.route.snapshot.params.externalPaymentToken;
   }
 
   goToLogin() {
@@ -424,5 +451,14 @@ export class UserRegistrationComponent
       default:
         return Menu.PUBLIC_REGISTRATION;
     }
+  }
+
+  private goToWizard(wizard: Wizard) {
+    const externalPaymentToken = this.route.snapshot.params.externalPaymentToken;
+    let wizardUrl = `/wizards/registration/${ApiHelper.internalNameOrId(wizard)}`;
+    if (externalPaymentToken) {
+      wizardUrl += `/${externalPaymentToken}`;
+    }
+    this.router.navigateByUrl(wizardUrl, { replaceUrl: true });
   }
 }

@@ -31,6 +31,7 @@ export class SearchAdsComponent
   extends BaseSearchPageComponent<AdDataForSearch, AdQueryFilters, AdResult>
   implements OnInit {
 
+  brokered: boolean;
   categoryTrail$ = new BehaviorSubject<AdCategoryWithChildren[]>([]);
   currency$ = new BehaviorSubject<Currency>(null);
   profileFields: (string | CustomFieldDetailed)[];
@@ -52,7 +53,7 @@ export class SearchAdsComponent
 
   protected getFormControlNames() {
     return ['keywords', 'statuses', 'groups', 'category', 'customValues', 'distanceFilter', 'orderBy', 'kind', 'hasImages',
-      'minAmount', 'maxAmount', 'currency', 'beginDate', 'endDate'];
+      'minAmount', 'maxAmount', 'currency', 'beginDate', 'endDate', 'favoriteFor'];
   }
 
   getInitialFormValue(data: AdDataForSearch) {
@@ -66,39 +67,35 @@ export class SearchAdsComponent
 
   ngOnInit() {
     super.ngOnInit();
-    const types = [ResultType.CATEGORIES, ResultType.TILES, ResultType.LIST];
+    this.brokered = this.route.snapshot.data.brokered;
+    const types = [ResultType.TILES, ResultType.LIST];
     if (this.mapService.enabled) {
       types.push(ResultType.MAP);
     }
     this.allowedResultTypes = types;
-    this.stateManager.cache('data', this.marketplaceService.getAdDataForSearch({}))
-      .subscribe(data => {
-        this.data = data;
-      });
+    this.stateManager.cache('data',
+      this.marketplaceService.getAdDataForSearch({ brokered: this.brokered })).subscribe(data => this.data = data);
+  }
+
+  prepareForm(data: AdDataForSearch) {
+    this.form.setControl('customValues', this.fieldHelper.customFieldsForSearchFormGroup(data.customFields, data.query.customFields));
+    this.form.setControl('profileFields',
+      this.fieldHelper.profileFieldsForSearchFormGroup(data.basicProfileFields, data.customProfileFields));
   }
 
   onDataInitialized(data: AdDataForSearch) {
-    const auth = this.dataForFrontendHolder.auth || {};
-    const permissions = auth.permissions || {};
-    this.marketplacePermissions = permissions.marketplace || {};
+    this.marketplacePermissions = ((this.dataForFrontendHolder.auth || {}).permissions || {}).marketplace || {};
 
     const customField = (name: string) => data.customFields.find(f => f.internalName === name);
     this.basicFields = data.fieldsInBasicSearch.map(customField);
     this.advancedFields = data.fieldsInAdvancedSearch.map(customField);
-    this.form.setControl('customValues', this.fieldHelper.customFieldsForSearchFormGroup(data.customFields));
-
-    this.form.setControl('profileFields',
-      this.fieldHelper.profileFieldsForSearchFormGroup(data.basicProfileFields, data.customProfileFields));
 
     this.headingActions = [this.moreFiltersAction];
 
-    this.adsAction = new HeadingAction(SvgIcon.Handbag, this.i18n.ad.listAds, () =>
-      this.resultType = this.getResultType(data.resultType));
-    this.categoriesAction = new HeadingAction(SvgIcon.Book, this.i18n.ad.showCategories, () =>
-      this.resultType = ResultType.CATEGORIES);
+    this.adsAction = new HeadingAction(SvgIcon.Handbag, this.i18n.ad.listAds, () => this.resultType = this.getResultType(data.resultType));
+    this.categoriesAction = new HeadingAction(SvgIcon.Book, this.i18n.ad.showCategories, () => this.resultType = ResultType.CATEGORIES);
 
-    this.addSub(this.form.get('currency').valueChanges.subscribe(id =>
-      this.updateCurrency(id, data)));
+    this.addSub(this.form.get('currency').valueChanges.subscribe(id => this.updateCurrency(id, data)));
     // Preselect the currency if there is a single one
     if (!empty(data.currencies) && data.currencies.length === 1) {
       this.currency = data.currencies[0];
@@ -143,6 +140,9 @@ export class SearchAdsComponent
     params.customFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
     params.profileFields = this.fieldHelper.toProfileFieldsFilter(value.profileFields);
     params.addressResult = isMap ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
+    if (this.brokered) {
+      params.brokers = [this.login.user.id];
+    }
     const distanceFilter: MaxDistance = value.distanceFilter;
     if (distanceFilter) {
       params.maxDistance = distanceFilter.maxDistance;
@@ -150,6 +150,7 @@ export class SearchAdsComponent
       params.longitude = distanceFilter.longitude;
       params.addressResult = AdAddressResultEnum.NEAREST;
     }
+    params.favoriteFor = value.favoriteFor ? ApiHelper.SELF : null;
     params.publicationPeriod = ApiHelper.dateRangeFilter(value.beginDate, value.endDate);
     params.priceRange = ApiHelper.rangeFilter(value.minAmount, value.maxAmount);
     if (isMap) {
@@ -235,9 +236,11 @@ export class SearchAdsComponent
    * Returns if the current user is a manager to enable specific filters
    */
   get manager(): boolean {
-    return this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR ||
-      (this.dataForFrontendHolder.role === RoleEnum.BROKER &&
-        !empty(this.data.query.brokers));
+    return this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR || this.isBrokeredSearch;
+  }
+
+  get isBrokeredSearch(): boolean {
+    return this.dataForFrontendHolder.role === RoleEnum.BROKER && !empty(this.data.query.brokers);
   }
 
   /**

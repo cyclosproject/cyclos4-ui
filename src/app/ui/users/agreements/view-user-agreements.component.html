@@ -9,13 +9,14 @@
 
     <!-- Show the field if the optional agreements are editable -->
     <accept-agreements *ngIf="optionalControl; else optionalNotEditable"
-      [label]="i18n.agreements.optional" [formControl]="optionalControl"
-      [agreements]="allOptional"></accept-agreements>
+      [label]="allOptional?.length == 1 ? i18n.agreements.optionalSingular : i18n.agreements.optional"
+      [formControl]="optionalControl" [agreements]="allOptional">
+    </accept-agreements>
 
     <ng-template #optionalNotEditable>
       <!-- Optional agreemnts are not editable. Show links to the accepted ones -->
       <label-value *ngIf="acceptedOptional?.length > 0"
-        [label]="i18n.agreements.optional">
+        [label]="acceptedOptional?.length == 1 ? i18n.agreements.optionalSingular : i18n.agreements.optional">
         <ng-container
           *ngTemplateOutlet="agreementLinks; context: {$implicit: acceptedOptional}">
         </ng-container>
@@ -23,7 +24,9 @@
     </ng-template>
 
     <label-value *ngIf="acceptedRequired?.length > 0"
-      [label]="i18n.agreements.required">
+      [label]="acceptedRequired?.length == 1 ?
+      (this.hasOptional ? i18n.agreements.requiredSingular : i18n.agreements.agreement)
+      : (this.hasOptional ? i18n.agreements.required : i18n.agreements.agreements )">
       <ng-container
         *ngTemplateOutlet="agreementLinks; context: {$implicit: acceptedRequired}">
       </ng-container>

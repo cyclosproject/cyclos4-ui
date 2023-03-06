@@ -123,27 +123,36 @@ export class BankingHelperService {
    * Returns the avatar icon for the given account
    */
   avatarIcon(account: AccountWithOwner): SvgIcon {
-    return account.kind === 'user' ? SvgIcon.Person : SvgIcon.Briefcase;
+    if (account) {
+      return account.kind === 'user' ? SvgIcon.Person : SvgIcon.Briefcase;
+    }
+    return null;
   }
 
   /**
    * Returns the avatar image for the given account
    */
   avatarImage(account: AccountWithOwner): Image {
-    return (account.user || {}).image;
+    if (account) {
+      return (account.user || {}).image;
+    }
+    return null;
   }
 
   /**
    * Returns the user / system account display name
    */
   subjectName(account: AccountWithOwner): string {
-    if (account.kind === AccountKind.USER) {
-      // Show the user display
-      return account.user.display;
-    } else {
-      // Show the system account type name
-      return account.type.name;
+    if (account) {
+      if (account.kind === AccountKind.USER) {
+        // Show the user display
+        return account.user.display;
+      } else {
+        // Show the system account type name
+        return account.type.name;
+      }
     }
+    return "";
   }
 
   /**
@@ -204,7 +213,7 @@ export class BankingHelperService {
    * can manage its account visibility.
    */
   noAccountForPaymentErrorMessage() {
-    return this.loginService.permissions.banking.accountVisibilitySettings ? 
+    return this.loginService.permissions.banking.accountVisibilitySettings ?
       this.i18n.transaction.noVisibleAccounts(this.i18n.user.profile.accountVisibility) : this.i18n.transaction.noAccounts;
   }
 }

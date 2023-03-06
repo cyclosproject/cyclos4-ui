@@ -1,0 +1,24 @@
+<page-layout [ready]="data$ | async">
+  <page-content *ngIf="data" last [heading]="i18n.imports.title.lineEdit"
+    [mobileHeading]="i18n.imports.mobileTitle.lineEdit"
+    [headingActions]="headingActions$ | async">
+    <div class="d-flex flex-grow-1 flex-column" [formGroup]="form">
+
+      <label-value [label]="i18n.imports.lineNumber" kind="fieldView">{{
+        data.lineNumber }}</label-value>
+
+      <ng-container *ngFor="let c of controls">
+        <input-field *ngIf="!c.multiline" [formControl]="c.control"
+          [label]="c.field.name"></input-field>
+        <textarea-field *ngIf="c.multiline" [formControl]="c.control"
+          [label]="c.field.name"></textarea-field>
+      </ng-container>
+
+      <actions>
+        <action-button [disabled]="requesting$ | async" (action)="save()"
+          [label]="i18n.general.save">
+        </action-button>
+      </actions>
+    </div>
+  </page-content>
+</page-layout>

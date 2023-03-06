@@ -12,7 +12,7 @@ import { from, Observable, of } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
 
 const StaticUrl = 'https://maps.googleapis.com/maps/api/staticmap';
-const ExternalUrl = 'https://www.google.com/maps/search/?api=1';
+const ExternalUrl = 'https://www.google.com/maps/search/';
 const MarkerClustererPlusUrl = 'https://unpkg.com/@google/markerclustererplus@5.0.3/dist/markerclustererplus.min.js';
 
 /**
@@ -127,7 +127,7 @@ export class MapsService {
     if (coords == null) {
       return null;
     }
-    return `${ExternalUrl}&query=${coords.latitude},${coords.longitude}`;
+    return `${ExternalUrl}${coords.latitude},${coords.longitude}`;
   }
 
   private coords(location: Address | GeographicalCoordinate): GeographicalCoordinate {

@@ -2,11 +2,14 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { DataForFrontendHome } from 'app/api/models';
 import { Breakpoint } from 'app/core/layout.service';
 import { Arrows } from 'app/core/shortcut.service';
+import { SvgIcon } from 'app/core/svg-icon';
+import { HeadingAction } from 'app/shared/action';
 import { blurIfClick, handleKeyboardFocus } from 'app/shared/helper';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
 import { MenuService, NavigateParams } from 'app/ui/core/menu.service';
 import { BaseDashboardComponent } from 'app/ui/dashboard/base-dashboard.component';
 import { QuickAccessAction } from 'app/ui/dashboard/quick-access-action';
+import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 
 /**
@@ -18,7 +21,6 @@ import { BehaviorSubject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuickAccessComponent extends BaseDashboardComponent implements OnInit {
-
   /** Export to template */
   blurIfClick = blurIfClick;
 
@@ -35,6 +37,20 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
 
   ngOnInit() {
     super.ngOnInit();
+
+    // Quick access
+    const dataForFrontend = this.dataForFrontendHolder.dataForFrontend;
+    if (this.layout.gtsm && dataForFrontend.canManageQuickAccess) {
+      this.headingActions = [
+        new HeadingAction(SvgIcon.Gear, this.i18n.dashboard.customizeQuickAccess,
+          event => this.menu.navigate({
+            menu: new ActiveMenu(Menu.QUICK_ACCESS_SETTINGS),
+            clear: false,
+            event
+          }), true)
+      ];
+    }
+
 
     // Handle keyboard shortcuts: arrows to navigate correctly on the grid
     this.addShortcut(Arrows, event => {

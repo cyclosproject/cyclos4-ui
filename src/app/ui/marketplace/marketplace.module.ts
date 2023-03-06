@@ -15,12 +15,15 @@ import { ViewAdInterestComponent } from 'app/ui/marketplace/interests/view-ad-in
 import { MarketplaceRoutingModule } from 'app/ui/marketplace/marketplace-routing.module';
 import { OrderProductsComponent } from 'app/ui/marketplace/order-products.component';
 import { SaleFormComponent } from 'app/ui/marketplace/sale-form.component';
+import { AdFavoriteComponent } from 'app/ui/marketplace/ad-favorite.component';
 import { AdsResultsComponent } from 'app/ui/marketplace/search/ads-results.component';
+import { ListFavoritesComponent } from 'app/ui/marketplace/search/list-favorites.component';
 import { SearchAdsComponent } from 'app/ui/marketplace/search/search-ads.component';
 import { SearchOrdersComponent } from 'app/ui/marketplace/search/search-orders.component';
 import { SearchProductsComponent } from 'app/ui/marketplace/search/search-products.component';
 import { SearchUnansweredQuestionsComponent } from 'app/ui/marketplace/search/search-unanswered-questions.component';
 import { ShowSubCategoriesComponent } from 'app/ui/marketplace/search/show-sub-categories.component';
+import { CategoryHierarchyComponent } from 'app/ui/marketplace/search/category-hierarchy.component';
 import { UserAdsComponent } from 'app/ui/marketplace/search/user-ads.component';
 import { EditWebshopSettingsComponent } from 'app/ui/marketplace/settings/edit-webshop-settings.component';
 import { ViewWebshopSettingsComponent } from 'app/ui/marketplace/settings/view-webshop-settings.component';
@@ -49,11 +52,13 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
     ViewOrderHistoryComponent,
     SaleFormComponent,
     ShowSubCategoriesComponent,
+    CategoryHierarchyComponent,
     SetDeliveryMethodComponent,
     ShoppingCartItemsComponent,
     ListShoppingCartComponent,
     ListDeliveryMethodsComponent,
     ListAdInterestsComponent,
+    ListFavoritesComponent,
     EditDeliveryMethodComponent,
     EditAdInterestComponent,
     ViewDeliveryMethodComponent,
@@ -66,12 +71,15 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
     CartCheckoutComponent,
     SearchProductsComponent,
     OrderProductsComponent,
+    AdFavoriteComponent,
   ],
   entryComponents: [
     ShowSubCategoriesComponent,
+    CategoryHierarchyComponent,
     SetDeliveryMethodComponent,
     SearchProductsComponent,
     OrderProductsComponent,
+    AdFavoriteComponent,
   ]
 })
 export class MarketplaceModule {

@@ -14,18 +14,20 @@ body.consent {
     margin: 1.25rem 1rem;
   }
 
-  .auth-container, .client-container {
+  .auth-container,
+  .client-container {
     display: flex;
     justify-content: center;
   }
 
-  .auth, .client {
+  .auth,
+  .client {
     flex-grow: 1;
     width: 100%;
   }
 
   .expiration {
-    margin-top: 0.5rem;
+    margin-top: 1rem;
     font-size: 0.9em;
   }
 
@@ -65,17 +67,22 @@ body.consent {
       max-height: 3rem;
     }
   }
+
   .client-image-holder {
     margin-right: 1rem;
   }
-  .client-title-holder, .client-image-holder {
+
+  .client-title-holder,
+  .client-image-holder {
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
+
   .client-title-holder a {
     margin-top: 0.25rem;
   }
+
   .client-name {
     font-size: 1.1em;
     line-height: 1.1em;
@@ -108,8 +115,37 @@ body.consent {
 
 @include media-breakpoint-up(sm) {
   body.consent {
+    .card {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  body.consent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     .form-container {
       padding: 0 30px;
+    }
+
+    .form {
+      padding: 0 1rem;
+      margin-top: 1rem;
+    }
+
+    .title {
+      font-size: 1.4em;
+      line-height: 1.2em;
+      margin: 2rem 1.2rem 0.5rem;
+    }
+
+    .card {
+      max-width: 44rem;
+      padding: 2rem 0;
     }
 
     .client {
@@ -120,40 +156,8 @@ body.consent {
   }
 }
 
-
-@include media-breakpoint-up(md) {
-  body.consent {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .form {
-      padding: 0 1rem;
-      margin-top: 1rem;
-    }
-
-    .title {
-      font-size: 1.4em;
-      line-height: 1.2em;
-    }
-
-    .card {
-      max-width: 44rem;
-      padding: 2rem 0;
-    }
-
-    .title {
-      margin: 2rem 1.2rem;
-    }
-
-    input[type=password] {
-      margin-bottom: 0.5rem;
-    }
-  }
-}
-
 body.consent.dark {
   .client {
-    border-color: $border-color;
+    border-color: $border-color-dark;
   }
 }

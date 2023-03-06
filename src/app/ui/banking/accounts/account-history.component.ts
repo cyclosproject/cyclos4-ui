@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   AccountHistoryQueryFilters, AccountHistoryResult, AccountKind,
-  AccountWithHistoryStatus, Currency, DataForAccountHistory,
+  AccountWithHistoryStatus, Currency, CustomFieldDetailed, DataForAccountHistory,
   EntityReference, Image, PreselectedPeriod, TransferFilter
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services/accounts.service';
@@ -45,6 +45,8 @@ export class AccountHistoryComponent
   showForm$ = new BehaviorSubject(false);
   exportActions: HeadingAction[];
   statusForm: FormGroup;
+  fieldsInSearch: CustomFieldDetailed[];
+  fieldsInList: CustomFieldDetailed[];
 
   constructor(
     injector: Injector,
@@ -107,25 +109,25 @@ export class AccountHistoryComponent
       this.accountsService.getAccountHistoryDataByOwnerAndType({
         owner: this.ownerParam, accountType: this.typeParam,
       }),
-    ).subscribe(data => {
-      this.form.setControl('customFields', this.fieldHelper.customFieldsForSearchFormGroup(data.customFieldsInSearch));
-      this.data = data;
-    });
+    ).subscribe(data => this.data = data);
   }
 
-  onDataInitialized(data: DataForAccountHistory) {
-    super.onDataInitialized(data);
-    if (!this.form.controls['preselectedPeriod'].value) {
-      this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
-    }
+  prepareForm(data: DataForAccountHistory) {
+    this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInBasicSearch.includes(cf.internalName));
+    this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
+    this.form.setControl('customFields', this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields));
+
+    this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
 
     this.statusForm = new FormGroup({});
     for (const flow of data.transferStatusFlows || []) {
       this.statusForm.addControl(flow.id, new FormControl(null));
     }
     this.form.addControl('statuses', this.statusForm);
+  }
 
-
+  onDataInitialized(data: DataForAccountHistory) {
+    super.onDataInitialized(data);
     this.exportActions = this.exportHelper.headingActions(data.exportFormats, f =>
       this.accountsService.exportAccountHistory$Response({
         format: f.internalName,
@@ -137,9 +139,7 @@ export class AccountHistoryComponent
   }
 
   private updateShowForm(data: DataForAccountHistory) {
-    this.showForm$.next(
-      this.layout.xxs && !empty(data.preselectedPeriods) || this.moreFilters,
-    );
+    this.showForm$.next(this.layout.xxs && !empty(data.preselectedPeriods) || this.moreFilters);
   }
 
   toSearchParams(value: any): AccountHistorySearchParams {

@@ -5,14 +5,12 @@
     <confirmation-password focused [formControl]="control"
       [passwordInput]="passwordInput"
       [createDeviceConfirmation]="createDeviceConfirmation"
-      (confirmationModeChanged)="confirmationMode$.next($event)"
-      (confirmed)="submit($event)"
+      (showSubmit)="showSubmit$.next($event)" (confirmed)="submit($event)"
       [alertMessage]="i18n.login.confirmationText">
     </confirmation-password>
 
     <actions forceRow>
-      <action-button
-        *ngIf="(confirmationMode$ | async) !== ConfirmationMode.Device; else blank"
+      <action-button *ngIf="showSubmit$ | async; else blank"
         [disabled]="!canConfirm || (requesting$ | async)" (action)="submit()"
         [label]="i18n.general.submit">
       </action-button>

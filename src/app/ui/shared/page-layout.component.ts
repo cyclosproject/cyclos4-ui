@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { LayoutService } from 'app/core/layout.service';
 import { empty, truthyAttr } from 'app/shared/helper';
 import { LoginState } from 'app/ui/core/login-state';
@@ -54,7 +55,8 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
     public login: LoginService,
     private loginState: LoginState,
     public menu: MenuService,
-    public uiLayout: UiLayoutService) { }
+    public uiLayout: UiLayoutService,
+    private dataForFrontendHolder: DataForFrontendHolder) { }
 
   ngOnInit() {
     this.uiLayout.currentPageLayout = this;
@@ -84,7 +86,8 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
       const fullWidth = this.uiLayout.fullWidth;
       const hasLeftMenu = this.leftMenuVisible;
       const hasBanners = !empty(this.uiLayout.banners);
-      this.leftAreaVisible$.next(!this.hideMenu && gtmd && !fullWidth && (hasLeftMenu || hasBanners));
+      const loginConfirmation = this.dataForFrontendHolder.auth?.loginConfirmation;
+      this.leftAreaVisible$.next(!this.hideMenu && gtmd && !fullWidth && (hasLeftMenu || hasBanners) && !loginConfirmation);
     };
     this.subs.push(this.layout.gtmd$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.leftMenuVisible$.subscribe(updateLeftAreaVisible));

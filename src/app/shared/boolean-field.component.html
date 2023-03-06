@@ -13,9 +13,8 @@
       class="custom-control-input" [id]="id" (click)="onClick.emit($event)"
       (keyup.enter)="toggle(); onClick.emit($event)"
       [formControl]="formControl" [checked]="isTrue(value)">
-    <label class="custom-control-label" [for]="id">
-      <ng-content></ng-content>
-    </label>
+    <label class="custom-control-label" [for]="id">{{ text
+      }}</label>
   </div>
   <field-errors [control]="formControl"></field-errors>
 </ng-template>

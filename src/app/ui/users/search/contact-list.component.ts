@@ -11,7 +11,7 @@ import { PickUserDialogComponent } from 'app/ui/users/search/pick-user-dialog.co
 import { UsersResultsComponent } from 'app/ui/users/search/users-results.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
-type ContactListSearchParams = ContactListQueryFilters & { user: string };
+type ContactListSearchParams = ContactListQueryFilters & { user: string; };
 
 /**
  * Search the user's contact list
@@ -49,11 +49,8 @@ export class ContactListComponent
   ngOnInit() {
     super.ngOnInit();
     this.allowedResultTypes = [ResultType.TILES, ResultType.LIST];
-    this.stateManager.cache('data', this.contactsService.getContactListDataForSearch({
-      user: ApiHelper.SELF,
-    })).subscribe(data => {
-      this.data = data;
-    });
+    this.stateManager.cache('data',
+      this.contactsService.getContactListDataForSearch({ user: ApiHelper.SELF })).subscribe(data => this.data = data);
   }
 
   protected toSearchParams(value: any): ContactListSearchParams {
@@ -103,7 +100,7 @@ export class ContactListComponent
       }).subscribe(() => {
         this.notification.snackBar(this.i18n.user.profile.addContactDone(user.display));
         this.reload();
-      }))
+      }));
     }));
   }
 

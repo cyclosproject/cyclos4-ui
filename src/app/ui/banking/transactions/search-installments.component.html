@@ -5,7 +5,8 @@
 <ng-template #content>
   <page-content mode="filters" [heading]="i18n.transaction.title.scheduled"
     [mobileHeading]="i18n.transaction.mobileTitle.scheduled"
-    [headingActions]="headingActions$ | async">
+    [headingActions]="headingActions$ | async"
+    *ngIf="form.value || (form.valueChanges | async) as value">
     <div [formGroup]="form" class="filters-form">
       <div class="row">
         <div class="col-12 col-md-6">
@@ -59,7 +60,7 @@
               </single-selection-field>
             </div>
             <ng-container
-              *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null">
+              *ngIf="value.preselectedPeriod && !value.preselectedPeriod?.begin">
               <!-- Force a line break on sm and up -->
               <div class="w-100 d-none d-sm-block"></div>
               <div class="col-12 col-md-6">
@@ -70,7 +71,7 @@
               </div>
             </ng-container>
             <div
-              *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
+              *ngIf="value.preselectedPeriod && !value.preselectedPeriod?.end"
               class="col-12 col-md-6">
               <date-field formControlName="periodEnd"
                 [label]="i18n.general.endDate" minDate="past5" maxDate="today"
@@ -78,6 +79,20 @@
               </date-field>
             </div>
           </ng-container>
+          <div class="col-12 col-md-6" *ngFor="let f of fieldsInSearch">
+            <custom-field-filter [field]="f"
+              [formControl]="form.get('customFields').get(f.internalName)">
+            </custom-field-filter>
+          </div>
+          <div class="col-12 col-md-6">
+            <single-selection-field formControlName="orderBy"
+              [label]="i18n.general.orderBy">
+              <field-option value="dateDesc"
+                [text]="i18n.transaction.orderBy.dueDateDesc"></field-option>
+              <field-option value="dateAsc"
+                [text]="i18n.transaction.orderBy.dueDateAsc"></field-option>
+            </single-selection-field>
+          </div>
         </ng-container>
       </div>
     </div>
@@ -102,6 +117,9 @@
         <th>{{ i18n.transaction.from }}</th>
         <th>{{ i18n.transaction.to }}</th>
         <th>{{ i18n.transaction.installmentNumber }}</th>
+        <th *ngFor="let field of fieldsInList">
+          {{ field.name }}
+        </th>
         <th class="amount">{{ i18n.transaction.amount }}</th>
       </thead>
       <tbody>
@@ -112,6 +130,12 @@
             <td>{{ bankingHelper.subjectName(row.transaction.from) }}</td>
             <td>{{ bankingHelper.subjectName(row.transaction.to) }}</td>
             <td>{{ number(row) }}</td>
+            <td *ngFor="let field of fieldsInList">
+              <format-field-value [fields]="fieldsInList" [plainText]="true"
+                [fieldName]="field.internalName" [object]="row"
+                [customValues]="row.transaction.customValues">
+              </format-field-value>
+            </td>
             <td class="amount">
               {{ row.amount |
               currency:currencies.get(row.transaction.currency) }}

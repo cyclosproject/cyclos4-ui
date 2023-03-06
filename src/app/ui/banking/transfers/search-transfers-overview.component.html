@@ -18,6 +18,24 @@
             </field-option>
           </single-selection-field>
         </div>
+        <!-- Force a line break on sm and up -->
+        <div class="w-100 d-none d-sm-block"></div>
+        <div
+          *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
+          class="col-12 col-md-6">
+          <date-field formControlName="periodBegin"
+            [label]="i18n.general.beginDate" [minDate]="data.archivingDate"
+            maxDate="todayEnd" fieldSize="full" class>
+          </date-field>
+        </div>
+        <div
+          *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
+          class="col-12 col-md-6">
+          <date-field formControlName="periodEnd"
+            [label]="i18n.general.endDate" [minDate]="data.archivingDate"
+            maxDate="todayEnd" fieldSize="full">
+          </date-field>
+        </div>
         <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
           <multi-selection-field hierarchyProperty="groupSet"
             formControlName="groups" [emptyLabel]="i18n.general.notApplied"
@@ -29,11 +47,11 @@
             </field-option>
           </multi-selection-field>
         </div>
-        <div *ngIf="data.currencies?.length > 1" class="col-12 col-md-6">
+        <div *ngIf="currencies?.length > 1" class="col-12 col-md-6">
           <single-selection-field formControlName="currency"
             [label]="i18n.general.currency"
             [emptyOption]="i18n.general.notApplied">
-            <field-option *ngFor="let currency of data.currencies"
+            <field-option *ngFor="let currency of currencies"
               [value]="currency.id" [text]="currency.name"></field-option>
           </single-selection-field>
         </div>
@@ -83,24 +101,6 @@
               </field-option>
             </multi-selection-field>
           </div>
-          <!-- Force a line break on sm and up -->
-          <div class="w-100 d-none d-sm-block"></div>
-          <div
-            *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
-            class="col-12 col-md-6">
-            <date-field formControlName="periodBegin"
-              [label]="i18n.general.beginDate" minDate="past5"
-              maxDate="todayEnd" fieldSize="full" class>
-            </date-field>
-          </div>
-          <div
-            *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
-            class="col-12 col-md-6">
-            <date-field formControlName="periodEnd"
-              [label]="i18n.general.endDate" minDate="past5"
-              maxDate="todayEnd" fieldSize="full">
-            </date-field>
-          </div>
           <div class="col-12 col-md-6">
             <decimal-field formControlName="minAmount"
               [label]="i18n.account.minAmount" fieldSize="full"
@@ -147,6 +147,11 @@
               </field-option>
             </single-selection-field>
           </div>
+          <div class="col-12 col-md-6" *ngFor="let f of fieldsInSearch">
+            <custom-field-filter labelPosition="side" [field]="f"
+              [formControl]="form.get('customFields').get(f.internalName)">
+            </custom-field-filter>
+          </div>
           <div class="col-12 col-md-6">
             <single-selection-field formControlName="orderBy"
               [label]="i18n.general.orderBy">
@@ -182,6 +187,9 @@
         <th>{{ i18n.general.date }}</th>
         <th>{{ i18n.transaction.from }}</th>
         <th>{{ i18n.transaction.to }}</th>
+        <th *ngFor="let field of fieldsInList">
+          {{ field.name }}
+        </th>
         <th class="amount">{{ i18n.transaction.amount }}</th>
       </thead>
       <tbody>
@@ -201,6 +209,11 @@
               <a [routerLink]="path(row)">
                 {{ row.toName ?? bankingHelper.ownerName(row.to) }}
               </a>
+            </td>
+            <td *ngFor="let field of fieldsInList">
+              <format-field-value [fields]="fieldsInList" [plainText]="true"
+                [fieldName]="field.internalName" [object]="row">
+              </format-field-value>
             </td>
             <td class="amount">
               <a [routerLink]="path(row)">

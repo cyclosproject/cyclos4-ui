@@ -5,7 +5,6 @@ import { AuthHelperService } from 'app/core/auth-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { Enter } from 'app/core/shortcut.service';
 import { BaseComponent } from 'app/shared/base.component';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 
 @Component({
   selector: 'buy-vouchers-step-confirm',
@@ -19,7 +18,7 @@ export class BuyVouchersStepConfirmComponent extends BaseComponent implements On
   @Input() voucherCustomFields: CustomFieldDetailed[];
 
   @Input() confirmationPassword: FormControl;
-  @Output() confirmationModeChanged = new EventEmitter<ConfirmationMode>();
+  @Output() showSubmit = new EventEmitter<boolean>();
   @Output() confirmed = new EventEmitter<string>();
 
   buyVoucher: BuyVoucher;

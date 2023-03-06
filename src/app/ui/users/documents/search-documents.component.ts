@@ -37,9 +37,8 @@ export class SearchDocumentsComponent
 
   onDataInitialized(data: DocumentDataForSearch) {
     super.onDataInitialized(data);
-    this.headingActions = [new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.add, () => {
-      this.router.navigate(['/users', this.user, 'documents', 'new']);
-    }, true)];
+    this.headingActions = [new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.add,
+      () => this.router.navigate(['/users', this.user, 'documents', 'new']), true)];
   }
 
   protected doSearch(value: DocumentQueryFilters): Observable<HttpResponse<DocumentResult[]>> {

@@ -7,70 +7,68 @@
       [image]="ad.image" [additionalImages]="ad.additionalImages">
     </profile-images>
 
-    <div class="d-flex flex-row-reverse">
+    <float-labels>
       <profile-images *ngIf="ad.image && (layout.gtxs$ | async)"
         [icon]="SvgIcon.Basket" [image]="ad.image"
-        [additionalImages]="ad.additionalImages">
+        [additionalImages]="ad.additionalImages" class="float-right">
       </profile-images>
-
-      <div class="d-flex flex-grow-1 flex-column">
-        <label-value [label]="i18n.ad.name" [value]="ad.name"></label-value>
-        <label-value [label]="categoryLabel">
-          <ng-container *ngFor="let category of (ad.categories || [])">
-            <div>
-              <ng-container
-                *ngFor="let curr of categoryLevels(category); let first = first;">
-                <ng-container *ngIf="!first">
-                  &gt;
-                </ng-container>
-                {{ curr.name }}
+      <label-value [label]="i18n.ad.name" [value]="ad.name"></label-value>
+      <label-value [label]="categoryLabel">
+        <ng-container *ngFor="let category of (ad.categories || [])">
+          <div>
+            <ng-container
+              *ngFor="let curr of categoryLevels(category); let first = first;">
+              <ng-container *ngIf="!first">
+                &gt;
               </ng-container>
-            </div>
-          </ng-container>
-        </label-value>
-        <label-value *ngIf="ad.user" [label]="i18n.ad.owner">
-          <user-link [user]="ad.user"></user-link>
-        </label-value>
-        <label-value *ngIf="status" [label]="i18n.general.status">
-          {{ status }}
-        </label-value>
-        <ng-container *ngIf="data.publicationPeriod">
-          <label-value [label]="i18n.ad.publicationPeriod">
-            <span>{{ data.publicationPeriod.begin | date }}<span
-                class="d-inline pl-2 pr-2"> -
-              </span>{{ data.publicationPeriod.end | date }}</span>
-          </label-value>
+              {{ curr.name }}
+            </ng-container>
+          </div>
         </ng-container>
-        <custom-field-value *ngFor="let value of ad.customValues"
-          [fieldValue]="value"></custom-field-value>
-        <ng-container *ngIf="webshop">
-          <label-value *ngIf="!data.unlimitedStock"
-            [label]="i18n.ad.stockQuantity">
-            {{ stock }}
-          </label-value>
-          <label-value *ngIf="data.minAllowedInCart"
-            [label]="i18n.ad.minAllowedInCart">
-            {{ formatStock(data.minAllowedInCart) }}
-          </label-value>
-          <label-value *ngIf="data.maxAllowedInCart"
-            [label]="i18n.ad.maxAllowedInCart">
-            {{ formatStock(data.maxAllowedInCart) }}
-          </label-value>
-          <label-value [label]="i18n.ad.productNumber">
-            {{ data.productNumber }}
-          </label-value>
-        </ng-container>
-        <label-value *ngIf="ad.price" [label]="i18n.ad.price"
-          class="totalAmount">
-          <ng-container *ngIf="ad.promotionalPrice; else plainPrice">
-            {{ ad.promotionalPrice | currency:ad.currency }}
-            <span class="promo-price">
-              {{ ad.price | currency:ad.currency }}
-            </span>
-          </ng-container>
+      </label-value>
+      <label-value *ngIf="ad.user" [label]="i18n.ad.owner">
+        <user-link [user]="ad.user"></user-link>
+      </label-value>
+      <label-value *ngIf="status" [label]="i18n.general.status">
+        {{ status }}
+      </label-value>
+      <ng-container *ngIf="data.publicationPeriod">
+        <label-value [label]="i18n.ad.publicationPeriod">
+          <span>{{ data.publicationPeriod.begin | date }}<span
+              class="d-inline pl-2 pr-2"> -
+            </span>{{ data.publicationPeriod.end | date }}</span>
         </label-value>
-      </div>
-    </div>
+      </ng-container>
+      <custom-field-value *ngFor="let value of ad.customValues"
+        [fieldValue]="value"></custom-field-value>
+      <ng-container *ngIf="webshop">
+        <label-value *ngIf="!data.unlimitedStock"
+          [label]="i18n.ad.stockQuantity">
+          {{ stock }}
+        </label-value>
+        <label-value *ngIf="data.minAllowedInCart"
+          [label]="i18n.ad.minAllowedInCart">
+          {{ formatStock(data.minAllowedInCart) }}
+        </label-value>
+        <label-value *ngIf="data.maxAllowedInCart"
+          [label]="i18n.ad.maxAllowedInCart">
+          {{ formatStock(data.maxAllowedInCart) }}
+        </label-value>
+        <label-value [label]="i18n.ad.productNumber">
+          {{ data.productNumber }}
+        </label-value>
+      </ng-container>
+      <label-value *ngIf="ad.price" [label]="i18n.ad.price"
+        class="totalAmount">
+        <ng-container *ngIf="ad.promotionalPrice; else plainPrice">
+          {{ ad.promotionalPrice | currency:ad.currency }}
+          <span class="promo-price">
+            {{ ad.price | currency:ad.currency }}
+          </span>
+        </ng-container>
+      </label-value>
+    </float-labels>
+
     <ng-container *ngIf="data.lastAuthorizationComments">
       <h2 class="d-none d-sm-block my-ls pt-ls">
         {{ i18n.ad.authorizationNotes }}

@@ -9,12 +9,14 @@ heading-actions {
     white-space: nowrap;
     cursor: pointer;
   }
+
   .heading-action-with-icon {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0 0.5rem;
   }
+
   .heading-action.dropdown-toggle::after {
     margin-left: 0;
   }
@@ -41,11 +43,13 @@ heading-actions {
     cursor: pointer;
     white-space: nowrap;
     align-items: center;
+
     icon {
       margin: 0 0.4rem 0 0;
     }
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       text-decoration: none;
       outline: none;
       box-shadow: none;
@@ -66,11 +70,13 @@ heading-actions {
     line-height: 1em;
   }
 }
+
 @include media-breakpoint-up(xs) {
   heading-actions {
     .action-label {
       display: inline;
     }
+
     .heading-action-with-icon {
       icon {
         margin-left: 0;
@@ -78,29 +84,36 @@ heading-actions {
         transform: translateX(-0.1rem);
       }
     }
+
     .heading-action.dropdown-toggle::after {
       margin-left: 0.3rem;
     }
+
     .heading-action {
       padding-left: 1rem;
       padding-right: 1.2rem;
     }
+
     .heading-action-dropdown {
       padding-right: 1rem;
     }
+
     .heading-action-option {
       padding: 0.6rem 1.3rem 0.6rem 1rem;
     }
+
     .heading-action-option {
       icon {
         margin: 0.075rem 0.8rem 0 0;
       }
     }
+
     .heading-actions-menu {
       padding: 1rem 0;
     }
   }
 }
+
 @media print {
   heading-actions {
     display: none;
@@ -130,6 +143,7 @@ banner-card {
   box-shadow: $box-shadow-sm;
   padding: $card-spacer-x;
 }
+
 body.dark banner-card {
   color: $card-color-dark;
   background-color: $card-bg-dark;
@@ -155,29 +169,36 @@ login {
   .login-margin-top {
     margin-top: 0.5rem;
   }
+
   .login-margin-bottom {
     margin-bottom: 0.5rem;
   }
 
-  button, .button {
+  button,
+  .button {
     width: 100%;
   }
 }
+
 @include media-breakpoint-up(xs) {
   login {
     form {
       padding: 1rem;
     }
+
     .login-margin-top {
       margin-top: 1rem;
     }
+
     .login-margin-bottom {
       margin-bottom: 1rem;
     }
+
     .principal .invalid-feedback {
       margin-top: -0.75rem;
       margin-bottom: 0.5rem;
     }
+
     .pre-login-text {
       text-align: center;
       padding-bottom: 2rem;
@@ -185,21 +206,25 @@ login {
     }
   }
 }
+
 @include media-breakpoint-up(md) {
   login {
     page-content:not(.with-left-area) {
       margin-top: 3rem;
+
       form {
         margin-bottom: 1.75rem;
         padding-left: 3rem;
         padding-right: 3rem;
       }
     }
+
     .pre-login-text {
       margin-top: 0;
     }
   }
 }
+
 @include media-breakpoint-up(lg) {
   login {
     page-content:not(.with-left-area) {
@@ -247,11 +272,13 @@ profile-addresses {
     margin-left: -$layout-spacer-xxs;
     margin-right: -$layout-spacer-xxs;
   }
+
   agm-map {
     /* Without this 2px difference, the bottom border isn't shown */
     height: 258px;
   }
 }
+
 @include media-breakpoint-up(xs) {
   profile-addresses {
     .map-container {
@@ -260,6 +287,7 @@ profile-addresses {
     }
   }
 }
+
 @include media-breakpoint-up(sm) {
   profile-addresses {
     .map-container {
@@ -268,6 +296,7 @@ profile-addresses {
     }
   }
 }
+
 body.dark profile-addresses {
   .map-container {
     border-color: $border-color-dark;
@@ -283,22 +312,29 @@ profile-images {
     align-items: flex-start;
     margin: 0.5rem 0 1.5rem 0;
   }
+
   icon {
     color: $tiled-results-icon-color;
   }
-  .ngx-gallery-image, .ngx-gallery-thumbnail {
+
+  .ngx-gallery-image,
+  .ngx-gallery-thumbnail {
     border: 1px solid $border-color;
     z-index: 100 !important;
   }
-  .ngx-gallery-arrow-wrapper, .ngx-gallery-icon {
+
+  .ngx-gallery-arrow-wrapper,
+  .ngx-gallery-icon {
     z-index: 200 !important;
   }
+
   &:not(.single-image) {
     ngx-gallery {
       width: 16rem !important;
       height: 16rem !important;
     }
   }
+
   img.single-image {
     max-width: 16rem;
     max-height: 13rem;
@@ -306,17 +342,21 @@ profile-images {
     object-fit: contain;
   }
 }
+
 @include media-breakpoint-up(sm) {
   profile-images {
     justify-content: end;
     margin: 0 0 0 1.5rem;
   }
 }
+
 body.dark profile-images {
   icon {
     color: $tiled-results-icon-color-dark;
   }
-  .ngx-gallery-image, .ngx-gallery-thumbnail {
+
+  .ngx-gallery-image,
+  .ngx-gallery-thumbnail {
     border-color: $border-color-dark;
   }
 }
@@ -330,7 +370,9 @@ search-feedbacks {
     background-color: #fdce7e;
     border-radius: 1px;
   }
-  .count, .bar {
+
+  .count,
+  .bar {
     vertical-align: middle;
   }
 }
@@ -342,9 +384,11 @@ view-profile {
     margin-left: -0.75rem;
     overflow: hidden;
   }
+
   .heading-action-button {
     max-width: 100% !important;
   }
+
   .additional-contacts {
     icon {
       opacity: 0.30;
@@ -399,4 +443,121 @@ body.dark receive-qr-payment spinner {
 
 body.dark .operation-qr-code-scan .operation-qr-code-scan-label {
   color: $h2-color;
+}
+
+///////////////////////////////////////////////////////////
+
+.quick-access-setting-item {
+  display: flex;
+  padding: 0.5rem 0.5rem 0.5rem 0;
+
+  .quick-access-icon {
+    width: 3rem;
+    display: flex;
+    justify-content: center;
+    color: $quick-access-icon-color;
+  }
+
+  .quick-access-text {
+    flex-grow: 1;
+    display: flex;
+    margin-left: 0.5rem;
+    align-items: center;
+  }
+}
+
+.quick-access-setting-item.disabled {
+  .quick-access-icon {
+    color: $gray-600;
+  }
+
+  .quick-access-text {
+    opacity: 0.6;
+  }
+}
+
+body.dark {
+  .quick-access-setting-item {
+    .quick-access-icon {
+      color: $quick-access-icon-color-dark;
+    }
+  }
+
+  .quick-access-setting-item.disabled {
+    .quick-access-icon {
+      color: $body-color-dark;
+    }
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+.wizard-verification {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  icon {
+    width: 5rem;
+    height: 5rem;
+    color: $quick-access-icon-color;
+  }
+
+  .message {
+    margin: 1rem auto;
+    display: block;
+  }
+
+  .resend-code {
+    padding-top: 1rem;
+  }
+}
+
+body.dark {
+  .wizard-verification {
+    icon {
+      color: $quick-access-icon-color-dark;
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////
+.tiled-result {
+  ad-favorite {
+    z-index: 1;
+    right: .5rem;
+    top: .5rem;
+    position: absolute;
+    height: 2.2rem;
+    width: 2.2rem;
+  }
+
+  .btn {
+    line-height: 0;
+    border-radius: 50%;
+    min-height: auto;
+    height: 2.2rem;
+    width: 2.2rem;
+    padding: 0;
+    background: transparentize($card-bg, .7);
+  }
+}
+
+ad-favorite {
+  icon {
+    color: $link-color !important;
+    transform: translate(0, 1px);
+  }
+}
+
+body.dark {
+  ad-favorite {
+    .btn {
+      background: transparentize($card-bg-dark, .7);
+    }
+
+    icon {
+      color: $link-color-dark !important;
+    }
+  }
 }

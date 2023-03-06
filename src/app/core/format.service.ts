@@ -312,6 +312,13 @@ export class FormatService {
   }
 
   /**
+   * Returns whether both numbers represent the same number, optionally with a given scale
+   */
+  sameNumbers(n1: number | string, n2: number | string, scale = 9): boolean {
+    return n1 != null && n2 != null && (this.numberToFixed(n1, scale) === this.numberToFixed(n2, scale));
+  }
+
+  /**
    * Returns whether the given number (or string) represents a positive number
    * @param num The input number or string representation of a number
    */
@@ -516,7 +523,7 @@ export class FormatService {
   }
 
   /**
-   * Returns the formatted week days separated by comma 
+   * Returns the formatted week days separated by comma
    */
   formatWeekDays(weekDays: WeekDayEnum[]) {
     if (!empty(weekDays)) {

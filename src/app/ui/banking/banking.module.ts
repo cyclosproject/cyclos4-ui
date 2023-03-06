@@ -62,7 +62,6 @@ import { VoucherNotificationSettingsDialogComponent } from 'app/ui/banking/vouch
 import { VoucherTransactionStepConfirmComponent } from 'app/ui/banking/vouchers/voucher-transaction-step-confirm.component';
 import { VoucherTransactionStepFormComponent } from 'app/ui/banking/vouchers/voucher-transaction-step-form.component';
 import { VoucherTransactionStepTokenComponent } from 'app/ui/banking/vouchers/voucher-transaction-step-token.component';
-import { VoucherTypeSelectionComponent } from 'app/ui/banking/vouchers/voucher-type-selection.component';
 import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
 
 /**
@@ -103,7 +102,6 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
     ReceiveQrPaymentStepFormComponent,
     ReceiveQrPaymentStepPendingComponent,
 
-    VoucherTypeSelectionComponent,
     BuyVouchersComponent,
     SendVoucherComponent,
     SearchUserVouchersComponent,

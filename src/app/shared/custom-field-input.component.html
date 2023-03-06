@@ -148,8 +148,9 @@
   <!-- Linked user -->
   <user-field #userField *ngIf="linkedEntityType === 'user'" [id]="id"
     [label]="label" [name]="name" [labelPosition]="labelPosition"
-    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
-    [informationText]="getInformationText()" [filters]="userSearchFilters()">
+    [allowSelf]="true" [fieldSize]="fieldSize" [required]="required"
+    [formControl]="formControl" [informationText]="getInformationText()"
+    [filters]="userSearchFilters()">
   </user-field>
 
 </ng-template>

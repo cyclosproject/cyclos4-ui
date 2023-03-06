@@ -20,7 +20,8 @@ export class RedirectToLocationComponent implements OnInit {
   ngOnInit() {
     const location = this.route.snapshot.params.location;
     const id = this.route.snapshot.queryParams.id;
-    const url = ApiHelper.urlForLocation(location, id);
+    const externalPaymentToken = this.route.snapshot.queryParams.externalPaymentToken;
+    const url = ApiHelper.urlForLocation(location, id ?? externalPaymentToken);
     this.router.navigateByUrl(url, { replaceUrl: true, skipLocationChange: true });
   }
 }

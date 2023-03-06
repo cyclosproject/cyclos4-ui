@@ -44,6 +44,14 @@ export class BreadcrumbService {
   }
 
   /**
+   * Indicates whether the current element is the dashboard
+   */
+  get dashboardOnly(): boolean {
+    const value = this.breadcrumb$.value;
+    return value?.length > 0 && value[value.length - 1] === '/dashboard';
+  }
+
+  /**
    * Clears the navigation state
    */
   clear(): void {
@@ -62,7 +70,7 @@ export class BreadcrumbService {
 
     // Find the breadcrumb entry for this path
     let index = -1;
-    for (let i = 0; i < entries.length; i++) {
+    for (let i = entries.length - 1; i >= 0; i--) {
       if (entries[i] === event.url) {
         index = i;
         break;
@@ -80,12 +88,12 @@ export class BreadcrumbService {
   }
 
   /**
-   * Goes back one level
+   * Goes back one or more levels
    */
-  back(): boolean {
+  back(count = 1): boolean {
     const breadcrumb = this.breadcrumb$.value;
-    if (breadcrumb.length > 1) {
-      history.back();
+    if (breadcrumb.length > count) {
+      history.go(-count);
       return true;
     }
     return false;

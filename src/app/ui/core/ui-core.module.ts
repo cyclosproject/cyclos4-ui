@@ -9,6 +9,7 @@ import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { ExportHelperService } from 'app/ui/core/export-helper.service';
 import { HomeComponent } from 'app/ui/core/home.component';
+import { ImportsHelperService } from 'app/ui/core/imports-helper.service';
 import { LoginState } from 'app/ui/core/login-state';
 import { LoginService } from 'app/ui/core/login.service';
 import { MapsService } from 'app/ui/core/maps.service';
@@ -19,6 +20,7 @@ import { MessageHelperService } from 'app/ui/core/message-helper.service';
 import { OperationHelperService } from 'app/ui/core/operation-helper.service';
 import { PushNotificationComponent } from 'app/ui/core/push-notification.component';
 import { PushNotificationsComponent } from 'app/ui/core/push-notifications.component';
+import { QuickAccessHelperService } from 'app/ui/core/quick-access-helper.service';
 import { RedirectToLandingPageComponent } from 'app/ui/core/redirect-to-landing-page-component';
 import { SidenavComponent } from 'app/ui/core/sidenav.component';
 import { TokenHelperService } from 'app/ui/core/token-helper.service';
@@ -84,6 +86,8 @@ import { UiLayoutModule } from 'app/ui/shared/ui-layout.module';
     WizardHelperService,
     TokenHelperService,
     MessageHelperService,
+    QuickAccessHelperService,
+    ImportsHelperService
   ],
   entryComponents: [
     PushNotificationComponent

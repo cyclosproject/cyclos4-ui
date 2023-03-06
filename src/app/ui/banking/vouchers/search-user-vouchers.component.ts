@@ -1,9 +1,12 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { UserMenuEnum, UserVouchersDataForSearch, UserVouchersQueryFilters, VoucherCreationTypeEnum, VoucherStatusEnum } from 'app/api/models';
+import {
+  UserImportedFileContextEnum,
+  UserMenuEnum, UserVouchersDataForSearch, UserVouchersQueryFilters, VoucherCreationTypeEnum, VoucherStatusEnum
+} from 'app/api/models';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
+import { ApiHelper } from 'app/shared/api-helper';
 import { FieldOption } from 'app/shared/field-option';
-import { empty } from 'app/shared/helper';
 import { BaseSearchVouchersComponent, VoucherSearchParams } from 'app/ui/banking/vouchers/base-search-vouchers.component';
 import { ExportHelperService } from 'app/ui/core/export-helper.service';
 import { Menu } from 'app/ui/shared/menu';
@@ -34,26 +37,27 @@ export class SearchUserVouchersComponent
   ngOnInit() {
     super.ngOnInit();
     this.param = this.route.snapshot.paramMap.get('user');
-    this.addSub(this.vouchersService.getUserVouchersDataForSearch({
-      user: this.param
-    }).subscribe(dataForSearch => {
-      this.data = dataForSearch;
-    }));
+    this.addSub(this.vouchersService.getUserVouchersDataForSearch({ user: this.param }).subscribe(data => this.data = data));
+  }
+
+  prepareForm(_data: UserVouchersDataForSearch) {
+    this.form.patchValue({ creationType: 'all' });
   }
 
   onDataInitialized(data: UserVouchersDataForSearch) {
     super.onDataInitialized(data);
     this.self = this.authHelper.isSelf(data.user);
-    const headingActions: HeadingAction[] = [];
+    const headingActions: HeadingAction[] = [this.moreFiltersAction];
     if (data.canBuy) {
-      headingActions.push(new HeadingAction(SvgIcon.TicketArrowLeft, this.i18n.voucher.buy.buy, () => this.buy(), true));
+      headingActions.push(new HeadingAction(SvgIcon.TicketArrowLeft, this.i18n.voucher.buy.buy, () => this.buy()));
     }
     if (data.canSend) {
-      headingActions.push(new HeadingAction(SvgIcon.TicketArrowRight, this.i18n.voucher.send.send, () => this.send(), true));
+      headingActions.push(new HeadingAction(SvgIcon.TicketArrowRight, this.i18n.voucher.send.send, () => this.send()));
     }
-    if (empty(this.form.controls.creationType.value)) {
-      this.form.patchValue({ creationType: 'all' });
+    if (data.canSendImport) {
+      headingActions.push(new HeadingAction(SvgIcon.ArrowUpCircle, this.i18n.voucher.send.sendImport, () => this.sendImport()));
     }
+
     headingActions.push(...this.exportActions(data));
     this.headingActions = headingActions;
     this.form.get('creationType')?.valueChanges.subscribe(() => {
@@ -75,6 +79,9 @@ export class SearchUserVouchersComponent
   protected toSearchParams(value: any): UserVoucherSearchParams {
     const params: UserVoucherSearchParams = super.toSearchParams(value);
     params.user = this.param;
+    params.amountRange = ApiHelper.rangeFilter(value.minAmount, value.maxAmount);
+    params.creationPeriod = ApiHelper.dateRangeFilter(value.beginCreationDate, value.endCreationDate);
+    params.expirationPeriod = ApiHelper.dateRangeFilter(value.beginExpirationDate, value.endExpirationDate);
     if ((params.creationType as string) === 'all') {
       params.creationType = null;
     }
@@ -90,7 +97,8 @@ export class SearchUserVouchersComponent
   }
 
   protected getFormControlNames(): string[] {
-    return ['types', 'token', 'statuses', 'creationType'];
+    return ['types', 'token', 'statuses', 'creationType', 'minAmount', 'maxAmount',
+      'beginCreationDate', 'endCreationDate', 'beginExpirationDate', 'endExpirationDate'];
   }
 
   private buy() {
@@ -101,6 +109,10 @@ export class SearchUserVouchersComponent
     this.router.navigate(['/banking', this.param, 'vouchers', 'send']);
   }
 
+  private sendImport() {
+    this.router.navigate(['/imports', this.param, UserImportedFileContextEnum.USER_SEND_VOUCHERS, 'files']);
+  }
+
   get creationTypeOptions(): FieldOption[] {
     const statuses = [
       'all',
@@ -109,9 +121,7 @@ export class SearchUserVouchersComponent
     ];
     return statuses.map(st => ({
       value: st,
-      text: st === 'all'
-        ? this.i18n.general.all
-        : this.apiI18n.voucherCreationType(st as VoucherCreationTypeEnum)
+      text: st === 'all' ? this.i18n.general.all : this.apiI18n.voucherCreationType(st as VoucherCreationTypeEnum)
     }));
   }
 

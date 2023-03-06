@@ -19,8 +19,9 @@
       "node_modules/@types"
     ],
     "lib": [
-      "esnext",
-      "dom"
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
     ]
   },
   "angularCompilerOptions": {

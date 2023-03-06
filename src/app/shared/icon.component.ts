@@ -34,7 +34,7 @@ export class IconComponent {
     style.width = this._size;
   }
 
-  private get element(): HTMLElement {
+  public get element(): HTMLElement {
     return this.elementRef.nativeElement as HTMLElement;
   }
 

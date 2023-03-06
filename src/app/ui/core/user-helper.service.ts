@@ -3,7 +3,7 @@ import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup,
 import {
   AddressConfigurationForUserProfile, AvailabilityEnum, BasicUserDataForNew, OperatorDataForNew,
   OperatorGroupAccountAccessEnum, ProfileFieldActions, TokenStatusEnum, User,
-  UserBasicData, UserDataForNew, UserRegistrationResult, UserRegistrationStatusEnum, UserStatusEnum
+  UserBasicData, UserDataForNew, UserNew, UserRegistrationResult, UserRegistrationStatusEnum, UserStatusEnum
 } from 'app/api/models';
 import { UsersService } from 'app/api/services/users.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
@@ -130,7 +130,7 @@ export class UserHelperService {
     let mobileForm: FormGroup = null;
     if (mobileAvailability !== AvailabilityEnum.DISABLED) {
       const val = mobileAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null;
-      const phone = phoneConfiguration.mobilePhone;
+      const phone = (user as UserNew).mobilePhones[0] || phoneConfiguration.mobilePhone;
       mobileForm = this.formBuilder.group({
         name: phone.name,
         number: [phone.number, val, validateServerSide ? this.serverSideValidator(group, 'mobilePhone') : null],
@@ -143,7 +143,7 @@ export class UserHelperService {
     let landLineForm: FormGroup = null;
     if (landLineAvailability !== AvailabilityEnum.DISABLED) {
       const val = landLineAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null;
-      const phone = phoneConfiguration.landLinePhone;
+      const phone = (user as UserNew).landLinePhones[0] || phoneConfiguration.landLinePhone;
       landLineForm = this.formBuilder.group({
         name: phone.name,
         number: [phone.number, val, validateServerSide ? this.serverSideValidator(group, 'landLinePhone') : null],

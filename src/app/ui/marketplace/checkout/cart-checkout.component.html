@@ -126,13 +126,13 @@
           [formControl]="form.get('confirmationPassword')"
           [passwordInput]="data.confirmationPasswordInput"
           [createDeviceConfirmation]="createDeviceConfirmation"
-          (confirmationModeChanged)="confirmationMode$.next($event)"
+          (showSubmit)="showSubmit$.next($event)"
           (confirmed)="submit($event)">
         </confirmation-password>
       </ng-container>
       <actions forceRow>
         <action-button
-          *ngIf="negotiated || (confirmationMode$ | async) != ConfirmationMode.Device; else spacer"
+          *ngIf="negotiated || (showSubmit$ | async); else spacer"
           [disabled]="requesting$ | async" (action)="next()"
           [label]="i18n.general.confirm">
         </action-button>

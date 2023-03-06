@@ -6,8 +6,6 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 import QrScanner from 'qr-scanner';
 import { BehaviorSubject } from 'rxjs';
 
-QrScanner.WORKER_PATH = './qr-scanner-worker.min.js';
-
 export const Timeout = 60_000;
 
 /**
@@ -59,8 +57,10 @@ export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit,
   private setupQrScanner(cams: QrScanner.Camera[]) {
     this.cameras$.next(cams);
     const preferredCamera = this.preferredCamera;
-    this.qrScanner = new QrScanner(this.video.nativeElement,
-      result => this.emit(result), undefined, undefined, preferredCamera);
+    this.qrScanner = new QrScanner(this.video.nativeElement, result => this.emit(result.data), {
+      preferredCamera,
+      highlightScanRegion: true
+    });
     this.qrScanner.start()
       .then(() => this.initialize())
       .catch(() => this.noPermission());

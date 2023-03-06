@@ -47,7 +47,7 @@ export class UiLayoutService {
     }
   }
 
-  fullWidth$ = new BehaviorSubject<boolean>(null);
+  fullWidth$ = new BehaviorSubject<boolean>(false);
   get fullWidth(): boolean {
     return this.fullWidth$.value;
   }

@@ -15,9 +15,14 @@
       <ng-container *ngIf="data.enabled">
         <h2>{{ i18n.privacySettings.controlsSection }}</h2>
         <label-value *ngFor="let control of data.availableControls"
-          [label]="control.name" [tooltip]="control.informationText"
-          [placement]="'left'">
-          {{ control.fieldsAlwaysVisible || data.selectedControls.includes(control.id) ? i18n.general.yes : i18n.general.no }}
+          [label]="control.name">
+          {{ control.fieldsAlwaysVisible ||
+          data.selectedControls.includes(control.id) ? i18n.general.yes :
+          i18n.general.no }}
+          <ng-container *ngIf="control.informationText">
+            <br>
+            {{ control.informationText }}
+          </ng-container>
         </label-value>
       </ng-container>
     </ng-container>

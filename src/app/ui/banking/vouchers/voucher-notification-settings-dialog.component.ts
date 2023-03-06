@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ChangeVoucherNotificationSettings, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, VoucherActionEnum, VoucherCreationTypeEnum, VoucherView } from 'app/api/models';
 import { VouchersService } from 'app/api/services/vouchers.service';
 import { BaseComponent } from 'app/shared/base.component';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
@@ -19,12 +18,11 @@ import { BehaviorSubject } from 'rxjs';
 export class VoucherNotificationSettingsDialogComponent extends BaseComponent implements OnInit {
 
   VoucherCreationTypeEnum = VoucherCreationTypeEnum;
-  ConfirmationMode = ConfirmationMode;
 
   @Input() voucher: VoucherView;
   @Output() done = new EventEmitter<void>();
 
-  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
+  showSubmit$ = new BehaviorSubject(true);
   form: FormGroup;
 
   constructor(
@@ -36,7 +34,6 @@ export class VoucherNotificationSettingsDialogComponent extends BaseComponent im
 
   ngOnInit() {
     super.ngOnInit();
-
     this.form = this.formBuilder.group({
       email: [this.voucher.email, Validators.email],
       mobilePhone: this.voucher.mobilePhone,

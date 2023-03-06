@@ -2,17 +2,16 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { UserOperatorsDataForSearch, UserOperatorsQueryFilters } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { OperatorsService } from 'app/api/services/operators.service';
-import { UserHelperService } from 'app/ui/core/user-helper.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';
+import { UserHelperService } from 'app/ui/core/user-helper.service';
+import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { Menu } from 'app/ui/shared/menu';
-import { ResultType } from 'app/ui/shared/result-type';
-import { SvgIcon } from 'app/core/svg-icon';
 
-type UserOperatorsSearchParams = UserOperatorsQueryFilters & { user: string };
+type UserOperatorsSearchParams = UserOperatorsQueryFilters & { user: string; };
 /**
  * Searches for operators of a given user
  */
@@ -23,10 +22,6 @@ type UserOperatorsSearchParams = UserOperatorsQueryFilters & { user: string };
 })
 export class SearchUserOperatorsComponent
   extends BaseSearchPageComponent<UserOperatorsDataForSearch, UserOperatorsSearchParams, UserResult> implements OnInit {
-
-  // Export enum to the template
-  ResultType = ResultType;
-  empty = empty;
 
   param: string;
   self: boolean;
@@ -49,18 +44,9 @@ export class SearchUserOperatorsComponent
     super.ngOnInit();
     this.param = this.route.snapshot.params.user || ApiHelper.SELF;
     this.self = this.authHelper.isSelf(this.param);
+    this.statusOptions = this.userHelper.statusOptions();
 
-    this.addSub(this.operatorsService.getUserOperatorsDataForSearch({ user: this.param }).subscribe(data => {
-      this.statusOptions = this.userHelper.statusOptions();
-      if (!this.self && data.canCreateNew) {
-        this.headingActions = [
-          new HeadingAction(SvgIcon.PersonPlus, this.i18n.general.addNew, () => {
-            this.router.navigate(['/users', this.param, 'operators', 'registration']);
-          }, true),
-        ];
-      }
-      this.data = data;
-    }));
+    this.addSub(this.operatorsService.getUserOperatorsDataForSearch({ user: this.param }).subscribe(data => this.data = data));
   }
 
   onDataInitialized(data: UserOperatorsDataForSearch) {
@@ -68,6 +54,10 @@ export class SearchUserOperatorsComponent
     if (empty(data.fieldsInList)) {
       // When there are no fields in list, set the display
       data.fieldsInList = ['display'];
+    }
+    if (!this.self && data.canCreateNew) {
+      this.headingActions = [new HeadingAction(SvgIcon.PersonPlus, this.i18n.general.addNew,
+        () => this.router.navigate(['/users', this.param, 'operators', 'registration']), true)];
     }
   }
 

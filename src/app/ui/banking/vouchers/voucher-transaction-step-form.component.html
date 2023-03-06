@@ -22,11 +22,18 @@
     kind="fieldView">
   </label-value>
 
+  <ng-container *ngIf="data.type.allowPartialRedeems && balance">
+    <label-value [label]="i18n.voucher.redeem.voucherBalance"
+      [value]="balance | currency:data.type.configuration.currency"
+      kind="fieldView">
+    </label-value>
+  </ng-container>
   <ng-container *ngIf="data.type.configuration.currency as currency">
     <decimal-field formControlName="amount" focused required
       *ngIf="amountAsField; else plainAmount"
-      [label]="i18n.voucher.transaction.amount" [prefix]="currency.prefix"
-      [suffix]="currency.suffix" [scale]="currency.decimalDigits">
+      [label]="!topUpData && data.type.allowPartialRedeems ? i18n.voucher.redeem.amountToRedeem : i18n.voucher.transaction.amount"
+      [prefix]="currency.prefix" [suffix]="currency.suffix"
+      [scale]="currency.decimalDigits">
     </decimal-field>
     <ng-template #plainAmount>
       <label-value [label]="i18n.transaction.amount"

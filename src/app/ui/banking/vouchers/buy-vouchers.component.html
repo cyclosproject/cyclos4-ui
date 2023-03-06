@@ -38,13 +38,11 @@
       [paymentCustomFields]="dataTypeForBuy.paymentCustomFields"
       [voucherCustomFields]="dataTypeForBuy.voucherCustomFields"
       [confirmationPassword]="confirmationPassword"
-      (confirmationModeChanged)="confirmationMode$.next($event)"
-      (confirmed)="buy($event)">
+      (showSubmit)="showSubmit$.next($event)" (confirmed)="buy($event)">
     </buy-vouchers-step-confirm>
 
     <actions forceRow>
-      <action-button
-        *ngIf="(confirmationMode$ | async) != ConfirmationMode.Device; else spacer"
+      <action-button *ngIf="showSubmit$ | async; else spacer"
         [disabled]="!canConfirm || (requesting$ | async)" (action)="buy()"
         [label]="i18n.general.confirm">
       </action-button>

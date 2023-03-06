@@ -9,9 +9,21 @@
 
     <results-layout [results]="data.adInterests" [toLink]="toLink">
       <mobile-result *mobileResult="let row">
-        <div class="d-flex">
-          <div class="cell-main">{{ row.name }}</div>
-          <div *ngIf="data.canEdit" class="ml-auto text-right">
+        <div class="d-flex flex-row">
+          <div class="w-80">
+            <div class="cell-main">{{ row.name }}</div>
+            <div *ngIf="(row.keywords || []).length > 0" class="cell-text">{{
+              (row.keywords ||
+              '').join(', ') }}</div>
+            <div *ngIf="row.category" class="cell-text">{{
+              row.category?.name
+              }}
+            </div>
+            <div *ngIf="row.adUser" class="cell-text">{{
+              row.adUser?.display }}
+            </div>
+          </div>
+          <div *ngIf="data.canEdit" class="ml-auto">
             <button type="button" [tooltip]="i18n.general.remove"
               class="btn btn-icon"
               (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
@@ -23,6 +35,9 @@
       <table *resultTable class="table table-hover cursor-pointer">
         <thead>
           <th>{{ i18n.general.name }}</th>
+          <th *ngIf="keywords">{{ i18n.general.keywords }}</th>
+          <th *ngIf="category">{{ i18n.general.category }}</th>
+          <th *ngIf="user">{{ i18n.ad.owner}}</th>
           <th *ngIf="data.canEdit" class="actions"></th>
         </thead>
         <tbody>
@@ -31,6 +46,9 @@
               <td>
                 {{ row.name }}
               </td>
+              <td *ngIf="keywords">{{ (row.keywords || '').join(', ') }}</td>
+              <td *ngIf="category">{{ row.category?.name }}</td>
+              <td *ngIf="user">{{ row.adUser?.display }}</td>
               <td *ngIf="data.canEdit" class="actions">
                 <button type="button" [tooltip]="i18n.general.remove"
                   class="btn btn-icon"

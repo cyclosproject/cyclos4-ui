@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PaymentRequestPreview } from 'app/api/models';
 import { PaymentRequestsService } from 'app/api/services/payment-requests.service';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { empty, locateControl, validateBeforeSubmit } from 'app/shared/helper';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
@@ -23,14 +22,12 @@ export class AcceptPaymentRequestComponent extends BasePageComponent<PaymentRequ
 
   empty = empty;
 
-  ConfirmationMode = ConfirmationMode;
-
   transactionKey: string;
 
   form: FormGroup;
   confirmationPassword: FormControl;
   canConfirm: boolean;
-  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
+  showSubmit$ = new BehaviorSubject(true);
 
   constructor(
     injector: Injector,

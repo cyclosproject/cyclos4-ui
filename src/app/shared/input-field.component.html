@@ -7,7 +7,7 @@
   <input #input [id]="id" [formControl]="formControl" [name]="name"
     [type]="type" (blur)="onblur.emit($event)" (focus)="onfocus.emit($event)"
     (keyup.enter)="enter.emit($event)" (input)="oninput.emit($event)"
-    [numbersOnly]="type === 'number'" [mask]="mask"
+    [numbersOnly]="type === 'number'" [mask]="mask" [maxlength]="maxLength"
     [placeholder]="placeholder || ''" [autocomplete]="autocomplete"
     class="form-control w-100" [ngClass]="{
       'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched,

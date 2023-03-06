@@ -45,7 +45,8 @@
     [label]="i18n.transaction.occurrencesCount">
     {{ transaction.occurrencesCount }}
   </label-value>
-  <label-value *ngIf="transaction.occurrenceInterval"
+  <label-value
+    *ngIf="transaction.kind === 'recurringPayment' && transaction.occurrenceInterval"
     [label]="i18n.transaction.occurrenceInterval">
     {{ format.formatTimeInterval(transaction.occurrenceInterval) }}
   </label-value>
@@ -101,8 +102,15 @@
       : i18n.transaction.repeatUntilManual }}
     </label-value>
     <label-value *ngIf="transaction.firstOccurrenceIsImmediate != null"
-      [label]="i18n.transaction.firstOccurrenceIsImmediate">
-      {{ transaction.firstOccurrenceIsImmediate | boolean}}
+      [label]="i18n.transaction.firstOccurrence">
+      {{ transaction.firstOccurrenceIsImmediate ?
+      i18n.transaction.firstOccurrenceImmediate :
+      i18n.transaction.firstOccurrenceAfterInterval(format.formatTimeInterval(transaction.occurrenceInterval))}}
+    </label-value>
+    <label-value
+      *ngIf="transaction.kind === 'paymentRequest' && transaction.occurrenceInterval"
+      [label]="i18n.transaction.occurrenceInterval">
+      {{ format.formatTimeInterval(transaction.occurrenceInterval) }}
     </label-value>
   </ng-container>
 

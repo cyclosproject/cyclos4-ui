@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
-import { RunWizardStepFieldsComponent } from './run-wizard-step-fields.component';
+import { RunWizardStepFieldComponent } from './run-wizard-step-field.component';
 import { RunWizardStepGroupComponent } from './run-wizard-step-group.component';
 import { RunWizardStepIdPComponent } from './run-wizard-step-idp.component';
+import { RunWizardStepVerificationComponent } from './run-wizard-step-verification.component';
 import { RunWizardComponent } from './run-wizard.component';
 import { WizardCallbackComponent } from './wizard-callback.component';
 import { WizardsRoutingModule } from './wizard-routing.module';
@@ -15,7 +16,8 @@ import { WizardsRoutingModule } from './wizard-routing.module';
     RunWizardComponent,
     RunWizardStepGroupComponent,
     RunWizardStepIdPComponent,
-    RunWizardStepFieldsComponent,
+    RunWizardStepFieldComponent,
+    RunWizardStepVerificationComponent,
     WizardCallbackComponent,
   ],
   imports: [

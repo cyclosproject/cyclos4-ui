@@ -46,8 +46,17 @@
         [label]="i18n.user.registration.passwordAssign"></boolean-field>
       <ng-container *ngIf="passwordForm(i).get('defined').value">
         <input-field required formControlName="value" type="password"
-          autocomplete="new-password" [label]="pt.name">
+          autocomplete="new-password" [label]="pt.name"
+          [maxLength]="pt.maxLength">
         </input-field>
+        <label-value *ngIf="layout.gtxs$ | async" label=" ">
+          <password-hints [passwordType]="pt"
+            [control]="passwordForm(i).controls.value">
+          </password-hints>
+        </label-value>
+        <password-hints *ngIf="layout.ltsm$ | async" [passwordType]="pt"
+          [control]="passwordForm(i).controls.value">
+        </password-hints>
         <input-field required formControlName="confirmationValue"
           type="password" autocomplete="new-password"
           [label]="i18n.user.passwordConfirmation(pt.name)">
@@ -68,6 +77,7 @@
       </div>
       <single-selection-field formControlName="securityQuestion"
         [label]="i18n.securityQuestion.question"
+        [required]="data.requireSecurityQuestion"
         [emptyOption]="i18n.user.securityQuestionEmpty">
         <field-option *ngFor="let q of data.securityQuestions"
           [value]="q.internalName" [text]="q.name">

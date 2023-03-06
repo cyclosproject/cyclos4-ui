@@ -1,0 +1,11 @@
+<div class="p-3">
+  {{ i18n.user.registration.resumeWizard.message }}
+  <actions>
+    <action-button (action)="emit(true)"
+      [label]="i18n.user.registration.resumeWizard.resume">
+    </action-button>
+    <action-button outline (action)="emit(false)"
+      [label]="i18n.user.registration.resumeWizard.restart">
+    </action-button>
+  </actions>
+</div>

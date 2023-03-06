@@ -4,6 +4,14 @@
       [heading]="create ? i18n.ad.title['new'] : i18n.ad.title.edit"
       [mobileHeading]="create ? i18n.ad.mobileTitle['new'] : i18n.ad.mobileTitle.edit"
       [headingActions]="headingActions$ | async">
+      <notification *ngIf="showNotAvailableCurrenciesError()" class="mb-3"
+        type="error">
+        {{ i18n.ad.error.noAvailableAccounts }}
+      </notification>
+      <notification *ngIf="showDisabledAdWarning()" class="mb-3"
+        type="warning">
+        {{ i18n.ad.warningDisabledAd }}
+      </notification>
       <ng-container [formGroup]="form">
         <ng-container *ngIf="data.maxImages > 0">
           <h2
@@ -29,14 +37,17 @@
             <ng-container
               *ngIf="canUploadImages && (multiUpload.uploading$ | async) === false">
               <action-button outline (action)="multiUpload.perform()"
-                [label]="i18n.field.image.upload">
+                [label]="i18n.field.image.upload"
+                [disabled]="showNotAvailableCurrenciesError()">
               </action-button>
               <action-button outline (action)="captureCamera(multiUpload)"
-                [label]="i18n.field.image.camera">
+                [label]="i18n.field.image.camera"
+                [disabled]="showNotAvailableCurrenciesError()">
               </action-button>
             </ng-container>
             <action-button *ngIf="images.length > 0" outline
-              (action)="manageImages()" [label]="i18n.field.image.manage">
+              (action)="manageImages()" [label]="i18n.field.image.manage"
+              [disabled]="showNotAvailableCurrenciesError()">
             </action-button>
           </actions>
           <image-upload #multiUpload
@@ -79,8 +90,7 @@
             [level]="cat.level" [disabled]="!cat.leaf">
           </field-option>
         </multi-selection-field>
-        <single-selection-field
-          *ngIf="data.currencies && data.currencies.length > 1"
+        <single-selection-field *ngIf="data.currencies?.length > 1"
           formControlName="currency" [label]="i18n.general.currency"
           [required]="webshop">
           <field-option *ngFor="let c of data.currencies"
@@ -200,11 +210,12 @@
         </ng-container>
       </ng-container>
       <actions>
-        <action-button (action)="save()" [label]="i18n.general.save">
+        <action-button (action)="save()" [label]="i18n.general.save"
+          [disabled]="showNotAvailableCurrenciesError()">
         </action-button>
         <action-button *ngIf="data.canCreateNew" outline
-          [disabled]="requesting$ | async" (action)="save(true)"
-          [label]="i18n.ad.saveAndInsertNew">
+          [disabled]="(requesting$ | async) || showNotAvailableCurrenciesError()"
+          (action)="save(true)" [label]="i18n.ad.saveAndInsertNew">
         </action-button>
       </actions>
     </page-content>

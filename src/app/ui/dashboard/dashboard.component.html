@@ -2,10 +2,19 @@
   <page-layout hideMenu>
     <div class="dashboard">
       <div class="notifications"
-        *ngIf="data.passwordsNeedingAttention?.length > 0 || data.pendingSecurityQuestion">
+        *ngIf="data.passwordsNeedingAttention?.length > 0 || data.pendingSecurityQuestion || data.pendingTotp">
         <notification *ngFor="let password of data.passwordsNeedingAttention"
           type="warning">
           {{ passwordMessage(password) }}
+          <br>
+          <a [routerLink]="['/personal', 'passwords']" class="mt-2"
+            (click)="goToPasswords($event)">
+            {{ i18n.dashboard.passwords.proceed }}
+          </a>
+        </notification>
+
+        <notification *ngIf="data.pendingTotp" type="warning">
+          {{ i18n.dashboard.passwords.totp }}
           <br>
           <a [routerLink]="['/personal', 'passwords']" class="mt-2"
             (click)="goToPasswords($event)">

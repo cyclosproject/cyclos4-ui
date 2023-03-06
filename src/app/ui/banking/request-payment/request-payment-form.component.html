@@ -111,9 +111,13 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="'recurring'">
-      <boolean-field formControlName="firstOccurrenceIsImmediate"
-        [label]="i18n.transaction.firstOccurrenceIsImmediate">
-      </boolean-field>
+      <radio-group-field asColumn formControlName="firstOccurrenceIsImmediate"
+        [label]="i18n.transaction.firstOccurrence">
+        <field-option [value]="true"
+          [text]="i18n.transaction.firstOccurrenceImmediate"></field-option>
+        <field-option [value]="false"
+          [text]="firstOccurrenceAfterIntervalLabel$ | async"></field-option>
+      </radio-group-field>
 
       <radio-group-field formControlName="repeatUntilCanceled"
         [label]="i18n.transaction.repeatUntil">
@@ -128,6 +132,10 @@
         formControlName="occurrencesCount" required
         [label]="i18n.transaction.occurrencesCount">
       </input-field>
+
+      <time-interval-field formControlName="occurrenceInterval"
+        [label]="i18n.transaction.occurrenceInterval" required>
+      </time-interval-field>
     </ng-container>
   </ng-container>
 

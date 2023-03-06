@@ -256,8 +256,6 @@
   },
   "password": {
     "confirm.mode": "Conferma con",
-    "confirm.mode.device": "Cellulare",
-    "otp.sent": "La password è stata inviata a {dest}",
     "oldPassword": "Vecchia password",
     "newPassword": "Nuova password",
     "passwordConfirmation": "Conferma password",
@@ -423,7 +421,6 @@
     "accountBalance": "Saldo del conto",
     "installments": "Rate",
     "installmentNumber": "Numero",
-    "occurrences": "Occorrenze",
     "noAccounts": "Non hai nessun conto per eseguire il pagamento",
     "noTypes": "Non ci sono tipi di pagamento possibili",
     "noTypesSelection": "Non ci sono tipi di pagamento possibili da questo conto all'utente selezionato",
@@ -637,10 +634,6 @@
     "refundDate": "Data di rimborso"
   },
   "field": {
-    "privacy": {
-      "private.tooltip": "Questo campo è privato. Clicca per consentire ad altri di vederlo.",
-      "public.tooltip": "Questo campo è visibile da altri. Clicca per renderlo privato."
-    },
     "image": {
       "upload": "Carica nuova immagine",
       "manage": "Riordina o rimuovi immagini",
@@ -713,7 +706,6 @@
     "operator.owner": "Proprietario Operatore",
     "operator.noGroup": "Nessun gruppo (ha tutti i permessi)",
     "operator.registration.active": "L'operatore {operator} è stato attivato.",
-    "operator.registration.inactive": "L'operatore {operator} è stato registrato, tuttavia, ha ancora bisogno di essere attivato dall'amministrazione.",
     "operator.registration.pending": "L'operatore {operator} è stato registrato, tuttavia, deve ancora convalidare la sua registrazione confermando l'e-mail.",
     "operator.registration.addAnother": "Registra un altro operatore",
     "noImage": "Nessuna immagine profilo",
@@ -787,7 +779,6 @@
       "inactive.public": "Il tuo account è stato creato con successo.<br>Tuttavia, dovrai essere attivato dall'amministrazione.<br>Sarai avvisato quando il tuo account è attivo.",
       "pending.public": "La tua registrazione è stata inviata e deve essere verificata.<br>Dovresti ricevere una e-mail a breve con le istruzioni su come attivare il tuo account.<br>Se non riesci a trovare l'e-mail, assicurati di controllare la cartella spam.",
       "active.manager": "Il conto dell'utente {user} è stato attivato.",
-      "inactive.manager": "L'utente {user} è stato registrato, tuttavia, ha ancora bisogno di essere attivato dall'amministrazione.",
       "pending.manager": "L'utente {user} è stato registrato, tuttavia, deve ancora convalidare la sua registrazione confermando l'e-mail.",
       "principal.single": "Puoi utilizzare il tuo {principal} ({value}) su {channels}",
       "principal.multiple.preface": "Puoi accedere con i seguenti dati:",
@@ -936,7 +927,6 @@
     "verified": "Verificato",
     "error": {
       "verify": {
-        "expired": "Il codice di verifica non è stato inviato o è scaduto.<br> Per favore, invia nuovamente il codice al tuo telefono e riavvia il processo.",
         "invalid": "Codice di verifica non valido",
         "maxAttempts": "Hai superato il numero di tentativi consentiti.<br>Per favore, invia nuovamente il codice al tuo telefono e riavvia il processo."
       }

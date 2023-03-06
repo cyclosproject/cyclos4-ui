@@ -4,7 +4,6 @@ import { CreateDeviceConfirmation, CustomField, CustomFieldTypeEnum, DeviceConfi
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { Enter } from 'app/core/shortcut.service';
 import { BaseComponent } from 'app/shared/base.component';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 
 @Component({
   selector: 'generate-vouchers-step-confirm',
@@ -19,7 +18,7 @@ export class GenerateVouchersStepConfirmComponent extends BaseComponent implemen
   @Input() data: VoucherDataForGenerate;
   @Input() user: User;
 
-  @Output() confirmationModeChanged = new EventEmitter<ConfirmationMode>();
+  @Output() showSubmit = new EventEmitter<boolean>();
   @Output() confirmed = new EventEmitter<string>();
 
   showAmount: boolean;

@@ -64,9 +64,7 @@ export class SearchUserBalancesComponent
     this.allowedResultTypes = allowMap ? [ResultType.LIST, ResultType.MAP] : [ResultType.LIST];
   }
 
-  onDataInitialized(data: DataForUserBalancesSearch) {
-    super.onDataInitialized(data);
-
+  prepareForm(data: DataForUserBalancesSearch) {
     data.fieldsInBasicSearch.forEach(f => {
       var field: any = data.customFields.find(cf => cf.internalName === f);
       if (field) {
@@ -89,7 +87,11 @@ export class SearchUserBalancesComponent
     });
 
     this.form.setControl('profileFields',
-      this.fieldHelper.profileFieldsForSearchFormGroup(this.basicFieldsInSearch, this.customFieldsInSearch));
+      this.fieldHelper.profileFieldsForSearchFormGroup(this.basicFieldsInSearch, this.customFieldsInSearch, data.query.profileFields));
+  }
+
+  onDataInitialized(data: DataForUserBalancesSearch) {
+    super.onDataInitialized(data);
 
     const filterAction = this.moreFiltersAction;
     filterAction.breakpoint = null;

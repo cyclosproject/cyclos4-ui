@@ -1,12 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AdKind, BasicProfileFieldEnum,
-  FieldSection, PhoneKind, PhoneView, RoleEnum,
-  UserCustomField, UserProfileSectionEnum, UserRelationshipEnum, UserView
+  AdKind, BasicProfileFieldEnum, FieldSection, PhoneKind, PhoneView, RoleEnum, User, UserCustomField, UserImportedFileKind, UserProfileSectionEnum,
+  UserRelationshipEnum, UserView
 } from 'app/api/models';
 import { ContactsService } from 'app/api/services/contacts.service';
 import { UsersService } from 'app/api/services/users.service';
+import { ValidationService } from 'app/api/services/validation.service';
 import { ErrorStatus } from 'app/core/error-status';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
@@ -36,6 +36,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
   constructor(
     injector: Injector,
     private usersService: UsersService,
+    private validationService: ValidationService,
     private contactsService: ContactsService,
     private runOperationHelper: RunOperationHelperService,
     private wizardHelper: WizardHelperService,
@@ -120,6 +121,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const authorizedPayments = permissions.authorizedPayments || {};
     const paymentRequests = permissions.paymentRequests || {};
     const externalPayments = permissions.externalPayments || {};
+    const tickets = permissions.tickets || {};
     const marketplace = permissions.marketplace || {};
     const simpleAds = marketplace.simple || {};
     const webshop = marketplace.webshop || {};
@@ -134,6 +136,8 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const tokens = permissions.tokens || [];
     const products = permissions.products || {};
     const messages = permissions.messages || {};
+    const quickAccess = permissions.quickAccess || {};
+    const imports = permissions.imports || {};
 
     const manager = [UserRelationshipEnum.ADMINISTRATOR, UserRelationshipEnum.BROKER, UserRelationshipEnum.OWNER]
       .includes(user.relationship);
@@ -157,16 +161,16 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       // For the own user, we just show the edit or privacy settings as a top-level actions
       const headingActions: HeadingAction[] = [];
       const myPermissions = this.dataForFrontendHolder.auth?.permissions || {};
-      if (myPermissions.myProfile?.editProfile) {
+      if (myPermissions.privacySettings?.view) {
+        headingActions.push(new HeadingAction(SvgIcon.EyeSlash, this.i18n.user.profile.privacySettings, () => {
+          this.router.navigate(['/users', this.param, 'privacy-settings']);
+        }, true));
+      }
+      if (myPermissions.myProfile?.editProfile || myPermissions.myProfile?.manageContactInfos) {
         const edit = new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => {
           this.router.navigateByUrl(this.router.url + '/edit');
         }, true);
         headingActions.push(edit);
-      }
-      if (myPermissions.privacySettings?.view) {
-        headingActions.push(new HeadingAction(SvgIcon.EyeSlash, this.i18n.user.profile.privacySettings, () => {
-          this.router.navigate(['/users', this.param, 'privacy-settings']);
-        }));
       }
       this.headingActions = headingActions;
     } else {
@@ -212,6 +216,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SYSTEM]);
         }));
       }
+      if (imports.kinds?.includes(UserImportedFileKind.USER_PAYMENTS)) {
+        this.bankingActions.push(new HeadingAction(SvgIcon.ArrowUpCircle, this.i18n.user.profile.batchPayments, () => {
+          this.router.navigate(['/imports', this.param, UserImportedFileKind.USER_PAYMENTS, 'files']);
+        }));
+      }
       if (scheduledPayments.view) {
         this.bankingActions.push(new HeadingAction(SvgIcon.Clock, this.i18n.user.profile.viewScheduledPayments, () => {
           this.router.navigate(['/banking', this.param, 'installments']);
@@ -233,6 +242,13 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/banking', this.param, 'external-payments']);
         }));
       }
+
+      if (tickets.view) {
+        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2Check, this.i18n.user.profile.tickets, () => {
+          this.router.navigate(['/banking', this.param, 'tickets']);
+        }));
+      }
+
       const balanceLimitsPermissions = permissions.balanceLimits || {};
       if (balanceLimitsPermissions.view) {
         this.bankingActions.push(new HeadingAction(SvgIcon.ArrowDownUp, this.i18n.user.profile.accountsBalanceLimits, () => {
@@ -297,6 +313,58 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/users', this.param, 'identity-providers']);
         }));
       }
+
+      const validation = permissions.validation || {};
+      if (validation.resendEmailChange) {
+        this.managementActions.push(new HeadingAction(SvgIcon.EnvelopeCheck, this.i18n.user.profile.resendEmailChange, () => {
+          this.addSub(this.validationService.resendEmailChangeEmail({ user: this.param }).subscribe(
+            () => this.notification.snackBar(this.i18n.user.profile.resendEmailChangeDone)));
+
+        }));
+      }
+      if (validation.validateEmailChange) {
+        this.managementActions.push(new HeadingAction(SvgIcon.Check2, this.i18n.user.profile.validateEmailChange, () => {
+          this.addSub(this.validationService.manuallyValidateEmailChange({ user: this.param }).subscribe(
+            () => {
+              this.reload();
+              this.notification.snackBar(this.i18n.user.profile.validateEmailChangeDone);
+            }));
+        }));
+      }
+
+      if (validation.resendRegistrationValidation) {
+        this.managementActions.push(new HeadingAction(SvgIcon.EnvelopeCheck, this.i18n.user.profile.resendRegistrationValidation, () => {
+          this.addSub(this.validationService.resendUserRegistrationEmail({ user: this.param }).subscribe(
+            () => this.notification.snackBar(this.i18n.user.profile.resendRegistrationValidationDone)));
+
+        }));
+      }
+      if (validation.validateRegistration) {
+        this.managementActions.push(new HeadingAction(SvgIcon.Check2, this.i18n.user.profile.validateRegistration, () => {
+          this.addSub(this.validationService.manuallyValidateUserRegistration({ user: this.param }).subscribe(
+            () => {
+              this.reload();
+              this.notification.snackBar(this.i18n.user.profile.validateRegistrationDone);
+            }));
+        }));
+      }
+
+      if (profile.physicallyRemove) {
+        this.managementActions.push(new HeadingAction(SvgIcon.Trash, this.i18n.user.profile.remove, () => {
+          this.confirmation.confirm({
+            message: this.i18n.general.removeConfirm(user.display),
+            callback: () => this.addSub(this.usersService.deletePendingUser({ user: this.param }).subscribe(() => {
+              if (this.breadcrumb.empty || this.breadcrumb.breadcrumb$.value.length === 1) {
+                this.router.navigate(['/users', 'search']);
+              } else {
+                this.breadcrumb.back();
+              }
+              this.notification.snackBar(this.i18n.general.removeDone(user.display));
+            }))
+          });
+        }));
+      }
+
       if (status.view) {
         this.managementActions.push(new HeadingAction(SvgIcon.PersonCheck,
           operator ? this.i18n.user.profile.statusOperator : this.i18n.user.profile.statusUser,
@@ -382,6 +450,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/marketplace', this.param, 'ad-interests']);
         }));
       }
+      if (marketplace.viewFavorites) {
+        this.managementActions.push(new HeadingAction(SvgIcon.Heart, this.i18n.user.profile.favoriteAds, () => {
+          this.router.navigate(['/marketplace', this.param, 'list-favorites']);
+        }));
+      }
       if (webshop.viewSettings) {
         this.managementActions.push(new HeadingAction(SvgIcon.Truck, this.i18n.user.profile.deliveryMethods, () => {
           this.router.navigate(['/marketplace', this.param, 'delivery-methods']);
@@ -409,6 +482,12 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       if (permissions.references?.view) {
         this.managementActions.push(new HeadingAction(SvgIcon.Star, this.i18n.user.profile.references, () => {
           this.router.navigate(['/users', this.param, 'references', 'search']);
+        }));
+      }
+      // Quick access
+      if (quickAccess.view) {
+        this.managementActions.push(new HeadingAction(SvgIcon.Grid2, this.i18n.user.profile.quickAccess, () => {
+          this.router.navigate(['/users', this.param, 'quick-access', 'settings']);
         }));
       }
       // Feedbacks
@@ -525,6 +604,14 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
   get showOperatorOwner(): boolean {
     return this.user.role === RoleEnum.OPERATOR &&
       ![UserRelationshipEnum.OWNER, UserRelationshipEnum.SAME_OWNER].includes(this.user.relationship);
+  }
+
+  get mainBroker(): User {
+    return this.data.brokers?.find(b => b.mainBroker).broker;
+  }
+
+  get otherBrokers(): User[] {
+    return this.data.brokers?.filter(b => !b.mainBroker).map(b => b.broker);
   }
 
   resolveMenu(user: UserView) {

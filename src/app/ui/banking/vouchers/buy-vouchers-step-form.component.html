@@ -22,8 +22,10 @@
     {{ format.formatWeekDays(data.redeemOnWeekDays) ||
     i18n.voucher.redeem.onDaysAny }}
   </label-value>
-  <input-field type="number" formControlName="count" required
-    fieldSize="small" [label]="i18n.voucher.numberOfVouchers">
+  <input-field
+    *ngIf="data.type.maxVouchersPerBuy == null || data.type.maxVouchersPerBuy > 1"
+    type="number" formControlName="count" required fieldSize="small"
+    [label]="i18n.voucher.numberOfVouchers">
   </input-field>
   <label-value *ngIf="fixedAmount; else regularAmount" kind="fieldView"
     [label]="countLabel$ | async">

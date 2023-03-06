@@ -1,10 +1,10 @@
-import { HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Params } from '@angular/router';
 import {
-  CreateDeviceConfirmation, Currency, CustomFieldDetailed, DeviceConfirmationTypeEnum,
-  ExportFormat, OperationDataForRun, OperationResultTypeEnum,
+  CreateDeviceConfirmation, Currency, DeviceConfirmationTypeEnum,
+  ExportFormat, OperationCustomFieldDetailed, OperationDataForRun, OperationResultTypeEnum,
   OperationRowActionEnum, OperationScopeEnum, RunOperationAction, RunOperationResult, RunOperationResultColumn, RunOperationResultColumnTypeEnum
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services/operations.service';
@@ -37,6 +37,12 @@ export class RunOperationComponent
   extends BasePageComponent<OperationDataForRun>
   implements OnInit {
 
+  /** Cache keys to be used with the StateManager */
+  static OPERATION_DATA = 'operationData';
+  static OPERATION_RESULT_RESPONSE = 'operationResultResponse';
+  static OPERATION_RESULT_RESPONSE_HEADERS = 'operationResultResponseHeaders';
+
+
   /** The scope is only set when not running over own user */
   runScope: OperationRunScope;
   userParam: string;
@@ -48,10 +54,11 @@ export class RunOperationComponent
   pageResults$ = new BehaviorSubject<PagedResults<any>>(null);
   redirecting$ = new BehaviorSubject(false);
   pageData: PageData;
-  formFields: CustomFieldDetailed[];
+  formFields: OperationCustomFieldDetailed[];
   isSearch: boolean;
   isContent: boolean;
   runDirectly: boolean;
+  reRun: boolean;
   hasSearchFields: boolean;
   leaveNotification: boolean;
   alreadyExecuted: boolean;
@@ -134,30 +141,22 @@ export class RunOperationComponent
         request = this.operationsService.getOperationDataForRun(params);
         break;
     }
-
-    // Perform the request to get the run data
     this.nextRequestState.queryParams = route.queryParams;
     this.leaveNotification = this.nextRequestState.leaveNotification;
-    this.addSub(request.subscribe(data => {
-      this.data = data;
-    }));
+    this.handleReRunAndGetOperationData(request);
   }
 
   onDataInitialized(data: OperationDataForRun) {
+    this.stateManager.set(RunOperationComponent.OPERATION_DATA, data);
     if (this.runScope === OperationRunScope.User) {
       this.self = this.authHelper.isSelf(data.user);
-    }
-
-    if (data.scope === OperationScopeEnum.INTERNAL && data.id !== this.runOperationHelper.nextAction) {
-      // This action has already been executed, this is probably a page refresh
-      this.alreadyExecuted = true;
-      return;
     }
 
     this.isSearch = data.resultType === OperationResultTypeEnum.RESULT_PAGE;
     this.isContent = [OperationResultTypeEnum.PLAIN_TEXT, OperationResultTypeEnum.RICH_TEXT].includes(data.resultType);
     const formFields = data.formParameters || [];
-    this.form = this.fieldsHelper.customValuesFormGroup(formFields);
+    this.form = this.fieldsHelper.customValuesFormGroup(formFields,
+      { disabledProvider: (field => (field as OperationCustomFieldDetailed).readonly) });
     this.fileControl = this.formBuilder.control(null);
     this.runDirectly = this.runOperationHelper.canRunDirectly(data, false);
     this.hasSearchFields = formFields.length > 0 || data.hasFileUpload;
@@ -168,8 +167,12 @@ export class RunOperationComponent
       for (const field of formFields) {
         const value = queryParams.get(field.internalName);
         if (empty(value)) {
-          // There's no fixed value for this field.
-          this.formFields.push(field);
+          if (field.readonly && !this.form.controls[field.internalName].value) {
+            this.form.removeControl(field.internalName);
+          } else {
+            // There's no fixed value for this field.
+            this.formFields.push(field);
+          }
         } else {
           // There's a fixed value for this field: store it on the form
           const patch: any = {};
@@ -181,12 +184,14 @@ export class RunOperationComponent
 
     if (this.isSearch) {
       // When a search, manage the form state, so on back, the same filters are kept
-      this.stateManager.manage(this.form);
       this.pageData = {
         page: 0,
         pageSize: this.uiLayout.searchPageSize,
       };
+    } else if (this.reRun) {
+      this.stateManager.stopManaging();
     }
+    this.stateManager.manage(this.form);
 
     // Register the row action, if any
     this.operationHelper.register(data.rowOperation);
@@ -205,8 +210,44 @@ export class RunOperationComponent
         }));
       }
       // Run the operation
-      this.run(data);
+      if (this.reRun) {
+        this.run(data);
+      }
     }
+  }
+
+  /**
+ * Performs the request to get the run data or get it with the result from the StateManager if it doesn't need to reRun
+ */
+  handleReRunAndGetOperationData(request: Observable<OperationDataForRun>) {
+    const actualData = this.stateManager.get(RunOperationComponent.OPERATION_DATA) as OperationDataForRun;
+    if (this.runOperationHelper.reRun || !actualData || actualData.reRun) {
+      // Perform the request to get the run data
+      this.runOperationHelper.reRun = false;
+      this.reRun = true;
+      this.cleanCache();
+      this.addSub(request.subscribe(data => this.data = data));
+    } else {
+      // Set the data and the result from the cache
+      this.reRun = false;
+      this.data = actualData;
+      this.afterRun(this.getResultResponseFromStateManager());
+    }
+  }
+
+  cleanCache() {
+    this.stateManager.delete(RunOperationComponent.OPERATION_DATA);
+    this.stateManager.delete(RunOperationComponent.OPERATION_RESULT_RESPONSE);
+    this.stateManager.delete(RunOperationComponent.OPERATION_RESULT_RESPONSE_HEADERS);
+  }
+
+  getResultResponseFromStateManager(): HttpResponse<any> {
+    let response = this.stateManager.get(RunOperationComponent.OPERATION_RESULT_RESPONSE) as HttpResponse<any>;
+    let responseHeaders = new HttpHeaders();
+    const headersMap = (this.stateManager.get(RunOperationComponent.OPERATION_RESULT_RESPONSE_HEADERS) as Map<string, string>);
+    headersMap?.forEach((value, header) => responseHeaders = responseHeaders.set(header, value));
+    response = response.clone({ headers: responseHeaders });
+    return response;
   }
 
   /** Execute the custom operation */
@@ -290,7 +331,16 @@ export class RunOperationComponent
     this.redirecting$.next(data.resultType === OperationResultTypeEnum.EXTERNAL_REDIRECT);
   }
 
+  setResultResponseInCache(response: HttpResponse<any>) {
+    this.stateManager.set(RunOperationComponent.OPERATION_RESULT_RESPONSE, response);
+    let responseHeaders = new Map<string, string>();
+    response.headers.keys().every(k => responseHeaders.set(k, response.headers.get(k)));
+    this.stateManager.set(RunOperationComponent.OPERATION_RESULT_RESPONSE_HEADERS, responseHeaders);
+  }
+
   private afterRun(response: HttpResponse<any>) {
+    this.setResultResponseInCache(response);
+    this.confirmation.hide();
     const handled = this.runOperationHelper.handleResult(response);
     if (handled) {
       // Already handled (download / notification / url / redirect)
@@ -351,6 +401,7 @@ export class RunOperationComponent
         } else {
           this.operationHelper.register(op);
           headingActions.push(new HeadingAction(this.operationHelper.icon(op), op.label, () => {
+            this.runOperationHelper.reRun = true;
             this.runOperationHelper.run(op, null, action.parameters);
           }));
         }
@@ -363,6 +414,7 @@ export class RunOperationComponent
   }
 
   runPrimaryAction(action: RunOperationAction) {
+    this.runOperationHelper.reRun = true;
     this.runOperationHelper.run(action.action, null, action.parameters);
   }
 
@@ -375,8 +427,8 @@ export class RunOperationComponent
 
     switch (action) {
       case OperationRowActionEnum.OPERATION:
+        this.runOperationHelper.reRun = true;
         const operation = data.rowOperation;
-        this.runOperationHelper.nextAction = operation.id;
         this.router.navigate(['/operations', 'action', ApiHelper.internalNameOrId(operation)], {
           queryParams: params,
         });

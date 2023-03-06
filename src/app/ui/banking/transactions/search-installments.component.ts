@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  Currency, InstallmentOverviewDataForSearch, InstallmentOverviewResult, InstallmentStatusEnum, TransactionDataForSearch
+  Currency, CustomFieldDetailed, InstallmentOverviewDataForSearch, InstallmentOverviewResult, InstallmentStatusEnum, TransactionDataForSearch
 } from 'app/api/models';
 import { InstallmentQueryFilters } from 'app/api/models/installment-query-filters';
 import { InstallmentsService } from 'app/api/services/installments.service';
@@ -30,6 +30,8 @@ export class SearchInstallmentsComponent
   currencies = new Map<string, Currency>();
   hasTransactionNumber: boolean;
   transactionNumberPattern: string;
+  fieldsInSearch: CustomFieldDetailed[];
+  fieldsInList: CustomFieldDetailed[];
 
   constructor(
     injector: Injector,
@@ -42,28 +44,27 @@ export class SearchInstallmentsComponent
     super.ngOnInit();
 
     // Get the installments search data
-    this.stateManager.cache('data',
-      this.installmentsService.getInstallmentsOverviewDataForSearch({
-        fields: ['accountTypes', 'preselectedPeriods', 'query'],
-      }),
-    ).subscribe(data => {
+    this.stateManager.cache('data', this.installmentsService.getInstallmentsOverviewDataForSearch({
+      fields: ['accountTypes', 'preselectedPeriods', 'query', 'fieldsInBasicSearch', 'fieldsInList', 'customFields', 'archivingDate']
+    })).subscribe(data => this.data = data);
+  }
 
-      // Initialize the currencies Map to make lookups easier
-      (data.accountTypes || []).forEach(at => {
-        const currency = at.currency;
-        this.currencies.set(currency.id, currency);
-        if (!empty(currency.internalName)) {
-          this.currencies.set(currency.internalName, currency);
-        }
-      });
-
-      // Only initialize the data once the form is filled-in
-      this.data = data;
-    });
+  prepareForm(data: InstallmentOverviewDataForSearch) {
+    this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInBasicSearch.includes(cf.internalName));
+    this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
+    this.form.setControl('customFields', this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields));
   }
 
   onDataInitialized(data: InstallmentOverviewDataForSearch) {
     super.onDataInitialized(data);
+    // Initialize the currencies Map to make lookups easier
+    (data.accountTypes || []).forEach(at => {
+      const currency = at.currency;
+      this.currencies.set(currency.id, currency);
+      if (!empty(currency.internalName)) {
+        this.currencies.set(currency.internalName, currency);
+      }
+    });
     const transactionNumberPatterns = (data.accountTypes || [])
       .map(a => a.currency?.transactionNumberPattern)
       .filter(p => p)
@@ -75,7 +76,7 @@ export class SearchInstallmentsComponent
 
   getFormControlNames() {
     return ['status', 'fromAccountType', 'toAccountType', 'transferFilter', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd',
-      'direction', 'transactionNumber'];
+      'direction', 'transactionNumber', 'customFields', 'orderBy'];
   }
 
   getInitialFormValue(data: TransactionDataForSearch) {
@@ -99,6 +100,7 @@ export class SearchInstallmentsComponent
     params.datePeriod = this.bankingHelper.resolveDatePeriod(value);
     const status = value.status as InstallmentStatusEnum;
     params.statuses = [status];
+    params.customFields = this.fieldHelper.toCustomValuesFilter(value.customFields);
     return params;
   }
 

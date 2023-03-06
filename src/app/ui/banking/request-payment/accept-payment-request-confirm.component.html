@@ -87,6 +87,10 @@
       }) }}
     </ng-container>
   </ng-template>
+  <label-value *ngIf="preview.payment.occurrenceInterval"
+    [label]="i18n.transaction.occurrenceInterval">
+    {{ format.formatTimeInterval(preview.payment.occurrenceInterval) }}
+  </label-value>
 </label-value>
 <label-value [label]="i18n.general.description"
   *ngIf="preview.payment.description" [value]="preview.payment.description"
@@ -132,7 +136,7 @@
     <confirmation-password focused formControlName="confirmationPassword"
       [passwordInput]="preview.confirmationPasswordInput"
       [createDeviceConfirmation]="createDeviceConfirmation"
-      (confirmationModeChanged)="confirmationModeChanged.emit($event)"
+      (showSubmit)="showSubmit.emit($event)"
       (confirmed)="confirmed.emit($event)">
     </confirmation-password>
   </ng-container>

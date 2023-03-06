@@ -2,21 +2,19 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import {
   AccountWithCurrency, AvailabilityEnum, Currency, CustomFieldDetailed, DataForTransaction, PaymentPreview, PaymentSchedulingEnum,
-  PerformPayment, TimeFieldEnum, TimeInterval, Transaction, TransactionTypeData, TransferType,
+  PerformPayment, RoleEnum, TimeFieldEnum, TimeInterval, Transaction, TransactionTypeData, TransferType
 } from 'app/api/models';
 import { PaymentsService } from 'app/api/services/payments.service';
 import { PosService } from 'app/api/services/pos.service';
-import { BankingHelperService } from 'app/ui/core/banking-helper.service';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
+import { PaymentStepFormComponent } from 'app/ui/banking/payment/payment-step-form.component';
+import { BankingHelperService } from 'app/ui/core/banking-helper.service';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
-import { cloneDeep } from 'lodash-es';
-import { isEqual } from 'lodash-es';
+import { cloneDeep, isEqual } from 'lodash-es';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { PaymentStepFormComponent } from 'app/ui/banking/payment/payment-step-form.component';
 
 export type PaymentStep = 'form' | 'confirm';
 
@@ -86,8 +84,6 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
 
   @ViewChild('paymentStepForm') paymentStepForm: PaymentStepFormComponent;
 
-  ConfirmationMode = ConfirmationMode;
-
   fromParam: string;
   toParam: string;
   fromSelf: boolean;
@@ -111,7 +107,7 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
   lastPaymentTypeData: TransactionTypeData;
   lastValue: any;
   customValuesControls = new Map<string, FormControl>();
-  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
+  showSubmit$ = new BehaviorSubject(true);
 
   get step(): PaymentStep {
     return this.step$.value;
@@ -146,7 +142,6 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
 
   ngOnInit() {
     super.ngOnInit();
-
     // Resolve the from and to parameters
     const route = this.route.snapshot;
     this.pos = route.url[route.url.length - 1].path === 'pos';
@@ -155,7 +150,8 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
       this.fromSelf = this.authHelper.isSelf(this.fromParam);
       this.fromSystem = this.authHelper.isSystem(this.fromParam);
       this.toParam = route.params.to;
-      this.toSelf = this.toParam != null && this.authHelper.isSelf(this.toParam);
+      this.toSelf = this.toParam != null && this.dataForFrontendHolder.auth.role != RoleEnum.ADMINISTRATOR
+        && this.authHelper.isSelf(this.toParam);
       this.toSystem = this.toParam != null && this.authHelper.isSystem(this.toParam);
     }
 
@@ -338,14 +334,20 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
     }
     this.addSub(this.confirmDataRequest().subscribe(preview => {
       this.preview = preview;
-      this.step = 'confirm';
-      this.canConfirm = this.authHelper.canConfirm(preview.confirmationPasswordInput);
-      if (!this.canConfirm) {
-        this.notification.warning(this.authHelper.getConfirmationMessage(preview.confirmationPasswordInput, this.pos));
+      if (this.preview.skipConfirmation) {
+        // Attempt the payment directly
+        this.perform();
+      } else {
+        // Go to the confirmation step
+        this.step = 'confirm';
+        this.canConfirm = this.authHelper.canConfirm(preview.confirmationPasswordInput);
+        if (!this.canConfirm) {
+          this.notification.warning(this.authHelper.getConfirmationMessage(preview.confirmationPasswordInput, null, this.pos));
+        }
+        const val = preview.confirmationPasswordInput ? Validators.required : null;
+        this.confirmationPassword.setValidators(val);
+        scrollTop();
       }
-      const val = preview.confirmationPasswordInput ? Validators.required : null;
-      this.confirmationPassword.setValidators(val);
-      scrollTop();
     }));
   }
 

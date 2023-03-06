@@ -54,14 +54,16 @@ export class ApiHelper {
    * Asserts that an entity has internal name
    */
   static isInternalNamed(entity: Entity): entity is InternalNamedEntity {
-    return (entity as InternalNamedEntity).internalName !== undefined;
+    const internalName = (entity as InternalNamedEntity).internalName;
+    return internalName !== undefined && internalName !== null;
   }
 
   /**
    * Asserts that an entity has name
    */
   static is(entity: Entity): entity is NamedEntity {
-    return (entity as NamedEntity).name !== undefined;
+    const name = (entity as NamedEntity).name;
+    return name !== undefined && name !== null;
   }
 
   /**
@@ -268,7 +270,7 @@ export class ApiHelper {
       case 'token':
         return `/users/tokens/view/${id}`;
       case 'publicUserRegistration':
-        return `/users/registration`;
+        return id ? `/users/registration/${id}` : `/users/registration`;
       default:
         return null;
     }
@@ -280,7 +282,6 @@ export class ApiHelper {
    * - Expired access password
    * - Pending agreements
    * - Pending login confirmation
-   * - Expired secondary password
    * - Guest from an unauthorized IP address
    */
   static isRestrictedAccess(dataForFrontend: DataForFrontend): boolean {
@@ -293,8 +294,7 @@ export class ApiHelper {
     const auth = dataForFrontend?.dataForUi?.auth || {};
     return auth.expiredPassword
       || auth.pendingAgreements
-      || auth.pendingSecondaryPassword
-      || auth.expiredSecondaryPassword
+      || !!auth.loginConfirmation
       || auth.unauthorizedAddress;
   }
 

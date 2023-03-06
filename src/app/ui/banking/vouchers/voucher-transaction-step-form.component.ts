@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CustomFieldDetailed, SendMediumEnum, VoucherBasicDataForTransaction, VoucherDataForTopUp, VoucherTransactionKind } from 'app/api/models';
+import { CustomFieldDetailed, SendMediumEnum, VoucherBasicDataForTransaction, VoucherDataForRedeem, VoucherDataForTopUp, VoucherTransactionKind } from 'app/api/models';
 import { VoucherPinOnActivationEnum } from 'app/api/models/voucher-pin-on-activation-enum';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { BaseComponent } from 'app/shared/base.component';
@@ -68,5 +68,9 @@ export class VoucherTransactionStepFormComponent extends BaseComponent implement
         }));
       }
     }
+  }
+
+  get balance() {
+    return (this.data as VoucherDataForRedeem).balance;
   }
 }

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AccountType, Currency, PreselectedPeriod, RoleEnum,
+  AccountType, Currency, CustomFieldDetailed, PreselectedPeriod, RoleEnum,
   TransferDataForSearch, TransferFilter, TransferKind, TransferQueryFilters, TransferResult, TransOrderByEnum, UserQueryFilters
 } from 'app/api/models';
 import { TransfersService } from 'app/api/services/transfers.service';
@@ -28,10 +28,13 @@ export class SearchTransfersOverviewComponent
   implements OnInit {
 
   filters$ = new BehaviorSubject<TransferFilter[]>([]);
+  currencies: Currency[];
   singleCurrency: Currency;
   singleAccount: AccountType;
   hasTransactionNumber: boolean;
   transactionNumberPattern: string;
+  fieldsInSearch: CustomFieldDetailed[];
+  fieldsInList: CustomFieldDetailed[];
 
   constructor(
     injector: Injector,
@@ -47,15 +50,9 @@ export class SearchTransfersOverviewComponent
 
   getFormControlNames() {
     return [
-      'preselectedPeriod',
-      'periodBegin', 'periodEnd',
-      'groups', 'currency', 'channels',
-      'fromAccountTypes', 'toAccountTypes',
-      'transferFilters',
-      'kinds', 'chargedBack',
-      'minAmount', 'maxAmount',
-      'transactionNumber',
-      'user', 'by', 'orderBy', 'brokers'
+      'preselectedPeriod', 'periodBegin', 'periodEnd', 'groups', 'currency', 'channels', 'fromAccountTypes', 'toAccountTypes',
+      'transferFilters', 'kinds', 'chargedBack', 'minAmount', 'maxAmount', 'transactionNumber', 'user', 'by', 'orderBy', 'brokers',
+      'customFields'
     ];
   }
 
@@ -68,20 +65,21 @@ export class SearchTransfersOverviewComponent
 
   ngOnInit() {
     super.ngOnInit();
+    this.stateManager.cache('data', this.transfersService.getTransferDataForSearch()).subscribe(data => this.data = data);
+  }
 
-    // Get the transfers overview data
-    this.stateManager.cache('data',
-      this.transfersService.getTransferDataForSearch(),
-    ).subscribe(data => {
-      this.data = data;
-    });
+  prepareForm(data: TransferDataForSearch) {
+    this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInBasicSearch.includes(cf.internalName));
+    this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
+    this.form.setControl('customFields', this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields));
   }
 
   onDataInitialized(data: TransferDataForSearch) {
     super.onDataInitialized(data);
-    this.singleCurrency = (data.currencies || []).length === 1 ? data.currencies[0] : null;
+    this.currencies = [...new Set((data.accountTypes || []).map(at => at.currency))].sort((c1, c2) => c1.name.localeCompare(c2.name));
+    this.singleCurrency = (this.currencies || []).length === 1 ? this.currencies[0] : null;
     this.singleAccount = (data.accountTypes || []).length === 1 ? data.accountTypes[0] : null;
-    const transactionNumberPatterns = (data.currencies || [])
+    const transactionNumberPatterns = this.currencies
       .map(c => c.transactionNumberPattern)
       .filter(p => p)
       .reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], []);
@@ -182,6 +180,7 @@ export class SearchTransfersOverviewComponent
     query.currencies = value.currency ? [value.currency] : [];
     query.datePeriod = this.bankingHelper.resolveDatePeriod(value);
     query.amountRange = ApiHelper.rangeFilter(value.minAmount, value.maxAmount);
+    query.customFields = this.fieldHelper.toCustomValuesFilter(value.customFields);
     query.fields = [];
     if (value.chargedBack) {
       query.chargedBack = value.chargedBack === 'yes';

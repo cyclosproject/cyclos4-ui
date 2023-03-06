@@ -33,6 +33,7 @@ import { OperatorRegistrationComponent } from 'app/ui/users/operators/operator-r
 import { SearchUserOperatorsComponent } from 'app/ui/users/operators/search-user-operators.component';
 import { ChangePasswordDialogComponent } from 'app/ui/users/passwords/change-password-dialog.component';
 import { ManagePasswordsComponent } from 'app/ui/users/passwords/manage-passwords.component';
+import { ManageTotpSecretComponent } from 'app/ui/users/passwords/manage-totp-secret.component';
 import { ViewPasswordsHistoryComponent } from 'app/ui/users/passwords/view-passwords-history.component';
 import { ListProductAssignmentComponent } from 'app/ui/users/products/list-product-assignment.component';
 import { ViewProductAssignmentHistoryComponent } from 'app/ui/users/products/view-product-assignment-history.component';
@@ -40,9 +41,11 @@ import { EditProfileComponent } from 'app/ui/users/profile/edit-profile.componen
 import { ValidateEmailChangeComponent } from 'app/ui/users/profile/validate-email-change.component';
 import { VerifyPhoneComponent } from 'app/ui/users/profile/verify-phone.component';
 import { ViewProfileComponent } from 'app/ui/users/profile/view-profile.component';
+import { QuickAccessSettingsComponent } from 'app/ui/users/quick-access/quick-access-settings.component';
 import { SearchReferencesComponent } from 'app/ui/users/references/search-references.component';
 import { SetReferenceComponent } from 'app/ui/users/references/set-reference.component';
 import { ViewReferenceComponent } from 'app/ui/users/references/view-reference.component';
+import { ConfirmResumeWizardComponent } from 'app/ui/users/registration/confirm-resume-wizard.component';
 import { RegistrationStepConfirmComponent } from 'app/ui/users/registration/registration-step-confirm.component';
 import { RegistrationStepDoneComponent } from 'app/ui/users/registration/registration-step-done.component';
 import { RegistrationStepFieldsComponent } from 'app/ui/users/registration/registration-step-fields.component';
@@ -80,6 +83,7 @@ import { UsersRoutingModule } from 'app/ui/users/users-routing.module';
     ValidateEmailChangeComponent,
 
     UserRegistrationComponent,
+    ConfirmResumeWizardComponent,
     RegistrationStepGroupComponent,
     RegistrationStepIdPComponent,
     RegistrationStepFieldsComponent,
@@ -111,6 +115,7 @@ import { UsersRoutingModule } from 'app/ui/users/users-routing.module';
     ManagePasswordsComponent,
     ChangePasswordDialogComponent,
     ViewPasswordsHistoryComponent,
+    ManageTotpSecretComponent,
 
     UserIdentityProvidersComponent,
 
@@ -146,7 +151,9 @@ import { UsersRoutingModule } from 'app/ui/users/users-routing.module';
 
     SearchMessagesComponent,
     ViewMessageComponent,
-    EditMessageComponent
+    EditMessageComponent,
+
+    QuickAccessSettingsComponent
   ],
   imports: [
     UsersRoutingModule,
@@ -157,6 +164,7 @@ import { UsersRoutingModule } from 'app/ui/users/users-routing.module';
     VerifyPhoneComponent,
     PickUserDialogComponent,
     ChangePasswordDialogComponent,
+    ConfirmResumeWizardComponent
   ]
 })
 export class UsersModule {

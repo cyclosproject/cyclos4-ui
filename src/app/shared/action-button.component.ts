@@ -11,7 +11,11 @@ export type ActionKind
   = 'primary'
 
   /** Actions "inside" a page which are not primary, like actions over images editing the profile or the button to add new addresses */
-  | 'secondary';
+  | 'secondary'
+
+  /** Actions with a flat background, shown like the result type selector */
+  | 'flat'
+  ;
 
 /**
  * A button that displays a spinner, before the icon and/or text, if it is disabled.

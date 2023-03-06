@@ -71,15 +71,15 @@
           </div>
         </a>
       </ng-template>
-      <ng-container *ngIf="messageHelper.messageStatus$ | async as status">
-        <a *ngIf="status && (layout.gtxxs$ | async)"
-          routerLink="/users/messages/search" id="messages-link"
+      <ng-container
+        *ngIf="(layout.gtxxs$ | async) && (messageHelper.messageStatus$ | async)">
+        <a routerLink="/users/messages/search" id="messages-link"
           (click)="navigate(messageHelper.resolveMenu(), $event); blurIfClick('messages-link', $event);"
           [ngClass]="customNgClass(messageHelper.resolveMenu())"
           [tooltip]="hasMenu ? messageHelper.resolveLabel() : null"
           [attr.aria-label]="messageHelper.resolveLabel()">
           <icon-with-counter [icon]="SvgIcon.Envelope"
-            [count]="status.newMessages">
+            [count]="(messageHelper.messageStatus$ | async).newMessages">
           </icon-with-counter>
           <div *ngIf="(layout.gtmd$ | async) && !hasMenu" class="ml-2">
             {{ messageHelper.resolveLabel() }}
@@ -87,15 +87,15 @@
         </a>
       </ng-container>
     </ng-container>
-    <ng-container *ngIf="notification.notificationsStatus$ | async as status">
-      <a *ngIf="status && (layout.gtxxs$ | async)"
-        routerLink="/personal/notifications" id="notifications-link"
+    <ng-container
+      *ngIf="(layout.gtxxs$ | async) && (notification.notificationsStatus$ | async)">
+      <a routerLink="/personal/notifications" id="notifications-link"
         (click)="navigate(Menu.NOTIFICATIONS, $event); blurIfClick('notifications-link', $event);"
         [ngClass]="customNgClass(Menu.NOTIFICATIONS)"
         [tooltip]="hasMenu ? i18n.menu.personalNotifications : null"
         [attr.aria-label]="i18n.menu.personalNotifications">
         <icon-with-counter [icon]="SvgIcon.Bell"
-          [count]="status.newNotifications">
+          [count]="(notification.notificationsStatus$ | async).newNotifications">
         </icon-with-counter>
         <div *ngIf="(layout.gtmd$ | async) && !hasMenu" class="ml-2">
           {{ i18n.menu.personalNotifications }}

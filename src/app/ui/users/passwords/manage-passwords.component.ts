@@ -1,17 +1,21 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import {
-  CreateDeviceConfirmation, DataForUserPasswords, DeviceConfirmationTypeEnum,
+  CreateDeviceConfirmation, CredentialTypeEnum, DataForUserPasswords, DeviceConfirmationTypeEnum,
+  PasswordInput,
   PasswordStatusAndActions, PasswordStatusEnum, SendMediumEnum
 } from 'app/api/models';
 import { PasswordsService } from 'app/api/services/passwords.service';
+import { TotpService } from 'app/api/services/totp.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { Action, HeadingAction } from 'app/shared/action';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { LoginState } from 'app/ui/core/login-state';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { ChangePasswordDialogComponent } from 'app/ui/users/passwords/change-password-dialog.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { first } from 'rxjs/operators';
 
 /**
  * Manages the user passwords
@@ -28,9 +32,13 @@ export class ManagePasswordsComponent
   param: string;
   self: boolean;
 
+  showPasswords = true;
   multiple: boolean;
   title: string;
   mobileTitle: string;
+
+  loginConfirmationMessage: string;
+  loginConfirmation: PasswordInput;
 
   securityAnswer: FormGroup;
 
@@ -38,21 +46,63 @@ export class ManagePasswordsComponent
     injector: Injector,
     private modal: BsModalService,
     private passwordsService: PasswordsService,
-    private nextRequestState: NextRequestState) {
+    private totpService: TotpService,
+    private nextRequestState: NextRequestState,
+    private loginState: LoginState) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.param = this.route.snapshot.params.user;
-    this.addSub(this.passwordsService.getUserPasswordsListData({ user: this.param })
-      .subscribe(data => {
-        this.data = data;
+    this.self = this.authHelper.isSelf(this.param);
+
+    const auth = this.dataForFrontendHolder.auth;
+    if (this.self && !auth.permissions?.passwords?.manage && auth.totpEnabled) {
+      // Special case: the user has no permission to manage passwords, but does have TOTP
+      this.showPasswords = false;
+      this.addSub(this.totpService.viewUserTotpSecret({ user: this.param }).subscribe(totp => {
+        this.data = {
+          user: totp.user,
+          passwords: [],
+          totpSecret: totp
+        };
       }));
+    } else {
+      this.addSub(this.passwordsService.getUserPasswordsListData({ user: this.param })
+        .subscribe(data => {
+          this.data = data;
+        }));
+    }
   }
 
   onDataInitialized(data: DataForUserPasswords) {
-    this.self = this.authHelper.isSelf(data.user);
+    this.loginConfirmation = this.dataForFrontendHolder.auth?.loginConfirmation;
+    if (this.loginConfirmation) {
+      const passwordType = this.loginConfirmation.passwordType;
+      const allowed = (this.loginConfirmation.allowedCredentials || []).filter(ct => [CredentialTypeEnum.PASSWORD, CredentialTypeEnum.TOTP].includes(ct));
+      data.passwords = data.passwords.filter(p => passwordType && p.type.id === passwordType.id);
+      this.showPasswords = data.passwords.length > 0;
+
+      if (!allowed.includes(CredentialTypeEnum.TOTP)) {
+        data.totpSecret = null;
+      }
+
+      if (allowed.length === 1) {
+        switch (allowed[0]) {
+          case CredentialTypeEnum.PASSWORD:
+            this.loginConfirmationMessage = this.i18n.login.error.confirmation.notActive.password(this.loginConfirmation.passwordType?.name);
+            break;
+          case CredentialTypeEnum.TOTP:
+            this.loginConfirmationMessage = this.i18n.login.error.confirmation.notActive.totp;
+            break;
+        }
+      } else if (allowed.length > 1) {
+        const names = allowed.map(ct => this.authHelper.credentialTypeLabel(this.loginConfirmation, ct));
+        this.loginConfirmationMessage = this.i18n.login.error.confirmation.notActive.multiple(names.join(", "));
+      }
+    }
+
     this.multiple = data.passwords.length > 1;
     if (this.self) {
       this.title = this.multiple
@@ -80,6 +130,11 @@ export class ManagePasswordsComponent
     if (data.passwords.find(p => p.history?.length > 0)) {
       this.headingActions.push(new HeadingAction(this.SvgIcon.Clock, this.i18n.general.viewHistory, () =>
         this.router.navigate(['/users', this.param, 'passwords', 'history']), true));
+    }
+
+    if (data.totpSecret) {
+      // The user isn't sent twice, but is needed
+      data.totpSecret.user = data.user;
     }
   }
 
@@ -375,5 +430,13 @@ export class ManagePasswordsComponent
 
   resolveMenu(data: DataForUserPasswords) {
     return this.menu.userMenu(data.user, Menu.PASSWORDS);
+  }
+
+  reload() {
+    if (this.loginConfirmation) {
+      this.dataForFrontendHolder.reload().pipe(first()).subscribe(() => this.router.navigateByUrl(this.loginState.redirectUrl || ''));
+    } else {
+      super.reload();
+    }
   }
 }

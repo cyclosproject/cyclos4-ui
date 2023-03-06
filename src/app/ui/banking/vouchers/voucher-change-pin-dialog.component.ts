@@ -3,7 +3,6 @@ import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms'
 import { ChangeVoucherPin, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, VoucherActionEnum, VoucherCreationTypeEnum, VoucherView } from 'app/api/models';
 import { VouchersService } from 'app/api/services/vouchers.service';
 import { BaseComponent } from 'app/shared/base.component';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
@@ -35,12 +34,11 @@ const PINS_MATCH_VAL: ValidatorFn = control => {
 export class VoucherChangePinDialogComponent extends BaseComponent implements OnInit {
 
   VoucherCreationTypeEnum = VoucherCreationTypeEnum;
-  ConfirmationMode = ConfirmationMode;
 
   @Input() voucher: VoucherView;
   @Output() done = new EventEmitter<void>();
 
-  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
+  showSubmit$ = new BehaviorSubject(true);
   form: FormGroup;
 
   constructor(
@@ -52,7 +50,6 @@ export class VoucherChangePinDialogComponent extends BaseComponent implements On
 
   ngOnInit() {
     super.ngOnInit();
-
     this.form = this.formBuilder.group({
       newPin: [null, [Validators.required,
       Validators.minLength(this.voucher.pinInput?.minLength ?? 6),

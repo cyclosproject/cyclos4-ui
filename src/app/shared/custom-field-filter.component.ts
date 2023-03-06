@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from '@angular/forms';
-import { CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum, UserQueryFilters, UserStatusEnum } from 'app/api/models';
+import { CustomFieldDetailed, CustomFieldSizeEnum, CustomFieldTypeEnum, LinkedEntityTypeEnum, UserQueryFilters, UserStatusEnum } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
+import { LayoutService } from 'app/core/layout.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { FieldOption } from 'app/shared/field-option';
@@ -83,13 +84,17 @@ export class CustomFieldFilterComponent
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private fieldHelper: FieldHelperService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public layout: LayoutService,
   ) {
     super(injector, controlContainer);
   }
 
   ngOnInit() {
     super.ngOnInit();
+    if (this.layout.ltmd) {
+      this.fieldSize = CustomFieldSizeEnum.FULL;
+    }
     if (RANGE.includes(this.type)) {
       this.range = this.formBuilder.array([null, null]);
       this.addSub(this.range.valueChanges.subscribe((arr: string[]) => {
@@ -105,6 +110,11 @@ export class CustomFieldFilterComponent
     if (this.type === CustomFieldTypeEnum.DYNAMIC_SELECTION && typeof value === 'string') {
       // The dynamic can have a separator between value and text. Keep only the value
       return value.split(ApiHelper.VALUE_SEPARATOR)[0];
+    }
+
+    if (RANGE.includes(this.type)) {
+      const values = value.split(ApiHelper.VALUE_SEPARATOR);
+      this.range.setValue(values, { emitEvent: false });
     }
     return value;
   }

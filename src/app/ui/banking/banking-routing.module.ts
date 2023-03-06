@@ -103,10 +103,24 @@ const bankingRoutes: Routes = [
         }
       },
       {
+        path: ':owner/tickets',
+        component: SearchOwnerTransactionsComponent,
+        data: {
+          kind: 'ticket'
+        }
+      },
+      {
         path: 'payment-requests',
         component: SearchTransactionsOverviewComponent,
         data: {
           kind: 'payment-request'
+        }
+      },
+      {
+        path: 'tickets',
+        component: SearchTransactionsOverviewComponent,
+        data: {
+          kind: 'ticket'
         }
       },
       {

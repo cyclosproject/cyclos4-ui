@@ -1,5 +1,7 @@
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgModule } from '@angular/core';
 import { ConfirmationService, ConfirmOptions } from 'app/core/confirmation.service';
+import { AvatarLightboxComponent } from 'app/shared/avatar-lightbox.component';
 import { BasicProfileFieldFilterComponent } from 'app/shared/basic-profile-field-filter.component';
 import { BooleanFieldComponent } from 'app/shared/boolean-field.component';
 import { ButtonToggleComponent } from 'app/shared/button-toggle.component';
@@ -35,6 +37,7 @@ import { PickContactComponent } from 'app/shared/pick-contact.component';
 import { RadioGroupFieldComponent } from 'app/shared/radio-group-field.component';
 import { RichTextContainerComponent } from 'app/shared/rich-text-container.component';
 import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
+import { SendOtpFieldComponent } from 'app/shared/send-otp-field.component';
 import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
 import { TempFileUploadComponent } from 'app/shared/temp-file-upload.component';
 import { TextDialogComponent } from 'app/shared/text-dialog.component';
@@ -43,6 +46,7 @@ import { TextAreaFieldComponent } from 'app/shared/textarea-field.component';
 import { TimeIntervalFieldComponent } from 'app/shared/time-interval-field.component';
 import { UrlFieldComponent } from 'app/shared/url-field.component';
 import { UserFieldComponent } from 'app/shared/user-field.component';
+import { UserLinkComponent } from 'app/shared/user-link.component';
 import { AcceptAgreementsComponent } from 'app/ui/shared/accept-agreements.component';
 import { AccountPipe } from 'app/ui/shared/account.pipe';
 import { AddressDetailsWithCustomFieldsComponent } from 'app/ui/shared/address-details-with-custom-fields.component';
@@ -50,7 +54,6 @@ import { AddressDetailsComponent } from 'app/ui/shared/address-details.component
 import { AddressFormComponent } from 'app/ui/shared/address-form.component';
 import { AgreementsContentDialogComponent } from 'app/ui/shared/agreement-content-dialog.component';
 import { AgreementLinkComponent } from 'app/ui/shared/agreement-link.component';
-import { AvatarLightboxComponent } from 'app/shared/avatar-lightbox.component';
 import { DistanceSelectionFieldComponent } from 'app/ui/shared/distance-selection-field.component';
 import { DistanceSelectionComponent } from 'app/ui/shared/distance-selection.component';
 import { FieldPrivacyComponent } from 'app/ui/shared/field-privacy.component';
@@ -58,6 +61,7 @@ import { MapResultComponent } from 'app/ui/shared/map-result.component';
 import { MobileResultComponent } from 'app/ui/shared/mobile-result.component';
 import { MobileResultDirective } from 'app/ui/shared/mobile-result.directive';
 import { PaginatorComponent } from 'app/ui/shared/paginator.component';
+import { PasswordHintsComponent } from 'app/ui/shared/password-hints.component';
 import { ProfileAddressesComponent } from 'app/ui/shared/profile-addresses.component';
 import { ProfileImagesComponent } from 'app/ui/shared/profile-images.component';
 import { RatingStatsComponent } from 'app/ui/shared/rating-stats.component';
@@ -71,13 +75,12 @@ import { StaticMapComponent } from 'app/ui/shared/static-map.component';
 import { TiledResultComponent } from 'app/ui/shared/tiled-result.component';
 import { UiLayoutModule } from 'app/ui/shared/ui-layout.module';
 import { UserInfoComponent } from 'app/ui/shared/user-info.component';
-import { UserLinkComponent } from 'app/shared/user-link.component';
+import { VoucherTypeSelectionComponent } from 'app/ui/shared/voucher-type-selection.component';
 import { NotificationTypeSettingComponent } from 'app/ui/users/notification-settings/notification-type-setting.component';
 import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
-import { SortableModule } from 'ngx-bootstrap/sortable';
 import { NgxGalleryModule } from 'ngx-gallery-9';
 import { WebcamModule } from 'ngx-webcam';
 
@@ -113,6 +116,8 @@ import { WebcamModule } from 'ngx-webcam';
     DistanceSelectionFieldComponent,
     DistanceSelectionComponent,
     AddressDetailsComponent,
+    AddressDetailsWithCustomFieldsComponent,
+    VoucherTypeSelectionComponent,
 
     AvatarLightboxComponent,
     ConfirmationComponent,
@@ -157,7 +162,8 @@ import { WebcamModule } from 'ngx-webcam';
     CaptureCameraComponent,
     ButtonToggleComponent,
     HiddenTextComponent,
-    AddressDetailsWithCustomFieldsComponent,
+    PasswordHintsComponent,
+    SendOtpFieldComponent,
 
     AccountPipe,
   ],
@@ -166,10 +172,10 @@ import { WebcamModule } from 'ngx-webcam';
     RecaptchaModule,
     RecaptchaFormsModule,
     ProgressbarModule.forRoot(),
-    SortableModule.forRoot(),
     PaginationModule.forRoot(),
     WebcamModule,
     NgxGalleryModule,
+    DragDropModule
   ],
   exports: [
     UiLayoutModule,
@@ -177,9 +183,9 @@ import { WebcamModule } from 'ngx-webcam';
     RecaptchaModule,
     RecaptchaFormsModule,
     ProgressbarModule,
-    SortableModule,
     WebcamModule,
     NgxGalleryModule,
+    DragDropModule,
 
     ResultTypeFieldComponent,
     ContentMonitorComponent,
@@ -208,6 +214,8 @@ import { WebcamModule } from 'ngx-webcam';
     DistanceSelectionFieldComponent,
     DistanceSelectionComponent,
     AddressDetailsComponent,
+    AddressDetailsWithCustomFieldsComponent,
+    VoucherTypeSelectionComponent,
 
     AvatarLightboxComponent,
     ConfirmationComponent,
@@ -252,7 +260,8 @@ import { WebcamModule } from 'ngx-webcam';
     CaptureCameraComponent,
     ButtonToggleComponent,
     HiddenTextComponent,
-    AddressDetailsWithCustomFieldsComponent,
+    PasswordHintsComponent,
+    SendOtpFieldComponent,
 
     AccountPipe,
   ],

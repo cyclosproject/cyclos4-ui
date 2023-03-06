@@ -20,13 +20,11 @@
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <payment-step-confirm class="flex-grow-1 d-flex flex-column" [pos]="pos"
       [preview]="preview" [confirmationPassword]="confirmationPassword"
-      (confirmationModeChanged)="confirmationMode$.next($event)"
-      (confirmed)="perform($event)"
+      (showSubmit)="showSubmit$.next($event)" (confirmed)="perform($event)"
       [showPaymentType]="(availablePaymentTypes || []).length > 1">
     </payment-step-confirm>
     <actions forceRow>
-      <action-button
-        *ngIf="(confirmationMode$ | async) != ConfirmationMode.Device; else spacer"
+      <action-button *ngIf="showSubmit$ | async; else spacer"
         [disabled]="!canConfirm || (requesting$ | async)" (action)="perform()"
         [label]="i18n.general.confirm"></action-button>
       <ng-template #spacer>&nbsp;</ng-template>

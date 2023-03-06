@@ -283,7 +283,6 @@
     "rejectPaymentRequest": "Weier hierdie betalingsversoek",
     "changePaymentRequestExpiration": "Wysig vervaldatum",
     "confirmPaymentRequest": "Is u seker om hierdie betalingsversoek te stuur?",
-    "firstOccurrenceIsImmediate": "Datum van eerste voorkoms",
     "firstInstallmentIsImmediate": "Eerste paaiement is onmiddellik",
     "error": {
       "minTime": "'n Minimale periode behoort afgewag te word om 'n betaling van hierdie type te kan doen."

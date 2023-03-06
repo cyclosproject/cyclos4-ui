@@ -31,22 +31,32 @@
 
   <mobile-result *mobileResult="let ad" [avatarImage]="ad.image"
     [avatarIcon]="SvgIcon.Basket">
-    <div *ngIf="ad.price" class="cell-main">
-      <span *ngIf="ad.promotionalPrice" class="promo-price">
-        {{ ad.price | number:decimals(ad) }}
-      </span>
-      {{ (ad.promotionalPrice || ad.price) | currency:lookupCurrency(ad) }}
-    </div>
-    <div class="cell-text">
-      {{ ad.name }}
-    </div>
-    <div *ngIf="ad.user" class="cell-text">
-      {{ i18n.ad.byOwner(ad.user.display) }}
-    </div>
-    <div *ngFor="let field of data.fieldsInList" class="cell-small">
-      <format-field-value [fields]="data.customFields" [plainText]="true"
-        [fieldName]="field" [object]="ad">
-      </format-field-value>
+    <div class="d-flex">
+      <div>
+        <div *ngIf="ad.price" class="cell-main">
+          <span *ngIf="ad.promotionalPrice" class="promo-price">
+            {{ ad.price | number:decimals(ad) }}
+          </span>
+          {{ (ad.promotionalPrice || ad.price) | currency:lookupCurrency(ad)
+          }}
+        </div>
+        <div class="cell-text">
+          {{ ad.name }}
+        </div>
+        <div *ngIf="ad.user" class="cell-text">
+          {{ i18n.ad.byOwner(ad.user.display) }}
+        </div>
+        <div *ngFor="let field of data.fieldsInList" class="cell-small">
+          <format-field-value [fields]="data.customFields" [plainText]="true"
+            [fieldName]="field" [object]="ad">
+          </format-field-value>
+        </div>
+      </div>
+      <div
+        *ngIf="dataForFrontendHolder.auth?.permissions?.marketplace?.favorites && ad.user.id !== dataForFrontendHolder.user.id"
+        class="ml-auto text-right d-flex flex-column">
+        <ad-favorite [ad]="ad"></ad-favorite>
+      </div>
     </div>
   </mobile-result>
 
@@ -58,6 +68,9 @@
         }}</th>
       <th *ngFor="let field of data.fieldsInList">{{ fieldName(field) }}</th>
       <th *ngIf="!data.hidePrice" class="text-right">{{ i18n.ad.price }}</th>
+      <th
+        *ngIf="dataForFrontendHolder.auth?.permissions?.marketplace?.favorites"
+        class="actions"></th>
     </thead>
     <tbody>
       <tr *ngFor="let ad of results?.results"
@@ -90,12 +103,22 @@
           {{ (ad.promotionalPrice || ad.price) |
           currency:lookupCurrency(ad) }}
         </td>
+        <td
+          *ngIf="dataForFrontendHolder.auth?.permissions?.marketplace?.favorites"
+          class="actions">
+          <ad-favorite *ngIf="ad.user.id !== dataForFrontendHolder.user.id"
+            [ad]="ad"></ad-favorite>
+        </td>
       </tr>
     </tbody>
   </table>
 
   <tiled-result *resultTile="let ad" [image]="ad.image" [zoom]="true"
     [icon]="SvgIcon.Basket">
+    <ng-container header
+      *ngIf="dataForFrontendHolder.auth?.permissions?.marketplace?.favorites && ad.user.id !== dataForFrontendHolder.user.id">
+      <ad-favorite [ad]="ad" class="btn-favorite"></ad-favorite>
+    </ng-container>
     <ng-container *ngIf="!singleUser && ad.user">
       <div class="tile-floating-avatar">
         <avatar class="solid-icon" [image]="ad.user.image"

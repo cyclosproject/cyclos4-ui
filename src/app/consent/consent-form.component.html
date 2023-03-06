@@ -1,7 +1,11 @@
 <div class="form" [formGroup]="form">
   <div class="container">
-    <div class="row flex-row-reverse flex-sm-row">
-      <div class="col-12 col-sm-6 auth-container">
+    <div *ngIf="data.client.domain" class="mb-4 text-center"
+      [innerHTML]="i18n.consent.dynamicDomain(data.client.domain)">
+    </div>
+    <div class="row flex-row-reverse flex-md-row">
+      <div [ngClass]="{'col-md-6': hasAdditionalData}"
+        class="col-12 auth-container">
         <div class="auth">
           <input-field formControlName="user"
             [placeholder]="i18n.login.principal" focused
@@ -44,26 +48,28 @@
           <div class="actions actions-primary container-fluid"
             [ngClass]="{'openid-only': data.openidOnly}">
             <div class="row">
-              <div class="col-12 col-sm-6 p-0 pr-sm-2">
+              <div class="col-12 col-md-6 p-0 pr-md-2">
                 <action-button class="w-100"
                   [disabled]="(state.processing$ | async)"
                   (action)="authorize()" [label]="i18n.consent.authorize">
                 </action-button>
               </div>
-              <div class="col-12 col-sm-6 p-0 pl-sm-2">
+              <div class="col-12 col-md-6 p-0 pl-md-2">
                 <action-button [disabled]="(state.processing$ | async)"
-                  outline class="w-100 mt-3 mt-sm-0" (action)="state.deny()"
+                  outline class="w-100 mt-3 mt-md-0" (action)="state.deny()"
                   [label]="i18n.consent.deny"></action-button>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-12 col-sm-6 client-container">
+      <div *ngIf="hasAdditionalData" class="col-12 col-md-6 client-container">
         <div class="client">
           <div class="client-title">
-            <div *ngIf="data.client.image" class="client-image-holder">
-              <img [src]="data.client.image.url" class="client-image">
+            <div
+              *ngIf="data.client.image?.url || data.client.imageUrl as imageUrl"
+              class="client-image-holder">
+              <img [src]="imageUrl" class="client-image">
             </div>
             <div class="client-title-holder">
               <div class="client-name">{{ data.client.name }}</div>

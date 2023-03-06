@@ -26,16 +26,14 @@
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <external-payment-step-confirm class="flex-grow-1 d-flex flex-column"
       [preview]="preview" [confirmationPassword]="confirmationPassword"
-      (confirmationModeChanged)="confirmationMode$.next($event)"
-      (confirmed)="perform($event)"
+      (showSubmit)="showSubmit$.next($event)" (confirmed)="perform($event)"
       [showPaymentType]="(availablePaymentTypes || []).length > 1">
     </external-payment-step-confirm>
     <actions forceRow>
-      <action-button *ngIf="
-          (confirmationMode$ | async) != ConfirmationMode.Device;
-          else spacer
-        " [disabled]="!canConfirm || (requesting$ | async)"
-        (action)="perform()" [label]="i18n.general.confirm"></action-button>
+      <action-button *ngIf="showSubmit$ | async; else spacer"
+        [disabled]="!canConfirm || (requesting$ | async)" (action)="perform()"
+        [label]="i18n.general.confirm">
+      </action-button>
       <ng-template #spacer>&nbsp;</ng-template>
       <action-button outline (action)="backToForm()"
         [label]="i18n.general.previous">

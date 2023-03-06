@@ -7,7 +7,6 @@ import { NextRequestState } from 'app/core/next-request-state';
 import { ShortcutService } from 'app/core/shortcut.service';
 import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { blank, empty, validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
@@ -31,8 +30,6 @@ export interface ConfirmCallbackParams {
 })
 export class ConfirmationComponent implements OnInit, OnDestroy {
 
-  ConfirmationMode = ConfirmationMode;
-
   @Input() title: string;
   @Input() message: string;
   @Input() cancelLabel: string;
@@ -47,7 +44,7 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
   hasFields = false;
   hasForm = false;
   requesting$: Observable<boolean>;
-  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
+  showSubmit$ = new BehaviorSubject(true);
   canConfirm: boolean;
   sub: Subscription;
 
@@ -56,7 +53,7 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
     @Inject(I18nInjectionToken) public i18n: I18n,
     public modalRef: BsModalRef,
     private fieldHelper: FieldHelperService,
-    private authHelper: AuthHelperService,
+    public authHelper: AuthHelperService,
     private shortcut: ShortcutService,
     nextRequestState: NextRequestState,
   ) {

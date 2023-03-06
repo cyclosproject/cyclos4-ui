@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormGroup, Validators } from '@angular/forms';
 import { BrokerDataForAdd, RoleEnum } from 'app/api/models';
 import { BrokeringService } from 'app/api/services/brokering.service';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 
 /**
  * Assigns a broker to an user
@@ -61,7 +61,14 @@ export class BrokerFormComponent
       main: value.mainBroker,
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.brokers.brokerAdded);
-      this.router.navigate(['/users', this.user, 'brokers']);
+      if (this.breadcrumb.breadcrumb$.value.length > 1) {
+        // If coming from the brokers list then go back
+        this.breadcrumb.back();
+      } else {
+        // Else if you has done a F5 or comes from a link, go to the brokers list and remove this page from the history
+        this.breadcrumb.pop();
+        this.router.navigate(['/users', this.user, 'brokers'], { replaceUrl: true });
+      }
     }));
   }
 

@@ -41,11 +41,7 @@ export class SearchMessagesComponent
     super.ngOnInit();
 
     // Get search data
-    this.addSub(this.messagesService.getMessageDataForSearch().subscribe(data => {
-      // Patch value to avoid the form reload twice
-      this.form.patchValue(data.query, { emitEvent: false });
-      this.data = data;
-    }));
+    this.addSub(this.messagesService.getMessageDataForSearch().subscribe(data => this.data = data));
 
     // Send a background request indicating the last time messages were viewed
     this.addSub(this.messagesService.updateLastViewDateForMessages().pipe(first()).subscribe(() => {
@@ -60,10 +56,9 @@ export class SearchMessagesComponent
       this.addSub(this.messageHelper.messageStatus$.pipe(skip(1)).subscribe(() => this.update()));
     }));
 
-    const newAction = this.canSend
-      ? new HeadingAction(this.SvgIcon.Envelope, this.i18n.message.actions.newMessage, () => {
-        this.router.navigate(['/users', 'messages', 'send']);
-      }, true)
+    const newAction = this.canSend ?
+      new HeadingAction(this.SvgIcon.Envelope, this.i18n.message.actions.newMessage,
+        () => this.router.navigate(['/users', 'messages', 'send']), true)
       : null;
     if (newAction) {
       this.headingActions = [newAction];
@@ -109,8 +104,7 @@ export class SearchMessagesComponent
   }
 
   markAllRead() {
-    this.addSub(this.messagesService.markMessagesAsRead({ ids: this.ids })
-      .subscribe(() => this.update()));
+    this.addSub(this.messagesService.markMessagesAsRead({ ids: this.ids }).subscribe(() => this.update()));
   }
 
   /**
@@ -159,8 +153,7 @@ export class SearchMessagesComponent
   }
 
   resolveMenu() {
-    return this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR
-      ? Menu.SYSTEM_MESSAGES : Menu.MESSAGES;
+    return this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR ? Menu.SYSTEM_MESSAGES : Menu.MESSAGES;
   }
 
   resolveProfileTitle(): string {

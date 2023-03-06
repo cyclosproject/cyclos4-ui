@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import {
-  AccountKind, AccountWithOwner, AvailabilityEnum,
+  AccountKind, AccountWithOwner, CredentialTypeEnum,
   IdentityProvider,
   IdentityProviderCallbackResult, IdentityProviderRequestResult,
-  PasswordInput, PasswordModeEnum, RoleEnum, User, UserLocale
+  PasswordInput, PasswordModeEnum, PasswordType, RoleEnum, User, UserLocale
 } from 'app/api/models';
 import { IdentityProvidersService } from 'app/api/services/identity-providers.service';
 import { LocalizationService } from 'app/api/services/localization.service';
@@ -88,7 +88,7 @@ export class AuthHelperService {
           }
         } else {
           // key is a user
-          return key.id === user.id || key.id === user?.user?.id;
+          return key.id && (key.id === user.id || key.id === user?.user?.id);
         }
       }
     } else {
@@ -147,152 +147,137 @@ export class AuthHelperService {
   }
 
   /**
-   * Returns whether the given password input is enabled for confirmation.
-   * That means: if the password is an OTP, needs valid mediums to send.
+   * Returns the initial credential type for the given password input
+   */
+  initialCredentialType(passwordInput: PasswordInput) {
+    const active = passwordInput?.activeCredentials || [];
+    for (const type of [CredentialTypeEnum.DEVICE, CredentialTypeEnum.TOTP, CredentialTypeEnum.PASSWORD]) {
+      if (active.includes(type)) {
+        return type;
+      }
+    }
+  }
+
+  /**
+   * Returns whether the logged user can confirm with the given password input.
+   * That means: either it is null, meaning no confirmation is actually needed,  if the password is an OTP, needs valid mediums to send.
    * Otherwise, there must have an active password.
    * If passwordInput is null it is assumed that no confirmation password is needed, hence, can confirm.
    */
-  canConfirm(passwordInput: PasswordInput): boolean {
+  canConfirm(passwordInput: PasswordInput, credentialType?: CredentialTypeEnum): boolean {
     if (passwordInput == null) {
       // No confirmation is actually needed
       return true;
     }
-    const device = passwordInput.deviceAvailability || AvailabilityEnum.DISABLED;
-    if (device === AvailabilityEnum.REQUIRED) {
-      // Must confirm with a device. Can confirm if there's at least one active device.
-      return passwordInput.hasActiveDevice;
-    } else if (device === AvailabilityEnum.OPTIONAL && passwordInput.hasActiveDevice) {
-      // On optional device, if there's an active device, the user can confirm, regardless of the password
-      return true;
+    if (credentialType) {
+      return passwordInput.activeCredentials?.includes(credentialType);
     }
-    // At this point device is either optional or disabled. Must have an active password...
-    if (passwordInput.hasActivePassword) {
-      return true;
-    }
-    // ... except if the password input mode is OTP. In this case, a password is generated 'on the fly'...
-    if (passwordInput.mode === PasswordModeEnum.OTP) {
-      // ... but still, needs at least one send medium
-      return (passwordInput.otpSendMediums || []).length > 0;
-    }
-    return false;
+    return !empty(passwordInput.activeCredentials);
   }
 
   /**
-   * Returns whether a confirmation with device is possible
+   * Returns the message that should be presented to users in an action confirmation
    */
-  canConfirmWithDevice(passwordInput: PasswordInput): boolean {
-    if (passwordInput == null) {
-      return false;
-    }
-    const device = passwordInput.deviceAvailability || AvailabilityEnum.DISABLED;
-    return device !== AvailabilityEnum.DISABLED && passwordInput.hasActiveDevice;
-  }
-
-  /**
-   * Returns whether a confirmation with password is possible
-   */
-  canConfirmWithPassword(passwordInput: PasswordInput): boolean {
-    if (passwordInput == null) {
-      return false;
-    }
-    if (passwordInput.deviceAvailability === AvailabilityEnum.REQUIRED) {
-      // User is required to confirm with device
-      return false;
-    }
-    if (passwordInput.hasActivePassword) {
-      // There's an active password
-      return true;
-    }
-    // Without an active password, it might still be possible to confirm with OTP
-    if (passwordInput.mode === PasswordModeEnum.OTP && !empty(passwordInput.otpSendMediums)) {
-      return true;
-    }
-    // No usable password
-    return false;
-  }
-
-  /**
-   * Returns the message that should be presented to users in case a confirmation password cannot be used
-   */
-  getConfirmationMessage(passwordInput: PasswordInput, posConfirmation?: boolean): string {
+  getConfirmationMessage(passwordInput: PasswordInput, selectedCredential?: CredentialTypeEnum, pos?: boolean): string {
     if (passwordInput == null) {
       return null;
     }
-    const deviceRequired = passwordInput.deviceAvailability === AvailabilityEnum.REQUIRED;
-    const deviceOptional = passwordInput.deviceAvailability === AvailabilityEnum.OPTIONAL;
-    const deviceUsable = this.canConfirmWithDevice(passwordInput);
+    const allowed = passwordInput.allowedCredentials || [];
+    if (allowed.length === 0) {
+      return this.i18n.password.confirmation.notPossible;
+    }
 
-    const otp = passwordInput.mode === PasswordModeEnum.OTP;
-    const passwordUsable = this.canConfirmWithPassword(passwordInput);
-    const hasOtpSendMediums = passwordInput.mode === PasswordModeEnum.OTP && !empty(passwordInput.otpSendMediums);
-
-    // Handle device-only confirmation, or device / password confirmation with no usable password
-    if (deviceRequired || deviceOptional && !passwordUsable) {
-      if (deviceUsable) {
-        // Show a message to scan the QR-code
-        return posConfirmation ? this.i18n.transaction.confirmMessage.activeDevice : this.i18n.password.confirmMessage.activeDevice;
-      } else {
-        if (deviceRequired) {
-          // Device is required but has none
-          return posConfirmation ? this.i18n.transaction.confirmMessage.notActiveDevice : this.i18n.password.confirmMessage.notActiveDevice;
-        } else {
-          // Device is optional and has no password
-          if (otp) {
-            return posConfirmation ? this.i18n.transaction.confirmMessage.notActiveDeviceOrRenewablePasswordNoMediums(passwordInput.name)
-              : this.i18n.password.confirmMessage.notActiveDeviceOrRenewablePasswordNoMediums(passwordInput.name);
-          } else {
-            return posConfirmation ? this.i18n.transaction.confirmMessage.notActiveDeviceOrPassword(passwordInput.name)
-              : this.i18n.password.confirmMessage.notActiveDeviceOrPassword(passwordInput.name);
-          }
+    // Handle the case that there are no active credentials
+    const active = passwordInput.activeCredentials || [];
+    if (active.length === 0) {
+      // No active credentials
+      if (allowed.length === 1) {
+        // There are multiple allowed confirmation credential: show a specific message
+        switch (allowed[0]) {
+          case CredentialTypeEnum.PASSWORD:
+            return pos
+              ? this.i18n.transaction.posConfirmation.notActive.password(passwordInput.passwordType?.name)
+              : this.i18n.password.confirmation.notActive.password(passwordInput.passwordType?.name);
+          case CredentialTypeEnum.DEVICE:
+            return pos
+              ? this.i18n.transaction.posConfirmation.notActive.device
+              : this.i18n.password.confirmation.notActive.device;
+          case CredentialTypeEnum.TOTP:
+            return pos
+              ? this.i18n.transaction.posConfirmation.notActive.totp
+              : this.i18n.password.confirmation.notActive.totp;
+          case CredentialTypeEnum.PIN:
+            // Not used in this frontend
+            return this.i18n.password.confirmation.notPossible;
         }
+      } else {
+        // There are multiple allowed confirmation credentials: show a generic message
+        const names = allowed.map(ct => this.credentialTypeLabel(passwordInput, ct));
+        return pos
+          ? this.i18n.transaction.posConfirmation.notActive.multiple(names.join(', '))
+          : this.i18n.password.confirmation.notActive.multiple(names.join(', '));
       }
     }
 
-    // Handle mixed device / password with a device active
-    if (deviceOptional && deviceUsable) {
-      // At this point we know the password is usable and the device is active, so the user can choose
-      if (otp) {
-        if (passwordInput.hasActivePassword && hasOtpSendMediums) {
-          return posConfirmation ? this.i18n.transaction.confirmMessage.activeDeviceOrRenewablePassword
-            : this.i18n.password.confirmMessage.activeDeviceOrRenewablePassword;
-        } else if (passwordInput.hasActivePassword) {
-          return posConfirmation ? this.i18n.transaction.confirmMessage.activeDeviceOrRenewablePasswordNoMediums
-            : this.i18n.password.confirmMessage.activeDeviceOrRenewablePasswordNoMediums;
-        } else {
-          return posConfirmation ? this.i18n.transaction.confirmMessage.activeDeviceOrNotActiveRenewablePassword
-            : this.i18n.password.confirmMessage.activeDeviceOrNotActiveRenewablePassword;
-        }
-      } else {
-        return posConfirmation ? this.i18n.transaction.confirmMessage.activeDeviceOrPassword(passwordInput.name)
-          : this.i18n.password.confirmMessage.activeDeviceOrPassword(passwordInput.name);
+    const singleType = selectedCredential ? selectedCredential : active.length === 1 ? active[0] : null;
+    if (singleType != null) {
+      switch (singleType) {
+        case CredentialTypeEnum.PASSWORD:
+          return pos
+            ? this.i18n.transaction.posConfirmation.password(passwordInput.passwordType?.name)
+            : this.i18n.password.confirmation.password(passwordInput.passwordType?.name);
+        case CredentialTypeEnum.DEVICE:
+          return pos
+            ? this.i18n.transaction.posConfirmation.device
+            : this.i18n.password.confirmation.device;
+        case CredentialTypeEnum.TOTP:
+          return pos
+            ? this.i18n.transaction.posConfirmation.totp
+            : this.i18n.password.confirmation.totp;
+        case CredentialTypeEnum.PIN:
+          // Not used in this frontend
+          return this.i18n.password.confirmation.notPossible;
       }
     }
+    return null;
+  }
 
-    // At this point, the confirmation is with password only
-    if (otp) {
-      // The messages for OTP are distinct
-      if (!passwordInput.hasActivePassword && !hasOtpSendMediums) {
-        return posConfirmation ? this.i18n.transaction.confirmMessage.notActiveRenewablePasswordNoMediums(passwordInput.name)
-          : this.i18n.password.confirmMessage.notActiveRenewablePasswordNoMediums(passwordInput.name);
-      } else if (passwordInput.hasActivePassword && hasOtpSendMediums) {
-        return posConfirmation ? this.i18n.transaction.confirmMessage.activeRenewablePassword
-          : this.i18n.password.confirmMessage.activeRenewablePassword;
-      } else if (passwordInput.hasActivePassword) {
-        return posConfirmation ? this.i18n.transaction.confirmMessage.activeRenewablePasswordNoMediums
-          : this.i18n.password.confirmMessage.activeRenewablePasswordNoMediums;
-      } else {
-        return posConfirmation ? this.i18n.transaction.confirmMessage.notActiveRenewablePassword
-          : this.i18n.password.confirmMessage.notActiveRenewablePassword;
-      }
-    } else {
-      // A regular password
-      if (passwordUsable) {
-        return posConfirmation ? this.i18n.transaction.confirmMessage.activePassword(passwordInput.name)
-          : this.i18n.password.confirmMessage.activePassword(passwordInput.name);
-      } else {
-        return posConfirmation ? this.i18n.transaction.confirmMessage.notActivePassword(passwordInput.name)
-          : this.i18n.password.confirmMessage.notActivePassword(passwordInput.name);
-      }
+  /**
+   * Returns the display label of a credential type
+   */
+  credentialTypeLabel(passwordInput: { passwordType?: PasswordType; }, credentialType: CredentialTypeEnum) {
+    switch (credentialType) {
+      case CredentialTypeEnum.DEVICE:
+        return this.i18n.password.confirmModeDevice;
+      case CredentialTypeEnum.PASSWORD:
+        return passwordInput?.passwordType?.name;
+      case CredentialTypeEnum.TOTP:
+        return this.i18n.password.confirmModeTotp;
+    }
+  }
+
+  /**
+   * Indicates whether the submit button should be shown for the given password input when the given credential type is selected
+   */
+  showSubmit(passwordInput: PasswordInput, credentialType: CredentialTypeEnum, otpSent?: boolean) {
+    if (!passwordInput || !credentialType) {
+      return true;
+    }
+    switch (credentialType) {
+      case CredentialTypeEnum.DEVICE:
+      case CredentialTypeEnum.PIN:
+        // Never show for device, and PIN isn't supported in this frontend
+        return false;
+      case CredentialTypeEnum.TOTP:
+        // Always show for TOTP
+        return true;
+      case CredentialTypeEnum.PASSWORD:
+        // For password, show when there's an active password, except if a non-reusable OTP without having sent the OTP
+        if (passwordInput?.passwordType?.mode === PasswordModeEnum.OTP) {
+          return otpSent || passwordInput.hasReusableOtp;
+        }
+        // For others, always active
+        return true;
     }
   }
 
@@ -314,7 +299,7 @@ export class AuthHelperService {
   /**
    * Opens a popup with a request for an identity provider
    */
-  identityProviderPopup(idp: IdentityProvider, type: 'login' | 'register' | 'wizard' | 'link', group?: string, key?: string):
+  identityProviderPopup(idp: IdentityProvider, type: 'login' | 'register' | 'wizard' | 'link', group?: string, key?: string, userAgentId?: string):
     Observable<IdentityProviderCallbackResult> {
     const observable = new Subject<IdentityProviderCallbackResult>();
 
@@ -326,13 +311,14 @@ export class AuthHelperService {
     switch (type) {
       case 'login':
         this.nextRequestState.nextAsGuest();
-        request = this.identityProvidersService.prepareIdentityProviderLogin({ identityProvider: idp.internalName });
+        request = this.identityProvidersService.prepareIdentityProviderLogin({ identityProvider: idp.internalName, userAgentId: userAgentId });
         break;
       case 'register':
         this.nextRequestState.nextAsGuest();
         request = this.identityProvidersService.prepareIdentityProviderRegistration({
           identityProvider: idp.internalName,
           group,
+          userAgentId: userAgentId
         });
         break;
       case 'wizard':

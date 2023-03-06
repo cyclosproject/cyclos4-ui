@@ -1,17 +1,23 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
+  AdKind,
   DataForFrontendHome, DataForUserPasswords, FrontendContentLayoutEnum,
-  FrontendDashboardAccount, FrontendQuickAccessTypeEnum, PasswordStatusAndActions, PasswordStatusEnum, RoleEnum, UserMenuEnum
+  FrontendDashboardAccount, PasswordStatusAndActions, PasswordStatusEnum, QuickAccessTypeEnum, RoleEnum, UserMenuEnum
 } from 'app/api/models';
 import { FrontendService } from 'app/api/services/frontend.service';
+import { IconLoadingService } from 'app/core/icon-loading.service';
 import { SvgIcon } from 'app/core/svg-icon';
+import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
-import { empty } from 'app/shared/helper';
+import { QuickAccessHelperService } from 'app/ui/core/quick-access-helper.service';
+import { RunOperationHelperService } from 'app/ui/core/run-operation-helper.service';
 import { QuickAccessAction } from 'app/ui/dashboard/quick-access-action';
 import { BasePageComponent, UpdateTitleFrom } from 'app/ui/shared/base-page.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { environment } from 'environments/environment';
 import { chunk } from 'lodash-es';
+import { of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 export const PasswordStatusNeedingAttention = [
   PasswordStatusEnum.EXPIRED, PasswordStatusEnum.RESET,
@@ -40,7 +46,10 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
 
   constructor(
     injector: Injector,
-    private frontendService: FrontendService) {
+    private frontendService: FrontendService,
+    private quickAccessHelper: QuickAccessHelperService,
+    private iconLoadingService: IconLoadingService,
+    private runOperationHelper: RunOperationHelperService) {
     super(injector);
   }
 
@@ -52,9 +61,22 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
       return;
     }
 
+    // Fetch the home page
     this.addSub(this.frontendService.dataForFrontendHome({
       screenSize: this.layout.screenSize
-    }).subscribe(data => this.data = data));
+    }).pipe(
+      //Before setting the data, fetch possibly missing icons for the quick access
+      switchMap(data => {
+        const icons = data.quickAccess?.map(qa => this.quickAccessHelper.iconAndLabel(qa).icon).filter(i => !!i);
+        if (icons.length === 0) {
+          return of(data);
+        } else {
+          return this.iconLoadingService.load(icons, false).pipe(switchMap(() => of(data)));
+        }
+      })
+    ).subscribe(data => {
+      this.data = data;
+    }));
   }
 
   onDataInitialized(data: DataForFrontendHome) {
@@ -104,152 +126,254 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
     return Menu.DASHBOARD;
   }
 
+
   initDashboardActions(data: DataForFrontendHome) {
     this.actions = [];
+    const dataForFrontend = this.dataForFrontendHolder.dataForFrontend;
     const auth = this.dataForFrontendHolder.auth;
     const permissions = auth.permissions || {};
 
-    const types = new Set(data.quickAccess);
-
-    const addAction = (
-      icon: SvgIcon, label: string, activeMenu: ActiveMenu, onClick?: () => void, url?: string): void => {
-      const entry = this.menu.menuEntry(activeMenu);
-      if (entry) {
-        this.actions.push({
-          icon,
-          label,
-          entry,
-          onClick,
-          url
-        });
-      }
-    };
-
-    const owner = this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR
-      ? ApiHelper.SYSTEM : ApiHelper.SELF;
-
-    // PAYMENTS
-    if (permissions.banking) {
-      if (types.has(FrontendQuickAccessTypeEnum.ACCOUNT)) {
-        // Skip the quick access icon for accounts already visible in the dashboard
-        const allAccounts = (permissions.banking.accounts || []);
-        const accounts = allAccounts.filter(p => this.layout.ltmd || p.visible && !p.viewStatus).map(p => p.account);
-        if (accounts.length >= ApiHelper.MIN_ACCOUNTS_FOR_SUMMARY) {
-          addAction(SvgIcon.Wallet2, this.i18n.dashboard.action.accounts, new ActiveMenu(Menu.ACCOUNTS_SUMMARY));
-        } else {
-          for (const account of accounts) {
-            const accountType = account.type;
-            const accountLabel = allAccounts.length === 1 ? this.i18n.dashboard.action.account : accountType.name;
-            addAction(SvgIcon.Wallet2, accountLabel, new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType }));
-          }
-        }
-      }
-      const payments = permissions.banking.payments || {};
-      if (types.has(FrontendQuickAccessTypeEnum.PAY_USER) && payments.user) {
-        addAction(SvgIcon.Wallet2ArrowRight, this.i18n.dashboard.action.payUser, new ActiveMenu(Menu.PAYMENT_TO_USER));
-      }
-      if (types.has(FrontendQuickAccessTypeEnum.PAY_SYSTEM) && payments.system) {
-        addAction(SvgIcon.Wallet2ArrowRight, this.i18n.dashboard.action.paySystem, new ActiveMenu(Menu.PAYMENT_TO_SYSTEM));
-      }
-      if (types.has(FrontendQuickAccessTypeEnum.POS) && payments.pos) {
-        addAction(SvgIcon.CreditCard, this.i18n.dashboard.action.pos, new ActiveMenu(Menu.POS));
-      }
-      const tickets = permissions.banking.tickets || {};
-      if (types.has(FrontendQuickAccessTypeEnum.RECEIVE_QR_PAYMENT) && tickets.create) {
-        addAction(SvgIcon.QrCodeScan, this.i18n.dashboard.action.receiveQrPayment, new ActiveMenu(Menu.RECEIVE_QR_PAYMENT));
-      }
-
-      const scheduledPayments = permissions.banking.scheduledPayments || {};
-      if (types.has(FrontendQuickAccessTypeEnum.SCHEDULED_PAYMENTS) && scheduledPayments?.view) {
-        addAction(SvgIcon.CalendarEvent, this.i18n.dashboard.action.scheduledPayments, new ActiveMenu(Menu.SCHEDULED_PAYMENTS));
-      }
-
-      // PAYMENT REQUESTS
-      const paymentRequests = permissions.banking.paymentRequests || {};
-      const paymentRequestsMenu = new ActiveMenu(Menu.PAYMENT_REQUESTS);
-      if (types.has(FrontendQuickAccessTypeEnum.REQUEST_PAYMENT_FROM_USER) && paymentRequests?.sendToUser) {
-        addAction(SvgIcon.Wallet2ArrowLeft, this.i18n.dashboard.action.sendPaymentRequestToUser, paymentRequestsMenu, null,
-          `/banking/${owner}/payment-request`);
-      }
-      if (types.has(FrontendQuickAccessTypeEnum.REQUEST_PAYMENT_FROM_SYSTEM) && paymentRequests?.sendToSystem) {
-        addAction(SvgIcon.Wallet2ArrowLeft, this.i18n.dashboard.action.sendPaymentRequestToSystem, paymentRequestsMenu, null,
-          `/banking/${owner}/payment-request/${ApiHelper.SYSTEM}`);
-      }
-      if (types.has(FrontendQuickAccessTypeEnum.PAYMENT_REQUESTS) && paymentRequests?.view) {
-        addAction(SvgIcon.Wallet2ArrowLeft, this.i18n.dashboard.action.paymentRequests, paymentRequestsMenu);
-      }
-
-      const externalPayments = permissions.banking.externalPayments || {};
-      if (types.has(FrontendQuickAccessTypeEnum.PAY_EXTERNAL_USER) && externalPayments?.perform) {
-        addAction(SvgIcon.Wallet2ArrowUpRight, this.i18n.dashboard.action.payExternalUser, new ActiveMenu(Menu.EXTERNAL_PAYMENTS), null,
-          `/banking/${ApiHelper.SELF}/external-payment`);
-      }
+    if (this.layout.gtsm && dataForFrontend.canManageQuickAccess) {
+      this.headingActions = [
+        new HeadingAction(SvgIcon.Gear, this.i18n.dashboard.customizeQuickAccess,
+          event => this.menu.navigate({
+            menu: new ActiveMenu(Menu.QUICK_ACCESS_SETTINGS),
+            clear: false,
+            event
+          }), true)
+      ];
     }
 
-    // VOUCHERS
-    const vouchers = this.menu.resolveVoucherPermissions(permissions.vouchers || {});
-    const myVoucherMenu = new ActiveMenu(this.dataForFrontendHolder.dataForFrontend.voucherBuyingMenu == UserMenuEnum.MARKETPLACE ?
-      Menu.SEARCH_MY_VOUCHERS_MARKETPLACE : Menu.SEARCH_MY_VOUCHERS_BANKING);
-    if (types.has(FrontendQuickAccessTypeEnum.VOUCHERS) && vouchers?.viewVouchers) {
-      addAction(SvgIcon.Ticket, this.i18n.dashboard.action.vouchers, myVoucherMenu);
-    }
-    if (types.has(FrontendQuickAccessTypeEnum.BUY_VOUCHER) && vouchers.buy) {
-      addAction(SvgIcon.Ticket, this.i18n.dashboard.action.buy, myVoucherMenu, null, `/banking/${ApiHelper.SELF}/vouchers/buy`);
-    }
-    if (types.has(FrontendQuickAccessTypeEnum.SEND_VOUCHER) && vouchers.send) {
-      addAction(SvgIcon.Ticket, this.i18n.dashboard.action.send, myVoucherMenu, null, `/banking/${ApiHelper.SELF}/vouchers/send`);
-    }
+    const isAdmin = this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR;
+    const owner = isAdmin ? ApiHelper.SYSTEM : ApiHelper.SELF;
+    const vouchersMenu = new ActiveMenu(isAdmin
+      ? Menu.SEARCH_VOUCHERS
+      : this.dataForFrontendHolder.dataForFrontend.voucherBuyingMenu == UserMenuEnum.MARKETPLACE
+        ? Menu.SEARCH_MY_VOUCHERS_MARKETPLACE
+        : Menu.SEARCH_MY_VOUCHERS_BANKING);
     const voucherTransactionsMenu = new ActiveMenu(Menu.VOUCHER_TRANSACTIONS);
-    if (types.has(FrontendQuickAccessTypeEnum.VOUCHER_TRANSACTIONS) && vouchers?.viewTransactions) {
-      const voucherTransactionsLabel = this.dataForFrontendHolder.dataForFrontend.topUpEnabled ?
-        this.i18n.dashboard.action.voucherTransactions : this.i18n.dashboard.action.voucherTransactionsRedeems;
-      addAction(SvgIcon.TicketDetailed, voucherTransactionsLabel, voucherTransactionsMenu);
-    }
-    if (types.has(FrontendQuickAccessTypeEnum.REDEEM_VOUCHER) && vouchers?.redeem) {
-      addAction(SvgIcon.TicketArrowDown, this.i18n.dashboard.action.redeem, voucherTransactionsMenu, null, `/banking/${ApiHelper.SELF}/vouchers/redeem`);
-    }
-    if (types.has(FrontendQuickAccessTypeEnum.TOP_UP_VOUCHER) && vouchers?.topUp) {
-      addAction(SvgIcon.TicketArrowUp, this.i18n.dashboard.action.topUp, voucherTransactionsMenu, null, `/banking/${ApiHelper.SELF}/vouchers/top-up`);
-    }
+    const paymentRequestsMenu = new ActiveMenu(Menu.PAYMENT_REQUESTS);
+    const externalPaymentsMenu = new ActiveMenu(Menu.EXTERNAL_PAYMENTS);
+    const myAdsMenu = new ActiveMenu(Menu.SEARCH_USER_ADS);
+    const myWebshopMenu = new ActiveMenu(Menu.SEARCH_USER_WEBSHOP);
+    const messagesMenu = new ActiveMenu(isAdmin ? Menu.SYSTEM_MESSAGES : Menu.MESSAGES);
+    const usersMenu = new ActiveMenu(Menu.SEARCH_USERS);
 
-    // USERS
-    if (types.has(FrontendQuickAccessTypeEnum.CONTACTS) && (permissions.contacts || {}).enable) {
-      addAction(SvgIcon.Book, this.i18n.dashboard.action.contacts, new ActiveMenu(Menu.CONTACTS));
-    }
-    const users = permissions.users || {};
-    if (types.has(FrontendQuickAccessTypeEnum.SEARCH_USERS) && !data.showLatestUsers && (users.search || users.map)) {
-      addAction(SvgIcon.People, this.i18n.dashboard.action.directory, new ActiveMenu(Menu.SEARCH_USERS));
-    }
+    for (const quickAccess of data.quickAccess) {
+      const addAction = (
+        activeMenu: ActiveMenu, onClick?: () => void, customLabel?: string, url?: string): void => {
+        const entry = this.menu.menuEntry(activeMenu);
+        if (entry) {
+          const iconAndLabel = this.quickAccessHelper.iconAndLabel(quickAccess);
+          this.actions.push({
+            icon: iconAndLabel?.icon,
+            label: customLabel ?? iconAndLabel?.label,
+            entry,
+            onClick,
+            url
+          });
+        }
+      };
 
-    // MARKETPLACE
-    const marketplace = permissions.marketplace || {};
-    if (types.has(FrontendQuickAccessTypeEnum.SEARCH_ADS) && !data.showLatestAds
-      && ((marketplace.userSimple || {}).view || (marketplace.userWebshop || {}).view)) {
-      addAction(SvgIcon.Basket, this.i18n.dashboard.action.advertisements, new ActiveMenu(Menu.SEARCH_ADS));
-    }
-
-    // PROFILE
-    if (types.has(FrontendQuickAccessTypeEnum.EDIT_PROFILE) && (permissions.myProfile || {}).editProfile) {
-      addAction(SvgIcon.Person, this.i18n.dashboard.action.editProfile, new ActiveMenu(Menu.EDIT_MY_PROFILE));
-    }
-    if (types.has(FrontendQuickAccessTypeEnum.PASSWORDS) && !empty((permissions.passwords || {}).passwords)) {
-      const passwordsLabel = permissions.passwords.passwords.length === 1 ? this.i18n.dashboard.action.password :
-        this.i18n.dashboard.action.passwords;
-      addAction(SvgIcon.Key, passwordsLabel, new ActiveMenu(Menu.PASSWORDS));
-    }
-
-    // SETTINGS
-    if (types.has(FrontendQuickAccessTypeEnum.SWITCH_THEME)) {
-      addAction(SvgIcon.LightDark, this.i18n.dashboard.action.switchTheme, new ActiveMenu(Menu.SETTINGS),
-        () => this.layout.darkTheme = !this.layout.darkTheme);
-    }
-    if (types.has(FrontendQuickAccessTypeEnum.USE_CLASSIC_FRONTEND) && !environment.standalone
-      && this.dataForFrontendHolder.dataForFrontend.allowFrontendSwitching) {
-      addAction(SvgIcon.Display, this.i18n.dashboard.action.classicFrontend, new ActiveMenu(Menu.SETTINGS),
-        () => this.dataForFrontendHolder.useClassicFrontend(true));
-    }
-    if (types.has(FrontendQuickAccessTypeEnum.SETTINGS)) {
-      addAction(SvgIcon.Gear, this.i18n.dashboard.action.settings, new ActiveMenu(Menu.SETTINGS));
+      switch (quickAccess.type) {
+        case QuickAccessTypeEnum.ACCOUNT:
+          // Skip the quick access icon for accounts already visible in the dashboard
+          const allAccounts = (permissions.banking.accounts || []);
+          const accounts = allAccounts.filter(p => this.layout.ltmd || p.visible && !p.viewStatus).map(p => p.account);
+          if (accounts.length >= ApiHelper.MIN_ACCOUNTS_FOR_SUMMARY) {
+            addAction(new ActiveMenu(Menu.ACCOUNTS_SUMMARY));
+          } else {
+            for (const account of accounts) {
+              const accountType = account.type;
+              const accountLabel = allAccounts.length === 1 ? this.i18n.dashboard.action.account : accountType.name;
+              addAction(new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType }), null, accountLabel);
+            }
+          }
+          break;
+        case QuickAccessTypeEnum.TRANSFERS_OVERVIEW:
+          addAction(new ActiveMenu(isAdmin ? Menu.ADMIN_TRANSFERS_OVERVIEW : Menu.BROKER_TRANSFERS_OVERVIEW));
+          break;
+        case QuickAccessTypeEnum.BALANCES_OVERVIEW:
+          // TODO Maybe we're missing a Menu.BROKER_BALANCES_OVERVIEW?
+          addAction(new ActiveMenu(Menu.USER_BALANCES_OVERVIEW));
+          break;
+        case QuickAccessTypeEnum.PAY_USER:
+          addAction(new ActiveMenu(Menu.PAYMENT_TO_USER));
+          break;
+        case QuickAccessTypeEnum.PAY_SYSTEM:
+          addAction(new ActiveMenu(Menu.PAYMENT_TO_SYSTEM));
+          break;
+        case QuickAccessTypeEnum.PAY_SELF:
+          addAction(new ActiveMenu(Menu.PAYMENT_TO_SELF));
+          break;
+        case QuickAccessTypeEnum.POS:
+          addAction(new ActiveMenu(Menu.POS));
+          break;
+        case QuickAccessTypeEnum.RECEIVE_QR_PAYMENT:
+          addAction(new ActiveMenu(Menu.RECEIVE_QR_PAYMENT));
+          break;
+        case QuickAccessTypeEnum.SCHEDULED_PAYMENTS:
+          addAction(new ActiveMenu(Menu.SCHEDULED_PAYMENTS));
+          break;
+        case QuickAccessTypeEnum.REQUEST_PAYMENT_FROM_USER:
+          addAction(paymentRequestsMenu, null, null, `/banking/${owner}/payment-request`);
+          break;
+        case QuickAccessTypeEnum.REQUEST_PAYMENT_FROM_SYSTEM:
+          addAction(paymentRequestsMenu, null, null, `/banking/${owner}/payment-request/${ApiHelper.SYSTEM}`);
+          break;
+        case QuickAccessTypeEnum.PAYMENT_REQUESTS:
+          addAction(paymentRequestsMenu);
+          break;
+        case QuickAccessTypeEnum.PAY_EXTERNAL_USER:
+          addAction(externalPaymentsMenu, null, null, `/banking/${owner}/external-payment`);
+          break;
+        case QuickAccessTypeEnum.EXTERNAL_PAYMENTS:
+          addAction(externalPaymentsMenu);
+          break;
+        case QuickAccessTypeEnum.VOUCHERS:
+          addAction(vouchersMenu);
+          break;
+        case QuickAccessTypeEnum.BUY_VOUCHER:
+          addAction(vouchersMenu, null, null, `/banking/${ApiHelper.SELF}/vouchers/buy`);
+          break;
+        case QuickAccessTypeEnum.SEND_VOUCHER:
+          addAction(vouchersMenu, null, null, `/banking/${ApiHelper.SELF}/vouchers/send`);
+          break;
+        case QuickAccessTypeEnum.VOUCHER_TRANSACTIONS:
+          const voucherTransactionsLabel = this.dataForFrontendHolder.dataForFrontend.topUpEnabled ?
+            this.i18n.dashboard.action.voucherTransactions : this.i18n.dashboard.action.voucherTransactionsRedeems;
+          addAction(new ActiveMenu(Menu.VOUCHER_TRANSACTIONS), null, voucherTransactionsLabel);
+          break;
+        case QuickAccessTypeEnum.REDEEM_VOUCHER:
+          addAction(voucherTransactionsMenu, null, null, `/banking/${ApiHelper.SELF}/vouchers/redeem`);
+          break;
+        case QuickAccessTypeEnum.TOP_UP_VOUCHER:
+          addAction(voucherTransactionsMenu, null, null, `/banking/${ApiHelper.SELF}/vouchers/top-up`);
+          break;
+        case QuickAccessTypeEnum.CONTACTS:
+          addAction(new ActiveMenu(Menu.CONTACTS));
+          break;
+        case QuickAccessTypeEnum.PENDING_USERS:
+          if ((permissions.users || {}).viewPending) {
+            addAction(usersMenu, null, null, '/users/search/pending');
+          }
+          break;
+        case QuickAccessTypeEnum.SEARCH_USERS:
+          if (!data.showLatestUsers) {
+            // Hide the search action if already showing the latest users in the dashboard
+            addAction(usersMenu);
+          }
+          break;
+        case QuickAccessTypeEnum.BROKERED_USERS:
+          addAction(new ActiveMenu(Menu.MY_BROKERED_USERS));
+          break;
+        case QuickAccessTypeEnum.REGISTER_USER:
+          addAction(new ActiveMenu(isAdmin ? Menu.ADMIN_REGISTRATION : Menu.BROKER_REGISTRATION));
+          break;
+        case QuickAccessTypeEnum.INVITE_USER:
+          addAction(new ActiveMenu(Menu.INVITE));
+          break;
+        case QuickAccessTypeEnum.SEARCH_ADS:
+          if (!data.showLatestAds) {
+            // Hide the search action if already showing the latest ads in the dashboard
+            addAction(new ActiveMenu(Menu.SEARCH_ADS));
+          }
+          break;
+        case QuickAccessTypeEnum.AD_INTERESTS:
+          addAction(new ActiveMenu(Menu.AD_INTERESTS));
+          break;
+        case QuickAccessTypeEnum.PURCHASES:
+          addAction(new ActiveMenu(Menu.PURCHASES));
+          break;
+        case QuickAccessTypeEnum.MY_ADS:
+          addAction(new ActiveMenu(Menu.SEARCH_USER_ADS));
+          break;
+        case QuickAccessTypeEnum.CREATE_AD:
+          addAction(myAdsMenu, null, null, `/marketplace/${ApiHelper.SELF}/${AdKind.SIMPLE}/ad/new`);
+          break;
+        case QuickAccessTypeEnum.MY_WEBSHOP:
+          addAction(new ActiveMenu(Menu.SEARCH_USER_WEBSHOP));
+          break;
+        case QuickAccessTypeEnum.CREATE_WEBSHOP_AD:
+          addAction(myWebshopMenu, null, null, `/marketplace/${ApiHelper.SELF}/${AdKind.WEBSHOP}/ad/new`);
+          break;
+        case QuickAccessTypeEnum.SALES:
+          addAction(new ActiveMenu(Menu.SALES));
+          break;
+        case QuickAccessTypeEnum.EDIT_PROFILE:
+          addAction(new ActiveMenu(Menu.EDIT_MY_PROFILE));
+          break;
+        case QuickAccessTypeEnum.PASSWORDS:
+          const passwordsLabel =
+            permissions.passwords.passwords.length === 1 ? this.i18n.dashboard.action.password : this.i18n.dashboard.action.passwords;
+          addAction(new ActiveMenu(Menu.PASSWORDS), null, passwordsLabel);
+          break;
+        case QuickAccessTypeEnum.DOCUMENTS:
+          if (!isAdmin) {
+            // This frontend doesn't implement management of documents by admins
+            addAction(new ActiveMenu(Menu.MY_DOCUMENTS));
+          }
+          break;
+        case QuickAccessTypeEnum.MESSAGES:
+          addAction(messagesMenu);
+          break;
+        case QuickAccessTypeEnum.SEND_MESSAGE:
+          addAction(messagesMenu, null, null, `/users/messages/send`);
+          break;
+        case QuickAccessTypeEnum.NOTIFICATIONS:
+          addAction(new ActiveMenu(Menu.NOTIFICATIONS));
+          break;
+        case QuickAccessTypeEnum.REFERENCES:
+          addAction(new ActiveMenu(Menu.REFERENCES));
+          break;
+        case QuickAccessTypeEnum.TRANSACTION_FEEDBACKS:
+          addAction(new ActiveMenu(Menu.FEEDBACKS));
+          break;
+        case QuickAccessTypeEnum.SWITCH_THEME:
+          addAction(new ActiveMenu(Menu.SETTINGS), () => this.layout.darkTheme = !this.layout.darkTheme);
+          break;
+        case QuickAccessTypeEnum.SWITCH_FRONTEND:
+          if (!environment.standalone) {
+            // Don't allow switching frontend in standalone mode
+            addAction(new ActiveMenu(Menu.SETTINGS), () => this.dataForFrontendHolder.useClassicFrontend(true));
+          }
+          break;
+        case QuickAccessTypeEnum.SETTINGS:
+          addAction(new ActiveMenu(Menu.SETTINGS));
+          break;
+        case QuickAccessTypeEnum.OPERATION:
+          const operation = quickAccess.operation;
+          const operationMenu = this.menu.operationEntry(operation?.id);
+          if (operationMenu) {
+            const action = this.runOperationHelper.canRunDirectly(operation)
+              ? () => this.runOperationHelper.run(operation, isAdmin ? null : ApiHelper.SELF)
+              : null;
+            addAction(operationMenu.activeMenu, action);
+          }
+          break;
+        case QuickAccessTypeEnum.WIZARD:
+          const wizardMenu = this.menu.wizardEntry(quickAccess.wizard?.id);
+          if (wizardMenu) {
+            addAction(wizardMenu.activeMenu);
+          }
+          break;
+        case QuickAccessTypeEnum.RECORD:
+          const recordMenu = this.menu.activeMenuForRecordType(isAdmin, quickAccess.recordType);
+          if (recordMenu) {
+            addAction(recordMenu);
+          }
+          break;
+        case QuickAccessTypeEnum.TOKEN:
+          if (!isAdmin) {
+            // For now we don't support quick access for general tokens search
+            const tokenMenu = this.menu.activeMenuForTokenType(quickAccess.tokenType);
+            if (tokenMenu) {
+              addAction(tokenMenu);
+            }
+          }
+          break;
+      }
     }
   }
+
 }

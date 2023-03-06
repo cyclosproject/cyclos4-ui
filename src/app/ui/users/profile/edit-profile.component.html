@@ -72,7 +72,7 @@
           </action-button>
         </actions>
         <image-upload #multiUpload target="profile" [owner]="param"
-          [max]="data.imageConfiguration.maxImages"
+          [max]="data.imageConfiguration.maxImages - images.length"
           (uploadDone)="onUploadDone($event)"></image-upload>
       </ng-container>
     </ng-container>

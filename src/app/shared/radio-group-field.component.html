@@ -20,9 +20,10 @@
         class="custom-control custom-radio d-inline-flex mr-3 align-items-center"
         (click)="value = option.value; $event.preventDefault(); $event.stopPropagation()"
         (keydown.space)="$event.preventDefault(); $event.stopPropagation()"
-        [ngClass]="{'mt-1': !firstOpt && asColumn}">
+        [ngClass]="{'mt-1': !firstOpt && asColumn, 'custom-control-disabled': option.disabled}">
         <input type="radio" [name]="name" class="custom-control-input"
           [id]="id + '_' + option.value" [value]="option.value"
+          [disabled]="option.disabled"
           (keyup.enter)="value = option.value; $event.preventDefault(); $event.stopPropagation()"
           [checked]="isSelected(option)">
         <label class="custom-control-label" [for]="id + '_' + option.value">

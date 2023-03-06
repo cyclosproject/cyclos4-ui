@@ -13,21 +13,17 @@
   <confirmation-password *ngIf="voucher.confirmationPasswordInput"
     class="mt-4" formControlName="confirmationPassword"
     [createDeviceConfirmation]="createDeviceConfirmation"
-    (confirmationModeChanged)="confirmationMode$.next($event)"
-    (confirmed)="submit($event)"
+    (showSubmit)="showSubmit$.next($event)" (confirmed)="submit($event)"
     [passwordInput]="voucher.confirmationPasswordInput">
   </confirmation-password>
 </ng-container>
 
 <actions forceRow>
-  <div
-    *ngIf="(confirmationMode$ | async) === ConfirmationMode.Device; else submitTpl">
-  </div>
-  <ng-template #submitTpl>
-    <action-button [disabled]="requesting$ | async" (action)="submit()"
-      [label]="i18n.general.submit">
-    </action-button>
-  </ng-template>
+  <action-button *ngIf="showSubmit$ | async; else blank"
+    [disabled]="requesting$ | async" (action)="submit()"
+    [label]="i18n.general.submit">
+  </action-button>
+  <ng-template #blank>&nbsp;</ng-template>
   <action-button outline (action)="modalRef.hide()"
     [label]="i18n.general.cancel">
   </action-button>

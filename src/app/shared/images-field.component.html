@@ -18,13 +18,15 @@
     </div>
     <div class="d-flex align-items-center">
       <ng-container *ngIf="maxFiles === 1 || images.length < maxFiles">
-        <button type="button" class="btn btn-icon d-flex align-content-center"
-          [tooltip]="i18n.field.image.upload" (click)="imageUpload.perform()">
+        <button #upload type="button"
+          class="btn btn-icon d-flex align-content-center"
+          [tooltip]="i18n.field.image.upload"
+          (click)="imageUpload.perform(); blurIfClick(upload, $event)">
           <icon [icon]="SvgIcon.Upload"></icon>
         </button>
         <button type="button"
           class="ml-2 btn btn-icon d-flex align-content-center"
-          [tooltip]="i18n.field.image.upload" (click)="captureCamera()">
+          [tooltip]="i18n.field.image.camera" (click)="captureCamera()">
           <icon [icon]="SvgIcon.Camera"></icon>
         </button>
       </ng-container>

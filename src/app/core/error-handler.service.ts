@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import {
   BuyVoucherError, BuyVoucherErrorCode, ConflictError, ConflictErrorCode,
+  CredentialTypeEnum,
   ErrorKind, ForbiddenError, ForbiddenErrorCode, ForgottenPasswordError,
   ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError, NotFoundError,
   PasswordStatusEnum, PaymentError, PaymentErrorCode, RedeemVoucherError,
@@ -11,6 +12,7 @@ import {
   UnauthorizedError, UnauthorizedErrorCode, UnavailableError, UnavailableErrorCode, UserStatusEnum
 } from 'app/api/models';
 import { ApiI18nService } from 'app/core/api-i18n.service';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { FormatService } from 'app/core/format.service';
 import { NotificationService } from 'app/core/notification.service';
@@ -39,7 +41,8 @@ export class ErrorHandlerService {
     private nextRequestState: NextRequestState,
     private dataForFrontendHolder: DataForFrontendHolder,
     @Inject(I18nInjectionToken) private i18n: I18n,
-    private apiI18n: ApiI18nService
+    private apiI18n: ApiI18nService,
+    private authHelper: AuthHelperService
   ) { }
 
   /**
@@ -418,15 +421,21 @@ export class ErrorHandlerService {
     error = error || {} as UnauthorizedError;
     switch (error.code) {
       case UnauthorizedErrorCode.LOGIN:
-        const missingSecondaryPassword = error.missingSecondaryPassword;
-        const secondaryDeviceAllowed = !!error.secondaryDeviceAllowed;
-        if (missingSecondaryPassword && secondaryDeviceAllowed) {
-          return this.i18n.login.error.confirmation.missingBoth(missingSecondaryPassword.name);
-        } else if (missingSecondaryPassword && !secondaryDeviceAllowed) {
-          return this.i18n.login.error.confirmation.missingPassword(missingSecondaryPassword.name);
-        } else if (!missingSecondaryPassword && secondaryDeviceAllowed) {
-          return this.i18n.login.error.confirmation.missingDevice;
+        const missingCredentials = error.missingLoginConfirmationCredentials;
+        if (missingCredentials?.length === 1) {
+          switch (missingCredentials[0]) {
+            case CredentialTypeEnum.DEVICE:
+              return this.i18n.login.error.confirmation.missing.device;
+            case CredentialTypeEnum.TOTP:
+              return this.i18n.login.error.confirmation.missing.totp;
+            default:
+              return this.i18n.login.error.confirmation.missing.password(error.missingLoginConfirmationPasswordType?.name);
+          }
+        } else if (missingCredentials?.length > 1) {
+          const names = missingCredentials.map(ct => this.authHelper.credentialTypeLabel({ passwordType: error.missingLoginConfirmationPasswordType }, ct));
+          return this.i18n.login.error.confirmation.missing.multiple(names.join(", "));
         }
+
         switch (error.passwordStatus) {
           case PasswordStatusEnum.DISABLED:
             return this.i18n.login.error.password.disabled;
@@ -482,6 +491,10 @@ export class ErrorHandlerService {
         return this.i18n.password.error.indefinitelyBlocked;
       case ForbiddenErrorCode.OTP_INVALIDATED:
         return this.i18n.password.error.otpInvalidated;
+      case ForbiddenErrorCode.INVALID_TOTP:
+        return this.i18n.password.error.invalidTotp;
+      case ForbiddenErrorCode.BLOCKED_BY_TOTP:
+        return this.i18n.password.error.blockedByTotp;
       default:
         return this.i18n.error.permission;
     }
@@ -499,7 +512,7 @@ export class ErrorHandlerService {
       case PaymentErrorCode.TIME_BETWEEN_PAYMENTS_NOT_MET:
         return this.i18n.transaction.error.minTime;
       case PaymentErrorCode.INSUFFICIENT_BALANCE:
-        return this.i18n.transaction.error.balance;
+        return error.voucher ? this.i18n.transaction.error.balanceVoucher : this.i18n.transaction.error.balance;
       case PaymentErrorCode.DESTINATION_UPPER_LIMIT_REACHED:
         return this.i18n.transaction.error.upperLimit;
       case PaymentErrorCode.DAILY_AMOUNT_EXCEEDED:

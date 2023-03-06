@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding,
   Inject,
   Injector, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild
 } from '@angular/core';
@@ -72,6 +72,7 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnDest
 
   constructor(
     injector: Injector,
+    private changeDetector: ChangeDetectorRef,
     public authHelper: AuthHelperService,
     public layout: LayoutService,
     public uiLayout: UiLayoutService,
@@ -88,6 +89,11 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnDest
 
   ngOnInit() {
     super.ngOnInit();
+
+    // Whenever there are changes to message or notification status, force a change detection
+    const detectChanges = () => setTimeout(() => this.changeDetector.detectChanges(), 100);
+    this.addSub(this.messageHelper.messageStatus$.subscribe(detectChanges));
+    this.addSub(this.notification.notificationsStatus$.subscribe(detectChanges));
 
     if (!this.dataForFrontendHolder.dataForFrontend.menuBar) {
       this.hasMenu = true;
@@ -159,16 +165,18 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnDest
     } else {
       // If there's a breadcrumb, show the back action, otherwise, home
       const home = user ? Menu.DASHBOARD : Menu.HOME;
-      if (this.breadcrumb.empty) {
-        addAction('home', SvgIcon.HouseDoor2, this.i18n.menu.home, home);
-      } else {
-        addAction('back', SvgIcon.ArrowLeft, this.i18n.general.back, () => {
-          if (!this.breadcrumb.back()) {
-            this.menu.navigate({
-              menu: new ActiveMenu(home),
-            });
-          }
-        });
+      if (!this.breadcrumb.dashboardOnly) {
+        if (this.breadcrumb.empty) {
+          addAction('home', SvgIcon.HouseDoor2, this.i18n.menu.home, home);
+        } else {
+          addAction('back', SvgIcon.ArrowLeft, this.i18n.general.back, () => {
+            if (!this.breadcrumb.back()) {
+              this.menu.navigate({
+                menu: new ActiveMenu(home),
+              });
+            }
+          });
+        }
       }
     }
     // Now show the other actions

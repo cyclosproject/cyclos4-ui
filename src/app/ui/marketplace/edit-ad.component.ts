@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { AdBasicData, AdDataForEdit, AdDataForNew, AdEdit, AdKind, AdManage, Currency, DeliveryMethod, Image } from 'app/api/models';
+import { AdBasicData, AdDataForEdit, AdDataForNew, AdEdit, AdKind, AdManage, AdStatusEnum, Currency, DeliveryMethod, Image } from 'app/api/models';
 import { ImagesService } from 'app/api/services/images.service';
 import { MarketplaceService } from 'app/api/services/marketplace.service';
 import { CameraService } from 'app/core/camera.service';
@@ -110,13 +110,15 @@ export class EditAdComponent
     this.requiredProductNumber = this.webshop && !settings.productNumberGenerated;
 
     this.mask = !settings.productNumberGenerated ? settings.productNumberMask : '';
-    const firstCurrency = !empty(data.currencies) ? data.currencies[0] : null;
+    const hasCurrencies = !empty(data.currencies);
+    const firstOrCurrentCurrency = !hasCurrencies ? null :
+      data.currencies?.find(c => this.ApiHelper.internalNameOrId(c) === adManage.currency) || data.currencies[0];
 
     this.form = this.formBuilder.group({
       name: [adManage.name, Validators.required],
       categories: [categories, Validators.required],
-      currency: [firstCurrency ? this.ApiHelper.internalNameOrId(firstCurrency) : null, Validators.required],
-      price: [adManage.price, this.webshop ? Validators.required : null],
+      currency: [firstOrCurrentCurrency ? this.ApiHelper.internalNameOrId(firstOrCurrentCurrency) : null, hasCurrencies ? Validators.required : null],
+      price: [adManage.price, this.webshop && hasCurrencies ? Validators.required : null],
       publicationBeginDate: [adManage.publicationPeriod.begin, Validators.required],
       publicationEndDate: [adManage.publicationPeriod.end, Validators.required],
       setPromotionalPeriod: adManage.promotionalPeriod != null,
@@ -146,15 +148,14 @@ export class EditAdComponent
       this.updateDeliveryMethods(data);
     }));
     // Preselect the first currency when creating a new ad
-    // or use the single returned currency when editing
-    this.currency = firstCurrency;
+    // or use the single returned currency when editing if it's the same of the ad
+    this.currency = firstOrCurrentCurrency;
 
     this.addSub(this.form.controls.stockType.valueChanges.subscribe(() => this.updateStockControls()));
 
     this.uploadedImages = [];
     this.updateDeliveryMethods(data);
     this.updateStockControls();
-
   }
 
   resolveMenu(data: AdBasicData) {
@@ -218,6 +219,14 @@ export class EditAdComponent
     return this.marketplaceHelper.resolveStatusLabel((this.data as AdDataForEdit).status);
   }
 
+  showNotAvailableCurrenciesError(): boolean {
+    return (this.data as AdDataForEdit).status === AdStatusEnum.DISABLED && (!this.data.currencies || this.data.currencies.length === 0);
+  }
+
+  showDisabledAdWarning(): boolean {
+    return (this.data as AdDataForEdit).status === AdStatusEnum.DISABLED && this.data.currencies?.length > 0;
+  }
+
   /**
    * Creates or updates the current ad and allows to create
    * a new ad based on the current one
@@ -255,7 +264,7 @@ export class EditAdComponent
     const onFinish: any = (id: string) => {
       this.notification.snackBar(this.i18n.ad.adSaved);
       if (insertNew) {
-        this.router.navigate(['/marketplace', this.owner, this.data.kind, 'new'], {
+        this.router.navigate(['/marketplace', this.owner, this.data.kind, 'ad', 'new'], {
           replaceUrl: true,
           queryParams: { basedOnId: id || this.id },
         });
@@ -322,26 +331,19 @@ export class EditAdComponent
     });
     const component = ref.content as ManageImagesComponent;
     component.result.pipe(first()).subscribe(result => {
-      this.hasRemovedImages = !empty(result.removedImages);
-      if (this.hasRemovedImages) {
-        for (const removed of result.removedImages) {
-          this.addSub(this.imagesService.deleteImage({ idOrKey: removed }).subscribe());
-        }
+      if (result.order != null) {
         // Update the images and uploaded images lists
-        this.images = this.images.filter(i => !result.removedImages.includes(i.id));
-        this.uploadedImages = this.uploadedImages.filter(i => !result.removedImages.includes(i.id));
-      }
-      const hasOrderChanged = !empty(result.order);
-      if (hasOrderChanged) {
+        this.images = this.images.filter(i => result.order.includes(i.id));
+        this.uploadedImages = this.uploadedImages.filter(i => result.order.includes(i.id));
+
         // The order has changed
-        this.images = result.order.map(id => {
-          return this.images.find(i => i.id === id);
-        });
+        this.images = result.order.map(id => this.images.find(i => i.id === id));
         if (!this.create) {
           this.addSub(this.imagesService.reorderAdImages({ ids: result.order, ad: this.id }).subscribe());
         }
       }
       ref.hide();
+      this.changeDetector.detectChanges();
     });
   }
 

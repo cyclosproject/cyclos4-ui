@@ -161,7 +161,6 @@
       "from": "De {min}",
       "to": "Jusqu'à {max}"
     },
-    "rangeTo": "à",
     "fileSize": {
       "b": "{n} octets",
       "k": "{n}Ko",
@@ -299,17 +298,7 @@
   },
   "password": {
     "confirm.mode": "Confirmer avec",
-    "confirm.mode.device": "Téléphone mobile",
-    "confirm.mode.password": "Mot de passe",
-    "confirmMessage": {
-      "notActive.device": "Cette opération doit être confirmée avec un appareil de fiable (téléphone mobile), veuillez vous connecter à votre appareil mobile, aller à la configuration (icône de paramètres) et faire  l'appareil fiable"
-    },
     "confirm.password.placeholder": "Tapez ici: {password}",
-    "otp.countdownLabel": "* Vous pouvez envoyer à nouveau l'e-mail/SMS dans {seconds} secondes.",
-    "otp.receiveBy.sent": "{medium} envoyé",
-    "otp.sent": "Le mot de passe a été envoyé à {dest}",
-    "otp.sentToMail": "Envoyé à l'adresse e-mail {mail}",
-    "otp.sentToPhone": "Envoyé au téléphone {phone}",
     "oldPassword": "Ancien mot de passe",
     "newPassword": "Nouveau mot de passe",
     "passwordConfirmation": "Confirmer le mot de passe",
@@ -613,7 +602,6 @@
     "accountBalance": "Solde du compte",
     "installments": "Versements",
     "installmentNumber": "Numéro",
-    "occurrences": "Occurrences",
     "noAccounts": "Vous n'avez pas de compte pour effectuer le paiement",
     "noVisibleAccounts": "Vous n'avez aucun compte visible pour effectuer le paiement, veuillez consulter la page {0} . Si le compte est déjà marqué comme visible, veuillez contacter l'administrateur. ",
     "noExternalPaymentPrincipalTypes": "Il n'y a pas de méthode d'identification utilisateur compatible pour effectuer le paiement",
@@ -824,7 +812,6 @@
     "reschedulePaymentRequest.rescheduleTo": "Replanifier à",
     "reschedulePaymentRequest.rescheduleTo.date": "Reprogrammer à la date",
     "confirmPaymentRequest": "Êtes-vous sûr d'envoyer cette demande de paiement ?",
-    "firstOccurrenceIsImmediate": "La première occurrence est immédiate",
     "firstInstallmentIsImmediate": "Le premier versement est immédiat",
     "voucher.redeemed": "Coupon encaissé",
     "voucher.toppedUp": "Coupon rechargé",
@@ -880,7 +867,6 @@
     "topUp": {
       "confirm": "Les détails de la recharge du coupon sont donnés ci-dessous. Veuillez le vérifier et confirmer cette action.",
       "done": "Le coupon a été rechargé avec succès.",
-      "topUp": "Recharger coupon",
       "sendPinBy": "Envoyer le code PIN par",
       "sendNotificationsBy": "Envoyer des notifications par",
       "dontSendNotifications": "Ne pas envoyer de notifications",
@@ -913,7 +899,6 @@
       "send": "Acheter et envoyer par e-mail",
       "sendConfirmation": "Envoyer confirmation",
       "redeem": "Encaisser coupon",
-      "topUp": "Recharger coupon",
       "redeemDetails": "Encaissement de coupon",
       "topUpDetails": "Recharge de coupon",
       "chargebackDetails": "Remboursement du coupon",
@@ -927,7 +912,6 @@
       "send": "Acheter coupons et renvoyer par e-mail",
       "sendConfirmation": "Envoyer confirmation",
       "redeem": "Encaisser coupon",
-      "topUp": "Recharger coupon",
       "redeemDetails": "Détails d´encaissement",
       "topUpDetails": "Détails de la recharge du coupon",
       "chargebackDetails": "Remboursement  du coupon",
@@ -1049,11 +1033,6 @@
     }
   },
   "field": {
-    "privacy": {
-      "name": "Confidentialité",
-      "private.tooltip": "Ce champ est privé. Cliquez pour permettre aux autres de le voir.",
-      "public.tooltip": "Ce champ est visible par d'autres. Cliquez pour le rendre privé."
-    },
     "image": {
       "upload": "Télécharger une nouvelle image",
       "manage": "Réorganiser ou supprimer des images",
@@ -1132,7 +1111,6 @@
     "email.pending": "Courriel en attente de validation",
     "operator.noGroup": "Aucun groupe (a toutes les permissions)",
     "operator.registration.active": "L'opérateur {operator} a été activé.",
-    "operator.registration.inactive": "L' opérateur {operator} a été enregistré, cependant, nécessite toujours une activation par l'administration.",
     "operator.registration.pending": "L'opérateur {operator} a été enregistré, cependant, doit encore valider son inscription en confirmant l'e-mail.",
     "operator.registration.addAnother": "Enregistrer un autre opérateur",
     "noImage": "Pas d'image de profil",
@@ -1223,7 +1201,6 @@
       "inactive.public": "Votre compte a été créé avec succès. <br> Toutefois, vous devrez être activé par l'administration. <br> Vous serez averti lorsque votre compte est actif.",
       "pending.public": "Votre inscription a été soumise et doit être vérifiée. <br> Vous devriez recevoir sous peu un courrier électronique avec les instructions pour activer votre compte. <br> Si vous ne recevez pas l'e-mail, assurez-vous de vérifier votre dossier spam / courrier indésirable.",
       "active.manager": "Le compte de l'utilisateur de {user} a été activé.",
-      "inactive.manager": "L'utilisateur {user} a été enregistré, cependant, nécessite toujours une activation par l'administration.",
       "pending.manager": "L'utilisateur {user} a été enregistré, cependant, doit encore valider son inscription en confirmant l'e-mail.",
       "principal.single": "Vous pouvez utiliser votre {principal} ({value}) sur {channels}",
       "principal.multiple.preface": "Vous pouvez vous connecter avec les données suivantes :",
@@ -1394,7 +1371,6 @@
     "enabledSms": "Activé pour SMS",
     "error": {
       "verify": {
-        "expired": "Le code de vérification n'a pas été envoyé ou a expiré. <br> Veuillez renvoyer le code sur votre téléphone et relancer le processus.",
         "invalid": "Code de vérification invalidee",
         "maxAttempts": "Vous avez dépassé le nombre de tentatives autorisées. <br> Veuillez renvoyer le code sur votre téléphone et relancer le processus."
       }
@@ -1492,7 +1468,6 @@
       "paymentCanceled": "Paiement annulé",
       "paymentExpired": "Paiement expiré"
     },
-    "listAds": "Liste des annonces\n",
     "title": {
       "search": "Rechercher annonces",
       "myAdvertisements": "Mes annonces",
@@ -1563,8 +1538,7 @@
     "messageDestination": {
       "brokered": "Utilisateurs enregistrés"
     },
-    "send": "Envoyer",
-    "messageSent": "Le message a été envoyé avec succès."
+    "send": "Envoyer"
   },
   "notification": {
     "onlyUnread": "Non-lus uniquement",

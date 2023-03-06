@@ -1,30 +1,29 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import {
-  AfterViewInit,
-  ChangeDetectionStrategy, Component, EventEmitter, Host, Injector, Input,
-  OnDestroy, OnInit, Optional, Output, SkipSelf, ViewChild,
+  AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Host, Injector, Input, OnDestroy, OnInit, Optional, Output, SkipSelf,
+  ViewChild
 } from '@angular/core';
 import {
-  AbstractControl, ControlContainer, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR,
-  ValidationErrors, Validator,
+  AbstractControl, ControlContainer, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
 } from '@angular/forms';
 import {
-  CreateDeviceConfirmation, DeviceConfirmationStatusEnum, DeviceConfirmationView,
-  ImageSizeEnum, PasswordInput, PasswordInputMethodEnum, PasswordModeEnum, PaymentPreview, PerformPayment,
+  CreateDeviceConfirmation, CredentialTypeEnum, DeviceConfirmationStatusEnum, DeviceConfirmationView, ImageSizeEnum, PasswordInput, PasswordInputMethodEnum,
+  PasswordModeEnum, PaymentPreview, PerformPayment
 } from 'app/api/models';
 import { DeviceConfirmationsService } from 'app/api/services/device-confirmations.service';
 import { PosService } from 'app/api/services/pos.service';
 import { AuthHelperService } from 'app/core/auth-helper.service';
+import { LayoutService } from 'app/core/layout.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { BaseControlComponent } from 'app/shared/base-control.component';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
+import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 /**
- * Component used to input a password to confirm an action
+ * Component used to input a password to confirm an action.
  */
 @Component({
   selector: 'confirmation-password',
@@ -37,25 +36,29 @@ import { first } from 'rxjs/operators';
 })
 export class ConfirmationPasswordComponent extends BaseControlComponent<string> implements OnInit, OnDestroy, AfterViewInit, Validator {
 
-  ConfirmationMode = ConfirmationMode;
   PasswordInputMethodEnum = PasswordInputMethodEnum;
+  CredentialTypeEnum = CredentialTypeEnum;
 
   @Input() paymentPreview: PaymentPreview;
   @Input() pos: boolean;
   @Input() passwordInput: PasswordInput;
   @Input() createDeviceConfirmation: () => CreateDeviceConfirmation | PerformPayment;
-  @Output() confirmationModeChanged = new EventEmitter<ConfirmationMode>();
+  @Output() showSubmit = new EventEmitter<boolean>();
   @Output() confirmed = new EventEmitter<string>();
   @Output() createDeviceConfirmationError = new EventEmitter<HttpErrorResponse>();
   @Input() alertMessage: string;
 
+  otpSent: boolean;
   canConfirm: boolean;
   allowDevice: boolean;
+  allowTotp: boolean;
   allowPassword: boolean;
   confirmationMessage$ = new BehaviorSubject<string>(null);
-  otpRenewable: boolean;
-  confirmationModeControl: FormControl;
+  credentialTypeControl: FormControl;
+  credentialTypeOptions: FieldOption[];
   deviceConfirmationId: string;
+
+  totpControl = new FormControl();
 
   @ViewChild('passwordComponent') private passwordComponent: PasswordInputComponent;
 
@@ -70,7 +73,8 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
     private posService: PosService,
     private deviceConfirmationsService: DeviceConfirmationsService,
     private pushNotifications: PushNotificationsService,
-    private authHelper: AuthHelperService,
+    public authHelper: AuthHelperService,
+    public layout: LayoutService
   ) {
     super(injector, controlContainer);
   }
@@ -78,28 +82,46 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
   ngOnInit() {
     super.ngOnInit();
     this.canConfirm = this.authHelper.canConfirm(this.passwordInput);
-    this.allowDevice = this.authHelper.canConfirmWithDevice(this.passwordInput);
-    this.allowPassword = this.authHelper.canConfirmWithPassword(this.passwordInput);
-    this.confirmationMessage$.next(this.authHelper.getConfirmationMessage(this.passwordInput, this.pos));
-    this.confirmationModeControl = new FormControl(null);
-    this.addSub(this.confirmationModeControl.valueChanges.subscribe(mode => {
-      if (mode === ConfirmationMode.Device && !this.deviceConfirmationId) {
+    this.allowDevice = this.authHelper.canConfirm(this.passwordInput, CredentialTypeEnum.DEVICE);
+    this.allowTotp = this.authHelper.canConfirm(this.passwordInput, CredentialTypeEnum.TOTP);
+    this.allowPassword = this.authHelper.canConfirm(this.passwordInput, CredentialTypeEnum.PASSWORD);
+    this.updateConfirmationMessage(null);
+    const credentialType = this.authHelper.initialCredentialType(this.passwordInput);
+    if (credentialType == CredentialTypeEnum.DEVICE) {
+      this.newQR();
+    }
+    this.credentialTypeControl = new FormControl(credentialType);
+    if (this.passwordInput.allowedCredentials.length > 1) {
+      this.credentialTypeOptions = this.passwordInput.allowedCredentials.map(ct => ({
+        value: ct,
+        text: this.authHelper.credentialTypeLabel(this.passwordInput, ct),
+        disabled: !this.passwordInput.activeCredentials.includes(ct)
+      } as FieldOption));
+    }
+    this.addSub(this.credentialTypeControl.valueChanges.subscribe(credentialType => {
+      if (credentialType === CredentialTypeEnum.DEVICE && !this.deviceConfirmationId) {
         this.newQR();
       }
-      this.confirmationModeChanged.emit(mode);
+      this.formControl.setValue(null);
+      this.updateConfirmationMessage(credentialType);
+      this.emitShowSubmit(credentialType);
+    }));
+    this.addSub(this.pushNotifications.deviceConfirmations$.subscribe(c => this.onDeviceConfirmation(c)));
+
+    this.addSub(this.totpControl.valueChanges.subscribe(totp => {
+      totp = (totp || '').trim();
+      this.formControl.setValue(totp.length ? `totp:${totp}` : '');
     }));
 
-    this.addSub(this.pushNotifications.deviceConfirmations$.subscribe(c =>
-      this.onDeviceConfirmation(c)));
-
-    // Set the initial value for the confirmation mode
+    // Update the initial status
     setTimeout(() => {
-      if (this.allowDevice) {
-        this.confirmationModeControl.setValue(ConfirmationMode.Device);
-      } else if (this.allowPassword) {
-        this.confirmationModeControl.setValue(ConfirmationMode.Password);
-      }
-    }, 1);
+      this.updateConfirmationMessage(credentialType);
+      this.emitShowSubmit(credentialType);
+    });
+  }
+
+  private emitShowSubmit(credentialType: CredentialTypeEnum) {
+    this.showSubmit.emit(this.authHelper.showSubmit(this.passwordInput, credentialType, this.otpSent));
   }
 
   ngOnDestroy() {
@@ -110,22 +132,26 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
   ngAfterViewInit() {
     if (this.otpSubscription == null && this.passwordComponent) {
       this.otpSubscription = this.passwordComponent.otpSent.subscribe(() => {
-        this.passwordInput.hasActivePassword = true;
-        this.confirmationMessage$.next(this.authHelper.getConfirmationMessage(this.passwordInput, this.pos));
+        if (this.passwordInput.passwordType.allowReuseOtp) {
+          this.passwordInput.hasReusableOtp = true;
+        }
+        this.otpSent = true;
+        this.showSubmit.emit(this.authHelper.showSubmit(this.passwordInput, CredentialTypeEnum.PASSWORD, true));
+        this.updateConfirmationMessage(CredentialTypeEnum.PASSWORD);
       });
     }
   }
 
   get confirmPasswordPlaceholder(): string {
-    return this.i18n.password.confirmPasswordPlaceholder(this.passwordInput.name);
+    return this.i18n.password.confirmPasswordPlaceholder(this.passwordInput.passwordType?.name);
   }
 
   get activePassword(): boolean {
-    return this.passwordInput.hasActivePassword;
+    return this.passwordInput.activeCredentials?.includes(CredentialTypeEnum.PASSWORD);
   }
 
   get hasOtpSendMediums(): boolean {
-    return this.passwordInput.mode === PasswordModeEnum.OTP
+    return this.passwordInput?.passwordType?.mode === PasswordModeEnum.OTP
       && !empty(this.passwordInput.otpSendMediums);
   }
 
@@ -137,13 +163,13 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
 
   // Validator methods
   validate(c: AbstractControl): ValidationErrors {
-    if (this.confirmationModeControl.value === ConfirmationMode.Password &&
-      this.passwordComponent) {
+    if (this.credentialTypeControl.value === CredentialTypeEnum.PASSWORD && this.passwordComponent) {
       return this.passwordComponent.validate(c);
     }
     return null;
   }
   registerOnValidatorChange() {
+    // Do nothing
   }
 
   focus() {
@@ -217,5 +243,9 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
         this.rejected$.next(true);
         break;
     }
+  }
+
+  private updateConfirmationMessage(credentialType: CredentialTypeEnum) {
+    this.confirmationMessage$.next(this.authHelper.getConfirmationMessage(this.passwordInput, credentialType, this.pos));
   }
 }

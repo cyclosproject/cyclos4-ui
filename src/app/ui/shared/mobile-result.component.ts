@@ -19,6 +19,7 @@ export class MobileResultComponent implements OnInit {
   @Input() avatarRoundBorders: boolean;
   @Input() date: string;
   @Input() topLeft: string;
+  @Input() topRight: string;
   @Input() amount: string;
   @Input() amountColor = true;
   @Input() currency: Currency;
@@ -37,7 +38,7 @@ export class MobileResultComponent implements OnInit {
 
   avatarClass: string;
   mainClass: string;
-  amountClass: { [key: string]: boolean };
+  amountClass: { [key: string]: boolean; };
 
   constructor(
     private format: FormatService,

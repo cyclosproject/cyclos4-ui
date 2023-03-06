@@ -227,44 +227,36 @@ For this, as a global administrator (which may be switched to the network),
 in 'System > Tools > Script', create a script of type 'Link generation',
 with the following content:
 
+
 ```groovy
-import org.cyclos.entities.system.CustomWizardExecution
-import org.cyclos.entities.system.ExternalRedirectExecution
+import org.cyclos.entities.users.BasicUser
 import org.cyclos.impl.utils.LinkType
 import org.cyclos.utils.StringHelper
 
-if (user != null && user.admin && user.group.adminType != null) {
+BasicUser user = binding.user
+if (user?.admin && user.user.group.adminType != null) {
     // Don't generate custom links for system administrators
     return null
 }
 
-String root = scriptParameters.rootUrl
-switch (type) {
-    case LinkType.ROOT:
-        return root
-    case LinkType.REGISTRATION_VALIDATION:
-        return "${root}/users/validate-registration/${validationKey}"
-    case LinkType.EMAIL_CHANGE:
-        return "${root}/users/validate-email-change/${validationKey}"
-    case LinkType.FORGOT_PASSWORD:
-        return "${root}/forgot-password/${validationKey}"
-    case LinkType.LOGIN:
-        return "${root}/login"
-    case LinkType.EXTERNAL_REDIRECT:
-        ExternalRedirectExecution e = binding.execution
-        return "${root}/operations/callback/${maskId(e.id)}/${e.verificationToken}"
-    case LinkType.WIZARD_EXTERNAL_REDIRECT:
-        CustomWizardExecution we = binding.execution
-        return "${root}/wizards/callback/${we.key}"
-    case LinkType.NOTIFICATION:
-        def l = StringHelper.camelize(location.name())
-        return "${root}/redirect/${l}" + entityId ? "?id=${maskId(entityId)}" : ""
-    // Those 2 should only be used if proxying the /identity path
-    case LinkType.IDENTITY_PROVIDER_REDIRECT:
-        return "${root}/identity/redirect/${requestId}"
-    case LinkType.IDENTITY_PROVIDER_CALLBACK:
-        return "${root}/identity/callback"
-}}
+// Read the parameters
+Map scriptParameters = binding.scriptParameters
+LinkType linkType = binding.type
+String root = StringHelper.removeEnd(scriptParameters.rootUrl, '/')
+
+// For root, return the configured root URL
+if (linkType == linkType.ROOT) {
+    return root
+}
+
+// Cyclos already generates links to the built-in frontend,
+// using the /ui/ prefix. This script assumes that the users
+// configuration sets the new frontend for all regular users.
+String urlFilePart = binding.urlFilePart
+if (urlFilePart?.startsWith("/ui/")) {
+    return root + StringHelper.removeStart(urlFilePart, "/ui")
+}
+
 ```
 
 Then, in 'System > System configuration > Configurations' select the configuration
@@ -275,6 +267,9 @@ replacing the URL with your deployed URL:
 ```properties
 rootUrl = https://account.example.com
 ```
+
+For this script to work, make sure that the same configuration sets the frontend for
+users to be the new frontend, not the classic frontend.
 
 ### Customizing the frontend theme
 

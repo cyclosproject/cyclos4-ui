@@ -5,7 +5,6 @@ import {
   TransferType
 } from 'app/api/models';
 import { ExternalPaymentsService } from 'app/api/services/external-payments.service';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
@@ -27,8 +26,6 @@ export type ExternalPaymentStep = 'error' | 'form' | 'confirm';
 })
 export class ExternalPaymentComponent extends BasePageComponent<DataForTransaction> implements OnInit {
 
-  ConfirmationMode = ConfirmationMode;
-
   ownerParam: string;
   fromSelf: boolean;
   fromSystem: boolean;
@@ -43,7 +40,7 @@ export class ExternalPaymentComponent extends BasePageComponent<DataForTransacti
   actualData: DataForTransaction;
   confirmationPassword: FormControl;
   canConfirm: boolean;
-  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
+  showSubmit$ = new BehaviorSubject(true);
   preview: ExternalPaymentPreview;
   paymentTypeData$ = new BehaviorSubject<TransactionTypeData>(null);
   availablePaymentTypes: TransferType[];
@@ -87,7 +84,6 @@ export class ExternalPaymentComponent extends BasePageComponent<DataForTransacti
 
   ngOnInit() {
     super.ngOnInit();
-
     // Resolve the from and to parameters
     const route = this.route.snapshot;
     this.ownerParam = route.params.owner;
@@ -211,6 +207,7 @@ export class ExternalPaymentComponent extends BasePageComponent<DataForTransacti
       body: this.form.value
     }).subscribe(preview => {
       this.preview = preview;
+      // Initialize confirmation mode
       this.step = 'confirm';
       this.canConfirm = this.authHelper.canConfirm(preview.confirmationPasswordInput);
       if (!this.canConfirm) {

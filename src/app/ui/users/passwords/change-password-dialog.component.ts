@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { ChangePassword, PasswordType, User } from 'app/api/models';
+import { ChangePassword, PasswordTypeDetailed, User } from 'app/api/models';
 import { PasswordsService } from 'app/api/services/passwords.service';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { BaseComponent } from 'app/shared/base.component';
@@ -34,7 +34,7 @@ export class ChangePasswordDialogComponent extends BaseComponent implements OnIn
 
   @Input() param: string;
   @Input() user: User;
-  @Input() type: PasswordType;
+  @Input() type: PasswordTypeDetailed;
   @Input() requireOld: boolean;
   @Output() done = new EventEmitter<void>();
 

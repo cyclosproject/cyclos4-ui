@@ -29,6 +29,7 @@
       </th>
       <th *ngFor="let field of fieldsInList">{{ fieldName(field) }}</th>
       <th *ngIf="resultKind === 'operator'">{{ i18n.user.group }}</th>
+      <th *ngIf="removeAction" class="actions"></th>
     </thead>
     <tbody>
       <tr *ngFor="let row of results?.results"
@@ -42,6 +43,13 @@
             [customValues]="customValues(row)"></format-field-value>
         </td>
         <td *ngIf="resultKind === 'operator'">{{ operatorGroup(row) }}</td>
+        <td *ngIf="removeAction" class="actions">
+          <button type="button" [tooltip]="i18n.user.remove"
+            class="btn btn-icon"
+            (click)="removeAction(row); $event.stopPropagation(); $event.preventDefault() ">
+            <icon [icon]="SvgIcon.Trash"></icon>
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>

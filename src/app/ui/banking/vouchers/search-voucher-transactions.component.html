@@ -27,18 +27,11 @@
           </multi-selection-field>
         </div>
         <div *ngIf="data.topUpEnabled" class="col-12 col-md-6">
-          <single-selection-field [emptyOption]="i18n.general.notApplied"
-            formControlName="kind" [label]="i18n.voucher.transaction.kind">
-            <field-option [value]="VoucherTransactionKind.REDEEM"
-              [text]="i18n.voucher.transaction.redeem">
-            </field-option>
-            <field-option [value]="VoucherTransactionKind.TOP_UP"
-              [text]="i18n.voucher.transaction.topUp">
-            </field-option>
-            <field-option [value]="VoucherTransactionKind.CHARGEBACK"
-              [text]="i18n.voucher.transaction.chargeback">
-            </field-option>
-          </single-selection-field>
+          <multi-selection-field labelPosition="side"
+            [emptyLabel]="i18n.general.notApplied" formControlName="kinds"
+            [label]="i18n.voucher.transaction.kind"
+            [fieldOptions]="kindsOptions">
+          </multi-selection-field>
         </div>
         <div class="row no-gutters col-12">
           <div class="col-12 col-md-6">

@@ -18,6 +18,11 @@
         </router-outlet>
       </div>
     </div>
+    <ng-container *ngIf="(uiLayout.fullWidth$ | async) === false">
+      <div *ngIf="dataForFrontendHolder.dataForFrontend?.footer as footer"
+        class="footer" [innerHTML]="footer | trust">
+      </div>
+    </ng-container>
   </ng-container>
 </ng-container>
 <ng-template #loading>

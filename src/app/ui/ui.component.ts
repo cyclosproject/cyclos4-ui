@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataForFrontend, UnauthorizedError, UnauthorizedErrorCode } from 'app/api/models';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
@@ -7,7 +7,7 @@ import { LayoutService } from 'app/core/layout.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { ArrowsVertical, ShortcutService } from 'app/core/shortcut.service';
 import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
-import { handleKeyboardFocus, setRootSpinnerVisible } from 'app/shared/helper';
+import { empty, handleKeyboardFocus, setRootSpinnerVisible } from 'app/shared/helper';
 import { LoginState } from 'app/ui/core/login-state';
 import { LoginService } from 'app/ui/core/login.service';
 import { MenuService } from 'app/ui/core/menu.service';
@@ -46,7 +46,8 @@ export class UiComponent implements OnInit {
     private nextRequestState: NextRequestState,
     private shortcut: ShortcutService,
     private errorHandler: ErrorHandlerService,
-    private uiErrorHandler: UiErrorHandlerService
+    private uiErrorHandler: UiErrorHandlerService,
+    private changeDetector: ChangeDetectorRef
   ) {
   }
 
@@ -91,6 +92,9 @@ export class UiComponent implements OnInit {
     // Listen for vertical arrows events on mobile to change focus
     this.shortcut.subscribe(ArrowsVertical, e =>
       handleKeyboardFocus(this.layout, this.mainContainer.nativeElement, e));
+
+    // Workaround: Without this, the footer doesn't show up without a click in the page
+    this.uiLayout.fullWidth$.subscribe(() => setTimeout(() => this.changeDetector.detectChanges()));
   }
 
   private doInitialize(dataForFrontend: DataForFrontend) {
@@ -99,6 +103,11 @@ export class UiComponent implements OnInit {
     this.menuBar = dataForFrontend.menuBar;
     const dataForUi = (dataForFrontend || {}).dataForUi;
     const auth = (dataForUi || {}).auth || {};
+
+    const hasFooter = !empty(dataForFrontend.footer);
+    if (hasFooter) {
+      document.body.classList.add('with-footer');
+    }
 
     if (auth.unauthorizedAddress) {
       const error = { code: UnauthorizedErrorCode.UNAUTHORIZED_ADDRESS } as UnauthorizedError;

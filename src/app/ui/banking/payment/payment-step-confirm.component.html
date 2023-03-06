@@ -3,6 +3,14 @@
   {{ i18n.transaction.requiresAuthorization }}
 </notification>
 
+<!-- From/To operator -->
+<label-value *ngIf="preview.fromOperator" [label]="i18n.general.performedBy">
+  <user-link [user]="preview.fromOperator"></user-link>
+</label-value>
+<label-value *ngIf="preview.toOperator" [label]="i18n.transaction.receivedBy">
+  <user-link [user]="preview.toOperator"></user-link>
+</label-value>
+
 <ng-container *ngIf="fromSelf && toSelf">
   <!-- For payments between own accounts, show the account names -->
   <label-value [label]="i18n.transaction.fromAccount">
@@ -149,7 +157,7 @@
     [formControl]="form.get('confirmationPassword')" [pos]="pos"
     [passwordInput]="preview.confirmationPasswordInput"
     [createDeviceConfirmation]="createDeviceConfirmation"
-    (confirmationModeChanged)="confirmationModeChanged.emit($event)"
+    (showSubmit)="showSubmit.emit($event)"
     (confirmed)="confirmed.emit($event)" [paymentPreview]="preview">
   </confirmation-password>
 </ng-container>

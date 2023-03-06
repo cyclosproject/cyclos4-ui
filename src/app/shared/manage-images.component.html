@@ -2,24 +2,21 @@
 
 <div class="mb-3">{{ i18n.field.image.manageMessage }}</div>
 
-<ng-template #imageTemplate let-item="item">
-  <div class="d-flex justify-items-center mb-2 cursor-move">
-    <avatar size="medium" [image]="item.value"></avatar>
+<div cdkDropList (cdkDropListDropped)="drop($event)">
+  <div *ngFor="let image of images" cdkDrag
+    class="d-flex justify-items-center mb-2 cursor-move">
+    <avatar size="medium" [image]="image"></avatar>
     <div class="ml-2 flex-grow-1 d-flex align-items-center text-truncate">
-      {{ item.value.name }}
+      {{ image.name }}
     </div>
     <div class="ml-2">
-      <button
-        *ngIf="!(requireAtLeastOne && ((order.valueChanges | async) || order.value)?.length === 1)"
-        type="button" class="btn btn-icon" (click)="remove(item.value)">
+      <button *ngIf="!(requireAtLeastOne && images?.length === 1)"
+        type="button" class="btn btn-icon" (click)="remove(image)">
         <icon [icon]="SvgIcon.X"></icon>
       </button>
     </div>
   </div>
-</ng-template>
-
-<bs-sortable [itemTemplate]="imageTemplate" [formControl]="order">
-</bs-sortable>
+</div>
 
 <div *ngIf="manageAfterConfirm" class="mt-4 text-primary">
   {{ i18n.field.image.manageAfterConfirm }}

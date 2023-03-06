@@ -7,7 +7,7 @@ import { LayoutService } from 'app/core/layout.service';
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, End, Home, PageDown, PageUp } from 'app/core/shortcut.service';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import download from 'downloadjs';
-import { deburr } from 'lodash-es';
+import { deburr, random, times } from 'lodash-es';
 import { INgxGalleryImage } from 'ngx-gallery-9';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
@@ -36,6 +36,13 @@ export function apiUrl() {
     // Fallback to the environment
     return environment.apiUrl;
   }
+}
+
+/**
+ * Generates a random string of a given length
+ */
+export function randomString(length: number) {
+  return times(length, () => random(35).toString(36)).join('');
 }
 
 /**
@@ -440,6 +447,13 @@ export function empty(input: any): boolean {
     return input.size === 0;
   }
   return false;
+}
+
+/**
+ * Removes any diacritics from the given string
+ */
+export function unaccent(input: string): string {
+  return input ? input.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : undefined;
 }
 
 /**

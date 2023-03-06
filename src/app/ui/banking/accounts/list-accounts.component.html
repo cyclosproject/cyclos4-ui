@@ -1,12 +1,34 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [mode]="!self ? 'filters' : 'emptyFilters'"
+    <page-content [mode]="!self || showFilters ? 'filters' : 'emptyFilters'"
       [heading]="i18n.account.title.accountsSummary"
       [mobileHeading]="i18n.account.mobileTitle.accountsSummary">
       <user-info *ngIf="!self" [user]="data.user"></user-info>
+      <div [formGroup]="form" *ngIf="showFilters"
+        class="filters-form filters-form-separator border-bottom">
+        <div class="row filters-row">
+          <div class="col-12 col-md-6">
+            <input-field labelPosition="side" formControlName="keywords"
+              [label]="i18n.general.keywords"></input-field>
+          </div>
+          <div class="col-12 col-md-6" *ngIf="currencyOptions.length > 1">
+            <single-selection-field labelPosition="side"
+              [emptyOption]="i18n.general.notApplied"
+              formControlName="currency" [label]="i18n.general.currency"
+              [fieldOptions]="currencyOptions">
+            </single-selection-field>
+          </div>
+          <div class="col-12 col-md-6" *ngIf="anyHasBalance">
+            <boolean-field labelPosition="side"
+              formControlName="nonZeroBalance"
+              [label]="i18n.account.nonZeroBalance">
+            </boolean-field>
+          </div>
+        </div>
+      </div>
     </page-content>
 
-    <results-layout [results]="data.accounts" [toLink]="toLink">
+    <results-layout [results]="results$ | async" [toLink]="toLink">
       <mobile-result *mobileResult="let row">
         <div class="d-flex">
           <div>
@@ -24,7 +46,7 @@
           <th class="text-right">{{ i18n.account.balance }}</th>
         </thead>
         <tbody>
-          <tr *ngFor="let row of data.accounts"
+          <tr *ngFor="let row of (results$ | async).results"
             (click)="router.navigate(path(row.type)); $event.stopPropagation()">
             <td>{{ row.type.name }}</td>
             <td class="text-right">

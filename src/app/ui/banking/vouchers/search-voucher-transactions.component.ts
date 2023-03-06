@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { UserVouchersDataForSearch, UserVoucherTransactionsDataForSearch, UserVoucherTransactionsQueryFilters, VoucherTransactionKind, VoucherTransactionResult } from 'app/api/models';
+import {
+  UserVouchersDataForSearch, UserVoucherTransactionsDataForSearch, UserVoucherTransactionsQueryFilters, VoucherTransactionKind,
+  VoucherTransactionResult
+} from 'app/api/models';
 import { VouchersService } from 'app/api/services/vouchers.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
@@ -33,30 +36,11 @@ export class SearchVoucherTransactionsComponent
   ngOnInit() {
     super.ngOnInit();
     this.param = this.route.snapshot.paramMap.get('user');
-    this.addSub(this.vouchersService.getUserVoucherTransactionsDataForSearch({
-      user: this.param
-    }).subscribe(dataForSearch => {
-      this.data = dataForSearch;
-    }));
+    this.addSub(this.vouchersService.getUserVoucherTransactionsDataForSearch({ user: this.param }).subscribe(data => this.data = data));
   }
 
   protected getFormControlNames(): string[] {
-    return ['types', 'kind', 'periodBegin', 'periodEnd'];
-  }
-
-  protected toSearchParams(value: any): UserVoucherTransactionsSearchParams {
-    const params = value as UserVoucherTransactionsSearchParams;
-    params.user = this.param;
-    if (value.periodBegin || value.periodEnd) {
-      params.datePeriod = this.ApiHelper.dateRangeFilter(value.periodBegin, value.periodEnd);
-    }
-    params.fields = ['id', 'date', 'kind', 'amount',
-      'type.voucherTitle', 'type.configuration.currency', 'type.image'];
-    return params;
-  }
-
-  protected doSearch(filters: UserVoucherTransactionsSearchParams) {
-    return this.vouchersService.searchUserVoucherTransactions$Response(filters);
+    return ['types', 'kinds', 'periodBegin', 'periodEnd'];
   }
 
   onDataInitialized(data: UserVoucherTransactionsDataForSearch) {
@@ -70,6 +54,29 @@ export class SearchVoucherTransactionsComponent
       headingActions.push(new HeadingAction(SvgIcon.TicketArrowUp, this.i18n.voucher.topUp.topUp, () => this.topUp(), true));
     }
     this.headingActions = headingActions;
+  }
+
+  protected toSearchParams(value: any): UserVoucherTransactionsSearchParams {
+    const params = value as UserVoucherTransactionsSearchParams;
+    params.user = this.param;
+    if (value.periodBegin || value.periodEnd) {
+      params.datePeriod = this.ApiHelper.dateRangeFilter(value.periodBegin, value.periodEnd);
+    }
+    params.fields = ['id', 'date', 'kinds', 'amount', 'type.voucherTitle', 'type.configuration.currency', 'type.image'];
+    return params;
+  }
+
+  protected doSearch(filters: UserVoucherTransactionsSearchParams) {
+    return this.vouchersService.searchUserVoucherTransactions$Response(filters);
+  }
+
+  get kindsOptions() {
+    const values = [
+      VoucherTransactionKind.REDEEM,
+      VoucherTransactionKind.TOP_UP,
+      VoucherTransactionKind.CHARGEBACK
+    ];
+    return values.map(kind => ({ value: kind, text: this.apiI18n.voucherTransactionKind(kind) }));
   }
 
   resolveVoucherTransactionsTitle(): string {

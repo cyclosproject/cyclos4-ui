@@ -10,7 +10,7 @@
     </receive-qr-payment-step-form>
     <actions forceRow>
       <action-button [disabled]="requesting$ | async" (action)="toPending()"
-        [label]="i18n.general.next">
+        [label]="i18n.transaction.receiveQrPaymentGenerateQrCode">
       </action-button>
     </actions>
   </page-content>
@@ -27,7 +27,7 @@
       </action-button>
       <ng-template #empty><span></span></ng-template>
       <action-button outline (action)="reload()"
-        [label]="i18n.general.previous">
+        [label]="i18n.transaction.receiveQrPaymentGenerateNewQrCode">
       </action-button>
     </actions>
   </page-content>

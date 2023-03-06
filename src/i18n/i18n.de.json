@@ -170,7 +170,6 @@
       "from": "Von {min}",
       "to": "Bis zu {max}"
     },
-    "rangeTo": "zu",
     "fileSize": {
       "b": "{n} Bytes",
       "k": "{n}KB",
@@ -318,20 +317,11 @@
         "reset": "Anmeldung fehlgeschlagen. Ihr Passwort wurde zurückgesetzt. Bitte kontaktieren Sie die Administration.",
         "indefinitelyBlocked": "Anmeldung fehlgeschlagen. Ihr Login-Passwort wurde wegen Überschreitung der maximal möglichen Versuche deaktiviert. Bitte kontaktieren Sie die Administration.",
         "temporarilyBlocked": "Ihr Passwort wird wegen Überschreitung der maximal zulässigen Versuche vorübergehend gesperrt"
-      },
-      "confirmation": {
-        "missingDevice": "Anmeldung fehlgeschlagen. Sie müssen Ihre Anmeldung mit einem vertrauenswürdigen mobilen Gerät bestätigen, aber Sie haben keine. Bitte installieren Sie die mobile App und aktivieren ist ein vertrauenswürdiges Gerät.",
-        "missingPassword": "Anmeldung fehlgeschlagen. Sie müssen den Login mit Ihrem {0} bestätigen, aber Sie sind nicht aktiv. Bitte kontaktieren Sie die Administration.",
-        "missingBoth": "Anmeldung fehlgeschlagen. Sie müssen Ihren Login entweder mit Ihrem {0} oder einem vertrauenswürdigen Mobilgerät bestätigen, aber Sie haben keine. Bitte installieren Sie die mobile App und aktivieren ist ein vertrauenswürdiges Gerät zuerst, oder kontaktieren Sie die Administration."
       }
     }
   },
   "password": {
     "confirm.mode": "Bestätigen mit",
-    "confirm.mode.device": "Mobiltelefon",
-    "confirm.mode.password": "Passwort",
-    "otp.receiveBy.sent": "{medium} gesendet",
-    "otp.sent": "Das Passwort wurde an {dest} gesendet",
     "oldPassword": "Altes Passwort",
     "newPassword": "Neues Passwort",
     "passwordConfirmation": "Bestätigung des Passworts",
@@ -639,7 +629,6 @@
     "installments": "Raten",
     "installmentNumber": "Nummer",
     "installmentNumberOfTotal": "{number} von {total}",
-    "occurrences": "Häufigkeit",
     "noAccounts": "Sie haben keine Konten zum Ausführen der Zahlung",
     "noTypes": "Es gibt keine möglichen Zahlungsarten",
     "noTypesSelection": "Es gibt keine möglichen Zahlungsarten für dieses Konto und Nutzende",
@@ -812,7 +801,6 @@
     "changePaymentRequestExpiration.done": "Das Ablaufdatum der Zahlungsanforderung wurde geändert",
     "reschedulePaymentRequest.done": "Die Zahlungsaufforderung wurde verschoben",
     "confirmPaymentRequest": "Sind Sie sicher, dass Sie diese Zahlungsaufforderung senden wollen?",
-    "firstOccurrenceIsImmediate": "Erster Vorgang ist sofort",
     "firstInstallmentIsImmediate": "Erste Rate ist sofort",
     "error": {
       "minTime": "Für eine Zahlung dieser Art sollte ein minimaler Zeitraum erwartet werden.",
@@ -906,11 +894,6 @@
     "refundDate": "Erstattungsdatum"
   },
   "field": {
-    "privacy": {
-      "name": "Privatsphäre",
-      "private.tooltip": "Dieses Feld ist privat. Klicken Sie hier, um es anderen anzuzeigen.",
-      "public.tooltip": "Dieses Feld ist für andere sichtbar. Klicken Sie hier, um es privat zu machen."
-    },
     "image": {
       "upload": "Neues Bild hochladen",
       "camera": "Von Kamera aufnehmen",
@@ -1069,7 +1052,6 @@
     "operator.owner": "Betreiber-Eigentümer",
     "operator.noGroup": "Keine Gruppe (hat alle Berechtigungen)",
     "operator.registration.active": "Der Operator {operator} wurde aktiviert.",
-    "operator.registration.inactive": "Der Operator {operator} wurde registriert, muss jedoch noch von der Administration aktiviert werden.",
     "operator.registration.pending": "Der Betreiber {operator} wurde registriert, muss seine Registrierung jedoch noch durch Bestätigung der E-Mail bestätigen.",
     "operator.registration.addAnother": "Einen anderen Operator registrieren",
     "noImage": "Kein Profilbild",
@@ -1160,7 +1142,6 @@
       "inactive.public": "Ihr Konto wurde erfolgreich erstellt.<br>Sie müssen jedoch noch von der Administration aktiviert werden.<br>Sie werden benachrichtigt, wenn Ihr Konto aktiv ist.",
       "pending.public": "Ihre Registrierung wurde abgeschickt und muss überprüft werden.<br>Sie sollten in Kürze eine E-Mail mit Anweisungen zur Aktivierung Ihres Kontos erhalten.<br>Wenn Sie die E-Mail nicht erhalten, überprüfen Sie Ihren Spam-/Junk-Ordner.",
       "active.manager": "Das Nutzerkonto für {user} wurde aktiviert.",
-      "inactive.manager": "Der Nutzende {user} wurde registriert, muss jedoch noch durch die Administration aktiviert werden.",
       "pending.manager": "Der Nutzende {user} wurde registriert, muss seine Registrierung jedoch noch durch Bestätigung der E-Mail bestätigen.",
       "principal.single": "Du kannst deine {principal} ({value}) auf {channels} verwenden",
       "principal.multiple.preface": "Sie können sich mit den folgenden Daten anmelden:",
@@ -1328,7 +1309,6 @@
     "verified": "Verifiziert",
     "error": {
       "verify": {
-        "expired": "Der Bestätigungscode wurde nicht gesendet oder ist abgelaufen.<br> Bitte senden Sie den Code erneut an Ihr Mobiltelefon und starten Sie den Prozess neu.",
         "invalid": "Ungültiger Bestätigungscode",
         "maxAttempts": "Sie haben die Anzahl der erlaubten Versuche überschritten.<br>Bitte senden Sie den Code erneut an Ihr Mobiltelefon und starten Sie den Prozess neu."
       }

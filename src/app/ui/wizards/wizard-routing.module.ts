@@ -18,6 +18,10 @@ const wizardRoutes: Routes = [
         component: RunWizardComponent
       },
       {
+        path: 'registration/:wizard/:externalPaymentToken',
+        component: RunWizardComponent
+      },
+      {
         path: 'user/:user/:wizard',
         component: RunWizardComponent,
         canActivate: [LoggedUserGuard]

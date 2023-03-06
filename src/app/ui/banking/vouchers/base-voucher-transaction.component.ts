@@ -1,8 +1,7 @@
-import { Directive, Injector, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Directive, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { VoucherBasicDataForTransaction, VoucherInitialDataForTransaction, VoucherTransactionPreview, VoucherTransactionResult } from 'app/api/models';
 import { VouchersService } from 'app/api/services/vouchers.service';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
@@ -14,9 +13,7 @@ export type VoucherTransactionStep = 'token' | 'form' | 'confirm';
 export abstract class BaseVoucherTransactionComponent<
   D extends VoucherBasicDataForTransaction,
   P extends VoucherTransactionPreview
-  > extends BasePageComponent<VoucherInitialDataForTransaction> implements OnInit {
-
-  ConfirmationMode = ConfirmationMode;
+> extends BasePageComponent<VoucherInitialDataForTransaction> implements OnInit {
 
   protected vouchersService: VouchersService;
 
@@ -41,7 +38,7 @@ export abstract class BaseVoucherTransactionComponent<
     return this.preview$.value;
   }
   pin = new FormControl('', Validators.required);
-  confirmationMode$ = new BehaviorSubject(ConfirmationMode.Password);
+  showSubmit$ = new BehaviorSubject(true);
 
   get step(): VoucherTransactionStep {
     return this.step$.value;
@@ -64,6 +61,10 @@ export abstract class BaseVoucherTransactionComponent<
       this.self = this.authHelper.isSelf(data.user);
     }));
     this.step = 'token';
+
+    // TODO this shouldn't be needed, but started with Angular 13.2.x.
+    // There's the issue https://jira.cyclos.org/browse/CYCLOS-9724 for tracking this.
+    this.step$.subscribe(() => setTimeout(() => this.injector.get(ChangeDetectorRef).detectChanges()));
   }
 
   /**

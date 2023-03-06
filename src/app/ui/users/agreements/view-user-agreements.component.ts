@@ -30,6 +30,7 @@ export class ViewUserAgreementsComponent extends BaseViewPageComponent<UserAgree
   allOptional: Agreement[];
   acceptedOptional: Agreement[];
   acceptedRequired: Agreement[];
+  hasOptional: boolean;
 
   ngOnInit() {
     super.ngOnInit();
@@ -47,10 +48,11 @@ export class ViewUserAgreementsComponent extends BaseViewPageComponent<UserAgree
     const acceptedIds = Object.keys(data.accepted || {});
     const accepted = (data.agreements || []).filter(a => acceptedIds.includes(a.id));
     this.allOptional = (data.agreements || []).filter(a => !a.required);
+    this.hasOptional = this.allOptional.length > 0;
     this.acceptedOptional = accepted.filter(a => !a.required);
     this.acceptedRequired = accepted.filter(a => a.required);
     if (data.canEdit) {
-      if (this.allOptional.length > 0) {
+      if (this.hasOptional) {
         this.optionalControl = this.formBuilder.control(this.acceptedOptional.map(a => a.id));
       }
     } else {

@@ -13,6 +13,7 @@ import { ListAdInterestsComponent } from 'app/ui/marketplace/interests/list-ad-i
 import { ViewAdInterestComponent } from 'app/ui/marketplace/interests/view-ad-interest.component';
 import { SaleFormComponent } from 'app/ui/marketplace/sale-form.component';
 import { SearchAdsComponent } from 'app/ui/marketplace/search/search-ads.component';
+import { ListFavoritesComponent } from 'app/ui/marketplace/search/list-favorites.component';
 import { SearchOrdersComponent } from 'app/ui/marketplace/search/search-orders.component';
 import { SearchUnansweredQuestionsComponent } from 'app/ui/marketplace/search/search-unanswered-questions.component';
 import { UserAdsComponent } from 'app/ui/marketplace/search/user-ads.component';
@@ -29,6 +30,11 @@ const marketplaceRoutes: Routes = [
       {
         path: 'search',
         component: SearchAdsComponent,
+      },
+      {
+        path: 'broker-search',
+        component: SearchAdsComponent,
+        data: { brokered: true }
       },
       {
         path: ':user/:kind/list',
@@ -89,6 +95,10 @@ const marketplaceRoutes: Routes = [
       {
         path: ':user/ad-interests',
         component: ListAdInterestsComponent,
+      },
+      {
+        path: ':user/list-favorites',
+        component: ListFavoritesComponent,
       },
       {
         path: 'delivery-methods/view/:id',

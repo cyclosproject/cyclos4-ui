@@ -2,10 +2,12 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Params, Router } from '@angular/router';
 import {
+  DeviceConfirmationTypeEnum,
   ExportFormat, NotificationLevelEnum, Operation, OperationDataForRun,
-  OperationResultTypeEnum, OperationScopeEnum, RunOperation, RunOperationResult
+  OperationResultTypeEnum, OperationScopeEnum, OperationShowFormEnum, RunOperation, RunOperationResult
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services/operations.service';
+import { ConfirmationService } from 'app/core/confirmation.service';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { NextRequestState } from 'app/core/next-request-state';
 import { NotificationService } from 'app/core/notification.service';
@@ -15,8 +17,8 @@ import { downloadResponse, empty } from 'app/shared/helper';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
 import { OperationHelperService } from 'app/ui/core/operation-helper.service';
 import { PageData } from 'app/ui/shared/page-data';
+import { cloneDeep } from 'lodash-es';
 import { Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
 
 /**
  * Types which can run actions directly without going to the run page
@@ -37,7 +39,7 @@ const TypesRunDirectly: OperationResultTypeEnum[] = [
 export class RunOperationHelperService {
 
   /** The next action that can be executed. */
-  nextAction?: string;
+  reRun = false;
 
   constructor(
     private dataForFrontendHolder: DataForFrontendHolder,
@@ -46,7 +48,8 @@ export class RunOperationHelperService {
     private router: Router,
     private operationHelper: OperationHelperService,
     private operationsService: OperationsService,
-    private nextRequestState: NextRequestState) {
+    private nextRequestState: NextRequestState,
+    private confirmation: ConfirmationService) {
   }
 
   /**
@@ -62,14 +65,44 @@ export class RunOperationHelperService {
     }
     if (this.canRunDirectly(operation)) {
       // Run the operation right now
-      this.runRequest(operation, {
+      var doRun = (confirmationPassword?: string) => this.runRequest(operation, {
         scopeId,
         formParameters,
-      }).pipe(first())
-        .subscribe(response => this.handleResult(response));
+        confirmationPassword
+      }).subscribe(response => this.handleResult(response));
+
+      if (operation.requireConfirmationPassword) {
+        // Get the run data in order to get the password input
+        const createDeviceConfirmation = () => ({
+          type: DeviceConfirmationTypeEnum.RUN_OPERATION,
+          operation: operation.id,
+        });
+        this.getDataForRunRequest(operation, scopeId).subscribe(data => {
+          if (data.confirmationPasswordInput) {
+            this.confirmation.confirm({
+              callback: conf => {
+                this.confirmation.hide();
+                doRun(conf.confirmationPassword);
+              },
+              createDeviceConfirmation,
+              message: data.confirmationText,
+              passwordInput: data.confirmationPasswordInput
+            });
+          }
+        });
+      } else if (operation.confirmationText) {
+        this.confirmation.confirm({
+          callback: () => {
+            this.confirmation.hide();
+            doRun();
+          },
+          message: operation.confirmationText,
+        });
+      } else {
+        doRun();
+      }
     } else {
       // Go to the run page
-      this.nextAction = operation.id;
       const parts = ['/operations'];
       switch (operation.scope) {
         case OperationScopeEnum.USER:
@@ -150,42 +183,73 @@ export class RunOperationHelperService {
         return asDownload
           ? this.operationsService.runOwnerOperationWithUpload$Any$Response(params)
           : this.operationsService.runOwnerOperationWithUpload$Response(params);
-
       case OperationScopeEnum.ADVERTISEMENT:
         // Over an advertisement
         params.ad = scopeId;
         return asDownload
           ? this.operationsService.runAdOperationWithUpload$Any$Response(params)
           : this.operationsService.runAdOperationWithUpload$Response(params);
-        break;
-
       case OperationScopeEnum.RECORD:
         // Over a record
         params.id = scopeId;
         return asDownload
           ? this.operationsService.runRecordOperationWithUpload$Any$Response(params)
           : this.operationsService.runRecordOperationWithUpload$Response(params);
-        break;
-
       case OperationScopeEnum.TRANSFER:
         // Over a transfer
         params.key = scopeId;
         return asDownload
           ? this.operationsService.runTransferOperationWithUpload$Any$Response(params)
           : this.operationsService.runTransferOperationWithUpload$Response(params);
-
       case OperationScopeEnum.MENU:
         // Over a menu item
         params.menu = scopeId;
         return asDownload
           ? this.operationsService.runMenuOperationWithUpload$Any$Response(params)
           : this.operationsService.runMenuOperationWithUpload$Response(params);
-
       default:
         // No additional context (system, internal action, ...)
         return asDownload
           ? this.operationsService.runOperationWithUpload$Any$Response(params)
           : this.operationsService.runOperationWithUpload$Response(params);
+    }
+  }
+
+  /**
+   * Returns the request to get data for running the given custom operation
+   */
+  getDataForRunRequest(operation: Operation, scopeId?: string): Observable<OperationDataForRun> {
+    switch (operation.scope) {
+      case OperationScopeEnum.USER:
+        // Over a user
+        return this.operationsService.getOwnerOperationDataForRun({
+          operation: operation.id, owner: scopeId
+        });
+      case OperationScopeEnum.ADVERTISEMENT:
+        // Over an advertisement
+        return this.operationsService.getOwnerOperationDataForRun({
+          operation: operation.id, owner: scopeId
+        });
+      case OperationScopeEnum.RECORD:
+        // Over a record
+        return this.operationsService.getRecordOperationDataForRun({
+          operation: operation.id, id: scopeId
+        });
+      case OperationScopeEnum.TRANSFER:
+        // Over a transfer
+        return this.operationsService.getTransferOperationDataForRun({
+          operation: operation.id, key: scopeId
+        });
+      case OperationScopeEnum.MENU:
+        // Over a menu item
+        return this.operationsService.getMenuOperationDataForRun({
+          menu: scopeId
+        });
+      default:
+        // No additional context (system, internal action, ...)
+        return this.operationsService.getOperationDataForRun({
+          operation: operation.id
+        });
     }
   }
 
@@ -200,9 +264,8 @@ export class RunOperationHelperService {
     if (onlyTypesThatCanRunOnHostPage && !TypesRunDirectly.includes(operation.resultType)) {
       return false;
     }
-    // Cannot run if there is QR-code scan, file upload, of if has confirmation password or confirmation text
-    if (operation.submitWithQrCodeScan || operation.hasFileUpload
-      || operation.requireConfirmationPassword || !empty(operation.confirmationText)) {
+    // Cannot run if there is QR-code scan or file upload
+    if (operation.submitWithQrCodeScan || operation.hasFileUpload) {
       return false;
     }
     if (operation.resultType === OperationResultTypeEnum.RESULT_PAGE) {
@@ -210,9 +273,19 @@ export class RunOperationHelperService {
       // In this case, assume that operation is a OperationDataForRun already
       return (operation as OperationDataForRun).searchAutomatically;
     } else {
-      // Can run directly if there's no missing parameter
-      return empty(operation.missingRequiredParameters)
-        && (!operation.showForm || empty(operation.missingOptionalParameters));
+      if (operation.showForm) {
+        switch (operation.showForm) {
+          case OperationShowFormEnum.ALWAYS:
+            return false;
+          case OperationShowFormEnum.MISSING_REQUIRED:
+            return empty(operation.missingRequiredParameters);
+          case OperationShowFormEnum.MISSING_ANY:
+            return empty(operation.missingRequiredParameters) && empty(operation.missingOptionalParameters);
+        }
+      } else {
+        // Can run directly if there's no missing parameter
+        return empty(operation.missingRequiredParameters) && empty(operation.missingOptionalParameters);
+      }
     }
   }
 
@@ -271,34 +344,31 @@ export class RunOperationHelperService {
         break;
     }
 
-    // Check if we need to go back to a previous custom operation
+    this.reRun = result.reRun;
+
+    // Check if we need to go back to a previous custom operation or go back to the url before all custom operations
     const backTo = ApiHelper.internalNameOrId(result.backTo);
-    if (backTo) {
-      // We need to go back to a previous custom operation
-      const paths = this.breadcrumb.breadcrumb$.value;
-      for (const path of paths) {
-        if (path.startsWith('/operations/') && path.includes('/' + backTo)) {
-          // Found the operation where to return to
-          this.doNavigate(path);
-          return true;
-        }
+    if (backTo || result.backToRoot) {
+      const pathCondition = backTo ?
+        // We need to go back to a previous custom operation
+        path => path.startsWith('/operations/') && path.includes('/' + backTo) :
+        // We need to go back to the first page which is not a custom operation
+        path => !path.startsWith('/operations/');
+      const index = cloneDeep(this.breadcrumb.breadcrumb$.value).reverse().findIndex(pathCondition);
+      if (index > 0) {
+        this.breadcrumb.back(index);
+        return true;
+      }
+      if (result.backToRoot) {
+        // Still needs to go back to home
+        this.doNavigate('/home');
+        return true;
       }
     }
 
-    // Check if we need to go back to the url before all custom operations
-    if (result.backToRoot) {
-      // We need to go back to the first page which is not run a custom operation
-      const paths = this.breadcrumb.breadcrumb$.value;
-      for (let i = paths.length - 1; i >= 0; i--) {
-        const path = paths[i];
-        if (!path.startsWith('/operations/')) {
-          // Found the page where to return to
-          this.doNavigate(path);
-          return true;
-        }
-      }
-      // Still needs to go back to home
-      this.doNavigate('/home');
+    if (this.reRun) {
+      this.doNavigate(this.breadcrumb.breadcrumb$.value.pop(), true);
+      return true;
     }
 
     // If there is some action that needs to be executed immediately, do it
@@ -319,12 +389,13 @@ export class RunOperationHelperService {
     return new HeadingAction(this.operationHelper.icon(operation), operation.label, () => this.run(operation, scopeId, formParameters));
   }
 
-  private doNavigate(path: string) {
+  private doNavigate(path: string, replaceUrl = false) {
     const url = new URL(path, location.href);
     const params: Params = {};
     url.searchParams.forEach((value, name) => params[name] = value);
     this.router.navigate([url.pathname], {
       queryParams: params,
+      replaceUrl
     });
   }
 }

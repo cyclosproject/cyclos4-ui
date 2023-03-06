@@ -12,8 +12,7 @@
           <ng-container
             *ngIf="data.user && !authHelper.isSelfOrOwner(data.user)">
             <div class="col-12 col-md-6">
-              <label-value [label]="i18n.general.user" labelPosition="side"
-                kind="fieldView">
+              <label-value [label]="i18n.general.user" kind="fieldView">
                 <user-link [user]="data.user"></user-link>
               </label-value>
             </div>
@@ -21,13 +20,12 @@
             </div>
           </ng-container>
           <div class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
-              formControlName="statuses" [label]="i18n.general.status"
-              [emptyOption]="true">
+            <single-selection-field formControlName="statuses"
+              [label]="i18n.general.status" [emptyOption]="true">
               <field-option *ngIf="sales && isOwner" value="draft"
                 [text]="i18n.ad.orderStatus.draft">
               </field-option>
-              <field-option value="pendingBuyer" [text]="!sales && isOwner ? 
+              <field-option value="pendingBuyer" [text]="!sales && isOwner ?
                 i18n.ad.requiringMyConfirmation :
                 i18n.ad.waitingForBuyersApproval">
               </field-option>
@@ -62,30 +60,30 @@
             </single-selection-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="relatedUser"
+            <user-field formControlName="relatedUser"
               [label]="sales ? i18n.ad.buyer : i18n.ad.seller">
             </user-field>
           </div>
           <div class="row no-gutters col-12">
             <div class="col-12 col-md-6">
-              <date-field labelPosition="side" formControlName="periodBegin"
+              <date-field formControlName="periodBegin"
                 [label]="i18n.general.beginDate" minDate="past100"
                 maxDate="todayEnd" fieldSize="full" class>
               </date-field>
             </div>
             <div class="col-12 col-md-6">
-              <date-field labelPosition="side" formControlName="periodEnd"
+              <date-field formControlName="periodEnd"
                 [label]="i18n.general.endDate" minDate="past100"
                 maxDate="todayEnd" fieldSize="full">
               </date-field>
             </div>
           </div>
           <div class="col-12 col-md-6">
-            <input-field labelPosition="side" formControlName="number"
-              [label]="i18n.ad.order" fieldSize="full"></input-field>
+            <input-field formControlName="number" [label]="i18n.ad.order"
+              fieldSize="full"></input-field>
           </div>
           <div class="col-12 col-md-6">
-            <input-field labelPosition="side" formControlName="productNumber"
+            <input-field formControlName="productNumber"
               [label]="i18n.ad.productNumber" fieldSize="full"></input-field>
           </div>
         </div>

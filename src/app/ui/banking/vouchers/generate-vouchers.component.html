@@ -38,13 +38,11 @@
       [user]="form.get('userData').value"
       [confirmationPasswordInput]="dataTypeForGenerate.confirmationPasswordInput"
       [confirmationPassword]="confirmationPassword"
-      (confirmationModeChanged)="confirmationMode$.next($event)"
-      (confirmed)="generate($event)">
+      (showSubmit)="showSubmit$.next($event)" (confirmed)="generate($event)">
     </generate-vouchers-step-confirm>
 
     <actions forceRow>
-      <action-button
-        *ngIf="(confirmationMode$ | async) != ConfirmationMode.Device; else spacer"
+      <action-button *ngIf="showSubmit$ | async; else spacer"
         [disabled]="!canConfirm || (requesting$ | async)"
         (action)="generate()" [label]="i18n.general.confirm">
       </action-button>

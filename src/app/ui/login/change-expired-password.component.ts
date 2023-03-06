@@ -57,12 +57,12 @@ export class ChangeExpiredPasswordComponent
   ngOnInit() {
     super.ngOnInit();
     const auth = this.dataForFrontendHolder.auth || {};
-    if (!auth.expiredPassword && !auth.expiredSecondaryPassword) {
+    if (!auth.expiredPassword) {
       // The password is not actually expired
       this.router.navigateByUrl(this.loginState.redirectUrl || '');
       return;
     }
-    this.typeId = auth.expiredSecondaryPassword ? auth.secondaryPasswordType.id : auth.passwordType.id;
+    this.typeId = auth.passwordType.id;
 
     this.addSub(this.passwordsService.getUserPasswordsData({
       user: ApiHelper.SELF,

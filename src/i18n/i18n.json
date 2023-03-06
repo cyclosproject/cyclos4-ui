@@ -71,6 +71,7 @@
     "addNew": "Add new",
     "yes": "Yes",
     "no": "No",
+    "errorMessage": "Error message",
     "notSet": "Not set",
     "share": "Share",
     "tiledView": "Tiled view",
@@ -86,12 +87,14 @@
     "currency": "Currency",
     "images": "Images",
     "internalName": "Internal name",
+    "progress": "Progress",
     "usersOfBroker": "Users of the broker",
     "administration": "The administration",
     "maskHelp": "This masks can restrict which characters can be typed, restrict size and apply case transformations, using the following constructors.<br><br><ul><li><b>#, 0 or 9</b> - A number.</li><li><b>a or A</b> - A letter.</li><li><b>? or _</b> - Any character.</li><li><b>l or L</b> - A lowercase letter.</li><li><b>u or U</b> - An uppercase letter.</li><li><b>c or C</b> - A capitalized letter.</li><li><b>\\\\, \\#, \\0, ...</b> - Those literal characters. Remember that, when you write a string, '\\\\' means a single backslash. To use a backslash on the mask, you need 4 on the string.</li></ul>",
     "sendMedium": {
       "email": "E-mail",
-      "sms": "SMS"
+      "sms": "SMS",
+      "app": "Mobile phone"
     },
     "sendCode": "Send code",
     "sentCodeTo": "The verification code was sent to {to}",
@@ -179,7 +182,6 @@
       "from": "From {min}",
       "to": "Up to {max}"
     },
-    "rangeTo": "to",
     "fileSize": {
       "b": "{n} bytes",
       "k": "{n}KB",
@@ -268,6 +270,7 @@
     "banking.externalPayments": "External payments",
     "banking.externalPaymentsOverview": "External payments overview",
     "banking.pos": "Receive payment",
+    "banking.tickets": "Tickets",
     "banking.receiveQrPayment": "Receive QR-code",
     "banking.scheduledPayments": "Scheduled payments",
     "banking.scheduledPaymentsOverview": "Scheduled payments overview",
@@ -281,11 +284,14 @@
     "banking.userBalancesOverview": "User balances overview",
     "banking.accountBalanceLimits": "Account balance limits",
     "banking.accountPaymentLimits": "Account payment limits",
+    "banking.importedPayments": "Import payments",
+    "banking.userImportedPayments": "Batch payments",
     "operators": "Operators",
     "operators.operators": "Operators",
     "operators.register": "Register operator",
     "operators.groups": "Operator groups",
     "brokering": "Brokering",
+    "brokering.ads": "Advertisements",
     "brokering.users": "Users",
     "brokering.register": "Register user",
     "marketplace": "Marketplace",
@@ -314,6 +320,7 @@
     "personal.contacts": "Contacts",
     "personal.password": "Password",
     "personal.passwords": "Passwords",
+    "personal.totp": "Authenticator app",
     "personal.identityProviders": "Identity providers",
     "personal.agreements": "Agreements",
     "personal.messages": "Messages",
@@ -321,6 +328,7 @@
     "personal.settings": "Settings",
     "personal.references": "References",
     "personal.feedbacks": "Feedbacks",
+    "personal.quickAccessSettings": "Quick access settings",
     "content": "Information"
   },
   "login": {
@@ -349,38 +357,50 @@
         "temporarilyBlocked": "Your password is temporarily blocked by exceeding the maximum tries"
       },
       "confirmation": {
-        "missingDevice": "Sign in failed. You are required to confirm your login with a trusted mobile device, but you have none. Please, install the mobile app and activate is a trusted device first.",
-        "missingPassword": "Sign in failed. You are required to confirm the login with your {0} but you do not it active. Please, contact the administration.",
-        "missingBoth": "Sign in failed. You are required to confirm your login with either your {0} or a trusted mobile device, but you have none. Please, install the mobile app and activate is a trusted device first, or contact the administration."
+        "missing": {
+          "device": "Sign in failed. You are required to confirm your login with a trusted mobile device, but you have none. Please, install the mobile app and activate it as a trusted device first.",
+          "password": "Sign in failed. You are required to confirm the login with your {0} but you do not it active. Please, contact the administration.",
+          "totp": "Sign in failed. You are required to confirm your login with your authenticator app, but you have none. Please, contact the administration.",
+          "multiple": "Sign in failed. You are required to confirm your login with some of the following, but you have none: {credentials}. Please, contact the administration."
+        },
+        "notActive": {
+          "password": "In order to finish your login, you need a {password}, but you don't have it active. Please, activate it and proceed.",
+          "totp": "In order to finish your login, you need your authenticator app, but you don't have it active. Please, activate it and proceed.",
+          "multiple": "In order to finish your login, you need either a {password} or your authenticator app, but you don't have them active. Please, activate one of them and proceed."
+        }
       }
     }
   },
   "password": {
     "confirm.mode": "Confirm with",
-    "confirm.mode.device": "Mobile phone",
-    "confirm.mode.password": "Password",
-    "confirmMessage": {
-      "active.device": "In order to confirm, scan this QR-code with your mobile phone.",
-      "active.deviceOrPassword": "In order to confirm, either scan this QR-code with your mobile phone or supply your {password}",
-      "active.deviceOrRenewablePassword": "In order to confirm, either scan this QR-code with your mobile phone, use the previously sent confirmation password or request a new one",
-      "active.deviceOrRenewablePassword.noMediums": "In order to confirm, either scan this QR-code with your mobile phone or use the previously sent confirmation password because you can not request for a new one",
-      "active.deviceOrNotActiveRenewablePassword": "In order to confirm, either scan this QR-code with your mobile phone, or request a confirmation password below",
-      "active.password": "In order to confirm, supply your {password}",
-      "active.renewablePassword": "In order to confirm use the previously sent confirmation password or request a new one",
-      "active.renewablePassword.noMediums": "In order to confirm use the previously sent confirmation password because you can not request for a new one",
-      "notActive.device": "This operation needs to be confirmed with a trusted device (mobile phone), please login to your mobile device, go to the configuration (settings icon) and make the device trusted",
-      "notActive.deviceOrPassword": "In order to confirm you must have a trusted mobile phone or supply your {password} but you do not have any",
-      "notActive.deviceOrRenewablePassword.noMediums": "In order to confirm you must have a trusted mobile phone or supply your {password} but you do not have any and can not request for a new password, please, contact the administration",
-      "notActive.password": "In order to confirm you need a {password}, but you do not have any",
-      "notActive.renewablePassword": "Please, request a confirmation password below in order to confirm",
-      "notActive.renewablePassword.noMediums": "In order to confirm you need a {password}, but there are no possible mediums to receive it, please, contact the administration."
+    "confirm.mode.device": "Mobile app",
+    "confirm.mode.totp": "Authenticator app",
+    "confirmation": {
+      "device": "In order to confirm, scan this QR-code with the mobile app.",
+      "password": "In order to confirm, supply your {passwordType}.",
+      "totp": "In order to confirm, supply a code generated by your authenticator app.",
+      "notPossible": "It is not possible to confirm this operation due to a configuration error. Please, contact the administration.",
+      "notActive": {
+        "multiple": "In order to confirm, you need one of the following, but you don't have any: {credentials}.",
+        "device": "In order to confirm, you need the mobile app installed and activated as a trusted device. Please, download the app and proceed with its activation.",
+        "password": "In order to confirm, you need your {passwordType}, but you don't have it active. Please, visit your password settings page or contact the administration.",
+        "totp": "In order to confirm, you need an authenticator app configured. Please, visit your password settings page and activate it."
+      }
     },
     "confirm.password.placeholder": "Type here: {password}",
-    "otp.countdownLabel": "* You can sent the e-mail/sms again in {seconds} seconds.",
-    "otp.receiveBy.sent": "{medium} sent",
-    "otp.sent": "The password was sent to {dest}",
-    "otp.sentToMail": "Sent to E-mail {mail}",
-    "otp.sentToPhone": "Sent to phone {phone}",
+    "otp": {
+      "verificationCode": "Verification code",
+      "sendMedium": "Send verification code to",
+      "sendToEmail": "Send to email {email}",
+      "sendToPhone": "Send to phone {phone}",
+      "noMediums": "No possible mediums to receive verification code",
+      "send": "Send verification code",
+      "countdownLabel": "* You can sent the email/sms again in {seconds} seconds.",
+      "receiveBy.sent": "{medium} sent",
+      "sent": "The password was sent to {dest}",
+      "sentToEmail": "Email sent to {mail}",
+      "sentToPhone": "SMS message sent to {phone}"
+    },
     "oldPassword": "Old password",
     "newPassword": "New password",
     "passwordConfirmation": "Password confirmation",
@@ -389,7 +409,9 @@
       "temporarilyBlocked": "Your password is temporarily blocked by exceeding the maximum tries.",
       "expired": "Your password has expired. Please, contact the administration.",
       "invalid": "The given {type} is invalid",
-      "otpInvalidated": "The one time password has been invalidated. Please, request a new one."
+      "otpInvalidated": "The one time password has been invalidated. Please, request a new one.",
+      "invalidTotp": "The given code is invalid. Please enter a valid code from your authenticator app.",
+      "blockedByTotp": "You have been blocked by exceeding attempts of the authenticator app code. Please, contact the administration."
     },
     "title": {
       "change.self": "Change your password",
@@ -400,7 +422,8 @@
       "manage.single.user": "Manage user password",
       "manage.multiple.user": "Manage user passwords",
       "securityAnswer": "Set your security answer",
-      "history": "Passwords history"
+      "history": "Passwords history",
+      "totp": "Authenticator app"
     },
     "mobileTitle": {
       "change.self": "Password change",
@@ -410,7 +433,8 @@
       "manage.single.user": "User password",
       "manage.multiple.user": "User passwords",
       "securityAnswer": "Security answer",
-      "history": "Passwords history"
+      "history": "Passwords history",
+      "totp": "Authenticator app"
     },
     "forgotten": {
       "preface": "Here you can recover your user and change your password by requesting a recovery code. You can use one of the following identification methods in the user field below:",
@@ -475,6 +499,30 @@
       "allowGeneration": "Allow generation",
       "allowGeneration.confirm": "Are you sure to allow the user to generate their{type}?",
       "allowGeneration.done": "The user can now generate their {type}"
+    },
+    "hints": {
+      "ok": "{text} ✓",
+      "fail": "{text} ✗",
+      "preface": "The password needs to contain:",
+      "fixedLength": "Exactly {length} characters",
+      "minLength": "At least {count} characters",
+      "lowerCaseLetters": "At least 1 lower case letter",
+      "upperCaseLetters": "At least 1 upper case letter",
+      "numbers": "At least 1 number",
+      "specialCharacters": "At least 1 special character"
+    },
+    "totp": {
+      "active": "The authenticator app is active since {date}",
+      "neverCreated.managers": "The authenticator app hasn't been configured for this user.",
+      "neverCreated.message": "Enable an authenticator app, so you can confirm operations: <ul><li>First download and install an RFC 6238 compatible authenticator app (such as Google Authenticator or Microsoft Authenticator) from your phone application store (Google Play or App Store);</li><li>Send a verification code to your email / phone (via SMS), so we can verify your identity;</li><li>Type in that verification code in the field below and submit;</li><li>A QR-code will be displayed;</li><li>Open the authenticator app in your phone and scan the QR-code. A numerical sequence will be displayed (and renewed every 30 seconds);</li><li>Type in that numerical sequence and confirm;</li><li>Your authenticator app will be configured, and will generate the numerical sequences you will need in order to confirm further operations.</li></ul>",
+      "neverCreated.message.mobile": "Enable an authenticator app, so you can confirm operations: <ul><li>First download and install an RFC 6238 compatible authenticator app (such as Google Authenticator or Microsoft Authenticator) from your phone application store (Google Play or App Store);</li><li>Send a verification code to your email / phone (via SMS), so we can verify your identity;</li><li>Type in that verification code in the field below and submit;</li><li>A button to open the authenticator app will be displayed. Click on it and add your account on the app.</li><li>A numerical sequence will be displayed (and renewed every 30 seconds);</li><li>Type in that numerical sequence and confirm;</li><li>Your authenticator app will be configured, and will generate the numerical sequences you will need in order to confirm further operations.</li></ul>",
+      "activated": "Your authenticator app has been configured. You can now use it to confirm operations.",
+      "firstTotp": "Numerical sequence generated by the authenticator app",
+      "scanQr": "Now, scan the QR-code with the authenticator app and type in the numerical sequence.",
+      "openApp": "Open authenticator app",
+      "remove": "Remove",
+      "remove.confirmation": "Are you sure to remove the authenticator app for this account?",
+      "remove.done": "The authenticator app secret was removed"
     }
   },
   "pendingAgreements": {
@@ -497,18 +545,28 @@
     "set": "Your security answer was set"
   },
   "dashboard": {
+    "customizeQuickAccess": "Customize",
     "quickAccess": "Quick access",
     "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
       "account": "Account",
       "accounts": "Accounts",
+      "transfersOverview": "Transfers overview",
+      "balancesOverview": "Balances overview",
+      "externalPayments": "External payments",
       "payUser": "Pay user",
       "paySystem": "Pay system",
+      "paySelf": "Transfer between accounts",
       "pos": "Receive payment",
       "receiveQrPayment": "Receive QR-code payment",
       "contacts": "Contacts",
       "directory": "Directory",
+      "pendingUsers": "Pending users",
+      "brokeredUsers": "Registered users",
+      "registerUser": "Register user",
       "advertisements": "Marketplace",
+      "adInterests": "Ad interests",
+      "purchases": "My purchases",
       "editProfile": "Edit profile",
       "password": "Password",
       "passwords": "Passwords",
@@ -526,7 +584,19 @@
       "paymentRequests": "Payment requests",
       "settings": "Settings",
       "scheduledPayments": "Scheduled payments",
-      "payExternalUser": "Pay external user"
+      "payExternalUser": "Pay external user",
+      "myAds": "My ads",
+      "createAd": "Place ad",
+      "myWebshop": "My web shop",
+      "sales": "My sales",
+      "createWebshopAd": "Place web shop ad",
+      "documents": "Documents",
+      "inviteUser": "Invite user",
+      "messages": "Messages",
+      "sendMessage": "Send message",
+      "notifications": "Notifications",
+      "references": "My references",
+      "feedbacks": "My feedbacks"
     },
     "accounts": "Accounts",
     "accountStatus": "Account status",
@@ -540,6 +610,7 @@
       "pending": "Your {type} is pending generation.",
       "neverCreated": "Your {type} needs to be set.",
       "securityAnswer": "You should set the security question, which will be required in case you need to reset your password.",
+      "totp": "You should configure an authenticator app to confirm operations.",
       "proceed": "Click here to proceed"
     }
   },
@@ -563,6 +634,7 @@
     "totalOutflow": "Total paid",
     "netInflow": "Net income",
     "system": "System account",
+    "nonZeroBalance": "Non-zero balance",
     "mobileTitle": {
       "account": "Account",
       "accountsSummary": "Accounts summary"
@@ -723,7 +795,7 @@
     "installments": "Installments",
     "installmentNumber": "Number",
     "installmentNumberOfTotal": "{number} of {total}",
-    "occurrences": "Ocurrences",
+    "occurrences": "Occurrences",
     "occurrenceInterval": "Process every",
     "feesOnAuthorization": "Fees to be applied when authorized",
     "noAccounts": "You don't have any accounts to perform the payment",
@@ -773,6 +845,8 @@
     "occurrencesCount": "Number of occurrences",
     "firstOccurrence": "First occurrence",
     "firstOccurrence.date": "First occurrence date",
+    "firstOccurrence.immediate": "First payment when accepting the request",
+    "firstOccurrence.afterInterval": "First payment {interval} after accepting the request",
     "processed": "The payment was successfully processed",
     "pending": "The payment was submitted for further authorization",
     "paymentRequestAcceptScheduled": "The payment request was scheduled to be processed at {date}",
@@ -781,6 +855,10 @@
     "done.new": "New payment",
     "done.addReceiverToContacts": "Add receiver to contacts",
     "done.userAddedToContacts": "The user {contact} was added to contacts",
+    "orderBy": {
+      "dueDateDesc": "Due date (newest first)",
+      "dueDateAsc": "Due date (oldest first)"
+    },
     "status": {
       "open": "Open",
       "closed": "Closed",
@@ -821,6 +899,7 @@
       "childTransfer": "Transfer generated by this one",
       "childTransfers": "Transfers generated by this one",
       "transfersOverview": "Transfers overview",
+      "tickets": "Tickets",
       "receiveQrPayment": "Receive QR-code payment",
       "paymentRequestSystemToUser": "Send system payment request to user",
       "paymentRequestToSystem": "Send payment request to system",
@@ -860,6 +939,7 @@
       "childTransfer": "Originated transfer",
       "childTransfers": "Originated transfers",
       "transfersOverview": "Transfers overview",
+      "tickets": "Tickets",
       "receiveQrPayment": "QR-code payment",
       "paymentRequestSystemToUser": "System payment request",
       "paymentRequestToSystem": "Payment request",
@@ -875,6 +955,9 @@
       "boughtVouchers": "Bought vouchers",
       "editRecurringPayment": "Edit recurring payment"
     },
+    "receiveQrPayment.generateQrCode": "Generate QR code",
+    "receiveQrPayment.generateNewQrCode": "Generate new QR code",
+    "receiveQrPayment.pendingConfirmation": "Pending confirmation",
     "ticketShareTitle": "Invitation to perform a payment",
     "ticketShareText": "{user} has invited you to pay {amount}",
     "ticketShareUrl": "URL to share",
@@ -950,29 +1033,24 @@
     "reschedulePaymentRequest.rescheduleTo": "Reschedule to",
     "reschedulePaymentRequest.rescheduleTo.date": "Reschedule to date",
     "confirmPaymentRequest": "Are you sure to send this payment request?",
-    "firstOccurrenceIsImmediate": "First occurrence is immediate",
     "firstInstallmentIsImmediate": "First installment is immediate",
     "voucher.redeemed": "Redeemed voucher",
     "voucher.toppedUp": "Topped-up voucher",
-    "confirmMessage": {
-      "active.device": "In order to confirm the payer must scan this QR-code with its mobile phone..",
-      "active.deviceOrPassword": "In order to confirm the payer can scan this QR-code with its mobile phone or supply the {password}",
-      "active.deviceOrRenewablePassword": "In order to confirm the payer can scan this QR-code with its mobile phone, use the password already received or request for a new one",
-      "active.deviceOrRenewablePassword.noMediums": "In order to confirm the payer can scan this QR-code with its mobile phone or must use the previously received confirmation password because he can not request for a new one",
-      "active.deviceOrNotActiveRenewablePassword": "In order to confirm the payer can scan this QR-code with its mobile phone or request a confirmation password below",
-      "active.password": "In order to confirm the payer must supply its {password}",
-      "active.renewablePassword": "In order to confirm the payer must use the previously received confirmation password or request a new one",
-      "active.renewablePassword.noMediums": "In order to confirm the payer must use the previously received confirmation password or request a new one",
-      "notActive.device": "In order to confirm the payer must have a trusted mobile phone but it does not",
-      "notActive.deviceOrPassword": "In order to confirm the payer must have a trusted mobile phone or supply the {password} but it does not have any",
-      "notActive.deviceOrRenewablePassword.noMediums": "In order to confirm the payer must have a trusted mobile phone or supply the {password} but he does not have any and can not request for a new password, please, contact the administration",
-      "notActive.password": "In order to confirm the payer need a {password}, but he does not have any",
-      "notActive.renewablePassword": "Please, request for the payer a confirmation password below in order to confirm",
-      "notActive.renewablePassword.noMediums": "In order to confirm the payer must supply the {password} but he does not have any and can not request for a new one, please, contact the administration"
+    "posConfirmation": {
+      "device": "In order to confirm, the payer must scan this QR-code with its mobile app.",
+      "password": "In order to confirm, the payer must supply its {passwordType}.",
+      "totp": "In order to confirm, the payer must supply a code generated by your authenticator app.",
+      "notActive": {
+        "multiple": "In order to confirm, the payer needs one of the following, but don't have any: {credentials}.",
+        "device": "In order to confirm, the payer needs the mobile app installed and activated as a trusted device. They must download the app and proceed with its activation.",
+        "password": "In order to confirm, the payer needs a {passwordType}, but don't have it active. They must access the system and visit the password settings page or contact the administration.",
+        "totp": "In order to confirm, the payer needs an authenticator app configured. They must access the system and visit the password settings page in order to activate it."
+      }
     },
     "error": {
       "minTime": "A minimum period of time should be awaited to make a payment of this type.",
       "balance": "Insufficient balance to perform this operation",
+      "balance.voucher": "Insufficient voucher balance to perform this operation",
       "upperLimit": "You cannot perform this payment because the upper balance limit of the destination account has been exceeded",
       "daily.amount": "The maximum daily amount of {amount} was exceeded",
       "daily.count": "The maximum allowed number of payments per day is {count}",
@@ -1017,13 +1095,16 @@
       "redeemer": "Redeem place",
       "date": "Redeem date",
       "amount": "Redeem amount",
+      "amountAtCreation": "Amount (at creation)",
+      "amountToRedeem": "Amount to redeem",
       "by": "Redeem performed by",
-      "payment": "Redeem payment"
+      "payment": "Redeem payment",
+      "voucherBalance": "Voucher balance"
     },
     "topUp": {
       "confirm": "The details of the voucher top-up are given below. Please, review it and confirm this action.",
       "done": "The voucher was topped-up successfully.",
-      "topUp": "Top-up voucher",
+      "topUp": "Top-up / activate voucher",
       "sendPinBy": "Send PIN by",
       "sendNotificationsBy": "Send notifications by",
       "dontSendNotifications": "Don't send notifications",
@@ -1062,7 +1143,7 @@
       "send": "Buy and email",
       "sendConfirmation": "Send confirmation",
       "redeem": "Redeem voucher",
-      "topUp": "Top-up voucher",
+      "topUp": "Top-up / activate voucher",
       "redeemDetails": "Voucher redeem",
       "topUpDetails": "Voucher top-up",
       "chargebackDetails": "Voucher chargeback",
@@ -1078,7 +1159,7 @@
       "send": "Buy and email voucher",
       "sendConfirmation": "Send confirmation",
       "redeem": "Redeem voucher",
-      "topUp": "Top-up voucher",
+      "topUp": "Top-up / activate voucher",
       "redeemDetails": "Voucher redeem details",
       "topUpDetails": "Voucher top-up details",
       "chargebackDetails": "Voucher chargeback",
@@ -1112,6 +1193,7 @@
     },
     "send": {
       "send": "Buy and email",
+      "sendImport": "Batch email",
       "issuer": "Issuer",
       "done": "The voucher was sent to {email}",
       "message": "Message"
@@ -1120,6 +1202,8 @@
       "generate": "Generate vouchers",
       "done": "The voucher(s) has been generated."
     },
+    "sendPinToClient": "Send PIN to client",
+    "pinSent": "The voucher PIN was sent to {mediums}",
     "configuration": "Configuration",
     "originAccount": "Origin account",
     "numberOfVouchers": "Number of vouchers",
@@ -1142,9 +1226,11 @@
     },
     "cancel": {
       "cancelAndRefund": "Cancel & refund",
+      "cancelAndChargeback": "Cancel & chargeback",
       "done": "This voucher has been canceled.",
       "packConfirmation": "There are other vouchers belonging to the same pack that will be also canceled. Are you sure to continue?",
       "refundConfirmation": "Are you sure to cancel and refund this voucher?",
+      "chargebackConfirmation": "Are you sure to cancel and chargeback this voucher?",
       "confirmation": "Are you sure to cancel this voucher?"
     },
     "resendEmail": {
@@ -1193,6 +1279,10 @@
     "showCategories": "Show categories",
     "listTypes": "List voucher types",
     "voucher": "Voucher",
+    "beginCreationDate": "Creation date begin",
+    "endCreationDate": "Creation date end",
+    "beginExpirationDate": "Expiration date begin",
+    "endExpirationDate": "Expiration date end",
     "info": {
       "title": "Voucher information",
       "message.token": "Here you can check your voucher status. Type in the voucher code below.",
@@ -1230,9 +1320,9 @@
       "errorAddressNotLocated": "The {address} address was not geolocated yet."
     },
     "privacy": {
-      "name": "Privacy",
-      "private.tooltip": "This field is private. Click to allow other to view it.",
-      "public.tooltip": "This field is visible by others. Click to make it private."
+      "name": "Visibility",
+      "private.tooltip": "This field is hidden by other users. Click to make it visible.",
+      "public.tooltip": "This field is visible by other users. Click to make it private."
     },
     "image": {
       "upload": "Upload a new image",
@@ -1352,6 +1442,7 @@
       "contactList": "Contact list",
       "addContact": "Add a new contact",
       "search": "Users search",
+      "searchPending": "Pending users",
       "directory": "Business directory",
       "myOperators": "Operators",
       "userOperators": "User operators",
@@ -1368,6 +1459,7 @@
       "registration.done": "Success",
       "contactList": "Contacts",
       "search": "Users",
+      "searchPending": "Pending users",
       "directory": "Directory",
       "myOperators": "Operators",
       "userOperators": "Operators",
@@ -1375,6 +1467,7 @@
       "myBrokerings": "Assigned members",
       "userBrokerings": "Broker members"
     },
+    "remove": "Remove",
     "statusEmptyLabel": "Show all active or blocked users",
     "connected": "Online",
     "connectionStatus": "Connection status",
@@ -1382,6 +1475,8 @@
     "neverLogged": "Never logged",
     "group": "Group",
     "broker": "Broker",
+    "mainBroker": "Main broker",
+    "otherBrokers": "Other brokers",
     "groups": "Groups",
     "groupSet": "Group set",
     "group.filter": "Groups",
@@ -1394,7 +1489,7 @@
     "operator.owner": "Operator owner",
     "operator.noGroup": "No group (has all permissions)",
     "operator.registration.active": "The operator {operator} has been activated.",
-    "operator.registration.inactive": "The operator {operator} has been registered, however, still needs activatation by the administration.",
+    "operator.registration.inactive": "The operator {operator} has been registered, however, still needs activation by the administration.",
     "operator.registration.pending": "The operator {operator} has been registered, however, still needs to validate their registration by confirming the e-mail.",
     "operator.registration.addAnother": "Register another operator",
     "noImageRequired": "Please, upload your profile image",
@@ -1448,11 +1543,21 @@
       "addContact.done": "{user} was added to your contact list",
       "removeContact": "Remove from contacts",
       "removeContact.done": "{user} was removed from your contact list",
+      "resendEmailChange": "Resend e-mail validation key",
+      "resendEmailChange.done": "The validation key was sent to the user by e-mail",
+      "validateEmailChange": "Mark the e-mail as validated",
+      "validateEmailChange.done": "The e-mail has been marked valid",
+      "resendRegistrationValidation": "Resend validation e-mail",
+      "resendRegistrationValidation.done": "The validation key was sent to the user by e-mail",
+      "validateRegistration": "Mark as validated",
+      "validateRegistration.done": "The e-mail has been marked as valid and the user is now active",
+      "remove": "Remove",
       "pay": "Make payment",
       "paySystemToUser": "Payment system to user",
       "payAsUserToSystem": "Payment user to system",
       "payAsUserToUser": "Payment user to user",
       "payAsUserToSelf": "Payment user to self",
+      "batchPayments": "Batch payments",
       "requestPayment": "Request payment",
       "purchases": "Purchases",
       "sales": "Sales",
@@ -1481,7 +1586,7 @@
       "voucherTransactions": "View voucher transactions",
       "voucherTransactionsRedeems": "View voucher redeems",
       "voucherRedeem": "Redeem voucher",
-      "voucherTopUp": "Top-up voucher",
+      "voucherTopUp": "Top-up / activate voucher",
       "notificationSettings": "Notification settings",
       "products": "Products",
       "accountsBalanceLimits": "Account balance limits",
@@ -1496,7 +1601,10 @@
       "transactions": "{transactions} transactions",
       "totalReceived": "{received} (total received)",
       "totalPaid": "{paid} (total paid)",
-      "sendMessage": "Send message"
+      "sendMessage": "Send message",
+      "quickAccess": "Quick access",
+      "favoriteAds": "Favorite ads",
+      "tickets": "Tickets"
     },
     "registration": {
       "group.public": "Choose the group you want to participate",
@@ -1508,7 +1616,7 @@
       "inactive.public": "Your account was successfully created.<br>However, you will need to be activated by the administration.<br>You will be notified when your account is active.",
       "pending.public": "Your registration has been submitted, and needs to be verified.<br>You should receive an e-mail shortly with instructions on how to activate your account.<br>If you don't receive the e-mail, make sure to check your spam / junk folder.",
       "active.manager": "The user's account for {user} has been activated.",
-      "inactive.manager": "The user {user} has been registered, however, still needs activatation by the administration.",
+      "inactive.manager": "The user {user} has been registered, however, still needs activation by the administration.",
       "pending.manager": "The user {user} has been registered, however, still needs to validate their registration by confirming the e-mail.",
       "principal.single": "You can use your {principal} ({value}) on {channels}",
       "principal.multiple.preface": "You can login with the following data:",
@@ -1517,7 +1625,12 @@
       "generatedPasswords.single": "You will receive an e-mail shortly with your generated {type}.",
       "generatedPasswords.multiple": "You will receive an e-mail shortly with the following generated passwords: {types}.",
       "viewProfile": "View profile",
-      "registerAnotherUser": "Register another user"
+      "registerAnotherUser": "Register another user",
+      "resumeWizard": {
+        "message": "A previous registration was started in this device. Would you like to resume it or start over a new registration?",
+        "resume": "Resume previous",
+        "restart": "Start a new registration"
+      }
     },
     "orderBy": {
       "alphabeticallyAsc": "Name (A-Z)",
@@ -1624,8 +1737,11 @@
   },
   "agreements": {
     "agreement": "Agreement",
+    "agreements": "Agreements",
     "required": "Required agreements",
+    "required.singular": "Required agreement",
     "optional": "Optional agreements",
+    "optional.singular": "Optional agreement",
     "optional.saved": "The selected agreements have been saved",
     "accepted": "Accepted",
     "noAccepted": "No accepted agreements",
@@ -1694,7 +1810,6 @@
     "verified": "Verified",
     "error": {
       "verify": {
-        "expired": "The verification code was not sent or has expired.<br> Please, send the code again to your phone and restart the process.",
         "invalid": "Invalid verification code",
         "maxAttempts": "You have exceeded the number of allowed attempts.<br>Please, send the code again to your phone and restart the process."
       }
@@ -1725,6 +1840,10 @@
   "ad": {
     "accept": "Accept",
     "acceptOrder": "Accept order",
+    "addToFavorites": "Add to favorites",
+    "addedToFavorites": "Added to favorites",
+    "removeFromFavorites": "Remove from favorites",
+    "removedFromFavorites": "Removed from favorites",
     "addedProduct": "The product was added to cart",
     "addedProductOrder": "The product was added to the order",
     "addedProductAlreadyInCart": "The product was added to cart (this item has been added previously to your cart)",
@@ -1767,7 +1886,8 @@
     "error": {
       "cannotBuyFromSeller": "At the moment, you are not allowed to buy products from this user. Please contact your administrator.",
       "cannotProceedToCheckout": "You can not proceed with checkout because some items are unavailable or you do not have enough balance",
-      "notEnoughStock": "The quantity demanded cannot be delivered, because the article is almost out of stock."
+      "notEnoughStock": "The quantity demanded cannot be delivered, because the article is almost out of stock.",
+      "noAvailableAccounts": "The advertisement can not be saved because there is not available accounts and price can not be set. Please contact the administration"
     },
     "deliveryAddress": "Delivery address",
     "deliveryInformation": "Delivery information",
@@ -1903,7 +2023,9 @@
     "waitingForBuyersApproval": "Waiting for buyers approval",
     "waitingForSellersApproval": "Waiting for sellers approval",
     "remarks": "Remarks",
-    "listAds": "List advertisements",
+    "listAds": "Show advertisements",
+    "showFavorites": "Favorites only",
+    "warningDisabledAd": "This advertisement has the disabled status and cannot be viewed by other users. In order to activate the advertisement please choose a price and currency and save the ad again",
     "title": {
       "search": "Search advertisements",
       "myAdvertisements": "My advertisements",
@@ -1929,7 +2051,8 @@
       "answerQuestion": "Answer question",
       "adInterests": "Advertisement interests",
       "adInterestNew": "New advertisement interest",
-      "adInterest": "Advertisement interest"
+      "adInterest": "Advertisement interest",
+      "favoriteAds": "Advertisement favorites"
     },
     "mobileTitle": {
       "search": "Advertisements",
@@ -1957,7 +2080,8 @@
       "answerQuestion": "Answer question",
       "adInterests": "Advertisement interests",
       "adInterestNew": "New advertisement interest",
-      "adInterest": "Advertisement interest"
+      "adInterest": "Advertisement interest",
+      "favoriteAds": "Advertisement favorites"
     }
   },
   "message": {
@@ -2010,7 +2134,7 @@
       "system": "Administration"
     },
     "send": "Send",
-    "messageSent": "The message was succesfully sent"
+    "messageSent": "The message was successfully sent"
   },
   "notification": {
     "message": "Message",
@@ -2062,6 +2186,8 @@
         "incomingScheduledPaymentReceived": "Scheduled payment received",
         "limitChange": "Account limit changed",
         "paymentAwaitingAuthorization": "Payment awaiting authorization",
+        "paymentPerformedChargedBack": "Performed payment charged back",
+        "paymentReceivedChargedBack": "Received payment charged back",
         "paymentReceived": "Payment received",
         "paymentRequestCanceled": "Payment request canceled",
         "paymentRequestDenied": "Payment request denied",
@@ -2155,6 +2281,7 @@
     "forwardMessages": "Forward internal messages to your email address",
     "emailMailings": "Receive email mailings",
     "smsMailings": "Receive SMS mailings",
+    "appMailings": "Receive mobile app mailings",
     "internalNotification": "Internal notification",
     "accounts": "Accounts",
     "personal": "Personal",
@@ -2224,7 +2351,15 @@
     "emailVerificationCode": "E-mail verification code",
     "smsVerificationCode": "SMS verification code",
     "codeSent": "Code sent",
-    "currentStep": "Step {current} of {total}"
+    "currentStep": "Step {current} of {total}",
+    "verification": {
+      "sentToEmail": "The verification code was sent to the email address <b>{email}</b>.<br>Please, check your mailbox and copy the received code to the field below.",
+      "sentToPhone": "The verification code was sent via SMS to <b>{phone}</b>.<br>Please, check your mobile phone and copy the received code to the field below.",
+      "new": {
+        "seconds": "You can request a new code in {seconds} seconds",
+        "request": "Didn't get a verification code? Request a new one."
+      }
+    }
   },
   "setting": {
     "title": "Settings",
@@ -2507,6 +2642,115 @@
     "sent.single": "The invitation e-mail was sent",
     "sent.multiple": "The invitation e-mails were sent"
   },
+  "quickAccessSettings": {
+    "title": "Quick access settings",
+    "mobileTitle": "Quick access",
+    "information": "In this page you can customize which quick access icons are shown in your dashbord, and in which order. Enable / disable an item by clicking on it. You can also reorder enabled items by dragging and dropping them.",
+    "enabled": "Enabled items",
+    "disabled": "Disabled items",
+    "restoreDefaults": "Restore defaults",
+    "restoreDefaults.done": "The quick access items were restored to the defaults"
+  },
+  "imports": {
+    "title": {
+      "payments": "Import payments",
+      "userPayments": "Batch payments",
+      "userSendVouchers": "Batch vouchers sending",
+      "general.search": "Imports",
+      "general.details": "Import details",
+      "importNew": "Import new file",
+      "importNew.vouchersSend": "Buy and email multiple vouchers",
+      "edit": "Modify imported file",
+      "line.search": "Imported file lines",
+      "line.details": "Imported line details",
+      "line.edit": "Edit imported line"
+    },
+    "mobileTitle": {
+      "payments": "Import payments",
+      "userPayments": "Batch payments",
+      "userSendVouchers": "Batch vouchers",
+      "general.search": "Imports",
+      "general.details": "Import",
+      "importNew": "Import file",
+      "importNew.vouchersSend": "Buy and email vouchers",
+      "edit": "Modify imported file",
+      "line.search": "Imported file lines",
+      "line.details": "Imported line details",
+      "line.edit": "Edit imported line"
+    },
+    "kind": {
+      "label": "Import type",
+      "users": "Users",
+      "ads": "Advertisements",
+      "records": "Records",
+      "generalReferences": "General references",
+      "transfers": "Transfers",
+      "tokens": "Tokens",
+      "payments": "Payments",
+      "userPayments": "Batch payments",
+      "userSendVouchers": "Batch buy and email vouchers"
+    },
+    "fileStatus": {
+      "invalid": "Invalid",
+      "readingCsv": "Reading lines",
+      "readingZip": "Reading images",
+      "ready": "Ready",
+      "importing": "Importing",
+      "imported": "Finished",
+      "archived": "Archived",
+      "aborted": "Aborted",
+      "internalError": "Internal error"
+    },
+    "lineStatus": {
+      "ready": "Ready to import",
+      "validationError": "Validation error",
+      "skipped": "Marked as skipped",
+      "importError": "Error on import",
+      "imported": "Successfully imported"
+    },
+    "file": "File",
+    "fileName": "File name",
+    "creationDate": "Upload date",
+    "processingDate": "Process date",
+    "archivingDate": "Archiving date",
+    "archivingDate.value": "After {date} this imported file will be archived, which means all detailed line information will be removed.",
+    "sendNotifications": "Send notifications",
+    "useGroupFromFile": "Use groups from file",
+    "defaultGroup": "Default group",
+    "sendActivationEmail": "Send activation email",
+    "useAmountFromFile": "Use amount from file",
+    "defaultAmount": "Default amount",
+    "importNew": "Import new",
+    "lines": "Lines",
+    "ignoredFields": "Ignored fields",
+    "abort": {
+      "label": "Abort",
+      "confirmation": "Are you sure to abort this import?",
+      "done": "The import was aborted"
+    },
+    "process": {
+      "label": "Import",
+      "confirmation": "Are you sure to import {count} valid lines?",
+      "done": "The import has started"
+    },
+    "section": {
+      "validation": "Lines validation",
+      "import": "Lines importing"
+    },
+    "skip": {
+      "label": "Skip",
+      "done": "This line will be skipped when the file is imported"
+    },
+    "include": {
+      "label": "Include",
+      "done": "This line will be included when the file is imported"
+    },
+    "lineNumber": "Line number",
+    "information": {
+      "ready": "The file is ready to begin importing. To proceed, select the Import action above.",
+      "userSendVouchers": "You can send multiple vouchers at once by importing a CSV file, using <tt>{separator}</tt> as separator.<br>\nThe file must have 2 columns: <tt>name</tt> and <tt>email</tt>. If you set to use amount from file, you have to also specify the <tt>amount</tt> column.<br>\nIn the message field, you can use the same header names as variables, surrounded by curly braces: <tt>&#123;name}</tt>, <tt>&#123;email}</tt> and <tt>&#123;amount}</tt>."
+    }
+  },
   "consent": {
     "authorize": "Authorize",
     "deny": "Deny",
@@ -2518,6 +2762,7 @@
     "termsOfService": "Terms of service",
     "title": "Authorize {client} to access your {app} account?",
     "titleOpenidOnly": "Authorize {client} to validate your {app} identity?",
+    "dynamicDomain": "Make sure that <b>{domain}</b> is the website you are authorizing",
     "permission": {
       "openIdOnly": "{client} will not have access to any of your personal data.",
       "requesting": "{client} is requesting:"

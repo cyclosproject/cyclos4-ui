@@ -46,7 +46,7 @@
           *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
           class="col-12 col-md-6">
           <date-field formControlName="periodBegin"
-            [label]="i18n.general.beginDate" minDate="past5"
+            [label]="i18n.general.beginDate" [minDate]="data.archivingDate"
             maxDate="todayEnd" fieldSize="full">
           </date-field>
         </div>
@@ -54,7 +54,7 @@
           *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
           class="col-12 col-md-6">
           <date-field formControlName="periodEnd"
-            [label]="i18n.general.endDate" minDate="past5" maxDate="todayEnd"
+            [label]="i18n.general.endDate" [minDate]="data.archivingDate" maxDate="todayEnd"
             fieldSize="full">
           </date-field>
         </div>
@@ -137,8 +137,7 @@
               </field-option>
             </single-selection-field>
           </div>
-          <div class="col-12 col-md-6"
-            *ngFor="let f of data.customFieldsInSearch">
+          <div class="col-12 col-md-6" *ngFor="let f of fieldsInSearch">
             <custom-field-filter [field]="f"
               [formControl]="form.get('customFields').get(f.internalName)">
             </custom-field-filter>
@@ -195,7 +194,7 @@
           {{ i18n.general.description }}</th>
         <th *ngIf="data.transferStatusFlows?.length > 0">
           {{ i18n.transaction.transferStatus }}</th>
-        <th *ngFor="let field of data.customFieldsInList">
+        <th *ngFor="let field of fieldsInList">
           {{ field.name }}
         </th>
         <th class="amount">{{ i18n.transaction.amount }}</th>
@@ -225,10 +224,9 @@
             <td *ngIf="data.transferStatusFlows?.length > 0">
               {{ statuses(row) }}
             </td>
-            <td *ngFor="let field of data.customFieldsInList">
-              <format-field-value [fields]="data.customFieldsInList"
-                [plainText]="true" [fieldName]="field.internalName"
-                [object]="row">
+            <td *ngFor="let field of fieldsInList">
+              <format-field-value [fields]="fieldsInList" [plainText]="true"
+                [fieldName]="field.internalName" [object]="row">
               </format-field-value>
             </td>
             <td class="amount">

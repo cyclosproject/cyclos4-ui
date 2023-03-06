@@ -35,7 +35,6 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
   createChangeExpirationDeviceConfirmation: () => CreateDeviceConfirmation;
   canConfirm: boolean;
   confirmationPassword: FormControl;
-  showBalance: boolean;
   redeemOnDays: string;
   showTransactionsUser$ = new BehaviorSubject(false);
 
@@ -75,7 +74,6 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
       this.confirmationPassword = this.formBuilder.control('confirmationPassword', Validators.required);
     }
     this.headingActions = this.initActions(data);
-    this.showBalance = this.format.isPositive(data.balance);
     if (data.status === VoucherStatusEnum.OPEN) {
       const days = data.redeemOnWeekDays?.length;
       if (![0, 7].includes(days)) {
@@ -102,8 +100,11 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
         key: voucher.id
       }));
     if (voucher.cancelAction) {
-      const label = voucher.cancelAction === VoucherCancelActionEnum.CANCEL_AND_REFUND ?
-        this.i18n.voucher.cancel.cancelAndRefund : this.i18n.general.cancel;
+      const label = voucher.cancelAction === VoucherCancelActionEnum.CANCEL_AND_REFUND
+        ? this.i18n.voucher.cancel.cancelAndRefund
+        : voucher.cancelAction === VoucherCancelActionEnum.CANCEL_AND_CHARGEBACK
+          ? this.i18n.voucher.cancel.cancelAndChargeback
+          : this.i18n.general.cancel;
       actions.push(new HeadingAction(SvgIcon.XCircle, label, () => {
         // Handle the case that the confirmation password cannot be used
         if (!this.canConfirm) {
@@ -258,6 +259,8 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
     switch (cancelAction) {
       case VoucherCancelActionEnum.CANCEL_AND_REFUND:
         return this.i18n.voucher.cancel.refundConfirmation;
+      case VoucherCancelActionEnum.CANCEL_AND_CHARGEBACK:
+        return this.i18n.voucher.cancel.chargebackConfirmation;
       case VoucherCancelActionEnum.CANCEL_PENDING_PACK:
         return this.i18n.voucher.cancel.packConfirmation;
       case VoucherCancelActionEnum.CANCEL_GENERATED:

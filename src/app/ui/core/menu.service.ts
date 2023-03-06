@@ -3,8 +3,8 @@ import { NavigationEnd, Router } from '@angular/router';
 import {
   AccountType, AccountWithOwner, AdminMenuEnum, DataForFrontend,
 
-  FrontendMenuEnum, Operation,
-  RecordLayoutEnum, RecordPermissions, RecordType, RoleEnum, Transfer, User,
+  FrontendMenuEnum, ImportedFileKind, Operation,
+  RecordLayoutEnum, RecordPermissions, RecordType, RoleEnum, TokenType, Transfer, User,
   UserLocale,
   UserMenuEnum, UserRelationshipEnum, VouchersPermissions, Wizard
 } from 'app/api/models';
@@ -358,6 +358,9 @@ export class MenuService {
    * @param op The operation id or internal name
    */
   operationEntry(op: string): MenuEntry {
+    if (op == null) {
+      return null;
+    }
     const roots = this._fullMenu.value || [];
     for (const rootEntry of roots) {
       for (const entry of rootEntry.entries || []) {
@@ -642,6 +645,9 @@ export class MenuService {
    * Returns the ActiveMenu which represents this record type.
    */
   activeMenuForRecordType(general: boolean, type: RecordType): ActiveMenu {
+    if (!type) {
+      return null;
+    }
     let menu: Menu;
     if (general) {
       // General records search
@@ -669,6 +675,17 @@ export class MenuService {
       menu = Menu.SEARCH_RECORDS_MARKETPLACE;
     }
     return new ActiveMenu(menu, { recordType: type });
+  }
+
+
+  /**
+   * Returns the ActiveMenu which represents this token type.
+   */
+  activeMenuForTokenType(type: TokenType): ActiveMenu {
+    if (!type) {
+      return null;
+    }
+    return new ActiveMenu(Menu.MY_TOKENS, { tokenType: type });
   }
 
   /**
@@ -921,6 +938,7 @@ export class MenuService {
       const banking = permissions.banking || {};
       const contacts = permissions.contacts || {};
       const operators = permissions.operators || {};
+      const imports = permissions.imports || {};
 
       // Banking
       const owner = isAdmin ? ApiHelper.SYSTEM : ApiHelper.SELF;
@@ -963,6 +981,9 @@ export class MenuService {
       if (banking.externalPayments?.view) {
         add(Menu.EXTERNAL_PAYMENTS, `/banking/${owner}/external-payments`, SvgIcon.Wallet2ArrowUpRight,
           this.i18n.menu.bankingExternalPayments);
+      }
+      if (banking.tickets?.view) {
+        add(Menu.TICKETS, `/banking/${owner}/tickets`, SvgIcon.Wallet2Check, this.i18n.menu.bankingTickets);
       }
 
       const authorizations = (banking.authorizations || {});
@@ -1030,6 +1051,14 @@ export class MenuService {
           SvgIcon.ArrowDownUp, this.i18n.menu.bankingAccountPaymentLimits);
       }
 
+      if (isAdmin && imports.visibleKinds?.includes(ImportedFileKind.PAYMENTS)) {
+        add(Menu.PAYMENT_IMPORTS, '/imports/system/payments/files',
+          SvgIcon.ArrowUpCircle, this.i18n.menu.bankingImportedPayments);
+      } else if (!isAdmin && imports.visibleKinds?.includes(ImportedFileKind.USER_PAYMENTS)) {
+        add(Menu.PAYMENT_IMPORTS, '/imports/self/userPayments/files',
+          SvgIcon.ArrowUpCircle, this.i18n.menu.bankingUserImportedPayments);
+      }
+
       addRecords(RootMenu.BANKING);
       addOperations(RootMenu.BANKING);
       addWizards(RootMenu.BANKING);
@@ -1045,6 +1074,9 @@ export class MenuService {
       // Brokering
       if (isBroker) {
         add(Menu.MY_BROKERED_USERS, '/users/brokerings', SvgIcon.PersonSquareOutline, this.i18n.menu.brokeringUsers);
+        if (marketplace.userSimple.view || marketplace.userWebshop.view) {
+          add(Menu.BROKERED_USERS_ADS, '/marketplace/broker-search', SvgIcon.Basket, this.i18n.menu.brokeringAds);
+        }
         if (users.registerAsBroker) {
           add(Menu.BROKER_REGISTRATION, '/users/registration', SvgIcon.PersonPlus, this.i18n.menu.brokeringRegister);
         }
@@ -1155,9 +1187,12 @@ export class MenuService {
       if (contacts.enable) {
         add(Menu.CONTACTS, '/users/contacts', SvgIcon.Book, this.i18n.menu.personalContacts);
       }
-      if ((permissions.passwords || {}).manage) {
+      const totpEnabled = this.dataForFrontendHolder.auth?.totpEnabled;
+      if ((permissions.passwords || {}).manage || totpEnabled) {
         let passwordsLabel: string;
-        if ((permissions.passwords.passwords || []).length === 1) {
+        if (!(permissions.passwords || {}).manage && totpEnabled) {
+          passwordsLabel = this.i18n.menu.personalTotp;
+        } else if ((permissions.passwords.passwords || []).length === 1) {
           passwordsLabel = this.i18n.menu.personalPassword;
         } else {
           passwordsLabel = this.i18n.menu.personalPasswords;
@@ -1191,6 +1226,9 @@ export class MenuService {
       const myFeedbacks = (permissions.paymentFeedbacks || {});
       if (myFeedbacks.receive || myFeedbacks.give) {
         add(Menu.FEEDBACKS, '/users/self/feedbacks/search', SvgIcon.Award, this.i18n.menu.personalFeedbacks);
+      }
+      if (this.dataForFrontendHolder.dataForFrontend.canManageQuickAccess) {
+        add(Menu.QUICK_ACCESS_SETTINGS, '/users/self/quick-access/settings', SvgIcon.Grid2, this.i18n.menu.personalQuickAccessSettings);
       }
       addRecords(RootMenu.PERSONAL);
       addOperations(RootMenu.PERSONAL);

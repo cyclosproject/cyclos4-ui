@@ -33,7 +33,7 @@
 
   <!-- linked entity: user (other linked entities are also handled as input -->
   <user-field #userField *ngIf="user" [id]="id" [label]="label" [name]="name"
-    [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [labelPosition]="labelPosition" [fieldSize]="fieldSize" [allowSelf]="true"
     [required]="required" [formControl]="formControl"
     [filters]="userSearchFilters()">
   </user-field>
@@ -41,36 +41,36 @@
   <!-- Integer, decimal and date are ranges -->
   <label-value *ngIf="range" [label]="label" [labelPosition]="labelPosition"
     [fieldSize]="fieldSize" [required]="required" kind="field">
-    <div class="d-flex w-100" [ngClass]="{'flex-column': type === 'date'}">
-      <div class="flex-grow-1">
-        <input-field #integerMin *ngIf="type == 'integer'" [id]="id + '_min'"
+    <div class="range" [ngSwitch]="type">
+      <ng-container *ngSwitchCase="'integer'">
+        <input-field #integerMin [id]="id + '_min'"
           [name]="name ? name + '_min' : null" [formControl]="range.at(0)"
           [type]="'number'"></input-field>
-        <decimal-field #decimalMin *ngIf="type == 'decimal'"
-          [id]="id + '_min'" [scale]="field.decimalDigits"
-          [name]="name ? name + '_min' : null" [formControl]="range.at(0)">
-        </decimal-field>
-        <date-field #dateMin *ngIf="type == 'date'" [id]="id + '_min'"
-          [name]="name ? name + '_min' : null" [formControl]="range.at(0)">
-        </date-field>
-      </div>
-      <div class="d-flex p-1 align-items-center">
-        {{ i18n.general.rangeTo }}</div>
-      <div class="flex-grow-1">
-        <input-field #integerMax *ngIf="type == 'integer'" [id]="id + '_max'"
+        <input-field #integerMax [id]="id + '_max'"
           [name]="name ? name + '_max' : null" [formControl]="range.at(1)"
           [type]="'number'"></input-field>
-        <decimal-field #decimalMax *ngIf="type == 'decimal'"
-          [id]="id + '_max'" [scale]="field.decimalDigits"
-          [name]="name ? name + '_max' : null" [formControl]="range.at(1)">
+      </ng-container>
+      <ng-container *ngSwitchCase="'decimal'">
+        <decimal-field #decimalMin [id]="id + '_min'"
+          [scale]="field.decimalDigits" [name]="name ? name + '_min' : null"
+          [formControl]="range.at(0)">
         </decimal-field>
-        <date-field #dateMax *ngIf="type == 'date'" [id]="id + '_max'"
+        <decimal-field #decimalMax [id]="id + '_max'"
+          [scale]="field.decimalDigits" [name]="name ? name + '_max' : null"
+          [formControl]="range.at(1)">
+        </decimal-field>
+      </ng-container>
+      <ng-container *ngSwitchCase="'date'">
+        <date-field #dateMin [id]="id + '_min'"
+          [tooltip]="(layout.ltmd$ | async) ? null : range.at(0).valueChanges | async | date"
+          [name]="name ? name + '_min' : null" [formControl]="range.at(0)">
+        </date-field>
+        <date-field #dateMax [id]="id + '_max'"
+          [tooltip]="(layout.ltmd$ | async) ? null : range.at(1).valueChanges | async | date"
           [name]="name ? name + '_max' : null" [formControl]="range.at(1)">
         </date-field>
-      </div>
+      </ng-container>
     </div>
-    <ng-container *ngIf="range">
-    </ng-container>
   </label-value>
 
 </ng-template>

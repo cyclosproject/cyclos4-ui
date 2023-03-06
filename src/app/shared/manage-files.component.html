@@ -2,21 +2,19 @@
 
 <div class="mb-3">{{ i18n.field.file.manageMessage }}</div>
 
-<ng-template #fileTemplate let-item="item">
-  <div class="d-flex justify-items-center mb-2 cursor-move">
+<div cdkDropList (cdkDropListDropped)="drop($event)">
+  <div *ngFor="let file of files" cdkDrag
+    class="d-flex justify-items-center mb-2 cursor-move">
     <div class="flex-grow-1 d-flex align-items-center text-truncate">
-      {{ item.value.name }}
+      {{ file.name }}
     </div>
     <div class="ml-2">
-      <button type="button" class="btn btn-icon" (click)="remove(item.value)">
+      <button type="button" class="btn btn-icon" (click)="remove(file)">
         <icon [icon]="SvgIcon.X"></icon>
       </button>
     </div>
   </div>
-</ng-template>
-
-<bs-sortable [itemTemplate]="fileTemplate" [formControl]="order">
-</bs-sortable>
+</div>
 
 <actions>
   <action-button (action)="ok()" [label]="i18n.general.confirm">

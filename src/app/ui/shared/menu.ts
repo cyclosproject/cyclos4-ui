@@ -86,6 +86,8 @@ export namespace Menu {
   export const VOUCHER_TRANSACTIONS = new Menu(RootMenu.BANKING, 'VOUCHER_TRANSACTIONS');
   export const SEARCH_VOUCHERS = new Menu(RootMenu.BANKING, 'SEARCH_VOUCHERS');
   export const SEARCH_MY_VOUCHERS_BANKING = new Menu(RootMenu.BANKING, 'SEARCH_MY_VOUCHERS_BANKING');
+  export const PAYMENT_IMPORTS = new Menu(RootMenu.BANKING, 'GENERAL_PAYMENT_IMPORTS');
+  export const TICKETS = new Menu(RootMenu.BANKING, 'TICKETS');
 
   // Users / Marketplace
   export const SEARCH_USERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USERS');
@@ -96,6 +98,7 @@ export namespace Menu {
   export const SEARCH_USER_WEBSHOP = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USER_WEBSHOP');
   export const SALES = new Menu(RootMenu.MARKETPLACE, 'SALES');
   export const DELIVERY_METHODS = new Menu(RootMenu.MARKETPLACE, 'DELIVERY_METHODS');
+  export const FAVORITE_ADS = new Menu(RootMenu.MARKETPLACE, 'FAVORITE_ADS');
   export const AD_INTERESTS = new Menu(RootMenu.MARKETPLACE, 'AD_INTERESTS');
   export const WEBSHOP_SETTINGS = new Menu(RootMenu.MARKETPLACE, 'WEBSHOP_SETTINGS');
   export const UNANSWERED_QUESTIONS = new Menu(RootMenu.MARKETPLACE, 'UNANSWERED_QUESTIONS');
@@ -114,6 +117,7 @@ export namespace Menu {
 
   // Brokering
   export const MY_BROKERED_USERS = new Menu(RootMenu.BROKERING, 'MY_BROKERED_USERS');
+  export const BROKERED_USERS_ADS = new Menu(RootMenu.BROKERING, 'BROKERED_USERS_ADS');
   export const BROKER_REGISTRATION = new Menu(RootMenu.BROKERING, 'BROKER_REGISTRATION');
   export const BROKER_TRANSFERS_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_TRANSFERS_OVERVIEW');
   export const BROKER_AUTHORIZED_PAYMENTS_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_AUTHORIZED_PAYMENTS_OVERVIEW');
@@ -131,6 +135,7 @@ export namespace Menu {
   export const SETTINGS = new Menu(RootMenu.PERSONAL, 'SETTINGS');
   export const REFERENCES = new Menu(RootMenu.PERSONAL, 'REFERENCES');
   export const FEEDBACKS = new Menu(RootMenu.PERSONAL, 'FEEDBACKS');
+  export const QUICK_ACCESS_SETTINGS = new Menu(RootMenu.PERSONAL, 'QUICK_ACCESS_SETTINGS');
 
   // Custom operations (one per root menu in owner, also one per operation container)
   export const RUN_OPERATION_BANKING = new Menu(RootMenu.BANKING, 'RUN_OPERATION_BANKING');

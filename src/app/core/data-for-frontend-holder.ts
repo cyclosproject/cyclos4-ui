@@ -46,7 +46,10 @@ export class DataForFrontendHolder {
   /**
    * Returns a cold observer for initializing the `DataForFrontend` instance
    */
-  initialize(): Observable<DataForFrontend> {
+  initialize(dataForFrontend?: DataForFrontend): Observable<DataForFrontend> {
+    if (dataForFrontend) {
+      return this.performInitialize(dataForFrontend);
+    }
     return this.reload();
   }
 

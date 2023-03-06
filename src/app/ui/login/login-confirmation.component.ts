@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormControl, Validators } from '@angular/forms';
 import { CreateDeviceConfirmation, DeviceConfirmationTypeEnum, PasswordInput } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { LoginState } from 'app/ui/core/login-state';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
@@ -11,7 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 /**
- * Component shown if the user should confirm the login, either with a secondary password or trusted device
+ * Component shown if the user should confirm the login
  */
 @Component({
   selector: 'login-confirmation',
@@ -22,11 +21,9 @@ export class LoginConfirmationComponent
   extends BasePageComponent<PasswordInput>
   implements OnInit {
 
-  ConfirmationMode = ConfirmationMode;
-
   control = new FormControl(null, Validators.required);
   canConfirm: boolean;
-  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
+  showSubmit$ = new BehaviorSubject(true);
   createDeviceConfirmation: () => CreateDeviceConfirmation;
 
   get passwordInput() {
@@ -43,12 +40,12 @@ export class LoginConfirmationComponent
 
   ngOnInit() {
     const auth = this.dataForFrontendHolder.auth || {};
-    if (!auth.pendingSecondaryPassword) {
+    if (!auth.loginConfirmation) {
       this.router.navigate(['']);
       return;
     }
     super.ngOnInit();
-    this.addSub(this.authService.getSecondaryPasswordInput().subscribe(input => this.data = input));
+    this.data = auth.loginConfirmation;
     this.createDeviceConfirmation = () => {
       return { type: DeviceConfirmationTypeEnum.SECONDARY_LOGIN };
     };
@@ -62,7 +59,7 @@ export class LoginConfirmationComponent
     if (!value && !validateBeforeSubmit(this.control)) {
       return;
     }
-    this.addSub(this.authService.validateSecondaryPassword({
+    this.addSub(this.authService.confirmLogin({
       body: value || this.control.value
     }).subscribe(() => this.reload()));
   }

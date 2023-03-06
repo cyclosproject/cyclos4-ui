@@ -23,8 +23,13 @@ export class BooleanFieldComponent
 
   /** Whether the value type is boolean or string */
   @Input() type: 'boolean' | 'string' = 'boolean';
+
+  @Input() text: string;
+
   @Output() onClick = new EventEmitter<Event>();
+
   @ViewChild('checkbox') checkbox: ElementRef;
+
   _switch: boolean | string = false;
   @HostBinding('class.switch') @Input() get switch(): boolean | string {
     return this._switch;
@@ -67,7 +72,6 @@ export class BooleanFieldComponent
   }
 
   protected getDisabledValue(): string {
-    const bool = this.value === true || this.value === 'true';
-    return bool ? this.i18n.general.yes : this.i18n.general.no;
+    return this.text || (this.isTrue(this.value) ? this.i18n.general.yes : this.i18n.general.no);
   }
 }

@@ -58,7 +58,7 @@
     [formControl]="form.get('confirmationPassword')"
     [passwordInput]="preview.confirmationPasswordInput"
     [createDeviceConfirmation]="createDeviceConfirmation"
-    (confirmationModeChanged)="confirmationModeChanged.emit($event)"
+    (showSubmit)="showSubmit.emit($event)"
     (confirmed)="confirmed.emit($event)">
   </confirmation-password>
 </ng-container>

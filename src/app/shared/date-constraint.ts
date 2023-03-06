@@ -55,6 +55,9 @@ export function dateConstraintAsMoment(constraint: DateConstraint, now: moment.M
       if (!date.isValid()) {
         throw new Error(`Got an invalid date constraint: ${constraint}`);
       }
+      if (date.hours() > 12) {
+        date.add(1, 'day');
+      }
       return date;
   }
 }

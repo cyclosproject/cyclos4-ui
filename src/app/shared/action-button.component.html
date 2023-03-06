@@ -1,8 +1,9 @@
 <button #button type="button"
   class="btn d-flex justify-content-center align-items-center w-100 h-100"
   [ngClass]="{ 'link-with-icon': icon,
-  'btn-primary': !outline,
-  'btn-outline-primary': outline,
+  'btn-flat': actionKind === 'flat',
+  'btn-primary': actionKind !== 'flat' && !outline,
+  'btn-outline-primary': actionKind !== 'flat' && outline,
   'btn-action-primary': actionKind === 'primary' }"
   (click)="onClick($event); $event.stopPropagation()" [disabled]="disabled">
   <span *ngIf="disabled && (showSpinner$ | async)"

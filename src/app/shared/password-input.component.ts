@@ -13,7 +13,7 @@ import { ActionWithIcon } from 'app/shared/action';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { truthyAttr } from 'app/shared/helper';
 import { chunk } from 'lodash-es';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 /**
  * Component used to display a password input
@@ -77,6 +77,8 @@ export class PasswordInputComponent
   otpButtonsDisabled$ = new BehaviorSubject<boolean>(false);
   passwordFieldType: string;
 
+  visible = false;
+
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
@@ -97,7 +99,7 @@ export class PasswordInputComponent
       this.otpCountdownLabel$ = new BehaviorSubject(null);
       this.otpCountdownAction = (remainingSeconds) => {
         if (remainingSeconds > 0) {
-          this.otpCountdownLabel$.next(this.i18n.password.otpCountdownLabel(remainingSeconds));
+          this.otpCountdownLabel$.next(this.i18n.password.otp.countdownLabel(remainingSeconds));
         } else {
           this.otpButtonsDisabled$.next(false);
           this.otpCountdownLabel$.next(null);
@@ -121,7 +123,7 @@ export class PasswordInputComponent
       mockInput.style.setProperty('-webkit-text-security', 'disc');
       const supportTextSecurity = mockInput.style.getPropertyValue('-webkit-text-security');
       if (!!supportTextSecurity || this.hasTextSecurityDisc()) {
-        this.passwordFieldType = input.onlyNumeric ? 'tel' : 'text';
+        this.passwordFieldType = input.passwordType.onlyNumeric ? 'tel' : 'text';
       } else {
         this.passwordFieldType = 'password';
       }
@@ -130,7 +132,7 @@ export class PasswordInputComponent
     }
 
     // Initialize the virtual keyboard fields
-    this.virtualKeyboard = input.inputMethod === PasswordInputMethodEnum.VIRTUAL_KEYBOARD;
+    this.virtualKeyboard = input.passwordType.inputMethod === PasswordInputMethodEnum.VIRTUAL_KEYBOARD;
     if (this.virtualKeyboard) {
       this.enteredVKPassword = [];
       this.updateVKButtons();
@@ -177,12 +179,12 @@ export class PasswordInputComponent
       case SendMediumEnum.EMAIL:
         mobilePhones = [];
         icon = SvgIcon.Envelope;
-        label = this.i18n.password.otpSentToMail(value ? '(' + value + ')' : '');
+        label = this.i18n.password.otp.sendToEmail(value ? '(' + value + ')' : '');
         break;
       case SendMediumEnum.SMS:
         mobilePhones = [phoneId];
         icon = SvgIcon.Phone;
-        label = this.i18n.password.otpSentToPhone(value ? '(' + value + ')' : '');
+        label = this.i18n.password.otp.sendToPhone(value ? '(' + value + ')' : '');
         break;
       default:
         return null;
@@ -190,16 +192,17 @@ export class PasswordInputComponent
 
     return new ActionWithIcon(icon, label, () => {
       this.otpButtonsDisabled$.next(true);
-      let request;
+      let request: Observable<any>;
       if (this.pos) {
         request = this.posService.receivePaymentOtp({ medium, body: this.paymentPreview.payment });
       } else {
-        request = this.dataForFrontendHolder.auth.pendingSecondaryPassword ?
-          this.authService.newOtpForSecondaryPassword({ medium, mobilePhones }) : this.authService.newOtp({ medium, mobilePhones });
+        request = this.dataForFrontendHolder.auth.loginConfirmation
+          ? this.authService.newOtpForLoginConfirmation({ medium, mobilePhones })
+          : this.authService.newOtp({ medium, mobilePhones });
       }
       this.addSub(request.subscribe(res => {
-        this.notificationService.snackBar(this.i18n.password.otpSent(
-          this.pos ? this.paymentPreview.fromAccount.user.display : (res || []).join(', ')
+        this.notificationService.snackBar(this.i18n.password.otp.sent(
+          this.pos ? this.paymentPreview.fromOperator?.display ?? this.paymentPreview.fromAccount.user.display : (res || []).join(', ')
         ));
         this.otpSent.emit(null);
       }));
@@ -256,9 +259,14 @@ export class PasswordInputComponent
   }
 
   otpDisableMessageFunction(medium: string): (remaining: number) => string {
-    return () => this.i18n.password.otpReceiveBySent(medium);
+    return () => this.i18n.password.otp.receiveBySent(medium);
   }
 
   registerOnValidatorChange() {
   }
+
+  toggleVisibility() {
+    this.visible = !this.visible;
+  }
+
 }

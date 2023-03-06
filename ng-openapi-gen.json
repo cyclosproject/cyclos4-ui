@@ -12,6 +12,7 @@
     "Notifications",
     "NotificationSettings",
     "Passwords",
+    "TOTP",
     "Agreements",
     "IdentityProviders",
     "Users",
@@ -64,7 +65,8 @@
     "References",
     "PaymentFeedbacks",
     "PaymentRequests",
-    "Invite"
+    "Invite",
+    "Imports"
   ],
   "enumStyle": "upper",
   "skipJsonSuffix": true,

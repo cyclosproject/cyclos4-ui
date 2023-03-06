@@ -1,0 +1,82 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [heading]="i18n.ad.title.favoriteAds"
+      [mobileHeading]="i18n.ad.mobileTitle.favoriteAds"
+      [mode]="!self ? 'normal' : 'empty'">
+      <user-info *ngIf="!self" [user]="data.user"></user-info>
+    </page-content>
+    <results-layout [results]="results$ | async" resultType="list"
+      [toLink]="toLink" (update)="update($event)" [rendering$]="rendering$">
+      <mobile-result *mobileResult="let row"
+        [avatarImage]="row.advertisement.image" [avatarIcon]="SvgIcon.Basket">
+        <div class="d-flex">
+          <div>
+            <div class="cell-main">
+              {{ row.name }}
+            </div>
+            <div class="cell-date">
+              {{ row.publicationPeriod.begin | dateTime }}
+            </div>
+            <div *ngIf="row.price" class="cell-text">
+              <span *ngIf="row.promotionalPrice" class="promo-price">
+                {{ row.price | number:decimals(row) }}
+              </span>
+              {{ (row.promotionalPrice || row.price) |
+              currency:lookupCurrency(row) }}
+            </div>
+          </div>
+          <div *ngIf="data.canEdit"
+            class="ml-auto text-right d-flex flex-column">
+            <button type="button" [tooltip]="i18n.general.remove"
+              class="btn btn-icon mt-2"
+              (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
+              <icon [icon]="SvgIcon.Trash"></icon>
+            </button>
+          </div>
+        </div>
+      </mobile-result>
+
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead>
+          <th class="avatar"></th>
+          <th width="30%">{{ i18n.ad.name }}</th>
+          <th>{{ i18n.general.date }}</th>
+          <th>{{ i18n.ad.price }}</th>
+          <th *ngIf="data.canEdit" class="actions"></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of (results$ | async)?.results"
+            (click)="router.navigate(toLink(row))">
+            <td class=" avatar" [ngClass]="{
+              'pb-0': layout.xxs$ | async,
+              'border-0': layout.xxs$ | async
+            }">
+              <avatar [image]="row.image" [tooltip]="row.name"
+                [icon]="SvgIcon.Basket">
+              </avatar>
+            <td class="link">
+              <span (click)="viewPath(row)">{{ row.name }}</span>
+            </td>
+            <td>
+              {{ row.publicationPeriod.begin | date }}
+            </td>
+            <td>
+              <span *ngIf="row.promotionalPrice" class="promo-price">
+                {{ row.price | number:decimals(row) }}
+              </span>
+              {{ (row.promotionalPrice || row.price) |
+              currency:lookupCurrency(row) }}
+            </td>
+            <td *ngIf="data.canEdit" class="actions actions-multiple">
+              <button type="button" [tooltip]="i18n.general.remove"
+                class="btn btn-icon"
+                (click)="remove(row); $event.stopPropagation()">
+                <icon [icon]="SvgIcon.Trash"></icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>

@@ -27,13 +27,7 @@ export class SearchConnectedComponent
 
   ngOnInit() {
     super.ngOnInit();
-
-    // Get search data
-    this.addSub(this.sessionsService.getSessionDataForSearch().subscribe(data => {
-      // Patch value to avoid the form reload twice
-      this.form.patchValue(data.query, { emitEvent: false });
-      this.data = data;
-    }));
+    this.addSub(this.sessionsService.getSessionDataForSearch().subscribe(data => this.data = data));
   }
 
   protected toSearchParams(value: any): SessionQueryFilters {

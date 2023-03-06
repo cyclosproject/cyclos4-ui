@@ -41,6 +41,11 @@ export class ListTokenComponent
   }
 
   onDataInitialized(data: UserTokensListData) {
+    if (data.maxPerUser === 1 && data.tokens?.length === 1 && data.tokens[0].status === TokenStatusEnum.ACTIVE) {
+      this.router.navigate(this.view(data.tokens[0]), { replaceUrl: true });
+      return;
+    }
+
     super.onDataInitialized(data);
     this.self = this.authHelper.isSelf(data.user);
     if (this.canCreate() && data.type.physicalType !== PhysicalTokenTypeEnum.NFC_TAG) {

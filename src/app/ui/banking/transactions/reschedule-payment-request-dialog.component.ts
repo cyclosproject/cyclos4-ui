@@ -4,11 +4,10 @@ import { AcceptOrReschedulePaymentRequest, CreateDeviceConfirmation, Transaction
 import { PaymentRequestsService } from 'app/api/services/payment-requests.service';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { BaseComponent } from 'app/shared/base.component';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { PaymentRequestScheduledTo } from 'app/ui/banking/request-payment/payment-request-scheduled-to';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
-import { PaymentRequestScheduledTo } from 'app/ui/banking/request-payment/payment-request-scheduled-to';
 
 /**
  * Presents the fields to reschedule a payment request
@@ -19,7 +18,6 @@ import { PaymentRequestScheduledTo } from 'app/ui/banking/request-payment/paymen
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReschedulePaymentRequestDialogComponent extends BaseComponent implements OnInit {
-  ConfirmationMode = ConfirmationMode;
   PaymentRequestScheduledTo = PaymentRequestScheduledTo;
 
   @Input() createDeviceConfirmation: () => CreateDeviceConfirmation;
@@ -28,7 +26,7 @@ export class ReschedulePaymentRequestDialogComponent extends BaseComponent imple
 
   form: FormGroup;
   rescheduleTo: FormControl;
-  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
+  showSubmit$ = new BehaviorSubject(true);
   canConfirm: boolean;
 
   constructor(
@@ -42,19 +40,16 @@ export class ReschedulePaymentRequestDialogComponent extends BaseComponent imple
 
   ngOnInit() {
     super.ngOnInit();
+
     this.rescheduleTo = new FormControl(PaymentRequestScheduledTo.EXPIRY);
-    this.form = this.formBuilder.group({
-      processDate: null,
-      comments: null
-    });
+    this.form = this.formBuilder.group({ processDate: null, comments: null });
     this.addSub(this.rescheduleTo.valueChanges.subscribe(rescheduleTo => {
       if (rescheduleTo === PaymentRequestScheduledTo.DATE) {
         this.form.controls.processDate.setValidators(Validators.required);
       } else {
         this.form.controls.processDate.clearValidators();
       }
-      const processDate: string = rescheduleTo === PaymentRequestScheduledTo.EXPIRY
-        ? this.transaction.expirationDate : null;
+      const processDate: string = rescheduleTo === PaymentRequestScheduledTo.EXPIRY ? this.transaction.expirationDate : null;
       this.form.patchValue({ processDate });
     }));
     if (this.transaction.confirmationPasswordInput) {

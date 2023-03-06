@@ -46,6 +46,43 @@
             [fieldOptions]="creationTypeOptions">
           </radio-group-field>
         </div>
+        <ng-container *ngIf="moreFilters$ | async">
+          <div class="w-100"></div>
+          <div class="col-12 col-md-6">
+            <date-field formControlName="beginCreationDate"
+              [label]="i18n.voucher.beginCreationDate" minDate="past100"
+              maxDate="todayEnd" fieldSize="full">
+            </date-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <date-field formControlName="endCreationDate"
+              [label]="i18n.voucher.endCreationDate" minDate="past100"
+              maxDate="todayEnd" fieldSize="full">
+            </date-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <date-field formControlName="beginExpirationDate"
+              [label]="i18n.voucher.beginExpirationDate" minDate="past100"
+              maxDate="todayEnd" fieldSize="full">
+            </date-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <date-field formControlName="endExpirationDate"
+              [label]="i18n.voucher.endExpirationDate" minDate="past100"
+              maxDate="todayEnd" fieldSize="full">
+            </date-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <decimal-field formControlName="minAmount"
+              [label]="i18n.ad.minPrice" fieldSize="full">
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <decimal-field formControlName="maxAmount"
+              [label]="i18n.ad.maxPrice" fieldSize="full">
+            </decimal-field>
+          </div>
+        </ng-container>
       </div>
     </div>
   </page-content>

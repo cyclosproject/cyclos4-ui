@@ -4,8 +4,7 @@
       "/api",
       "/ui",
       "/consent",
-      "/unsubscribe",
-      "/identity"
+      "/unsubscribe"
     ],
     "target": "http://localhost:8888",
     "cookieDomainRewrite": "localhost",

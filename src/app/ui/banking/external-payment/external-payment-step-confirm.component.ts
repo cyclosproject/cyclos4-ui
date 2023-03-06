@@ -9,7 +9,6 @@ import { AuthHelperService } from 'app/core/auth-helper.service';
 import { Enter } from 'app/core/shortcut.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 
 /**
@@ -28,7 +27,7 @@ export class ExternalPaymentStepConfirmComponent extends BaseComponent implement
   @Input() preview: ExternalPaymentPreview;
   @Input() confirmationPassword: FormControl;
   @Input() showPaymentType: boolean;
-  @Output() confirmationModeChanged = new EventEmitter<ConfirmationMode>();
+  @Output() showSubmit = new EventEmitter<boolean>();
   @Output() confirmed = new EventEmitter<string>();
 
   fees: TransferFeePreview[];

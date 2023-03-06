@@ -11,7 +11,7 @@ import { LayoutService } from 'app/core/layout.service';
 import { StoredFileCacheService } from 'app/core/stored-file-cache.service';
 import { AvatarSize } from 'app/shared/avatar.component';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
-import { empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
+import { blurIfClick, empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
 import { ImageUploadComponent } from 'app/shared/image-upload.component';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -28,6 +28,8 @@ import { take } from 'rxjs/operators';
   ],
 })
 export class ImagesFieldComponent extends BaseFormFieldComponent<string | string[]> implements OnInit {
+
+  blurIfClick = blurIfClick;
 
   /**
    * The maximum of files that can be uploaded
@@ -130,6 +132,7 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
     // Manually mark the control as touched, as there's no native inputs
     this.formControl.markAsTouched();
     this.upload.emit(images);
+    this.notifyTouched();
   }
 
   manageImages() {
@@ -142,7 +145,7 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
     const component = ref.content as ManageImagesComponent;
     this.addSub(component.result.pipe(take(1)).subscribe(result => {
       let value = this.imageIds;
-      if (!empty(result.order)) {
+      if (result.order != null) {
         // The order has changed
         value = result.order;
       }
@@ -153,9 +156,7 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
           .forEach(i => this.addSub(this.imagesService.deleteImage({ idOrKey: i.id }).subscribe()));
 
         // Update the arrays
-        this.images = this.images.filter(i => !result.removedImages.includes(i.id));
         this.uploadedImages = this.uploadedImages.filter(i => !result.removedImages.includes(i.id));
-        value = value.filter(id => !result.removedImages.includes(id));
         result.removedImages.forEach(id => this.storedFileCacheService.delete(id));
       }
       this.images = value.map(id => this.images.find(i => i.id === id));

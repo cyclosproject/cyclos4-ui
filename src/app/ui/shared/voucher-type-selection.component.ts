@@ -9,7 +9,7 @@ import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.componen
 import { ResultType } from 'app/ui/shared/result-type';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 
-export type Query = { keywords?: string, category?: string } & QueryFilters;
+export type Query = { keywords?: string, category?: string; } & QueryFilters;
 
 /**
  * A selection of a voucher type for either generate / buy / send vouchers.
@@ -41,45 +41,6 @@ export class VoucherTypeSelectionComponent extends BaseSearchPageComponent<any, 
     super(injector);
   }
 
-  protected getFormControlNames(): string[] {
-    return ['keywords', 'category']
-  }
-
-  onResultTypeChanged(resultType: ResultType) {
-    if (resultType === ResultType.CATEGORIES) {
-      this.form.patchValue({ category: null, keywords: null });
-    }
-  }
-
-  protected doSearch(filter: Query): Observable<HttpResponse<VoucherTypeDetailed[]>> {
-    let kw = normalizeKeywords(filter.keywords);
-    let types = [...this.types];
-    if (kw.length > 0) {
-      // When there's a keyword filter, apply it
-      types = types.filter(t =>
-        normalizeKeywords(t.voucherTitle).includes(kw)
-        || normalizeKeywords(t.voucherDescription).includes(kw)
-        || normalizeKeywords(t.name).includes(kw)
-        || t.category && normalizeKeywords(t.category.name).includes(kw))
-    }
-    if (filter.category) {
-      types = types.filter(t => t.category.id === filter.category);
-    }
-    return of(new HttpResponse<VoucherTypeDetailed[]>({ body: types }));
-  }
-
-  protected toSearchParams(value: any) {
-    return value;
-  }
-
-  resolveMenu() {
-    return null;
-  }
-
-  getInitialResultType() {
-    return this.hasCategories ? ResultType.CATEGORIES : ResultType.LIST;
-  }
-
   ngOnInit() {
     if (this.types == null) {
       this.types = [];
@@ -102,6 +63,45 @@ export class VoucherTypeSelectionComponent extends BaseSearchPageComponent<any, 
     this.data = {};
     this.allowedResultTypes = this.hasCategories ? [ResultType.CATEGORIES, ResultType.LIST] : [ResultType.LIST];
     this.resultType = this.hasCategories ? ResultType.CATEGORIES : ResultType.LIST;
+  }
+
+  protected getFormControlNames(): string[] {
+    return ['keywords', 'category'];
+  }
+
+  onResultTypeChanged(resultType: ResultType) {
+    if (resultType === ResultType.CATEGORIES) {
+      this.form.patchValue({ category: null, keywords: null });
+    }
+  }
+
+  protected doSearch(filter: Query): Observable<HttpResponse<VoucherTypeDetailed[]>> {
+    let kw = normalizeKeywords(filter.keywords);
+    let types = [...this.types];
+    if (kw.length > 0) {
+      // When there's a keyword filter, apply it
+      types = types.filter(t =>
+        normalizeKeywords(t.voucherTitle).includes(kw)
+        || normalizeKeywords(t.voucherDescription).includes(kw)
+        || normalizeKeywords(t.name).includes(kw)
+        || t.category && normalizeKeywords(t.category.name).includes(kw));
+    }
+    if (filter.category) {
+      types = types.filter(t => t.category.id === filter.category);
+    }
+    return of(new HttpResponse<VoucherTypeDetailed[]>({ body: types }));
+  }
+
+  protected toSearchParams(value: any) {
+    return value;
+  }
+
+  resolveMenu() {
+    return null;
+  }
+
+  getInitialResultType() {
+    return this.hasCategories ? ResultType.CATEGORIES : ResultType.LIST;
   }
 
   get selectType() {

@@ -8,7 +8,7 @@ import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { NextRequestState } from 'app/core/next-request-state';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
-import { empty } from 'app/shared/helper';
+import { empty, randomString } from 'app/shared/helper';
 import { LoginState } from 'app/ui/core/login-state';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
@@ -149,14 +149,21 @@ export class LoginService {
    * @param identityProviderRequestId The requestId from the last identity provider callback, when there was no match.
    */
   login(principal: string, password: string, identityProviderRequestId?: string): Observable<DataForFrontend> {
+    // Close the push notifications just in case it's still open
+    this.pushNotifications.close();
+
     // Setup the basic authentication for the login request
     this.nextRequestState.nextAsBasic(principal, password);
     this.nextRequestState.addNextHeader('Principal-Type', '*');
 
+    // Get the user agent id passed on login
+    let userAgentId = this.getUserAgentId();
+
     return this.authService.login({
       cookie: this.nextRequestState.useCookie,
       identityProviderRequestId,
-      fields: ['sessionToken'],
+      fields: ['sessionToken', 'identityProviderNotLinkReason'],
+      userAgentId
     }).pipe(
       switchMap(auth => {
         // Store the session token
@@ -166,6 +173,15 @@ export class LoginService {
         return this.dataForFrontendHolder.reload();
       }));
   };
+
+  getUserAgentId(): string {
+    let userAgentId = localStorage.getItem('userAgentId');
+    if (!userAgentId) {
+      userAgentId = randomString(32) + "_" + new Date().getTime();
+      localStorage.setItem("userAgentId", userAgentId);
+    }
+    return userAgentId;
+  }
 
   /**
    * Directly clears the logged user state

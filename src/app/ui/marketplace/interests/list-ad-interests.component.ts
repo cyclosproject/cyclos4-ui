@@ -3,6 +3,7 @@ import { AdInterest, UserAdInterestsListData } from 'app/api/models';
 import { AdInterestsService } from 'app/api/services/ad-interests.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
+import { empty } from 'app/shared/helper';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 
@@ -19,6 +20,9 @@ export class ListAdInterestsComponent
   implements OnInit {
 
   self: boolean;
+  category: boolean;
+  user: boolean;
+  keywords: boolean;
   param: string;
 
   constructor(
@@ -37,6 +41,18 @@ export class ListAdInterestsComponent
   }
 
   onDataInitialized(data: UserAdInterestsListData) {
+
+    data.adInterests?.forEach(v => {
+      if (!empty(v.keywords || [])) {
+        this.keywords = true;
+      }
+      if (v.category) {
+        this.category = true;
+      }
+      if (v.adUser) {
+        this.user = true;
+      }
+    });
 
     this.self = this.authHelper.isSelfOrOwner(data.user);
 

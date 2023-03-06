@@ -23,6 +23,7 @@ export enum UserSearchKind {
   Member,
   Admin,
   Broker,
+  Pending
 }
 
 /**
@@ -56,6 +57,7 @@ export class SearchUsersComponent
   basicFieldsInSearch: BasicProfileFieldInput[];
   fieldsInBasicSearch: any[];
   fieldsInAdvancedSearch: any[];
+  removeAction: (user: UserResult) => void;
 
   constructor(
     injector: Injector,
@@ -89,7 +91,9 @@ export class SearchUsersComponent
 
     // Determine the search kind
     const url = this.router.url;
-    if (url.includes('search')) {
+    if (url.includes('pending')) {
+      this.kind = UserSearchKind.Pending;
+    } else if (url.includes('search')) {
       if (role == null) {
         this.kind = UserSearchKind.Public;
       } else if (role === RoleEnum.ADMINISTRATOR) {
@@ -118,6 +122,9 @@ export class SearchUsersComponent
     } else if (this.kind === UserSearchKind.Admin) {
       this.heading = this.i18n.user.title.search;
       this.mobileHeading = this.i18n.user.mobileTitle.search;
+    } else if (this.kind === UserSearchKind.Pending) {
+      this.heading = this.i18n.user.title.searchPending;
+      this.mobileHeading = this.i18n.user.mobileTitle.searchPending;
     }
 
     // Get the permissions to search users and view map directory
@@ -130,6 +137,19 @@ export class SearchUsersComponent
       return;
     }
 
+    if (this.kind === UserSearchKind.Pending && users.managePending) {
+      this.removeAction = user => {
+        this.confirmation.confirm({
+          message: this.i18n.general.removeConfirm(user.display),
+          callback: () => this.addSub(this.usersService.deletePendingUser({ user: user.id }).subscribe(() => {
+            this.update(this.pageData);
+            this.notification.snackBar(this.i18n.general.removeDone(user.display));
+          }))
+        }
+        );
+      };
+    }
+
     this.countries$ = this.countriesResolve.data;
 
     // Get data for search
@@ -137,8 +157,7 @@ export class SearchUsersComponent
   }
 
   get statusOptions(): FieldOption[] {
-    const statuses = Object.values(UserStatusEnum) as UserStatusEnum[];
-    return statuses.map(st => ({ value: st, text: this.userHelper.userStatus(st) }));
+    return this.data.statuses.map(st => ({ value: st, text: this.userHelper.userStatus(st) }));
   }
 
   /**
@@ -146,6 +165,35 @@ export class SearchUsersComponent
    */
   shouldUpdateOnResultTypeChange() {
     return false;
+  }
+
+  prepareForm(data: UserDataForSearch | UserDataForMap) {
+    this.customFieldsInSearch = [];
+    this.basicFieldsInSearch = [];
+    this.fieldsInBasicSearch = [];
+    this.fieldsInAdvancedSearch = [];
+    data.fieldsInBasicSearch?.forEach(f => {
+      let field: any = data.customFields.find(cf => cf.internalName === f);
+      if (field) {
+        this.customFieldsInSearch.push(field);
+      } else {
+        field = data.basicFields.find(bf => bf.field === f);
+        this.basicFieldsInSearch.push(field);
+      }
+      this.fieldsInBasicSearch.push(field);
+    });
+    data.fieldsInAdvancedSearch?.forEach(f => {
+      let field: any = data.customFields.find(cf => cf.internalName === f);
+      if (field) {
+        this.customFieldsInSearch.push(field);
+      } else {
+        field = data.basicFields.find(bf => bf.field === f);
+        this.basicFieldsInSearch.push(field);
+      }
+      this.fieldsInAdvancedSearch.push(field);
+    });
+    this.form.setControl('profileFields',
+      this.fieldHelper.profileFieldsForSearchFormGroup(this.basicFieldsInSearch, this.customFieldsInSearch, data.query.profileFields));
   }
 
   protected onResultTypeChanged(resultType: ResultType, previousResultType: ResultType) {
@@ -167,14 +215,18 @@ export class SearchUsersComponent
       }
       this.doIgnoringUpdate(() => {
         const allowedResultTypes = [];
-        if (this.canSearch) {
-          if (data.canViewImages) {
-            allowedResultTypes.push(ResultType.TILES);
-          }
+        if (this.pendingSearch) {
           allowedResultTypes.push(ResultType.LIST);
-        }
-        if (this.canViewMap || this.manager) {
-          allowedResultTypes.push(ResultType.MAP);
+        } else {
+          if (this.canSearch) {
+            if (data.canViewImages) {
+              allowedResultTypes.push(ResultType.TILES);
+            }
+            allowedResultTypes.push(ResultType.LIST);
+          }
+          if (this.canViewMap || this.manager) {
+            allowedResultTypes.push(ResultType.MAP);
+          }
         }
         this.allowedResultTypes = allowedResultTypes;
 
@@ -185,42 +237,14 @@ export class SearchUsersComponent
           this.resultType = resultType;
         }
 
-        this.customFieldsInSearch = [];
-        this.basicFieldsInSearch = [];
-        this.fieldsInBasicSearch = [];
-        this.fieldsInAdvancedSearch = [];
-        data.fieldsInBasicSearch?.forEach(f => {
-          let field: any = data.customFields.find(cf => cf.internalName === f);
-          if (field) {
-            this.customFieldsInSearch.push(field);
-          } else {
-            field = data.basicFields.find(bf => bf.field === f);
-            this.basicFieldsInSearch.push(field);
-          }
-          this.fieldsInBasicSearch.push(field);
-        });
-        data.fieldsInAdvancedSearch?.forEach(f => {
-          let field: any = data.customFields.find(cf => cf.internalName === f);
-          if (field) {
-            this.customFieldsInSearch.push(field);
-          } else {
-            field = data.basicFields.find(bf => bf.field === f);
-            this.basicFieldsInSearch.push(field);
-          }
-          this.fieldsInAdvancedSearch.push(field);
-        });
-        this.form.setControl('profileFields',
-          this.fieldHelper.profileFieldsForSearchFormGroup(this.basicFieldsInSearch, this.customFieldsInSearch));
         if (!this.broker && data.broker) {
           this.broker = data.broker;
         }
         this.data = data;
         this.headingActions = [
           ...this.doShowMoreFilters() ? [] : [this.moreFiltersAction],
-          ...this.exportHelper.headingActions(this.data.exportFormats, f => this.usersService.exportUsers$Response({
-            format: f.internalName,
-            ...this.toSearchParams(this.form.value)
-          }))
+          ...this.exportHelper.headingActions(this.data.exportFormats,
+            f => this.usersService.exportUsers$Response({ format: f.internalName, ...this.toSearchParams(this.form.value) }))
         ];
       });
     };
@@ -230,8 +254,7 @@ export class SearchUsersComponent
       // When searching as manager (admin / broker) the map is a simple map view, not the "map directory"
       if (isMap && !this.manager) {
         // Get data for showing the map
-        this.stateManager.cache('dataForMap', this.usersService.getDataForMapDirectory())
-          .subscribe(setData);
+        this.stateManager.cache('dataForMap', this.usersService.getDataForMapDirectory()).subscribe(setData);
       } else {
         // Get the data for regular user search
         this.stateManager.cache('dataForSearch', this.usersService.getUserDataForSearch({
@@ -253,6 +276,10 @@ export class SearchUsersComponent
 
   get byManager() {
     return [UserSearchKind.Broker, UserSearchKind.Admin].includes(this.kind);
+  }
+
+  get pendingSearch() {
+    return UserSearchKind.Pending === this.kind;
   }
 
   protected toSearchParams(value: any): UserQueryFilters {
@@ -282,6 +309,9 @@ export class SearchUsersComponent
     if (isMap) {
       filters.pageSize = 99999;
       filters.addressResult = UserAddressResultEnum.ALL;
+    }
+    if (this.pendingSearch) {
+      filters.statuses = [UserStatusEnum.PENDING];
     }
     return filters;
   }

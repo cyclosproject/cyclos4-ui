@@ -2,12 +2,10 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormControl, FormGroup } from '@angular/forms';
 import { Address, DeliveryMethod, DeliveryMethodTypeEnum, DeviceConfirmationTypeEnum, ShoppingCartCheckout, ShoppingCartDataForCheckout } from 'app/api/models';
 import { ShoppingCartsService } from 'app/api/services/shopping-carts.service';
+import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
-import { empty } from 'app/shared/helper';
-import { validateBeforeSubmit } from 'app/shared/helper';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { cloneDeep } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
@@ -25,12 +23,10 @@ export type CheckoutStep = 'delivery' | 'address' | 'payment' | 'confirm';
 export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataForCheckout>
   implements OnInit {
 
-  ConfirmationMode = ConfirmationMode;
-
   step$ = new BehaviorSubject<CheckoutStep>(null);
   deliveryMethod$ = new BehaviorSubject<DeliveryMethod>(null);
   address$ = new BehaviorSubject<Address>(null);
-  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
+  showSubmit$ = new BehaviorSubject(true);;
 
   form: FormGroup;
   addressForm: FormGroup;
@@ -46,12 +42,8 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
 
   ngOnInit() {
     super.ngOnInit();
-
     const id = this.route.snapshot.params.id;
-
-    this.addSub(this.shoppingCartService.getShoppingCartDataForCheckout({ id }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(this.shoppingCartService.getShoppingCartDataForCheckout({ id }).subscribe(data => this.data = data));
   }
 
   onDataInitialized(data: ShoppingCartDataForCheckout) {

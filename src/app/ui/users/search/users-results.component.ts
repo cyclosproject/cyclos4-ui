@@ -45,6 +45,8 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
 
   @Input() resultKind: 'user' | 'operator' | 'contact' = 'user';
 
+  @Input() removeAction: (user: UserResult | ContactResult) => void;
+
   @Output() update = new EventEmitter<PageData>();
 
   fieldsInList: string[];

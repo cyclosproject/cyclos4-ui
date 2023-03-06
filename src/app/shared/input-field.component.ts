@@ -31,6 +31,9 @@ export class InputFieldComponent
   /** A mask (pattern) to be applied to the field */
   @Input() mask: string;
 
+  /** Maximum number of characters in the input field */
+  @Input() maxLength: number;
+
   @Output() enter = new EventEmitter<KeyboardEvent>();
   @Output() onblur = new EventEmitter<FocusEvent>();
   @Output() onfocus = new EventEmitter<FocusEvent>();

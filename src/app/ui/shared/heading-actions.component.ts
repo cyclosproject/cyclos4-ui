@@ -116,8 +116,8 @@ export class HeadingActionsComponent extends BaseComponent implements OnInit {
     // Emit the output property change
     this.visibleActions.emit(actions);
 
-    // Only group actions on mobile
-    const groupActions = activeBreakpoints.has('lt-sm') && actions.length > 0;
+    // Only group actions on mobile when there are multiple actions
+    const groupActions = activeBreakpoints.has('lt-sm') && actions.length > 1;
     this.groupActions$.next(groupActions);
   }
 

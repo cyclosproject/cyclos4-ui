@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { Currency, PerformVoucherTransaction, TopUpVoucher, VoucherTopUpPreview, VoucherTransactionKind, VoucherTransactionPreview } from 'app/api/models';
+import { Currency, PerformVoucherTransaction, TopUpVoucher, VoucherBasicDataForTransaction, VoucherDataForRedeem, VoucherTopUpPreview, VoucherTransactionKind, VoucherTransactionPreview } from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { BaseComponent } from 'app/shared/base.component';
 
@@ -14,6 +14,7 @@ import { BaseComponent } from 'app/shared/base.component';
 export class VoucherTransactionStepConfirmComponent extends BaseComponent implements OnInit {
 
   @Input() preview: VoucherTransactionPreview;
+  @Input() data: VoucherBasicDataForTransaction;
   @Input() transaction: PerformVoucherTransaction;
   @Input() pinIsSent: boolean;
 
@@ -38,5 +39,9 @@ export class VoucherTransactionStepConfirmComponent extends BaseComponent implem
       this.topUpPreview = this.preview as VoucherTopUpPreview;
       this.topUp = this.transaction as TopUpVoucher;
     }
+  }
+
+  get balance() {
+    return this.data && (this.data as VoucherDataForRedeem).balance;
   }
 }

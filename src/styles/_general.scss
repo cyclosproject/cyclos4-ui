@@ -14,7 +14,8 @@
   --window-width: "1000px";
 }
 
-b, strong {
+b,
+strong {
   font-weight: $font-weight-bold;
 }
 
@@ -30,13 +31,13 @@ b, strong {
   margin-right: 0;
   margin-left: 0;
 
-  > .col,
-  > [class*="col-"] {
+  >.col,
+  >[class*="col-"] {
     padding-right: 0;
     padding-left: 0;
   }
 
-  > .col-form-label {
+  >.col-form-label {
     padding-right: 0.5rem;
   }
 }
@@ -75,14 +76,17 @@ hr {
   transition: opacity 0.3s;
 }
 
-.ellipsis, .single-line {
+.ellipsis,
+.single-line {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
+
 .single-line {
   max-height: 1.4em;
 }
+
 .ellipsis-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -90,94 +94,162 @@ hr {
   overflow: hidden;
 }
 
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drop-list-dragging> :not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-preview {
+  z-index: 10000 !important;
+}
+
 body.dark {
   hr {
     border-color: $border-color-dark;
   }
+
   pre {
     color: $body-color-dark;
   }
 }
 
 /* Margins / paddings according to the layout spacer */
-.my-ls, .mt-ls {
+.my-ls,
+.mt-ls {
   margin-top: $layout-spacer-xxs !important;
 }
-.my-ls, .mb-ls {
+
+.my-ls,
+.mb-ls {
   margin-bottom: $layout-spacer-xxs !important;
 }
-.mx-ls, .ml-ls {
+
+.mx-ls,
+.ml-ls {
   margin-left: $layout-spacer-xxs !important;
 }
-.mx-ls, .mr-ls {
+
+.mx-ls,
+.mr-ls {
   margin-right: $layout-spacer-xxs !important;
 }
-.py-ls, .pt-ls {
+
+.py-ls,
+.pt-ls {
   padding-top: $layout-spacer-xxs !important;
 }
-.py-ls, .pb-ls {
+
+.py-ls,
+.pb-ls {
   padding-bottom: $layout-spacer-xxs !important;
 }
-.px-ls, .pl-ls {
+
+.px-ls,
+.pl-ls {
   padding-left: $layout-spacer-xxs !important;
 }
-.px-ls, .pr-ls {
+
+.px-ls,
+.pr-ls {
   padding-right: $layout-spacer-xxs !important;
 }
+
 @include media-breakpoint-up(xs) {
-  .my-ls, .mt-ls {
+
+  .my-ls,
+  .mt-ls {
     margin-top: $layout-spacer-xs !important;
   }
-  .my-ls, .mb-ls {
+
+  .my-ls,
+  .mb-ls {
     margin-bottom: $layout-spacer-xs !important;
   }
-  .mx-ls, .ml-ls {
+
+  .mx-ls,
+  .ml-ls {
     margin-left: $layout-spacer-xs !important;
   }
-  .mx-ls, .mr-ls {
+
+  .mx-ls,
+  .mr-ls {
     margin-right: $layout-spacer-xs !important;
   }
-  .py-ls, .pt-ls {
+
+  .py-ls,
+  .pt-ls {
     padding-top: $layout-spacer-xs !important;
   }
-  .py-ls, .pb-ls {
+
+  .py-ls,
+  .pb-ls {
     padding-bottom: $layout-spacer-xs !important;
   }
-  .px-ls, .pl-ls {
+
+  .px-ls,
+  .pl-ls {
     padding-left: $layout-spacer-xs !important;
   }
-  .px-ls, .pr-ls {
+
+  .px-ls,
+  .pr-ls {
     padding-right: $layout-spacer-xs !important;
   }
 }
+
 @include media-breakpoint-up(sm) {
-  .my-ls, .mt-ls {
+
+  .my-ls,
+  .mt-ls {
     margin-top: $layout-spacer !important;
   }
-  .my-ls, .mb-ls {
+
+  .my-ls,
+  .mb-ls {
     margin-bottom: $layout-spacer !important;
   }
-  .mx-ls, .ml-ls {
+
+  .mx-ls,
+  .ml-ls {
     margin-left: $layout-spacer !important;
   }
-  .mx-ls, .mr-ls {
+
+  .mx-ls,
+  .mr-ls {
     margin-right: $layout-spacer !important;
   }
-  .py-ls, .pt-ls {
+
+  .py-ls,
+  .pt-ls {
     padding-top: $layout-spacer !important;
   }
-  .py-ls, .pb-ls {
+
+  .py-ls,
+  .pb-ls {
     padding-bottom: $layout-spacer !important;
   }
-  .px-ls, .pl-ls {
+
+  .px-ls,
+  .pl-ls {
     padding-left: $layout-spacer !important;
   }
-  .px-ls, .pr-ls {
+
+  .px-ls,
+  .pr-ls {
     padding-right: $layout-spacer !important;
   }
 }
 
 .focusable {
+
   // This is only to mark anchors in the page that can receive focus, but shouldn't get any hightlight
   &:focus {
     outline: none;
@@ -194,19 +266,24 @@ body.dark {
     background-color: transparent !important;
     padding-top: 1cm;
   }
+
   .avatar-container.round-borders {
     border-radius: 0 !important;
   }
+
   hr {
     border-color: black !important;
   }
+
   ngx-gallery {
     -webkit-print-color-adjust: exact;
     color-adjust: exact;
   }
+
   .ngx-gallery-icon {
     display: none !important;
   }
+
   .ngx-gallery-thumbnail {
     border: none !important;
   }

@@ -27,7 +27,7 @@ export class RedeemVoucherComponent extends BaseVoucherTransactionComponent<Vouc
   }
   protected setupForm(form: FormGroup, data: VoucherDataForRedeem): void {
     if (data.type.allowPartialRedeems) {
-      form.addControl('amount', new FormControl(data.balance, Validators.required));
+      form.addControl('amount', new FormControl(null, Validators.required));
     }
     if (data.pinInput) {
       form.addControl('pin', new FormControl(null, Validators.required));
@@ -45,6 +45,12 @@ export class RedeemVoucherComponent extends BaseVoucherTransactionComponent<Vouc
       params.body.pin = this.pin.value;
     }
     return this.vouchersService.redeemVoucher(params);
+  }
+
+  resendPin() {
+    this.addSub(this.vouchersService.resendPin({ key: this.dataForTransaction.token }).subscribe(res => {
+      this.notification.info(this.i18n.voucher.pinSent((res || []).join(', ')));
+    }));
   }
 
   validatePerformFromForm(_data: VoucherDataForRedeem, form: FormGroup): boolean {

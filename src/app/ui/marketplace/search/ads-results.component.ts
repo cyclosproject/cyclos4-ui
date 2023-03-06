@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Injector, Input, Output } from '@angular/core';
 import { AdCategoryWithChildren, AdResult, Currency } from 'app/api/models';
 import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
-import { ShowSubCategoriesComponent } from 'app/ui/marketplace/search/show-sub-categories.component';
 import { BaseComponent } from 'app/shared/base.component';
 import { truthyAttr } from 'app/shared/helper';
+import { PagedResults } from 'app/shared/paged-results';
+import { ShowSubCategoriesComponent } from 'app/ui/marketplace/search/show-sub-categories.component';
 import { MaxDistance } from 'app/ui/shared/max-distance';
 import { PageData } from 'app/ui/shared/page-data';
-import { PagedResults } from 'app/shared/paged-results';
 import { ResultType } from 'app/ui/shared/result-type';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
@@ -123,7 +123,7 @@ export class AdsResultsComponent extends BaseComponent {
    */
   hasMoreChildren(cat: AdCategoryWithChildren): boolean {
     const children = cat.children || [];
-    return children.length > MAX_CHILDREN;
+    return children.length > MAX_CHILDREN || !!children.find(c => c.children?.length > 0);
   }
 
   /**
@@ -132,7 +132,7 @@ export class AdsResultsComponent extends BaseComponent {
    */
   showAllChildren(cat: AdCategoryWithChildren): void {
     const ref = this.modal.show(ShowSubCategoriesComponent, {
-      class: 'modal-form modal-small',
+      class: 'modal-form modal-small modal-sticky',
       initialState: {
         category: cat,
         image: cat.svgIcon ? null : cat.image,

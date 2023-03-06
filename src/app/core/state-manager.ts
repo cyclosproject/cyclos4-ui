@@ -84,6 +84,13 @@ export class StateManager {
   }
 
   /**
+   * Deletes the state related to the current path
+   */
+  delete(key: string): any {
+    return this.state.delete(key + '@' + this.url);
+  }
+
+  /**
    * Returns the state related to the current path
    * @param key The key (valid only for the current path)
    */
@@ -117,6 +124,13 @@ export class StateManager {
     }
     this.subscriptions.push(control.valueChanges.subscribe(val => this.set(key, val)));
     return control;
+  }
+
+  /**
+   * Stop managing the form control
+   */
+  stopManaging(key = 'form') {
+    this.delete(key);
   }
 
   /**

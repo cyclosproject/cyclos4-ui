@@ -62,6 +62,20 @@
             <user-field formControlName="user" [label]="i18n.general.user">
             </user-field>
           </div>
+          <div class="col-12 col-md-6" *ngFor="let f of fieldsInSearch">
+            <custom-field-filter labelPosition="side" [field]="f"
+              [formControl]="form.get('customFields').get(f.internalName)">
+            </custom-field-filter>
+          </div>
+          <div class="col-12 col-md-6">
+            <single-selection-field formControlName="orderBy"
+              [label]="i18n.general.orderBy">
+              <field-option value="dateDesc"
+                [text]="i18n.transaction.orderBy.dueDateDesc"></field-option>
+              <field-option value="dateAsc"
+                [text]="i18n.transaction.orderBy.dueDateAsc"></field-option>
+            </single-selection-field>
+          </div>
         </ng-container>
       </div>
     </div>
@@ -86,6 +100,9 @@
         <th>{{ i18n.transaction.dueDate }}</th>
         <th>{{ i18n.transaction.fromTo }}</th>
         <th>{{ i18n.transaction.installmentNumber }}</th>
+        <th *ngFor="let field of fieldsInList">
+          {{ field.name }}
+        </th>
         <th class="amount">{{ i18n.transaction.amount }}</th>
       </thead>
       <tbody>
@@ -115,6 +132,12 @@
                 [routerLink]="bankingHelper.transactionPath(row.transaction)">
                 {{ number(row) }}
               </a>
+            </td>
+            <td *ngFor="let field of fieldsInList">
+              <format-field-value [fields]="fieldsInList" [plainText]="true"
+                [fieldName]="field.internalName" [object]="row"
+                [customValues]="row.transaction.customValues">
+              </format-field-value>
             </td>
             <td class="amount">
               <a [routerLink]="bankingHelper.transactionPath(row.transaction)"

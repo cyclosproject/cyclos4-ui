@@ -42,6 +42,7 @@
         [mobileForm]="mobileForm" [landLineForm]="landLineForm"
         [defineAddress]="defineAddress" [addressForm]="addressForm"
         [imageControl]="imageControl" [image]="image"
+        [fromExternalPayment]="fromExternalPayment()"
         (imageUploaded)="image = $event" (imageRemoved)="image = null"
         (customImagesUploaded)="addCustomImages($event)"
         (customFilesUploaded)="addCustomFiles($event)">

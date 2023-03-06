@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FrontendService } from 'app/api/services/frontend.service';
+import { ImagesService } from 'app/api/services/images.service';
 import { CacheService } from 'app/core/cache.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { isDevServer } from 'app/shared/helper';
@@ -19,7 +19,7 @@ export class IconLoadingService {
   private otherIcons = new Set<string>();
 
   constructor(
-    private frontendService: FrontendService,
+    private imageService: ImagesService,
     private cache: CacheService) {
     const current = cache.current('icons');
     if (typeof current === 'string') {
@@ -51,7 +51,7 @@ export class IconLoadingService {
       // Nothing to load
       return of(null);
     }
-    return this.frontendService.getFrontendIcons({
+    return this.imageService.getSvgIcons({
       names: [...missing]
     }).pipe(
       first(),

@@ -179,7 +179,6 @@
       "from": "Van {min}",
       "to": "Tot {max}"
     },
-    "rangeTo": "tot",
     "fileSize": {
       "b": "{n} bytes",
       "k": "{n}kB",
@@ -347,40 +346,12 @@
         "reset": "Inloggen mislukt. Uw wachtwoord is gereset. Neem contact op met de administratie.",
         "indefinitelyBlocked": "Inloggen mislukt. Uw wachtwoord is uitgeschakeld wegens overschrijding van het maximum aantal pogingen. Neem contact op met de administratie.",
         "temporarilyBlocked": "Uw wachtwoord is tijdelijk geblokkeerd wegens overschrijding van het maximum aantal pogingen"
-      },
-      "confirmation": {
-        "missingDevice": "Inloggen mislukt. U dient uw login te bevestigen met een beveiligd mobiel apparaat, maar dat heeft u niet ingesteld. Installeer eerst de mobiele app en activeer een beveiligd apparaat.",
-        "missingPassword": "Inloggen mislukt. U dient de login te bevestigen met uw {0} , maar dat is niet actief. Neem contact op met de administratie.",
-        "missingBoth": "Inloggen mislukt. U dient uw login te bevestigen met ofwel uw {0} of een beveiligd mobiel apparaat, maar die heeft u niet ingesteld. Installeer de mobiele app en activeer een beveiligd apparaat of neem contact op met de administratie."
       }
     }
   },
   "password": {
     "confirm.mode": "Bevestigen met",
-    "confirm.mode.device": "Mobiele telefoon",
-    "confirm.mode.password": "Wachtwoord",
-    "confirmMessage": {
-      "active.device": "Om te bevestigen dient deze QR-code te worden gescanned met uw mobiele telefoon.",
-      "active.deviceOrPassword": "Scan QR-code met uw mobiele telefoon, of voer u uw {password} in",
-      "active.deviceOrRenewablePassword": "Om te bevestigen, scan deze QR-code met uw mobiele telefoon, gebruik het eerder verzonden bevestigingswachtwoord of vraag een nieuwe aan.",
-      "active.deviceOrRenewablePassword.noMediums": "Om te bevestigen dient deze QR-code met uw mobiele telefoon te worden gescanned. U kunt ook het vorige bevestigingswachtwoord gebruiken.",
-      "active.deviceOrNotActiveRenewablePassword": "Om te bevestigen, scan deze QR-code met uw mobiele telefoon of vraag hieronder een bevestigingswachtwoord aan",
-      "active.password": "Om te bevestigen, voer uw {password} in",
-      "active.renewablePassword": "Om te bevestigen gebruik je het eerder verzonden bevestigingswachtwoord of vraag een nieuwe aan",
-      "active.renewablePassword.noMediums": "Om te bevestigen gebruik je het eerder verzonden bevestigingswachtwoord.",
-      "notActive.device": "Deze operatie moet worden bevestigd met de mobiele telefoon. Log in op uw mobiele telefoon, ga naar de instellingen (tandwiel-pictogram) en stel de telefoon in als beveiligd apparaat",
-      "notActive.deviceOrPassword": "Om te kunnen bevestigen moet u een beveiligde mobiele telefoon hebben of uw {password} opgeven. Als hu geen {password} heeft neem dan contact op met de administratie.",
-      "notActive.deviceOrRenewablePassword.noMediums": "Om te kunnen bevestigen moet u een geverifierde mobiele telefoon hebben of uw {password} opgeven. Neem contact op met de administratie",
-      "notActive.password": "Om te bevestigen dat je een {password} nodig. Indien u deze niet heeft neem dan contact op met de administratie. ",
-      "notActive.renewablePassword": "Gelieve te vragen om een bevestiging wachtwoord hieronder in om te bevestigen",
-      "notActive.renewablePassword.noMediums": "Om te bevestigen heeft u een {password} nodig, er zijn echter geen mogelijke kanalen ingevoerd om deze te ontvangen. Neem contact op met de administratie."
-    },
     "confirm.password.placeholder": "Typ hier: {password}",
-    "otp.countdownLabel": "* Je kunt de e-mail / sms opnieuw verzenden in {seconds} seconden.",
-    "otp.receiveBy.sent": "{medium} verzonden",
-    "otp.sent": "Het wachtwoord is verstuurd naar {dest}",
-    "otp.sentToMail": "Verzonden naar e-mail {mail}",
-    "otp.sentToPhone": "Verzonden naar telefoon {phone}",
     "oldPassword": "Oud wachtwoord",
     "newPassword": "Nieuw wachtwoord",
     "passwordConfirmation": "Bevestiging van het wachtwoord",
@@ -723,7 +694,6 @@
     "installments": "Termijnbetalingen",
     "installmentNumber": "Nummer",
     "installmentNumberOfTotal": "{number} van {total}",
-    "occurrences": "Valuta",
     "occurrenceInterval": "Verwerk alle",
     "feesOnAuthorization": "Heffingen die toegepast moeten worden wanneer geautoriseerd",
     "noAccounts": "U heeft geen rekeningen om de betaling uit te voeren",
@@ -950,26 +920,9 @@
     "reschedulePaymentRequest.rescheduleTo": "Plannen naar",
     "reschedulePaymentRequest.rescheduleTo.date": "Plannen naar datum",
     "confirmPaymentRequest": "Weet u zeker dat u dit betalingsverzoek wilt versturen?",
-    "firstOccurrenceIsImmediate": "Eerste verwerking zal direct plaatsvinden",
     "firstInstallmentIsImmediate": "De eerste termijnbetaling zal direct plaatsvinden",
     "voucher.redeemed": "Ingewisselde waardebon",
     "voucher.toppedUp": "Opgewaardeerde waardebon",
-    "confirmMessage": {
-      "active.device": "Om te kunnen bevestigen moet de betaler deze QR-code scannen met een mobiele telefoon..",
-      "active.deviceOrPassword": "Om te bevestigen dat de betaler deze QR-code kan scannen met zijn mobiele telefoon of de {password} kan leveren",
-      "active.deviceOrRenewablePassword": "Om te bevestigen dat de betaler deze QR-code kan scannen met zijn mobiele telefoon, gebruik het wachtwoord dat al is ontvangen of vraag naar een nieuwe code",
-      "active.deviceOrRenewablePassword.noMediums": "Om te bevestigen dat de betaler deze QR-code kan scannen met zijn mobiele telefoon of moet hij het eerder ontvangen bevestigingswachtwoord gebruiken, omdat hij niet kan vragen om een nieuwe code",
-      "active.deviceOrNotActiveRenewablePassword": "Om te bevestigen kan de betaler deze QR-code scannen met zijn mobiele telefoon of een bevestigingswachtwoord aanvragen hieronder",
-      "active.password": "Om te kunnen bevestigen moet de betaler zijn {password} opgeven",
-      "active.renewablePassword": "Om te kunnen bevestigen moet de betaler het eerder ontvangen bevestigingswachtwoord gebruiken of een nieuwe aanvragen indienen",
-      "active.renewablePassword.noMediums": "Om te kunnen bevestigen moet de betaler het eerder ontvangen bevestigingswachtwoord gebruiken of een nieuwe aanvragen indienen",
-      "notActive.device": "Om te kunnen bevestigen moet de betaler een vertrouwde mobiele telefoon hebben, maar niet",
-      "notActive.deviceOrPassword": "Om te kunnen bevestigen moet de betaler zijn mobiele telefoon hebben of de {password} hebben opgegeven, maar deze heeft geen enkele",
-      "notActive.deviceOrRenewablePassword.noMediums": "Om te kunnen bevestigen moet de betaler een vertrouwde mobiele telefoon hebben of de {password} opgeven, maar hij heeft geen of meer en kan geen nieuw wachtwoord aanvragen, neem contact op met de administratie",
-      "notActive.password": "Om te bevestigen dat de betaler een {password}nodig heeft, maar hij heeft geen",
-      "notActive.renewablePassword": "Vraag de betaler een bevestiging wachtwoord hieronder aan om te bevestigen",
-      "notActive.renewablePassword.noMediums": "Om te kunnen bevestigen moet de betaler zijn {password} aanleveren, maar hij heeft er geen en kan geen nieuwe aanvragen. neem contact op met de administratie"
-    },
     "error": {
       "minTime": "Een minimale periode moet worden afgewacht om een betaling van dit type te verwerken.",
       "balance": "Onvoldoende saldo voor deze bewerking",
@@ -1023,7 +976,6 @@
     "topUp": {
       "confirm": "De details van de waardebon aanvullen worden hieronder gegeven. Controleer het en bevestig deze actie.",
       "done": "De waardebon is succesvol opgerekt.",
-      "topUp": "Waardebon opwaarderen",
       "sendPinBy": "Stuur PIN via",
       "sendNotificationsBy": "Stuur meldingen via",
       "dontSendNotifications": "Stuur geen meldingen",
@@ -1062,7 +1014,6 @@
       "send": "Koop en e-mail",
       "sendConfirmation": "Bevestiging verzenden",
       "redeem": "Waardebon inwisselen",
-      "topUp": "Waardebon opwaarderen",
       "redeemDetails": "Waardebon ontvangst",
       "topUpDetails": "Waardebon opwaardering",
       "chargebackDetails": "Waardebon terugboeking",
@@ -1078,7 +1029,6 @@
       "send": "Koop en e-mail waardebon",
       "sendConfirmation": "Bevestiging verzenden",
       "redeem": "Waardebon inwisselen",
-      "topUp": "Waardebon opwaarderen",
       "redeemDetails": "Details waardebon ontvangst",
       "topUpDetails": "Details waardebon opwaardering",
       "chargebackDetails": "Waardebon terugboeking\n",
@@ -1228,11 +1178,6 @@
       "clear": "Wissen",
       "selectTooltip": "Filter op maximale afstand",
       "errorAddressNotLocated": "Het {address} adres was nog niet geolocloceerd."
-    },
-    "privacy": {
-      "name": "Privacy",
-      "private.tooltip": "Dit veld is privé. Klik om het zichtbaar te maken voor andere deelnemers.",
-      "public.tooltip": "Dit veld is zichtbaar voor andere deelnemers. Klik om het als privé in te stellen."
     },
     "image": {
       "upload": "Het uploaden van een nieuwe afbeelding",
@@ -1394,7 +1339,6 @@
     "operator.owner": "Operator eigenaar",
     "operator.noGroup": "Geen groep (heeft alle rechten)",
     "operator.registration.active": "De operator {operator} is geactiveerd.",
-    "operator.registration.inactive": "De operator {operator} is geregistreerd, maar moet nog door de administratie geactiveerd worden.",
     "operator.registration.pending": "De operator {operator} is geregistreerd, maar moet de registratie nog valideren door de e-mail te bevestigen.",
     "operator.registration.addAnother": "Nog een operator registreren",
     "noImageRequired": "Upload uw profielfoto",
@@ -1481,7 +1425,6 @@
       "voucherTransactions": "Bekijk waardebon transacties",
       "voucherTransactionsRedeems": "Bekijk waardebon inwisselingen",
       "voucherRedeem": "Waardebon inwisselen",
-      "voucherTopUp": "Waardebon opwaarderen",
       "notificationSettings": "Meldingsinstellingen",
       "products": "Producten",
       "accountsBalanceLimits": "Rekeningsaldo limieten",
@@ -1508,7 +1451,6 @@
       "inactive.public": "Uw account is succesvol aangemaakt en is in afwachting van activatie door de administratie.<br>U ontvangt bericht als uw account actief is.",
       "pending.public": "Uw registratie is ingediend en moet worden geverifieerd.<br>U ontvangt binnenkort een e-mail met instructies over hoe u uw account kunt activeren.<br>Als u de e-mail niet ontvangt, controleer dan uw spam- of junk-folder.",
       "active.manager": "Het gebruikersaccount voor {user} is geactiveerd.",
-      "inactive.manager": "Gebruiker {user} is geregistreerd, maar moet nog geactiveerd worden door de administratie.",
       "pending.manager": "De gebruiker {user} is geregistreerd, maar moet de registratie nog valideren door de e-mail te bevestigen.",
       "principal.single": "U kunt gebruik maken van uw {principal} ({value}) op {channels}",
       "principal.multiple.preface": "U kunt inloggen met de volgende gegevens:",
@@ -1694,7 +1636,6 @@
     "verified": "Geverifieerd",
     "error": {
       "verify": {
-        "expired": "De verificatiecode is niet verzonden of is verlopen.<br> Stuur de code opnieuw naar uw telefoon en start het proces opnieuw.",
         "invalid": "Ongeldige verificatie code",
         "maxAttempts": "U heeft het aantal toegestane pogingen overschreden.<br>Stuur de code opnieuw naar uw telefoon en start het proces opnieuw."
       }
@@ -1903,7 +1844,6 @@
     "waitingForBuyersApproval": "Wachten voor kopers goedkeuring",
     "waitingForSellersApproval": "Wachten op verkopers goedkeuring",
     "remarks": "Opmerkingen",
-    "listAds": "Toon advertenties",
     "title": {
       "search": "Zoek advertenties",
       "myAdvertisements": "Mijn advertenties",
@@ -2009,8 +1949,7 @@
       "brokered": "Mijn geregistreerde gebruikers",
       "system": "Administratie"
     },
-    "send": "Sturen",
-    "messageSent": "Het bericht is succesvol verzonden"
+    "send": "Sturen"
   },
   "notification": {
     "message": "Bericht",

@@ -73,12 +73,8 @@ export class SearchOrdersComponent
 
   onDataInitialized(data: OrderDataForSearch) {
     super.onDataInitialized(data);
-
     this.headingActions = this.initActions(data);
-
-    this.addSub(this.layout.ltsm$.subscribe(() => {
-      this.headingActions = this.initActions(data);
-    }));
+    this.addSub(this.layout.ltsm$.subscribe(() => this.headingActions = this.initActions(data)));
   }
 
   protected initActions(data: OrderDataForSearch) {

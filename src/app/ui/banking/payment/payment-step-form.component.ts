@@ -43,7 +43,6 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
   @ViewChild('toUser') userField: UserFieldComponent;
   @ViewChild('amount', { static: true }) amountField: DecimalFieldComponent;
 
-  accountBalanceLabel$ = new BehaviorSubject<string>(null);
   fixedDestination = false;
   fromParam: string;
   fromUser: User;
@@ -51,6 +50,8 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
   toParam: string;
   toUser: User;
   toSelf: boolean;
+
+  account$ = new BehaviorSubject<AccountWithStatus>(null);
 
   accountChangeSubscription: Subscription;
   typeChangeSubscription: Subscription;
@@ -92,10 +93,15 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
       this.setFetchedPaymentTypes(this.data);
     }
 
-    this.createSubscriptions();
+    // Initialize with the first account
+    this.account$.next(this.data.accounts[0]);
+    // And monitor changes on account
+    this.addSub(this.form.controls.account.valueChanges.subscribe(v => {
+      const account = this.data.accounts.find(a => a.type.id === v);
+      this.account$.next(account);
+    }));
 
-    this.addSub(this.layout.xxs$.subscribe(() => this.updateAccountBalanceLabel()));
-    this.updateAccountBalanceLabel();
+    this.createSubscriptions();
   }
 
   public createSubscriptions() {
@@ -122,14 +128,6 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     }
     this.accountChangeSubscription.unsubscribe();
     this.typeChangeSubscription.unsubscribe();
-  }
-
-  private updateAccountBalanceLabel() {
-    if (this.layout.xxs) {
-      this.accountBalanceLabel$.next(this.i18n.account.balance);
-    } else {
-      this.accountBalanceLabel$.next(this.i18n.transaction.accountBalance);
-    }
   }
 
   private fetchPaymentTypes() {

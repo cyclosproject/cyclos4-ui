@@ -45,7 +45,7 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
    * Sends the verification code
    */
   sendCode() {
-    this.addSub(this.phonesService.sendPhoneVerificationCode({ id: this.phone.id })
+    this.addSub(this.phonesService.sendPhoneVerificationCode({ idOrNumber: this.phone.id })
       .subscribe(phoneNumber => {
         this.message = this.i18n.phone.verify.done(phoneNumber);
         this.code.setValue(null);
@@ -69,23 +69,19 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
       return;
     }
     this.addSub(this.phonesService.verifyPhone({
-      id: this.phone.id,
+      idOrNumber: this.phone.id,
       code: this.code.value,
     }).subscribe(status => {
       switch (status) {
-        case CodeVerificationStatusEnum.CODE_NOT_SENT:
-        case CodeVerificationStatusEnum.EXPIRED:
-          this.notification.error(this.i18n.phone.error.verify.expired);
-          break;
-        case CodeVerificationStatusEnum.FAILED:
-          this.notification.error(this.i18n.phone.error.verify.invalid);
+        case CodeVerificationStatusEnum.SUCCESS:
+          this.disabled = true;
+          this.verified.emit(true);
           break;
         case CodeVerificationStatusEnum.MAX_ATTEMPTS_REACHED:
           this.notification.error(this.i18n.phone.error.verify.maxAttempts);
           break;
-        case CodeVerificationStatusEnum.SUCCESS:
-          this.disabled = true;
-          this.verified.emit(true);
+        default:
+          this.notification.error(this.i18n.phone.error.verify.invalid);
           break;
       }
     }));

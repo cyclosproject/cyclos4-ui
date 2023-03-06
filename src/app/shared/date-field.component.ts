@@ -133,19 +133,22 @@ export class DateFieldComponent
       // The value is already pre-validated with error
       errors.date = true;
     } else {
-      const mmnt = moment(value);
-      if (!mmnt.isValid()) {
+      var date = new Date(value.substring(0, 10));
+      if (isNaN(date.getTime())) {
         errors.date = true;
-      }
-      if (this.min != null && mmnt.isBefore(this.min)) {
-        errors.minDate = {
-          min: this.format.formatAsDate(this.min),
-        };
-      }
-      if (this.max != null && mmnt.isAfter(this.max)) {
-        errors.maxDate = {
-          max: this.format.formatAsDate(this.max),
-        };
+      } else {
+        var min = this.min ? new Date(this.min.format('YYYY-MM-DD')) : null;
+        if (min && date < min) {
+          errors.minDate = {
+            min: this.format.formatAsDate(this.min),
+          };
+        }
+        var max = this.max ? new Date(this.max.format('YYYY-MM-DD')) : null;
+        if (max && date > max) {
+          errors.maxDate = {
+            max: this.format.formatAsDate(this.max),
+          };
+        }
       }
     }
     return Object.keys(errors).length === 0 ? null : errors;

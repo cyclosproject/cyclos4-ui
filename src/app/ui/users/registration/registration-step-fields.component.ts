@@ -28,6 +28,7 @@ export class RegistrationStepFieldsComponent
   @Input() addressForm: FormGroup;
   @Input() defineAddress: FormControl;
   @Input() imageControl: FormControl;
+  @Input() fromExternalPayment: boolean;
   @Output() imageUploaded = new EventEmitter<Image>();
   @Output() imageRemoved = new EventEmitter<Image>();
   @Output() customImagesUploaded = new EventEmitter<Image[]>();

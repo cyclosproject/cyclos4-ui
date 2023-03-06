@@ -27,4 +27,8 @@
     [iconTooltip]="i18n.general.sendMedium.sms" formControlName="sms"
     [readOnly]="disabled">
   </button-toggle>
+  <button-toggle *ngIf="setting.app != null" [onIcon]="SvgIcon.Phone"
+    [offIcon]="SvgIcon.PhoneSlash" [iconTooltip]="i18n.general.sendMedium.app"
+    formControlName="app" [readOnly]="disabled">
+  </button-toggle>
 </div>

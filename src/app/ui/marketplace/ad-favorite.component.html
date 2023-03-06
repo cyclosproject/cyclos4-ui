@@ -1,0 +1,6 @@
+<button #fav type="button" class="btn btn-transparent text-primary" [tooltip]="ad.favoriteForViewer ? i18n.ad.removeFromFavorites :
+            i18n.ad.addToFavorites"
+  (click)="setFavorite(ad); blurIfClick(fav, $event); $event.stopPropagation(); $event.preventDefault();">
+  <icon [icon]="ad.favoriteForViewer ? SvgIcon.HeartFill : SvgIcon.Heart ">
+  </icon>
+</button>

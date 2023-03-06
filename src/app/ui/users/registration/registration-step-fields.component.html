@@ -53,19 +53,27 @@
     [label]="data.nameLabel || i18n.user.name" required></input-field>
   <input-field *ngIf="canEdit('username')" formControlName="username"
     [label]="i18n.user.username" required></input-field>
-  <ng-container *ngIf="canEdit('email')">
-    <label-value [label]="i18n.user.email" kind="field"
-      [ignoreExtraCell]="!canManagePrivacy('email')"
-      [required]="data.emailRequired">
-      <input-field formControlName="email" [required]="data.emailRequired">
-      </input-field>
-      <field-privacy *extraCell field="email"
-        [control]="form.get('hiddenFields')"></field-privacy>
+  <ng-container
+    *ngIf="fromExternalPayment && data.user.email; else fillEmail">
+    <label-value [label]="i18n.user.email" kind="fieldView">
+      {{ data.user.email }}
     </label-value>
-    <boolean-field *ngIf="data.allowSetSendActivationEmail"
-      [label]="i18n.user.registration.skipActivationEmail"
-      formControlName="skipActivationEmail"></boolean-field>
   </ng-container>
+  <ng-template #fillEmail>
+    <ng-container *ngIf="canEdit('email')">
+      <label-value [label]="i18n.user.email" kind="field"
+        [ignoreExtraCell]="!canManagePrivacy('email')"
+        [required]="data.emailRequired">
+        <input-field formControlName="email" [required]="data.emailRequired">
+        </input-field>
+        <field-privacy *extraCell field="email"
+          [control]="form.get('hiddenFields')"></field-privacy>
+      </label-value>
+      <boolean-field *ngIf="data.allowSetSendActivationEmail"
+        [label]="i18n.user.registration.skipActivationEmail"
+        formControlName="skipActivationEmail"></boolean-field>
+    </ng-container>
+  </ng-template>
 </ng-container>
 
 <!-- Custom profile fields -->
@@ -107,14 +115,24 @@
   *ngIf="(fieldsWithSection.size > 0 || fieldsWithoutSection.length > 0) && (mobileAvailability !== 'disabled' || landLineAvailability !== 'disabled' || addressAvailability !== 'disabled')" />
 
 <!-- Mobile phone -->
-<label-value *ngIf="mobileAvailability !== 'disabled'"
-  [label]="i18n.phone.mobile" [required]="mobileAvailability === 'required'"
-  kind="field" [formGroup]="mobileForm">
-  <input-field formControlName="number"
-    [placeholder]="data.phoneConfiguration.mobileExample"></input-field>
-  <field-privacy *extraCell [control]="mobileForm.get('hidden')">
-  </field-privacy>
-</label-value>
+<ng-container *ngIf="mobileAvailability !== 'disabled'">
+  <ng-container
+    *ngIf="fromExternalPayment && data.user.mobilePhones?.length > 0; else fillMobile">
+    <label-value [label]="i18n.phone.mobile" kind="fieldView">
+      {{ data.user.mobilePhones[0].number }}
+    </label-value>
+  </ng-container>
+  <ng-template #fillMobile>
+    <label-value [label]="i18n.phone.mobile"
+      [required]="mobileAvailability === 'required'" kind="field"
+      [formGroup]="mobileForm">
+      <input-field formControlName="number"
+        [placeholder]="data.phoneConfiguration.mobileExample"></input-field>
+      <field-privacy *extraCell [control]="mobileForm.get('hidden')">
+      </field-privacy>
+    </label-value>
+  </ng-template>
+</ng-container>
 
 <!-- Land-line phone -->
 <ng-container *ngIf="landLineAvailability !== 'disabled'"

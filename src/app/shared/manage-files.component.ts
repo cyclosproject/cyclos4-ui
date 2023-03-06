@@ -1,8 +1,8 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
-  ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output,
+  ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output
 } from '@angular/core';
 
-import { FormControl } from '@angular/forms';
 import { StoredFile } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { isEqual } from 'lodash-es';
@@ -30,7 +30,6 @@ export class ManageFilesComponent extends BaseComponent implements OnInit {
 
   removedIds: string[];
   originalOrder: string[];
-  order: FormControl;
 
   constructor(
     injector: Injector,
@@ -40,24 +39,29 @@ export class ManageFilesComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
-    this.order = this.formBuilder.control(this.files);
     this.originalOrder = this.files.map(i => i.id);
   }
 
   remove(file: StoredFile) {
     this.removedIds = [file.id, ...(this.removedIds || [])];
     this.originalOrder = this.originalOrder.filter(i => i !== file.id);
-    this.order.setValue((this.order.value || []).filter(i => i.id !== file.id));
+    this.files = this.files.filter(f => f != file);
   }
 
   ok() {
     // Send the order if it has changed
     let order: string[] = null;
-    const newOrder = this.order.value.map(i => i.id) as string[];
+    const newOrder = this.files.map(i => i.id) as string[];
     if (!isEqual(newOrder, this.originalOrder)) {
       order = newOrder;
     }
     this.result.emit(new ManageFilesResult(order, this.removedIds));
+  }
+
+
+  drop(event: CdkDragDrop<StoredFile[]>) {
+    this.files = [...this.files];
+    moveItemInArray(this.files, event.previousIndex, event.currentIndex);
   }
 
 }
