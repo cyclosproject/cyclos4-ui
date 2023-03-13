@@ -148,7 +148,8 @@ export class RunOperationComponent
       this.self = this.authHelper.isSelf(data.user);
     }
 
-    if (data.scope === OperationScopeEnum.INTERNAL && data.id !== this.runOperationHelper.nextAction) {
+    if (data.scope === OperationScopeEnum.INTERNAL &&
+      data.id !== this.runOperationHelper.nextAction && data.internalName !== this.runOperationHelper.nextAction) {
       // This action has already been executed, this is probably a page refresh
       this.alreadyExecuted = true;
       return;

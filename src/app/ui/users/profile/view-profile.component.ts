@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AdKind, BasicProfileFieldEnum,
-  FieldSection, PhoneKind, PhoneView, RoleEnum,
+  FieldSection, PhoneKind, PhoneView, RoleEnum, User,
   UserCustomField, UserProfileSectionEnum, UserRelationshipEnum, UserView
 } from 'app/api/models';
 import { ContactsService } from 'app/api/services/contacts.service';
@@ -527,6 +527,14 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       ![UserRelationshipEnum.OWNER, UserRelationshipEnum.SAME_OWNER].includes(this.user.relationship);
   }
 
+  get mainBroker(): User {
+    return this.data.brokers?.find(b => b.mainBroker).broker;
+  }
+
+  get otherBrokers(): User[] {
+    return this.data.brokers?.filter(b => !b.mainBroker).map(b => b.broker);
+  }
+  
   resolveMenu(user: UserView) {
     switch (user.relationship) {
       case UserRelationshipEnum.SELF:

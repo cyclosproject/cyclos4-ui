@@ -1382,6 +1382,8 @@
     "neverLogged": "Never logged",
     "group": "Group",
     "broker": "Broker",
+    "mainBroker": "Main broker",
+    "otherBrokers": "Other brokers",
     "groups": "Groups",
     "groupSet": "Group set",
     "group.filter": "Groups",

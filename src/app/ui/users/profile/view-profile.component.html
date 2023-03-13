@@ -49,6 +49,17 @@
       </label-value>
       <label-value *ngIf="user.username" [label]="i18n.user.username"
         [value]="user.username"></label-value>
+      <label-value *ngIf="mainBroker" [label]="i18n.user.mainBroker">
+        <user-link [user]="mainBroker"></user-link>
+      </label-value>
+      <label-value *ngIf="otherBrokers?.length > 0"
+        [label]="i18n.user.otherBrokers">
+        <ng-container
+          *ngFor="let otherBroker of otherBrokers; let last = last;">
+          <user-link [user]="otherBroker"
+            [ngClass]="{'mb-1': !last}"></user-link>
+        </ng-container>
+      </label-value>
       <label-value *ngIf="user.registrationDate"
         [label]="i18n.user.registrationDate"
         [value]="user.registrationDate | date"></label-value>

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Params, Router } from '@angular/router';
 import {
   ExportFormat, NotificationLevelEnum, Operation, OperationDataForRun,
-  OperationResultTypeEnum, OperationScopeEnum, RunOperation, RunOperationResult
+  OperationResultTypeEnum, OperationScopeEnum, OperationShowFormEnum, RunOperation, RunOperationResult
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services/operations.service';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
@@ -210,9 +210,19 @@ export class RunOperationHelperService {
       // In this case, assume that operation is a OperationDataForRun already
       return (operation as OperationDataForRun).searchAutomatically;
     } else {
-      // Can run directly if there's no missing parameter
-      return empty(operation.missingRequiredParameters)
-        && (!operation.showForm || empty(operation.missingOptionalParameters));
+      if (operation.showForm) {
+        switch (operation.showForm) {
+          case OperationShowFormEnum.ALWAYS:
+            return false;
+          case OperationShowFormEnum.MISSING_REQUIRED:
+            return empty(operation.missingRequiredParameters);
+          case OperationShowFormEnum.MISSING_ANY:
+            return empty(operation.missingRequiredParameters) && empty(operation.missingOptionalParameters);
+        }
+      } else {
+        // Can run directly if there's no missing parameter
+        return empty(operation.missingRequiredParameters) && empty(operation.missingOptionalParameters);
+      }
     }
   }
 
@@ -279,6 +289,7 @@ export class RunOperationHelperService {
       for (const path of paths) {
         if (path.startsWith('/operations/') && path.includes('/' + backTo)) {
           // Found the operation where to return to
+          this.nextAction = backTo;
           this.doNavigate(path);
           return true;
         }
