@@ -2,9 +2,10 @@
 {{ field.kind }}: {{ field.basicProfileField }}{{ field.customProfileField }}
 {{ field.wizardField }}
 -->
-<ng-container *ngIf="field.readOnly; else fieldInput">
+<ng-container
+  *ngIf="field.readOnly && field.basicProfileField !== BasicProfileFieldEnum.ADDRESS && field.kind !== WizardStepFieldKind.CONTACT_INFO ; else fieldInput">
   <label-value kind="fieldView" [label]="label">
-    <format-field-value [fieldValue]="field.readOnlyValue">
+    <format-field-value [fieldValue]="field.readOnlyFieldValue">
     </format-field-value>
   </label-value>
 </ng-container>
@@ -111,6 +112,58 @@
       [control]="privacyControl"></field-privacy>
   </label-value>
 
+  <ng-container *ngIf="field.kind === WizardStepFieldKind.CONTACT_INFO">
+    <boolean-field [formControl]="defineContactInfo"
+      [label]="i18n.user.contactInfoDefine">
+    </boolean-field>
+    <ng-container *ngIf="defineContactInfo.value" [formGroup]="contactInfo">
+      <images-field
+        *ngIf="!isContactInfoReadonly() || contactInfo.get('image')?.value"
+        formControlName="image" target="contactInfo"
+        [initialImages]="dataForNew.contactInfoImage"
+        [label]=" i18n.general.image" separator="@" avatarSize="large">
+      </images-field>
+      <input-field [id]="'contact-info_name'" formControlName="name"
+        [label]="i18n.general.name"
+        [required]="defineContactInfo?.value && !isContactInfoReadonly()">
+      </input-field>
+      <input-field
+        *ngIf="!isContactInfoReadonly() || contactInfo.get('email')?.value"
+        [id]="'contact-info_email'" formControlName="email"
+        [label]="i18n.user.email"></input-field>
+      <input-field
+        *ngIf="!isContactInfoReadonly() || contactInfo.get('mobilePhone')?.value"
+        [id]="'contact-info_mobilePhone'" formControlName="mobilePhone"
+        [label]="i18n.phone.mobile">
+      </input-field>
+      <input-field
+        *ngIf="!isContactInfoReadonly() || contactInfo.get('landLinePhone')?.value"
+        [id]="'contact-info_landLinePhone'" formControlName="landLinePhone"
+        [label]="i18n.phone.landLine">
+      </input-field>
+      <input-field
+        *ngIf="(!isContactInfoReadonly() || contactInfo.get('landLineExtension')?.value) && dataForNew.phoneConfiguration.extensionEnabled"
+        [id]="'contact-info_landLineExtension'"
+        formControlName="landLineExtension" [label]="i18n.phone.extension">
+      </input-field>
+      <ng-container
+        *ngFor="let cf of dataForNew.contactInfoConfiguration.customFields"
+        [formGroup]="contactInfo.get('customValues')">
+        <custom-field-input
+          *ngIf="!isContactInfoReadonly() || contactInfo.get('customValues').get(cf.internalName)?.value"
+          [field]="cf" [formControlName]="cf.internalName">
+        </custom-field-input>
+      </ng-container>
+      <label-value [label]="i18n.field.privacy.name" kind="field"
+        labelPosition="sideForced">
+        <div class="d-flex w-100 justify-content-between">
+          <field-privacy [control]="contactInfo.get('hidden')"
+            justifyStart></field-privacy>
+        </div>
+      </label-value>
+    </ng-container>
+  </ng-container>
+
   <ng-container *ngIf="field.kind === WizardStepFieldKind.PASSWORDS">
     <ng-container *ngFor="let pt of dataForNew.passwordTypes; let i = index">
       <alert *ngIf="pt.description" type="info">{{ pt.description }}</alert>
@@ -149,7 +202,7 @@
       </field-option>
     </single-selection-field>
     <input-field #securityAnswer
-      *ngIf="!empty(user.get('securityQuestion').valueChanges | async)"
+      *ngIf="!empty(user.controls.securityQuestion.valueChanges | async) || user.controls.securityQuestion.value"
       [formControl]="user.controls.securityAnswer" required
       [label]="i18n.securityQuestion.answer">
     </input-field>
@@ -162,7 +215,8 @@
     </label-value>
   </ng-container>
 
-  <ng-container *ngIf="field.kind === WizardStepFieldKind.CAPTCHA">
+  <ng-container
+    *ngIf="field.kind === WizardStepFieldKind.CAPTCHA && dataForNew.captchaInput && !dataForNew.user.identityProviderRequestId ">
     <label-value kind="field" [label]="i18n.user.captcha" required>
       <captcha [captchaInput]="dataForNew.captchaInput"
         [form]="user.controls.captcha"></captcha>

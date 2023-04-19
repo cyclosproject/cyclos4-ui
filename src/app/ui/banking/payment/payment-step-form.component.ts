@@ -61,6 +61,9 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
   paymentTypes$ = new BehaviorSubject<TransferType[]>(null);
   private dataCache: Map<string, TransactionTypeData>;
 
+  usersToExclude: string[];
+  allowSelf = false;
+
   @Input() customValuesControlGetter: (cf: CustomFieldDetailed) => FormControl;
 
   constructor(
@@ -85,6 +88,13 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
     this.toUser = this.data.toUser;
     this.toSelf = this.authHelper.isSelf(this.toUser);
+
+    // Initialize the users to exclude from autocomplete
+    this.usersToExclude = [];
+    if (this.fromUser) {
+      this.usersToExclude.push(this.fromUser.id);
+    }
+    this.allowSelf = !this.fromSelf;
 
     if (this.fixedDestination || this.form.value?.type) {
       // When there's a fixed destination, the payment types are already present in the initial data |

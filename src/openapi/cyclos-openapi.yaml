@@ -68,9 +68,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.16-BETA/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.16/api-deprecation.html)
     for this version.
-  version: '4.16-BETA'
+  version: '4.16'
 servers:
   - url: 'http://root/api'
 
@@ -127,7 +127,7 @@ tags:
       profile fields.
   - name: ContactInfos
     description: >-
-      Management of user's additional contact information, which can either
+      Management of user's public contact information, which can either
       represent contact information for specific employees (e.g. a salesman) or
       distinct subsidiary offices of the same company.
   - name: Images
@@ -4971,8 +4971,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
       description: >-
         The returned data contains all profile-related elements of a
         user or operator - profile fields, phones, addresses, images
-        and additional contact information. Operators cannot have
-        addresses, images or additional contact information, so these
+        and public contact information. Operators cannot have
+        addresses, images or public contact information, so these
         will not be sent.
       parameters:
         - $ref: '#/components/parameters/fields'
@@ -5038,8 +5038,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
       description: >-
         Saves in a single, transactional operation, the full user / operator
         profile: edition of the profile fields and creating / modifying /
-        removing phones, addresses, additional contacts and images. Operators
-        can never have addresses, additional contacts or images, so they don't
+        removing phones, addresses, public contacts and images. Operators
+        can never have addresses, public contacts or images, so they don't
         apply to operators.
       parameters:
         - $ref: '#/components/parameters/fields'
@@ -8280,10 +8280,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
     get:
       operationId: getUserContactInfosListData
       summary: >-
-        Returns data for listing additional contact informations of the given
+        Returns data for listing public contact informations of the given
         user.
       description: >-
-        Returns data containing the (visible) user additional contact
+        Returns data containing the (visible) user public contact
         informations, plus additional data related to them.
       tags:
         - ContactInfos
@@ -8297,7 +8297,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '200':
           description: >-
-            The data for listing additional contact informations
+            The data for listing public contact informations
           content:
             application/json:
               schema:
@@ -8343,9 +8343,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
     get:
       operationId: listContactInfosByUser
       summary: >-
-        Lists all (visible) additional contact informations for the user
+        Lists all (visible) public contact informations for the user
       description: >-
-        Returns a list with all additional contact informations of the given user
+        Returns a list with all public contact informations of the given user
         that the currently authenticated user can see.
       tags:
         - ContactInfos
@@ -8359,7 +8359,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '200':
           description: >-
-            The list of visible additional contact information
+            The list of visible public contact information
           content:
             application/json:
               schema:
@@ -8405,9 +8405,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
     post:
       operationId: createContactInfo
       summary: >-
-        Creates a new additional contact information for the given user
+        Creates a new public contact information for the given user
       description: >-
-        Creates a new additional contact information for the given user.
+        Creates a new public contact information for the given user.
       tags:
         - ContactInfos
       parameters:
@@ -8416,11 +8416,11 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '201':
           description: >-
-            Returns the identifier of the new additional contact information
+            Returns the identifier of the new public contact information
           headers:
             Location:
               description: >-
-                URL for viewing the additional contact information details
+                URL for viewing the public contact information details
               schema:
                 type: string
           content:
@@ -8473,7 +8473,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 $ref: '#/components/schemas/Error'
       requestBody:
         description: >-
-          The additional contact information to be created
+          The public contact information to be created
         required: true
         content:
           application/json:
@@ -8484,9 +8484,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
     get:
       operationId: getContactInfoDataForNew
       summary: >-
-        Returns data to create a new additional contact information
+        Returns data to create a new public contact information
       description: >-
-        Returns configuration data for creating an additional contact information
+        Returns configuration data for creating a public contact information
         for the given user
       tags:
         - ContactInfos
@@ -8500,7 +8500,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '200':
           description: >-
-            The data for creating an additional contact information
+            The data for creating a public contact information
           content:
             application/json:
               schema:
@@ -8546,9 +8546,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
     get:
       operationId: getContactInfoDataForEdit
       summary: >-
-        Returns data to edit an existing additional contact information
+        Returns data to edit an existing public contact information
       description: >-
-        Returns configuration data for editing an additional contact information,
+        Returns configuration data for editing a public contact information,
         plus the current ContactInfoEdit object that can be altered and posted
         back.
       tags:
@@ -8609,9 +8609,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
     get:
       operationId: viewContactInfo
       summary: >-
-        Returns details of a specific additional contact information
+        Returns details of a specific public contact information
       description: >-
-        Returns information about an additional contact information by id
+        Returns information about a public contact information by id
       tags:
         - ContactInfos
       security:
@@ -8624,7 +8624,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '200':
           description: >-
-            The additional contact information data
+            The public contact information data
           content:
             application/json:
               schema:
@@ -8668,9 +8668,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
     put:
       operationId: updateContactInfo
       summary: >-
-        Updates an existing additional contact information
+        Updates an existing public contact information
       description: >-
-        Updates an existing additional contact information
+        Updates an existing public contact information
       tags:
         - ContactInfos
       security:
@@ -8683,7 +8683,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '204':
           description: >-
-            The additional contact information was updated
+            The public contact information was updated
         '409':
           description: >-
             This operation expected an entity state, but it has resulted in a conflict
@@ -8737,7 +8737,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 $ref: '#/components/schemas/Error'
       requestBody:
         description: >-
-          The additional contact information to be edited
+          The public contact information to be edited
         required: true
         content:
           application/json:
@@ -8746,9 +8746,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
     delete:
       operationId: deleteContactInfo
       summary: >-
-        Removes an existing additional contact information
+        Removes an existing public contact information
       description: >-
-        Removes an existing additional contact information
+        Removes an existing public contact information
       tags:
         - ContactInfos
       security:
@@ -8761,7 +8761,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '204':
           description: >-
-            The additional contact information was deleted
+            The public contact information was deleted
         '409':
           description: >-
             This operation expected an entity state, but it has resulted in a conflict
@@ -8810,10 +8810,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
     get:
       operationId: getPasswordInputForRemoveContactInfo
       summary: >-
-        Returns a confirmation `PasswordInput` for removing an additional contact
+        Returns a confirmation `PasswordInput` for removing a public contact
         information, if any.
       description: >-
-        If a confirmation password is required to remove an additional contact
+        If a confirmation password is required to remove a public contact
         infomation, clients should invoke this operation prior to effectively
         removing it, which will return the data regarding the confirmation
         password.
@@ -11191,10 +11191,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
     post:
       operationId: uploadContactInfoImage
       summary: >-
-        Uploads a new image for the given additional contact information.
+        Uploads a new image for the given public contact information.
       description: >-
-        Saves the given image for the additional contact information. If the given
-        additional contact information already has an image, the old one is
+        Saves the given image for the public contact information. If the given
+        public contact information already has an image, the old one is
         removed, and the current image is saved in its place.
       tags:
         - Images
@@ -41525,10 +41525,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
     get:
       operationId: listOperationsByContactInfo
       summary: >-
-        Lists the custom operations over the given additional contact information
+        Lists the custom operations over the given public contact information
       description: >-
         Returns the custom operations the authenticated user can run over the
-        given additional contact iformation. All returned operations have the
+        given public contact iformation. All returned operations have the
         scope `contactInfo`.
       tags:
         - Operations
@@ -41590,10 +41590,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
     get:
       operationId: getContactInfoOperationDataForRun
       summary: >-
-        Returns configuration data for running a custom operation over an
-        additional contact information
+        Returns configuration data for running a custom operation over a
+        public contact information
       description: >-
-        Returns data to run a specific custom operation over an additional contact
+        Returns data to run a specific custom operation over a public contact
         information. The operation scope must be
         `contactInfo`.
       tags:
@@ -41661,9 +41661,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
     post:
       operationId: runContactInfoOperation
       summary: >-
-        Runs a custom operation over an additional contact information
+        Runs a custom operation over a public contact information
       description: >-
-        Runs a specific custom operation over a given additional contact
+        Runs a specific custom operation over a given public contact
         information. The operation scope must be
         `contactInfo`. If the operation resulted in a
         file download (either because the `resultType` is
@@ -41771,10 +41771,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
     post:
       operationId: runContactInfoOperationWithUpload
       summary: >-
-        Runs a custom operation over an additional contact information while
+        Runs a custom operation over a public contact information while
         uploading a file
       description: >-
-        Runs a specific custom operation over a given additional contact
+        Runs a specific custom operation over a given public contact
         information. The operation scope must be
         `contactInfo`. This path allows uploading a file,
         by using a `multipart-form-data` post. If the operation resulted in a file
@@ -54574,7 +54574,7 @@ components:
         
         - `contact`: Contact fields.
         
-        - `contactInfo`: Additional contact information fields.
+        - `contactInfo`: Public contact information fields.
         
         - `custom_operation`: Custom operation fields.
         
@@ -54831,7 +54831,7 @@ components:
         
         - `manageAuthorization`: A confirmation for managing a pending payment authorization
         
-        - `manageContactInfo`: A confirmation for managing an additional contact information of his own
+        - `manageContactInfo`: A confirmation for managing a public contact information of his own
         
         - `manageDevice`: A confirmation for managing a trusted device
         
@@ -55428,7 +55428,7 @@ components:
 
         Possible values are:
         
-        - `contactInfo`: An image of an additional contact information
+        - `contactInfo`: An image of a public contact information
         
         - `customFieldValue`: An image used as custom field value
         
@@ -56827,7 +56827,7 @@ components:
         
         - `contact`: A custom operation which is executed over a contact in a user's contact list
         
-        - `contactInfo`: A custom operation which is executed over an additional contact information, which is part of the user profile
+        - `contactInfo`: A custom operation which is executed over a public contact information, which is part of the user profile
         
         - `internal`: A custom operation which is executed by another custom operation
         
@@ -58011,7 +58011,7 @@ components:
         
         - `advertisement`: The image will be used for an advertisement of a specific user
         
-        - `contactInfo`: The image will be used for an additional contact information of a specific user
+        - `contactInfo`: The image will be used for a public contact information of a specific user
         
         - `customValue`: The image will be used for a value of a specific custom field
         
@@ -59100,6 +59100,8 @@ components:
         
         - `captcha`: The CAPTCHA verification to prevent registrations by bots.
         
+        - `contactInfo`: The input for the public contact information.
+        
         - `customProfileField`: A custom user profile field.
         
         - `passwords`: The input for the password (or passwords).
@@ -59112,6 +59114,7 @@ components:
         - agreements
         - basicProfileField
         - captcha
+        - contactInfo
         - customProfileField
         - passwords
         - securityQuestion
@@ -60987,10 +60990,10 @@ components:
             contactInfoEnabled:
               type: boolean
               description: >-
-                Can the address have additional contact information fields?
+                Can the address have public contact information fields?
             contactInfoFields:
               description: >-
-                The additional contact information custom fields.
+                The public contact information custom fields.
                 Only returned if `contactInfoEnabled` is true.
               type: array
               items:
@@ -61094,19 +61097,19 @@ components:
         email:
           type: string
           description: >-
-            The e-mail for this additional contact information
+            The e-mail for this public contact information
         mobilePhone:
           type: string
           description: >-
-            The formatted mobile phone for this additional contact information
+            The formatted mobile phone for this public contact information
         landLinePhone:
           type: string
           description: >-
-            The formatted landline phone for this additional contact information
+            The formatted landline phone for this public contact information
         landLineExtension:
           type: string
           description: >-
-            The landline phone extension for this additional contact information
+            The landline phone extension for this public contact information
         normalizedMobilePhone:
           type: string
           description: >-
@@ -61117,15 +61120,14 @@ components:
             The land-line phone, normalized to the E.164 format
         customValues:
           description: >-
-            The list of custom field values on this additional contact
-            information
+            The list of custom field values on this public contact information
           type: array
           items:
             $ref: '#/components/schemas/CustomFieldValue'
 
     AddressContactInfoManage:
       description: >-
-        Common fields for either creating or editing an additional contact
+        Common fields for either creating or editing a public contact
         information
       type: object
       x-implements: IContactInfo
@@ -61133,19 +61135,19 @@ components:
         email:
           type: string
           description: >-
-            The e-mail for this additional contact information
+            The e-mail for this public contact information
         mobilePhone:
           type: string
           description: >-
-            The formatted mobile phone for this additional contact information
+            The formatted mobile phone for this public contact information
         landLinePhone:
           type: string
           description: >-
-            The formatted landline phone for this additional contact information
+            The formatted landline phone for this public contact information
         landLineExtension:
           type: string
           description: >-
-            The landline phone extension for this additional contact information
+            The landline phone extension for this public contact information
         customValues:
           type: object
           description: >-
@@ -61320,7 +61322,7 @@ components:
               type: boolean
             contactInfo:
               description: >-
-                If enabled, contains additional contact information for the address
+                If enabled, contains public contact information for the address
               allOf:
                 - $ref: '#/components/schemas/AddressContactInfo'
 
@@ -64239,7 +64241,7 @@ components:
 
     ContactInfo:
       description: >-
-        An additional contact information reference
+        A public contact information reference
       x-implements: IContactInfo, INormalizedPhones
       allOf:
         - $ref: '#/components/schemas/NamedEntity'
@@ -64248,19 +64250,19 @@ components:
             email:
               type: string
               description: >-
-                The e-mail for this additional contact information
+                The e-mail for this public contact information
             mobilePhone:
               type: string
               description: >-
-                The formatted mobile phone for this additional contact information
+                The formatted mobile phone for this public contact information
             landLinePhone:
               type: string
               description: >-
-                The formatted landline phone for this additional contact information
+                The formatted landline phone for this public contact information
             landLineExtension:
               type: string
               description: >-
-                The landline phone extension for this additional contact information
+                The landline phone extension for this public contact information
             normalizedMobilePhone:
               type: string
               description: >-
@@ -64282,7 +64284,7 @@ components:
       properties:
         customFields:
           description: >-
-            The additional contact information custom fields
+            The public contact information custom fields
           type: array
           items:
             $ref: '#/components/schemas/CustomFieldDetailed'
@@ -64312,7 +64314,7 @@ components:
 
     ContactInfoBinaryValuesForUserProfile:
       description: >-
-        Holds the current additional contact image and binary field values
+        Holds the current public contact image and binary field values
       allOf:
         - $ref: '#/components/schemas/CustomFieldBinaryValues'
         - type: object
@@ -64322,45 +64324,45 @@ components:
 
     ContactInfoConfigurationForUserProfile:
       description: >-
-        User additional contacts data sent when editing the full profile
+        User public contacts data sent when editing the full profile
       type: object
       properties:
         contactInfo:
           description: >-
-            Contains the default values for a new additional contact
+            Contains the default values for a new public contact
           allOf:
             - $ref: '#/components/schemas/ContactInfoNew'
         customFields:
           description: >-
-            The custom fields for additional contact informations
+            The custom fields for public contact informations
           type: array
           items:
             $ref: '#/components/schemas/CustomFieldDetailed'
         edit:
           type: boolean
           description: >-
-            Can the authenticated user edit additional contacts?
+            Can the authenticated user edit public contacts?
         managePrivacy:
           type: boolean
           description: >-
-            Can the authenticated user manage the privacy of additional contacts?
+            Can the authenticated user manage the privacy of public contacts?
         maxContactInfos:
           type: integer
           description: >-
-            The maximum number of additional contacts the user can own
+            The maximum number of public contacts the user can own
         availability:
           $ref: '#/components/schemas/AvailabilityEnum'
 
     ContactInfoDataForEdit:
       description: >-
-        Contains data for editing an existing additional contact information
+        Contains data for editing an existing public contact information
       allOf:
         - $ref: '#/components/schemas/ContactInfoBasicData'
         - type: object
           properties:
             contactInfo:
               description: >-
-                The additional contact information that is being edited. This value
+                The public contact information that is being edited. This value
                 can be modified and sent back on `PUT /contactInfos/{id}`.
               allOf:
                 - $ref: '#/components/schemas/ContactInfoEdit'
@@ -64385,14 +64387,14 @@ components:
 
     ContactInfoDataForNew:
       description: >-
-        Contains data for creating a new additional contact information
+        Contains data for creating a new public contact information
       allOf:
         - $ref: '#/components/schemas/ContactInfoBasicData'
         - type: object
           properties:
             contactInfo:
               description: >-
-                The additional contact information populated with the default
+                The public contact information populated with the default
                 fields. This value can be modified and sent back on `POST
                 /{user}/contactInfos`.
               allOf:
@@ -64400,29 +64402,22 @@ components:
 
     ContactInfoDetailed:
       description: >-
-        Contains extra details of an additional contact information
+        Contains extra details of an public contact information
       allOf:
-        - $ref: '#/components/schemas/ContactInfo'
+        - $ref: '#/components/schemas/ContactInfoWithFields'
         - type: object
           properties:
-            customValues:
-              description: >-
-                The list of custom field values on this additional contact
-                information
-              type: array
-              items:
-                $ref: '#/components/schemas/CustomFieldValue'
             operations:
               description: >-
                 The list of custom operations the logged user can run over this
-                additional contact information
+                public contact information
               type: array
               items:
                 $ref: '#/components/schemas/Operation'
 
     ContactInfoEdit:
       description: >-
-        Fields for editing an additional contact information
+        Fields for editing a public contact information
       allOf:
         - $ref: '#/components/schemas/ContactInfoManage'
         - type: object
@@ -64440,7 +64435,7 @@ components:
 
     ContactInfoEditWithId:
       description: >-
-        Parameters for editing an existing additional contact
+        Parameters for editing an existing public contact
       allOf:
         - $ref: '#/components/schemas/ContactInfoEdit'
         - type: object
@@ -64452,7 +64447,7 @@ components:
 
     ContactInfoManage:
       description: >-
-        Common fields for either creating or editing an additional contact
+        Common fields for either creating or editing a public contact
         information
       type: object
       x-implements: IContactInfo
@@ -64465,33 +64460,33 @@ components:
         email:
           type: string
           description: >-
-            The e-mail for this additional contact information
+            The e-mail for this public contact information
         mobilePhone:
           type: string
           description: >-
-            The formatted mobile phone for this additional contact information
+            The formatted mobile phone for this public contact information
         landLinePhone:
           type: string
           description: >-
-            The formatted landline phone for this additional contact information
+            The formatted landline phone for this public contact information
         landLineExtension:
           type: string
           description: >-
-            The landline phone extension for this additional contact information
+            The landline phone extension for this public contact information
         image:
           type: string
           description: >-
             The identifier of either an uploaded temporary image, or an existing
-            additional contact image.
+            public contact image.
         address:
           type: string
           description: >-
             The identifier for the user address to be used as address of this
-            additional contact information
+            public contact information
         hidden:
           type: boolean
           description: >-
-            Whether this additional contact information should be hidden for other
+            Whether this public contact information should be hidden for other
             users
         customValues:
           type: object
@@ -64505,13 +64500,13 @@ components:
 
     ContactInfoNew:
       description: >-
-        Fields for a new additional contact information
+        Fields for a new public contact information
       allOf:
         - $ref: '#/components/schemas/ContactInfoManage'
 
     ContactInfoResult:
       description: >-
-        An additional contact information as a result item
+        A public contact information as a result item
       allOf:
         - $ref: '#/components/schemas/ContactInfo'
         - type: object
@@ -64519,7 +64514,7 @@ components:
             hidden:
               type: boolean
               description: >-
-                Indicates whether this additional contact information is hidden for
+                Indicates whether this public contact information is hidden for
                 other users.
             customValues:
               type: object
@@ -64533,26 +64528,41 @@ components:
 
     ContactInfoView:
       description: >-
-        Contains details of an additional contact information
+        Contains details of a public contact information
       allOf:
         - $ref: '#/components/schemas/ContactInfoDetailed'
         - type: object
           properties:
             user:
               description: >-
-                The user which owns this additional contact information
+                The user which owns this public contact information
               allOf:
                 - $ref: '#/components/schemas/User'
             canEdit:
               type: boolean
               description: >-
                 Indicates whether the logged user can remove / edit this
-                additional contact information
+                public contact information
             hidden:
               type: boolean
               description: >-
-                Indicates whether this additional contact information should be
+                Indicates whether this public contact information should be
                 hidden for other users
+
+    ContactInfoWithFields:
+      description: >-
+        Contains the custom fields of a public contact information
+      allOf:
+        - $ref: '#/components/schemas/ContactInfo'
+        - type: object
+          properties:
+            customValues:
+              description: >-
+                The list of custom field values on this public contact
+                information
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomFieldValue'
 
     ContactListDataForSearch:
       description: >-
@@ -65686,13 +65696,13 @@ components:
           $ref: '#/components/schemas/ContactInfoConfigurationForUserProfile'
         contactInfos:
           description: >-
-            The existing additional contacts that can be modified and posted back
+            The existing public contacts that can be modified and posted back
           type: array
           items:
             $ref: '#/components/schemas/ContactInfoEditWithId'
         contactInfoBinaryValues:
           description: >-
-            Values for images and binary custom fields for additional contacts,
+            Values for images and binary custom fields for public contacts,
             keyed by contact info id.
           type: object
           additionalProperties:
@@ -68129,21 +68139,21 @@ components:
             type: string
         createContactInfos:
           description: >-
-            Additional contacts to be created. If not sent / empty, no additional
+            Public contacts to be created. If not sent / empty, no public
             contacts are created.
           type: array
           items:
             $ref: '#/components/schemas/ContactInfoNew'
         modifyContactInfos:
           description: >-
-            Additional contacts to be modified. If not sent / empty, no additional
+            Public contacts to be modified. If not sent / empty, no public
             contacts are modified.
           type: array
           items:
             $ref: '#/components/schemas/ContactInfoEditWithId'
         removeContactInfos:
           description: >-
-            Additional contacts to be removed. If not sent / empty, no additional
+            Public contacts to be removed. If not sent / empty, no public
             contacts are removed.
           type: array
           items:
@@ -68185,7 +68195,7 @@ components:
               type: string
           createdContactInfos:
             description: >-
-              Identifiers of created additional contacts
+              Identifiers of created public contacts
             type: array
             items:
               type: string
@@ -68735,19 +68745,19 @@ components:
         email:
           type: string
           description: >-
-            The e-mail for this additional contact information
+            The e-mail for this public contact information
         mobilePhone:
           type: string
           description: >-
-            The formatted mobile phone for this additional contact information
+            The formatted mobile phone for this public contact information
         landLinePhone:
           type: string
           description: >-
-            The formatted landline phone for this additional contact information
+            The formatted landline phone for this public contact information
         landLineExtension:
           type: string
           description: >-
-            The landline phone extension for this additional contact information
+            The landline phone extension for this public contact information
 
     INormalizedPhones:
       description: >-
@@ -72031,7 +72041,7 @@ components:
                 - $ref: '#/components/schemas/Contact'
             contactInfo:
               description: >-
-                The additional contact for which this custom operation will be executed.
+                The public contact for which this custom operation will be executed.
                 Only returned if `scope` is `contactInfo`
               allOf:
                 - $ref: '#/components/schemas/ContactInfo'
@@ -79932,7 +79942,7 @@ components:
 
     UserContactInfosListData:
       description: >-
-        Contains, besides the user's additional contact informations, data for
+        Contains, besides the user's public contact informations, data for
         managing them
       type: object
       properties:
@@ -79943,28 +79953,28 @@ components:
             - $ref: '#/components/schemas/User'
         canEdit:
           description: >-
-            Indicates whether the additional contact informations can be edited by
+            Indicates whether the public contact informations can be edited by
             the authenticated user
           type: boolean
         canCreate:
           description: >-
-            Indicates whether new additional contact informations can be created by
+            Indicates whether new public contact informations can be created by
             the authenticated user
           type: boolean
         maxContactInfos:
           description: >-
-            Indicates the maximum number of additional contact informations the user
+            Indicates the maximum number of public contact informations the user
             can have
           type: integer
         customFields:
           description: >-
-            The list of additional contact informations custom fields
+            The list of public contact informations custom fields
           type: array
           items:
             $ref: '#/components/schemas/CustomFieldDetailed'
         contactInfos:
           description: >-
-            The additional contact information list
+            The public contact information list
           type: array
           items:
             $ref: '#/components/schemas/ContactInfoResult'
@@ -80147,6 +80157,18 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Image'
+            contactInfoImage:
+              description: >-
+                The image which is already assigned to the new user public contact
+                information.
+              allOf:
+                - $ref: '#/components/schemas/Image'
+            contactInfoBinaryValues:
+              description: >-
+                Holds the current values for file / image custom fields of the new
+                user public contact information as lists of `StoredFile`s / `Image`s.
+              allOf:
+                - $ref: '#/components/schemas/CustomFieldBinaryValues'
             agreements:
               description: >-
                 The agreements that needs to be accepted by the user to be able to
@@ -80565,7 +80587,7 @@ components:
               items:
                 $ref: '#/components/schemas/ContactInfoNew'
               description: >-
-                Additional contacts to be registered together with the user
+                Public contacts to be registered together with the user
             images:
               type: array
               items:
@@ -81175,7 +81197,7 @@ components:
           type: boolean
         manageContactInfos:
           description: >-
-            Can manage additional contact informations?
+            Can manage public contact informations?
           type: boolean
         canCreateAddress:
           description: >-
@@ -81203,9 +81225,9 @@ components:
           type: boolean
         canCreateContactInfo:
           description: >-
-            Will be true if the authenticated user can manage additional contact
+            Will be true if the authenticated user can manage public contact
             informations and the user for whom we are viewing its profile has not
-            reached the maximum allowed additional contact informations. Only if
+            reached the maximum allowed public contact informations. Only if
             `manageContactInfos` is true.
           type: boolean
         maxAddresses:
@@ -81230,7 +81252,7 @@ components:
           type: integer
         maxContactInfos:
           description: >-
-            The maximum number of additional contacts the user can own.
+            The maximum number of public contacts the user can own.
              Only if `manageContactInfos` is true.
           type: integer
         addressAvailability:
@@ -81255,7 +81277,7 @@ components:
             - $ref: '#/components/schemas/AvailabilityEnum'
         contactInfoAvailability:
           description: >-
-            The availability for additional contacts. Only if `manageContactInfos`
+            The availability for public contacts. Only if `manageContactInfos`
             is true
           allOf:
             - $ref: '#/components/schemas/AvailabilityEnum'
@@ -81787,7 +81809,7 @@ components:
               items:
                 $ref: '#/components/schemas/ContactInfoDetailed'
               description: >-
-                Visible additional contact information
+                Visible public contact information
             contact:
               description: >-
                 When this user is in the contact list of the currently logged user,
@@ -84114,10 +84136,14 @@ components:
             to the next step. The only fields that support verification are
             email and mobile phone.
           type: boolean
-        readOnlyValue:
+        readOnlyFieldValue:
           description: >-
-            When a value was entered in a previous step and this step is set
+            When a value was entered in a previous step and this field is set
             to be read-only, contains the field value previously entered.
+            Only if `readOnly` is true and `kind` is
+            `basicProfileField` (except for address),
+            `customProfileField` or
+            `wizardField`.
           allOf:
             - $ref: '#/components/schemas/CustomFieldValue'
 

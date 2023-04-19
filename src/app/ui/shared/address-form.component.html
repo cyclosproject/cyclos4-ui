@@ -4,7 +4,7 @@
     <single-selection-field [id]="idPrefix + field + idSuffix"
       *ngIf="!addressForm.controls[field].disabled || addressForm.controls[field].value"
       formControlName="country" [label]="getLabel(field)"
-      [required]="isRequired(field)">
+      [required]="isRequired(field, addressForm.controls[field])">
       <field-option *ngFor="let country of countriesResolve.data | async"
         [value]="country.code" [text]="country.name">
       </field-option>
@@ -14,7 +14,7 @@
     <input-field [id]="idPrefix + field + idSuffix"
       *ngIf="!addressForm.controls[field].disabled || addressForm.controls[field].value"
       [formControlName]="field" [label]="getLabel(field)"
-      [required]="isRequired(field)"></input-field>
+      [required]="isRequired(field, addressForm.controls[field])"></input-field>
   </ng-template>
 </ng-container>
 <ng-container

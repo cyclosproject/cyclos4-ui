@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, HostBinding } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, HostBinding, Injector, Input, OnInit } from '@angular/core';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import {
   AddressConfiguration, AddressConfigurationForUserProfile,
-  AddressFieldEnum, Country, CustomFieldBinaryValues,
+  AddressFieldEnum, Country, CustomFieldBinaryValues
 } from 'app/api/models';
-import { AddressHelperService } from 'app/ui/core/address-helper.service';
-import { CountriesResolve } from 'app/ui/countries.resolve';
 import { BaseComponent } from 'app/shared/base.component';
 import { truthyAttr } from 'app/shared/helper';
+import { AddressHelperService } from 'app/ui/core/address-helper.service';
+import { CountriesResolve } from 'app/ui/countries.resolve';
 
 /**
  * Form used to input all fields of an address
@@ -58,8 +58,8 @@ export class AddressFormComponent extends BaseComponent implements OnInit {
     return this.addressHelper.addressFieldLabel(field);
   }
 
-  isRequired(field: AddressFieldEnum): boolean {
-    return (this.configuration.requiredFields || []).includes(field);
+  isRequired(field: AddressFieldEnum, control: AbstractControl): boolean {
+    return (this.configuration.requiredFields || []).includes(field) && !control.disabled;
   }
 
   ngOnInit() {

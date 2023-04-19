@@ -52,6 +52,8 @@ export class RunWizardStepFieldComponent
   @Input() landLinePhone: FormGroup;
   @Input() defineAddress: FormControl;
   @Input() address: FormGroup;
+  @Input() defineContactInfo: FormControl;
+  @Input() contactInfo: FormGroup;
   @Input() customValues: FormGroup;
   @Input() emailValidation: FormControl;
   @Input() smsValidation: FormControl;
@@ -265,5 +267,9 @@ export class RunWizardStepFieldComponent
         focusFirstInvalid();
       }
     });
+  }
+
+  isContactInfoReadonly(): boolean {
+    return this.step.fields.find(f => f.kind === WizardStepFieldKind.CONTACT_INFO)?.readOnly;
   }
 }

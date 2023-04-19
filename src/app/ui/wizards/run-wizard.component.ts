@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  AddressNew, AvailabilityEnum, BasicProfileFieldEnum, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, IdentityProvider, IdentityProviderCallbackStatusEnum,
-  PhoneKind,
-  PhoneNew, UserNew, WizardActionEnum, WizardExecutionData, WizardKind, WizardResultTypeEnum, WizardStepKind, WizardStepTransition
+  AddressNew, AvailabilityEnum, BasicProfileFieldEnum, ContactInfoConfigurationForUserProfile, CreateDeviceConfirmation,
+  DeviceConfirmationTypeEnum, IdentityProvider, IdentityProviderCallbackStatusEnum, PhoneKind, PhoneNew, StoredFile, UserNew, WizardActionEnum,
+  WizardExecutionData, WizardKind, WizardResultTypeEnum, WizardStepField, WizardStepFieldKind, WizardStepKind, WizardStepTransition
 } from 'app/api/models';
 import { WizardsService } from 'app/api/services/wizards.service';
 import { CaptchaHelperService } from 'app/core/captcha-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
+import { StoredFileCacheService } from 'app/core/stored-file-cache.service';
 import { empty, focusFirstInvalid, mergeValidity, validateBeforeSubmit } from 'app/shared/helper';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
@@ -43,6 +44,8 @@ export class RunWizardComponent
   landLinePhone: FormGroup;
   defineAddress: FormControl;
   address: FormGroup;
+  defineContactInfo: FormControl;
+  contactInfo: FormGroup;
   customValues: FormGroup;
   emailValidation: FormControl;
   smsValidation: FormControl;
@@ -67,7 +70,8 @@ export class RunWizardComponent
     private userHelper: UserHelperService,
     private captchaHelper: CaptchaHelperService,
     private nextRequestState: NextRequestState,
-    private wizardsService: WizardsService) {
+    private wizardsService: WizardsService,
+    private storedFileCacheService: StoredFileCacheService) {
     super(injector);
   }
 
@@ -183,6 +187,8 @@ export class RunWizardComponent
     this.customValues = null;
     this.address = null;
     this.defineAddress = null;
+    this.contactInfo = null;
+    this.defineContactInfo = null;
     this.verificationCode = null;
 
     // Then, according to the current step, initialize the corresponding ones
@@ -204,13 +210,32 @@ export class RunWizardComponent
             const user = data.params.user;
             dataForNew.user = user;
 
+            // Update stored files cache if necessary
+            // This update of the cache also cover the case where the contact info is readonly
+            // Images are not added to the cache because they are initialized in the fields with "initialImages".
+            const currentBinaryValues: StoredFile[] = [];
+            for (let key in dataForNew.binaryValues?.fileValues) {
+              dataForNew.binaryValues.fileValues[key].forEach(f => currentBinaryValues.push(f));
+            }
+            for (let key in dataForNew.binaryValues?.imageValues) {
+              dataForNew.binaryValues.imageValues[key].forEach(i => currentBinaryValues.push(i));
+            }
+            for (let key in dataForNew.contactInfoBinaryValues?.fileValues) {
+              dataForNew.contactInfoBinaryValues.fileValues[key].forEach(f => currentBinaryValues.push(f));
+            }
+            for (let key in dataForNew.contactInfoBinaryValues?.imageValues) {
+              dataForNew.contactInfoBinaryValues.imageValues[key].forEach(i => currentBinaryValues.push(i));
+            }
+            if (currentBinaryValues.length > 0 && !this.storedFileCacheService.contains(currentBinaryValues[0].id)) {
+              currentBinaryValues.forEach(v => this.storedFileCacheService.write(v));
+            }
+
             this.user = this.formBuilder.group({
               group: user.group,
               hiddenFields: [user.hiddenFields || []],
             });
             // The profile fields and phones are handled by the helper
-            [this.mobilePhone, this.landLinePhone] = this.userHelper.setupRegistrationForm(
-              this.user, dataForNew, true);
+            [this.mobilePhone, this.landLinePhone] = this.userHelper.setupRegistrationForm(this.user, dataForNew, true);
 
             if (data.step.fields?.find(f => f.basicProfileField === BasicProfileFieldEnum.EMAIL && f.requireVerification)) {
               this.emailValidation = new FormControl(null);
@@ -254,17 +279,45 @@ export class RunWizardComponent
                 dataForNew.addressConfiguration.address = user.addresses[0];
               }
             }
+            if (dataForNew.contactInfoConfiguration) {
+              if (!empty(user.contactInfos)) {
+                dataForNew.contactInfoConfiguration.contactInfo = user.contactInfos[0];
+              }
+            }
+
             const imageAvailability = dataForNew.imageConfiguration.availability;
             if (imageAvailability !== AvailabilityEnum.DISABLED) {
               this.user.addControl('images', new FormControl(user.images,
                 imageAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null));
             }
 
+            // Contact info
+            const contactInfoField = step.fields.find(f => f.kind === WizardStepFieldKind.CONTACT_INFO);
+            if (contactInfoField) {
+              this.contactInfo = this.buildContactInfoForm(dataForNew.contactInfoConfiguration, contactInfoField);
+              this.defineContactInfo = this.formBuilder.control(!empty(user.contactInfos));
+              this.addSub(this.defineContactInfo.valueChanges.subscribe(() => {
+                if (this.defineContactInfo.value && !contactInfoField.readOnly) {
+                  this.contactInfo.get('name').addValidators(Validators.required);
+                } else {
+                  this.contactInfo.get('name').removeValidators(Validators.required);
+                }
+              }));
+              if (contactInfoField.readOnly) {
+                this.contactInfo.disable();
+                this.defineContactInfo.disable();
+              }
+            }
             // Address
+            const addressField = step.fields.find(f => f.basicProfileField === BasicProfileFieldEnum.ADDRESS);
             let addressSubs: Subscription[];
-            [this.address, this.defineAddress, addressSubs] = this.userHelper.registrationAddressForm(dataForNew.addressConfiguration);
+            [this.address, this.defineAddress, addressSubs] = this.userHelper.registrationAddressForm(dataForNew.addressConfiguration, addressField);
             if (this.defineAddress && !empty(user.addresses)) {
               this.defineAddress.setValue(true);
+            }
+            if (addressField?.readOnly) {
+              this.address.disable();
+              this.defineAddress.disable();
             }
             addressSubs.forEach(s => this.addSub(s));
 
@@ -296,6 +349,23 @@ export class RunWizardComponent
           break;
       }
     }
+  }
+
+  private buildContactInfoForm(contactInfoData: ContactInfoConfigurationForUserProfile, contactInfoField: WizardStepField): FormGroup {
+    const form = this.formBuilder.group({
+      id: null,
+      version: null,
+      hidden: null,
+      name: [null, contactInfoData.contactInfo?.name && !contactInfoField.readOnly ? Validators.required : null],
+      image: null,
+      email: null,
+      mobilePhone: null,
+      landLinePhone: null,
+      landLineExtension: null
+    });
+    form.setControl('customValues', this.fieldHelper.customValuesFormGroup(contactInfoData.customFields));
+    form.patchValue(contactInfoData.contactInfo);
+    return form;
   }
 
   resolveMenu(data: WizardExecutionData) {
@@ -417,8 +487,11 @@ export class RunWizardComponent
           if (this.landLinePhone) {
             fullForm.addControl('landLinePhone', this.landLinePhone);
           }
-          if (this.address && this.defineAddress.value) {
+          if (this.address && this.defineAddress?.value) {
             fullForm.addControl('address', this.address);
+          }
+          if (this.contactInfo && this.contactInfo?.value) {
+            fullForm.addControl('contactInfo', this.contactInfo);
           }
         }
 
@@ -439,6 +512,9 @@ export class RunWizardComponent
                 if (landLine.number) {
                   user.landLinePhones = [landLine];
                 }
+              }
+              if (this.contactInfo?.value && this.defineContactInfo?.value) {
+                user.contactInfos = [this.contactInfo.value];
               }
               if (this.address) {
                 const address = (this.defineAddress && this.defineAddress.value ? this.address.value : null) as AddressNew;

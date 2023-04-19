@@ -16,31 +16,33 @@
         [size]="avatarSize" [image]="img" [additionalImages]="images">
       </avatar-lightbox>
     </div>
-    <div class="d-flex align-items-center">
-      <ng-container *ngIf="maxFiles === 1 || images.length < maxFiles">
-        <button #upload type="button"
-          class="btn btn-icon d-flex align-content-center"
-          [tooltip]="i18n.field.image.upload"
-          (click)="imageUpload.perform(); blurIfClick(upload, $event)">
-          <icon [icon]="SvgIcon.Upload"></icon>
-        </button>
-        <button type="button"
+    <ng-container *ngIf="!disabled">
+      <div class="d-flex align-items-center">
+        <ng-container *ngIf="maxFiles === 1 || images.length < maxFiles">
+          <button #upload type="button"
+            class="btn btn-icon d-flex align-content-center"
+            [tooltip]="i18n.field.image.upload"
+            (click)="imageUpload.perform(); blurIfClick(upload, $event)">
+            <icon [icon]="SvgIcon.Upload"></icon>
+          </button>
+          <button type="button"
+            class="ml-2 btn btn-icon d-flex align-content-center"
+            [tooltip]="i18n.field.image.camera" (click)="captureCamera()">
+            <icon [icon]="SvgIcon.Camera"></icon>
+          </button>
+        </ng-container>
+        <button type="button" *ngIf="maxFiles > 1 && images.length > 0"
           class="ml-2 btn btn-icon d-flex align-content-center"
-          [tooltip]="i18n.field.image.camera" (click)="captureCamera()">
-          <icon [icon]="SvgIcon.Camera"></icon>
+          [tooltip]="i18n.field.image.manage" (click)="manageImages()">
+          <icon [icon]="SvgIcon.Pencil"></icon>
         </button>
-      </ng-container>
-      <button type="button" *ngIf="maxFiles > 1 && images.length > 0"
-        class="ml-2 btn btn-icon d-flex align-content-center"
-        [tooltip]="i18n.field.image.manage" (click)="manageImages()">
-        <icon [icon]="SvgIcon.Pencil"></icon>
-      </button>
-      <button type="button" *ngIf="maxFiles === 1 && images.length > 0"
-        class="ml-2 btn btn-icon d-flex align-content-center"
-        [tooltip]="i18n.field.image.remove" (click)="removeAllImages()">
-        <icon [icon]="SvgIcon.Trash"></icon>
-      </button>
-    </div>
+        <button type="button" *ngIf="maxFiles === 1 && images.length > 0"
+          class="ml-2 btn btn-icon d-flex align-content-center"
+          [tooltip]="i18n.field.image.remove" (click)="removeAllImages()">
+          <icon [icon]="SvgIcon.Trash"></icon>
+        </button>
+      </div>
+    </ng-container>
   </div>
 
   <image-upload #imageUpload containerClass="mt-3"

@@ -392,7 +392,7 @@ export class EditProfileComponent
     this.removedContactInfos = [];
 
     if (data.contactInfoConfiguration && data.contactInfoConfiguration.availability !== AvailabilityEnum.DISABLED) {
-      // Additional contacts are enabled. Copy the fields to the address configuration
+      // Public contacts are enabled. Copy the fields to the address configuration
       data.addressConfiguration.contactInfoEnabled = true;
       data.addressConfiguration.contactInfoFields = data.contactInfoConfiguration.customFields;
     }

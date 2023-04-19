@@ -71,6 +71,7 @@
     "addNew": "Nieuw",
     "yes": "Ja",
     "no": "Nee",
+    "errorMessage": "Foutmelding",
     "notSet": "Niet ingesteld",
     "share": "Delen",
     "tiledView": "Verticale weergave",
@@ -86,12 +87,14 @@
     "currency": "Valuta",
     "images": "Afbeeldingen",
     "internalName": "Interne naam",
+    "progress": "Voortgang",
     "usersOfBroker": "Gebruikers van de makelaar",
     "administration": "Administratie",
     "maskHelp": "Deze maskers kunnen beperken welke tekens getypt kunnen worden, de grootte van de maskers beperken en de transformatie van de zaken uitvoeren door de volgende constructeurs te gebruiken.<br><br><ul><li><b>#, 0 of 9</b> - Een nummer.</li><li><b>een of A</b> - Een brief.</li><li><b>? of _</b> - Elk teken.</li><li><b>l of L</b> - een kleine letter.</li><li><b>u of U</b> - Een hoofdletter.</li><li><b>c of C</b> - Een hoofdletter.</li><li><b>\\\\, \\#, \\0, . .</b> - Deze letterlijke karakters. Vergeet niet dat '\\\\' bij het schrijven van een tekenreeks een enkele backslash betekent. Om een backslash op het masker te gebruiken, heb je 4 op de string nodig.</li></ul>",
     "sendMedium": {
       "email": "E-mail",
-      "sms": "SMS"
+      "sms": "SMS",
+      "app": "Mobiele telefoon"
     },
     "sendCode": "Stuur code",
     "sentCodeTo": "De verificatiecode is verzonden naar {to}",
@@ -267,6 +270,7 @@
     "banking.externalPayments": "Externe betalingen",
     "banking.externalPaymentsOverview": "Overzicht van externe betalingen",
     "banking.pos": "Betaling ontvangen",
+    "banking.tickets": "Tickets",
     "banking.receiveQrPayment": "Genereer QR-code ",
     "banking.scheduledPayments": "Geagendeerde betalingen",
     "banking.scheduledPaymentsOverview": "Overzicht van geagendeerde betalingen",
@@ -280,11 +284,14 @@
     "banking.userBalancesOverview": "Overzicht gebruiker saldi",
     "banking.accountBalanceLimits": "Rekeningsaldo limieten",
     "banking.accountPaymentLimits": "Rekening betalingslimieten",
+    "banking.importedPayments": "Importeer betalingen",
+    "banking.userImportedPayments": "Batch betalingen",
     "operators": "Operators",
     "operators.operators": "Operators",
     "operators.register": "Registreer operator",
     "operators.groups": "Operator groepen",
     "brokering": "Makelaars",
+    "brokering.ads": "Advertenties",
     "brokering.users": "Gebruikers",
     "brokering.register": "Registreer gebruiker",
     "marketplace": "Marktplaats",
@@ -313,6 +320,7 @@
     "personal.contacts": "Contacten",
     "personal.password": "Wachtwoord",
     "personal.passwords": "Wachtwoorden",
+    "personal.totp": "Authenticator app",
     "personal.identityProviders": "Identity providers",
     "personal.agreements": "Overeenkomsten",
     "personal.messages": "Berichten",
@@ -320,6 +328,7 @@
     "personal.settings": "Instellingen",
     "personal.references": "Referenties",
     "personal.feedbacks": "Commentaren",
+    "personal.quickAccessSettings": "Snelle toegang instellingen",
     "content": "Informatie"
   },
   "login": {
@@ -346,12 +355,48 @@
         "reset": "Inloggen mislukt. Uw wachtwoord is gereset. Neem contact op met de administratie.",
         "indefinitelyBlocked": "Inloggen mislukt. Uw wachtwoord is uitgeschakeld wegens overschrijding van het maximum aantal pogingen. Neem contact op met de administratie.",
         "temporarilyBlocked": "Uw wachtwoord is tijdelijk geblokkeerd wegens overschrijding van het maximum aantal pogingen"
+      },
+      "confirmation": {
+        "missing": {
+          "device": "Inloggen mislukt. U dient uw login te bevestigen met een beveiligd mobiel apparaat, maar dat heeft u niet ingesteld. Installeer eerst de mobiele app en activeer een beveiligd apparaat.",
+          "password": "Inloggen mislukt. U dient de login te bevestigen met uw {0} , maar dat is niet actief. Neem contact op met de administratie.",
+          "totp": "Inloggen mislukt. U dient de login te bevestigen met uw authenticator app, maar die heeft u niet ingesteld. Neem contact op met de administratie."
+        },
+        "notActive": {
+          "multiple": "Om je aanmelding te voltooien, heb je een {password} of je authenticatie app nodig, maar u heeft geen van beide actief. Activeer één van hen en ga verder."
+        }
       }
     }
   },
   "password": {
     "confirm.mode": "Bevestigen met",
+    "confirm.mode.device": "Mobiele app",
+    "confirm.mode.totp": "Authenticator app",
+    "confirmation": {
+      "device": "Scan deze QR-code in met uw mobiele telefoon, om te bevestigen.",
+      "password": "Om te bevestigen, voer uw {passwordType} in.",
+      "totp": "Geef om te bevestigen een code op die is gegenereerd door je authenticator app.",
+      "notPossible": "Door een configuratiefout is het niet mogelijk om deze bewerking te bevestigen. Neem contact op met de administratie.",
+      "notActive": {
+        "multiple": "Om te bevestigen heeft u een van de volgende gegevens nodig, maar die heeft u niet: {credentials}.",
+        "device": "Om te bevestigen moet u de mobiele app hebben geïnstalleerd en geactiveerd als een vertrouwd apparaat. Download de app en ga verder met de activatie.",
+        "password": "Om te bevestigen heeft u uw {passwordType}nodig, maar u heeft dit niet actief. Bezoek uw wachtwoord instellingen pagina of neem contact op met de administratie.",
+        "totp": "Om te bevestigen moet u een authenticatie app configureren. Ga naar uw wachtwoordinstellingen pagina en activeer deze."
+      }
+    },
     "confirm.password.placeholder": "Typ hier: {password}",
+    "otp": {
+      "verificationCode": "Verificatiecode",
+      "sendMedium": "Stuur verificatiecode naar",
+      "sendToEmail": "Stuur naar e-mail {email}",
+      "sendToPhone": "Stuur naar telefoon {phone}",
+      "send": "Stuur verificatiecode",
+      "countdownLabel": "* Je kunt de e-mail / sms opnieuw verzenden over {seconds} seconden.",
+      "receiveBy.sent": "{medium} verzonden",
+      "sent": "Het wachtwoord is verstuurd naar {dest}",
+      "sentToEmail": "E-mail verzonden naar {mail}",
+      "sentToPhone": "SMS-bericht verzonden naar {phone}"
+    },
     "oldPassword": "Oud wachtwoord",
     "newPassword": "Nieuw wachtwoord",
     "passwordConfirmation": "Bevestiging van het wachtwoord",
@@ -360,7 +405,9 @@
       "temporarilyBlocked": "Uw wachtwoord wordt tijdelijk geblokkeerd door overschrijding van het maximaal aantal pogingen. Probeer het later opnieuw.",
       "expired": "Uw wachtwoord is verlopen. Gelieve contact op te nemen met de administratie.",
       "invalid": "Wachtwoord type: {type} is ongeldig",
-      "otpInvalidated": "Het eenmalige wachtwoord is niet meer geldig. Vraag een nieuwe aan."
+      "otpInvalidated": "Het eenmalige wachtwoord is niet meer geldig. Vraag een nieuwe aan.",
+      "invalidTotp": "De ingegeven code is ongeldig. Voer een geldige code in vanuit uw authenticator app.",
+      "blockedByTotp": "U bent geblokkeerd door overschrijding van de pogingen van de authenticator app code. Neem contact op met de administratie."
     },
     "title": {
       "change.self": "Wijzig wachtwoord",
@@ -371,7 +418,8 @@
       "manage.single.user": "Beheer wachtwoord gebruiker",
       "manage.multiple.user": "Beheer wachtwoorden gebruiker",
       "securityAnswer": "Stel uw beveiligingsantwoord in",
-      "history": "Wachtwoorden geschiedenis"
+      "history": "Wachtwoorden geschiedenis",
+      "totp": "Authenticator app"
     },
     "mobileTitle": {
       "change.self": "Wachtwoord wijzigen",
@@ -381,7 +429,8 @@
       "manage.single.user": "Wachtwoord gebruiker",
       "manage.multiple.user": "Wachtwoorden gebruiker",
       "securityAnswer": "Antwoord op beveiligingsvraag",
-      "history": "Wachtwoorden geschiedenis"
+      "history": "Wachtwoorden geschiedenis",
+      "totp": "Authenticator app"
     },
     "forgotten": {
       "preface": "Hier kunt u uw gebruiker herstellen en uw wachtwoord wijzigen door een herstelcode aan te vragen. U kunt één van de volgende identificatiemethoden in het onderstaande gebruikersveld gebruiken:",
@@ -446,6 +495,29 @@
       "allowGeneration": "Genereren toestaan",
       "allowGeneration.confirm": "Weet u zeker dat u de gebruiker wilt toestaan hun {type} te genereren?",
       "allowGeneration.done": "De gebruiker kan nu hun {type} genereren"
+    },
+    "hints": {
+      "ok": "{text} ✓",
+      "fail": "{text} ✗",
+      "preface": "Het wachtwoord moet bevatten:",
+      "fixedLength": "Precies {length} tekens",
+      "minLength": "Ten minste {count} tekens",
+      "lowerCaseLetters": "Minstens 1 kleine letter",
+      "upperCaseLetters": "Minstens 1 hoofdletter",
+      "numbers": "Minstens 1 cijfer",
+      "specialCharacters": "Minstens 1 speciaal teken"
+    },
+    "totp": {
+      "active": "De authenticator app is actief sinds {date}",
+      "neverCreated.managers": "De authenticator app is niet geconfigureerd voor deze gebruiker.",
+      "neverCreated.message": "Schakel een authenticatie-app in zodat u de bewerkingen kunt bevestigen: <ul><li>Download en installeer eerst een RFC 6238 compatibele authenticator app (zoals Google Authenticator of Microsoft Authenticator) uit uw App Store (Google Play of App Store);</li><li>Stuur een verificatiecode naar je e-mail / telefoon (via SMS), zodat we uw identiteit kunnen verifiëren;</li><li>Typ de verificatiecode in het veld hieronder en druk op 'Verzenden';</li><li>Een QR-code zal worden weergegeven;</li><li>Open de authenticator app op uw telefoon en scan de QR-code. Er wordt een numerieke reeks weergegeven (en elke 30 seconden vernieuwd);</li><li>Type die numerieke reeks in en bevestig;</li><li>Uw authenticator app wordt geconfigureerd en zal de numerieke sequenties genereren die u in het vervolg nodig hebt om verdere handelingen te bevestigen.</li></ul>",
+      "neverCreated.message.mobile": "Schakel een authenticator app in zodat u de bewerkingen kunt bevestigen: <ul><li>Download en installeer eerst een RFC 6238 compatibele authenticator app (zoals Google Authenticator of Microsoft Authenticator) uit uw App Store (Google Play of App Store);</li><li>Stuur een verificatiecode naar je e-mail / telefoon (via SMS), zodat we uw identiteit kunnen verifiëren;</li><li>Typ de verificatiecode in het veld hieronder en druk op 'Verzenden';</li><li>Een knop om de authenticator app te openen wordt weergegeven. Klik erop en voeg je account toe aan de app.</li><li>Er wordt een numerieke reeks weergegeven (en elke 30 seconden vernieuwd);</li><li>Type die numerieke reeks in en bevestig;</li><li>Uw authenticator app wordt geconfigureerd en zal de numerieke sequenties genereren die u in het vervolg nodig hebt om verdere handelingen te bevestigen.</li></ul>",
+      "activated": "Je authenticator app is geconfigureerd. Je kunt deze nu gebruiken om de bewerking te bevestigen.",
+      "firstTotp": "Numerieke reeks gegenereerd door de authenticator app",
+      "scanQr": "Scan nu de QR-code met de authenticator app en typ de numerieke reeks in.",
+      "openApp": "Open de authenticator app",
+      "remove": "Verwijderen",
+      "remove.confirmation": "Weet u zeker dat u de authenticator app voor dit account wilt verwijderen?"
     }
   },
   "pendingAgreements": {
@@ -473,13 +545,19 @@
     "action": {
       "account": "Rekening",
       "accounts": "Rekeningen",
+      "balancesOverview": "Saldi overzicht",
+      "externalPayments": "Externe betalingen",
       "payUser": "Betaal",
       "paySystem": "Betaal aan systeemrekening",
       "pos": "Betaling ontvangen",
       "receiveQrPayment": "Ontvang QR-code betaling",
       "contacts": "Contacten",
       "directory": "Bedrijven",
+      "brokeredUsers": "Geregistreerde gebruikers",
+      "registerUser": "Registreer gebruiker",
       "advertisements": "Marktplaats",
+      "adInterests": "Advertentie interesses",
+      "purchases": "Mijn aankopen",
       "editProfile": "Profiel bewerken",
       "password": "Wachtwoord",
       "passwords": "Wachtwoorden",
@@ -497,7 +575,19 @@
       "paymentRequests": "Betalingsverzoeken",
       "settings": "Instellingen",
       "scheduledPayments": "Geautoriseerde betalingen",
-      "payExternalUser": "Betaling aan externe gebruiker"
+      "payExternalUser": "Betaling aan externe gebruiker",
+      "myAds": "Mijn advertenties",
+      "createAd": "Plaats advertentie",
+      "myWebshop": "Mijn webshop",
+      "sales": "Mijn verkopen",
+      "createWebshopAd": "Plaats webshop advertentie",
+      "documents": "Documenten",
+      "inviteUser": "Gebruiker uitnodigen",
+      "messages": "Berichten",
+      "sendMessage": "Verstuur bericht",
+      "notifications": "Meldingen",
+      "references": "Mijn referenties",
+      "feedbacks": "Mijn feedback"
     },
     "accounts": "Rekeningen",
     "accountStatus": "Rekening status",
@@ -511,6 +601,7 @@
       "pending": "Uw {type} is in afwachting van genereren.",
       "neverCreated": "Uw {type} moet worden ingesteld.",
       "securityAnswer": "U moet de beveiligingsvraag instellen, die vereist is voor het geval u uw wachtwoord moet resetten.",
+      "totp": "U moet een authenticator app configureren om de bewerking te bevestigen.",
       "proceed": "Klik hier om verder te gaan"
     }
   },
@@ -694,6 +785,7 @@
     "installments": "Termijnbetalingen",
     "installmentNumber": "Nummer",
     "installmentNumberOfTotal": "{number} van {total}",
+    "occurrences": "Gebeurtenissen",
     "occurrenceInterval": "Verwerk alle",
     "feesOnAuthorization": "Heffingen die toegepast moeten worden wanneer geautoriseerd",
     "noAccounts": "U heeft geen rekeningen om de betaling uit te voeren",
@@ -845,6 +937,9 @@
       "boughtVouchers": "Gekochte waardebonnen",
       "editRecurringPayment": "Bewerk periodieke betaling"
     },
+    "receiveQrPayment.generateQrCode": "QR code genereren",
+    "receiveQrPayment.generateNewQrCode": "Genereer nieuwe QR code",
+    "receiveQrPayment.pendingConfirmation": "Wachten op bevestiging",
     "ticketShareTitle": "Uitnodiging om een betaling uit te voeren",
     "ticketShareText": "{user} heeft u uitgenodigd om {amount} te betalen",
     "ticketShareUrl": "URL om te delen",
@@ -923,9 +1018,15 @@
     "firstInstallmentIsImmediate": "De eerste termijnbetaling zal direct plaatsvinden",
     "voucher.redeemed": "Ingewisselde waardebon",
     "voucher.toppedUp": "Opgewaardeerde waardebon",
+    "posConfirmation": {
+      "device": "Om te kunnen bevestigen, moet de betaler deze QR-code scannen met de mobiele telefoon.",
+      "password": "Om te bevestigen moet de betaler zijn {passwordType} opgeven.",
+      "totp": "Geef om te bevestigen een code op die is gegenereerd door je authenticator app."
+    },
     "error": {
       "minTime": "Een minimale periode moet worden afgewacht om een betaling van dit type te verwerken.",
       "balance": "Onvoldoende saldo voor deze bewerking",
+      "balance.voucher": "Onvoldoende saldo voor deze bewerking",
       "upperLimit": "U kan niet uitvoeren van deze betaling, omdat de bovenste balans grens van de bestemming account is overschreden",
       "daily.amount": "De maximale dagelijkse hoeveelheid {amount} werd overschreden",
       "daily.count": "Het maximaal toegestane aantal betalingen per dag is {count}",
@@ -970,8 +1071,11 @@
       "redeemer": "Plaats inwisseling",
       "date": "Inwisseldatum",
       "amount": "Bedrag inwisselen",
+      "amountAtCreation": "Bedrag (bij aanmaken)",
+      "amountToRedeem": "Bedrag om te verzilveren",
       "by": "Inwisselen uitgevoerd door",
-      "payment": "Inwisseling betaling"
+      "payment": "Inwisseling betaling",
+      "voucherBalance": "Waardebon saldo"
     },
     "topUp": {
       "confirm": "De details van de waardebon aanvullen worden hieronder gegeven. Controleer het en bevestig deze actie.",
@@ -1289,7 +1393,6 @@
       "fields": "Aangepaste profiel velden",
       "phones": "Telefoons",
       "addresses": "Adressen",
-      "contactInfos": "Aanvullende contacten",
       "confirmation": "Bevestiging",
       "registration": "Gebruikersregistratie",
       "registration.confirmation": "Bevestiging van inschrijving",
@@ -1356,7 +1459,6 @@
     "contactInfo": "Contactinformatie",
     "contactInfo.add": "Contact toevoegen",
     "contactInfo.remove": "Contact verwijderen",
-    "contactInfo.none": "Er zijn momenteel geen extra contacten",
     "contactInfo.atAddress": "Op",
     "profileSaved": "Het profiel is opgeslagen",
     "newEmailConfirmed": "Uw nieuwe e-mailadres is succesvol bevestigd",
@@ -1392,6 +1494,7 @@
       "addContact.done": "{user} werd toegevoegd aan uw lijst met contactpersonen",
       "removeContact": "Verwijderen uit contacten",
       "removeContact.done": "{user} is verwijderd uit uw lijst met contactpersonen",
+      "validateRegistration": "Markeren als gevalideerd",
       "pay": "Volgende",
       "paySystemToUser": "Betaling van systeem naar gebruiker",
       "payAsUserToSystem": "Betaling van gebruiker naar systeem",

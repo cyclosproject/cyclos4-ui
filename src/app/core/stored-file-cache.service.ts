@@ -57,6 +57,14 @@ export class StoredFileCacheService {
   }
 
   /**
+   * Returns if the given id is in the cache
+   * @param key The stored file id
+   */
+  contains(id: string): boolean {
+    return this.cache.has(id);
+  }
+
+  /**
    * Returns the cached elements count
    */
   size() {

@@ -3,7 +3,7 @@ import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup,
 import {
   AddressConfigurationForUserProfile, AvailabilityEnum, BasicUserDataForNew, OperatorDataForNew,
   OperatorGroupAccountAccessEnum, ProfileFieldActions, TokenStatusEnum, User,
-  UserBasicData, UserDataForNew, UserNew, UserRegistrationResult, UserRegistrationStatusEnum, UserStatusEnum
+  UserBasicData, UserDataForNew, UserNew, UserRegistrationResult, UserRegistrationStatusEnum, UserStatusEnum, WizardStepField
 } from 'app/api/models';
 import { UsersService } from 'app/api/services/users.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
@@ -195,7 +195,7 @@ export class UserHelperService {
    * according to the given configuration. When the configuration disables addresses, both are null.
    * Also returns an array of subscriptions, which should be unsubscribed when the calling component is disposed.
    */
-  registrationAddressForm(configuration: AddressConfigurationForUserProfile): [FormGroup, FormControl, Subscription[]] {
+  registrationAddressForm(configuration: AddressConfigurationForUserProfile, wizardStepAddressField?: WizardStepField): [FormGroup, FormControl, Subscription[]] {
     const addressAvailability = configuration.availability;
     let addressForm: FormGroup = null;
     let defineControl: FormControl = null;
@@ -206,14 +206,18 @@ export class UserHelperService {
       const address = configuration.address;
       addressForm.patchValue(address);
       // When any of the fields change, clear the location
-      for (const field of configuration.enabledFields) {
-        let previous = address[field] || null;
-        subscriptions.push(addressForm.get(field).valueChanges.subscribe(newVal => {
-          if (previous !== newVal) {
-            addressForm.get('location').patchValue({ latitude: null, longitude: null });
-          }
-          previous = newVal;
-        }));
+      if (!wizardStepAddressField || !wizardStepAddressField.readOnly) {
+        for (const field of configuration.enabledFields) {
+          let previous = address[field] || null;
+          subscriptions.push(addressForm.get(field).valueChanges.subscribe(newVal => {
+            if (previous !== newVal) {
+              addressForm.get('location').patchValue({ latitude: null, longitude: null });
+            }
+            previous = newVal;
+          }));
+        }
+      } else {
+        addressForm.clearValidators();
       }
     }
     return [addressForm, defineControl, subscriptions];

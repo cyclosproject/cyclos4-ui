@@ -393,7 +393,7 @@
       "sendMedium": "Enviar código de verificación a",
       "sendToEmail": "Enviar al correo {email}",
       "sendToPhone": "Enviar al teléfono {phone}",
-      "noMediums": "No hay medios posibles para recibir código de verificación",
+      "noMediums": "No hay medios posibles para recibir el código de verificación",
       "send": "Enviar código de verificación",
       "countdownLabel": "* Puede enviar el correo / SMS nuevamente en {seconds} segundos.",
       "receiveBy.sent": "{medium} enviado",
@@ -515,10 +515,10 @@
       "active": "La aplicación de autenticación está activa desde {date}",
       "neverCreated.managers": "La aplicación de autenticación no ha sido configurada para este usuario.",
       "neverCreated.message": "Activar una aplicación de autenticación, para poder confirmar operaciones: <ul>\n<li>Primero descargue e instale una aplicación de autenticación RFC 6238 compatible (como Google Authenticator o Microsoft Authenticator) desde tu tienda de aplicaciones del teléfono (Google Play o App Store);</li>\n<li>Envíe un código de verificación a su correo electrónico / teléfono (a través de SMS), para verificar su identidad;</li>\n<li>Ingrese el código de verificación recibido en el campo de abajo y envíelo;</li>\n<li>Se mostrará un código QR;</li>\n<li>Abra la aplicación de autenticación en su teléfono y lea el código QR. Se mostrará una secuencia numérica (que es  renovada cada 30 segundos);</li>\n<li>Ingrese la secuencia numérica mostrada y confirmela</li>\n<li>Su aplicación de autenticación será configurada, y generará las secuencias numéricas que necesitará para confirmar otras operaciones.</li></ul>",
-      "neverCreated.message.mobile": "Activar una aplicación de autenticación, para confirmar las operaciones: <ul><li>Primero descarga e instala una aplicación de autenticación RFC 6238 compatible (como Google Authenticator o Microsoft Authenticator) de tu tienda de aplicaciones de teléfono (Google Play o App Store);</li><li>Envía un código de verificación a tu correo electrónico / teléfono (a través de SMS), para que podamos verificar tu identidad;</li><li>Escriba ese código de verificación en el campo de abajo y envío;</li><li>Se mostrará un botón para abrir la aplicación de autenticación. Haga clic en el botón y añada su cuenta en la aplicación.</li><li>Se mostrará una secuencia numérica (que es  renovada cada 30 segundos);</li><li>Escriba esa secuencia numérica y confirmela</li><li>Tu aplicación de autenticación se configurará y generará las secuencias numéricas que necesitarás para confirmar más operaciones.</li></ul>",
+      "neverCreated.message.mobile": "Activar una aplicación de autenticación, para confirmar las operaciones: <ul><li>Primero descarga e instala una aplicación de autenticación RFC 6238 compatible (como Google Authenticator o Microsoft Authenticator) de tu tienda de aplicaciones de teléfono (Google Play o App Store);</li><li>Envía un código de verificación a tu correo electrónico / teléfono (a través de SMS), para que podamos verificar tu identidad;</li><li>Escriba ese código de verificación en el campo de abajo y envío;</li><li>Se mostrará un botón para abrir la aplicación de autenticación. Haga clic en el botón y añada su cuenta en la aplicación.</li><li>Se mostrará una secuencia numérica (que es  renovada cada 30 segundos);</li><li>Escriba esa secuencia numérica y confirmela</li><li>Su aplicación de autenticación se configurará y generará las secuencias numéricas que necesitará para confirmar otras operaciones.</li></ul>",
       "activated": "Su aplicación de autenticación ha sido configurada. Ahora puede utilizarla para confirmar operaciones.",
       "firstTotp": "Secuencia numérica generada por la aplicación de autenticación",
-      "scanQr": "Ahora, lea el código QR con la aplicación de autenticación e ingresa la secuencia numérica.",
+      "scanQr": "Ahora, lea el código QR con la aplicación de autenticación e ingrese la secuencia numérica.",
       "openApp": "Abra la aplicación de autenticación",
       "remove": "Eliminar",
       "remove.confirmation": "¿Está seguro de eliminar la aplicación de autenticación de esta cuenta?",
@@ -799,7 +799,7 @@
     "occurrenceInterval": "Ejecutar cada",
     "feesOnAuthorization": "Cargos que serán aplicados al autorizar",
     "noAccounts": "No posee ninguna cuenta para poder realizar el pago",
-    "noVisibleAccounts": "No tienes ninguna cuenta visible para realizar el pago, por favor revise la página {0}. En el caso de que la cuenta ya se encuentre marcada como visible, por favor contacte a la administración",
+    "noVisibleAccounts": "No tiene ninguna cuenta visible para realizar el pago, por favor revise la página {0}. En el caso de que la cuenta ya se encuentre marcada como visible, por favor contacte a la administración",
     "noExternalPaymentPrincipalTypes": "No hay métodos de identificación de usuario compatibles para realizar el pago",
     "noTypes": "No hay tipos de transacción posibles",
     "noTypesSelection": "No hay tipos de transacción posibles desde esta cuenta al usuario seleccionado",
@@ -856,8 +856,8 @@
     "done.addReceiverToContacts": "Añadir receptor a contactos",
     "done.userAddedToContacts": "El usuario {contact} fue añadido a los contactos",
     "orderBy": {
-      "dueDateDesc": "Fecha de vencimiento (nuevo primero)",
-      "dueDateAsc": "Fecha de vencimiento (antiguo primero)"
+      "dueDateDesc": "Fecha de vencimiento (nuevos primero)",
+      "dueDateAsc": "Fecha de vencimiento (antiguos primero)"
     },
     "status": {
       "open": "Abierto",
@@ -1281,8 +1281,8 @@
     "voucher": "Cupón",
     "beginCreationDate": "Fecha inicial de creación",
     "endCreationDate": "Fecha final de creación",
-    "beginExpirationDate": "Fecha inicial de vencimiento",
-    "endExpirationDate": "Fecha final de vencimiento",
+    "beginExpirationDate": "Fecha de vencimiento inicial",
+    "endExpirationDate": "Fecha de vencimiento final",
     "info": {
       "title": "Información de cupón",
       "message.token": "Aquí puedes comprobar el estado de tu cupón. Escribe el código del cupón a continuación.",
@@ -1434,7 +1434,7 @@
       "fields": "Campos de perfil",
       "phones": "Teléfonos",
       "addresses": "Direcciones",
-      "contactInfos": "Contactos adicionales",
+      "contactInfos": "Contactos públicos",
       "confirmation": "Confirmación",
       "registration": "Registro de usuario",
       "registration.confirmation": "Confirmación de registro",
@@ -1507,7 +1507,7 @@
     "contactInfo": "Información de contacto",
     "contactInfo.add": "Agregar contacto",
     "contactInfo.remove": "Eliminar información de contacto adicional",
-    "contactInfo.none": "No se encontró información de contactos adicionales",
+    "contactInfo.none": "No hay contactos públicos",
     "contactInfo.atAddress": "En",
     "profileSaved": "El perfil se ha guardado",
     "newEmailConfirmed": "Su nuevo correo fue confirmado",
@@ -1516,6 +1516,7 @@
     "securityQuestion.empty": "Dejar en blanco",
     "captcha": "Verificación",
     "contact": "Contacto",
+    "contactInfo.define": "Definir información de contacto público",
     "invitedBy": "Invitado por",
     "invitedByMe": "Invitado por mí",
     "creationBegin": "Registrado después de",
@@ -2713,7 +2714,7 @@
     "creationDate": "Fecha de carga",
     "processingDate": "Fecha de procesado",
     "archivingDate": "Fecha de archivado",
-    "archivingDate.value": "Después de {date} este archivo será archivado, lo que significa que toda la información y el detalle de las líneas será eliminado.",
+    "archivingDate.value": "Después del {date} este archivo será archivado, lo que significa que toda la información y el detalle de las líneas será eliminado.",
     "sendNotifications": "Enviar notificaciones",
     "useGroupFromFile": "Usar grupos del archivo",
     "defaultGroup": "Grupo por defecto",
@@ -2735,7 +2736,7 @@
     },
     "section": {
       "validation": "Validación de líneas",
-      "import": "Importando de líneas"
+      "import": "Importado de líneas"
     },
     "skip": {
       "label": "Ignorar",
@@ -2748,7 +2749,7 @@
     "lineNumber": "Número de línea",
     "information": {
       "ready": "El archivo está listo para ser importado. Para continuar, seleccione la acción de importar.",
-      "userSendVouchers": "Puede enviar varios cupones a la vez importando un archivo CSV, usando <tt>{0}</tt> como separador.<br>\nEl archivo debe tener 2 columnas: <tt>name</tt> y <tt>email</tt>. Si se define usar el monto del archivo, también tiene que especificar la columna <tt>amount</tt> .<br>\nEn el campo del mensaje, puede utilizar los mismos nombres de cabecera que las variables rodeados de llaves: <tt>{name}</tt>, <tt>{email}</tt> y <tt>{amount}</tt>."
+      "userSendVouchers": "Puede enviar varios cupones a la vez importando un archivo CSV, usando <tt>{0}</tt> como separador.<br>\nEl archivo debe tener 2 columnas: <tt>name</tt> y <tt>email</tt>. Si define usar el monto del archivo, también tiene que especificar la columna <tt>amount</tt> .<br>\nEn el campo del mensaje, puede utilizar los mismos nombres de cabecera que las variables rodeados de llaves: <tt>{name}</tt>, <tt>{email}</tt> y <tt>{amount}</tt>."
     }
   },
   "consent": {

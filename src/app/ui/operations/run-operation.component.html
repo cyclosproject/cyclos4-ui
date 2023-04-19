@@ -76,7 +76,9 @@
     <alert type="info" *ngIf="data.informationText">
       <div [innerHTML]="data.informationText | trust"></div>
     </alert>
-    <ng-container *ngTemplateOutlet="theForm"></ng-container>
+    <div [ngClass]="{'mt-3': data.informationText}">
+      <ng-container *ngTemplateOutlet="theForm"></ng-container>
+    </div>
     <div *ngIf="data.submitWithQrCodeScan" class="operation-qr-code-scan">
       <button type="button" class="btn btn-icon operation-qr-code-scan-button"
         (click)="run()">

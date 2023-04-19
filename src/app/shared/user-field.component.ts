@@ -143,8 +143,9 @@ export class UserFieldComponent
     filters.ignoreProfileFieldsInList = true;
     filters.pageSize = PageSize;
     filters.keywords = text;
+    filters.usersToExclude = [...(filters.usersToExclude || [])];
     if (!this.allowSelf) {
-      filters.usersToExclude = [...(filters.usersToExclude || []), ApiHelper.SELF];
+      filters.usersToExclude.push(ApiHelper.SELF);
     }
     this.nextRequestState.leaveNotification = true;
     return this.usersService.searchUsers(filters);

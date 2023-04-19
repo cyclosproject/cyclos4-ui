@@ -9,18 +9,6 @@
   "references": [
     {
       "path": "./src/tsconfig.ui.json"
-    },
-    {
-      "path": "./src/tsconfig.pay.json"
-    },
-    {
-      "path": "./src/tsconfig.consent.json"
-    },
-    {
-      "path": "./src/tsconfig.unsubscribe.json"
-    },
-    {
-      "path": "./src/tsconfig.voucher.json"
     }
   ]
 }

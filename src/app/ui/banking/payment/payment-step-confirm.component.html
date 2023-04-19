@@ -47,7 +47,7 @@
   <user-link [user]="toUser" [display]="preview.payment.toName"></user-link>
 </label-value>
 <ng-template #toUserTemplate>
-  <ng-container *ngIf="!toSelf">
+  <ng-container *ngIf="!(fromSelf && toSelf)">
     <label-value *ngIf="toUser; else toSystemTemplate"
       [label]="i18n.transaction.toUser">
       <user-link [user]="toUser"></user-link>

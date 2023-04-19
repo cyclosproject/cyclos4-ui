@@ -96,6 +96,7 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
 
   ngOnInit() {
     super.ngOnInit();
+    this.disabledFormat = 'component';
     if (this.initialImages == null) {
       this.images = [];
     } else if (this.initialImages instanceof Array) {
@@ -185,7 +186,7 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
   onValueInitialized(_value: string | string[]) {
     this.imageIds
       .map(id => this.storedFileCacheService.read(id))
-      .filter(sf => sf)
+      .filter(sf => sf && !this.images.find(i => i.id === sf.id))
       .forEach(sf => this.images.push(sf));
   }
 

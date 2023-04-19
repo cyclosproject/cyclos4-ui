@@ -64,8 +64,8 @@
     </single-selection-field>
     <ng-template #toUserField>
       <user-field #toUser focused [autoSearch]="!allowPrincipal"
-        [filters]="{usersToExclude: fromUser && !fromSelf ? [fromParam] : null}"
-        formControlName="subject" [allowContacts]="allowContacts"
+        [filters]="{usersToExclude: usersToExclude}" formControlName="subject"
+        [allowSelf]="allowSelf" [allowContacts]="allowContacts"
         [allowSearch]="allowSearch" [allowPrincipal]="allowPrincipal"
         [allowQrCode]="allowQrCode" [principalTypes]="data.principalTypes"
         [allowLocate]="data.allowAutocomplete"
