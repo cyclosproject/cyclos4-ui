@@ -155,7 +155,7 @@
       </field-option>
     </single-selection-field>
     <input-field #securityAnswer
-      *ngIf="!empty(user.get('securityQuestion').valueChanges | async)"
+      *ngIf="!empty(user.controls.securityQuestion.valueChanges | async) || user.controls.securityQuestion.value"
       [formControl]="user.controls.securityAnswer"
       [label]="i18n.securityQuestion.answer">
     </input-field>

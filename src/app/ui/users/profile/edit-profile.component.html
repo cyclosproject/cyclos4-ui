@@ -178,8 +178,7 @@
         </field-privacy>
       </label-value>
 
-      <ng-container
-        *ngIf="phoneHasSms(singleMobileManage) && (byManager || !singleMobile.get('verified').value)">
+      <ng-container *ngIf="phoneHasSms(singleMobileManage) && byManager">
         <boolean-field [label]="i18n.phone.verified"
           *ngIf="canEdit('phone'); else plainVerified"
           [formControl]="singleMobile.get('verified')">
@@ -325,8 +324,7 @@
             [label]="i18n.phone.extension"></input-field>
         </ng-container>
 
-        <ng-container
-          *ngIf="(byManager || !phone.verified) && phoneHasSms(phone)">
+        <ng-container *ngIf="byManager && phoneHasSms(phone)">
           <boolean-field [label]="i18n.phone.verified"
             *ngIf="byManager && canEdit('phone'); else plainVerified"
             formControlName="verified">
