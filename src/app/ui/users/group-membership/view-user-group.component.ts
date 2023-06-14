@@ -59,8 +59,7 @@ export class ViewUserGroupComponent extends BaseViewPageComponent<GroupMembershi
   }
 
   save() {
-    validateBeforeSubmit(this.form);
-    if (!this.form.valid) {
+    if (!validateBeforeSubmit(this.form)) {
       return;
     }
     const group = this.data.possibleNewGroups.find(g => g.id === this.form.value.group);

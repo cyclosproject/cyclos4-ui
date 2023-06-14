@@ -70,8 +70,7 @@ export class ProcessDynamicDocumentComponent
   }
 
   process() {
-    validateBeforeSubmit(this.form);
-    if (!this.form.valid) {
+    if (!validateBeforeSubmit(this.form)) {
       return;
     }
     this.addSub(this.documentsService.processDynamicDocument({

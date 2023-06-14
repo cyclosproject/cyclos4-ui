@@ -48,8 +48,7 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
   }
 
   save() {
-    validateBeforeSubmit(this.form);
-    if (!this.form.valid) {
+    if (!validateBeforeSubmit(this.form)) {
       return;
     }
     const value = this.form.value;

@@ -57,8 +57,11 @@ export class RunOperationComponent
   formFields: OperationCustomFieldDetailed[];
   isSearch: boolean;
   isContent: boolean;
-  runDirectly: boolean;
+  canRunDirectly = true;
+  runDirectly$ = new BehaviorSubject(false);
+  showCloseButton: boolean;
   reRun: boolean;
+  startNewOperation: boolean;
   hasSearchFields: boolean;
   leaveNotification: boolean;
   alreadyExecuted: boolean;
@@ -147,6 +150,9 @@ export class RunOperationComponent
   }
 
   onDataInitialized(data: OperationDataForRun) {
+    if (this.alreadyExecuted) {
+      return;
+    }
     this.stateManager.set(RunOperationComponent.OPERATION_DATA, data);
     if (this.runScope === OperationRunScope.User) {
       this.self = this.authHelper.isSelf(data.user);
@@ -158,7 +164,9 @@ export class RunOperationComponent
     this.form = this.fieldsHelper.customValuesFormGroup(formFields,
       { disabledProvider: (field => (field as OperationCustomFieldDetailed).readonly) });
     this.fileControl = this.formBuilder.control(null);
-    this.runDirectly = this.runOperationHelper.canRunDirectly(data, false);
+    const runOperationDirectly = this.runOperationHelper.canRunDirectly(data, false);
+    this.showCloseButton = !runOperationDirectly;
+    this.runDirectly$.next(this.canRunDirectly && runOperationDirectly);
     this.hasSearchFields = formFields.length > 0 || data.hasFileUpload;
 
     if (formFields.length > 0) {
@@ -188,7 +196,7 @@ export class RunOperationComponent
         page: 0,
         pageSize: this.uiLayout.searchPageSize,
       };
-    } else if (this.reRun) {
+    } else if (this.startNewOperation) {
       this.stateManager.stopManaging();
     }
     this.stateManager.manage(this.form);
@@ -200,7 +208,7 @@ export class RunOperationComponent
     this.addHeadingActions(data, data.actions);
 
     // Maybe the operation will be executed directly
-    if (this.runDirectly) {
+    if (this.runDirectly$.value) {
       this.nextRequestState.leaveNotification = this.leaveNotification;
       if (this.isSearch) {
         // When running searches directly, whenever some filter changes, re-run in page 0
@@ -209,10 +217,14 @@ export class RunOperationComponent
           this.run(data);
         }));
       }
-      // Run the operation
-      if (this.reRun) {
+      // Run the operation when starting a new execution
+      if (this.startNewOperation) {
         this.run(data);
       }
+    }
+    // If the operation was marked to re run, then run the operation
+    if (this.reRun) {
+      this.run(data);
     }
   }
 
@@ -221,17 +233,32 @@ export class RunOperationComponent
  */
   handleReRunAndGetOperationData(request: Observable<OperationDataForRun>) {
     const actualData = this.stateManager.get(RunOperationComponent.OPERATION_DATA) as OperationDataForRun;
-    if (this.runOperationHelper.reRun || !actualData || actualData.reRun) {
+    // If it is an action and the helper allow flag was not set and there is not a cached data we don't allow execution again
+    this.alreadyExecuted = !!this.route.snapshot.data.action && !this.runOperationHelper.allowActionExecution && !actualData;
+    this.runOperationHelper.allowActionExecution = false;
+
+    if (this.runOperationHelper.reRun || this.runOperationHelper.startNewOperation || !actualData || actualData.reRun) {
       // Perform the request to get the run data
+      // Store the flags in this page
+      this.reRun = this.runOperationHelper.reRun || actualData?.reRun;
+      this.startNewOperation = !this.reRun;
+      // Clean the flagas in the helper
+      this.runOperationHelper.alreadyConfirmedSession = false;
       this.runOperationHelper.reRun = false;
-      this.reRun = true;
+      this.runOperationHelper.startNewOperation = false;
+      // Clean cache and get the data
       this.cleanCache();
       this.addSub(request.subscribe(data => this.data = data));
     } else {
       // Set the data and the result from the cache
       this.reRun = false;
+      this.startNewOperation = false;
+      let response = this.getResultResponseFromStateManager();
+      this.canRunDirectly = !!response;
       this.data = actualData;
-      this.afterRun(this.getResultResponseFromStateManager());
+      if (response) {
+        this.afterRun(response);
+      }
     }
   }
 
@@ -243,6 +270,9 @@ export class RunOperationComponent
 
   getResultResponseFromStateManager(): HttpResponse<any> {
     let response = this.stateManager.get(RunOperationComponent.OPERATION_RESULT_RESPONSE) as HttpResponse<any>;
+    if (!response) {
+      return null;
+    }
     let responseHeaders = new HttpHeaders();
     const headersMap = (this.stateManager.get(RunOperationComponent.OPERATION_RESULT_RESPONSE_HEADERS) as Map<string, string>);
     headersMap?.forEach((value, header) => responseHeaders = responseHeaders.set(header, value));
@@ -259,8 +289,7 @@ export class RunOperationComponent
         return;
       }
     }
-    validateBeforeSubmit(this.form);
-    if (!this.form.valid) {
+    if (!validateBeforeSubmit(this.form)) {
       return;
     }
     if (data.submitWithQrCodeScan) {
@@ -276,15 +305,17 @@ export class RunOperationComponent
 
   private confirmAndRun(data: OperationDataForRun, scannedQrCode?: string) {
     if (!empty(data.confirmationText) || data.confirmationPasswordInput) {
+      const confirmOncePerSession = data.confirmationPasswordInput?.confirmationPasswordOncePerSession;
       this.confirmation.confirm({
         title: data.name,
         message: data.confirmationText,
         createDeviceConfirmation: this.createDeviceConfirmation,
-        passwordInput: data.confirmationPasswordInput,
+        passwordInput: confirmOncePerSession && this.runOperationHelper.alreadyConfirmedSession ? null : data.confirmationPasswordInput,
         callback: conf => this.doRun(data, {
           confirmationPassword: conf.confirmationPassword,
           scannedQrCode
         }),
+        cancelCallback: () => this.runDirectly$.next(false)
       });
     } else {
       this.doRun(data, {
@@ -325,7 +356,12 @@ export class RunOperationComponent
 
     // Perform the request. If there's any error, clear the redirecting flag
     this.addSub(request.pipe(first(), tap(r => r, () => this.redirecting$.next(false)))
-      .subscribe(response => this.afterRun(response)));
+      .subscribe(response => {
+        if (data.requireConfirmationPassword) {
+          this.runOperationHelper.alreadyConfirmedSession = true;
+        }
+        this.afterRun(response);
+      }));
 
     // When an external redirect, set the redirecting flag, so a message is show to the user
     this.redirecting$.next(data.resultType === OperationResultTypeEnum.EXTERNAL_REDIRECT);
@@ -374,6 +410,7 @@ export class RunOperationComponent
       clearTimeout(this.closeTimer);
       this.closeTimer = null;
     }
+    this.runOperationHelper.startNewOperation = true;
     super.reload();
   }
 
@@ -401,7 +438,8 @@ export class RunOperationComponent
         } else {
           this.operationHelper.register(op);
           headingActions.push(new HeadingAction(this.operationHelper.icon(op), op.label, () => {
-            this.runOperationHelper.reRun = true;
+            this.runOperationHelper.startNewOperation = true;
+            this.runOperationHelper.allowActionExecution = true;
             this.runOperationHelper.run(op, null, action.parameters);
           }));
         }
@@ -414,7 +452,8 @@ export class RunOperationComponent
   }
 
   runPrimaryAction(action: RunOperationAction) {
-    this.runOperationHelper.reRun = true;
+    this.runOperationHelper.startNewOperation = true;
+    this.runOperationHelper.allowActionExecution = true;
     this.runOperationHelper.run(action.action, null, action.parameters);
   }
 
@@ -427,8 +466,9 @@ export class RunOperationComponent
 
     switch (action) {
       case OperationRowActionEnum.OPERATION:
-        this.runOperationHelper.reRun = true;
+        this.runOperationHelper.startNewOperation = true;
         const operation = data.rowOperation;
+        this.runOperationHelper.allowActionExecution = true;
         this.router.navigate(['/operations', 'action', ApiHelper.internalNameOrId(operation)], {
           queryParams: params,
         });

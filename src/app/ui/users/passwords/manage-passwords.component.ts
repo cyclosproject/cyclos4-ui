@@ -197,8 +197,7 @@ export class ManagePasswordsComponent
   }
 
   setSecurityAnswer() {
-    validateBeforeSubmit(this.securityAnswer);
-    if (!this.securityAnswer.valid) {
+    if (!validateBeforeSubmit(this.securityAnswer)) {
       return;
     }
     this.addSub(this.passwordsService.setSecurityAnswer({ body: this.securityAnswer.value }).subscribe(() => {

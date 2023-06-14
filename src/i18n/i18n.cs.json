@@ -1,1 +1,16 @@
-{}
+{
+  "message": {
+    "title": {
+      "newMessage": "Nová zpráva"
+    },
+    "mobileTitle": {
+      "newMessage": "Nová zpráva"
+    },
+    "actions": {
+      "newMessage": "Nová zpráva"
+    },
+    "messageBox": {
+      "inbox": "Doručená pošta"
+    }
+  }
+}

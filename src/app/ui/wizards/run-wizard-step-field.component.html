@@ -25,7 +25,7 @@
   <label-value
     *ngIf="field.basicProfileField === BasicProfileFieldEnum.EMAIL
       && field.requireVerification
-      && (!data.step.verifiedEmail || data.step.verifiedEmail !== (formControl.valueChanges | async))"
+      && (!data.step.verifiedEmail || data.step.verifiedEmail !== ((formControl.valueChanges | async) || formControl.value))"
     [label]="i18n.wizard.emailVerificationCode" kind="field" required>
     <div class="row no-gutters w-100">
       <div class="col-6 col-md-4">
@@ -44,7 +44,7 @@
   <label-value
     *ngIf="field.phoneKind === PhoneKind.MOBILE
       && field.requireVerification
-      && (!data.step.verifiedSms || data.step.verifiedSms !== (mobilePhone.controls.number.valueChanges | async))"
+      && (!data.step.verifiedSms || data.step.verifiedSms !== ((mobilePhone.controls.number.valueChanges | async) || mobilePhone.controls.number.value))"
     [label]="i18n.wizard.smsVerificationCode" kind="field" required>
     <div class="row no-gutters w-100">
       <div class="col-6 col-md-4">

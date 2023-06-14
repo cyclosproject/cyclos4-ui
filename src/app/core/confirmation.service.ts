@@ -17,6 +17,7 @@ export interface ConfirmOptions {
   createDeviceConfirmation?: () => CreateDeviceConfirmation,
   passwordInput?: PasswordInput,
   callback: (params: ConfirmCallbackParams) => void,
+  cancelCallback?: () => void,
 }
 
 /**
@@ -41,12 +42,14 @@ export class ConfirmationService {
 
   private ref: BsModalRef;
 
+  // This flag is true for each confirmation if it was successful
+  confirmed = false;
+
   constructor(
     private modal: BsModalService,
     apiInterceptor: ApiInterceptor
   ) {
-    apiInterceptor.hideConfirmationHandler = () =>
-      this.hide();
+    apiInterceptor.hideConfirmationHandler = () => this.hide();
   }
 
   /**
@@ -65,16 +68,36 @@ export class ConfirmationService {
    *   the typed password is passed as parameter.
    */
   confirm(options: ConfirmOptions): void {
+    this.confirmed = false;
     if (options.passwordInput && !options.createDeviceConfirmation) {
       throw new Error('When there\'s a passwordInput it is also required to set the createDeviceConfirmation callback');
     }
+    if (options.passwordInput == null) {
+      // When no password input, set the confirmation as confirmed when the callback is called.
+      // Otherwise it will be managed by the hide() method
+      const originalCallback = options.callback;
+      options.callback = p => {
+        originalCallback(p);
+        this.confirmed = true;
+      };
+    }
     this.ref = this.confirmHandler(this.modal, options);
+
+    if (options.cancelCallback) {
+      let hideSub = this.ref.onHide.subscribe(() => {
+        if (!this.confirmed) {
+          options.cancelCallback();
+        }
+        hideSub.unsubscribe();
+      });
+    }
   }
 
   /**
    * Hides the current visible confirmation popup
    */
   hide() {
+    this.confirmed = true;
     if (this.ref) {
       this.modal.hide(this.ref.id);
     }

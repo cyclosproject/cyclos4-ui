@@ -101,12 +101,8 @@ export class EditDocumentComponent
   }
 
   save() {
-    validateBeforeSubmit(this.form);
     const file = this.fileControl.value as File;
-    if (this.create || file) {
-      validateBeforeSubmit(this.fileControl);
-    }
-    if (!this.form.valid || !this.fileControl.valid) {
+    if (!validateBeforeSubmit(this.form) || ((this.create || file) && !validateBeforeSubmit(this.fileControl))) {
       return;
     }
 

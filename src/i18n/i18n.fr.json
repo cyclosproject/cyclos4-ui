@@ -957,7 +957,6 @@
       "status": "Statut du PIN de coupon",
       "blocked": "Le code PIN a été bloqué pour avoir dépassé les tentatives non valides",
       "notUsed": "Le code PIN n'est pas utilisé",
-      "required": "Le code PIN est requis pour encaisser",
       "subsequent": "Le code PIN n'est pas utilisé lors du premier encaissement, mais requis par la suite"
     },
     "unblockPin": {

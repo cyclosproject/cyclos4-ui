@@ -87,8 +87,7 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
   }
 
   save() {
-    validateBeforeSubmit(this.form);
-    if (!this.form.valid) {
+    if (!validateBeforeSubmit(this.form)) {
       return;
     }
 

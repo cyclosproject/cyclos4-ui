@@ -1217,7 +1217,7 @@
       "status": "Estado do PIN do cupom",
       "blocked": "O PIN foi bloqueado por exceder as tentativas inválidas",
       "notUsed": "O PIN não é usado",
-      "required": "O PIN é necessário para resgatar",
+      "required": "PIN é necessário para resgatar",
       "subsequent": "O PIN não é usado no primeiro resgate, mas é necessário depois"
     },
     "unblockPin": {

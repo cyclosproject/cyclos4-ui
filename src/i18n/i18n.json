@@ -1217,7 +1217,7 @@
       "status": "Voucher PIN status",
       "blocked": "The PIN has been blocked by exceeding invalid attempts",
       "notUsed": "The PIN is not used",
-      "required": "The PIN is required for redeeming",
+      "required": "PIN is required for redeeming",
       "subsequent": "The PIN is not used on first redeem, but required afterwards"
     },
     "unblockPin": {

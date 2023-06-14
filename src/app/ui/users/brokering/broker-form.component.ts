@@ -50,8 +50,7 @@ export class BrokerFormComponent
   }
 
   save() {
-    validateBeforeSubmit(this.form);
-    if (!this.form.valid) {
+    if (!validateBeforeSubmit(this.form)) {
       return;
     }
     const value = this.form.value;

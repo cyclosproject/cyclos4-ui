@@ -1217,7 +1217,7 @@
       "status": "Estado del PIN del cupón",
       "blocked": "El PIN ha sido bloqueado por exceder los intentos no válidos",
       "notUsed": "No se utiliza PIN",
-      "required": "El PIN es necesario para el canje",
+      "required": "Se requiere PIN para realizar el canje",
       "subsequent": "El PIN no se utiliza en el primer canje, pero será requerido posteriormente"
     },
     "unblockPin": {

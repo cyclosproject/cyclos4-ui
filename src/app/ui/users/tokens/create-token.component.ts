@@ -83,8 +83,7 @@ export class CreateTokenComponent extends BaseComponent implements OnInit {
   }
 
   submit() {
-    validateBeforeSubmit(this.form);
-    if (!this.form.valid) {
+    if (!validateBeforeSubmit(this.form)) {
       return;
     }
     const value = cloneDeep(this.form.value);

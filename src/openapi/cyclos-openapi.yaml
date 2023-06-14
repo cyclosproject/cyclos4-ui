@@ -68,9 +68,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.16/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.16.1/api-deprecation.html)
     for this version.
-  version: '4.16'
+  version: '4.16.1'
 servers:
   - url: 'http://root/api'
 
@@ -97,7 +97,7 @@ tags:
       application, and then the popup must be opened. After finishing, the
       resulting data is sent via push notifications.
       For more information, see the corresponding section in the
-      [Wiki](https://wiki4.cyclos.org/index.php/External_identity_providers#Using_identity_providers_together_with_the_REST_API).
+      [Wiki](https://wiki.cyclos.org/index.php/External_identity_providers#Using_identity_providers_together_with_the_REST_API).
   - name: Users
     description: >-
       User searching, registration and profile modification. Also provides
@@ -756,7 +756,7 @@ paths:
           in: query
           required: false
           description: >-
-            When using an [external identity provider](https://wiki4.cyclos.org/index.php/External_identity_providers),
+            When using an [external identity provider](https://wiki.cyclos.org/index.php/External_identity_providers),
             this is the request id used to automatically link the user to the
             provider. Is only needed when no user was matched, that is, no user
             in Cyclos was linked to the identifier returned by the provider,
@@ -9637,7 +9637,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
       summary: >-
         Returns an image details by id or key
       description: >-
-        Returns metadata about an image given its identifier or key
+        Returns metadata about an image given its identifier or key.
+        In case of images of kind `systemCustom` the key could be
+        also compund by the prefix `system_image_` and the file name.
       tags:
         - Images
       parameters:
@@ -9646,7 +9648,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: path
           required: true
           description: >-
-            The image id or file name
+            The image id or key
           x-dotInPath: true
           schema:
             type: string
@@ -9699,9 +9701,11 @@ A note for dynamic custom fields: If a script is used to generate possible value
       summary: >-
         Removes an image by id or key
       description: >-
-        Removes the image with the given internal id or key. Any image kind can be
-        removed using this operation, but the authenticated user needs the
-        appropriate permission to do so.
+        Removes the image with the given internal id or key.
+        In case of images of kind `systemCustom` the key could be
+        also compund by the prefix `system_image_` and the file name.
+        Any image kind can be removed using this operation, but the authenticated
+        user needs the appropriate permission to do so.
       tags:
         - Images
       parameters:
@@ -9709,7 +9713,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: path
           required: true
           description: >-
-            The image id or file name
+            The image id or key
           x-dotInPath: true
           schema:
             type: string
@@ -9767,9 +9771,11 @@ A note for dynamic custom fields: If a script is used to generate possible value
       summary: >-
         Returns an image content by id or key
       description: >-
-        Returns the content of an image, given the image identifier or key. When
-        neither `width` nor `height` are specified, returns the original content.
-        The original ratio is always maintained. When only of one of the
+        Returns the content of an image, given the image identifier or key.
+        In case of images of kind `systemCustom` the key could be
+        also compund by the prefix `system_image_` and the file name.
+        When neither `width` nor `height` are specified, returns the original
+        content. The original ratio is always maintained. When only of one of the
         dimensions is specified, it is used as maximum, and the other is
         calculated. When both are informed, the maximum size with the original
         ratio that fits both dimensions is used.
@@ -9780,7 +9786,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: path
           required: true
           description: >-
-            The image id or file name
+            The image id or key
           x-dotInPath: true
           schema:
             type: string
@@ -31987,6 +31993,13 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/UnavailableError'
+        '500':
+          description: >-
+            If a payment error has occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentError'
       requestBody:
         description: >-
           The generate voucher parameters
@@ -58300,7 +58313,7 @@ components:
         
         - `externalPayment`: A payment to an external user
         
-        - `import`: Deprecated: No longer used. Use `payment` instead.. An imported transaction
+        - `import`: An imported transaction
         
         - `order`: Deprecated: No longer used. Use `payment` instead. . Transaction generated by confirming an order
         
@@ -58316,7 +58329,6 @@ components:
       type: string
       x-deprecated-enum:
         - chargeback|4.18|Chargebacks are now only handled at transfer level. Chargeback transactions no longer exist.
-        - import|4.18|No longer used. Use `payment` instead.
         - order|4.17|No longer used. Use `payment` instead.
       enum:
         - chargeback
@@ -58375,7 +58387,7 @@ components:
         
         - `chargeback`: A transfer which is a chargeback of another transfer
         
-        - `import`: Deprecated: No longer used, existing transfers were migrated to `payment`. An imported transfer
+        - `import`: An imported transfer
         
         - `initialCredit`: A transfer which is the initial credit for a newly created account
         
@@ -58385,8 +58397,6 @@ components:
         
         - `transferFee`: A transfer generated by a transfer fee charge
       type: string
-      x-deprecated-enum:
-        - import|4.18|No longer used, existing transfers were migrated to `payment`
       enum:
         - accountFee
         - balanceDisposal
@@ -80573,7 +80583,7 @@ components:
             identityProviderRequestId:
               type: string
               description: >-
-                When using an [external identity provider](https://wiki4.cyclos.org/index.php/External_identity_providers),
+                When using an [external identity provider](https://wiki.cyclos.org/index.php/External_identity_providers),
                 this is the request id used to complete the registration process
                 after filling up the registration form.
             addresses:

@@ -53,8 +53,7 @@ export class AssignTokenComponent extends BaseComponent implements OnInit {
   }
 
   submit() {
-    validateBeforeSubmit(this.form);
-    if (!this.form.valid) {
+    if (!validateBeforeSubmit(this.form)) {
       return;
     }
     const values = cloneDeep(this.form.value);

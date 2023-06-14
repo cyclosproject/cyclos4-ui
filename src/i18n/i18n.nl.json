@@ -1187,7 +1187,6 @@
       "status": "Waardebon PIN status",
       "blocked": "De pincode is geblokkeerd wegens overschrijding van ongeldige pogingen",
       "notUsed": "De pincode wordt niet gebruikt",
-      "required": "De PIN is vereist voor inwisselen",
       "subsequent": "De pincode wordt niet gebruikt bij eerste inwisseling, maar is daarna vereist"
     },
     "unblockPin": {

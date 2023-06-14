@@ -29,6 +29,7 @@ const operationRoutes: Routes = [
         path: 'action/:operation',
         component: RunOperationComponent,
         data: {
+          action: true,
           runScope: OperationRunScope.Standalone,
         },
       },

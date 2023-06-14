@@ -38,8 +38,12 @@ const TypesRunDirectly: OperationResultTypeEnum[] = [
 })
 export class RunOperationHelperService {
 
-  /** The next action that can be executed. */
+  /** Flag to allow the next execution of an operation because it was caused by a user interaction with operations and not a reload */
+  allowActionExecution = false;
+
   reRun = false;
+  startNewOperation = false;
+  alreadyConfirmedSession = false;
 
   constructor(
     private dataForFrontendHolder: DataForFrontendHolder,
@@ -69,7 +73,28 @@ export class RunOperationHelperService {
         scopeId,
         formParameters,
         confirmationPassword
-      }).subscribe(response => this.handleResult(response));
+      }).subscribe(response => {
+        if (operation.requireConfirmationPassword) {
+          this.alreadyConfirmedSession = true;
+        }
+        this.allowActionExecution = false;
+        this.handleResult(response);
+      });
+
+      var confirmAndRun = () => {
+        if (operation.confirmationText) {
+          this.confirmation.confirm({
+            title: operation.name,
+            callback: () => {
+              this.confirmation.hide();
+              doRun();
+            },
+            message: operation.confirmationText
+          });
+        } else {
+          doRun();
+        }
+      };
 
       if (operation.requireConfirmationPassword) {
         // Get the run data in order to get the password input
@@ -80,6 +105,7 @@ export class RunOperationHelperService {
         this.getDataForRunRequest(operation, scopeId).subscribe(data => {
           if (data.confirmationPasswordInput) {
             this.confirmation.confirm({
+              title: data.name,
               callback: conf => {
                 this.confirmation.hide();
                 doRun(conf.confirmationPassword);
@@ -88,18 +114,12 @@ export class RunOperationHelperService {
               message: data.confirmationText,
               passwordInput: data.confirmationPasswordInput
             });
+          } else {
+            confirmAndRun();
           }
         });
-      } else if (operation.confirmationText) {
-        this.confirmation.confirm({
-          callback: () => {
-            this.confirmation.hide();
-            doRun();
-          },
-          message: operation.confirmationText,
-        });
       } else {
-        doRun();
+        confirmAndRun();
       }
     } else {
       // Go to the run page
@@ -130,9 +150,7 @@ export class RunOperationHelperService {
           break;
       }
       parts.push(ApiHelper.internalNameOrId(operation));
-      this.router.navigate(parts, {
-        queryParams: formParameters,
-      });
+      this.router.navigate(parts, { queryParams: formParameters });
     }
   }
 
@@ -356,6 +374,7 @@ export class RunOperationHelperService {
         path => !path.startsWith('/operations/');
       const index = cloneDeep(this.breadcrumb.breadcrumb$.value).reverse().findIndex(pathCondition);
       if (index > 0) {
+        this.allowActionExecution = true;
         this.breadcrumb.back(index);
         return true;
       }
@@ -367,6 +386,7 @@ export class RunOperationHelperService {
     }
 
     if (this.reRun) {
+      this.allowActionExecution = true;
       this.doNavigate(this.breadcrumb.breadcrumb$.value.pop(), true);
       return true;
     }
@@ -375,6 +395,7 @@ export class RunOperationHelperService {
     const autoRunAction = (result.actions || []).find(a => a.action.id === result.autoRunActionId);
     if (autoRunAction) {
       // Run the action and leave
+      this.allowActionExecution = true;
       this.run(autoRunAction.action, null, autoRunAction.parameters);
       return true;
     }

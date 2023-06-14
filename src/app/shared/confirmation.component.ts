@@ -108,6 +108,7 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
       value.confirmationPassword = confirmationPassword;
     }
     this.callback(value);
+
     if (this.passwordInput == null) {
       // If it's not a confirmation with password just hide it,
       // otherwise hiding is handled by the api interceptor

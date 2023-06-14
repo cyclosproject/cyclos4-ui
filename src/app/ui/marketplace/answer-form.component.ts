@@ -36,8 +36,7 @@ export class AnswerFormComponent
   }
 
   submit() {
-    validateBeforeSubmit(this.answer);
-    if (!this.answer.valid) {
+    if (!validateBeforeSubmit(this.answer)) {
       return;
     }
     this.addSub(this.adQuestionService.answerAdQuestion({

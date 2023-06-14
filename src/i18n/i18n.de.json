@@ -71,6 +71,7 @@
     "no": "Nein",
     "notSet": "Nicht festgelegt",
     "share": "Teilen",
+    "categoriesView": "Kategorieansicht",
     "map": "Karte",
     "map.view": "Karte anzeigen",
     "noOptionsSelected": "Keine Optionen ausgewählt",
@@ -350,6 +351,7 @@
       "securityAnswer": "Sicherheitsantwort"
     },
     "forgotten": {
+      "preface": "Hier können Sie Ihren Benutzer wiederherstellen und Ihr Passwort ändern, indem Sie einen Wiederherstellungscode anfordern. Sie können eine der folgenden Identifikationsmethoden im folgenden Benutzerfeld verwenden:",
       "principal": "Nutzende",
       "captcha": "Captcha-Überprüfung",
       "code": "Bestätigungscode",
@@ -891,7 +893,8 @@
     "changeExpirationDate": "Ablaufdatum ändern",
     "expirationDateChanged": "Ablaufdatum geändert",
     "refundPayment": "Rückerstattungszahlung",
-    "refundDate": "Erstattungsdatum"
+    "refundDate": "Erstattungsdatum",
+    "showCategories": "Kategorien zeigen"
   },
   "field": {
     "image": {
@@ -1414,6 +1417,7 @@
     "creationDate": "Erstellungsdatum",
     "byOwner": "Von {owner}",
     "showAllCategories": "Alle anzeigen",
+    "showCategories": "Kategorien zeigen",
     "rootCategory": "Haupt",
     "orderAccepted": "Die Bestellung wurde bearbeitet",
     "orderRejected": "Die Bestellung wurde abgelehnt",
@@ -1509,6 +1513,7 @@
     "waitingForBuyersApproval": "Warten auf Genehmigung des Käufers",
     "waitingForSellersApproval": "Warten auf Genehmigung des Verkäufers",
     "remarks": "Anmerkungen",
+    "listAds": "Anzeigen ansehen",
     "title": {
       "search": "Anzeigen suchen",
       "myAdvertisements": "Meine Anzeigen",
@@ -1926,12 +1931,14 @@
     },
     "title": {
       "search": "Referenzen",
+      "searchReceived": "Erhaltene Referenzen",
       "view": "Referenz Details",
       "set": "Neue Referenz festlegen",
       "edit": "Angegebene Referenz bearbeiten"
     },
     "mobileTitle": {
       "search": "Referenzen",
+      "searchReceived": "Erhaltene Referenzen",
       "view": "Referenz Details",
       "set": "Neue Referenz festlegen"
     },
@@ -1956,6 +1963,14 @@
     "last30Days": "Letzten 30 Tage",
     "total": "Insgesamt",
     "percentagePositive": "Prozentsatz positiv"
+  },
+  "feedback": {
+    "title": {
+      "searchReceived": "Erhaltene Bewertungen"
+    },
+    "mobileTitle": {
+      "searchReceived": "Erhaltene Bewertungen"
+    }
   },
   "product": {
     "title": {
