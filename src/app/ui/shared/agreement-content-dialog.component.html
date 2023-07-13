@@ -1,12 +1,12 @@
 <ng-container *ngIf="content$ | async as content; else loading">
-  <div #content>
+  <div #contentDiv>
     <h1>
       {{ agreement.name }}
     </h1>
     <div class="mb-3" [innerHTML]="content | trust"></div>
   </div>
   <actions forceRow>
-    <action-button (action)="print(content, printOutput)"
+    <action-button (action)="print(contentDiv, printOutput)"
       [label]="i18n.general.print">
     </action-button>
     <action-button outline (action)="modalRef.hide()"

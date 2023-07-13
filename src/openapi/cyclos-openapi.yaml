@@ -68,9 +68,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.16.1/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.16.2/api-deprecation.html)
     for this version.
-  version: '4.16.1'
+  version: '4.16.2'
 servers:
   - url: 'http://root/api'
 
@@ -5585,6 +5585,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "When set to `true`, instead of returning users with corresponding profile fields set on list, will return them with `display`."
           schema:
             type: boolean
+        - name: keywords
+          in: query
+          required: false
+          description: "Used to filter operators containing that keywords in the the username or name (case insensitive)"
+          schema:
+            type: string
         - name: operatorGroups
           in: query
           required: false
@@ -63468,6 +63474,11 @@ components:
         - $ref: '#/components/schemas/QueryFilters'
         - type: object
           properties:
+            keywords:
+              type: string
+              description: >-
+                Used to filter operators containing that keywords in the the
+                username or name (case insensitive)
             creationPeriod:
               description: >-
                 The minimum / maximum user creation date. Only taken into account if
@@ -65908,6 +65919,11 @@ components:
           description: >-
             The content of the footer, if any
           type: string
+        theme:
+          description: >-
+            The theme used by the frontend
+          allOf:
+            - $ref: '#/components/schemas/FrontendTheme'
 
     DataForFrontendHome:
       description: >-
@@ -68082,6 +68098,17 @@ components:
       properties:
         frontend:
           $ref: '#/components/schemas/FrontendEnum'
+
+    FrontendTheme:
+      description: >-
+        Represents the theme used by the new frontend
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+          properties:
+            lastModifiedInMillis:
+              description: The last modification millis
+              type: string
 
     FullProfileEdit:
       description: >-

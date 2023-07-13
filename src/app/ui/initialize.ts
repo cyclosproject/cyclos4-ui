@@ -11,10 +11,10 @@ import { NextRequestState } from 'app/core/next-request-state';
 import { ScriptLoaderService } from 'app/core/script-loader.service';
 import { StateManager } from 'app/core/state-manager';
 import { ApiHelper } from 'app/shared/api-helper';
-import { apiUrl, empty, i18nRoot, initializeStyleLinks, isSameOrigin } from 'app/shared/helper';
+import { apiUrl, empty, i18nRoot, initializeStyleLinks, isSameOrigin, setRootSpinnerVisible } from 'app/shared/helper';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
 import { forkJoin, of, timer } from 'rxjs';
-import { catchError, filter, first, switchMap } from 'rxjs/operators';
+import { catchError, filter, first, map, switchMap } from 'rxjs/operators';
 
 declare const UpUp: any;
 declare const dataForFrontend: DataForFrontend;
@@ -35,6 +35,11 @@ export function initialize(
   return async () => {
     const apiRoot = apiUrl();
 
+    const themeLoaded$ = timer(1000, 500).pipe(filter(() => {
+      const style = getComputedStyle(document.body);
+      return !empty(style.getPropertyValue('--primary').trim());
+    }), first());
+
     // Will split the session token if running on the same origin as the API
     nextRequestState.useCookie = isSameOrigin(apiRoot);
 
@@ -52,7 +57,6 @@ export function initialize(
     }
     // Initialize the API configuration
     apiConfig.rootUrl = apiRoot;
-
 
     // Initialize the style links
     initializeStyleLinks();
@@ -98,6 +102,36 @@ export function initialize(
       }
       return of(d);
     });
+    dataForFrontendHolder.registerLoadHook(d => {
+      const theme = d.theme || {};
+      if (theme.id && theme.lastModifiedInMillis) {
+        const stylesLink = document.getElementById('stylesLink') as HTMLLinkElement;
+        const url = stylesLink?.href;
+        const marker = '/ui/theme.css';
+        const pos = url?.indexOf(marker);
+        if (pos > 0) {
+          const newUrl = `${url.substring(0, pos + marker.length)}?id=${theme.id}&mod=${theme.lastModifiedInMillis}&k=${d.dataForUi?.resourceCacheKey}`;
+          const root = document.querySelector('ui-root') as HTMLElement;
+          if (newUrl !== url && root) {
+            root.style.display = 'none';
+            root.classList.remove('d-flex');
+            setRootSpinnerVisible(true);
+            document.head.removeChild(stylesLink);
+            return timer(0).pipe(switchMap(() => {
+              stylesLink.href = newUrl;
+              document.head.appendChild(stylesLink);
+              return themeLoaded$.pipe(map(() => {
+                root.style.display = '';
+                root.classList.add('d-flex');
+                setRootSpinnerVisible(false);
+                return d;
+              }));
+            }));
+          }
+        }
+      }
+      return of(d);
+    });
     if (environment.production && !environment.standalone) {
       dataForFrontendHolder.registerLoadHook(d => {
         return scriptLoader.loadScript('upup.min.js').pipe(
@@ -115,10 +149,6 @@ export function initialize(
       });
     }
     const dataForFrontend$ = dataForFrontendHolder.initialize(dataForFrontend);
-    const themeLoaded$ = timer(1000, 500).pipe(filter(() => {
-      const style = getComputedStyle(document.body);
-      return !empty(style.getPropertyValue('--primary').trim());
-    }), first());
 
 
     return forkJoin([dataForFrontend$, themeLoaded$]).toPromise();

@@ -258,6 +258,8 @@
     "banking.userBalancesOverview": "Überblick Kontostand Benutzer",
     "banking.accountBalanceLimits": "Kontolimits",
     "banking.accountPaymentLimits": "Zahlungsbeschränkungen",
+    "banking.importedPayments": "Zahlungen importieren",
+    "banking.userImportedPayments": "Sammelüberweisungen",
     "operators": "Operatoren",
     "operators.operators": "Operatoren",
     "operators.register": "Operator registrieren",
@@ -271,9 +273,11 @@
     "marketplace.directory": "Verzeichnis",
     "marketplace.userSearch": "Nutzende",
     "marketplace.businessDirectory": "Business-Verzeichnis",
+    "marketplace.systemMessages": "Nachrichten",
     "marketplace.advertisements": "Anzeigen",
     "marketplace.adInterests": "Anzeigeninteressen",
     "marketplace.deliveryMethods": "Versandarten",
+    "marketplace.inviteUsers": "Nutzer einladen",
     "marketplace.webshopSettings": "Webshop-Einstellungen",
     "marketplace.myAdvertisements": "Meine Anzeigen",
     "marketplace.myPurchases": "Meine Einkäufe",
@@ -291,6 +295,7 @@
     "personal.passwords": "Passwörter",
     "personal.identityProviders": "Identitätsanbieter",
     "personal.agreements": "Vereinbarungen",
+    "personal.messages": "Nachrichten",
     "personal.notifications": "Benachrichtigungen",
     "personal.settings": "Einstellungen",
     "personal.references": "Referenzen",
@@ -323,6 +328,11 @@
   },
   "password": {
     "confirm.mode": "Bestätigen mit",
+    "confirmation": {
+      "notActive": {
+        "device": "Um zu bestätigen, benötigen Sie die mobile App installiert und als vertrauenswürdiges Gerät aktiviert. Bitte laden Sie die  App herunter und fahren Sie mit der Aktivierung fort."
+      }
+    },
     "oldPassword": "Altes Passwort",
     "newPassword": "Neues Passwort",
     "passwordConfirmation": "Bestätigung des Passworts",
@@ -398,6 +408,7 @@
       "disable": "Deaktivieren",
       "disable.confirm": "Sind Sie sicher, {type} deaktivieren zu wollen?",
       "disable.done": "{type} wurde deaktiviert",
+      "resetAndSend": "Zurücksetzen und senden",
       "resetAndSendEmail": "Zurücksetzen und per E-Mail senden",
       "resetAndSendEmail.confirm": "Sind Sie sicher, dass Sie den {type} zurücksetzen und ihn per E-Mail an den Benutzer senden möchten?",
       "resetAndSendEmail.done": "{type} wurde zurückgesetzt und per E-Mail gesendet",
@@ -432,6 +443,7 @@
     "set": "Ihre Sicherheitsantwort wurde festgelegt"
   },
   "dashboard": {
+    "customizeQuickAccess": "Anpassen",
     "quickAccess": "Schnellzugriff",
     "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
@@ -443,13 +455,17 @@
       "contacts": "Kontakte",
       "directory": "Verzeichnis",
       "advertisements": "Marktplatz",
+      "adInterests": "Anzeigenbeobachter",
       "editProfile": "Profil bearbeiten",
       "password": "Passwort",
       "passwords": "Passwörter",
       "switchTheme": "Theme wechseln",
       "classicFrontend": "Klassisches Frontend verwenden",
       "sendPaymentRequestToUser": "Zahlung anfordern",
-      "sendPaymentRequestToSystem": "Zahlung vom System anfordern"
+      "sendPaymentRequestToSystem": "Zahlung vom System anfordern",
+      "documents": "Dokumente",
+      "messages": "Nachrichten",
+      "sendMessage": "Nachricht senden"
     },
     "accounts": "Konten",
     "accountStatus": "Kontostatus",
@@ -804,6 +820,11 @@
     "reschedulePaymentRequest.done": "Die Zahlungsaufforderung wurde verschoben",
     "confirmPaymentRequest": "Sind Sie sicher, dass Sie diese Zahlungsaufforderung senden wollen?",
     "firstInstallmentIsImmediate": "Erste Rate ist sofort",
+    "posConfirmation": {
+      "notActive": {
+        "device": "Um zu bestätigen, benötigt der Zahler die mobile App installiert  und als vertrauenswürdiges Gerät aktiviert. Sie müssen die App herunterladen und mit ihrer Aktivierung fortfahren."
+      }
+    },
     "error": {
       "minTime": "Für eine Zahlung dieser Art sollte ein minimaler Zeitraum erwartet werden.",
       "balance": "Unzureichendes Guthaben um diesen Vorgang auszuführen",
@@ -866,6 +887,9 @@
       "done": "Der/die Gutschein(e) wurde(n) gekauft.",
       "minTimeToRedeem": "Kann eingelöst werden",
       "minTimeToRedeem.afterBuy": "{interval} nach dem Kauf"
+    },
+    "send": {
+      "message": "Nachricht"
     },
     "generate": {
       "done": "Der/die Gutschein(e) wurde(n) generiert."
@@ -1039,7 +1063,7 @@
     "connected": "Online",
     "connectionStatus": "Verbindungsstatus",
     "disconnectedStatus": "Offline (letzter Login: {date})",
-    "neverLogged": "Niemals geloggt",
+    "neverLogged": "Noch nie angemeldet",
     "group": "Gruppe",
     "broker": "Makler",
     "groups": "Gruppen",
@@ -1077,6 +1101,8 @@
     "securityQuestion.message": "Wenn Sie Ihr Passwort vergessen haben, müssen Sie die Sicherheitsfrage richtig beantworten, um das Passwort zurückzusetzen.<br>Diese kann später festgelegt werden, aber bedenken Sie, dass die Passwortwiederherstellung ohne sie nicht funktioniert.",
     "securityQuestion.empty": "Leer lassen",
     "contact": "Kontakt",
+    "invitedBy": "Eingeladen von",
+    "invitedByMe": "Von mir eingeladen",
     "creationBegin": "Registriert nach",
     "creationEnd": "Registriert vor",
     "acceptedAgreements": "Akzeptierte Vereinbarungen",
@@ -1131,7 +1157,8 @@
       "accountsBalanceLimits": "Kontostand Limits",
       "accountsPaymentLimits": "Kontozahlungsbeschränkungen",
       "privacySettings": "Privatsphäre-Einstellungen",
-      "references": "Referenzen"
+      "references": "Referenzen",
+      "sendMessage": "Nachricht senden"
     },
     "registration": {
       "group.public": "Wähle die Gruppe, an der Sie teilnehmen möchten",
@@ -1151,7 +1178,10 @@
       "generatedPasswords.single": "Sie erhalten in Kürze eine E-Mail mit Ihrem generierten {type}.",
       "generatedPasswords.multiple": "Sie erhalten in Kürze eine E-Mail mit den folgenden generierten Passwörtern: {types}.",
       "viewProfile": "Profil anzeigen",
-      "registerAnotherUser": "Einen anderen Nutzenden registrieren"
+      "registerAnotherUser": "Einen anderen Nutzenden registrieren",
+      "resumeWizard": {
+        "message": "Eine vorherige Registrierung wurde auf diesem Gerät begonnen. Möchten Sie sie fortsetzen oder eine neue Registrierung beginnen?"
+      }
     },
     "orderBy": {
       "alphabeticallyAsc": "Name (A-Z)",
@@ -1194,6 +1224,7 @@
     "editOwnProfile": "Eigenes Profil bearbeiten",
     "notifications": "Benachrichtigungen",
     "viewAdvertisements": "Anzeigen aufrufen",
+    "messages": "Nachrichten anzeigen/senden",
     "brokering": "Brokering-Operationen ausführen",
     "runOperations": "Operationen ausführen",
     "created": "Die Operatorgruppe wurde erstellt",
@@ -1569,6 +1600,18 @@
       "adInterestNew": "Neue Anzeigeninteressen",
       "adInterest": "Anzeigeninteressen"
     }
+  },
+  "message": {
+    "title": {
+      "search": "Nachrichten"
+    },
+    "mobileTitle": {
+      "search": "Nachrichten"
+    },
+    "sendToBrokered": "Meine registrierten Benutzer",
+    "sendTo": "Senden an",
+    "send": "Senden",
+    "messageSent": "Die Nachricht wurde erfolgreich gesendet"
   },
   "notification": {
     "message": "Nachricht",
@@ -1999,6 +2042,23 @@
       "member": "Mitglied"
     }
   },
+  "quickAccessSettings": {
+    "information": "Auf dieser Seite können Sie einstellen, welche Schnellzugriffs-Icons in Ihrem Dashboard angezeigt werden und in welcher Reihenfolge. Aktivieren / Deaktivieren Sie ein Element, indem Sie es anklicken. Sie können aktivierte Elemente auch durch Ziehen und Ablegen neu ordnen."
+  },
+  "imports": {
+    "title": {
+      "payments": "Zahlungen importieren",
+      "userPayments": "Sammelüberweisungen"
+    },
+    "mobileTitle": {
+      "payments": "Zahlungen importieren",
+      "userPayments": "Sammelüberweisungen"
+    },
+    "kind": {
+      "payments": "Zahlungen",
+      "userPayments": "Sammelüberweisungen"
+    }
+  },
   "consent": {
     "authorize": "Autorisieren",
     "deny": "Ablehnen",
@@ -2010,5 +2070,9 @@
     "permission": {
       "requesting": "{client} fordert an:"
     }
+  },
+  "unsubscribe": {
+    "message.message": "{name}, Sie sind dabei, die E-Mail-Adresse <b>{email}</b> für E-Mails abzubestellen, die durch internen Nachrichten generiert wurden.",
+    "done.message": "Die E-Mail-Adresse <b>{email}</b> wird keine E-Mails mehr über interne Nachrichten erhalten."
   }
 }

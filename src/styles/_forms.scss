@@ -1893,6 +1893,7 @@ input-list-field {
 .input-field-secret::-moz-placeholder {
   /* Firefox 19+ */
   font-family: $font-family-sans-serif;
+  -webkit-text-security: none;
 }
 
 .input-field-secret:-ms-input-placeholder {

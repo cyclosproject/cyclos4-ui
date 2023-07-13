@@ -152,8 +152,10 @@ export class LoginComponent
   private get afterLogin(): () => any {
     return () => {
       setRootSpinnerVisible(false);
-      // Redirect to the correct URL
-      this.router.navigateByUrl(this.loginState.redirectUrl || '');
+      // Redirect to the correct URL if login confirmation isn't required
+      if (!this.dataForFrontendHolder.dataForUi?.auth?.loginConfirmation) {
+        this.router.navigateByUrl(this.loginState.redirectUrl || '');
+      }
     };
   }
 }

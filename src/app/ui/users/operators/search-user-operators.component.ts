@@ -37,7 +37,7 @@ export class SearchUserOperatorsComponent
   }
 
   protected getFormControlNames() {
-    return ['operatorGroups', 'statuses', 'creationBegin', 'creationEnd'];
+    return ['keywords', 'operatorGroups', 'statuses', 'creationBegin', 'creationEnd'];
   }
 
   ngOnInit() {

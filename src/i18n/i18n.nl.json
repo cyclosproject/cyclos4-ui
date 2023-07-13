@@ -360,9 +360,12 @@
         "missing": {
           "device": "Inloggen mislukt. U dient uw login te bevestigen met een beveiligd mobiel apparaat, maar dat heeft u niet ingesteld. Installeer eerst de mobiele app en activeer een beveiligd apparaat.",
           "password": "Inloggen mislukt. U dient de login te bevestigen met uw {0} , maar dat is niet actief. Neem contact op met de administratie.",
-          "totp": "Inloggen mislukt. U dient de login te bevestigen met uw authenticator app, maar die heeft u niet ingesteld. Neem contact op met de administratie."
+          "totp": "Inloggen mislukt. U dient de login te bevestigen met uw authenticator app, maar die heeft u niet ingesteld. Neem contact op met de administratie.",
+          "multiple": "Inloggen mislukt. U bent verplicht om uw login te bevestigen met een aantal van de volgende, maar u heeft geen: {credentials}. Neem contact op met de administratie."
         },
         "notActive": {
+          "password": "Om uw aanmelding te voltooien, heeft u een {password}nodig, maar u heeft het niet actief. Activeer het en ga verder.",
+          "totp": "Om uw aanmelding te voltooien, heeft u uw authenticator app nodig, maar deze is niet actief. Activeer deze en ga verder.",
           "multiple": "Om je aanmelding te voltooien, heb je een {password} of je authenticatie app nodig, maar u heeft geen van beide actief. Activeer één van hen en ga verder."
         }
       }
@@ -390,6 +393,7 @@
       "sendMedium": "Stuur verificatiecode naar",
       "sendToEmail": "Stuur naar e-mail {email}",
       "sendToPhone": "Stuur naar telefoon {phone}",
+      "noMediums": "Geen mogelijk medium om verificatiecode te ontvangen",
       "send": "Stuur verificatiecode",
       "countdownLabel": "* Je kunt de e-mail / sms opnieuw verzenden over {seconds} seconden.",
       "receiveBy.sent": "{medium} verzonden",
@@ -517,7 +521,8 @@
       "scanQr": "Scan nu de QR-code met de authenticator app en typ de numerieke reeks in.",
       "openApp": "Open de authenticator app",
       "remove": "Verwijderen",
-      "remove.confirmation": "Weet u zeker dat u de authenticator app voor dit account wilt verwijderen?"
+      "remove.confirmation": "Weet u zeker dat u de authenticator app voor dit account wilt verwijderen?",
+      "remove.done": "Het geheim van de authenticator app is verwijderd"
     }
   },
   "pendingAgreements": {
@@ -540,19 +545,23 @@
     "set": "Uw beveiligingsantwoord is ingesteld"
   },
   "dashboard": {
+    "customizeQuickAccess": "Aanpassen",
     "quickAccess": "Snelle toegang",
     "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
       "account": "Rekening",
       "accounts": "Rekeningen",
+      "transfersOverview": "Betalingsoverzicht",
       "balancesOverview": "Saldi overzicht",
       "externalPayments": "Externe betalingen",
       "payUser": "Betaal",
       "paySystem": "Betaal aan systeemrekening",
+      "paySelf": "Overschrijven tussen rekeningen",
       "pos": "Betaling ontvangen",
       "receiveQrPayment": "Ontvang QR-code betaling",
       "contacts": "Contacten",
       "directory": "Bedrijven",
+      "pendingUsers": "Gebruikers in afwachting van activatie",
       "brokeredUsers": "Geregistreerde gebruikers",
       "registerUser": "Registreer gebruiker",
       "advertisements": "Marktplaats",
@@ -625,6 +634,7 @@
     "totalOutflow": "Totaal betaald",
     "netInflow": "Netto inkomen",
     "system": "Systeemrekening",
+    "nonZeroBalance": "Niet-nul saldo",
     "mobileTitle": {
       "account": "Rekening",
       "accountsSummary": "Overzicht van de rekeningen"
@@ -835,6 +845,8 @@
     "occurrencesCount": "Aantal termijnbetalingen",
     "firstOccurrence": "Eerste termijnbetaling",
     "firstOccurrence.date": "Datum van de eerste termijnbetaling",
+    "firstOccurrence.immediate": "Eerste betaling bij het accepteren van het verzoek",
+    "firstOccurrence.afterInterval": "Eerste betaling {interval} na het accepteren van het verzoek",
     "processed": "De betaling is succesvol verwerkt",
     "pending": "De advertentie is verwerkt en wacht op verdere autorisatie",
     "paymentRequestAcceptScheduled": "Het betalingsverzoek was gepland om te worden verwerkt op {date}",
@@ -843,6 +855,10 @@
     "done.new": "Nieuwe betaling",
     "done.addReceiverToContacts": "Voeg ontvanger toe aan contacten",
     "done.userAddedToContacts": "Gebruiker {contact} is toegevoegd aan contactpersonen",
+    "orderBy": {
+      "dueDateDesc": "Vervaldatum (nieuwste eerst)",
+      "dueDateAsc": "Vervaldatum (oudste eerst)"
+    },
     "status": {
       "open": "Open",
       "closed": "Gesloten",
@@ -883,6 +899,7 @@
       "childTransfer": "Transactie gegenereerd door deze betaling",
       "childTransfers": "Transfers gegenereerd door deze",
       "transfersOverview": "Betalingsoverzicht",
+      "tickets": "Tickets",
       "receiveQrPayment": "Ontvang betaling via QR-code",
       "paymentRequestSystemToUser": "Stuur betalingsverzoek van systeem naar gebruiker",
       "paymentRequestToSystem": "Stuur betalingsverzoek aan systeemrekening",
@@ -922,6 +939,7 @@
       "childTransfer": "Oorspronkelijke overdracht",
       "childTransfers": "Oorspronkelijke overdrachten",
       "transfersOverview": "Betalingsoverzicht",
+      "tickets": "Tickets",
       "receiveQrPayment": "QR-code betaling",
       "paymentRequestSystemToUser": "Betalingsverzoek aan systeemrekening",
       "paymentRequestToSystem": "Betalingsverzoek",
@@ -1021,7 +1039,13 @@
     "posConfirmation": {
       "device": "Om te kunnen bevestigen, moet de betaler deze QR-code scannen met de mobiele telefoon.",
       "password": "Om te bevestigen moet de betaler zijn {passwordType} opgeven.",
-      "totp": "Geef om te bevestigen een code op die is gegenereerd door je authenticator app."
+      "totp": "Geef om te bevestigen een code op die is gegenereerd door je authenticator app.",
+      "notActive": {
+        "multiple": "Om te bevestigen heeft de betaler een van het volgende nodig, maar heeft hij geen : {credentials}.",
+        "device": "Om te bevestigen moet de betaler de mobiele app hebben geïnstalleerd en geactiveerd als een beveiligd apparaat. De betaler dient de app te downloaden en door te gaan met de activatie.",
+        "password": "Om te bevestigen heeft u uw {passwordType}nodig, maar u heeft dit niet actief. Bezoek uw wachtwoord instellingen pagina of neem contact op met de administratie.",
+        "totp": "Om te bevestigen heeft de betaler een authenticatie-app nodig. De betaler dient in het systeem de pagina met wachtwoordinstellingen te bezoeken om deze te activeren."
+      }
     },
     "error": {
       "minTime": "Een minimale periode moet worden afgewacht om een betaling van dit type te verwerken.",
@@ -1080,6 +1104,7 @@
     "topUp": {
       "confirm": "De details van de waardebon aanvullen worden hieronder gegeven. Controleer het en bevestig deze actie.",
       "done": "De waardebon is succesvol opgerekt.",
+      "topUp": "Waardebon opwaarderen / activeren",
       "sendPinBy": "Stuur PIN via",
       "sendNotificationsBy": "Stuur meldingen via",
       "dontSendNotifications": "Stuur geen meldingen",
@@ -1118,6 +1143,7 @@
       "send": "Koop en e-mail",
       "sendConfirmation": "Bevestiging verzenden",
       "redeem": "Waardebon inwisselen",
+      "topUp": "Waardebon opwaarderen / activeren",
       "redeemDetails": "Waardebon ontvangst",
       "topUpDetails": "Waardebon opwaardering",
       "chargebackDetails": "Waardebon terugboeking",
@@ -1133,6 +1159,7 @@
       "send": "Koop en e-mail waardebon",
       "sendConfirmation": "Bevestiging verzenden",
       "redeem": "Waardebon inwisselen",
+      "topUp": "Waardebon opwaarderen / activeren",
       "redeemDetails": "Details waardebon ontvangst",
       "topUpDetails": "Details waardebon opwaardering",
       "chargebackDetails": "Waardebon terugboeking\n",
@@ -1166,6 +1193,7 @@
     },
     "send": {
       "send": "Koop en e-mail",
+      "sendImport": "Batch e-mail",
       "issuer": "Uitgever",
       "done": "De waardebon is naar {email} verzonden",
       "message": "Bericht"
@@ -1174,6 +1202,8 @@
       "generate": "Genereer waardebonnen",
       "done": "De waardebon(nen) zijn gegenereerd."
     },
+    "sendPinToClient": "PIN-code verzenden naar client",
+    "pinSent": "De pincode voor de waardebon is verzonden naar {mediums}",
     "configuration": "Configuratie",
     "originAccount": "Oorsprong rekening",
     "numberOfVouchers": "Aantal waardebonnen",
@@ -1187,6 +1217,7 @@
       "status": "Waardebon PIN status",
       "blocked": "De pincode is geblokkeerd wegens overschrijding van ongeldige pogingen",
       "notUsed": "De pincode wordt niet gebruikt",
+      "required": "PIN-code is vereist voor inwisselen",
       "subsequent": "De pincode wordt niet gebruikt bij eerste inwisseling, maar is daarna vereist"
     },
     "unblockPin": {
@@ -1195,9 +1226,11 @@
     },
     "cancel": {
       "cancelAndRefund": "Annuleren & terugbetalen",
+      "cancelAndChargeback": "Annuleer & terugboeken",
       "done": "Deze waardebon is geannuleerd.",
       "packConfirmation": "Er zijn andere waardebonnen in hetzelfde pakket die ook zullen worden geannuleerd. Weet u zeker dat u door wilt gaan?",
       "refundConfirmation": "Weet u zeker dat u deze waardebon wilt annuleren en terugbetalen?",
+      "chargebackConfirmation": "Weet u zeker dat u deze waardebon wilt annuleren en terugboeken?",
       "confirmation": "Weet u zeker dat u deze waardebon wilt annuleren?"
     },
     "resendEmail": {
@@ -1246,6 +1279,10 @@
     "showCategories": "Toon categorieën",
     "listTypes": "Toon tegoedbontypes",
     "voucher": "Waardebon",
+    "beginCreationDate": "Aanmaakdatum begin",
+    "endCreationDate": "Einde aanmaakdatum",
+    "beginExpirationDate": "Vervaldatum begint",
+    "endExpirationDate": "Einde van de vervaldatum",
     "info": {
       "title": "Waardebon informatie",
       "message.token": "Hier kunt u uw waardebon status controleren. Typ hieronder de waardebon code in.",
@@ -1281,6 +1318,11 @@
       "clear": "Wissen",
       "selectTooltip": "Filter op maximale afstand",
       "errorAddressNotLocated": "Het {address} adres was nog niet geolocloceerd."
+    },
+    "privacy": {
+      "name": "Zichtbaarheid",
+      "private.tooltip": "Dit veld is verborgen door andere gebruikers. Klik om het zichtbaar te maken.",
+      "public.tooltip": "Dit veld is zichtbaar voor andere deelnemers. Klik om het als privé in te stellen."
     },
     "image": {
       "upload": "Het uploaden van een nieuwe afbeelding",
@@ -1392,6 +1434,7 @@
       "fields": "Aangepaste profiel velden",
       "phones": "Telefoons",
       "addresses": "Adressen",
+      "contactInfos": "Openbare contacten",
       "confirmation": "Bevestiging",
       "registration": "Gebruikersregistratie",
       "registration.confirmation": "Bevestiging van inschrijving",
@@ -1399,6 +1442,7 @@
       "contactList": "Contact lijst",
       "addContact": "Een nieuw contact toevoegen",
       "search": "Gebruikers zoeken",
+      "searchPending": "Gebruikers in afwachting van activatie",
       "directory": "Gebruikers",
       "myOperators": "Operators",
       "userOperators": "Gebruikeroperators",
@@ -1415,6 +1459,7 @@
       "registration.done": "Succesvol",
       "contactList": "Contacten",
       "search": "Gebruikers",
+      "searchPending": "Gebruikers in afwachting van activatie",
       "directory": "Directory",
       "myOperators": "Operators",
       "userOperators": "Operators",
@@ -1422,6 +1467,7 @@
       "myBrokerings": "Toegewezen gebruikers",
       "userBrokerings": "Makelaar leden"
     },
+    "remove": "Verwijderen",
     "statusEmptyLabel": "Toon alle actieve of geblokkeerde gebruikers",
     "connected": "Online",
     "connectionStatus": "Verbindingstatus",
@@ -1429,6 +1475,8 @@
     "neverLogged": "Nooit ingelogd",
     "group": "Groep",
     "broker": "Broker",
+    "mainBroker": "Hoofd makelaar",
+    "otherBrokers": "Andere makelaars",
     "groups": "Groepen",
     "groupSet": "Groep set",
     "group.filter": "Groepen",
@@ -1441,6 +1489,7 @@
     "operator.owner": "Operator eigenaar",
     "operator.noGroup": "Geen groep (heeft alle rechten)",
     "operator.registration.active": "De operator {operator} is geactiveerd.",
+    "operator.registration.inactive": "De operator {operator} is geregistreerd, maar moet nog door de administratie geactiveerd worden.",
     "operator.registration.pending": "De operator {operator} is geregistreerd, maar moet de registratie nog valideren door de e-mail te bevestigen.",
     "operator.registration.addAnother": "Nog een operator registreren",
     "noImageRequired": "Upload uw profielfoto",
@@ -1458,6 +1507,7 @@
     "contactInfo": "Contactinformatie",
     "contactInfo.add": "Contact toevoegen",
     "contactInfo.remove": "Contact verwijderen",
+    "contactInfo.none": "Er zijn momenteel geen openbare contacten",
     "contactInfo.atAddress": "Op",
     "profileSaved": "Het profiel is opgeslagen",
     "newEmailConfirmed": "Uw nieuwe e-mailadres is succesvol bevestigd",
@@ -1466,6 +1516,7 @@
     "securityQuestion.empty": "Laat dit veld leeg",
     "captcha": "Verificatie",
     "contact": "Contact",
+    "contactInfo.define": "Definieer openbare contactinformatie",
     "invitedBy": "Uitgenodigd door",
     "invitedByMe": "Uitgenodigd door mij",
     "creationBegin": "Geregistreerd na",
@@ -1493,12 +1544,21 @@
       "addContact.done": "{user} werd toegevoegd aan uw lijst met contactpersonen",
       "removeContact": "Verwijderen uit contacten",
       "removeContact.done": "{user} is verwijderd uit uw lijst met contactpersonen",
+      "resendEmailChange": "Stuur e-mail validatie sleutel opnieuw",
+      "resendEmailChange.done": "De validatie sleutel is via e-mail naar gebruiker gestuurd",
+      "validateEmailChange": "Markeer de e-mail als gevalideerd",
+      "validateEmailChange.done": "Het e-mailadres is geldig",
+      "resendRegistrationValidation": "Validatie e-mail opnieuw sturen",
+      "resendRegistrationValidation.done": "De validatie sleutel is via e-mail naar gebruiker gestuurd",
       "validateRegistration": "Markeren als gevalideerd",
+      "validateRegistration.done": "Het e-mailadres is geldig. De gebruiker is nu geactiveerd!",
+      "remove": "Verwijderen",
       "pay": "Volgende",
       "paySystemToUser": "Betaling van systeem naar gebruiker",
       "payAsUserToSystem": "Betaling van gebruiker naar systeem",
       "payAsUserToUser": "Betaling gebruiker aan gebruiker",
       "payAsUserToSelf": "Betaal gebruiker zelf",
+      "batchPayments": "Batch betalingen",
       "requestPayment": "Verzoek om betaling",
       "purchases": "Aankopen",
       "sales": "Verkopen",
@@ -1527,6 +1587,7 @@
       "voucherTransactions": "Bekijk waardebon transacties",
       "voucherTransactionsRedeems": "Bekijk waardebon inwisselingen",
       "voucherRedeem": "Waardebon inwisselen",
+      "voucherTopUp": "Waardebon opwaarderen / activeren",
       "notificationSettings": "Meldingsinstellingen",
       "products": "Producten",
       "accountsBalanceLimits": "Rekeningsaldo limieten",
@@ -1541,7 +1602,10 @@
       "transactions": "{transactions} transacties",
       "totalReceived": "{received} (totaal ontvangen)",
       "totalPaid": "{paid} (totaal betaald)",
-      "sendMessage": "Stuur bericht"
+      "sendMessage": "Stuur bericht",
+      "quickAccess": "Snelle toegang",
+      "favoriteAds": "Favoriete advertenties",
+      "tickets": "Tickets"
     },
     "registration": {
       "group.public": "Kies de groep die u wilt om deel te nemen",
@@ -1553,6 +1617,7 @@
       "inactive.public": "Uw account is succesvol aangemaakt en is in afwachting van activatie door de administratie.<br>U ontvangt bericht als uw account actief is.",
       "pending.public": "Uw registratie is ingediend en moet worden geverifieerd.<br>U ontvangt binnenkort een e-mail met instructies over hoe u uw account kunt activeren.<br>Als u de e-mail niet ontvangt, controleer dan uw spam- of junk-folder.",
       "active.manager": "Het gebruikersaccount voor {user} is geactiveerd.",
+      "inactive.manager": "Gebruiker {user} is geregistreerd, maar moet nog geactiveerd worden door de administratie.",
       "pending.manager": "De gebruiker {user} is geregistreerd, maar moet de registratie nog valideren door de e-mail te bevestigen.",
       "principal.single": "U kunt gebruik maken van uw {principal} ({value}) op {channels}",
       "principal.multiple.preface": "U kunt inloggen met de volgende gegevens:",
@@ -1561,7 +1626,12 @@
       "generatedPasswords.single": "U ontvangt binnenkort een e-mail met uw gegenereerde {type}.",
       "generatedPasswords.multiple": "U ontvangt binnenkort een e-mail met de volgende gegenereerde wachtwoorden: {types}.",
       "viewProfile": "Profiel bekijken",
-      "registerAnotherUser": "Registreer een andere gebruiker"
+      "registerAnotherUser": "Registreer een andere gebruiker",
+      "resumeWizard": {
+        "message": "Er is een vorige registratie gestart op dit apparaat. Wil je deze hervatten of opnieuw beginnen met registratie?",
+        "resume": "Vorige hervatten",
+        "restart": "Start een nieuwe registratie"
+      }
     },
     "orderBy": {
       "alphabeticallyAsc": "Naam (A-Z)",
@@ -1668,8 +1738,11 @@
   },
   "agreements": {
     "agreement": "Overeenkomst",
+    "agreements": "Registratie overeenkomsten",
     "required": "Vereiste overeenkomsten",
+    "required.singular": "Vereiste overeenkomst",
     "optional": "Optionele overeenkomsten",
+    "optional.singular": "Optionele overeenkomst",
     "optional.saved": "De geselecteerde overeenkomsten zijn opgeslagen",
     "accepted": "Geaccepteerd",
     "noAccepted": "Geen geaccepteerde overeenkomsten",
@@ -1768,6 +1841,10 @@
   "ad": {
     "accept": "Accepteren",
     "acceptOrder": "Bestelling accepteren",
+    "addToFavorites": "Aan favorieten toevoegen",
+    "addedToFavorites": "Aan favorieten toegevoegd",
+    "removeFromFavorites": "Verwijder uit favorieten",
+    "removedFromFavorites": "Verwijderd uit favorieten",
     "addedProduct": "Het product is toegevoegd aan de winkelwagen",
     "addedProductOrder": "Het product is toegevoegd aan de bestelling",
     "addedProductAlreadyInCart": "Het product is toegevoegd aan de winkelwagen (dit artikel is eerder aan uw winkelwagen toegevoegd)",
@@ -1810,7 +1887,8 @@
     "error": {
       "cannotBuyFromSeller": "Op het moment, is het niet toegestaan om producten te kopen van deze gebruiker. Neem contact op met de administratie",
       "cannotProceedToCheckout": "U kunt niet doorgaan met het afrekenen omdat sommige items niet beschikbaar zijn of omdat u niet genoeg saldo heeft",
-      "notEnoughStock": "De gevraagde hoeveelheid kan niet worden geleverd, omdat het artikel bijna niet meer op voorraad is."
+      "notEnoughStock": "De gevraagde hoeveelheid kan niet worden geleverd, omdat het artikel bijna niet meer op voorraad is.",
+      "noAvailableAccounts": "De advertentie kan niet worden opgeslagen omdat er geen rekeningen beschikbaar zijn en de prijs niet kan worden ingesteld.\nNeem contact op met de administratie"
     },
     "deliveryAddress": "Afleveradres",
     "deliveryInformation": "Leveringsdetails",
@@ -1946,6 +2024,9 @@
     "waitingForBuyersApproval": "Wachten voor kopers goedkeuring",
     "waitingForSellersApproval": "Wachten op verkopers goedkeuring",
     "remarks": "Opmerkingen",
+    "listAds": "Toon advertenties",
+    "showFavorites": "Alleen favorieten",
+    "warningDisabledAd": "Deze advertentie heeft de status niet actief en kan niet worden bekeken door andere gebruikers. Om de advertentie te activeren, kies dan een prijs en sla de advertentie opnieuw op.",
     "title": {
       "search": "Zoek advertenties",
       "myAdvertisements": "Mijn advertenties",
@@ -1971,7 +2052,8 @@
       "answerQuestion": "Vraag beantwoorden",
       "adInterests": "Advertentie alerts",
       "adInterestNew": "Nieuwe advertentie rente",
-      "adInterest": "Advertentie rente"
+      "adInterest": "Advertentie rente",
+      "favoriteAds": "Favoriete advertenties"
     },
     "mobileTitle": {
       "search": "Advertenties",
@@ -1999,7 +2081,8 @@
       "answerQuestion": "Vraag beantwoorden",
       "adInterests": "Advertentie alerts",
       "adInterestNew": "Nieuwe advertentie rente",
-      "adInterest": "Advertentie rente"
+      "adInterest": "Advertentie rente",
+      "favoriteAds": "Favoriete advertenties"
     }
   },
   "message": {
@@ -2051,7 +2134,8 @@
       "brokered": "Mijn geregistreerde gebruikers",
       "system": "Administratie"
     },
-    "send": "Sturen"
+    "send": "Sturen",
+    "messageSent": "Het bericht werd met succes verzonden"
   },
   "notification": {
     "message": "Bericht",
@@ -2103,6 +2187,8 @@
         "incomingScheduledPaymentReceived": "Geagendeerde betaling ontvangen",
         "limitChange": "Rekening limiet gewijzigd",
         "paymentAwaitingAuthorization": "Betaling in afwachting van autorisatie",
+        "paymentPerformedChargedBack": "Uitgevoerde betaling ongedaan gemaakt",
+        "paymentReceivedChargedBack": "Ontvangen betaling ongedaan gemaakt",
         "paymentReceived": "Betaling ontvangen",
         "paymentRequestCanceled": "Betalingsverzoek geannuleerd",
         "paymentRequestDenied": "Betalingsverzoek geweigerd",
@@ -2196,6 +2282,7 @@
     "forwardMessages": "Stuur uw interne berichten door naar uw e-mailadres",
     "emailMailings": "E-mail mailings ontvangen",
     "smsMailings": "SMS mailings ontvangen",
+    "appMailings": "Ontvang mobiele app mailings",
     "internalNotification": "Interne melding",
     "accounts": "Rekeningen",
     "personal": "Persoonlijk",
@@ -2265,7 +2352,15 @@
     "emailVerificationCode": "E-mail verificatiecode",
     "smsVerificationCode": "SMS verificatiecode",
     "codeSent": "Code verzonden",
-    "currentStep": "Stap {current} van {total}"
+    "currentStep": "Stap {current} van {total}",
+    "verification": {
+      "sentToEmail": "De verificatiecode is verzonden naar het e-mailadres <b>{email}</b>.<br>Controleer uw mailbox en kopieer de ontvangen code naar het veld hieronder.",
+      "sentToPhone": "De verificatiecode is verzonden via SMS naar <b>{phone}</b>.<br>Controleer uw mobiele telefoon en kopieer de ontvangen code naar het veld hieronder.",
+      "new": {
+        "seconds": "Je kunt een nieuwe code aanvragen over {seconds} seconden",
+        "request": "Heb je geen verificatiecode ontvangen? Vraag een nieuwe aan."
+      }
+    }
   },
   "setting": {
     "title": "Instellingen",
@@ -2548,6 +2643,115 @@
     "sent.single": "De uitnodigingsmail is verzonden",
     "sent.multiple": "De uitnodigingen e-mails zijn verzonden"
   },
+  "quickAccessSettings": {
+    "title": "Snelle toegang instellingen",
+    "mobileTitle": "Snelle toegang",
+    "information": "Op deze pagina kunt u aanpassen welke pictogrammen voor snelle toegang worden weergegeven in uw dashbord, in welke volgorde. In- of uitschakelen van een item door erop te klikken. U kunt ook ingeschakelde items sorteren door ze te slepen.",
+    "enabled": "Ingeschakelde items",
+    "disabled": "Uitgeschakelde items",
+    "restoreDefaults": "Standaard instelling terugzetten",
+    "restoreDefaults.done": "De items voor snelle toegang zijn teruggezet naar de standaardwaarden"
+  },
+  "imports": {
+    "title": {
+      "payments": "Importeer betalingen",
+      "userPayments": "Batch betalingen",
+      "userSendVouchers": "Batch waardebonnen verzenden",
+      "general.search": "Imports",
+      "general.details": "Details over importeren",
+      "importNew": "Nieuw bestand importeren",
+      "importNew.vouchersSend": "Koop en e-mail meerdere waardebonnen",
+      "edit": "Geïmporteerd bestand wijzigen",
+      "line.search": "Geïmporteerde orderregels",
+      "line.details": "Orderregel details",
+      "line.edit": "Orderregel bewerken"
+    },
+    "mobileTitle": {
+      "payments": "Importeer betalingen",
+      "userPayments": "Batch betalingen",
+      "userSendVouchers": "Batch waardebonnen",
+      "general.search": "Imports",
+      "general.details": "Import",
+      "importNew": "Bestand importeren",
+      "importNew.vouchersSend": "Koop en e-mail waardebonnen",
+      "edit": "Geïmporteerd bestand wijzigen",
+      "line.search": "Geïmporteerde orderregels",
+      "line.details": "Orderregels details",
+      "line.edit": "Orderregel bewerken"
+    },
+    "kind": {
+      "label": "Importtype",
+      "users": "Gebruikers",
+      "ads": "Advertenties",
+      "records": "Records",
+      "generalReferences": "Referenties",
+      "transfers": "Overschrijvingen",
+      "tokens": "Tokens",
+      "payments": "Betalingen",
+      "userPayments": "Batch betalingen",
+      "userSendVouchers": "Koop en e-mail meerdere waardebonnen"
+    },
+    "fileStatus": {
+      "invalid": "Ongeldig",
+      "readingCsv": "Lezen orderregels",
+      "readingZip": "Afbeeldingen lezen",
+      "ready": "Gereed",
+      "importing": "Importeren",
+      "imported": "Voltooid",
+      "archived": "Gearchiveerd",
+      "aborted": "Afgebroken",
+      "internalError": "Interne fout"
+    },
+    "lineStatus": {
+      "ready": "Klaar om te importeren",
+      "validationError": "Validatiefout",
+      "skipped": "Gemarkeerd als overgeslagen",
+      "importError": "Fout bij importeren",
+      "imported": "Succesvol geïmporteerd"
+    },
+    "file": "Bestand",
+    "fileName": "Bestandsnaam",
+    "creationDate": "Upload datum",
+    "processingDate": "Verwerkingsdatum",
+    "archivingDate": "Archiveerdatum",
+    "archivingDate.value": "Na {date} wordt dit geïmporteerde bestand gearchiveerd, wat betekent dat alle gedetailleerde orderregel informatie zal worden verwijderd.",
+    "sendNotifications": "Meldingen verzenden",
+    "useGroupFromFile": "Gebruik groepen uit bestand",
+    "defaultGroup": "Standaard groep",
+    "sendActivationEmail": "Verstuur activatie e-mail",
+    "useAmountFromFile": "Gebruik bedrag uit bestand",
+    "defaultAmount": "Standaard bedrag",
+    "importNew": "Nieuwe importeren",
+    "lines": "Regels",
+    "ignoredFields": "Genegeerde velden",
+    "abort": {
+      "label": "Afbreken",
+      "confirmation": "Weet u zeker dat u deze import wilt afbreken?",
+      "done": "De import is afgebroken"
+    },
+    "process": {
+      "label": "Importeren",
+      "confirmation": "Weet u zeker dat u {count} geldige regels wilt importeren?",
+      "done": "Uw import is begonnen!"
+    },
+    "section": {
+      "validation": "Regels validatie",
+      "import": "Regels importeren"
+    },
+    "skip": {
+      "label": "Overslaan",
+      "done": "Deze regel wordt overgeslagen wanneer het bestand wordt geïmporteerd"
+    },
+    "include": {
+      "label": "Inbegrepen",
+      "done": "Deze regel wordt opgenomen wanneer het bestand is geïmporteerd"
+    },
+    "lineNumber": "Regel nummer",
+    "information": {
+      "ready": "Het bestand is klaar om te beginnen met importeren. Selecteer bovenstaande importactie om verder te gaan.",
+      "userSendVouchers": "U kunt meerdere vouchers tegelijk verzenden door een CSV-bestand te importeren met behulp van <tt>{separator}</tt> als scheidingsteken.<br>\nHet bestand moet 2 kolommen hebben: <tt>naam</tt> en <tt>e-mail</tt>. Als u het bedrag van het bestand wilt gebruiken, moet u ook de kolom <tt>bedrag</tt> specificeren.<br>\nIn het berichtveld, kunt u dezelfde header namen als variabelen gebruiken, omringd door accolades: <tt>&#123;naam}</tt>, <tt>&#123;e-mail}</tt> en <tt>&#123;bedrag}</tt>."
+    }
+  },
   "consent": {
     "authorize": "Machtigen",
     "deny": "Weigeren",
@@ -2559,6 +2763,7 @@
     "termsOfService": "Gebruiksvoorwaarden",
     "title": "Autoriseer {client} om toegang te krijgen tot je {app} account?",
     "titleOpenidOnly": "{client} toestaan om uw {app} identiteit te valideren?",
+    "dynamicDomain": "Zorg ervoor dat <b>{domain}</b> de website is die u autoriseert",
     "permission": {
       "openIdOnly": "{client} heeft geen toegang tot uw persoonlijke gegevens.",
       "requesting": "{client} vraagt aan:"

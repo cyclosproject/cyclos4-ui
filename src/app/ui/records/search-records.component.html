@@ -49,7 +49,7 @@
           </ng-container>
           <ng-container *ngIf="this.generalSearch || !isOwnRecords()">
             <div class="col-12 col-md-6">
-              <user-field formControlName="createdBy"
+              <user-field formControlName="createdBy" [allowSelf]="true"
                 [label]="i18n.record.createdBy"></user-field>
             </div>
             <!-- Force a new line to keep date range in same row -->

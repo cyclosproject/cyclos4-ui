@@ -90,7 +90,7 @@ export class SearchRecordsComponent
       headingActions.push(new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () =>
         this.router.navigate(['/records', this.param, this.type, 'new']), true));
     }
-    this.exportHelper.headingActions(data.exportFormats,
+    const exportActions = this.exportHelper.headingActions(data.exportFormats,
       f => {
         const params = {
           format: f.internalName,
@@ -102,7 +102,7 @@ export class SearchRecordsComponent
           return this.recordsService.exportOwnerRecords$Response(params);
         }
       });
-    this.headingActions = headingActions;
+    this.headingActions = [...headingActions, ...exportActions];
   }
 
   showKeywords(): boolean {

@@ -9,6 +9,10 @@
     [headingActions]="headingActions$ | async">
     <div [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row">
+        <div class="col-12 col-md-6">
+          <input-field formControlName="keywords"
+            [label]="i18n.general.keywords"></input-field>
+        </div>
         <div class="col-12 col-md-6" *ngIf="!self">
           <label-value [label]="i18n.general.user" kind="fieldView">
             <user-link [user]="data.user"></user-link>

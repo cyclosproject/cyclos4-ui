@@ -70,16 +70,14 @@
             </custom-field-filter>
           </div>
           <div
-            *ngIf="marketplacePermissions.userSimple.view || marketplacePermissions.userWebshop.view"
+            *ngIf="marketplacePermissions.userSimple.view && marketplacePermissions.userWebshop.view"
             class="col-12 col-md-6">
             <single-selection-field formControlName="kind"
               [label]="i18n.general.type"
               [emptyOption]="i18n.general.notApplied">
-              <field-option *ngIf="marketplacePermissions.userSimple.view"
-                [text]="i18n.ad.type.simple" value="simple">
+              <field-option [text]="i18n.ad.type.simple" value="simple">
               </field-option>
-              <field-option *ngIf="marketplacePermissions.userWebshop.view"
-                [text]="i18n.ad.type.webshop" value="webshop">
+              <field-option [text]="i18n.ad.type.webshop" value="webshop">
               </field-option>
             </single-selection-field>
           </div>

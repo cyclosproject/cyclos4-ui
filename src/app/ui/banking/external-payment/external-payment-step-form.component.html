@@ -61,8 +61,8 @@
   </ng-template>
 
   <!-- To principal -->
-  <radio-group-field #toPrincipalType formControlName="toPrincipalType"
-    [label]="i18n.transaction.receiver">
+  <radio-group-field #toPrincipalType *ngIf="data.principalTypes.length > 1"
+    formControlName="toPrincipalType" [label]="i18n.transaction.receiver">
     <field-option *ngFor="let pt of data.principalTypes" [value]="pt.id"
       [text]="pt.name"></field-option>
   </radio-group-field>

@@ -1,5 +1,5 @@
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Params } from '@angular/router';
 import {
@@ -35,7 +35,7 @@ import { debounceTime, first, tap } from 'rxjs/operators';
 })
 export class RunOperationComponent
   extends BasePageComponent<OperationDataForRun>
-  implements OnInit {
+  implements OnInit, OnDestroy {
 
   /** Cache keys to be used with the StateManager */
   static OPERATION_DATA = 'operationData';
@@ -93,6 +93,7 @@ export class RunOperationComponent
     const route = this.route.snapshot;
     this.runScope = route.data.runScope;
     this.userParam = route.params.user;
+    this.clearCloseTimer();
 
     if (!this.runScope) {
       throw new Error(`No runScope on ${route.url}`);
@@ -262,6 +263,17 @@ export class RunOperationComponent
     }
   }
 
+  ngOnDestroy(): void {
+    this.clearCloseTimer();
+  }
+
+  clearCloseTimer() {
+    if (this.closeTimer) {
+      clearTimeout(this.closeTimer);
+      this.closeTimer = null;
+    }
+  }
+
   cleanCache() {
     this.stateManager.delete(RunOperationComponent.OPERATION_DATA);
     this.stateManager.delete(RunOperationComponent.OPERATION_RESULT_RESPONSE);
@@ -406,10 +418,7 @@ export class RunOperationComponent
   }
 
   reload() {
-    if (this.closeTimer) {
-      clearTimeout(this.closeTimer);
-      this.closeTimer = null;
-    }
+    this.clearCloseTimer();
     this.runOperationHelper.startNewOperation = true;
     super.reload();
   }
