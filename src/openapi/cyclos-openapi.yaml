@@ -68,9 +68,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.16.2/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.16.3/api-deprecation.html)
     for this version.
-  version: '4.16.2'
+  version: '4.16.3'
 servers:
   - url: 'http://root/api'
 
@@ -29285,6 +29285,63 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /frontend/help:
+    get:
+      operationId: getFrontendHelp
+      summary: >-
+        Returns the new frontend help page.
+      description: >-
+        Returns information about the home page of the new frontend.
+        If disabled, returns null.
+      tags:
+        - Frontend
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            Returns the content of the help page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FrontendHomeContent'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Either permission was denied for such operation or an illegal action was attempted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '405':
+          description: >-
+            Some required service is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnavailableError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /frontend/page/{key}:
     get:
       operationId: viewFrontendPage
@@ -55230,6 +55287,8 @@ components:
         
         - `dashboard`: Logged user's dashboard
         
+        - `help`: Help page
+        
         - `home`: Guest home page
         
         - `login`: Login page
@@ -55253,6 +55312,7 @@ components:
         - brokering
         - content
         - dashboard
+        - help
         - home
         - login
         - marketplace
@@ -60040,7 +60100,7 @@ components:
           type: boolean
         canCreateNew:
           description: >-
-            Indicates whether the user can create a new advertisement (if not reached max setting)
+            Indicates whether the user can create a new advertisement (if not reached max setting) and there is any available currency in case of a webshop
           type: boolean
         maxCategoriesPerAd:
           description: >-
@@ -65819,6 +65879,10 @@ components:
         hasHomePage:
           description: >-
             Is the guest home page used?
+          type: boolean
+        hasHelp:
+          description: >-
+            Is a help page used?
           type: boolean
         logoUrl:
           description: >-
@@ -75811,6 +75875,15 @@ components:
                 The name of the SVG icon.
                 The content of the icon can be obtained with
                 `GET /images/svg-icons/{name}.svg`
+              type: string
+            icon:
+              description: >-
+                The character that represents the icon in the Cyclos font. Only used by the mobile application.
+              type: string
+            customIconContent:
+              description: >-
+                The content of the custom SVG icon.
+                Used only by the mobile application.
               type: string
             useViewPage:
               description: >-

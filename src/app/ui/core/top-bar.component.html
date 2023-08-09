@@ -116,6 +116,19 @@
       </div>
     </a>
 
+    <a href="#" *ngIf="dataForFrontendHolder.dataForFrontend.hasHelp"
+      id="help-link" class="nav-item"
+      [ngClass]="customNgClass(this.menu.helpMenu)"
+      [tooltip]="(layout.gtsm$ | async) && (user == null || !hasMenu) ? null : i18n.menu.help"
+      [attr.aria-label]="i18n.menu.help"
+      (click)="navigate(this.menu.helpMenu, $event); blurIfClick('help-link', $event);">
+      <icon [icon]="SvgIcon.QuestionCircle"></icon>
+      <div *ngIf="(layout.gtsm$ | async) && (user == null || !hasMenu)"
+        class="ml-2">
+        {{ i18n.menu.help }}
+      </div>
+    </a>
+
     <a href="#" *ngIf="(layout.gtxxs$ | async) && user != null"
       id="logout-trigger" class="nav-item"
       [ngClass]="customNgClass(Menu.LOGOUT)"

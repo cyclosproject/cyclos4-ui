@@ -21,8 +21,8 @@
         <span class="ellipsis">{{ indicator.label }}</span>
       </div>
       <div class="status-value col-6 col-sm-3" [ngClass]="{
-        negative: (indicator.alwaysNegative || format.isNegative(indicator.amount)),
-        positive: (!indicator.alwaysNegative && format.isPositive(indicator.amount)),
+        negative: (!indicator.skipColor && (indicator.alwaysNegative || format.isNegative(indicator.amount))),
+        positive: (!indicator.skipColor && (!indicator.alwaysNegative && format.isPositive(indicator.amount))),
         'status-value-last': last
       }">
         <ng-container *ngIf="indicator.amount">

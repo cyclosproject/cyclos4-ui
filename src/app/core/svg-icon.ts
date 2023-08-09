@@ -106,6 +106,7 @@ export enum SvgIcon {
   Play = 'play',
   PlusCircle = 'plus-circle',
   Printer = 'printer',
+  QuestionCircle = 'question-circle',
   QrCodeScan = 'qr-code-scan',
   Receipt = 'receipt',
   Reply = 'reply',

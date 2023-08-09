@@ -358,13 +358,11 @@ export function validateBeforeSubmit(control: AbstractControl, returnNonValid = 
     control.controls.forEach(current => {
       Array.prototype.push.apply(result, validateBeforeSubmit(current, true) as FormControl[]);
     });
-    control.updateValueAndValidity({ onlySelf: true });
   } else if (control instanceof FormGroup) {
     Object.keys(control.controls).forEach(key => {
       const current = control.controls[key];
       Array.prototype.push.apply(result, validateBeforeSubmit(current, true) as FormControl[]);
     });
-    control.updateValueAndValidity({ onlySelf: true });
   }
   const valid = empty(result);
   if (!valid) {

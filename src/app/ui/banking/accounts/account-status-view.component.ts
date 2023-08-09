@@ -9,6 +9,7 @@ export interface StatusIndicator {
   label: string;
   amount: string;
   alwaysNegative: boolean;
+  skipColor: boolean;
 }
 
 /**
@@ -69,12 +70,13 @@ export class AccountStatusViewComponent extends BaseComponent implements OnInit,
   private updateIndicators() {
     const indicators: StatusIndicator[] = [];
     const status = this.status;
-    const add = (amount: string, label: string, alwaysNegative: boolean = false) => {
+    const add = (amount: string, label: string, alwaysNegative: boolean = false, skipColor = false) => {
       if (amount) {
         indicators.push({
           label,
           amount,
           alwaysNegative: this.format.isZero(amount) ? false : alwaysNegative,
+          skipColor
         });
       }
     };
@@ -87,10 +89,10 @@ export class AccountStatusViewComponent extends BaseComponent implements OnInit,
         add(status.reservedAmount, this.i18n.account.reservedAmount, true);
       }
       if (status.creditLimit && !this.format.isZero(status.creditLimit)) {
-        add(status.creditLimit, this.i18n.account.negativeLimit);
+        add(status.creditLimit, this.i18n.account.negativeLimit, false, true);
       }
       if (status.upperCreditLimit && !this.format.isZero(status.upperCreditLimit)) {
-        add(status.upperCreditLimit, this.i18n.account.positiveLimit);
+        add(status.upperCreditLimit, this.i18n.account.positiveLimit, false, true);
       }
     } else {
       if (this.layout.gtxxs && status.balanceAtBegin != null) {

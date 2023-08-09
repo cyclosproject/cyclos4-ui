@@ -3,12 +3,13 @@ import { NoPreloading, RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from 'app/shared/not-found.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { ContentPageComponent } from 'app/ui/content/content-page.component';
-import { RedirectToLandingPageComponent } from 'app/ui/core/redirect-to-landing-page-component';
-import { LoggedUserGuard } from 'app/ui/logged-user-guard';
+import { HelpComponent } from 'app/ui/core/help.component';
 import { HomeComponent } from 'app/ui/core/home.component';
+import { RedirectToLandingPageComponent } from 'app/ui/core/redirect-to-landing-page-component';
+import { InviteTokenComponent } from 'app/ui/invite/invite-token.component';
+import { LoggedUserGuard } from 'app/ui/logged-user-guard';
 import { LoginComponent } from 'app/ui/login/login.component';
 import { RedirectToLocationComponent } from 'app/ui/redirect-to-location-component';
-import { InviteTokenComponent } from 'app/ui/invite/invite-token.component';
 
 const rootRoutes: Routes = [
   {
@@ -23,6 +24,10 @@ const rootRoutes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+  },
+  {
+    path: 'help',
+    component: HelpComponent,
   },
   {
     path: 'forgot-password',

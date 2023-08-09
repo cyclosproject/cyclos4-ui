@@ -67,15 +67,14 @@ the command `npm run generate`.
 ## Updating the frontend version served by Cyclos with your customized one
 
 Important: Make sure you checkout the exact tag version in GitHub as the
-Cyclos server version. For example, if the server runs `4.14.2`,
-checkout the tag `4.14.2`.
+Cyclos server version. For example, if the server runs `4.16.3`,
+checkout the tag `4.16.3`.
 
 Then apply all customizations to that version, and build with the `npm run build`.
 You will have the `dist/ui` folder generated with the code that should be served.
-However, Cyclos pre-process the `src/ui/index.html` file into a JSP page to include
-server-side data on it.
+However, Cyclos pre-process the `src/ui/index.html` file to include server-side data on it.
 
-So, to copy the files to the correct place and have the JSP file generated,
+So, to copy the files to the correct place and have the HTML processed,
 supposing you have the Cyclos package you have downloaded extracted to the directory
 under `$CYCLOS_ROOT`:
 

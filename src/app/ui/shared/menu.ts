@@ -33,7 +33,8 @@ export enum RootMenu {
   PERSONAL = 'personal',
   REGISTRATION = 'registration',
   LOGIN = 'login',
-  LOGOUT = 'logout'
+  LOGOUT = 'logout',
+  HELP = 'help'
 }
 
 /** Represents an available menu item */
@@ -62,6 +63,8 @@ export namespace Menu {
   export const LANGUAGE = new Menu(RootMenu.LANGUAGE, 'LANGUAGE');
   export const LOGIN = new Menu(RootMenu.LOGIN, 'LOGIN');
   export const LOGOUT = new Menu(RootMenu.LOGOUT, 'LOGOUT');
+  export const HELP_CONTENT = new Menu(RootMenu.CONTENT, 'HELP_CONTENT');
+  export const HELP_HELP = new Menu(RootMenu.HELP, 'HELP_HELP');
 
   // Banking
   export const ACCOUNT_HISTORY = new Menu(RootMenu.BANKING, 'ACCOUNT_HISTORY');

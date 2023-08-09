@@ -700,6 +700,22 @@ export class MenuService {
   }
 
   /**
+   * Returns the root menu used for help. Will be content if there's already some page on it, otherwise a dedicated help root menu
+   */
+  get helpRoot() {
+    const pages = this.dataForFrontendHolder.dataForFrontend?.pages ?? [];
+    const hasContentPage = !!pages.find(p => p.menu === FrontendMenuEnum.CONTENT);
+    return hasContentPage ? RootMenu.CONTENT : RootMenu.HELP;
+  }
+
+  /**
+   * Returns the help menu
+   */
+  get helpMenu() {
+    return this.helpRoot === RootMenu.HELP ? Menu.HELP_HELP : Menu.HELP_CONTENT;
+  }
+
+  /**
    * Returns the RootMenu for a given FrontendMenu
    */
   rootMenuForEnum(menu: FrontendMenuEnum) {
@@ -712,6 +728,8 @@ export class MenuService {
         return RootMenu.CONTENT;
       case FrontendMenuEnum.DASHBOARD:
         return RootMenu.DASHBOARD;
+      case FrontendMenuEnum.HELP:
+        return this.helpRoot;
       case FrontendMenuEnum.HOME:
         return RootMenu.HOME;
       case FrontendMenuEnum.LOGIN:
@@ -773,6 +791,7 @@ export class MenuService {
     const register = addRoot(RootMenu.REGISTRATION, SvgIcon.PersonPlus, this.i18n.menu.register, null, [MenuType.SIDENAV]);
     const login = addRoot(RootMenu.LOGIN, SvgIcon.Login2, this.i18n.menu.login, null, [MenuType.SIDENAV]);
     const logout = addRoot(RootMenu.LOGOUT, SvgIcon.Logout2, this.i18n.menu.logout, null, []);
+    const help = addRoot(RootMenu.HELP, SvgIcon.QuestionCircle, this.i18n.menu.help, null, [MenuType.SIDE, MenuType.SIDENAV]);
 
     // Lambda that adds a submenu to a root menu
     const add = (
@@ -1245,6 +1264,10 @@ export class MenuService {
     // For guests, content will always be dropdown.
     // For logged users, only if at least 1 content page with layout full is used
     content.dropdown = user == null || (pagesInContent || []).findIndex(p => p.layout === 'full') >= 0;
+
+    if (data.hasHelp) {
+      add(this.helpMenu, '/help', help.icon, help.label);
+    }
 
     // Populate the menu in the root declaration order
     const rootMenus: RootMenuEntry[] = [];

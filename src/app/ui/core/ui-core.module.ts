@@ -8,6 +8,7 @@ import { ContentPageComponent } from 'app/ui/content/content-page.component';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { ExportHelperService } from 'app/ui/core/export-helper.service';
+import { HelpComponent } from 'app/ui/core/help.component';
 import { HomeComponent } from 'app/ui/core/home.component';
 import { ImportsHelperService } from 'app/ui/core/imports-helper.service';
 import { LoginState } from 'app/ui/core/login-state';
@@ -43,6 +44,7 @@ import { UiLayoutModule } from 'app/ui/shared/ui-layout.module';
     RedirectToLandingPageComponent,
     RedirectToLocationComponent,
     HomeComponent,
+    HelpComponent,
     LoginComponent,
     ContentPageComponent,
     TopBarComponent,
