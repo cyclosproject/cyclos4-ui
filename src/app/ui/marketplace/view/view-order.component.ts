@@ -203,7 +203,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
     const ref = this.modal.show(SetDeliveryMethodComponent, {
       class: 'modal-form', initialState: {
         name: dm.name,
-        chargeAmount: parseFloat(dm.price),
+        chargeAmount: dm.price == null ? null : parseFloat(dm.price),
         minTime: dm.minTime,
         maxTime: dm.maxTime,
         deliveryType: dm.deliveryType,

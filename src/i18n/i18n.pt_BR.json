@@ -506,7 +506,9 @@
       "fail": "{text} ✗",
       "preface": "A senha precisa conter:",
       "fixedLength": "Exatamente {length} caracteres",
+      "fixedLengthNumbers": "Exatamente {length} números",
       "minLength": "Pelo menos {count} caracteres",
+      "minLengthNumbers": "Pelo menos {count} números",
       "lowerCaseLetters": "Pelo menos 1 letra minúscula",
       "upperCaseLetters": "Pelo menos 1 letra maiúscula",
       "numbers": "Pelo menos 1 número",
@@ -1887,9 +1889,10 @@
     "endDate": "Data final de publicação",
     "error": {
       "cannotBuyFromSeller": "No momento, você não está autorizado a comprar produtos deste usuário. Por favor, contate o seu administrador.",
-      "cannotProceedToCheckout": "Você não pode prosseguir com a finalização da compra, porque alguns itens não estão disponíveis ou você não tem saldo suficiente",
+      "cannotProceedToCheckout": "Você não pode prosseguir com a finalização da compra porque alguns itens estão indisponíveis",
       "notEnoughStock": "A quantidade solicitada não pode ser entregue, porque o artigo está quase sem estoque.",
-      "noAvailableAccounts": "O anúncio não pode ser salvo porque não há contas disponíveis e o preço não pode ser definido. Por favor, contate a administração"
+      "noAvailableAccounts": "O anúncio não pode ser salvo porque não há contas disponíveis e o preço não pode ser definido. Por favor, contate a administração",
+      "insufficientBalance": "Saldo insuficiente para prosseguir com a finalização da compra."
     },
     "deliveryAddress": "Endereço de entrega",
     "deliveryInformation": "Informações de entrega",

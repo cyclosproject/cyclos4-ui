@@ -995,7 +995,6 @@
     "endDate": "al",
     "error": {
       "cannotBuyFromSeller": "Al momento non è consentito acquistare prodotti da questo utente. Contatta l'amministratore.",
-      "cannotProceedToCheckout": "Non puoi procedere con il checkout perché alcuni elementi non sono disponibili o non hai abbastanza disponibile sul conto",
       "notEnoughStock": "La quantità richiesta non può essere consegnata, perché l'articolo è quasi esaurito."
     },
     "deliveryAddress": "Indirizzo di consegna",

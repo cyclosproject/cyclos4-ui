@@ -1411,7 +1411,6 @@
     "endDate": "Veröffentlichtes Enddatum",
     "error": {
       "cannotBuyFromSeller": "Im Moment sind Sie nicht berechtigt, Produkte von diesem Benutzer zu kaufen. Bitte kontaktieren Sie Ihren Administrator.",
-      "cannotProceedToCheckout": "Sie können nicht mit der Kasse fortfahren, weil einige Elemente nicht verfügbar sind oder Sie nicht genug Guthaben haben",
       "notEnoughStock": "Die geforderte Menge kann nicht geliefert werden, da der Artikel fast ausverkauft ist."
     },
     "deliveryAddress": "Lieferadresse",

@@ -8,7 +8,7 @@ import { CardMode } from 'app/ui/content/card-mode';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 
-export const IframeResizerUrl = 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.11/iframeResizer.min.js';
+export const IframeResizerUrl = 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.6/iframeResizer.min.js';
 
 /**
  * Displays a content page with layout

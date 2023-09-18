@@ -121,7 +121,7 @@ export class ViewCartComponent
    * Validates and navigates to the checkout page
    */
   protected checkout() {
-    if (this.unavailable || this.outOfStock || this.data.insufficientBalance) {
+    if (this.unavailable || this.outOfStock) {
       this.notification.error(this.i18n.ad.error.cannotProceedToCheckout);
       return;
     }

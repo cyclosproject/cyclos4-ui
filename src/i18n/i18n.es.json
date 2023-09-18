@@ -506,7 +506,9 @@
       "fail": "{text} ✗",
       "preface": "La contraseña debe contener:",
       "fixedLength": "Exactamente {length} caracteres",
+      "fixedLengthNumbers": "Exactamente {length} números",
       "minLength": "Al menos {count} caracteres",
+      "minLengthNumbers": "Al menos {count} números",
       "lowerCaseLetters": "Al menos 1 letra minúscula",
       "upperCaseLetters": "Al menos 1 letra mayúscula",
       "numbers": "Al menos 1 número",
@@ -1887,9 +1889,10 @@
     "endDate": "Publicado hasta",
     "error": {
       "cannotBuyFromSeller": "Por el momento, no puede comprar productos de este usuario. Por favor, contacte a su administración.",
-      "cannotProceedToCheckout": "No se puede continuar con la generación de la orden de compra debido a que algunos productos no están disponibles, o usted no posee saldo suficiente",
+      "cannotProceedToCheckout": "No puede finalizar el pedido porque algunos artículos no están disponibles",
       "notEnoughStock": "La cantidad solicitada no puede ser entregada porque no posee stock suficiente del el producto.",
-      "noAvailableAccounts": "El anuncio no se puede guardar porque no hay cuentas disponibles y el precio no se puede definir.\nPor favor, consulte a la administración."
+      "noAvailableAccounts": "El anuncio no se puede guardar porque no hay cuentas disponibles y el precio no se puede definir.\nPor favor, consulte a la administración.",
+      "insufficientBalance": "Saldo insuficiente para finalizar el pedido."
     },
     "deliveryAddress": "Dirección de entrega",
     "deliveryInformation": "Información de entrega",

@@ -657,6 +657,13 @@ export function ensureInScroll(el: ElementReference) {
 }
 
 /**
+ * Returns true if the given string is not null and composed of numbers only
+ */
+export function isNumeric(value: string): boolean {
+  return value && value.length > 0 && /^[\-\+]?\d+$/.test(value);
+}
+
+/**
  * Returns the first words of a text, up to a maximum length.
  * For example: words('Social Trade Organization', 15) will return 'Social Trade'.
  * If the first word is larger than maxLength, truncates it, appending an ellipsis in the end.

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { FormControl } from '@angular/forms';
 import { AvailabilityEnum, PasswordTypeDetailed } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
+import { isNumeric } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
 
 const UpperCaseLetters = /[A-Z]/;
@@ -51,8 +52,8 @@ export class PasswordHintsComponent extends BaseComponent implements OnInit {
 
     this.addSub(this.control.valueChanges.subscribe(v => {
       v = v ?? '';
-      this.fixedLength$.next(v.length == this.fixedLength);
-      this.minLength$.next(v.length >= this.minLength);
+      this.fixedLength$.next(v.length == this.fixedLength && (!this.passwordType.onlyNumeric || isNumeric(v)));
+      this.minLength$.next(v.length >= this.minLength && (!this.passwordType.onlyNumeric || isNumeric(v)));
       this.lowerCaseLetters$.next(LowerCaseLetters.test(v));
       this.upperCaseLetters$.next(UpperCaseLetters.test(v));
       this.numbers$.next(Numbers.test(v));

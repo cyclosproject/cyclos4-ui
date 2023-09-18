@@ -6,7 +6,7 @@ import {
   ErrorKind, ForbiddenError, ForbiddenErrorCode, ForgottenPasswordError,
   ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError, NotFoundError,
   PasswordStatusEnum, PaymentError, PaymentErrorCode, RedeemVoucherError,
-  RedeemVoucherErrorCode, ShoppingCartError, ShoppingCartErrorCode,
+  RedeemVoucherErrorCode, ShoppingCartCheckoutError, ShoppingCartCheckoutErrorCode, ShoppingCartError, ShoppingCartErrorCode,
   TopUpVoucherError,
   TopUpVoucherErrorCode,
   UnauthorizedError, UnauthorizedErrorCode, UnavailableError, UnavailableErrorCode, UserStatusEnum
@@ -120,6 +120,9 @@ export class ErrorHandlerService {
                 case ErrorKind.SHOPPING_CART:
                   this.handleShoppingCartError(error as ShoppingCartError);
                   return;
+                case ErrorKind.SHOPPING_CART_CHECKOUT:
+                  this.handleShoppingCartCheckoutError(error as ShoppingCartCheckoutError);
+                  return;
                 case ErrorKind.NESTED:
                   // An error in a nested property
                   this.handleNestedError(error as NestedError);
@@ -223,11 +226,24 @@ export class ErrorHandlerService {
     this.notification.error(this.shoppingCartErrorMessage(error));
   }
 
+  public handleShoppingCartCheckoutError(error: ShoppingCartCheckoutError) {
+    this.notification.error(this.shoppingCartCheckoutErrorMessage(error));
+  }
+
   private shoppingCartErrorMessage(error: ShoppingCartError) {
     if (error?.code === ShoppingCartErrorCode.CAN_NOT_BUY_FROM_SELLER) {
       return this.i18n.ad.error.cannotBuyFromSeller;
     } else if (error?.code === ShoppingCartErrorCode.NOT_ENOUGH_STOCK) {
       return this.i18n.ad.error.notEnoughStock;
+    }
+    return this.general;
+  }
+
+  private shoppingCartCheckoutErrorMessage(error: ShoppingCartCheckoutError) {
+    if (error?.code == ShoppingCartCheckoutErrorCode.INSUFFICIENT_BALANCE) {
+      return this.i18n.ad.error.insufficientBalance;
+    } else if (error?.code === ShoppingCartCheckoutErrorCode.PRODUCTS) {
+      return this.shoppingCartErrorMessage(error?.shoppingCartError);
     }
     return this.general;
   }

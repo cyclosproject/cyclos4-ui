@@ -1887,7 +1887,6 @@
     "endDate": "Gepubliceerde einddatum",
     "error": {
       "cannotBuyFromSeller": "Op het moment, is het niet toegestaan om producten te kopen van deze gebruiker. Neem contact op met de administratie",
-      "cannotProceedToCheckout": "U kunt niet doorgaan met het afrekenen omdat sommige items niet beschikbaar zijn of omdat u niet genoeg saldo heeft",
       "notEnoughStock": "De gevraagde hoeveelheid kan niet worden geleverd, omdat het artikel bijna niet meer op voorraad is.",
       "noAvailableAccounts": "De advertentie kan niet worden opgeslagen omdat er geen rekeningen beschikbaar zijn en de prijs niet kan worden ingesteld.\nNeem contact op met de administratie"
     },
