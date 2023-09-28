@@ -51,7 +51,7 @@ export class SearchNotificationsComponent
     }));
 
     const settingsAction = this.dataForFrontendHolder.auth?.permissions?.notificationSettings?.enable
-      ? new HeadingAction(SvgIcon.BellSlash, this.i18n.notification.actions.settings, () => {
+      ? new HeadingAction(SvgIcon.Gear, this.i18n.notification.actions.settings, () => {
         this.router.navigate(['/users', ApiHelper.SELF, 'notification-settings']);
       }, true)
       : null;

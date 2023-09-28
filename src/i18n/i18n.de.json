@@ -329,6 +329,7 @@
   "password": {
     "confirm.mode": "Bestätigen mit",
     "confirmation": {
+      "device": "Um zu bestätigen, scannen Sie diesen QR-Code mit Ihrer Smartphone-App.",
       "notActive": {
         "device": "Um zu bestätigen, benötigen Sie die mobile App installiert und als vertrauenswürdiges Gerät aktiviert. Bitte laden Sie die  App herunter und fahren Sie mit der Aktivierung fort."
       }
@@ -421,6 +422,10 @@
       "allowGeneration": "Generierung erlauben",
       "allowGeneration.confirm": "Sind Sie sicher, dass der Benutzer seine {type} generieren darf?",
       "allowGeneration.done": "Der Benutzer kann nun seine {type} generieren"
+    },
+    "totp": {
+      "neverCreated.message": "Aktiviere eine Authentifizierungs-App, damit Sie die Operationen bestätigen können: <ul> <li>Laden Sie zuerst eine RFC-6238-kompatible Authentifizierungs-App (wie Google Authenticator oder Microsoft Authenticator) aus Ihrem Handy-Anwendungs-Store (Google Play oder App Store) herunter und installieren Sie diese);</li> <li>Senden Sie einen Bestätigungscode an Ihre E-Mail / Telefon (via SMS), damit wir Ihre Identität verifizieren können;</li> <li>Geben Sie den Bestätigungscode in das untenstehende Feld ein und senden Sie ihn ab;</li> <li>Es wird ein QR-Code angezeigt;</li> <li>Öffnen Sie die Authentifizierungs-App in Ihrem Telefon und scannen Sie den QR-Code. Eine numerische Sequenz wird angezeigt (und alle 30 Sekunden erneuert);</li> <li>Geben Sie diese numerische Sequenz ein und bestätigen Sie;</li> <li>Ihre Authentifizierungs-App wird konfiguriert und generiert die Zahlenfolge, die Sie benötigen, um weitere Operationen zu bestätigen.</li></ul>",
+      "scanQr": "Scannen Sie nun den QR-Code mit der Authentifizierungs-App und geben Sie die Zahlenfolge ein."
     }
   },
   "pendingAgreements": {
@@ -452,6 +457,7 @@
       "payUser": "Nutzende bezahlen",
       "paySystem": "System bezahlen",
       "pos": "Zahlung erhalten",
+      "receiveQrPayment": "Zahlung per QR-Code erhalten",
       "contacts": "Kontakte",
       "directory": "Verzeichnis",
       "advertisements": "Marktplatz",
@@ -763,6 +769,9 @@
       "paymentRequests": "Zahlungsaufforderungen",
       "paymentRequestsOverview": "Übersicht Zahlungsaufforderungen"
     },
+    "receiveQrPayment.generateQrCode": "QR-Code erzeugen",
+    "receiveQrPayment.generateNewQrCode": "Neuen QR-Code erzeugen",
+    "receiveQrPayment.pendingConfirmation": "Bestätigung ausstehend",
     "ticketShareTitle": "Einladung zur Durchführung einer Zahlung",
     "ticketShareText": "{user} hat Sie eingeladen {amount} zu bezahlen",
     "ticketShareUrl": "URL zum Teilen",
@@ -821,6 +830,7 @@
     "confirmPaymentRequest": "Sind Sie sicher, dass Sie diese Zahlungsaufforderung senden wollen?",
     "firstInstallmentIsImmediate": "Erste Rate ist sofort",
     "posConfirmation": {
+      "device": "Zur Bestätigung muss er Zahlende diesen QR-Code mit seiner Smartphone-App scannen.",
       "notActive": {
         "device": "Um zu bestätigen, benötigt der Zahler die mobile App installiert  und als vertrauenswürdiges Gerät aktiviert. Sie müssen die App herunterladen und mit ihrer Aktivierung fortfahren."
       }
