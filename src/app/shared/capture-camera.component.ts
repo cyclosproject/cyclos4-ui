@@ -63,7 +63,7 @@ export class CaptureCameraComponent implements AfterViewChecked {
     if (error.mediaStreamError) {
       if (error.mediaStreamError.name === 'NotAllowedError') {
         this.errorHandler(this.i18n.field.camera.noPermission);
-      } else if (error.mediaStreamError.name === 'NotAllowedError') {
+      } else if (error.mediaStreamError.name === 'NotFoundError') {
         this.errorHandler(this.i18n.field.camera.noCameras);
       }
     }

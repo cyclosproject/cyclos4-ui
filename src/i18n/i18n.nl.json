@@ -506,7 +506,9 @@
       "fail": "{text} ✗",
       "preface": "Het wachtwoord moet bevatten:",
       "fixedLength": "Precies {length} tekens",
+      "fixedLengthNumbers": "Precies {length} tekens",
       "minLength": "Ten minste {count} tekens",
+      "minLengthNumbers": "Ten minste {count} tekens",
       "lowerCaseLetters": "Minstens 1 kleine letter",
       "upperCaseLetters": "Minstens 1 hoofdletter",
       "numbers": "Minstens 1 cijfer",
@@ -1887,8 +1889,10 @@
     "endDate": "Gepubliceerde einddatum",
     "error": {
       "cannotBuyFromSeller": "Op het moment, is het niet toegestaan om producten te kopen van deze gebruiker. Neem contact op met de administratie",
+      "cannotProceedToCheckout": "U kunt niet doorgaan met afrekenen omdat sommige items niet beschikbaar zijn",
       "notEnoughStock": "De gevraagde hoeveelheid kan niet worden geleverd, omdat het artikel bijna niet meer op voorraad is.",
-      "noAvailableAccounts": "De advertentie kan niet worden opgeslagen omdat er geen rekeningen beschikbaar zijn en de prijs niet kan worden ingesteld.\nNeem contact op met de administratie"
+      "noAvailableAccounts": "De advertentie kan niet worden opgeslagen omdat er geen rekeningen beschikbaar zijn en de prijs niet kan worden ingesteld.\nNeem contact op met de administratie",
+      "insufficientBalance": "Onvoldoende saldo om door te gaan met de bevestiging van het afrekenen."
     },
     "deliveryAddress": "Afleveradres",
     "deliveryInformation": "Leveringsdetails",
