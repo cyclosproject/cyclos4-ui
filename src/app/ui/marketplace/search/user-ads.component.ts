@@ -2,16 +2,14 @@ import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AdKind, AdResult, RoleEnum, UserAdsDataForSearch, UserAdsQueryFilters } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services/marketplace.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
-import { words } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { ResultType } from 'app/ui/shared/result-type';
-import { MAX_SIZE_SHORT_NAME } from 'app/ui/users/profile/view-profile.component';
 import { Observable } from 'rxjs';
-import { SvgIcon } from 'app/core/svg-icon';
 
-type UserAdsSearchParams = UserAdsQueryFilters & { user: string };
+type UserAdsSearchParams = UserAdsQueryFilters & { user: string; };
 
 /**
  * Lists the advertisements of a given user
@@ -56,7 +54,6 @@ export class UserAdsComponent
   onDataInitialized(data: UserAdsDataForSearch) {
     super.onDataInitialized(data);
     this.self = this.authHelper.isSelfOrOwner(data.user);
-    this.shortName = words(data.user.display, MAX_SIZE_SHORT_NAME);
     if (data.createNew) {
       this.headingActions = [
         new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () =>

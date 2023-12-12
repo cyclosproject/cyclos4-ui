@@ -16,9 +16,7 @@ export class ValidateRegistrationComponent
   extends BasePageComponent<UserRegistrationResult>
   implements OnInit {
 
-  get result() {
-    return this.data;
-  }
+  public result: UserRegistrationResult;
 
   constructor(
     injector: Injector,
@@ -28,10 +26,18 @@ export class ValidateRegistrationComponent
   }
 
   ngOnInit() {
+    this.result = this.stateManager.getGlobal('result');
     const key = this.route.snapshot.params.key;
-    this.addSub(this.validationService.validateUserRegistration({ key }).subscribe(result => {
-      this.data = result;
-    }));
+    if (key) {
+      this.addSub(this.validationService.validateUserRegistration({ key }).subscribe(result => {
+        this.stateManager.setGlobal('result', result);
+        this.router.navigate(['/users', 'validate-registration']);
+      }));
+    } else if (this.result) {
+      this.data = this.result;
+    } else {
+      this.goToLogin();
+    }
   }
 
   goToLogin() {

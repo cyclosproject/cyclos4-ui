@@ -30,9 +30,11 @@
     "to": "à",
     "description": "Déscription",
     "details": "Détails",
+    "download": "Télécharger",
     "downloadAs": "Download en {format}",
     "image": "Image",
     "keywords": "Mots-clés",
+    "distanceFilter": "Distance",
     "orderBy": "Trier par",
     "orderBy.relevance": "Pertinence",
     "print": "Imprimer",
@@ -69,6 +71,7 @@
     "addNew": "Ajouter",
     "yes": "Oui",
     "no": "Non",
+    "errorMessage": "Message d'erreur",
     "notSet": "Non spécifié",
     "share": "Partager",
     "tiledView": "Vue mosaïque",
@@ -83,8 +86,16 @@
     "removeAllItemsConfirm": "Êtes-vous certain de supprimer tous les objet?",
     "currency": "Monnaie",
     "images": "Images",
+    "internalName": "Nom interne",
+    "progress": "Progrès",
     "usersOfBroker": "Utilisateurs du broker\n",
     "administration": "L'administration",
+    "maskHelp": "Ce masque peut restreindre les caractères qui peuvent être saisis, limiter la taille et appliquer des transformations de casse, en utilisant les constructeurs suivants.<br><br><ul><li><b>#, 0 ou 9</b> - Un nombre.</li><li><b>a ou A</b> - Une lettre.</li><li><b>? ou _</b> - N'importe quel caractère.</li><li><b>l ou L</b> - Une lettre minuscule.</li><li><b>u ou U</b> - Une lettre majuscule.</li><li><b>c ou C</b> - Une lettre majuscule.</li><li><b>\\\\, \\#, \\0, ...</b> - Ces caractères littéraux. N'oubliez pas que, lorsque vous écrivez une chaîne de caractères, \"\\N\" signifie une barre oblique inverse simple. Pour utiliser une barre oblique inverse sur le masque, il en faut 4 sur la chaîne.</li></ul>",
+    "sendMedium": {
+      "email": "Courriel",
+      "sms": "SMS",
+      "app": "Téléphone mobile"
+    },
     "sendCode": "Envoyer code",
     "sentCodeTo": "Le code de vérification a été envoyé à {number}",
     "reloadPage": "Recharger la page",
@@ -109,14 +120,22 @@
         "dec": "Décembre"
       },
       "short": {
+        "jan": "Janvier",
         "feb": "Fév",
+        "mar": "Mai",
         "apr": "Avr",
         "may": "Mai",
+        "jun": "Juin",
+        "jul": "Juin",
         "aug": "Aoû",
+        "sep": "Sep",
+        "oct": "Oct",
+        "nov": "Nov",
         "dec": "Déc"
       }
     },
     "timeField": {
+      "pattern": "{amount} {field}",
       "plural": {
         "days": "Jours",
         "hours": "Heures",
@@ -132,6 +151,7 @@
         "hour": "Heure",
         "milli": "Milliseconde",
         "minute": "Minute",
+        "month": "Mois",
         "second": "Seconde",
         "week": "Semaine",
         "year": "Année"
@@ -144,7 +164,8 @@
         "tue": "M",
         "wed": "M",
         "thu": "J",
-        "fri": "V"
+        "fri": "V",
+        "sat": "S"
       },
       "long": {
         "sun": "Dimanche",
@@ -184,11 +205,13 @@
     "general": "Une erreur inattendue s'est produite lors du traitement de votre demande.",
     "serverOffline": "Le serveur n'a pas pu être contacté. <br> Veuillez réessayer plus tard.",
     "invalidRequest": "Il n'est pas possible de se connecter au serveur. <br> Assurez-vous d'être connecté à Internet et réessayez dans quelques secondes.",
+    "networkInaccessible": "Ce réseau n'est pas accessible par l'utilisateur spécifié",
     "queryParse": "Mots-clés invalides",
     "uploadSizeExceeded": "Le fichier téléchargé dépasse la taille maximale autorisée de {size}",
     "maxItems": "Impossible d'ajouter plus de {max} éléments",
     "validation": "L'action n'a pas pu être traitée car il y a eu des erreurs de validation",
     "staleEntity": "Ces données ne peuvent pas être sauvegardées car elles ont été modifiées par quelqu'un d'autre. <br> Veuillez recharger la page, puis relancer l'opération.",
+    "removeDataInUse": "Cet élément ne peut pas être supprimé car il est actuellement utilisé.",
     "notFound": {
       "location": "L'emplacement auquel vous avez tapé ou tenté d'accéder n'a pas été trouvé",
       "type": "Les données demandées sont introuvables : {type}",
@@ -219,14 +242,25 @@
       "minDate": "Devrait être {min} ou plus",
       "maxDate": "Devrait être {max} ou moins",
       "invalidValuePattern": "La valeur entrée n'est pas valide"
+    },
+    "geolocation": {
+      "denied": "Vous n'avez pas la permission d'obtenir la position actuelle. Veuillez accorder cette permission dans votre navigateur.",
+      "deniedNoAddressAvailable": "Aucune permission pour obtenir la position actuelle et il n'y a pas d'adresse à sélectionner. S'il vous plaît, accordez cette permission dans votre navigateur.",
+      "unavailable": "L'emplacement actuel n'est pas disponible",
+      "general": "Erreur lors de l'obtention de l'emplacement actuel"
     }
   },
   "menu": {
+    "menu": "Menu",
     "login": "Connexion",
+    "language": "Langue",
     "register": "Enregistrement",
     "logout": "Déconnexion",
+    "shoppingCart": "Panier d'achat",
     "home": "Accueil",
     "dashboard": "Tableau de bord",
+    "help": "Aide",
+    "banking": "Services bancaires",
     "banking.accountsSummary": "Résumé des comptes",
     "banking.accountVisibility": "Afficher/masquer comptes",
     "banking.payUser": "Paiement à l'utilisateur",
@@ -237,9 +271,11 @@
     "banking.externalPayments": "Paiements externes",
     "banking.externalPaymentsOverview": "Aperçu des paiements externes",
     "banking.pos": "Recevoir paiement",
+    "banking.tickets": "Billets",
     "banking.receiveQrPayment": "Recevoir le code QR",
     "banking.scheduledPayments": "Paiements planifiés",
     "banking.scheduledPaymentsOverview": "Aperçu des paiements planifiés",
+    "banking.pendingMyAuth": "En attente de mon autorisation",
     "banking.authorizations": "Autorisations de paiement",
     "banking.vouchers": "Coupons",
     "banking.myVouchers": "Mes coupons",
@@ -249,10 +285,14 @@
     "banking.userBalancesOverview": "Aperçu des soldes de l’utilisateur",
     "banking.accountBalanceLimits": "Limites de solde du compte",
     "banking.accountPaymentLimits": "Limites de solde du compte",
+    "banking.importedPayments": "Importer les paiements",
+    "banking.userImportedPayments": "Paiements de masse",
     "operators": "Opérateurs",
     "operators.operators": "Opérateurs",
     "operators.register": "Enregistrer un opérateur",
     "operators.groups": "Groupes des opérateurs",
+    "brokering": "Courtage",
+    "brokering.ads": "Annonces",
     "brokering.users": "Utlisateurs",
     "brokering.register": "Enregistrer un utilisateur",
     "marketplace": "Place de marché",
@@ -261,24 +301,42 @@
     "marketplace.directory": "Annuaire",
     "marketplace.userSearch": "Utlisateurs",
     "marketplace.businessDirectory": "Annuaire professionnel",
+    "marketplace.systemMessages": "Messages",
     "marketplace.advertisements": "Annonces",
     "marketplace.adInterests": "Intérêts",
+    "marketplace.deliveryMethods": "Méthodes de livraison",
     "marketplace.inviteUsers": "Inviter des utilisateurs",
     "marketplace.webshopSettings": "Paramètres de la boutique en ligne",
     "marketplace.myAdvertisements": "Mes annonces",
+    "marketplace.myPurchases": "Mes achats",
+    "marketplace.mySales": "Mes ventes",
+    "marketplace.myWebshop": "Ma boutique en ligne",
+    "marketplace.unansweredQuestions": "Questions sans réponse",
     "marketplace.connectedUsers": "Utilisateurs connectés",
     "marketplace.userAlerts": "Alertes utilisateur",
     "personal": "Personnel",
+    "personal.documents": "Documents",
     "personal.viewProfile": "Mon profil",
     "personal.editProfile": "Editer profil",
+    "personal.contacts": "Contacts",
     "personal.password": "Mot de passe",
     "personal.passwords": "Mots de passe",
+    "personal.totp": "Application d'authentification",
+    "personal.identityProviders": "Fournisseurs d'identité",
     "personal.agreements": "Accords",
+    "personal.messages": "Messages",
+    "personal.notifications": "Notifications",
     "personal.settings": "Paramètres",
-    "personal.feedbacks": "Évaluations"
+    "personal.references": "Références",
+    "personal.feedbacks": "Évaluations",
+    "personal.quickAccessSettings": "Paramètres d'accès rapide",
+    "content": "Information"
   },
   "login": {
     "title": "Connexion",
+    "mobileTitle": "Se connecter",
+    "title.confirmation": "Confirmation de connexion",
+    "mobileTitle.confirmation": "Confirmation de connexion",
     "message": "Vous pouvez vous connecter avec votre identifiant et votre mot de passe.",
     "disconnected": "Vous avez été déconnecté.<br>Veuillez vous identifier à nouveau pour afficher la page demandée.",
     "principal": "Utilisateur",
@@ -288,17 +346,62 @@
     "confirmation.text": "Vous vous êtes connecté avec succès, mais votre session doit être confirmée pour pouvoir continuer.",
     "error": {
       "user": {
+        "blocked": "Échec de la connexion. Votre compte d'utilisateur a été bloqué. Veuillez contacter l'administrateur.",
+        "disabled": "Échec de la connexion. Votre compte utilisateur a été désactivé. Veuillez contacter l'administration.",
         "pending": "Votre compte d'utilisateur est en attente d'activation. Vous auriez dû recevoir un e-mail contenant les instructions pour activer votre compte. Sinon, veuillez contacter l'administrateur."
       },
       "password": {
         "expired": "Votre mot de passe a expiré. Veuillez contacter l'administrateur.",
-        "indefinitelyBlocked": "Votre mot de passe de connexion a été désactivé en dépassant le nombre maximum d'essais. Veuillez contacter l´administrateur."
+        "disabled": "Échec de la connexion. Votre mot de passe a été désactivé. Veuillez contacter l'administration.",
+        "reset": "Échec de la connexion. Votre mot de passe a été réinitialisé. Veuillez contacter l'administrateur.",
+        "indefinitelyBlocked": "Votre mot de passe de connexion a été désactivé en dépassant le nombre maximum d'essais. Veuillez contacter l´administrateur.",
+        "temporarilyBlocked": "Votre mot de passe est temporairement bloqué en dépassant le nombre maximum d'essais"
+      },
+      "confirmation": {
+        "missing": {
+          "device": "La connexion a échoué. Vous devez confirmer votre connexion avec un appareil mobile de confiance, mais vous n'en avez aucun. Veuillez d'abord installer l'application mobile et l'activer en tant qu'appareil de confiance.",
+          "password": "La connexion a échoué. Vous devez confirmer la connexion avec votre {0} mais vous ne l'activez pas. Veuillez contacter l'administrateur.",
+          "totp": "La connexion a échoué. Vous devez confirmer votre connexion avec votre application d'authentification, mais vous n'en avez aucun. Veuillez contacter l'administration.",
+          "multiple": "La connexion a échoué. Vous devez confirmer votre connexion avec certains des éléments suivants, mais vous n'en avez pas : {credentials}. Veuillez contacter l'administrateur."
+        },
+        "notActive": {
+          "password": "Afin de terminer votre connexion, vous avez besoin d'un {password}, mais vous ne l'avez pas activé. Veuillez l'activer et continuer.",
+          "totp": "Afin de terminer votre connexion, vous avez besoin de votre application d'authentification, mais vous ne l'avez pas activée. Veuillez l'activer et continuer.",
+          "multiple": "Afin de terminer votre connexion, vous avez besoin d'un {password} ou de votre application d'authentification, mais vous ne les avez pas actifs. Veuillez activer l'un d'eux et continuer."
+        }
       }
     }
   },
   "password": {
     "confirm.mode": "Confirmer avec",
+    "confirm.mode.device": "Application mobile",
+    "confirm.mode.totp": "Application d'authentification",
+    "confirmation": {
+      "device": "Pour confirmer, scannez ce code QR avec l'application mobile.",
+      "password": "Pour confirmer, fournissez votre {passwordType}.",
+      "totp": "Pour confirmer, fournissez un code généré par votre application d'authentification.",
+      "notPossible": "Il n'est pas possible de confirmer cette opération en raison d'une erreur de configuration. Veuillez contacter l'administrateur.",
+      "notActive": {
+        "multiple": "Pour confirmer, vous avez besoin de l'un des éléments suivants, mais vous n'en avez pas : {credentials}.",
+        "device": "Afin de confirmer, vous avez besoin que l'application mobile soit installée et activée en tant qu'appareil de confiance. Veuillez télécharger l'application et procéder à son activation.",
+        "password": "Afin de confirmer, vous avez besoin de votre {passwordType}, mais vous ne l'avez pas activée. Veuillez visiter votre page de paramètres de mot de passe ou contacter l'administrateur.",
+        "totp": "Afin de confirmer, vous avez besoin d'une application d'authentification configurée. Veuillez visiter votre page de paramètres de mot de passe et l'activer."
+      }
+    },
     "confirm.password.placeholder": "Tapez ici: {password}",
+    "otp": {
+      "verificationCode": "Code de vérification",
+      "sendMedium": "Envoyer le code de vérification à",
+      "sendToEmail": "Envoyer à l'e-mail {email}",
+      "sendToPhone": "Envoyer au téléphone {phone}",
+      "noMediums": "Aucun média possible pour recevoir le code de vérification",
+      "send": "Envoyer le code de vérification",
+      "countdownLabel": "* Vous pouvez envoyer à nouveau les emails/sms dans {seconds} secondes.",
+      "receiveBy.sent": "{medium} envoyé",
+      "sent": "Le mot de passe a été envoyé à {dest}",
+      "sentToEmail": "E-mail envoyé à {mail}",
+      "sentToPhone": "Message SMS envoyé à {phone}"
+    },
     "oldPassword": "Ancien mot de passe",
     "newPassword": "Nouveau mot de passe",
     "passwordConfirmation": "Confirmer le mot de passe",
@@ -307,7 +410,9 @@
       "temporarilyBlocked": "Votre mot de passe est temporairement bloqué en dépassant le nombre maximal d'essais.",
       "expired": "Votre mot de passe a expiré. S'il vous plaît, contactez l'administration.",
       "invalid": "Le {type} n'est pas valide",
-      "otpInvalidated": "Le mot de passe unique a été invalidé. Veuillez en demander un nouveau."
+      "otpInvalidated": "Le mot de passe unique a été invalidé. Veuillez en demander un nouveau.",
+      "invalidTotp": "Le code indiqué n'est pas valide. Veuillez entrer un code valide depuis votre application d'authentification.",
+      "blockedByTotp": "Vous avez été bloqué pour avoir dépassé les tentatives du code de l'application d'authentification. Veuillez contacter l'administrateur."
     },
     "title": {
       "change.self": "Modifier votre mot de passe",
@@ -318,7 +423,8 @@
       "manage.single.user": "Gérer mots de passe",
       "manage.multiple.user": "Gérer mots de passe ",
       "securityAnswer": "Définir votre réponse de sécurité",
-      "history": "Historique des mots de passe"
+      "history": "Historique des mots de passe",
+      "totp": "Application d'authentification"
     },
     "mobileTitle": {
       "change.self": "Changement de mot de passe",
@@ -328,7 +434,8 @@
       "manage.single.user": "Mots de passe de l'utilisateur",
       "manage.multiple.user": "Mots de passe de l'utilisateur",
       "securityAnswer": "Réponse de sécurité",
-      "history": "Historique des mots de passe"
+      "history": "Historique des mots de passe",
+      "totp": "Application d'authentification"
     },
     "forgotten": {
       "preface": "Ici vous pouvez récupérer votre identification et changer votre mot de passe en demandant un code de récupération. Vous pouvez utiliser l'une des méthodes d'identification suivantes dans le champ utilisateur ci-dessous:",
@@ -340,8 +447,10 @@
       "sendMedium": "Recevoir le code par",
       "generate": "Génerer le mot de passe",
       "generated.done.email": "Vous devriez recevoir sous peu un e-mail avec votre nouveau mot de passe.",
+      "generated.done.sms": "Vous devriez recevoir sous peu un SMS avec votre nouveau mot de passe.",
       "manual.done": "Votre mot de passe a été changé avec succès. Vous pouvez maintenant l'utiliser pour vous connecter.",
-      "title.changePassword": "Modifier votre mot de passe"
+      "title.changePassword": "Modifier votre mot de passe",
+      "invalidUser": "L'identification de l'utilisateur donnée est invalide ou appartient à un utilisateur qui ne peut pas utiliser l'option de mot de passe oublié. Veuillez contacter l'administrateur."
     },
     "expired": {
       "preface": "Votre {type} a expiré.",
@@ -368,18 +477,55 @@
       "change.generated.confirm": "Cela générera un nouveau {type}, et la valeur ne sera affichée qu'une fois. Êtes-vous sûr ?",
       "change.generated.done": "La valeur pour {type} est <data>{value}</data>.<br>Assurez-vous de la mémoriser, car elle ne sera plus affichée.",
       "unblock": "Débloquer",
+      "unblock.confirm": "Êtes-vous sûr de vouloir débloquer la {type}?",
       "unblock.done": "{user} a été débloqué",
       "activate": "Activer",
       "activate.confirm": "Cela activera votre {type}, et la valeur générée ne sera affichée qu'une fois. Êtes-vous sûr ?",
       "enable": "Activer",
+      "enable.confirm": "Êtes-vous sûr de vouloir activer l' {type}?",
+      "enable.done": "{type} a été activé",
       "disable": "Désactiver",
+      "disable.confirm": "Êtes-vous sûr de vouloir désactiver l' {type}?",
+      "disable.done": "{type} a été désactivé",
       "resetAndSend": "Réinitialiser et envoyer",
       "resetAndSendEmail": "Réinitialiser et envoyer par e-mail",
       "resetAndSendEmail.confirm": "Êtes-vous sûr de vouloir réinitialiser le {type} et l'envoyer par e-mail à l'utilisateur ?",
       "resetAndSendEmail.done": "{type} a été réinitialisé et envoyé par e-mail",
       "resetAndSendSms": "Réinitialiser et envoyer par SMS",
       "resetAndSendSms.confirm": "Êtes-vous sûr de vouloir réinitialiser le {type} et l'envoyer par SMS à l'utilisateur ?",
-      "resetAndSendSms.done": "{type} a été réinitialisé et envoyé par SMS"
+      "resetAndSendSms.done": "{type} a été réinitialisé et envoyé par SMS",
+      "resetGenerated": "Reset",
+      "resetGenerated.confirm": "Êtes-vous sûr de vouloir réinitialiser l' {type}, permettant à l'utilisateur de le générer à nouveau ?",
+      "resetGenerated.done": "{type} a été réinitialisé",
+      "allowGeneration": "Autoriser la génération",
+      "allowGeneration.confirm": "Êtes-vous sûr de vouloir autoriser l'utilisateur à générer son{type}?",
+      "allowGeneration.done": "L'utilisateur peut maintenant générer son {type}"
+    },
+    "hints": {
+      "ok": "{text} ✓",
+      "fail": "{text} <unk>",
+      "preface": "Le mot de passe doit contenir :",
+      "fixedLength": "Caractères {length} exacts",
+      "fixedLengthNumbers": "Numéros {length} exacts",
+      "minLength": "Au moins {count} caractères",
+      "minLengthNumbers": "Au moins les numéros {count}",
+      "lowerCaseLetters": "Au moins 1 lettre minuscule",
+      "upperCaseLetters": "Au moins 1 lettre majuscule",
+      "numbers": "Au moins 1 numéro",
+      "specialCharacters": "Au moins 1 caractère spécial"
+    },
+    "totp": {
+      "active": "L'application d'authentification est active depuis {date}",
+      "neverCreated.managers": "L'application d'authentification n'a pas été configurée pour cet utilisateur.",
+      "neverCreated.message": "Activez une application d'authentification afin de pouvoir confirmer les opérations : <ul><li>Téléchargez et installez d'abord une application d'authentification compatible avec la RFC 6238 (telle que Google Authenticator ou Microsoft Authenticator) depuis le magasin d'applications de votre téléphone (Google Play ou App Store) ;</li><li>Envoyez un code de vérification à votre e-mail / téléphone (par SMS), afin que nous puissions vérifier votre identité ;</li><li>Saisissez ce code de vérification dans le champ ci-dessous et soumettez-le ;</li><li>Un code QR s'affiche ;</li><li>Ouvrez l'application d'authentification dans votre téléphone et scannez le code QR. Une séquence numérique sera affichée (et renouvelée toutes les 30 secondes) ;</li><li>Saisissez cette séquence numérique et confirmez ;</li><li>Votre application authenticator sera configurée et générera les séquences numériques dont vous aurez besoin pour confirmer d'autres opérations.</li></ul>",
+      "neverCreated.message.mobile": "Activez une application d'authentification pour pouvoir confirmer les opérations : <ul><li>Téléchargez et installez d'abord une application d'authentification compatible RFC 6238 (telle que Google Authenticator ou Microsoft Authenticator) depuis la boutique d'applications de votre téléphone (Google Play ou App Store) ;</li><li>Envoyez un code de vérification à votre e-mail / téléphone (par SMS), afin que nous puissions vérifier votre identité ;</li><li>Saisissez ce code de vérification dans le champ ci-dessous et envoyez-le ;</li><li>Un bouton permettant d'ouvrir l'application d'authentification s'affichera. Cliquez dessus et ajoutez votre compte sur l'application.</li><li>Une séquence numérique sera affichée (et renouvelée toutes les 30 secondes) ;</li><li>Tapez cette séquence numérique et confirmez ;</li><li>Votre application authentificateur sera configurée et générera les séquences numériques dont vous aurez besoin pour confirmer les opérations ultérieures.</li></ul>",
+      "activated": "Votre application d'authentification a été configurée. Vous pouvez maintenant l'utiliser pour confirmer les opérations.",
+      "firstTotp": "Séquence numérique générée par l'application d'authentificateur",
+      "scanQr": "Maintenant, scannez le code QR avec l'application d'authentificateur et tapez dans la séquence numérique.",
+      "openApp": "Ouvrir l'application d'authentification",
+      "remove": "Retirer",
+      "remove.confirmation": "Êtes-vous sûr de vouloir supprimer l'application d'authentification pour ce compte ?",
+      "remove.done": "Le secret de l'application d'authentification a été supprimé"
     }
   },
   "pendingAgreements": {
@@ -396,20 +542,34 @@
     "preface": "Je déclare avoir lu et accepté les accords suivants :"
   },
   "securityQuestion": {
+    "message": "La question de sécurité est requise si vous devez réinitialiser votre mot de passe. Une fois défini, si vous avez besoin de le modifier, contactez l'administrateur.",
     "question": "Question de sécurité",
-    "answer": "Votre réponse"
+    "answer": "Votre réponse",
+    "set": "Votre réponse de sécurité a été définie"
   },
   "dashboard": {
+    "customizeQuickAccess": "Personnaliser",
     "quickAccess": "Accès rapide",
+    "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
       "account": "Compte",
       "accounts": "Comptes",
+      "transfersOverview": "Vue d'ensemble des transferts",
+      "balancesOverview": "Aperçu des soldes",
+      "externalPayments": "Paiements externes",
       "payUser": "Payer l'utilisateur",
       "paySystem": "Payer le système",
+      "paySelf": "Transfert entre comptes",
       "pos": "Recevoir paiement",
       "receiveQrPayment": "Recevoir paiement avec code QR",
+      "contacts": "Contacts",
       "directory": "Annuaire",
+      "pendingUsers": "Utilisateurs en attente",
+      "brokeredUsers": "Utilisateurs enregistrés",
+      "registerUser": "Inscription de l'utilisateur",
       "advertisements": "Marché",
+      "adInterests": "Intérêts publicitaires",
+      "purchases": "Mes achats",
       "editProfile": "Editer profil",
       "password": "Mot de passe",
       "passwords": "Mots de passe",
@@ -427,7 +587,19 @@
       "paymentRequests": "Demandes de paiement",
       "settings": "Paramètres",
       "scheduledPayments": "Paiements planifiés",
-      "payExternalUser": "Payer un utilisateur externe"
+      "payExternalUser": "Payer un utilisateur externe",
+      "myAds": "Mes annonces",
+      "createAd": "Placer une annonce",
+      "myWebshop": "Ma boutique en ligne",
+      "sales": "Mes ventes",
+      "createWebshopAd": "Placer une annonce dans la boutique en ligne",
+      "documents": "Documents",
+      "inviteUser": "Inviter un utilisateur",
+      "messages": "Messages",
+      "sendMessage": "Envoyer un message",
+      "notifications": "Notifications",
+      "references": "Mes références",
+      "feedbacks": "Mes commentaires"
     },
     "accounts": "Comptes",
     "accountStatus": "Statut du compte",
@@ -441,6 +613,7 @@
       "pending": "Votre {type} est en attente de génération.",
       "neverCreated": "Votre {type} doit être défini.",
       "securityAnswer": "Vous devriez définir la question de sécurité, qui sera requise si vous avez besoin de réinitialiser votre mot de passe.",
+      "totp": "Vous devez configurer une application d'authentification pour confirmer les opérations.",
       "proceed": "Cliquez ici pour continuer"
     }
   },
@@ -451,6 +624,7 @@
     "transferFilter": "Filtre",
     "minAmount": "Du montant",
     "maxAmount": "Au montant",
+    "direction": "Orientation",
     "incoming": "Entrant",
     "outgoing": "Sortant",
     "balance": "Solde",
@@ -463,6 +637,7 @@
     "totalOutflow": "Dépense totale",
     "netInflow": "Flux net",
     "system": "Compte système",
+    "nonZeroBalance": "Solde différent de zéro",
     "mobileTitle": {
       "account": "Compte",
       "accountsSummary": "Résumé des comptes"
@@ -499,6 +674,7 @@
     },
     "limits": {
       "unlimited": "Illimité",
+      "mode": "Mode",
       "personalized": "Personnalisé",
       "productDefault": "Produit par défaut"
     },
@@ -511,11 +687,16 @@
     },
     "balanceLimits": {
       "negativeLimit": "Limite de solde négatif",
+      "positiveLimit": "Limite du solde positif",
       "personalizedNegativeLimit": "Limite négative personnalisée",
+      "personalizedPositiveLimit": "Limite positive personnalisée",
       "fromNegativeLimit": "De la limite négative",
       "toNegativeLimit": "À la limite négative",
       "fromPositiveLimit": "De la limite positive",
+      "toPositiveLimit": "Limite positive",
       "negative": "Négative",
+      "positive": "Positif",
+      "confirm": "Vous devez confirmer pour appliquer les nouvelles limites de solde",
       "saved": "Les limites de paiement ont été sauveguardées",
       "title": {
         "list": "Limites de solde du compte",
@@ -525,8 +706,10 @@
         "overview": "Aperçu des limites du solde du compte"
       },
       "mobileTitle": {
+        "list": "Limites du solde",
         "view": "Détails des limites du solde",
         "edit": "Détails des limites du solde",
+        "history": "Historique des limites du solde",
         "overview": "Aperçu des limites du solde"
       }
     },
@@ -579,8 +762,11 @@
     "from": "De",
     "to": "à",
     "sender": "Expéditeur",
+    "receiver": "Récepteur",
     "senderOrReceiver": "Expéditeur ou destinataire",
     "sent": "Envoyé",
+    "received": "Reçu",
+    "direction": "Orientation",
     "account": "Compte",
     "fromAccount": "Du compte",
     "fromUser": "De l'utilisateur",
@@ -592,16 +778,29 @@
     "dueAmount": "Montant dû",
     "dueDate": "Date d'échéance",
     "processDate": "Date de traitement",
+    "processDateTooltip": "Sélectionnez cette option pour planifier le traitement",
     "nextOccurrence": "Occurrence suivante",
     "channel": "Canal",
     "receivedBy": "Reçu par",
     "chargedBack": "Remboursé",
     "chargebackOf": "Remboursement  de",
     "chargedBackBy": "Remboursé par",
+    "awaitingAuthorizationBy": "En attente d'autorisation par",
+    "awaitingAuthorizationBy.admin": "administrateur",
+    "awaitingAuthorizationBy.broker": "courtier",
+    "awaitingAuthorizationBy.missingBroker": "courtier (manquant)",
+    "awaitingAuthorizationBy.operatorOwner": "{user} ou opérateur autorisé",
+    "awaitingAuthorizationBy.payer": "payer",
+    "awaitingAuthorizationBy.receiver": "récepteur",
     "authorizationComments": "Commentaires d'autorisation",
+    "actionPerformedBy": "Action effectuée par",
     "accountBalance": "Solde du compte",
     "installments": "Versements",
     "installmentNumber": "Numéro",
+    "installmentNumberOfTotal": "{number} de {total}",
+    "occurrences": "Occurrences",
+    "occurrenceInterval": "Traiter tous les",
+    "feesOnAuthorization": "Frais à appliquer si autorisé",
     "noAccounts": "Vous n'avez pas de compte pour effectuer le paiement",
     "noVisibleAccounts": "Vous n'avez aucun compte visible pour effectuer le paiement, veuillez consulter la page {0} . Si le compte est déjà marqué comme visible, veuillez contacter l'administrateur. ",
     "noExternalPaymentPrincipalTypes": "Il n'y a pas de méthode d'identification utilisateur compatible pour effectuer le paiement",
@@ -618,6 +817,7 @@
       "transferFee": "Frais de transfert"
     },
     "transferStatus": "Statut",
+    "authorizationRoles": "Rôles d'autorisation",
     "scheduling": "Calendrier",
     "scheduling.direct": "Payer maintenant",
     "scheduling.single": "Planifié",
@@ -644,15 +844,24 @@
     "repeatUntil": "Répéter jusqu'au",
     "repeatUntil.manual": "Annulé manuellement",
     "repeatUntil.fixed": "Nombre fixe d'occurrences",
+    "repeatUntil.numberOfOccurrences": "Occurrences {number}",
     "occurrencesCount": "Nombre d'occurrences",
     "firstOccurrence": "Première occurence",
     "firstOccurrence.date": "Date de première occurrence",
+    "firstOccurrence.immediate": "Premier paiement lors de l'acceptation de la demande",
+    "firstOccurrence.afterInterval": "Premier paiement {interval} après avoir accepté la demande",
     "processed": "Le paiement a été traité avec succès",
     "pending": "Le paiement a été soumis pour une nouvelle autorisation",
     "paymentRequestAcceptScheduled": "La demande de paiement était planifiée pour traitement à {0}",
     "paymentRequestSent": "La demande de paiement a été envoyée avec succès",
     "externalPaymentPerformed": "Le paiement externe a été effectué avec succès. Une fois que l'utilisateur s'est enregistré, le paiement sera effectué",
     "done.new": "Nouveau paiement",
+    "done.addReceiverToContacts": "Ajouter un destinataire aux contacts",
+    "done.userAddedToContacts": "L'utilisateur {contact} a été ajouté aux contacts",
+    "orderBy": {
+      "dueDateDesc": "Date d'échéance (plus récente en premier)",
+      "dueDateAsc": "Date d'échéance (plus ancienne en premier)"
+    },
     "status": {
       "open": "Ouvert",
       "closed": "Fermé",
@@ -677,6 +886,7 @@
       "paymentToSelf": "Paiement entre vos comptes",
       "paymentToUser": "Paiement à l'utilisateur",
       "paymentConfirmation": "Confirmation de paiement",
+      "pendingMyAuthorization": "En attente d'autorisation",
       "authorizations": "Autorisations de paiement",
       "authorizationHistory": "Historique d'autorisation",
       "scheduled": "Paiements planifiés",
@@ -689,8 +899,10 @@
       "details.external": "Détails du paiement externe",
       "details.transfer": "Détails du transfert",
       "parentTransfer": "Transfert qui a généré celui-ci",
+      "childTransfer": "Transfert généré par celui-ci",
       "childTransfers": "Transferts générés par celui-ci",
       "transfersOverview": "Aperçu des transactions",
+      "tickets": "Billets",
       "receiveQrPayment": "Recevoir paiement avec code QR",
       "paymentRequestSystemToUser": "Envoyer une demande de paiement du système à l'utilisateur",
       "paymentRequestToSystem": "Envoyer une demande de paiement au système",
@@ -714,6 +926,8 @@
       "paymentToSelf": "Payer soi-même",
       "paymentToUser": "Payer un utilisateur",
       "paymentConfirmation": "Confirmation",
+      "pendingMyAuthorization": "Autoriser",
+      "authorizations": "Autorisations",
       "authorizationHistory": "Historique",
       "scheduled": "Paiements planifiés",
       "details.payment": "Paiement",
@@ -721,8 +935,14 @@
       "details.recurring": "Paiement récurrent",
       "details.request": "Demande de paiement",
       "details.chargeback": "Remboursement",
+      "details.ticket": "Billet",
       "details.external": "Paiement externe",
+      "details.transfer": "Transférer",
+      "parentTransfer": "Transfert d'origine",
+      "childTransfer": "Transfert d'origine",
+      "childTransfers": "Transferts d'origine",
       "transfersOverview": "Aperçu des transactions",
+      "tickets": "Billets",
       "receiveQrPayment": "Paiement par code QR",
       "paymentRequestSystemToUser": "Demandes de paiements du système",
       "paymentRequestToSystem": "Demande de paiement",
@@ -738,8 +958,12 @@
       "boughtVouchers": "Coupons achetés",
       "editRecurringPayment": "Modifier paiement récurrent"
     },
+    "receiveQrPayment.generateQrCode": "Generate QR code",
+    "receiveQrPayment.generateNewQrCode": "Générer un nouveau code QR",
+    "receiveQrPayment.pendingConfirmation": "En attente de confirmation",
     "ticketShareTitle": "Invitation à effectuer un paiement",
     "ticketShareText": "{user} vous a invité à payer {amount}",
+    "ticketShareUrl": "URL à partager",
     "generatedTransaction": "Transaction générée",
     "viewAuthorizations": "Voir les autorisations",
     "viewThisTransfer": "Voir ce transfert",
@@ -815,16 +1039,29 @@
     "firstInstallmentIsImmediate": "Le premier versement est immédiat",
     "voucher.redeemed": "Coupon encaissé",
     "voucher.toppedUp": "Coupon rechargé",
+    "posConfirmation": {
+      "device": "Pour confirmer, le payeur doit scanner ce code QR avec son application mobile.",
+      "password": "Pour confirmer, le payeur doit fournir son {passwordType}.",
+      "totp": "Pour confirmer, le payeur doit fournir un code généré par votre application d'authentification.",
+      "notActive": {
+        "multiple": "Pour confirmer, le payeur a besoin de l'un des éléments suivants, mais n'en a pas : {credentials}.",
+        "device": "Pour confirmer, le payeur a besoin que l'application mobile soit installée et activée comme un appareil de confiance. Ils doivent télécharger l'application et procéder à son activation.",
+        "password": "Pour confirmer, le payeur a besoin d'un {passwordType}, mais ne l'a pas activé. Ils doivent accéder au système et visiter la page des paramètres de mot de passe ou contacter l'administrateur.",
+        "totp": "Pour confirmer, le payeur a besoin d'une application d'authentification configurée. Ils doivent accéder au système et visiter la page des paramètres de mot de passe pour l'activer."
+      }
+    },
     "error": {
       "minTime": "Un délai minimum doit être attendu pour effectuer un tel paiement.",
       "balance": "Solde insuffisant pour effectuer cette opération",
+      "balance.voucher": "Solde du bon de réduction insuffisant pour effectuer cette opération",
       "upperLimit": "Vous ne pouvez pas effectuer ce paiement car la limite de solde supérieure du compte de destination a été dépassée.",
       "daily.amount": "La quantité quotidienne maximale de {amount} a été dépassée",
       "daily.count": "Le nombre de paiements maximum autorisé par jour est de {count}",
       "weekly.amount": "Le montant hebdomadaire maximal de {amount} a été dépassé",
       "weekly.count": "Le nombre maximum de paiements autorisés par semaine est de {count}",
       "monthly.amount": "Le montant mensuel maximal de {amount} a été dépassé",
-      "monthly.count": "Le nombre maximum de paiements autorisés par mois est de {count}"
+      "monthly.count": "Le nombre maximum de paiements autorisés par mois est de {count}",
+      "yearly.amount": "Le montant maximal annuel d' {amount} a été dépassé"
     }
   },
   "voucher": {
@@ -861,23 +1098,32 @@
       "redeemer": "Localisation de l´encaissement",
       "date": "Date de l´encaissement",
       "amount": "Montant encaissé",
+      "amountAtCreation": "Montant (à la création)",
+      "amountToRedeem": "Montant à encaisser",
       "by": "Encaissement effectué par",
-      "payment": "Transaction d´encaissement"
+      "payment": "Transaction d´encaissement",
+      "voucherBalance": "Solde du bon d'achat"
     },
     "topUp": {
       "confirm": "Les détails de la recharge du coupon sont donnés ci-dessous. Veuillez le vérifier et confirmer cette action.",
       "done": "Le coupon a été rechargé avec succès.",
+      "topUp": "Recharger / activer le bon de réduction",
       "sendPinBy": "Envoyer le code PIN par",
       "sendNotificationsBy": "Envoyer des notifications par",
       "dontSendNotifications": "Ne pas envoyer de notifications",
-      "pin": "Code PIN du coupon"
+      "manualPin": "Entrez le code PIN manuellement",
+      "pin": "Code PIN du coupon",
+      "pinConfirm": "Confirmer le code PIN"
     },
     "transaction": {
       "amount": "Montant",
       "date": "Date ",
+      "user": "Lieu",
       "userGroups": "Placer des groupes",
       "payment": "Paiement",
+      "kind": "Type de transaction",
       "redeem": "Encaisser",
+      "topUp": "Recharger",
       "chargeback": "Remboursement",
       "searchResultChargebackTitle": "Remboursement:",
       "chargebackOf": "Remboursement de",
@@ -896,32 +1142,41 @@
     },
     "mobileTitle": {
       "buy": "Acheter coupons\n",
+      "buyConfirmation": "Confirmation d'achat",
       "send": "Acheter et envoyer par e-mail",
       "sendConfirmation": "Envoyer confirmation",
       "redeem": "Encaisser coupon",
+      "topUp": "Recharger / activer le bon de réduction",
       "redeemDetails": "Encaissement de coupon",
       "topUpDetails": "Recharge de coupon",
       "chargebackDetails": "Remboursement du coupon",
       "transactions": "Transactions de coupons",
       "transactionsRedeems": "Encaissements de coupons",
       "search": "Rechercher coupons",
-      "generate": "Générer coupons"
+      "generate": "Générer coupons",
+      "generateConfirmation": "Générer une confirmation"
     },
     "title": {
       "buy": "Acheter coupons\n",
+      "buyConfirmation": "Confirmation d'achat",
       "send": "Acheter coupons et renvoyer par e-mail",
       "sendConfirmation": "Envoyer confirmation",
       "redeem": "Encaisser coupon",
+      "topUp": "Recharger / activer le bon de réduction",
       "redeemDetails": "Détails d´encaissement",
       "topUpDetails": "Détails de la recharge du coupon",
       "chargebackDetails": "Remboursement  du coupon",
       "transactions": "Rechercher transactions de coupon",
       "transactionsRedeems": "Rechercher encaissments ",
       "search": "Rechercher coupons",
-      "generate": "Générer des coupons"
+      "generate": "Générer des coupons",
+      "generateConfirmation": "Générer une confirmation"
     },
     "creationType": {
+      "label": "Type de création",
       "userLabel": "Afficher coupons",
+      "generated": "Générée",
+      "bought": "Acheté",
       "sent": "Envoyé"
     },
     "buy": {
@@ -929,22 +1184,30 @@
       "minimumAmount": "Montant minimum",
       "maximumAmount": "Montant maximum",
       "buy": "Acheter coupons\n",
+      "buyer": "Acheteur",
       "done": "Le coupon a été acheté.",
       "minTimeToRedeem": "Peut être encaissé",
       "minTimeToRedeem.afterBuy": "{interval} après l´achat",
       "payment": "Référence de paiement",
+      "usage": "Usage",
       "usage.self": "J'utiliserai le coupon moi-même (uniquement un usage personnel est autorisé)",
-      "usage.gift": "Ce coupon est un cadeau (les détails de l'encaissement ne seront pas visibles)"
+      "usage.gift": "Ce coupon est un cadeau (les détails de l'encaissement ne seront pas visibles)",
+      "usage.alwaysSelf": "Seul un usage personnel est autorisé"
     },
     "send": {
       "send": "Acheter et envoyer par e-mail",
+      "sendImport": "Courriel par lot",
       "issuer": "Émetteur",
-      "done": "Le coupon a été envoyé à {0}"
+      "done": "Le coupon a été envoyé à {0}",
+      "message": "Message"
     },
     "generate": {
       "generate": "Générer coupons",
       "done": "Les coupons ont été générés"
     },
+    "sendPinToClient": "Envoyer le code PIN au client",
+    "pinSent": "Le code PIN du bon de réduction a été envoyé à {mediums}",
+    "configuration": "Configuration",
     "originAccount": "Compte d'origine",
     "numberOfVouchers": "Nombre de coupons",
     "amountPerVoucher": "Montant par coupon\n",
@@ -957,6 +1220,7 @@
       "status": "Statut du PIN de coupon",
       "blocked": "Le code PIN a été bloqué pour avoir dépassé les tentatives non valides",
       "notUsed": "Le code PIN n'est pas utilisé",
+      "required": "Le code PIN est requis pour l'échange",
       "subsequent": "Le code PIN n'est pas utilisé lors du premier encaissement, mais requis par la suite"
     },
     "unblockPin": {
@@ -965,9 +1229,11 @@
     },
     "cancel": {
       "cancelAndRefund": "Annuler et rembourser",
+      "cancelAndChargeback": "Annuler & rejet de débit",
       "done": "Ce coupon a été annulé.",
       "packConfirmation": "Il y a d'autres coupons appartenant au même pack qui seront également annulés. Êtes-vous sûr de vouloir continuer ?",
       "refundConfirmation": "Êtes-vous sûr de vouloir annuler et rembourser ce coupon ?",
+      "chargebackConfirmation": "Êtes-vous sûr d'annuler et de débiter ce bon de réduction ?",
       "confirmation": "Êtes-vous sûr de annuler ce coupon ?"
     },
     "resendEmail": {
@@ -1001,6 +1267,7 @@
     "transactionsRedeems": "Encaissements",
     "owner": "Propriétaire",
     "sentToEmail": "Envoyé à l'e-mail",
+    "email": "Courriel",
     "mobilePhone": "Téléphone mobile",
     "enableNotifications": "Activer les notifications",
     "notificationsEnabled": "Notifications activées",
@@ -1008,17 +1275,33 @@
     "changeExpirationDate": "Modifier la date d’expiration",
     "expirationDateChanged": "Date d'expiration modifiée",
     "assign": "Assigner",
+    "assigned": "Le bon de réduction a été attribué",
     "refundPayment": "Rembourser paiement",
     "refundDate": "Date de remboursement",
     "otherCategory": "Autres",
     "showCategories": "Afficher les catégories",
+    "listTypes": "Lister les types de bons d'achat",
+    "voucher": "Bon de réduction",
+    "beginCreationDate": "Date de création",
+    "endCreationDate": "Date de création",
+    "beginExpirationDate": "Date d'expiration",
+    "endExpirationDate": "Date d'expiration",
     "info": {
+      "title": "Informations sur le bon de réduction",
+      "message.token": "Ici vous pouvez vérifier le statut de votre bon de réduction. Tapez le code de réduction ci-dessous.",
+      "message.pin": "Veuillez saisir le code PIN ci-dessous pour continuer.",
+      "message.pin.blockedVoucher": "Le bon de réduction est bloqué, veuillez saisir le code PIN ci-dessous pour le débloquer.",
       "forgotPin": {
         "message": "Veuillez confirmer votre demande de recevoir le code PIN par {medium}.",
         "messageAllMediums": "Veuillez confirmer votre demande de recevoir le code PIN par {email} et {sms}.",
         "title": "Code PIN oublié",
         "action": "Code PIN oublié",
         "pinSentTo": "Le code PIN a été envoyé à {to}"
+      },
+      "activateGift": {
+        "title": "Activation du bon d'achat",
+        "message": "Il s'agit d'un bon cadeau de l' {issuer}. Pour l'activer, vous devez définir un code PIN.",
+        "agreement": "En continuant, je déclare avoir reçu ce bon cadeau de la part de {issuer}."
       },
       "changePin": {
         "pinChanged": "Le code PIN a été modifié avec succès",
@@ -1028,12 +1311,25 @@
         "newPinConfirmation": "Confirmation du code PIN",
         "action": "Changer le code PIN"
       },
-      "home": "Page d'accueil"
+      "home": "Page d'accueil",
+      "exit": "Quitter",
+      "unblock": "Débloquer le bon de réduction"
     }
   },
   "field": {
+    "distanceSelection": {
+      "clear": "Nettoyer",
+      "selectTooltip": "Filtrer par distance max",
+      "errorAddressNotLocated": "L'adresse {address} n'est pas encore géolocalisée."
+    },
+    "privacy": {
+      "name": "Visibilité",
+      "private.tooltip": "Ce champ est masqué par d'autres utilisateurs. Cliquez pour le rendre visible.",
+      "public.tooltip": "Ce champ est visible par les autres utilisateurs. Cliquez pour le rendre privé."
+    },
     "image": {
       "upload": "Télécharger une nouvelle image",
+      "camera": "Capture à partir de l'appareil photo",
       "manage": "Réorganiser ou supprimer des images",
       "remove": "Supprimer cette image",
       "manageMessage": "Vous pouvez glisser/déposer les images pour les réorganiser",
@@ -1050,17 +1346,84 @@
       "placeholder.principal": "Tapez l'identifiant de l'utilisateur",
       "contact.tooltip": "Choisissez parmi votre liste de contacts",
       "contact.title": "Selectionner un contact",
-      "scanQrCode.tooltip": "Scannez le code QR avec votre appareil photo"
+      "scanQrCode.tooltip": "Scannez le code QR avec votre appareil photo",
+      "locate.tooltip": "Localiser l'utilisateur"
     },
     "camera": {
+      "title.capture": "Capturer une image depuis votre appareil photo",
       "title.qrCode": "Scannez le code QR",
+      "fileName": "Caméra {timestamp}.jpeg",
+      "capture": "Capturer",
+      "noCameras": "Aucune caméra trouvée sur cet appareil.",
       "noPermission": "Afin d'utiliser cette fonctionnalité, veuillez autoriser l'application à accéder à votre caméra."
     },
     "html": {
+      "undo": "Annuler",
+      "redo": "Refaire",
+      "font": "Font",
+      "font.default": "Default font",
+      "font.sansSerif": "Sans serif",
+      "font.serif": "Serif",
+      "font.monospace": "Monoespace",
+      "size": "Taille",
+      "size.1": "Petit",
+      "size.2": "Petit",
+      "size.3": "Moyenne",
+      "size.4": "Moyen plus grand",
+      "size.5": "Gros",
+      "size.6": "Énorme",
+      "size.7": "Maximum",
+      "block": "Formatage en cours",
+      "block.h1": "Titre 1",
+      "block.h2": "Titre 2",
+      "block.h3": "Titre 3",
+      "block.h4": "Titre 4",
+      "block.h5": "Titre 5",
+      "block.h6": "Titre 6",
+      "block.p": "Paragraphe",
+      "block.pre": "Préformaté",
+      "align.left": "Gauche",
+      "align.right": "Droite",
+      "align.center": "Centrer",
+      "align.justify": "Justifier",
+      "bold": "Bold",
+      "italic": "Italic",
+      "underline": "Souligné",
+      "strikethrough": "Frappe",
+      "removeFormat": "Supprimer le format",
+      "list.bulleted": "Liste à puces",
+      "list.numbered": "Liste numérotée",
+      "indent.less": "Diminuer l'indentation",
+      "indent.more": "Augmenter l'indentation",
+      "source": "Modifier la source HTML",
       "link": {
+        "tooltip": "Insérer un lien hypertexte",
+        "title": "Propriétés du lien hypertexte",
+        "href": "Emplacement du lien hypertexte",
         "text": "Texte affiché"
       },
+      "unlink": "Supprimer le lien hypertexte",
       "image": {
+        "tooltip": "Insérer une image",
+        "title.insert": "Sélectionnez l'image à insérer",
+        "title.properties": "Propriétés de l'image",
+        "source.url": "Insérez l'image depuis Internet",
+        "url": "URL de l'image",
+        "source.existing": "Sélectionnez une image précédemment téléchargée",
+        "noImages": "Il n'y a aucune image existante",
+        "upload": "Télécharger une nouvelle version",
+        "width": "Width",
+        "height": "Hauteur",
+        "contrain": "Conserver le ratio d'aspect",
+        "float": "Align",
+        "floatNone": "Aucun",
+        "floatLeft": "Gauche",
+        "floatRight": "Droite",
+        "marginTop": "Marge supérieure",
+        "marginBottom": "Marge inférieure",
+        "marginLeft": "Marge de gauche",
+        "marginRight": "Marge droite",
+        "border": "Border",
         "textExample": "Ceci est un texte d'exemple. Il montre comment l'image sera positionnée quand il y a du texte en plus de l'image."
       }
     }
@@ -1074,12 +1437,16 @@
       "fields": "Champs de profil",
       "phones": "Téléphones",
       "addresses": "Adresses",
+      "contactInfos": "Contacts publics",
+      "confirmation": "Valider",
       "registration": "Enregistrement de l'utilisateur",
       "registration.confirmation": "Confirmation d'enregistrement",
       "registration.done": "Inscription réussie",
       "contactList": "Liste de contacts",
       "addContact": "Ajouter un nouveau contact",
       "search": "Rechercher utilisateurs\n",
+      "searchPending": "Utilisateurs en attente",
+      "directory": "Répertoire professionnel",
       "myOperators": "Opérateurs",
       "userOperators": "Utilisateurs opérateurs",
       "operatorRegistration": "Enregistrement de l'opérateur",
@@ -1087,18 +1454,32 @@
       "userBrokerings": "Membres assignés par broker\n"
     },
     "mobileTitle": {
+      "myProfile": "Mon profil",
+      "userProfile": "Profil de l'utilisateur",
       "editProfile": "Editer profil",
+      "registration": "Inscription",
+      "registration.confirmation": "Valider",
+      "registration.done": "Succès",
+      "contactList": "Contacts",
       "search": "Utlisateurs",
+      "searchPending": "Utilisateurs en attente",
+      "directory": "Répertoire",
       "myOperators": "Opérateurs",
       "userOperators": "Opérateurs",
       "operatorRegistration": "Nouvel opérateur",
       "myBrokerings": "Membres assignés",
       "userBrokerings": "Membres du broker"
     },
+    "remove": "Retirer",
     "statusEmptyLabel": "Afficher tous les utilisateurs actifs ou bloqués",
+    "connected": "En ligne",
     "connectionStatus": "État de la connexion",
     "disconnectedStatus": "Déconnecté (dernière connexion : {0})",
+    "neverLogged": "Jamais connecté",
     "group": "Groupe",
+    "broker": "Courtier",
+    "mainBroker": "Courtier principal",
+    "otherBrokers": "Autres courtiers",
     "groups": "Groupes",
     "groupSet": "Ensemble de groupes",
     "group.filter": "Groupes",
@@ -1106,11 +1487,15 @@
     "activationDate": "Date d'activation",
     "name": "Nom complet",
     "username": "Nom d'utilisateur",
+    "email": "Courriel",
     "email.pending": "Courriel en attente de validation",
+    "operator.owner": "Propriétaire de l'opérateur",
     "operator.noGroup": "Aucun groupe (a toutes les permissions)",
     "operator.registration.active": "L'opérateur {operator} a été activé.",
+    "operator.registration.inactive": "L'opérateur {operator} a été enregistré, cependant, nécessite toujours une activation par l'administration.",
     "operator.registration.pending": "L'opérateur {operator} a été enregistré, cependant, doit encore valider son inscription en confirmant l'e-mail.",
     "operator.registration.addAnother": "Enregistrer un autre opérateur",
+    "noImageRequired": "Veuillez télécharger votre image de profil",
     "noImage": "Pas d'image de profil",
     "noImages": "Aucune image de profil",
     "address.define": "Définir l'adresse",
@@ -1122,19 +1507,26 @@
     "phone.add.landLine": "Ajouter un téléphone portable",
     "phone.remove": "Retirer ce téléphone",
     "phone.none": "Il n'y a actuellement aucun téléphone",
+    "contactInfo": "Coordonnées",
     "contactInfo.add": "Ajouter le contact",
     "contactInfo.remove": "Supprimer le contact",
+    "contactInfo.none": "Il n'y a actuellement aucun contact public",
+    "contactInfo.atAddress": "Le",
     "profileSaved": "Le profil a été enregistré",
     "newEmailConfirmed": "Votre nouvelle adresse e-mail a été confirmée avec succès",
     "passwordConfirmation": "Confirmation {type}",
     "securityQuestion.message": "Si vous oubliez votre mot de passe, vous devrez répondre correctement à la question de sécurité pour pouvoir le réinitialiser. <br> Cette option peut être définie ultérieurement, mais gardez à l'esprit que la récupération du mot de passe ne fonctionnera pas sans elle.",
     "securityQuestion.empty": "Laisser vide",
+    "captcha": "Vérification",
+    "contact": "Contacter",
+    "contactInfo.define": "Définir les coordonnées publiques",
     "invitedBy": "Invité par",
     "invitedByMe": "Invité par moi",
     "creationBegin": "Enregistré après",
     "creationEnd": "Enregistré avant",
     "acceptedAgreements": "Accords acceptés",
     "notAcceptedAgreements": "Accords non acceptés",
+    "assignedProducts": "Produits assignés",
     "beginUserActivationDate": "Activé après",
     "endUserActivationDate": "Activé avant",
     "beginLastLoginDate": "Dernier login après",
@@ -1146,18 +1538,33 @@
       "noPermission": "Vous n'avez pas la permission de voir le profil de cet utilisateur",
       "showActions": "Afficher les actions",
       "hideActions": "Masquer actions",
+      "banking": "Services bancaires",
       "management": "Gestion",
       "edit": "Editer profil",
       "managePasswords": "Gérer mots de passe",
       "viewIdentityProviders": "Voir fournisseurs d'identité",
+      "addContact": "Ajouter aux contacts",
       "addContact.done": "{user} a été ajouté à votre liste de contacts",
+      "removeContact": "Retirer des contacts",
       "removeContact.done": "{user} a été supprimé de votre liste de contacts",
+      "resendEmailChange": "Renvoyer la clé de validation de l'e-mail",
+      "resendEmailChange.done": "La clé de validation a été envoyée à l'utilisateur par e-mail",
+      "validateEmailChange": "Marquer l'e-mail comme validé",
+      "validateEmailChange.done": "L'e-mail a été marqué comme valide",
+      "resendRegistrationValidation": "Renvoyer l'e-mail de validation",
+      "resendRegistrationValidation.done": "La clé de validation a été envoyée à l'utilisateur par e-mail",
+      "validateRegistration": "Marquer comme validé",
+      "validateRegistration.done": "L'e-mail a été marqué comme valide et l'utilisateur est maintenant actif",
+      "remove": "Retirer",
       "pay": "Effectuer le paiement",
       "paySystemToUser": "Paiement du système à un utilisateur",
       "payAsUserToSystem": "Paiement de l'utilisateur vers le système",
       "payAsUserToUser": "Paiement de l'utilisateur à l'utilisateur",
       "payAsUserToSelf": "Payer l'utilisateur à lui-même",
+      "batchPayments": "Paiements de masse",
       "requestPayment": "Demande de paiement",
+      "purchases": "Achats",
+      "sales": "Ventes",
       "viewAccount": "Voir {account}",
       "viewScheduledPayments": "Visualiser les paiements planifiés",
       "viewAuthorizedPayments": "Visualiser les autorisations de paiement",
@@ -1169,24 +1576,39 @@
       "viewOperators": "Voir opérateurs",
       "viewOperatorGroups": "Voir groupes des opérateurs",
       "viewWebshop": "Voir boutique en ligne",
+      "adInterests": "Intérêts publicitaires",
+      "deliveryMethods": "Méthodes de livraison",
       "webshopSettings": "Paramètres de la boutique en ligne",
       "status.user": "Statut de l'utilisateur",
       "status.operator": "Statut de l'opérateur",
+      "group.user": "Groupe d'utilisateurs",
       "group.operator": "Groupes d'opérateurs",
       "agreements": "Accords",
       "vouchers": "Voir coupons",
+      "voucherBuy": "Acheter un bon d'achat",
       "voucherSend": "Acheter et envoyer le coupon par e-mail",
       "voucherTransactions": "Voir transactions de coupon",
       "voucherTransactionsRedeems": "Voir encaissements de coupons",
       "voucherRedeem": "Encaisser coupon",
+      "voucherTopUp": "Recharger / activer le bon de réduction",
       "notificationSettings": "Préférences de notifications",
+      "products": "Produits",
       "accountsBalanceLimits": "Limites de solde du compte",
       "accountsPaymentLimits": "Limites de paiements du compte",
       "privacySettings": "Paramètres de confidentialité",
+      "references": "Références",
       "feedbacks": "Évaluations",
+      "balance": "{balance} (actuel)",
+      "availableBalance": "{balance} (disponible)",
       "activityInPeriod": "Activité du compte client (30 derniers jours)",
       "activityAllTime": "Activité du compte (tout le temps)",
-      "sendMessage": "Envoyer message"
+      "transactions": "Transactions {transactions}",
+      "totalReceived": "{received} (total reçu)",
+      "totalPaid": "{paid} (total payé)",
+      "sendMessage": "Envoyer message",
+      "quickAccess": "Accès rapide",
+      "favoriteAds": "Annonces favorites",
+      "tickets": "Billets"
     },
     "registration": {
       "group.public": "Choisissez le groupe auquel vous souhaitez participer",
@@ -1198,6 +1620,7 @@
       "inactive.public": "Votre compte a été créé avec succès. <br> Toutefois, vous devrez être activé par l'administration. <br> Vous serez averti lorsque votre compte est actif.",
       "pending.public": "Votre inscription a été soumise et doit être vérifiée. <br> Vous devriez recevoir sous peu un courrier électronique avec les instructions pour activer votre compte. <br> Si vous ne recevez pas l'e-mail, assurez-vous de vérifier votre dossier spam / courrier indésirable.",
       "active.manager": "Le compte de l'utilisateur de {user} a été activé.",
+      "inactive.manager": "L'utilisateur {user} a été enregistré, cependant, nécessite toujours une activation par l'administration.",
       "pending.manager": "L'utilisateur {user} a été enregistré, cependant, doit encore valider son inscription en confirmant l'e-mail.",
       "principal.single": "Vous pouvez utiliser votre {principal} ({value}) sur {channels}",
       "principal.multiple.preface": "Vous pouvez vous connecter avec les données suivantes :",
@@ -1206,7 +1629,12 @@
       "generatedPasswords.single": "Vous recevrez bientôt un e-mail avec votre {type} généré.",
       "generatedPasswords.multiple": "Vous recevrez bientôt un courrier électronique contenant les mots de passe générés suivants: {types}.",
       "viewProfile": "Voir profil",
-      "registerAnotherUser": "Enregistrer un autre utilisateur"
+      "registerAnotherUser": "Enregistrer un autre utilisateur",
+      "resumeWizard": {
+        "message": "Une inscription précédente a été lancée sur cet appareil. Voulez-vous la reprendre ou commencer par une nouvelle inscription ?",
+        "resume": "Reprendre le précédent",
+        "restart": "Commencer une nouvelle inscription"
+      }
     },
     "orderBy": {
       "alphabeticallyAsc": "Nom (A-Z)",
@@ -1254,13 +1682,17 @@
     "voucherTransactionsRedeems": "Encaissements de coupons",
     "restrictPaymentsToUsers": "Restreindre paiements à",
     "editOwnProfile": "Modifier votre profil",
+    "notifications": "Notifications",
     "viewAdvertisements": "Voir les annonces",
     "manageAdvertisements": "Gérer annonces",
     "messages": "Voir / envoyer des messages",
+    "records": "Enregistrements",
     "brokering": "Effectuer des opérations de brokering",
+    "runOperations": "Exécuter des opérations",
     "created": "Le groupe d'opérateurs a été créé",
     "saved": "Le groupe d'opérateurs a été sauvegardé",
     "tokens": {
+      "label": "Vos propres jetons / cartes",
       "enable": "Activer",
       "block": "Bloquer",
       "unblock": "Débloquer",
@@ -1309,8 +1741,11 @@
   },
   "agreements": {
     "agreement": "Accord",
+    "agreements": "Accords",
     "required": "Accords requis",
+    "required.singular": "Accord requis",
     "optional": "Accords optionnels",
+    "optional.singular": "Contrat facultatif",
     "optional.saved": "Les accord sélectionnées ont été sauveguardés",
     "accepted": "Accepté",
     "noAccepted": "Aucun accord accepté",
@@ -1325,29 +1760,39 @@
     }
   },
   "groupMembership": {
+    "current": "Groupe actuel",
+    "new": "Nouveau groupe",
+    "confirm": "Êtes-vous sûr de vouloir changer {user} en groupe {group}?",
     "confirm.aliasOperator": "Êtes-vous sûr de vouloir accorder à {user} les mêmes autorisations que le propriétaire do compte ?",
     "done.user": "Le groupe d'utilisateurs a été modifié",
     "done.operator": "Le groupe d'opérateurs a été modifié",
     "title": {
+      "group.user": "Groupe d'utilisateurs",
       "group.operator": "Groupes d'opérateurs",
+      "history.user": "Historique des groupes d'utilisateurs",
       "history.operator": "Historique du groupe d'opérateur"
     },
     "mobileTitle": {
+      "group.user": "Groupe d'utilisateurs",
       "group.operator": "Groupes d'opérateurs",
+      "history.user": "Historique du groupe",
       "history.operator": "Historique du groupe"
     }
   },
   "brokers": {
     "title": {
+      "list": "Courtiers",
       "new": "Ajouter un broker",
       "history": "Historique des brokers"
     },
     "mobileTitle": {
+      "list": "Courtiers",
       "new": "Ajouter un broker",
       "history": "Historique des brokers"
     },
     "mainBroker": "Broker principal",
     "setMain": "Définir le principal",
+    "broker": "Courtier",
     "brokerAdded": "Le broker a été ajouté avec succès",
     "action": {
       "add": "Ajouté comme broker",
@@ -1366,6 +1811,7 @@
     "extension": "Extension de la ligne fixe",
     "numberExtensionValue": "{number} ext. {extension}",
     "enabledSms": "Activé pour SMS",
+    "verified": "Vérifié",
     "error": {
       "verify": {
         "invalid": "Code de vérification invalidee",
@@ -1374,6 +1820,7 @@
     },
     "verify": {
       "title": "Vérifier {number} pour SMS",
+      "code": "Code",
       "send": "Envoyer",
       "sendDisabled": "Envoyé ({seconds})",
       "message": "Cliquez sur le bouton ci-dessus pour envoyer le code de vérification à votre téléphone",
@@ -1395,102 +1842,251 @@
     "zip": "Code postal"
   },
   "ad": {
+    "accept": "Accepter",
+    "acceptOrder": "Accepter la commande",
+    "addToFavorites": "Ajouter aux favoris",
+    "addedToFavorites": "Ajouté aux favoris",
+    "removeFromFavorites": "Retirer des favoris",
+    "removedFromFavorites": "Supprimé des favoris",
+    "addedProduct": "Le produit a été ajouté au panier",
+    "addedProductOrder": "Le produit a été ajouté à la commande",
+    "addedProductAlreadyInCart": "Le produit a été ajouté au panier (cet article a été ajouté précédemment à votre panier)",
+    "addToCart": "Ajouter au panier",
+    "adjustedQuantity": {
+      "max": "- la quantité demandée ne peut pas être livrée, car il y a un maximum d'articles que vous êtes autorisé à avoir dans votre panier. La quantité de cet article est automatiquement réduite.<br>",
+      "min": "- la quantité demandée ne peut pas être livrée, car il y a un minimum d'articles que vous êtes autorisé à avoir dans votre panier. La quantité de cet article est automatiquement augmentée.<br>",
+      "stock": "- la quantité demandée ne peut pas être livrée, car l'article est presque en rupture de stock. La quantité de cet article est automatiquement réduite.<br>"
+    },
+    "adInterestCreated": "L'intérêt publicitaire a été créé",
     "adInterestSaved": "L'annonce a été sauveguardée",
+    "addProducts": "Ajouter des produits",
     "adSaved": "L'annonce a été sauveguardée",
     "adHidden": "L'annonce a été masquée",
     "adUnhidden": "L´annonce est maintenant visible",
+    "allowDecimalQuantity": "Autoriser la quantité décimale",
+    "answer": "Répondre",
+    "articlesNotice": "Veuillez noter, certains articles dans votre panier :<br> {notice}",
+    "authorize": "Autoriser",
     "authorized": "L'annonce a été autorisée",
+    "askQuestion": "Poser une question",
+    "available": "Disponible",
+    "notAvailable": "Indisponible",
     "backToDraft": "L'annonce est maintenant en mode brouillon",
     "basePrice": "Prix de référence",
     "beginDate": "Publié depuis le",
     "cartEmpty": "Ce panier est vide. Rechercher sur la place de marché des produits et des services à acheter",
+    "checkout": "Payer",
     "changeQuantity": "Modifier la quantité",
+    "chargeType": "Type de charge",
+    "chooseSeller": "Choisissez un vendeur dans la liste ci-dessous pour continuer le processus de panier",
+    "chooseDeliveryMethod": "Choisir le mode de livraison",
+    "chooseDeliveryAddress": "Choisir l'adresse de livraison",
     "choosePaymentType": "Choisissez un type de paiement ...",
+    "customAddress": "Adresse personnalisée",
+    "customDeliveryMethod": "Mode de livraison personnalisé",
+    "customQuantity": "Quantité personnalisée...",
+    "discount": "% de réduction",
     "endDate": "Publié jusqu`au",
     "error": {
-      "cannotBuyFromSeller": "Pour le moment, vous n'êtes pas autorisé à acheter des produits de cet utilisateur. Veuillez contacter votre administrateur."
+      "cannotBuyFromSeller": "Pour le moment, vous n'êtes pas autorisé à acheter des produits de cet utilisateur. Veuillez contacter votre administrateur.",
+      "cannotProceedToCheckout": "Vous ne pouvez pas procéder à la commande car certains éléments ne sont pas disponibles",
+      "notEnoughStock": "La quantité demandée ne peut pas être livrée, car l'article est presque en rupture de stock.",
+      "noAvailableAccounts": "L'annonce ne peut pas être enregistrée car il n'y a pas de comptes disponibles et le prix ne peut pas être défini. Veuillez contacter l'administration",
+      "insufficientBalance": "Solde insuffisant pour procéder à la confirmation de commande."
     },
+    "deliveryAddress": "Adresse de livraison",
+    "deliveryInformation": "Informations sur la livraison",
     "deliveryPrice": "Frais de livraison",
+    "deliveryMethod": "Mode de livraison",
+    "deliveryMethods": "Méthodes de livraison",
     "deliveryPriceToBeConfirmed": "Les frais de livraison ne sont pas encore connus. Une fois que le vendeur aura établi le montant des frais de livraison, vous pourrez toujours confirmer ou rejeter la commande.",
+    "deliveryMethodCreated": "Le mode de livraison a été créé",
     "deliveryMethodSaved": "Le mode de livraison a été sauvegardé",
+    "deliveryType": "Type de livraison",
+    "deliver": "Délivrance",
+    "pickup": "Point de prise en charge",
+    "pickupAddress": "Adresse de prise en charge",
+    "fixed": "Fixe",
     "hasImages": "Avec images",
     "noImages": "Aucune image pour cette annonce",
+    "item": "Élément",
+    "items": "Éléments",
+    "itemsNone": "Il n'y a actuellement aucun produit",
+    "itemNotAvailable": "Indisponible",
+    "itemsNoLongerAvailable": "- ne sont plus disponibles.<br>",
+    "itemsOutOfStock": "- sont en rupture de stock.<br>",
+    "lowBalance": "- dépassent votre solde {currency}.",
     "minPrice": "Prix minimum",
     "maxPrice": "Prix maximum",
+    "minDeliveryTime": "Délai de livraison minimum",
+    "maxDeliveryTime": "Délai maximum de livraison",
+    "matchFields": "Faire correspondre les champs d'annonce suivants",
     "name": "Titre",
+    "negotiated": "Négocié",
+    "noDeliveryMethodsAvailable": "Aucune méthode de livraison pour la devise sélectionnée",
     "owner": "Éditeur",
     "price": "Prix",
+    "questionAsked": "La question a été soumise au vendeur",
+    "questionRemoved": "La question a été supprimée",
     "categories": "Catégories",
     "creationDate": "Date de création",
     "byOwner": "Par {owner}",
     "showAllCategories": "Afficher tout",
     "showCategories": "Afficher les catégories",
     "rootCategory": "Principal",
+    "orderAccepted": "La commande a été traitée",
+    "orderRejected": "La commande a été rejetée",
     "orderSavedAsDraft": "La commande a été sauvegardée comme brouillon",
+    "orderSubmittedToBuyer": "La commande a été envoyée à l'acheteur",
     "publicationPeriod": "Période de publication",
+    "productNumberMask": "Masque",
     "promotionalPeriod": "Période de promotion",
     "promotionalPrice": "Prix promotionnel",
+    "products": "Produits",
+    "product": "Produit",
+    "generated": "Générée",
+    "manual": "Manuelle",
+    "number": "Numéros",
+    "orderNumber": "Numéro de commande",
+    "prefix": "Préfixe",
+    "length": "Longueur",
+    "suffix": "Suffix",
+    "quantity": "Quantité",
+    "question": "Question",
+    "questionAnswered": "La réponse a été envoyée",
+    "reject": "Refuser",
+    "rejectOrder": "Refuser la commande",
     "rejected": "L'annonce a été rejetée",
     "showAddressOnMap": "Afficher l'adresse sur la carte",
     "saveAndInsertNew": "Sauvegarder et créer un nouveau",
     "saveDraft": "Sauvegarder brouillon",
     "setAsDraft": "Définir comme brouillon ",
     "setPromotionalPeriod": "Définir période de promotion",
+    "submitForAuthorization": "Soumettre pour autorisation",
+    "submitToBuyer": "Soumettre à l'acheteur",
+    "submitToBuyerConfirmation": "Êtes-vous sûr de vouloir soumettre cette commande à l'acheteur ? Après cette étape, aucun changement supplémentaire ne sera autorisé dans cette commande, et il sera en attente de l'approbation de l'acheteur.",
+    "subtotal": "Sous-total",
+    "stockType": "Type de stock",
     "pendingForAuth": "L`annonce a été soumise pour autorisation",
     "hide": "Masquer",
     "unhide": "Démasquer",
+    "setDeliveryMethod": "Définir le mode de livraison",
+    "lowStockNotification": "Notification de stock faible",
+    "stockQuantity": "Quantité en stock",
+    "unlimited": "Illimité",
     "unitPrice": "Prix unitaire",
+    "minAllowedInCart": "Minimum autorisé dans le panier",
+    "maxAllowedInCart": "Maximum autorisé dans le panier",
+    "productNumber": "Numéro de produit",
+    "outOfStock": "En rupture de stock",
+    "authorizationNotes": "Notes d'autorisation",
+    "questionsAndAnswers": "Questions et réponses",
+    "removeQuestion": "Supprimer la question",
     "reserveAmount": "Ce montant sera réservé lorsque la commande sera confirmée, et sera débité de votre compte une fois la commande acceptée par le vendeur.",
+    "order": "Commandes",
+    "orderWaitingForSellersApproval": "La commande a été créée et attend l'approbation du vendeur",
     "total": "Prix total",
+    "toBeConfirmedBySeller": "A confirmer par le vendeur",
     "type": {
-      "simple": "Annonce"
+      "simple": "Annonce",
+      "webshop": "Boutique en ligne"
     },
     "webshopSettingsSaved": "Les paramètres de la boutique en ligne ont été sauveguardés",
     "orderBy": {
       "date": "Dernières publications",
+      "distance": "Distance",
       "priceAsc": "Les moins chers",
-      "priceDesc": "Les plus chers"
+      "priceDesc": "Les plus chers",
+      "relevance": "Pertinence"
     },
     "status": {
       "active": "Publié",
       "disabled": "Désactivé",
+      "draft": "Brouillon",
       "expired": "Expirés",
       "hidden": "Masqué",
       "pending": "En attente",
       "scheduled": "Planifié"
     },
     "orderStatus": {
+      "draft": "Brouillon",
+      "completed": "Terminé",
+      "rejectedByBuyer": "Rejeté par l'acheteur",
+      "rejectedBySeller": "Rejeté par le vendeur",
       "paymentPending": "Paiement en attente",
       "paymentDenied": "Paiement refusé",
       "paymentCanceled": "Paiement annulé",
-      "paymentExpired": "Paiement expiré"
+      "paymentExpired": "Paiement expiré",
+      "pendingBuyer": "En attente de l'acheteur",
+      "pendingSeller": "En attente du vendeur",
+      "disposed": "Disposé"
     },
+    "requiringMyConfirmation": "Exiger ma confirmation",
+    "buyer": "Acheteur",
+    "seller": "Vendeur",
+    "stock": "Stock",
+    "waitingForBuyersApproval": "En attente d'approbation des acheteurs",
+    "waitingForSellersApproval": "En attente d'approbation des vendeurs",
+    "remarks": "Remarques",
+    "listAds": "Afficher les annonces",
+    "showFavorites": "Favoris seulement",
+    "warningDisabledAd": "Cette publicité a le statut désactivé et ne peut pas être vue par d'autres utilisateurs. Afin d'activer la publicité, veuillez choisir un prix et une devise et enregistrer la publicité à nouveau",
     "title": {
       "search": "Rechercher annonces",
       "myAdvertisements": "Mes annonces",
+      "myWebshop": "Ma boutique en ligne",
       "viewAdvertisements": "Voir les annonces",
       "viewWebshop": "Voir boutique en ligne",
       "new": "Nouvelle annonce",
       "edit": "Modifier l'annonce",
+      "purchases": "Achats",
+      "sales": "Ventes",
+      "order": "Détails de la commande",
+      "newOrder": "Créer une commande dans la boutique en ligne",
+      "shoppingCart": "Panier d'achat",
+      "history": "Historique des commandes",
+      "deliveryAddress": "Adresse de livraison",
+      "deliveryMethod": "Mode de livraison",
+      "deliveryMethodNew": "Nouveau mode de livraison",
+      "deliveryMethods": "Méthodes de livraison",
       "paymentType": "Type de paiement",
+      "confirmOrder": "Confirmer la commande",
       "webshopSettings": "Paramètres de la boutique en ligne",
+      "unansweredQuestions": "Questions sans réponse",
+      "answerQuestion": "Répondre à la question",
       "adInterests": "Intérêts",
       "adInterestNew": "Nouvel intérêt",
-      "adInterest": "Intérêt"
+      "adInterest": "Intérêt",
+      "favoriteAds": "Favoris d'annonce"
     },
     "mobileTitle": {
       "search": "Annonces",
       "myAdvertisements": "Mes annonces",
+      "myWebshop": "Ma boutique en ligne",
       "viewAdvertisements": "Voir les annonces",
       "viewWebshop": "Voir boutique en ligne",
       "details": "Annonce",
       "new": "Nouvelle annonce",
       "edit": "Modifier l'annonce",
+      "purchases": "Achats",
+      "sales": "Ventes",
+      "order": "Détails de la commande",
+      "newOrder": "Créer une commande dans la boutique en ligne",
+      "shoppingCart": "Panier d'achat",
+      "history": "Historique des commandes",
+      "deliveryAddress": "Adresse de livraison",
+      "deliveryMethod": "Mode de livraison",
+      "deliveryMethodNew": "Nouveau mode de livraison",
+      "deliveryMethods": "Méthodes de livraison",
       "paymentType": "Type de paiement",
+      "confirmOrder": "Confirmer la commande",
       "webshopSettings": "Paramètres de la boutique en ligne",
+      "unansweredQuestions": "Questions sans réponse",
+      "answerQuestion": "Répondre à la question",
       "adInterests": "Intérêts",
       "adInterestNew": "Nouvel intérêt",
-      "adInterest": "Intérêt"
+      "adInterest": "Intérêt",
+      "favoriteAds": "Favoris d'annonce"
     }
   },
   "message": {
@@ -1510,8 +2106,10 @@
       "newMessage": "Nouveau message",
       "moveToTrash": "Déplacer vers la poubelle\n",
       "moveAllToTrash": "Déplacez tout à la poubelle",
+      "remove": "Retirer",
       "reply": "Répondre ",
-      "markAsUnread": "Marquer comme non-lu"
+      "markAsUnread": "Marquer comme non-lu",
+      "restore": "Restaurer"
     },
     "messageBox": {
       "messageBox": "Boîte de messages",
@@ -1524,7 +2122,9 @@
     "fromSentTo": "De / Envoyé à",
     "markAsUnreadDone": "Le message a bien été marqué comme \"non-lu\"",
     "messageRestored": "Le message a été restauré de la poubelle.",
+    "replies": "Réponses",
     "moveToTrashDone": "Le message a été déplacé vers la poubelle\n",
+    "removeDone": "Ce message a été définitivement supprimé",
     "sentBy": "Envoyé par",
     "sentTo": "Envoyé à",
     "sendTo": "Envoyer à",
@@ -1533,26 +2133,39 @@
     "toGroups": "Aux groupes",
     "replyBody": "Le {date}, {fromAddr}, a écrit :",
     "messageDestination": {
-      "brokered": "Utilisateurs enregistrés"
+      "user": "Utilisateur",
+      "group": "Groupe(s)",
+      "brokered": "Utilisateurs enregistrés",
+      "system": "Administration"
     },
-    "send": "Envoyer"
+    "send": "Envoyer",
+    "messageSent": "Le message a été envoyé avec succès"
   },
   "notification": {
+    "message": "Message",
+    "title": "Notifications",
+    "mobileTitle": "Notifications",
     "onlyUnread": "Non-lus uniquement",
     "actions": {
+      "remove": "Supprimer cette notification",
       "removeAll": "Supprimer tout",
       "markAllRead": "Marquer tout comme lu\n",
       "settings": "Préférences de notifications"
     },
     "admin": {
+      "adPendingAuthorization": "Annonce en attente d'autorisation",
       "applicationErrors": "Erreurs de l'application",
       "externalPaymentExpired": "Paiement externe expiré",
       "externalPaymentPerformedFailed": "Le paiement externe n'a pu être reçu",
+      "generatedVouchersAboutToExpire": "Les bons de réduction générés vont bientôt expirer",
       "generatedVouchersExpired": "Expiration des coupons générés",
+      "networkCreated": "Réseau créé",
       "paymentAwaitingAuthorization": "Paiements en attente d'autorisation",
       "paymentPerformed": "Paiements",
+      "systemAlert": "Alertes système",
       "userAlert": "Alertes utilisateurs",
-      "userRegistration": "Nouveaux utilisateurs enregistrés"
+      "userRegistration": "Nouveaux utilisateurs enregistrés",
+      "voucherBuyingAboutToExpire": "Le bon d'achat est sur le point d'expirer"
     },
     "user": {
       "account": {
@@ -1561,8 +2174,11 @@
         "authorizedPaymentDenied": "Paiement autorisé refusé",
         "authorizedPaymentExpired": "Paiement autorisé annulé",
         "authorizedPaymentSucceeded": "Paiement autorisé avec succès",
+        "voucherAboutToExpire": "Les bons expireront dans quelques jours",
         "voucherExpirationDateChanged": "La date d'expiration du coupon a été modifiée",
         "voucherExpired": "Le coupon a expiré",
+        "voucherPinBlocked": "Le code PIN du bon de réduction a été bloqué pour avoir dépassé les tentatives",
+        "voucherTopUp": "Le bon a été rechargé",
         "voucherRedeem": "Le coupon a été encaissé",
         "externalPaymentExpired": "Paiement externe expiré",
         "externalPaymentPerformedFailed": "Paiement externe n'a pu être remis",
@@ -1575,6 +2191,8 @@
         "incomingScheduledPaymentReceived": "Paiement planifié a été reçu",
         "limitChange": "Limite de compte modifié",
         "paymentAwaitingAuthorization": "Paiement en attente par autorisation",
+        "paymentPerformedChargedBack": "Remboursement effectué",
+        "paymentReceivedChargedBack": "Reçu le paiement remboursé",
         "paymentReceived": "Paiement reçu",
         "paymentRequestCanceled": "Demande de paiement annulée",
         "paymentRequestDenied": "Demande de paiement refusée",
@@ -1589,6 +2207,7 @@
         "scheduledPaymentRequestFailed": "Demande de paiement planifiée a échouée",
         "sentPaymentRequestExpirationDateChanged": "La date d'expiration de la demande de paiement a été modifiée",
         "smsPerformedPayment": "Paiement par SMS effectué",
+        "ticketWebhookFailed": "L'approbation du ticket n'a pas pu être notifiée via le webhook",
         "operator": {
           "authorizedPaymentApprovedStillPending": "En attente de paiement par l'opérateur approuvé mais en attente d'autorisation supplémentaire",
           "authorizedPaymentCanceled": "Le paiement en attente par l'opérateur a été annulé",
@@ -1604,11 +2223,19 @@
         "memberUnassigned": "Membre non assigné"
       },
       "buyer": {
+        "adInterestNotification": "Nouvelle annonce correspondant à l'intérêt",
+        "adQuestionAnswered": "Question publicitaire répondue",
+        "orderCanceled": "Bon de commande annulé",
         "orderPaymentCanceled": "Paiement de commande de vente annulé",
         "orderPaymentDenied": "Paiement de commande de vente refusé",
         "orderPaymentExpired": "Paiement de commande de vente refusé",
+        "orderPending": "Commande en attente",
         "orderPendingAuthorization": "Une commande d`achat est en attente d'autorisation de paiement",
-        "orderProcessedBySeller": "Commande acceptée par le vendeur"
+        "orderPendingDeliveryData": "La commande en attente des informations de livraison",
+        "orderProcessedBySeller": "Commande acceptée par le vendeur",
+        "orderRejectedBySeller": "Commande rejetée par le vendeur",
+        "buyerSalePending": "Commande créée",
+        "buyerSaleRejectedBySeller": "Commande de vente annulée"
       },
       "feedback": {
         "changed": "Évaluation modifiée",
@@ -1621,21 +2248,34 @@
       "personal": {
         "brokerAssigned": "Broker assigné",
         "brokerUnassigned": "Broker non assigné",
+        "maxSmsPerMonthReached": "Nombre maximum de SMS par mois atteint",
+        "newToken": "Nouveau jeton / carte",
+        "newTokenPendingActivation": "Nouveau jeton / carte en attente d'activation",
         "passwordStatusChanged": "Le statut du mot de passe à changé",
+        "tokenStatusChanged": "Jeton / Statut de la carte changé",
         "userStatusChanged": "Statut de l'utilisateur changé"
       },
       "reference": {
-        "changed": "Référence modifiée"
+        "changed": "Référence modifiée",
+        "created": "Référence reçue"
       },
       "seller": {
         "adAuthorized": "Annonce autorisée",
         "adExpired": "Annonce expirée",
+        "adLowStock": "Faible quantité d'article",
+        "adOutOfStock": "Article en rupture de stock",
+        "adQuestionCreated": "Nouvelle question sur la publicité",
         "adRejected": "Annonce rejetée",
+        "orderCanceled": "Commande de vente annulée",
+        "orderCreated": "Nouvelle commande dans la boutique en ligne",
         "orderPaymentCanceled": "Paiement de commande de vente anulé",
         "orderPaymentDenied": "Paiement de la commande de vente expiré",
         "orderPaymentExpired": "Paiement de la commande de vente expiré",
         "orderPendingAuthorization": "Une commande de vente est en attente d'autorisation de paiement",
-        "orderProcessedByBuyer": "Commande acceptée par l'acheteur"
+        "orderPendingDeliveryData": "Informations de livraison demandées",
+        "orderProcessedByBuyer": "Commande acceptée par l'acheteur",
+        "orderRejectedByBuyer": "Commande rejetée",
+        "saleProcessedByBuyer": "Vente réalisée"
       }
     }
   },
@@ -1646,9 +2286,11 @@
     "forwardMessages": "Transférer les messages internes à votre adresse e-mail",
     "emailMailings": "Recevoir des listes de diffusion para e-mail",
     "smsMailings": "Recevoir des listes de diffusion par SMS",
+    "appMailings": "Recevoir les mailings des applications mobiles",
     "internalNotification": "Notification interne",
     "accounts": "Comptes",
     "personal": "Personnel",
+    "brokering": "Courtage",
     "payments": "Paiements",
     "marketplaceAsBuyer": "Marché en tant qu'acheteur",
     "marketplaceAsSeller": "Marché en tant que vendeur",
@@ -1666,15 +2308,24 @@
     "loggedInAt": "Connecté à",
     "channel": "Canal",
     "ipAddress": "Adresse IP",
+    "disconnect": "Déconnecter l'utilisateur",
     "viewConnected": {
       "operator": "Voir opérateurs connectés",
       "broker": "Voir brokers connectés",
       "admin": "Voir admins connectés",
       "member": "Voir membres connectés"
     },
-    "showConnected": "Montrer les connectés"
+    "showConnected": "Montrer les connectés",
+    "disconnected": "{user} a été déconnecté"
   },
   "identityProvider": {
+    "popup": "Contact avec {provider}. Veuillez patienter...",
+    "login": "Continuer avec <b>{provider}</b>",
+    "login.noMatch": "Aucun utilisateur trouvé avec l'e-mail {email}. Vous devrez vous connecter avec votre utilisateur habituel et votre mot de passe. Après la connexion, votre compte {app} sera automatiquement lié, donc la prochaine fois, la fonctionnalité « Continuer avec {provider}» fonctionnera directement.",
+    "login.noEmail": "Impossible de lire une adresse e-mail de votre compte {provider} . Vous devrez vous connecter avec votre utilisateur et votre mot de passe. Après la connexion, votre compte {app} sera automatiquement lié, donc la prochaine fois, la fonctionnalité « Continuer avec {provider}» fonctionnera directement.",
+    "registration": "Inscrivez-vous plus rapidement auprès de votre fournisseur d'identité :",
+    "registration.disclaimer": "<b>Avertissement :</b> Aucune de vos données {app} ne sera partagée avec ces fournisseurs, et le seul but de lire vos données personnelles est de remplir le formulaire d'inscription et de vous connecter après avoir été enregistré.",
+    "noResults": "Il n'y a pas encore de fournisseurs d'identité.",
     "title": {
       "manage.self": "Gérer vos fournisseurs d'identité",
       "manage.user": "Gérer vos fournisseurs d'identité"
@@ -1682,10 +2333,38 @@
     "mobileTitle": {
       "manage.self": "Fournisseurs d'identité",
       "manage.user": "Fournisseurs d'identité"
-    }
+    },
+    "action": {
+      "connect": "Connecter",
+      "connect.done": "Vous pouvez maintenant vous connecter en tant que {name} en utilisant {provider}",
+      "disconnect": "Déconnecter",
+      "disconnect.confirm": "Cela désactivera la fonctionnalité « Continuer avec {provider}». Êtes-vous sûr(e) ?",
+      "disconnect.done": "La connexion avec {provider} a été désactivée"
+    },
+    "connectedOn": "Connecté sur {date}",
+    "disconnected": "Déconnecté"
   },
   "operation": {
-    "ad": "Annonce"
+    "ad": "Annonce",
+    "transfer": "Transférer",
+    "fileUpload": "Envoi de fichier",
+    "redirecting": "Vous êtes en cours de redirection...",
+    "alreadyExecuted": "Cette action a déjà été exécutée. Veuillez redémarrer l'opération."
+  },
+  "wizard": {
+    "alreadyExecuted": "Cette étape a déjà été exécutée",
+    "emailVerificationCode": "Code de vérification de l'adresse e-mail",
+    "smsVerificationCode": "Code de vérification SMS",
+    "codeSent": "Code envoyé",
+    "currentStep": "Étape {current} de {total}",
+    "verification": {
+      "sentToEmail": "Le code de vérification a été envoyé à l'adresse électronique <b>{email}</b>.<br>Veuillez vérifier votre boîte aux lettres et copier le code reçu dans le champ ci-dessous.",
+      "sentToPhone": "Le code de vérification a été envoyé par SMS à <b>{phone}</b>.<br>Veuillez vérifier votre téléphone portable et copier le code reçu dans le champ ci-dessous.",
+      "new": {
+        "seconds": "Vous pouvez demander un nouveau code dans {seconds} secondes",
+        "request": "Vous n'avez pas obtenu de code de vérification ? Demandez-en un nouveau."
+      }
+    }
   },
   "setting": {
     "title": "Paramètres",
@@ -1693,7 +2372,8 @@
     "theme": "Thème",
     "theme.light": "Clair",
     "theme.dark": "Sombre",
-    "locale": "Définir la langue"
+    "locale": "Définir la langue",
+    "useClassicFrontend": "Utiliser le frontend classique"
   },
   "privacySettings": {
     "title": "Paramètres de confidentialité",
@@ -1704,14 +2384,22 @@
     "saved": "Les paramètres de confidentialité ont été sauveguardés"
   },
   "record": {
+    "createdBy": "Créé par",
     "lastModifiedBy": "Dernière modification par",
     "lastModificationDate": "Dernière modification le",
+    "action": "{type} ({count})",
+    "fields": "Champs",
     "title": {
+      "details": "Détails {name}",
+      "new": "Créer un nouveau {name}",
       "edit": "Éditer {name}"
     },
     "mobileTitle": {
+      "details": "Détails {name}",
+      "new": "Créer un nouveau {name}",
       "edit": "Éditer {name}"
     },
+    "created": "L' {name} a été créé",
     "saved": "Le {name} a été sauvegardé"
   },
   "userAlert": {
@@ -1719,39 +2407,70 @@
     "text": "Texte",
     "mobileTitle": "Alertes utilisateur",
     "type": {
+      "title": "Type de texte",
+      "custom": "Personnalisé",
       "givenVeryBadRefs": "L'utilisateur a donné beaucoup de \"très mauvaises\" références",
       "inconsistentBalanceBelowLimit": "Compte avec un solde incohérent en dessous de la limite de crédit",
       "insufficientBalanceForInitialCredit": "Le solde est insuffisant pour le crédit initial de compte",
+      "maxDeviceActivationAttemptsReached": "Nombre maximum de tentatives d'activation de l'appareil atteint",
+      "maxDeviceConfirmationCheckAttemptsReached": "Nombre maximal de tentatives de vérification de la confirmation de l'appareil atteint",
+      "maxTokenActivationAttemptsReached": "Nombre maximum de tentatives d'activation de jeton atteint",
+      "maxUserLocalizationAttemptsReached": "Nombre maximum d'utilisateurs tentant de localisation atteint",
       "maxVoucherRedeemAttemptsReached": "Nombre maximum de tentatives d´encaissement atteint",
+      "moveUserAutomaticallyFailed": "Le déplacement automatique de l'utilisateur vers le groupe a échoué",
       "passwordDisabledByTries": "Le mot de passe est bloqué indéfiniment pour avoir dépassé les tentatives",
+      "passwordTemporarilyBlocked": "Mot de passe temporairement bloqué pour avoir dépassé les tentatives",
       "receivedVeryBadRefs": "L'utilisateur a reçu beaucoup de \"très mauvaises\" références",
       "scheduledPaymentFailed": "Paiement planifié a échoué"
     }
   },
   "systemAlert": {
     "type": {
+      "accountBalanceFixed": "Les comptes avec un solde de cache incohérent ont été corrigés",
+      "accountFeeChargedNoFailures": "Frais de compte terminés sans échec",
+      "accountFeeChargedWithFailures": "Les frais de compte sont terminés avec au moins un échec",
       "applicationRestarted": "Application redémarrée",
+      "custom": "Personnalisé",
       "customTranslationsInvalidated": "Traduction personnalisée supprimée.",
       "emailSendingFailed": "Un e-mail n'a pas pu être envoyé",
+      "inconsistentDbSchema": "Le schéma de la base de données contient des changements inattendus",
+      "maxBlockedUsersReached": "Le nombre maximum d'utilisateurs bloqués de la même adresse IP a été atteint",
+      "maxGlobalSmsReached": "Le maximum global de SMS par mois a été atteint",
+      "maxIncorrectLoginAttempts": "Nombre maximum de tentatives de connexion incorrectes pour un utilisateur invalide",
       "smsSendingFailed": "Un SMS sortant n'a pas pu être envoyé"
     }
   },
   "document": {
     "title": {
+      "new": "Créer un nouveau document",
       "view": "Détails du document",
-      "edit": "Détails du document"
+      "edit": "Détails du document",
+      "list": "Documents",
+      "search": "Documents"
     },
     "mobileTitle": {
+      "new": "Créer un nouveau document",
       "view": "Détails du document",
-      "edit": "Détails du document"
+      "edit": "Détails du document",
+      "list": "Documents",
+      "search": "Documents"
     },
     "enable": "Activer",
+    "publiclyAccessible": "Accessible au public",
+    "userVisible": "Visible pour les membres",
     "brokerVisible": "Visible pour le broker",
     "brokerManageable": "Gérable par le broker",
-    "savedSuccessfully": "Sauvegardé avec succès"
+    "replaceDocument": "Remplacer le document",
+    "newDocument": "Nouveau document",
+    "document": "Document",
+    "savedSuccessfully": "Sauvegardé avec succès",
+    "process": "Traiter un document dynamique",
+    "action": "Documents ({count})",
+    "error.noFile": "Il n'y a pas de fichier attaché à ce document car il n'a pas encore été téléchargé."
   },
   "token": {
     "title": {
+      "new": "Détails {0}",
       "view": "{0} détails",
       "assign": "Assigner"
     },
@@ -1761,19 +2480,40 @@
     "action": {
       "activate": "Activer",
       "assign": "Assigner",
+      "block": "Bloquer",
+      "cancel": "Abandonner",
+      "changeDeadline": "Changer la date limite",
       "changeExpiry": "Modifier l'expiration",
-      "unblock": "Débloquer"
+      "unblock": "Débloquer",
+      "done": {
+        "activated": "Le jeton a été activé",
+        "assigned": "Le jeton a été assigné",
+        "blocked": "Le jeton a été bloqué",
+        "canceled": "Le jeton a été annulé",
+        "created": "Le jeton a été créé",
+        "deadlineChanged": "La date limite du jeton a été modifiée",
+        "expiryChanged": "L'expiration du jeton a été modifiée",
+        "unblocked": "Le jeton a été débloqué"
+      },
+      "message": {
+        "cancel": "Vous êtes sur le point d'annuler le jeton. Sachez qu'il s'agit d'une action permanente. Êtes-vous sûr de vouloir modifier le statut du jeton pour l'annuler ?"
+      }
     },
     "status": {
       "activationExpired": "Activation expirée",
       "active": "Activé",
       "blocked": "Bloqué",
+      "canceled": "Annulé",
       "expired": "Expiré",
       "pending": "En attente d'activation",
       "unassigned": "Non assigné"
     },
     "value": "Valeur",
+    "label": "Étiquette",
+    "activationDeadline": "Date limite d'activation",
+    "noDeadline": "Pas de date limite",
     "expiryDate": "Date d'expiration",
+    "noExpiryDate": "Sans expiration",
     "activationDate": "Date d'activation",
     "creationDate": "Date de création",
     "activationBeginDate": "Date d'activation iniciale",
@@ -1783,18 +2523,31 @@
     "unassigned": "Non assigné"
   },
   "reference": {
+    "set": "Définir la référence",
+    "referenceSet": "La référence a été donnée avec succès",
+    "count": {
+      "single": "(1 référence)",
+      "multi": "( Références{count})"
+    },
     "title": {
       "search": "Références",
       "searchGiven": "Références données",
       "searchReceived": "Références reçues",
       "view": "Détails de la référence",
+      "set": "Définir une nouvelle référence",
       "edit": "Modifier la référence donnée"
     },
     "mobileTitle": {
       "search": "Références",
       "searchGiven": "Références données",
       "searchReceived": "Références reçues",
-      "view": "Détails de la référence"
+      "view": "Détails de la référence",
+      "set": "Définir une nouvelle référence"
+    },
+    "direction": {
+      "direction": "Orientation",
+      "received": "Reçu",
+      "given": "Donné"
     },
     "level": {
       "level": "Niveau",
@@ -1805,9 +2558,12 @@
       "neutral": "Neutre"
     },
     "from": "De",
+    "to": "À",
+    "notGiven": "Pas encore donné",
     "value": "Valeur",
     "allTime": "Tous",
     "last30Days": "Derniers 30 jours",
+    "total": "Total",
     "percentagePositive": "Pourcentage positif"
   },
   "feedback": {
@@ -1853,16 +2609,169 @@
     }
   },
   "product": {
+    "title": {
+      "list": "Produits assignés",
+      "history": "Historique des produits assignés"
+    },
+    "mobileTitle": {
+      "list": "Produits assignés",
+      "history": "Historique des produits assignés"
+    },
     "assigned": {
+      "individual": "Produits assignés individuellement à l'utilisateur",
+      "group": "Produits assignés au groupe de l'utilisateur",
       "groupSet": "Produits assignés à l'ensemble du groupe"
     },
     "assign": "Assigner",
-    "unassign": "Ne plus assigner"
+    "unassign": "Ne plus assigner",
+    "assignIndividualProduct": "Assigner un produit individuel",
+    "userAccount": "Compte utilisateur",
+    "product": "Produit",
+    "action": "Action",
+    "productAssigned": "Le produit a été assigné à l'utilisateur",
+    "kind": {
+      "administrator": "Administrateur",
+      "broker": "Courtier",
+      "member": "Membre"
+    }
   },
   "invite": {
+    "title": "Inviter l'utilisateur à essayer le système",
+    "mobileTitle": "Inviter un utilisateur",
+    "toEmail": "A envoyer par e-mail",
+    "toEmails": "Aux e-mails",
     "subject": "Sujet",
+    "body": "Corps",
     "assignBroker": "Devenir comme broker lorsque l'utilisateur s'inscrit",
-    "send": "Envoyer"
+    "send": "Envoyer",
+    "sent.single": "L'e-mail d'invitation a été envoyé",
+    "sent.multiple": "Les e-mails d'invitation ont été envoyés"
+  },
+  "quickAccessSettings": {
+    "title": "Paramètres d'accès rapide",
+    "mobileTitle": "Accès rapide",
+    "information": "Dans cette page, vous pouvez personnaliser les icônes d'accès rapide qui sont affichées dans votre tableau de bord, et dans quel ordre. Activer / désactiver un élément en cliquant dessus. Vous pouvez également réorganiser les éléments activés en les glissant et en les déposant.",
+    "enabled": "Éléments activés",
+    "disabled": "Éléments désactivés",
+    "restoreDefaults": "Restaurer les valeurs par défaut",
+    "restoreDefaults.done": "Les éléments d'accès rapide ont été restaurés par défaut"
+  },
+  "imports": {
+    "title": {
+      "payments": "Importer les paiements",
+      "userPayments": "Paiements de masse",
+      "userSendVouchers": "Envoi de bons de réduction par lot",
+      "general.search": "Importation",
+      "general.details": "Détails de l'importation",
+      "importNew": "Importer un nouveau fichier",
+      "importNew.vouchersSend": "Acheter et envoyer par e-mail plusieurs bons d'achat",
+      "edit": "Modifier le fichier importé",
+      "line.search": "Lignes de fichier importées",
+      "line.details": "Détails de la ligne importée",
+      "line.edit": "Modifier la ligne importée"
+    },
+    "mobileTitle": {
+      "payments": "Importer les paiements",
+      "userPayments": "Paiements de masse",
+      "userSendVouchers": "Coupons de lot",
+      "general.search": "Importation",
+      "general.details": "Importation",
+      "importNew": "Importer un fichier",
+      "importNew.vouchersSend": "Acheter et envoyer des coupons par e-mail",
+      "edit": "Modifier le fichier importé",
+      "line.search": "Lignes de fichier importées",
+      "line.details": "Détails de la ligne importée",
+      "line.edit": "Modifier la ligne importée"
+    },
+    "kind": {
+      "label": "Type d'importation",
+      "users": "Utilisateurs",
+      "ads": "Annonces",
+      "records": "Enregistrements",
+      "generalReferences": "Références générales",
+      "transfers": "Transferts",
+      "tokens": "Jetons",
+      "payments": "Paiements",
+      "userPayments": "Paiements de masse",
+      "userSendVouchers": "Achat en lot et coupons par e-mail"
+    },
+    "fileStatus": {
+      "invalid": "Invalide",
+      "readingCsv": "Lignes de lecture",
+      "readingZip": "Lecture des images",
+      "ready": "Prêt",
+      "importing": "Importation en cours",
+      "imported": "Terminé",
+      "archived": "Archivé",
+      "aborted": "Abandonné",
+      "internalError": "Erreur interne"
+    },
+    "lineStatus": {
+      "ready": "Prêt à importer",
+      "validationError": "Erreur de validation",
+      "skipped": "Marqué comme ignoré",
+      "importError": "Erreur lors de l'importation",
+      "imported": "Importé avec succès"
+    },
+    "file": "Fichier",
+    "fileName": "Nom du fichier",
+    "creationDate": "Date d'envoi",
+    "processingDate": "Date du processus",
+    "archivingDate": "Date d'archivage",
+    "archivingDate.value": "Après {date} , ce fichier importé sera archivé, ce qui signifie que toutes les informations détaillées seront supprimées.",
+    "sendNotifications": "Envoyer des notifications",
+    "useGroupFromFile": "Utiliser les groupes du fichier",
+    "defaultGroup": "Groupe par défaut",
+    "sendActivationEmail": "Envoyer un e-mail d'activation",
+    "useAmountFromFile": "Utiliser le montant du fichier",
+    "defaultAmount": "Montant par défaut",
+    "importNew": "Importer un nouveau",
+    "lines": "Lignes",
+    "ignoredFields": "Champs ignorés",
+    "abort": {
+      "label": "Abandonner",
+      "confirmation": "Êtes-vous sûr de vouloir annuler cette importation ?",
+      "done": "L'importation a été interrompue"
+    },
+    "process": {
+      "label": "Importation",
+      "confirmation": "Êtes-vous sûr d'importer des lignes valides {count}?",
+      "done": "L'importation a commencé"
+    },
+    "section": {
+      "validation": "Validation des lignes",
+      "import": "Importation des lignes"
+    },
+    "skip": {
+      "label": "Ignorer",
+      "done": "Cette ligne sera ignorée lorsque le fichier sera importé"
+    },
+    "include": {
+      "label": "Inclure",
+      "done": "Cette ligne sera incluse lorsque le fichier sera importé"
+    },
+    "lineNumber": "Numéro de ligne",
+    "information": {
+      "ready": "Le fichier est prêt à être importé. Pour continuer, sélectionnez l'action d'importation ci-dessus.",
+      "userSendVouchers": "Vous pouvez envoyer plusieurs bons à la fois en important un fichier CSV, en utilisant <tt>{separator}</tt> comme séparateur.<br>\nLe fichier doit avoir 2 colonnes : <tt>nom</tt> et <tt>email</tt>. Si vous définissez le montant du fichier, vous devez également spécifier la colonne <tt>du montant</tt> .<br>\nDans le champ message, vous pouvez utiliser les mêmes noms d'en-tête que les variables, entourée d'accolades : <tt>&#123;nom}</tt>, <tt>&#123;email}</tt> et <tt>&#123;amount}</tt>."
+    }
+  },
+  "consent": {
+    "authorize": "Autoriser",
+    "deny": "Refuser",
+    "expiration": {
+      "never": "L'autorisation n'expirera pas, mais peut être révoquée manuellement.",
+      "time": "L'autorisation expirera dans {time}."
+    },
+    "privacyPolicy": "Politique de confidentialité",
+    "termsOfService": "Conditions d'utilisation",
+    "title": "Autoriser {client} à accéder à votre compte {app}?",
+    "titleOpenidOnly": "Autoriser {client} à valider votre identité {app}?",
+    "dynamicDomain": "Assurez-vous que <b>{domain}</b> est le site Web que vous autorisez",
+    "permission": {
+      "openIdOnly": "{client} n'aura accès à aucune de vos données personnelles.",
+      "requesting": "{client} demande :"
+    }
   },
   "unsubscribe": {
     "title": "Désinscription des e-mails",
@@ -1873,6 +2782,9 @@
     "message.confirm": "Vous êtes sûr de vouloir continuer?",
     "message.yes": "Oui, désinscrivez-moi",
     "message.no": "Non, je reste inscrit",
-    "done.notification": "L'adresse e-mail <b>{email}</b> ne recevra plus d'e-mails de notification."
+    "done.notification": "L'adresse e-mail <b>{email}</b> ne recevra plus d'e-mails de notification.",
+    "done.message": "L'adresse e-mail <b>{email}</b> ne recevra plus d'e-mails provenant de messages internes.",
+    "done.mailing": "L'adresse e-mail <b>{email}</b> ne recevra plus d'e-mails de listes de diffusion.",
+    "done.proceed": "Procéder"
   }
 }

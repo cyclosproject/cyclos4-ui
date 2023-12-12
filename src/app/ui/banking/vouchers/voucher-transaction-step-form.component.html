@@ -37,7 +37,7 @@
     </decimal-field>
     <ng-template #plainAmount>
       <label-value [label]="i18n.transaction.amount"
-        [value]="data.amount | currency:currency" kind="fieldView">
+        [value]="fixedAmount | currency:currency" kind="fieldView">
       </label-value>
     </ng-template>
   </ng-container>

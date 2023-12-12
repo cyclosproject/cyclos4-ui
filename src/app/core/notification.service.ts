@@ -173,4 +173,8 @@ export class NotificationService {
       this.currentNotification.close();
     }
   }
+
+  get isOpen() {
+    return !!this.currentNotification;
+  }
 }

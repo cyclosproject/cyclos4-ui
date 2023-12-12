@@ -80,7 +80,7 @@ export class ViewOperatorGroupComponent
 
   hasGeneralAccountOperations(): boolean {
     return this.group.restrictPaymentsToUsers?.length > 0 || this.group.chargebackPayments || this.group.receivePayments
-      || this.group.requestPayments;
+      || this.group.requestPayments || this.group.voucherTransactions;
   }
 
   hasTokenPermissions(): boolean {

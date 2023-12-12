@@ -68,9 +68,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.16.7/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.16.8/api-deprecation.html)
     for this version.
-  version: '4.16.7'
+  version: '4.16.8'
 servers:
   - url: 'http://root/api'
 
@@ -770,6 +770,13 @@ paths:
           description: >-
             When using firebase, this is the token assigned to the device. It will be used to associate it to the
             user being logged in. This will allow the user receive platform notifications.
+          schema:
+            type: string
+        - name: mobileAppVersion
+          in: query
+          required: false
+          description: >-
+            The version of the mobile application the user being logged in is using.
           schema:
             type: string
       responses:
@@ -4636,6 +4643,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/UnavailableError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
         '500':
           description: >-
             Unexpected error
@@ -63279,6 +63294,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Group'
+        statuses:
+          description: >-
+            The possible user statuses the authenticated user can use to filter
+            the search. Only administrators or brokers over their members can
+            filter by status (also depends on permissions).
+          type: array
+          items:
+            $ref: '#/components/schemas/UserStatusEnum'
         searchByDistanceData:
           $ref: '#/components/schemas/SearchByDistanceData'
         addressFieldsInSearch:
@@ -80364,14 +80387,6 @@ components:
                 Default query filters to search users
               allOf:
                 - $ref: '#/components/schemas/UserQueryFilters'
-            statuses:
-              description: >-
-                The possible user statuses the authenticated user can use to filter
-                the search. Only administrators or brokers over their members can
-                filter by status (also depends on permissions)
-              type: array
-              items:
-                $ref: '#/components/schemas/UserStatusEnum'
             resultType:
               description: >-
                 Indicates the type for customizable results like tiles, list, etc

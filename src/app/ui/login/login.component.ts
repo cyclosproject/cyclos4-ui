@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, ViewC
 import { FormGroup, ValidationErrors } from '@angular/forms';
 import { DataForLogin, DataForUi, IdentityProvider, IdentityProviderCallbackStatusEnum } from 'app/api/models';
 import { NextRequestState } from 'app/core/next-request-state';
+import { ApiHelper } from 'app/shared/api-helper';
 import { empty, setRootSpinnerVisible } from 'app/shared/helper';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { LoginReason, LoginState } from 'app/ui/core/login-state';
@@ -42,7 +43,7 @@ export class LoginComponent
   constructor(
     injector: Injector,
     private loginState: LoginState,
-    private nextRequestState: NextRequestState,
+    private nextRequestState: NextRequestState
   ) {
     super(injector);
   }
@@ -152,8 +153,8 @@ export class LoginComponent
   private get afterLogin(): () => any {
     return () => {
       setRootSpinnerVisible(false);
-      // Redirect to the correct URL if login confirmation isn't required
-      if (!this.dataForFrontendHolder.dataForUi?.auth?.loginConfirmation) {
+      // Redirect to the correct URL if not in an urgent situation isn't required
+      if (!ApiHelper.isRestrictedAccess(this.dataForFrontendHolder.dataForFrontend)) {
         this.router.navigateByUrl(this.loginState.redirectUrl || '');
       }
     };

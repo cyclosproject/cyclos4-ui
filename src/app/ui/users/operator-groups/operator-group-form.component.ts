@@ -171,10 +171,11 @@ export class OperatorGroupFormComponent
       return;
     }
     const value = this.form.value as OperatorGroupManage;
-    Object.keys(value.accounts)
-      .filter(key => value.accounts[key].access === OperatorGroupAccountAccessEnum.NONE)
-      .forEach(key => this.paymentTypesFromId(key).forEach(pt => delete value.payments[pt.id]));
-
+    if (value.accounts) {
+      Object.keys(value.accounts)
+        .filter(key => value.accounts[key].access === OperatorGroupAccountAccessEnum.NONE)
+        .forEach(key => this.paymentTypesFromId(key).forEach(pt => delete value.payments[pt.id]));
+    }
     const tokenPermissions = this.tokenPermissions.value as TokenPermission[];
     value.enableToken = tokenPermissions.includes("enable");
     value.blockToken = tokenPermissions.includes("block");

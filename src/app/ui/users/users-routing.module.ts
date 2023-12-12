@@ -253,6 +253,10 @@ const usersRoutes: Routes = [
         component: ValidateRegistrationComponent,
       },
       {
+        path: 'validate-registration',
+        component: ValidateRegistrationComponent,
+      },
+      {
         path: 'connected',
         component: SearchConnectedComponent,
       },

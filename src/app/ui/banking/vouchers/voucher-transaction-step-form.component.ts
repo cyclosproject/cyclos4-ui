@@ -73,4 +73,8 @@ export class VoucherTransactionStepFormComponent extends BaseComponent implement
   get balance() {
     return (this.data as VoucherDataForRedeem).balance;
   }
+  
+  get fixedAmount() {
+    return this.data.kind == VoucherTransactionKind.TOP_UP ? this.topUpData.amount : (this.data as VoucherDataForRedeem).balance;
+  }
 }

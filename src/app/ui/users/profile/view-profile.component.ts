@@ -11,7 +11,7 @@ import { ErrorStatus } from 'app/core/error-status';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
-import { empty, words } from 'app/shared/helper';
+import { empty } from 'app/shared/helper';
 import { MapsService } from 'app/ui/core/maps.service';
 import { RecordHelperService } from 'app/ui/core/records-helper.service';
 import { RunOperationHelperService } from 'app/ui/core/run-operation-helper.service';
@@ -21,8 +21,6 @@ import { WizardHelperService } from 'app/ui/core/wizard-helper.service';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
-
-export const MAX_SIZE_SHORT_NAME = 25;
 
 /**
  * Displays an user profile
@@ -48,7 +46,6 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
   }
 
   param: string;
-  shortName: string;
   mobilePhone: PhoneView;
   landLinePhone: PhoneView;
   mobilePhones: PhoneView[];
@@ -90,7 +87,6 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
   }
 
   onDataInitialized(user: UserView) {
-    this.shortName = words(user.name || user.display, MAX_SIZE_SHORT_NAME);
     const enabledFields = user.enabledProfileFields;
     this.imageEnabled = enabledFields == null || enabledFields.includes(BasicProfileFieldEnum.IMAGE);
 
@@ -569,14 +565,14 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
         contact: this.user.id,
       },
     }).subscribe(() => {
-      this.notification.snackBar(this.i18n.user.profile.addContactDone(this.shortName));
+      this.notification.snackBar(this.i18n.user.profile.addContactDone(this.user.name || this.user.display));
       this.reload();
     }));
   }
 
   private removeContact(): any {
     this.addSub(this.contactsService.deleteContact({ id: this.user.contact.id }).subscribe(() => {
-      this.notification.snackBar(this.i18n.user.profile.removeContactDone(this.shortName));
+      this.notification.snackBar(this.i18n.user.profile.removeContactDone(this.user.name || this.user.display));
       this.reload();
     }));
   }
@@ -586,7 +582,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
   }
 
   get title(): string {
-    return this.myProfile ? this.i18n.user.title.myProfile : this.shortName;
+    return this.myProfile ? this.i18n.user.title.myProfile : this.user.name || this.user.display;
   }
 
   get mobileTitle(): string {

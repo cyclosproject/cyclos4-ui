@@ -4,7 +4,7 @@ import { PrincipalType, User } from 'app/api/models';
 import { UserCacheService } from 'app/core/user-cache.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { UserFieldComponent } from 'app/shared/user-field.component';
-import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 /**
@@ -79,9 +79,13 @@ export class MultipleUsersFieldComponent
     }
   }
 
-  preprocessValue(value: string[]): Observable<string[]> {
-    return forkJoin((value || []).map(u => this.userCache.get(u)))
-      .pipe(map(users => users.map(u => this.toValue(u))));
+  preprocessValue(value: string[]): any {
+    if (value && value.length > 0) {
+      return forkJoin((value || []).map(u => this.userCache.get(u)))
+        .pipe(map(users => users.map(u => this.toValue(u))));
+    } else {
+      return null;
+    }
   }
 
   toValue(user: User): string {

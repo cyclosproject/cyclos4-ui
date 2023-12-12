@@ -61,6 +61,17 @@
               [label]="i18n.general.distanceFilter">
             </distance-selection-field>
           </div>
+          <div class="col-12 col-md-6">
+            <!-- active and blocked statuses are always there -->
+            <multi-selection-field *ngIf="data.statuses?.length ?? 0 > 2"
+              formControlName="statuses"
+              [emptyLabel]="i18n.user.statusEmptyLabel"
+              [label]="i18n.general.status">
+              <field-option *ngFor="let status of data.statuses"
+                [value]="status" [text]="userHelper.userStatus(status)">
+              </field-option>
+            </multi-selection-field>
+          </div>
           <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
             <multi-selection-field hierarchyProperty="groupSet"
               formControlName="groups" [emptyLabel]="i18n.general.notApplied"

@@ -3,6 +3,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFieldDirective } from 'app/shared/base-field.directive';
 import { focus, truthyAttr } from 'app/shared/helper';
 import { LayoutService } from 'app/core/layout.service';
+import { NotificationService } from 'app/core/notification.service';
 
 /**
  * Input fields with this directive will receive an initial focus
@@ -16,6 +17,7 @@ export class FocusedDirective extends BaseFieldDirective implements AfterViewIni
     @Optional() el: ElementRef,
     @Optional() @Inject(NG_VALUE_ACCESSOR) valueAccessor: any,
     private changeDetector: ChangeDetectorRef,
+    private notification: NotificationService
   ) {
     super(el, valueAccessor);
   }
@@ -31,7 +33,7 @@ export class FocusedDirective extends BaseFieldDirective implements AfterViewIni
   ngAfterViewInit(): void {
     if (this._focused && this.layout.gtxs) {
       const field = this.field;
-      if (field) {
+      if (field && !this.notification.isOpen) {
         setTimeout(() => {
           focus(field);
           this.changeDetector.detectChanges();

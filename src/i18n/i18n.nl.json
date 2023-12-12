@@ -1857,8 +1857,8 @@
       "min": "- de opgegeven hoeveelheid items is te weinig. De hoeveelheid items van dit artikel wordt automatisch verhoogd.<br>",
       "stock": "- De opgegeven hoeveelheid kan niet worden geleverd, omdat het artikel bijna niet meer op voorraad is. De hoeveelheid van dit artikel is automatisch aangepast aan het maximum.<br>"
     },
-    "adInterestCreated": "De advertentie rente is aangemaakt",
-    "adInterestSaved": "De advertentie rente is opgeslagen",
+    "adInterestCreated": "De advertentie alert is aangemaakt",
+    "adInterestSaved": "De advertentie alert is opgeslagen",
     "addProducts": "Producten toevoegen",
     "adSaved": "De advertentie is opgeslagen",
     "adHidden": "De advertentie is verborgen",
@@ -2055,8 +2055,8 @@
       "unansweredQuestions": "Onbeantwoorde vragen",
       "answerQuestion": "Vraag beantwoorden",
       "adInterests": "Advertentie alerts",
-      "adInterestNew": "Nieuwe advertentie rente",
-      "adInterest": "Advertentie rente",
+      "adInterestNew": "Nieuwe advertentie alert",
+      "adInterest": "Advertentie alerts",
       "favoriteAds": "Favoriete advertenties"
     },
     "mobileTitle": {
@@ -2084,8 +2084,8 @@
       "unansweredQuestions": "Onbeantwoorde vragen",
       "answerQuestion": "Vraag beantwoorden",
       "adInterests": "Advertentie alerts",
-      "adInterestNew": "Nieuwe advertentie rente",
-      "adInterest": "Advertentie rente",
+      "adInterestNew": "Nieuwe advertentie alert",
+      "adInterest": "Advertentie alert",
       "favoriteAds": "Favoriete advertenties"
     }
   },

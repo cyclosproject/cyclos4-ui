@@ -29,7 +29,7 @@ export class LoginState {
       redirectUrl = null;
     }
     this._redirectUrl = redirectUrl;
-    this._reason = redirectUrl == null ? LoginReason.NORMAL : LoginReason.LOGGED_OUT;
+    this._reason = redirectUrl ? LoginReason.LOGGED_OUT : LoginReason.NORMAL;
   }
 
   private _reason: LoginReason = LoginReason.NORMAL;

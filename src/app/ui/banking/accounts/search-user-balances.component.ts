@@ -1,19 +1,26 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AccountTypeWithDefaultMediumBalanceRange, Currency,
+  AccountTypeWithDefaultMediumBalanceRange,
+  BasicProfileFieldInput,
+  Currency,
   CustomFieldDetailed, DataForUserBalancesSearch,
-  UserAddressResultEnum, UsersWithBalanceQueryFilters, UsersWithBalanceSummary, UserWithBalanceResult, UserQueryFilters, RoleEnum, BasicProfileFieldInput
+  RoleEnum,
+  UserAddressResultEnum,
+  UserQueryFilters,
+  UserWithBalanceResult,
+  UsersWithBalanceQueryFilters, UsersWithBalanceSummary
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services/accounts.service';
-import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
+import { PagedResults } from 'app/shared/paged-results';
+import { BankingHelperService } from 'app/ui/core/banking-helper.service';
+import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { MaxDistance } from 'app/ui/shared/max-distance';
 import { Menu } from 'app/ui/shared/menu';
 import { ResultType } from 'app/ui/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { PagedResults } from 'app/shared/paged-results';
 
 type UserBalancesSearchParams = UsersWithBalanceQueryFilters & {
   fields?: Array<string>;
@@ -45,6 +52,7 @@ export class SearchUserBalancesComponent
     injector: Injector,
     private accountsService: AccountsService,
     private bankingHelper: BankingHelperService,
+    public userHelper: UserHelperService
   ) {
     super(injector);
   }
@@ -52,8 +60,9 @@ export class SearchUserBalancesComponent
   getFormControlNames() {
     return [
       'accountType', 'minMediumRange', 'maxMediumRange', 'minBalance', 'maxBalance', 'orderBy', 'groups', 'distanceFilter', 'brokers',
-      'beginActivationPeriod', 'endActivationPeriod', 'beginCreationPeriod', 'endCreationPeriod', 'beginLastLoginPeriod', 'customValues',
-      'endLastLoginPeriod', 'beginNegativeSincePeriod', 'endNegativeSincePeriod', 'notAcceptedAgreements', 'acceptedAgreements', 'products'
+      'statuses', 'beginActivationPeriod', 'endActivationPeriod', 'beginCreationPeriod', 'endCreationPeriod', 'beginLastLoginPeriod',
+      'customValues', 'endLastLoginPeriod', 'beginNegativeSincePeriod', 'endNegativeSincePeriod', 'notAcceptedAgreements',
+      'acceptedAgreements', 'products'
     ];
   }
 
@@ -212,14 +221,6 @@ export class SearchUserBalancesComponent
    */
   path(row: UserWithBalanceResult): string[] {
     return ['/users', row.id, 'profile'];
-  }
-
-  showMoreFiltersLabel() {
-    return this.i18n.general.showFilters;
-  }
-
-  showLessFiltersLabel() {
-    return this.i18n.general.hideFilters;
   }
 
   get toLink() {
