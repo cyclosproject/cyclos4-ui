@@ -235,6 +235,8 @@ export class ApiI18nService {
     switch (kind) {
       case TransferKind.ACCOUNT_FEE:
         return this.i18n.transaction.transferkind.accountFee;
+      case TransferKind.BALANCE_DISPOSAL:
+        return this.i18n.transaction.transferkind.balanceDisposal;
       case TransferKind.CHARGEBACK:
         return this.i18n.transaction.transferkind.chargeback;
       case TransferKind.IMPORT:

@@ -157,7 +157,7 @@ export class SearchOwnerTransactionsComponent
       }
     } else if (this.isExternalPayment()) {
       // There's only a possible action for payment requests, either as self, system or user: pay an external user
-      if (bankingPermissions?.externalPayments?.perform || userPermissions?.externalPayments.performAsSelf) {
+      if (bankingPermissions?.externalPayments?.perform || userPermissions?.externalPayments?.performAsSelf) {
         headingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowUpRight, this.i18n.transaction.payExternalUser,
           () => this.payExternalUser(), true));
       }

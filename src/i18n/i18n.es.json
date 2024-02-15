@@ -99,6 +99,7 @@
     "sendCode": "Enviar código",
     "sentCodeTo": "El código de verificación fue enviado a {to}",
     "reloadPage": "Recargar página",
+    "maxItemsReached": "No es posible agregar otro elemento. El máximo permitido ha sido alcanzado",
     "sessionExpired": {
       "title": "La sesión ha expirado",
       "message": "Su sesión ha terminado.\nPuede continuar viendo la misma página o acceder nuevamente al sistema.",

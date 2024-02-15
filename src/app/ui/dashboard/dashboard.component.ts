@@ -194,8 +194,7 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
           addAction(new ActiveMenu(isAdmin ? Menu.ADMIN_TRANSFERS_OVERVIEW : Menu.BROKER_TRANSFERS_OVERVIEW));
           break;
         case QuickAccessTypeEnum.BALANCES_OVERVIEW:
-          // TODO Maybe we're missing a Menu.BROKER_BALANCES_OVERVIEW?
-          addAction(new ActiveMenu(Menu.USER_BALANCES_OVERVIEW));
+          addAction(new ActiveMenu(isAdmin ? Menu.ADMIN_USER_BALANCES_OVERVIEW:Menu.BROKER_USER_BALANCES_OVERVIEW));
           break;
         case QuickAccessTypeEnum.PAY_USER:
           addAction(new ActiveMenu(Menu.PAYMENT_TO_USER));

@@ -69,7 +69,7 @@
           [label]="i18n.ad.creationDate">
           {{ creationDate | date }}
         </label-value>
-        <input-field [label]="i18n.general.name" formControlName="name"
+        <input-field [label]="i18n.ad.name" formControlName="name"
           required></input-field>
         <single-selection-field *ngIf="data.maxCategoriesPerAd == 1"
           formControlName="categories" [label]="i18n.general.category"

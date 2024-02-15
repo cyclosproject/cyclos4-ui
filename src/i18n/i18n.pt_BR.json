@@ -99,6 +99,7 @@
     "sendCode": "Enviar código",
     "sentCodeTo": "O código de verificação foi enviado para {to}",
     "reloadPage": "Recarregar página",
+    "maxItemsReached": "Não é possível adicionar outro elemento. Atingiu o máximo",
     "sessionExpired": {
       "title": "Sessão expirada",
       "message": "Você foi desconectado.<br>Você pode continuar vendo a mesma página ou efetuar o login novamente agora.",
@@ -809,6 +810,7 @@
     "transferKinds": "Natureza da transação",
     "transferkind": {
       "accountFee": "Taxa de conta",
+      "balanceDisposal": "Eliminação de saldo",
       "chargeback": "Estorno",
       "import": "Importar",
       "initialCredit": "Crédito inicial",

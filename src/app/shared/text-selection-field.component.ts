@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Host, Injector, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
 import { ControlContainer, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { InputFieldComponent } from 'app/shared/input-field.component';
@@ -17,6 +17,8 @@ import { InputFieldComponent } from 'app/shared/input-field.component';
 export class TextSelectionFieldComponent
   extends BaseFormFieldComponent<string[]> implements OnInit {
 
+  @Input('maxItems') maxItems: number;
+
   @ViewChild('inputField') inputField: InputFieldComponent;
 
   inputFieldControl = new FormControl(null);
@@ -31,6 +33,10 @@ export class TextSelectionFieldComponent
     super.ngOnInit();
   }
 
+  get maxItemsReached() {
+    return this.maxItems ? this.maxItems <= this.value.length : false;
+  }
+
   protected getDisabledValue(): string {
     return (this.value || []).join(', ');
   }
@@ -40,15 +46,15 @@ export class TextSelectionFieldComponent
   }
 
   add() {
-    const nativeInput = this.inputField.input;
-    const str = nativeInput.value;
-    if (!str) {
+    const str = this.inputField.input.value;
+    if (!str || (this.value || []).includes(str)) {
+      this.inputFieldControl.setValue(null);
       return;
     }
     const current = this.value || [];
     current.push(str);
     this.value = current;
-    nativeInput.value = null;
+    this.inputFieldControl.setValue(null);
   }
 
   remove(str: string) {

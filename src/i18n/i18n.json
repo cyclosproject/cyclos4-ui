@@ -99,6 +99,7 @@
     "sendCode": "Send code",
     "sentCodeTo": "The verification code was sent to {to}",
     "reloadPage": "Reload page",
+    "maxItemsReached": "Cannot add another element. The maximum has been reached",
     "sessionExpired": {
       "title": "Session expired",
       "message": "You have been logged-out.<br>You can keep viewing the same page or login again now.",
@@ -809,6 +810,7 @@
     "transferKinds": "Transfer kinds",
     "transferkind": {
       "accountFee": "Account fee",
+      "balanceDisposal": "Balance disposal",
       "chargeback": "Chargeback",
       "import": "Import",
       "initialCredit": "Initial credit",

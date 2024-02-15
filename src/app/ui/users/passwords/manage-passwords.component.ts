@@ -42,6 +42,8 @@ export class ManagePasswordsComponent
 
   securityAnswer: FormGroup;
 
+  cachedActions = new Map<string, Action[]>();
+
   constructor(
     injector: Injector,
     private modal: BsModalService,
@@ -139,7 +141,12 @@ export class ManagePasswordsComponent
   }
 
   actions(password: PasswordStatusAndActions): Action[] {
-    const actions: Action[] = [];
+    let actions = this.cachedActions.get(password.type.id);
+    if (actions) {
+      return actions;
+    }
+
+    actions = [];
     const permissions = password.permissions || {};
     if (permissions.change) {
       actions.push(new Action(this.i18n.password.action.change, () => {
@@ -193,6 +200,7 @@ export class ManagePasswordsComponent
         this.disable(password);
       }));
     }
+    this.cachedActions.set(password.type.id, actions);
     return actions;
   }
 

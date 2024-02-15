@@ -4,7 +4,7 @@
 </label-value>
 
 <ng-template #widget>
-  <div class="d-flex mw-100 w-100">
+  <div *ngIf="!maxItemsReached; else maxItemsReachedInfo" class="d-flex mw-100 w-100">
     <div class="d-flex flex-grow-1 mw-100">
       <input-field #inputField [formControl]="inputFieldControl">
       </input-field>
@@ -16,6 +16,11 @@
       </button>
     </div>
   </div>
+    <ng-template #maxItemsReachedInfo>
+      <div class="mt-2">
+        {{ i18n.general.maxItemsReached }}
+      </div>
+    </ng-template>
   <div *ngIf="value.length > 0" class="d-flex mw-100 w-100 flex-wrap">
     <chip [icon]="SvgIcon.Search" *ngFor="let str of value" class="mt-2 mr-2"
       (close)="remove(str)">

@@ -1010,21 +1010,23 @@ export class MenuService {
         add(Menu.PENDING_MY_AUTHORIZATION, `/banking/pending-my-authorization`,
           SvgIcon.Wallet2Check, this.i18n.menu.bankingPendingMyAuth);
       }
-      if (authorizations.view) {
-        if (isAdmin && banking.searchGeneralAuthorizedPayments) {
-          add(Menu.AUTHORIZED_PAYMENTS_OVERVIEW, `/banking/authorized-payments`,
-            SvgIcon.Wallet2Check, this.i18n.menu.bankingAuthorizations);
-        } else {
-          add(Menu.AUTHORIZED_PAYMENTS, `/banking/${owner}/authorized-payments`,
-            SvgIcon.Wallet2Check, this.i18n.menu.bankingAuthorizations);
-        }
+
+      if (!isAdmin && authorizations.view) {
+        add(Menu.AUTHORIZED_PAYMENTS, `/banking/${owner}/authorized-payments`,
+        SvgIcon.Wallet2Check, this.i18n.menu.bankingAuthorizations);
       }
-      if (banking.searchGeneralTransfers) {
+
+      if (isAdmin && banking.searchGeneralAuthorizedPayments) {
+        add(Menu.AUTHORIZED_PAYMENTS_OVERVIEW, `/banking/authorized-payments`,
+          SvgIcon.Wallet2Check, this.i18n.menu.bankingAuthorizations);
+      }
+
+      if (isAdmin && banking.searchGeneralTransfers) {
         add(Menu.ADMIN_TRANSFERS_OVERVIEW, `/banking/transfers-overview`, SvgIcon.ArrowLeftRight, this.i18n.menu.bankingTransfersOverview);
       }
 
-      if (banking.scheduledPayments?.view && banking.searchGeneralScheduledPayments) {
-        add(Menu.SCHEDULED_PAYMENTS_OVERVIEW, `/banking/installments-overview`,
+      if (isAdmin && banking.searchGeneralScheduledPayments) {
+        add(Menu.ADMIN_SCHEDULED_PAYMENTS_OVERVIEW, `/banking/installments-overview`,
           SvgIcon.CalendarEvent, this.i18n.menu.bankingScheduledPaymentsOverview);
       }
 
@@ -1038,8 +1040,8 @@ export class MenuService {
           SvgIcon.Wallet2ArrowUpRight, this.i18n.menu.bankingExternalPaymentsOverview);
       }
 
-      if (banking.searchUsersWithBalances) {
-        add(Menu.USER_BALANCES_OVERVIEW, `/banking/user-balances-overview`,
+      if (isAdmin && banking.searchUsersWithBalances) {
+        add(Menu.ADMIN_USER_BALANCES_OVERVIEW, `/banking/user-balances-overview`,
           SvgIcon.Wallet2Person, this.i18n.menu.bankingUserBalancesOverview);
       }
 
@@ -1060,13 +1062,13 @@ export class MenuService {
           SvgIcon.Ticket, this.i18n.menu.bankingVouchers);
       }
 
-      if (banking.searchGeneralBalanceLimits) {
-        add(Menu.ACCOUNT_BALANCE_LIMITS_OVERVIEW, '/banking/account-balance-limits-overview',
+      if (isAdmin && banking.searchGeneralBalanceLimits) {
+        add(Menu.ADMIN_ACCOUNT_BALANCE_LIMITS_OVERVIEW, '/banking/account-balance-limits-overview',
           SvgIcon.ArrowDownUp, this.i18n.menu.bankingAccountBalanceLimits);
       }
 
-      if (banking.searchGeneralPaymentLimits) {
-        add(Menu.ACCOUNT_PAYMENT_LIMITS_OVERVIEW, '/banking/account-payment-limits-overview',
+      if (isAdmin && banking.searchGeneralPaymentLimits) {
+        add(Menu.ADMIN_ACCOUNT_PAYMENT_LIMITS_OVERVIEW, '/banking/account-payment-limits-overview',
           SvgIcon.ArrowDownUp, this.i18n.menu.bankingAccountPaymentLimits);
       }
 
@@ -1107,6 +1109,25 @@ export class MenuService {
           add(Menu.BROKER_AUTHORIZED_PAYMENTS_OVERVIEW, `/banking/authorized-payments`,
             SvgIcon.Wallet2Check, this.i18n.menu.bankingAuthorizations);
         }
+        if (banking.searchGeneralScheduledPayments) {
+          add(Menu.BROKER_SCHEDULED_PAYMENTS_OVERVIEW, `/banking/installments-overview`,
+            SvgIcon.CalendarEvent, this.i18n.menu.bankingScheduledPaymentsOverview);
+        }
+        if (banking.searchUsersWithBalances) {
+          add(Menu.BROKER_USER_BALANCES_OVERVIEW, `/banking/user-balances-overview`,
+            SvgIcon.Wallet2Person, this.i18n.menu.bankingUserBalancesOverview);
+        }
+
+        if (banking.searchGeneralBalanceLimits) {
+          add(Menu.BROKER_ACCOUNT_BALANCE_LIMITS_OVERVIEW, '/banking/account-balance-limits-overview',
+            SvgIcon.ArrowDownUp, this.i18n.menu.bankingAccountBalanceLimits);
+        }
+
+        if (banking.searchGeneralPaymentLimits) {
+          add(Menu.BROKER_ACCOUNT_PAYMENT_LIMITS_OVERVIEW, '/banking/account-payment-limits-overview',
+            SvgIcon.ArrowDownUp, this.i18n.menu.bankingAccountPaymentLimits);
+        }
+
         addRecords(RootMenu.BROKERING);
         addOperations(RootMenu.BROKERING);
         addWizards(RootMenu.BROKERING);

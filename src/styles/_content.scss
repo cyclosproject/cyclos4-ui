@@ -1,4 +1,4 @@
-@import 'src/definitions';
+@import "src/definitions";
 
 .primary-color {
   color: $primary;
@@ -46,8 +46,7 @@
 }
 
 .custom-content-container {
-  display: flex;
-  flex-direction: column;
+  display: block;
   flex-grow: 1;
   font-size: 1rem;
 }
@@ -114,7 +113,11 @@ body.dark {
     background-color: $body-bg-dark;
     color: $body-color-dark;
   }
-  .border, .border-top, .border-right, .border-bottom, .border-left {
+  .border,
+  .border-top,
+  .border-right,
+  .border-bottom,
+  .border-left {
     border-color: $border-color-dark !important;
   }
   .iframe-loading-spinner {

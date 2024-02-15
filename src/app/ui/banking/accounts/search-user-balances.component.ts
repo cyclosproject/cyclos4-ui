@@ -228,6 +228,6 @@ export class SearchUserBalancesComponent
   }
 
   resolveMenu() {
-    return Menu.USER_BALANCES_OVERVIEW;
+    return Menu.ADMIN_USER_BALANCES_OVERVIEW;
   }
 }

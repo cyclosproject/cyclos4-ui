@@ -18,8 +18,8 @@
       <label-value *ngIf="data.category" [label]="i18n.general.category"
         [value]="data.category.name">
       </label-value>
-      <label-value *ngIf="data.user" [label]="i18n.general.by">
-        <user-link [user]="data.user"></user-link>
+      <label-value *ngIf="data.adUser" [label]="i18n.general.by">
+        <user-link [user]="data.adUser"></user-link>
       </label-value>
       <label-value *ngIf="data.minPrice || data.maxPrice"
         [label]="i18n.ad.price"

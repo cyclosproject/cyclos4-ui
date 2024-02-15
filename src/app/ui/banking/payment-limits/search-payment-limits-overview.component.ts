@@ -208,6 +208,6 @@ export class SearchPaymentLimitsOverviewComponent
   }
 
   resolveMenu() {
-    return new ActiveMenu(Menu.ACCOUNT_PAYMENT_LIMITS_OVERVIEW);
+    return new ActiveMenu(Menu.ADMIN_ACCOUNT_PAYMENT_LIMITS_OVERVIEW);
   }
 }

@@ -1,19 +1,14 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  Currency, CustomFieldDetailed, InstallmentOverviewDataForSearch, InstallmentOverviewResult, InstallmentStatusEnum, TransactionDataForSearch
+  Currency, CustomFieldDetailed, InstallmentOverviewDataForSearch, InstallmentOverviewQueryFilters, InstallmentOverviewResult, InstallmentStatusEnum, TransactionDataForSearch
 } from 'app/api/models';
-import { InstallmentQueryFilters } from 'app/api/models/installment-query-filters';
 import { InstallmentsService } from 'app/api/services/installments.service';
 import { empty } from 'app/shared/helper';
 import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { Observable } from 'rxjs';
-
-export type InstallmentSearchParams = InstallmentQueryFilters & {
-  owner: string;
-};
 
 /**
  * General search for installments
@@ -24,7 +19,7 @@ export type InstallmentSearchParams = InstallmentQueryFilters & {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchInstallmentsComponent
-  extends BaseSearchPageComponent<InstallmentOverviewDataForSearch, InstallmentSearchParams, InstallmentOverviewResult>
+  extends BaseSearchPageComponent<InstallmentOverviewDataForSearch, InstallmentOverviewQueryFilters, InstallmentOverviewResult>
   implements OnInit {
 
   currencies = new Map<string, Currency>();
@@ -75,7 +70,7 @@ export class SearchInstallmentsComponent
   }
 
   getFormControlNames() {
-    return ['status', 'fromAccountType', 'toAccountType', 'transferFilter', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd',
+    return ['status', 'fromAccountTypes', 'toAccountTypes', 'transferFilter', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd',
       'direction', 'transactionNumber', 'customFields', 'orderBy'];
   }
 
@@ -93,10 +88,8 @@ export class SearchInstallmentsComponent
     }));
   }
 
-  protected toSearchParams(value: any): InstallmentSearchParams {
-    const params: InstallmentSearchParams = value;
-    params.accountTypes = value.accountType ? [value.accountType] : null;
-    params.transferFilters = value.transferFilter ? [value.transferFilter] : null;
+  protected toSearchParams(value: any): InstallmentOverviewQueryFilters {
+    const params: InstallmentOverviewQueryFilters = value;
     params.datePeriod = this.bankingHelper.resolveDatePeriod(value);
     const status = value.status as InstallmentStatusEnum;
     params.statuses = [status];
@@ -113,10 +106,10 @@ export class SearchInstallmentsComponent
   }
 
   resolveMenu() {
-    return Menu.SCHEDULED_PAYMENTS_OVERVIEW;
+    return Menu.ADMIN_SCHEDULED_PAYMENTS_OVERVIEW;
   }
 
-  protected doSearch(filter: InstallmentSearchParams): Observable<HttpResponse<InstallmentOverviewResult[]>> {
+  protected doSearch(filter: InstallmentOverviewQueryFilters): Observable<HttpResponse<InstallmentOverviewResult[]>> {
     return this.installmentsService.searchInstallmentsOverview$Response(filter);
   }
 

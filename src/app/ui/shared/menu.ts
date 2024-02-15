@@ -70,7 +70,7 @@ export namespace Menu {
   export const ACCOUNT_HISTORY = new Menu(RootMenu.BANKING, 'ACCOUNT_HISTORY');
   export const ACCOUNTS_SUMMARY = new Menu(RootMenu.BANKING, 'ACCOUNTS_SUMMARY');
   export const ACCOUNT_VISIBILTIY = new Menu(RootMenu.BANKING, 'ACCOUNT_VISIBILITY');
-  export const USER_BALANCES_OVERVIEW = new Menu(RootMenu.BANKING, 'USER_BALANCES_OVERVIEW');
+  export const ADMIN_USER_BALANCES_OVERVIEW = new Menu(RootMenu.BANKING, 'ADMIN_USER_BALANCES_OVERVIEW');
   export const ADMIN_TRANSFERS_OVERVIEW = new Menu(RootMenu.BANKING, 'ADMIN_TRANSFERS_OVERVIEW');
   export const PAYMENT_TO_USER = new Menu(RootMenu.BANKING, 'PAYMENT_TO_USER');
   export const PAYMENT_TO_SELF = new Menu(RootMenu.BANKING, 'PAYMENT_TO_SELF');
@@ -78,7 +78,7 @@ export namespace Menu {
   export const POS = new Menu(RootMenu.BANKING, 'POS');
   export const RECEIVE_QR_PAYMENT = new Menu(RootMenu.BANKING, 'RECEIVE_QR_PAYMENT');
   export const SCHEDULED_PAYMENTS = new Menu(RootMenu.BANKING, 'SCHEDULED_PAYMENTS');
-  export const SCHEDULED_PAYMENTS_OVERVIEW = new Menu(RootMenu.BANKING, 'SCHEDULED_PAYMENTS_OVERVIEW');
+  export const ADMIN_SCHEDULED_PAYMENTS_OVERVIEW = new Menu(RootMenu.BANKING, 'ADMIN_SCHEDULED_PAYMENTS_OVERVIEW');
   export const AUTHORIZED_PAYMENTS = new Menu(RootMenu.BANKING, 'AUTHORIZED_PAYMENTS');
   export const AUTHORIZED_PAYMENTS_OVERVIEW = new Menu(RootMenu.BANKING, 'AUTHORIZED_PAYMENTS_OVERVIEW');
   export const PENDING_MY_AUTHORIZATION = new Menu(RootMenu.BANKING, 'PENDING_MY_AUTHORIZATION');
@@ -91,6 +91,8 @@ export namespace Menu {
   export const SEARCH_MY_VOUCHERS_BANKING = new Menu(RootMenu.BANKING, 'SEARCH_MY_VOUCHERS_BANKING');
   export const PAYMENT_IMPORTS = new Menu(RootMenu.BANKING, 'GENERAL_PAYMENT_IMPORTS');
   export const TICKETS = new Menu(RootMenu.BANKING, 'TICKETS');
+  export const ADMIN_ACCOUNT_BALANCE_LIMITS_OVERVIEW = new Menu(RootMenu.BANKING, 'ADMIN_ACCOUNT_BALANCE_LIMITS_OVERVIEW');
+  export const ADMIN_ACCOUNT_PAYMENT_LIMITS_OVERVIEW = new Menu(RootMenu.BANKING, 'ADMIN_ACCOUNT_PAYMENT_LIMITS_OVERVIEW');
 
   // Users / Marketplace
   export const SEARCH_USERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USERS');
@@ -123,8 +125,12 @@ export namespace Menu {
   export const BROKERED_USERS_ADS = new Menu(RootMenu.BROKERING, 'BROKERED_USERS_ADS');
   export const BROKER_REGISTRATION = new Menu(RootMenu.BROKERING, 'BROKER_REGISTRATION');
   export const BROKER_TRANSFERS_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_TRANSFERS_OVERVIEW');
+  export const BROKER_USER_BALANCES_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_USER_BALANCES_OVERVIEW');
   export const BROKER_AUTHORIZED_PAYMENTS_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_AUTHORIZED_PAYMENTS_OVERVIEW');
   export const BROKER_CONNECTED_USERS = new Menu(RootMenu.BROKERING, 'BROKER_CONNECTED_USERS');
+  export const BROKER_ACCOUNT_BALANCE_LIMITS_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_ACCOUNT_BALANCE_LIMITS_OVERVIEW');
+  export const BROKER_ACCOUNT_PAYMENT_LIMITS_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_ACCOUNT_PAYMENT_LIMITS_OVERVIEW');
+  export const BROKER_SCHEDULED_PAYMENTS_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_SCHEDULED_PAYMENTS_OVERVIEW');
 
   // Personal
   export const MY_PROFILE = new Menu(RootMenu.PERSONAL, 'MY_PROFILE');
@@ -175,12 +181,6 @@ export namespace Menu {
   // Tokens
   export const MY_TOKENS = new Menu(RootMenu.PERSONAL, 'MY_TOKENS');
   export const USER_TOKENS = new Menu(RootMenu.MARKETPLACE, 'USER_TOKENS');
-
-  // Account balance limits
-  export const ACCOUNT_BALANCE_LIMITS_OVERVIEW = new Menu(RootMenu.BANKING, 'ACCOUNT_BALANCE_LIMITS_OVERVIEW');
-
-  // Account payment limits
-  export const ACCOUNT_PAYMENT_LIMITS_OVERVIEW = new Menu(RootMenu.BANKING, 'ACCOUNT_PAYMENT_LIMITS_OVERVIEW');
 
   /**
    * Returns the various `Menu` that represents content pages in distinct root menus

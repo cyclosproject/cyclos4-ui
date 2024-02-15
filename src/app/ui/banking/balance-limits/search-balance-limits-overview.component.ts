@@ -170,6 +170,6 @@ export class SearchBalanceLimitsOverviewComponent
   }
 
   resolveMenu() {
-    return new ActiveMenu(Menu.ACCOUNT_BALANCE_LIMITS_OVERVIEW);
+    return new ActiveMenu(Menu.ADMIN_ACCOUNT_BALANCE_LIMITS_OVERVIEW);
   }
 }

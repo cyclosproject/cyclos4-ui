@@ -10,7 +10,7 @@
       <ng-container [formGroup]="form">
         <input-field formControlName="name" [label]="i18n.general.name"
           required></input-field>
-        <text-selection-field formControlName="keywords"
+        <text-selection-field formControlName="keywords" [maxItems]="5"
           [label]="i18n.general.keywords">
         </text-selection-field>
         <single-selection-field formControlName="kind"
@@ -23,7 +23,7 @@
         <user-field formControlName="user" [label]="i18n.general.by">
         </user-field>
         <single-selection-field formControlName="category"
-          [label]="i18n.general.category">
+          [label]="i18n.general.category" [emptyOption]="i18n.general.all">
           <field-option *ngFor="let cat of categories"
             [value]="ApiHelper.internalNameOrId(cat)" [id]="cat.id"
             [internalName]="cat.internalName" [text]="cat.name"

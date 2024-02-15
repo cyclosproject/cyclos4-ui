@@ -18,7 +18,7 @@
           <!-- Force a line break on sm and up -->
           <div class="w-100 d-none d-sm-block"></div>
           <div class="col-12 col-md-6">
-            <single-selection-field formControlName="fromAccountType"
+            <single-selection-field formControlName="fromAccountTypes"
               [emptyOption]="i18n.general.notApplied"
               [label]="i18n.transaction.fromAccount">
               <field-option *ngFor="let at of data.accountTypes"
@@ -28,7 +28,7 @@
             </single-selection-field>
           </div>
           <div class="col-12 col-md-6">
-            <single-selection-field formControlName="toAccountType"
+            <single-selection-field formControlName="toAccountTypes"
               [emptyOption]="i18n.general.notApplied"
               [label]="i18n.transaction.toAccount">
               <field-option *ngFor="let at of data.accountTypes"

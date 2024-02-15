@@ -68,9 +68,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.16.8/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.16.9/api-deprecation.html)
     for this version.
-  version: '4.16.8'
+  version: '4.16.9'
 servers:
   - url: 'http://root/api'
 
@@ -39535,7 +39535,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         the operation resulted in a file download (either because the `resultType`
         is `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -39651,7 +39651,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         download (either because the `resultType` is
         `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -39837,7 +39837,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         download (either because the `resultType` is
         `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -39947,7 +39947,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         download (either because the `resultType` is
         `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -40285,7 +40285,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         resulted in a file download (either because the `resultType` is
         `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -40395,7 +40395,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         resulted in a file download (either because the `resultType` is
         `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -40647,7 +40647,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         file download (either because the `resultType` is
         `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -40757,7 +40757,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         a file download (either because the `resultType` is
         `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -41021,7 +41021,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         resulted in a file download (either because the `resultType` is
         `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -41137,7 +41137,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         resulted in a file download (either because the `resultType` is
         `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -41395,7 +41395,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         file download (either because the `resultType` is
         `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -41505,7 +41505,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         a file download (either because the `resultType` is
         `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -41760,7 +41760,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         file download (either because the `resultType` is
         `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -41872,7 +41872,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         download (either because the `resultType` is
         `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -42057,7 +42057,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         `resultType` is
         `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -42167,7 +42167,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         download (either because the `resultType` is
         `fileDownload` or is a
         `resultPage` running for either PDF or CSV)
-        the resulting contente type will be of the file itself. Otherwise will
+        the resulting content type will be of the file itself. Otherwise will
         result in an `application/json` with the result object.
       tags:
         - Operations
@@ -58080,6 +58080,8 @@ components:
         
         - `maxIncorrectLoginAttempts`: Someone tried for a given number of tries to login with an invalid username
         
+        - `maxUsersAlmostReached`: Alert when a threshold of the maximum allowed users are registered
+        
         - `smsSendingFailed`: An SMS couldn't be sent
       type: string
       enum:
@@ -58095,6 +58097,7 @@ components:
         - maxBlockedUsersReached
         - maxGlobalSmsReached
         - maxIncorrectLoginAttempts
+        - maxUsersAlmostReached
         - smsSendingFailed
 
     TempImageTargetEnum:
