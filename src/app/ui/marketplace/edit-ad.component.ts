@@ -227,11 +227,19 @@ export class EditAdComponent
     return (this.data as AdDataForEdit).status === AdStatusEnum.DISABLED && this.data.currencies?.length > 0;
   }
 
+  save() {
+    this.doSave(false, false);
+  }
+
+  submitForAuthorization() {
+    this.doSave(false, true);
+  }
+
   /**
    * Creates or updates the current ad and allows to create
    * a new ad based on the current one
    */
-  save(insertNew?: boolean) {
+  doSave(insertNew: boolean, submitForAuthorization: boolean) {
 
     if (!validateBeforeSubmit(this.form)) {
       return;
@@ -262,7 +270,7 @@ export class EditAdComponent
     }
 
     const onFinish: any = (id: string) => {
-      this.notification.snackBar(this.i18n.ad.adSaved);
+      this.notification.snackBar(submitForAuthorization ? this.i18n.ad.pendingForAuth : this.i18n.ad.adSaved);
       if (insertNew) {
         this.router.navigate(['/marketplace', this.owner, this.data.kind, 'ad', 'new'], {
           replaceUrl: true,
@@ -275,8 +283,8 @@ export class EditAdComponent
       }
     };
 
-    if (this.data.requiresAuthorization && this.self) {
-      value.submitForAuthorization = false;
+    if(this.data.canRequestAuthorization) {
+      value.submitForAuthorization = submitForAuthorization;
     }
 
     if (this.create) {
@@ -289,7 +297,6 @@ export class EditAdComponent
       }).subscribe(onFinish));
 
     } else {
-
       const updateAdReq = this.marketplaceService.updateAd({
         ad: this.id,
         body: value,

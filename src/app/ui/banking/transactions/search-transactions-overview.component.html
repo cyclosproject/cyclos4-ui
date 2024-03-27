@@ -166,7 +166,7 @@
           </th>
         </ng-container>
         <ng-container *ngIf="isPaymentRequest()">
-          <th>{{ i18n.transaction.number }}</th>
+          <th *ngIf="hasTransactionNumber">{{ i18n.transaction.number }}</th>
           <th>{{ i18n.transaction.sender }}</th>
           <th>{{ i18n.transaction.receiver }}</th>
         </ng-container>
@@ -186,7 +186,7 @@
                 {{ row.date | date }}
               </a>
             </td>
-            <td *ngIf="isPaymentRequest()">
+            <td *ngIf="isPaymentRequest() && hasTransactionNumber">
               <a [routerLink]="bankingHelper.transactionPath(row)">
                 {{ row.transactionNumber }}
               </a>

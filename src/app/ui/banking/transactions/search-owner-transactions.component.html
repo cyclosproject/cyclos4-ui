@@ -149,7 +149,7 @@
             </td>
             <td *ngIf="isTicket() && hasTransactionNumber">{{
               row.transactionNumber }}</td>
-            <td *ngIf="!isPaymentRequest() && !isTicket()">
+            <td *ngIf="!isTicket()">
               {{ isExternalPayment()
               ? row.toPrincipalValue
               : bankingHelper.subjectName(row.related) }}

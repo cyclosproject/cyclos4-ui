@@ -68,9 +68,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.16.9/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.16.10/api-deprecation.html)
     for this version.
-  version: '4.16.9'
+  version: '4.16.10'
 servers:
   - url: 'http://root/api'
 
@@ -2583,7 +2583,7 @@ paths:
           description: >-
             The number of disconnected sessions.
           content:
-            plain/text:
+            text/plain:
               schema:
                 type: string
         '409':
@@ -29258,7 +29258,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '200':
           description: >-
-            Returns the content of the home page displayed for guests.
+            Returns the content of the home page or dashboard.
           content:
             application/json:
               schema:
@@ -29306,7 +29306,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       summary: >-
         Returns the new frontend help page.
       description: >-
-        Returns information about the home page of the new frontend.
+        Returns information about the help page of the new frontend.
         If disabled, returns null.
       tags:
         - Frontend
@@ -60124,7 +60124,18 @@ components:
           type: boolean
         canCreateNew:
           description: >-
-            Indicates whether the user can create a new advertisement (if not reached max setting) and there is any available currency in case of a webshop
+            Indicates whether the user can create a new advertisement (if not
+            reached max setting) and there is any available currency in case of a
+            webshop
+          type: boolean
+        canSaveAsDraft:
+          description: >-
+            Indicates if the authenticated user can save the advertisement as draft.
+          type: boolean
+        canRequestAuthorization:
+          description: >-
+            Indicates if the authenticated user can request for authorization for
+            this advertisement.
           type: boolean
         maxCategoriesPerAd:
           description: >-
@@ -60658,6 +60669,22 @@ components:
           type: array
           items:
             type: string
+        submitForAuthorization:
+          description: >-
+            Only useful when authorization is required
+            (`AdDataForNew`/`AdDataForEdit`.`requiresAuthorization` flag is
+            `true`). Indicates whether the advertisement will be submitted for
+            authorization (status = `pending`)
+            or kept in the `draft` status.
+          type: boolean
+        hidden:
+          description: >-
+            Only useful when authorization is not required
+            (`AdDataForNew`/`AdDataForEdit`.`requiresAuthorization` flag is
+            `false`). Indicates whether the status for the advertisement
+            should be `hidden` (when `true`) or
+            `active` (when `false`).
+          type: boolean
 
     AdNew:
       description: >-
@@ -60666,22 +60693,6 @@ components:
         - $ref: '#/components/schemas/AdManage'
         - type: object
           properties:
-            submitForAuthorization:
-              description: >-
-                Only useful when authorization is required
-                (`AdDataForNew`/`AdDataForEdit`.`requiresAuthorization` flag is
-                `true`). Indicates whether the advertisement will be initially
-                submitted for authorization (status = `pending`)
-                or kept in the `draft` status.
-              type: boolean
-            hidden:
-              description: >-
-                Only useful when authorization is not required
-                (`AdDataForNew`/`AdDataForEdit`.`requiresAuthorization` flag is
-                `false`). Indicates whether the initial status for the advertisement
-                should be `hidden` (when `true`) or
-                `active` (when `false`).
-              type: boolean
             images:
               type: array
               items:
@@ -66033,11 +66044,6 @@ components:
           allOf:
             - $ref: '#/components/schemas/FrontendHomeContent'
 
-        fullWidthContent:
-          description: >-
-            Should the guest home content be displayed full width in large screens?
-          type: boolean
-
         quickAccess:
           description: >-
             Contains the quick access items that should be displayed.
@@ -67775,6 +67781,14 @@ components:
                 Can this document be managed by the user's broker(s)?
                 Only used if the document `kind` is `user`.
               type: boolean
+            canEdit:
+              description: >-
+                Indicates if the authenticated user can edit this document.
+              type: boolean
+            canRemove:
+              description: >-
+                Indicates if the authenticated user can remove this document.
+              type: boolean
 
     DocumentsPermissions:
       description: >-
@@ -68096,7 +68110,8 @@ components:
 
     FrontendHomeContent:
       description: >-
-        The home page displayed for guests
+        Either the guest home content, help content or the content in the dashboard
+        of an authenticated user
       type: object
       properties:
         layout:
@@ -68105,12 +68120,18 @@ components:
             - $ref: '#/components/schemas/FrontendContentLayoutEnum'
         title:
           description: >-
-            The home page title, used when `layout` is a card
+            The guest home page title or dashboard title, used when `layout` is a
+            card
           type: string
         content:
           description: >-
             The HTML content
           type: string
+        fullWidth:
+          description: >-
+            Only returned for dashboard content. Should the dashboard content be
+            displayed full width in large screens?
+          type: boolean
 
     FrontendIcon:
       description: >-

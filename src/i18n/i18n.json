@@ -1961,6 +1961,8 @@
     "rejected": "The advertisement has been rejected",
     "showAddressOnMap": "Show address on map",
     "saveAndInsertNew": "Save and insert new",
+    "saveAsDraft": "Save as draft",
+    "saveAsDraftAndInsertNew": "Save as draft and insert new",
     "saveDraft": "Save draft",
     "setAsDraft": "Set as draft to edit",
     "setPromotionalPeriod": "Set promotional period",

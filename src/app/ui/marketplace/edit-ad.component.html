@@ -210,12 +210,15 @@
         </ng-container>
       </ng-container>
       <actions>
-        <action-button (action)="save()" [label]="i18n.general.save"
+        <action-button *ngIf="data.canRequestAuthorization"  (action)="submitForAuthorization()" [label]="i18n.ad.submitForAuthorization"
+          [disabled]="showNotAvailableCurrenciesError()">
+        </action-button>
+        <action-button [outline]="data.canRequestAuthorization" (action)="save()" [label]="data.canSaveAsDraft ? i18n.ad.saveAsDraft : i18n.general.save"
           [disabled]="showNotAvailableCurrenciesError()">
         </action-button>
         <action-button *ngIf="data.canCreateNew" outline
           [disabled]="(requesting$ | async) || showNotAvailableCurrenciesError()"
-          (action)="save(true)" [label]="i18n.ad.saveAndInsertNew">
+          (action)="doSave(true, false)" [label]="data.canSaveAsDraft ? i18n.ad.saveAsDraftAndInsertNew : i18n.ad.saveAndInsertNew">
         </action-button>
       </actions>
     </page-content>

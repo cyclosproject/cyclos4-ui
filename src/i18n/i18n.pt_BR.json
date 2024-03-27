@@ -1961,6 +1961,8 @@
     "rejected": "O anúncio foi rejeitado",
     "showAddressOnMap": "Mostrar endereço no mapa",
     "saveAndInsertNew": "Salvar e inserir novo",
+    "saveAsDraft": "Salvar como rascunho",
+    "saveAsDraftAndInsertNew": "Salvar como rascunho e criar novo",
     "saveDraft": "Salvar rascunho",
     "setAsDraft": "Definir como rascunho para editar",
     "setPromotionalPeriod": "Definir período promocional",

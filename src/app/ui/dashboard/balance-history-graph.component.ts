@@ -104,7 +104,14 @@ export class BalanceHistoryGraphComponent extends BaseComponent implements After
       this.yPoints.push(yPos(value));
       this.yLabels.unshift(this.format.formatAsNumber(value, 0));
     }
-    this.xLabels = balances.map(balance => this.format.shortMonthName(moment(balance.date).month()));
+    this.xLabels = balances.map(balance => {
+      const date = moment(balance.date);
+      if (date.isSame(moment(), 'day')) {
+        return this.i18n.general.now;
+      } else {
+        return this.format.shortMonthName(date.month());
+      }
+    });
 
     // Calculate the minimum x spot based on the largest label
     const maxLength = Math.max(...(this.yLabels.map(l => l.length)));
@@ -122,6 +129,7 @@ export class BalanceHistoryGraphComponent extends BaseComponent implements After
         x: this.xPoints[i],
         y: yPos(value),
         value,
+        date: balance.date ? this.format.formatAsDate(balance.date) : this.i18n.general.now,
         formattedValue: this.format.formatAsCurrency(currency, balance.amount)
       };
     });

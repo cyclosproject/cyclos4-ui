@@ -1960,6 +1960,8 @@
     "rejected": "Se ha rechazado el anuncio",
     "showAddressOnMap": "Mostrar dirección en el mapa",
     "saveAndInsertNew": "Guardar y agregar nuevo anuncio",
+    "saveAsDraft": "Guardar como borrador",
+    "saveAsDraftAndInsertNew": "Guardar como borrador y crear nuevo",
     "saveDraft": "Guardar borrador",
     "setAsDraft": "Definir borrador para editar",
     "setPromotionalPeriod": "En promoción",

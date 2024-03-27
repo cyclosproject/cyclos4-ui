@@ -48,7 +48,7 @@
         <latest-users *ngIf="data.showLatestUsers" [users]="data.latestUsers">
         </latest-users>
         <div *ngIf="data.content" class="dashboard-item"
-          [ngClass]="{'dashboard-item-full': data.fullWidthContent}">
+          [ngClass]="{'dashboard-item-full': data.content.fullWidth}">
           <ng-container *ngTemplateOutlet="showContent"></ng-container>
         </div>
       </div>

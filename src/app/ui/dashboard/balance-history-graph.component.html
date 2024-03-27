@@ -30,7 +30,7 @@
   <g class="data">
     <polyline [attr.points]="linePoints" />
     <circle *ngFor="let d of data" [attr.cx]="d.x" [attr.cy]="d.y" r="4"
-      [tooltip]="d.formattedValue" />
+      [tooltip]="d.date + ': ' + d.formattedValue" />
   </g>
   <!--
   <g class="debug">

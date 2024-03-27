@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { DocumentKind, DocumentView, RoleEnum } from 'app/api/models';
+import { DocumentKind, DocumentView } from 'app/api/models';
 import { DocumentsService } from 'app/api/services/documents.service';
-import { HeadingAction } from 'app/shared/action';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
-import { downloadResponse } from 'app/shared/helper';
-import { Menu } from 'app/ui/shared/menu';
 import { SvgIcon } from 'app/core/svg-icon';
-import { empty } from 'app/shared/helper';
+import { HeadingAction } from 'app/shared/action';
+import { downloadResponse, empty } from 'app/shared/helper';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
+import { Menu } from 'app/ui/shared/menu';
 
 /**
  * View the details of a document. Only for managers
@@ -37,11 +36,14 @@ export class ViewDocumentComponent
 
   onDataInitialized(data: DocumentView) {
     super.onDataInitialized(data);
-    if (this.dataForFrontendHolder.auth.role !== RoleEnum.BROKER || data.brokerManageable) {
-      const headingActions = [new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => this.navigateToEdit(), true)];
-      headingActions.push(new HeadingAction(SvgIcon.Trash, this.i18n.general.remove, () => this.remove(), true));
-      this.headingActions = headingActions;
+    const headingActions = [];
+    if (data.canEdit) {
+      headingActions.push(new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => this.navigateToEdit(), true));
     }
+    if (data.canRemove) {
+      headingActions.push(new HeadingAction(SvgIcon.Trash, this.i18n.general.remove, () => this.remove(), true));
+    }
+    this.headingActions = headingActions;
   }
 
   remove() {
