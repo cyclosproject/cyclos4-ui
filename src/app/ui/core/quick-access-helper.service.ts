@@ -152,6 +152,8 @@ export class QuickAccessHelperService {
       case QuickAccessTypeEnum.TOKEN:
         const tokenType = quickAccess.tokenType;
         return { icon: this.tokenHelper.icon(tokenType), label: tokenType.pluralName };
+      case QuickAccessTypeEnum.HELP:
+        return { icon: SvgIcon.QuestionCircle , label: this.i18n.dashboard.action.help };
     }
   }
 

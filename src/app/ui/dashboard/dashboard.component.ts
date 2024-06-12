@@ -371,6 +371,12 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
             }
           }
           break;
+        case QuickAccessTypeEnum.HELP:
+          if(dataForFrontend.hasHelp){
+            const helpMenu = this.menu.helpMenu;
+            addAction(new ActiveMenu(helpMenu));
+          }
+          break;
       }
     }
   }

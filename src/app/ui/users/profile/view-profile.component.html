@@ -118,9 +118,8 @@
           data.online ||
           (data.lastLogin && !data.online) ||
           (data.lastLogin == null && data.online != null) ||
-          data.references ||
-          data.paymentFeedbacks ||
-          hasAccountWithStatus " class="mb-1">
+          data.references?.count > 0 ||
+          data.paymentFeedbacks?.count > 0" class="mb-1">
         {{ i18n.user.activities }}</h3>
       <label-value *ngIf="data.online" [label]="i18n.user.connectionStatus"
         [value]="i18n.user.connected">
@@ -132,7 +131,7 @@
       <label-value *ngIf="data.lastLogin == null && data.online != null"
         [label]="i18n.user.connectionStatus" [value]="i18n.user.neverLogged">
       </label-value>
-      <label-value *ngIf="data.references"
+      <label-value *ngIf="data.references?.count > 0"
         [label]="i18n.user.profile.references">
         <a [routerLink]="referencesPath()">
           <rating-stats *ngIf="data.references.count > 0"
@@ -140,11 +139,9 @@
             i18n.reference.count.multi(data.references.count) :
             i18n.reference.count.single">
           </rating-stats>
-          <ng-container *ngIf="data.references.count === 0">
-            {{ i18n.reference.notGiven }}</ng-container>
         </a>
       </label-value>
-      <label-value *ngIf="data.paymentFeedbacks"
+      <label-value *ngIf="data.paymentFeedbacks?.count > 0"
         [label]="i18n.user.profile.feedbacks">
         <a [routerLink]="feedbackPath()">
           <rating-stats *ngIf="data.paymentFeedbacks.count > 0"
@@ -152,8 +149,6 @@
           i18n.feedback.count.multi(data.paymentFeedbacks.count) :
           i18n.feedback.count.single">
           </rating-stats>
-          <ng-container *ngIf="data.paymentFeedbacks.count === 0">
-            {{ i18n.reference.notGiven }}</ng-container>
         </a>
       </label-value>
       <ng-container *ngFor="let acc of data.accounts">

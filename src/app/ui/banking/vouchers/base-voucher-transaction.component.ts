@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Directive, Injector, OnInit } from '@angular/core';
+import { Directive,  Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { VoucherBasicDataForTransaction, VoucherInitialDataForTransaction, VoucherTransactionPreview, VoucherTransactionResult } from 'app/api/models';
 import { VouchersService } from 'app/api/services/vouchers.service';
@@ -61,10 +61,6 @@ export abstract class BaseVoucherTransactionComponent<
       this.self = this.authHelper.isSelf(data.user);
     }));
     this.step = 'token';
-
-    // TODO this shouldn't be needed, but started with Angular 13.2.x.
-    // There's the issue https://jira.cyclos.org/browse/CYCLOS-9724 for tracking this.
-    this.step$.subscribe(() => setTimeout(() => this.injector.get(ChangeDetectorRef).detectChanges()));
   }
 
   /**
@@ -146,6 +142,7 @@ export abstract class BaseVoucherTransactionComponent<
       token: data.token,
       body: this.form.value
     };
+   
     this.addSub(this.performTransaction(null, params).subscribe(result => {
       this.router.navigate(['/banking', 'voucher-transactions', 'view', result.id], { state: { url: this.router.url } });
     }));

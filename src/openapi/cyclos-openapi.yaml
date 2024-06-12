@@ -68,9 +68,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.16.10/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.16.11/api-deprecation.html)
     for this version.
-  version: '4.16.10'
+  version: '4.16.11'
 servers:
   - url: 'http://root/api'
 
@@ -9652,27 +9652,26 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /images/{idOrKey}:
+  /images/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: >-
+          The image id
+        x-dotInPath: true
+        schema:
+          type: string
     get:
       operationId: viewImage
       summary: >-
-        Returns an image details by id or key
+        Returns an image details by id
       description: >-
-        Returns metadata about an image given its identifier or key.
-        In case of images of kind `systemCustom` the key could be
-        also compund by the prefix `system_image_` and the file name.
+        Returns metadata about an image given its id.
       tags:
         - Images
       parameters:
         - $ref: '#/components/parameters/fields'
-        - name: idOrKey
-          in: path
-          required: true
-          description: >-
-            The image id or key
-          x-dotInPath: true
-          schema:
-            type: string
       responses:
         '200':
           description: >-
@@ -9720,24 +9719,13 @@ A note for dynamic custom fields: If a script is used to generate possible value
     delete:
       operationId: deleteImage
       summary: >-
-        Removes an image by id or key
+        Removes an image by id
       description: >-
-        Removes the image with the given internal id or key.
-        In case of images of kind `systemCustom` the key could be
-        also compund by the prefix `system_image_` and the file name.
+        Removes the image with the given id.
         Any image kind can be removed using this operation, but the authenticated
         user needs the appropriate permission to do so.
       tags:
         - Images
-      parameters:
-        - name: idOrKey
-          in: path
-          required: true
-          description: >-
-            The image id or key
-          x-dotInPath: true
-          schema:
-            type: string
       responses:
         '204':
           description: >-
@@ -9786,15 +9774,13 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /images/content/{idOrKey}:
+  /images/content/{id}:
     get:
       operationId: getImageContent
       summary: >-
-        Returns an image content by id or key
+        Returns an image content by id
       description: >-
-        Returns the content of an image, given the image identifier or key.
-        In case of images of kind `systemCustom` the key could be
-        also compund by the prefix `system_image_` and the file name.
+        Returns the content of an image, given the image id.
         When neither `width` nor `height` are specified, returns the original
         content. The original ratio is always maintained. When only of one of the
         dimensions is specified, it is used as maximum, and the other is
@@ -9803,11 +9789,11 @@ A note for dynamic custom fields: If a script is used to generate possible value
       tags:
         - Images
       parameters:
-        - name: idOrKey
+        - name: id
           in: path
           required: true
           description: >-
-            The image id or key
+            The image id
           x-dotInPath: true
           schema:
             type: string
@@ -10549,10 +10535,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
       description: >-
         Returns all uploaded temporary images by the current user, or guest key.
         If the current request is as guest and no guest key is given, the IP
-        address is used to match images. Using a key is recommended, because
-        clients that move between WiFi and mobile connection or if the client is
-        in a network with multiple outbound IP addresses, images won't be
-        correctly matched without a key.
+        address is used to match images. Using a guest key is recommended,
+        because clients that move between WiFi and mobile connection or if the
+        client is in a network with multiple outbound IP addresses, images won't
+        be correctly matched without a guest key.
       tags:
         - Images
       parameters:
@@ -66341,6 +66327,10 @@ components:
               description: >-
                 Whether the bluetooth printer is enabled or not
               type: boolean
+            applyDefaultUserSearchFiltersOnPayment:
+              description: >-
+                Indicates if the default search filters should be applied for make/receive payments
+              type: boolean
             topUpEnabled:
               description: >-
                 Indicates whether there is a voucher configuration supporting top-up
@@ -68626,6 +68616,12 @@ components:
             canGenerate:
               description: >-
                 Can the authenticated user generate vouchers?
+              type: boolean
+            topUpEnabled:
+              description: >-
+                Indicates whether there is a voucher configuration supporting top-up
+                which is visible for the authenticated user. This flag is not
+                related to the top-up permission.
               type: boolean
             userGroups:
               description: >-
@@ -72026,6 +72022,12 @@ components:
                 Only returned in contexts where the operation can be executed.
               allOf:
                 - $ref: '#/components/schemas/OperationResultTypeEnum'
+            menu:
+              description: >-
+                In which new frontend menu the operation shows up.
+                Only returned in contexts where the operation can be executed.
+              allOf:
+                - $ref: '#/components/schemas/FrontendMenuEnum'
             adminMenu:
               description: >-
                 In which administration menu the operation shows up.
@@ -76588,6 +76590,11 @@ components:
             `externalRedirect` or
             `url`.
           type: string
+        newWindow:
+          description: >-
+            A boolean value indicating if the URL should be opened in a new window.
+            When false or null the current window will be reused
+          type: boolean
         backTo:
           description: >-
             Either the id or internal name of the custom operation to go back after
@@ -78053,7 +78060,7 @@ components:
             $ref: '#/components/schemas/TokenPermissions'
         user:
           description: >-
-            Permissions over tokens types of other users
+            Permissions over tokens types of managed users
           type: array
           items:
             $ref: '#/components/schemas/TokenPermissions'

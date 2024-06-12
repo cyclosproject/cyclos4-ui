@@ -555,6 +555,7 @@
     "action": {
       "account": "Conta",
       "accounts": "Contas",
+      "help": "Ajuda",
       "transfersOverview": "Resumo de transações",
       "balancesOverview": "Resumo dos saldos",
       "externalPayments": "Pagamentos externos",
@@ -1207,6 +1208,7 @@
       "generate": "Gerar cupons",
       "done": "O(s) cupom(s) foi(ram) gerado(s)."
     },
+    "generalSearchTransactionDate": "Data da transação",
     "sendPinToClient": "Enviar PIN para o cliente",
     "pinSent": "O PIN do cupom foi enviado para {mediums}",
     "configuration": "Configuração",
@@ -1941,6 +1943,8 @@
     "orderSavedAsDraft": "O pedido foi salvo como rascunho",
     "orderSubmittedToBuyer": "O pedido foi enviado ao comprador",
     "publicationPeriod": "Período de publicação",
+    "publicationDate": "Data de publicação",
+    "expirationDate": "Vencimento",
     "productNumberMask": "Máscara",
     "promotionalPeriod": "Período promocional",
     "promotionalPrice": "Preço promocional",
@@ -2563,7 +2567,6 @@
     },
     "from": "De",
     "to": "Para",
-    "notGiven": "Não determinado ainda",
     "value": "Valor",
     "allTime": "Todo o período",
     "last30Days": "Últimos 30 Dias",

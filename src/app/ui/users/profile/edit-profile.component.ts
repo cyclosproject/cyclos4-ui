@@ -938,7 +938,7 @@ export class EditProfileComponent
 
   removeAllImages() {
     for (const image of this.images || []) {
-      this.addSub(this.imagesService.deleteImage({ idOrKey: image.id }).subscribe());
+      this.addSub(this.imagesService.deleteImage({ id: image.id }).subscribe());
     }
     this.images = [];
     this.changeDetector.detectChanges();

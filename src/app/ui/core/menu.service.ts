@@ -497,15 +497,26 @@ export class MenuService {
   }
 
   /**
+ * Returns, amongst the list of possible menus, the one whose root menu matches the one given
+ */
+  matchingRootMenu(possible: Menu[], menu: FrontendMenuEnum): Menu {
+    for (const current of possible) {
+      if (this.rootMenuForEnum(menu) === current.root) {
+        return current;
+      }
+    }
+  }
+
+  /**
    * Returns the menu for running an own custom operation, according to the given operation type.
    * This works for both system-scoped operations or user-scoped operations for the current user.
    * @param operation The operation
    */
   menuForOwnerOperation(operation: Operation): Menu {
     const possibleMenus = [
-      Menu.RUN_OPERATION_BANKING, Menu.RUN_OPERATION_MARKETPLACE, Menu.RUN_OPERATION_PERSONAL
+      Menu.RUN_OPERATION_BANKING, Menu.RUN_OPERATION_MARKETPLACE, Menu.RUN_OPERATION_PERSONAL, Menu.RUN_OPERATION_CONTENT, Menu.RUN_OPERATION_OPERATORS, Menu.RUN_OPERATION_BROKERING
     ];
-    return this.matchingMenu(possibleMenus, operation.adminMenu, operation.userMenu);
+    return this.matchingRootMenu(possibleMenus, operation.menu);
   }
 
   /**
@@ -839,6 +850,15 @@ export class MenuService {
         case RootMenu.PERSONAL:
           operationMenu = Menu.RUN_OPERATION_PERSONAL;
           break;
+        case RootMenu.CONTENT:
+          operationMenu = Menu.RUN_OPERATION_CONTENT;
+          break;
+        case RootMenu.BROKERING:
+          operationMenu = Menu.RUN_OPERATION_BROKERING;
+          break;
+        case RootMenu.OPERATORS:
+          operationMenu = Menu.RUN_OPERATION_OPERATORS;
+          break;
         default:
           // Invalid root menu for operations
           return;
@@ -853,8 +873,8 @@ export class MenuService {
       };
 
       // Add both system and self operations
-      doAddOperations('system', systemOperations.filter(o => this.adminMenuMatches(root, o.adminMenu)));
-      doAddOperations('self', userOperations.filter(o => this.userMenuMatches(root, o.userMenu)));
+      doAddOperations('system', systemOperations.filter(o => root === this.rootMenuForEnum(o.menu)));
+      doAddOperations('self', userOperations.filter(o => root === this.rootMenuForEnum(o.menu)));
     };
 
 
@@ -1013,7 +1033,7 @@ export class MenuService {
 
       if (!isAdmin && authorizations.view) {
         add(Menu.AUTHORIZED_PAYMENTS, `/banking/${owner}/authorized-payments`,
-        SvgIcon.Wallet2Check, this.i18n.menu.bankingAuthorizations);
+          SvgIcon.Wallet2Check, this.i18n.menu.bankingAuthorizations);
       }
 
       if (isAdmin && banking.searchGeneralAuthorizedPayments) {
@@ -1088,8 +1108,13 @@ export class MenuService {
       // Operators
       if (operators.enable) {
         add(Menu.MY_OPERATORS, '/users/self/operators', SvgIcon.PersonCircleOutline, this.i18n.menu.operatorsOperators);
-        add(Menu.REGISTER_OPERATOR, '/users/self/operators/registration', SvgIcon.PersonPlus, this.i18n.menu.operatorsRegister);
-        add(Menu.OPERATOR_GROUPS, '/users/self/operator-groups', SvgIcon.People, this.i18n.menu.operatorsGroups);
+        if (operators.manageOperators) {
+          add(Menu.REGISTER_OPERATOR, '/users/self/operators/registration', SvgIcon.PersonPlus, this.i18n.menu.operatorsRegister);
+        }
+        if (operators.manageGroups) {
+          add(Menu.OPERATOR_GROUPS, '/users/self/operator-groups', SvgIcon.People, this.i18n.menu.operatorsGroups);
+        }
+        addOperations(RootMenu.OPERATORS);
       }
 
       // Brokering
@@ -1281,6 +1306,7 @@ export class MenuService {
 
     // Content pages in the content root menu
     const pagesInContent = addContentPages(Menu.CONTENT_PAGE_CONTENT);
+    addOperations(RootMenu.CONTENT);
 
     // For guests, content will always be dropdown.
     // For logged users, only if at least 1 content page with layout full is used

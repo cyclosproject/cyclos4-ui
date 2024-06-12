@@ -555,6 +555,7 @@
     "action": {
       "account": "Account",
       "accounts": "Accounts",
+      "help": "Help",
       "transfersOverview": "Transfers overview",
       "balancesOverview": "Balances overview",
       "externalPayments": "External payments",
@@ -1207,6 +1208,7 @@
       "generate": "Generate vouchers",
       "done": "The voucher(s) has been generated."
     },
+    "generalSearchTransactionDate": "Transaction date",
     "sendPinToClient": "Send PIN to client",
     "pinSent": "The voucher PIN was sent to {mediums}",
     "configuration": "Configuration",
@@ -1941,6 +1943,8 @@
     "orderSavedAsDraft": "The order was saved as draft",
     "orderSubmittedToBuyer": "The order was submitted to buyer",
     "publicationPeriod": "Publication period",
+    "publicationDate": "Publication date",
+    "expirationDate": "Expiration date",
     "productNumberMask": "Mask",
     "promotionalPeriod": "Promotional period",
     "promotionalPrice": "Promotional price",
@@ -2563,7 +2567,6 @@
     },
     "from": "From",
     "to": "To",
-    "notGiven": "Not given yet",
     "value": "Value",
     "allTime": "All time",
     "last30Days": "Last 30 days",

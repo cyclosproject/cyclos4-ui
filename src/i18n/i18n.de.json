@@ -99,6 +99,7 @@
     "sendCode": "Code schicken",
     "sentCodeTo": "Der Verifizierungscode wurde an {to} geschickt",
     "reloadPage": "Seite neu laden",
+    "maxItemsReached": "Ein weiteres Element kann nicht hinzugefügt werden. Das Maximum ist erreicht",
     "sessionExpired": {
       "title": "Sitzung abgelaufen",
       "message": "Sie wurden abgemeldet.<br>Sie können die gleiche Seite weiterhin ansehen oder sich jetzt wieder anmelden.",
@@ -392,6 +393,7 @@
     "otp": {
       "verificationCode": "Bestätigungscode",
       "sendMedium": "Bestätigungscode senden an",
+      "sendToEmail": "An E-Mail {email} senden",
       "sendToPhone": "An Telefon senden {phone}",
       "noMediums": "Keine möglichen Medien, um den Bestätigungscode zu erhalten",
       "send": "Bestätigungscode senden",
@@ -808,6 +810,7 @@
     "transferKinds": "Überweisungsarten",
     "transferkind": {
       "accountFee": "Kontogebühr",
+      "balanceDisposal": "Saldo verwalten",
       "chargeback": "Rückbuchung",
       "import": "Import",
       "initialCredit": "Startguthaben",
@@ -1958,6 +1961,8 @@
     "rejected": "Die Anzeige wurde abgelehnt",
     "showAddressOnMap": "Adresse auf Karte anzeigen",
     "saveAndInsertNew": "Speichern und hinzufügen",
+    "saveAsDraft": "Als Entwurf speichern",
+    "saveAsDraftAndInsertNew": "Als Entwurf speichern und neuen einfügen",
     "saveDraft": "Entwurf speichern",
     "setAsDraft": "Als Entwurf zum Bearbeiten festlegen",
     "setPromotionalPeriod": "Werbezeitraum festlegen",
@@ -2558,7 +2563,6 @@
     },
     "from": "Von",
     "to": "An",
-    "notGiven": "Noch nicht gegeben",
     "value": "Wert",
     "allTime": "Zeitlich unbegrenzt",
     "last30Days": "Letzten 30 Tage",
@@ -2590,6 +2594,7 @@
     },
     "remove.confirm": "Sind Sie sicher, dass Sie dieses Zahlungs-Feedback entfernen möchten?",
     "remove.done": "Die Zahlungsbewertung wurde entfernt",
+    "removeUser": "Sind Sie sicher, dass Sie den Benutzer {user} entfernen möchten?",
     "buyerFeedback": "Feedback des Käufers",
     "sellerReply": "Verkäuferantwort",
     "reply": "Antwort",

@@ -254,7 +254,7 @@ export class ImageUploadComponent extends BaseComponent implements OnDestroy {
           // Once the upload is complete, we have to fetch the image model
           file.subscription.unsubscribe();
           file.uploadDone = true;
-          this.addSub(this.imagesService.viewImage({ idOrKey: event.body }).pipe(first()).subscribe(image => {
+          this.addSub(this.imagesService.viewImage({ id: event.body }).pipe(first()).subscribe(image => {
             file.image = image;
             this.storedFileCacheService.write(image);
             observer.next(file.image);

@@ -173,7 +173,7 @@ export class UserRegistrationComponent
 
       // ... and remove it server-side
       this.errorHandler.requestWithCustomErrorHandler(() => {
-        this.addSub(this.imagesService.deleteImage({ idOrKey: this.image.id }).subscribe());
+        this.addSub(this.imagesService.deleteImage({ id: this.image.id }).subscribe());
       });
     }
   }

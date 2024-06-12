@@ -1,6 +1,6 @@
 <ng-container *ngIf="hasValue$ | async; else empty">
   <ng-container *ngIf="directValue">
-    <ng-container *ngIf="!link && !externalLink">
+    <ng-container *ngIf="!link && !externalLink && !isLinkedUser()">
       {{ value }}
     </ng-container>
     <ng-container *ngIf="isLinkedUser()">

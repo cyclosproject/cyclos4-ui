@@ -75,11 +75,11 @@
             </date-field>
           </div>
         </div>
-        <!-- Transaction date date -->
+        <!-- Transaction date -->
         <div class="row no-gutters col-12">
           <div class="col-12 col-md-6">
             <date-field formControlName="transactionDateBegin"
-              [label]="i18n.voucher.transaction.date" minDate="past100"
+              [label]="data.topUpEnabled ? i18n.voucher.generalSearchTransactionDate : i18n.voucher.redeem.date" minDate="past100"
               maxDate="todayEnd" fieldSize="full" class>
             </date-field>
           </div>

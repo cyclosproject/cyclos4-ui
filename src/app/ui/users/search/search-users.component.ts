@@ -242,7 +242,7 @@ export class SearchUsersComponent
         }
         this.data = data;
         this.headingActions = [
-          ...this.doShowMoreFilters() ? [] : [this.moreFiltersAction],
+          ...this.doShowMoreFilters() ? [this.moreFiltersAction] : [],
           ...this.exportHelper.headingActions(this.data.exportFormats,
             f => this.usersService.exportUsers$Response({ format: f.internalName, ...this.toSearchParams(this.form.value) }))
         ];
@@ -266,8 +266,8 @@ export class SearchUsersComponent
   }
 
   doShowMoreFilters() {
-    return empty(this.data.fieldsInAdvancedSearch) && !this.byManager && !this.dataForFrontendHolder.auth?.permissions?.invite
-      && this.data.searchByDistanceData;
+    return !empty(this.data.fieldsInAdvancedSearch) || this.byManager || this.dataForFrontendHolder.auth?.permissions?.invite?.send
+      || this.data.searchByDistanceData;
   }
 
   get brokeringSearch() {

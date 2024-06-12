@@ -101,7 +101,7 @@
             </div>
             <!-- Invited by me -->
             <div
-              *ngIf="!byManager && dataForFrontendHolder.auth?.permissions?.invite"
+              *ngIf="!byManager && dataForFrontendHolder.auth?.permissions?.invite?.send"
               class="col-12 col-md-6">
               <boolean-field formControlName="invitedByMe"
                 [label]="i18n.user.invitedByMe">

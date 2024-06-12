@@ -68,7 +68,7 @@ export class SearchVouchersComponent
   protected toSearchParams(value: any): VoucherSearchParams {
     const result = super.toSearchParams(value);
     if (value.transactionDateBegin || value.transactionDateEnd) {
-      result.transactionPeriod = this.ApiHelper.dateRangeFilter(value.redeemBegin, value.redeemEnd);
+      result.transactionPeriod = this.ApiHelper.dateRangeFilter(value.transactionDateBegin, value.transactionDateEnd);
     }
     if (value.creationBegin || value.creationEnd) {
       result.creationPeriod = this.ApiHelper.dateRangeFilter(value.creationBegin, value.creationEnd);

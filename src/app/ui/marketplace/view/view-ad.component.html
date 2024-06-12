@@ -31,14 +31,18 @@
       </label-value>
       <label-value *ngIf="status" [label]="i18n.general.status">
         {{ status }}
+      </label-value>      
+      <label-value *ngIf="ad.publicationPeriod?.begin" [label]="i18n.ad.publicationDate">
+          {{ data.publicationPeriod.begin | date }}              
       </label-value>
-      <ng-container *ngIf="data.publicationPeriod">
-        <label-value [label]="i18n.ad.publicationPeriod">
-          <span>{{ data.publicationPeriod.begin | date }}<span
-              class="d-inline pl-2 pr-2"> -
-            </span>{{ data.publicationPeriod.end | date }}</span>
-        </label-value>
-      </ng-container>
+      <label-value *ngIf="ad.publicationPeriod?.end" [label]="i18n.ad.expirationDate">
+       	  {{ data.publicationPeriod.end | date }}              
+      </label-value>              
+      <label-value *ngIf="ad.promotionalPeriodActive" [label]="i18n.ad.promotionalPeriod">      	
+       	<span>{{ data.promotionalPeriod.begin | date }}<span
+             class="d-inline pl-2 pr-2"> -
+        </span>{{ data.promotionalPeriod.end | date }}</span>        
+      </label-value>
       <custom-field-value *ngFor="let value of ad.customValues"
         [fieldValue]="value"></custom-field-value>
       <ng-container *ngIf="webshop">
@@ -57,10 +61,10 @@
         <label-value [label]="i18n.ad.productNumber">
           {{ data.productNumber }}
         </label-value>
-      </ng-container>
+      </ng-container>     
       <label-value *ngIf="ad.price" [label]="i18n.ad.price"
         class="totalAmount">
-        <ng-container *ngIf="ad.promotionalPrice; else plainPrice">
+        <ng-container *ngIf="ad.promotionalPeriodActive; else plainPrice">
           {{ ad.promotionalPrice | currency:ad.currency }}
           <span class="promo-price">
             {{ ad.price | currency:ad.currency }}

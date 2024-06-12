@@ -45,6 +45,16 @@
             </custom-field-filter>
           </div>
         </ng-container>
+        <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
+          <multi-selection-field hierarchyProperty="groupSet"
+            formControlName="groups" [label]="i18n.user.groupFilter">
+            <field-option *ngFor="let group of data.groups"
+              [value]="ApiHelper.internalNameOrId(group)"
+              [internalName]="group.internalName" [id]="group.id"
+              [text]="group.name" [parent]="group.groupSet">
+            </field-option>
+          </multi-selection-field>
+        </div>
         <ng-container *ngIf="moreFilters$ | async">
           <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
             <distance-selection-field [data]="data.searchByDistanceData"
@@ -80,17 +90,7 @@
               <field-option [text]="i18n.ad.type.webshop" value="webshop">
               </field-option>
             </single-selection-field>
-          </div>
-          <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field hierarchyProperty="groupSet"
-              formControlName="groups" [label]="i18n.user.groupFilter">
-              <field-option *ngFor="let group of data.groups"
-                [value]="ApiHelper.internalNameOrId(group)"
-                [internalName]="group.internalName" [id]="group.id"
-                [text]="group.name" [parent]="group.groupSet">
-              </field-option>
-            </multi-selection-field>
-          </div>
+          </div>         
           <div class="col-12 col-md-6">
             <boolean-field labelPosition="sideForced"
               formControlName="hasImages" [label]="i18n.ad.hasImages">

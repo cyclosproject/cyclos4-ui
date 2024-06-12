@@ -16,6 +16,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { downloadResponse, empty } from 'app/shared/helper';
 import { BreadcrumbService } from 'app/ui/core/breadcrumb.service';
 import { OperationHelperService } from 'app/ui/core/operation-helper.service';
+import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 import { PageData } from 'app/ui/shared/page-data';
 import { cloneDeep } from 'lodash-es';
 import { Observable } from 'rxjs';
@@ -53,7 +54,8 @@ export class RunOperationHelperService {
     private operationHelper: OperationHelperService,
     private operationsService: OperationsService,
     private nextRequestState: NextRequestState,
-    private confirmation: ConfirmationService) {
+    private confirmation: ConfirmationService,
+    private uiLayout: UiLayoutService) {
   }
 
   /**
@@ -351,8 +353,8 @@ export class RunOperationHelperService {
         this.nextRequestState.leaveNotification = true;
         break;
       case OperationResultTypeEnum.URL:
-        // Open the URL in a new window
-        window.open(result.url);
+        // Open the URL in a new window        
+        window.open(result.url, result.newWindow == null || result.newWindow ? '_blank' : '_self');        
         handled = true;
         break;
       case OperationResultTypeEnum.EXTERNAL_REDIRECT:
@@ -372,8 +374,18 @@ export class RunOperationHelperService {
         path => path.startsWith('/operations/') && path.includes('/' + backTo) :
         // We need to go back to the first page which is not a custom operation
         path => !path.startsWith('/operations/');
-      const index = cloneDeep(this.breadcrumb.breadcrumb$.value).reverse().findIndex(pathCondition);
-      if (index > 0) {
+      const path = cloneDeep(this.breadcrumb.breadcrumb$.value).reverse();
+      let index = path.findIndex(pathCondition);
+      if (index < 0 && result.backToRoot) {
+        // Not found, go back to the first operation page in the breadcrumb
+        index = path.findIndex(path => path.startsWith('/operations/'));
+      }
+      if (index === 0) {
+        // Already in the target page - reload it
+        this.uiLayout.currentPage.reload();
+        return true;
+      } else if (index > 0) {
+        // Go back to a specific page
         this.allowActionExecution = true;
         this.breadcrumb.back(index);
         return true;
