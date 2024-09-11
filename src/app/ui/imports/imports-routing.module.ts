@@ -47,21 +47,16 @@ const importsRoutes: Routes = [
         path: 'lines/edit/:id',
         component: EditImportedLineComponent,
         canActivate: [LoggedUserGuard]
-      },
-    ],
-  },
+      }
+    ]
+  }
 ];
 
 /**
  * Routes for the imports module
  */
 @NgModule({
-  imports: [
-    RouterModule.forChild(importsRoutes),
-  ],
-  exports: [
-    RouterModule,
-  ],
+  imports: [RouterModule.forChild(importsRoutes)],
+  exports: [RouterModule]
 })
-export class ImportsRoutingModule {
-}
+export class ImportsRoutingModule {}

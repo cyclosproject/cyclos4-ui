@@ -8,19 +8,9 @@ import { UnsubscribeState } from 'app/unsubscribe/unsubscribe-state';
 import { UnsubscribeComponent } from 'app/unsubscribe/unsubscribe.component';
 
 @NgModule({
-  declarations: [
-    UnsubscribeComponent,
-    UnsubscribeFormComponent,
-    UnsubscribeDoneComponent,
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    CoreBasicModule,
-  ],
-  providers: [
-    UnsubscribeState,
-  ],
-  bootstrap: [UnsubscribeComponent],
+  declarations: [UnsubscribeComponent, UnsubscribeFormComponent, UnsubscribeDoneComponent],
+  imports: [BrowserModule, HttpClientModule, CoreBasicModule],
+  providers: [UnsubscribeState],
+  bootstrap: [UnsubscribeComponent]
 })
-export class UnsubscribeModule { }
+export class UnsubscribeModule {}

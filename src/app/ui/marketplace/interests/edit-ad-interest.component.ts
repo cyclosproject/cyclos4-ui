@@ -1,11 +1,17 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { AdInterestBasicData, AdInterestDataForEdit, AdInterestDataForNew, AdInterestEdit, Currency } from 'app/api/models';
+import {
+  AdInterestBasicData,
+  AdInterestDataForEdit,
+  AdInterestDataForNew,
+  AdInterestEdit,
+  Currency
+} from 'app/api/models';
 import { AdInterestsService } from 'app/api/services/ad-interests.service';
+import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { HierarchyItem } from 'app/ui/marketplace/hierarchy-item.component';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
-import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -15,12 +21,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Component({
   selector: 'edit-ad-interest',
   templateUrl: 'edit-ad-interest.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditAdInterestComponent
   extends BasePageComponent<AdInterestDataForNew | AdInterestDataForEdit>
-  implements OnInit {
-
+  implements OnInit
+{
   id: string;
   user: string;
   create: boolean;
@@ -33,7 +39,8 @@ export class EditAdInterestComponent
   constructor(
     injector: Injector,
     private adInterestService: AdInterestsService,
-    private marketplaceHelper: MarketplaceHelperService) {
+    private marketplaceHelper: MarketplaceHelperService
+  ) {
     super(injector);
   }
 
@@ -45,21 +52,25 @@ export class EditAdInterestComponent
 
     const request: Observable<AdInterestDataForNew | AdInterestDataForEdit> = this.create
       ? this.adInterestService.getAdInterestDataForNew({
-        user: this.user,
-      })
+          user: this.user
+        })
       : this.adInterestService.getAdInterestDataForEdit({ id: this.id });
-    this.addSub(request.subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      request.subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized(data: AdInterestDataForNew | AdInterestDataForEdit) {
-
     this.self = this.authHelper.isSelfOrOwner(data.user);
 
     const ai = data.adInterest;
-    const currency = ai.currency ? ai.currency :
-      !empty(data.currencies) ? this.ApiHelper.internalNameOrId(data.currencies[0]) : null;
+    const currency = ai.currency
+      ? ai.currency
+      : !empty(data.currencies)
+      ? this.ApiHelper.internalNameOrId(data.currencies[0])
+      : null;
 
     this.marketplaceHelper.populateCategories(this.categories, data.categories, 0);
 
@@ -72,7 +83,7 @@ export class EditAdInterestComponent
       minPrice: ai.minPrice,
       maxPrice: ai.maxPrice,
       currency,
-      version: (ai as AdInterestEdit).version,
+      version: (ai as AdInterestEdit).version
     });
     this.updateCurrency(data);
     this.addSub(this.form.controls.currency.valueChanges.subscribe(() => this.updateCurrency(data)));
@@ -80,8 +91,7 @@ export class EditAdInterestComponent
 
   protected updateCurrency(data: AdInterestBasicData) {
     const id = this.form.controls.currency.value;
-    this.currency = data.currencies.find(c => c.id === id || c.internalName === id)
-      || data.currencies[0];
+    this.currency = data.currencies.find(c => c.id === id || c.internalName === id) || data.currencies[0];
   }
 
   /**
@@ -92,15 +102,15 @@ export class EditAdInterestComponent
       return;
     }
     const value = this.form.value;
-    const request: Observable<string | void> = this.create ?
-      this.adInterestService.createAdInterest({ body: value, user: this.user }) :
-      this.adInterestService.updateAdInterest({ id: this.id, body: value });
-    this.addSub(request.subscribe(() => {
-      this.notification.snackBar(this.create
-        ? this.i18n.ad.adInterestCreated
-        : this.i18n.ad.adInterestSaved);
-      history.back();
-    }));
+    const request: Observable<string | void> = this.create
+      ? this.adInterestService.createAdInterest({ body: value, user: this.user })
+      : this.adInterestService.updateAdInterest({ id: this.id, body: value });
+    this.addSub(
+      request.subscribe(() => {
+        this.notification.snackBar(this.create ? this.i18n.ad.adInterestCreated : this.i18n.ad.adInterestSaved);
+        history.back();
+      })
+    );
   }
 
   resolveMenu(data: AdInterestDataForNew | AdInterestDataForEdit) {
@@ -114,5 +124,4 @@ export class EditAdInterestComponent
   set currency(currency: Currency) {
     this.currency$.next(currency);
   }
-
 }

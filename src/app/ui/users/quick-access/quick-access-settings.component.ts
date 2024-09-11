@@ -24,12 +24,9 @@ export interface QuickAccessItem extends IconAndLabel {
 @Component({
   selector: 'quick-access-settings',
   templateUrl: 'quick-access-settings.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class QuickAccessSettingsComponent
-  extends BasePageComponent<DataForUserQuickAccess>
-  implements OnInit {
-
+export class QuickAccessSettingsComponent extends BasePageComponent<DataForUserQuickAccess> implements OnInit {
   param: string;
   self: boolean;
   enabledItems: QuickAccessItem[];
@@ -49,10 +46,13 @@ export class QuickAccessSettingsComponent
     super.ngOnInit();
     this.param = this.route.snapshot.params.user || this.ApiHelper.SELF;
 
-    this.addSub(this.frontendService.getDataForUserQuickAccess({ user: this.param })
-      // Before setting the data, fetch possibly missing icons for the quick access
-      .pipe(switchMap(data => this.loadIcons(data)))
-      .subscribe(data => this.data = data));
+    this.addSub(
+      this.frontendService
+        .getDataForUserQuickAccess({ user: this.param })
+        // Before setting the data, fetch possibly missing icons for the quick access
+        .pipe(switchMap(data => this.loadIcons(data)))
+        .subscribe(data => (this.data = data))
+    );
   }
 
   private loadIcons(data: DataForUserQuickAccess) {
@@ -65,21 +65,25 @@ export class QuickAccessSettingsComponent
   }
 
   onDataInitialized(data: DataForUserQuickAccess) {
-    const toItem = (qa: UserQuickAccessView) => ({
-      ...this.quickAccessHelper.iconAndLabel(qa),
-      type: qa.type,
-      entity: qa.operation?.id ?? qa.wizard?.id ?? qa.recordType?.id ?? qa.tokenType?.id,
-      enabled: !!qa.enabled,
-      originalOrder: qa.originalOrder
-    } as QuickAccessItem);
+    const toItem = (qa: UserQuickAccessView) =>
+      ({
+        ...this.quickAccessHelper.iconAndLabel(qa),
+        type: qa.type,
+        entity: qa.operation?.id ?? qa.wizard?.id ?? qa.recordType?.id ?? qa.tokenType?.id,
+        enabled: !!qa.enabled,
+        originalOrder: qa.originalOrder
+      } as QuickAccessItem);
     this.self = this.authHelper.isSelf(data.user);
     this.enabledItems = data.quickAccess.filter(qa => qa.enabled).map(toItem);
     this.disabledItems = data.quickAccess.filter(qa => !qa.enabled).map(toItem);
     this.sortDisabled();
     if (data.canEdit) {
       this.addSub(this.allItems$.pipe(debounceTime(1_000)).subscribe(items => this.save(items)));
-      this.headingActions = [new HeadingAction(SvgIcon.ArrowClockwise, this.i18n.quickAccessSettings.restoreDefaults,
-        () => this.restoreDefaults())];
+      this.headingActions = [
+        new HeadingAction(SvgIcon.ArrowClockwise, this.i18n.quickAccessSettings.restoreDefaults, () =>
+          this.restoreDefaults()
+        )
+      ];
     }
   }
 
@@ -114,13 +118,16 @@ export class QuickAccessSettingsComponent
   }
 
   restoreDefaults() {
-    this.addSub(this.frontendService.restoreUserQuickAccessDefaults({
-      user: this.param
-    })
-      .subscribe(() => {
-        this.notification.snackBar(this.i18n.quickAccessSettings.restoreDefaultsDone);
-        this.router.navigateByUrl(this.router.url);
-      }));
+    this.addSub(
+      this.frontendService
+        .restoreUserQuickAccessDefaults({
+          user: this.param
+        })
+        .subscribe(() => {
+          this.notification.snackBar(this.i18n.quickAccessSettings.restoreDefaultsDone);
+          this.router.navigateByUrl(this.router.url);
+        })
+    );
   }
 
   private sortDisabled() {
@@ -132,18 +139,21 @@ export class QuickAccessSettingsComponent
   }
 
   private itemsAsArray() {
-    return [...this.enabledItems, ...this.disabledItems]
-      .map(i => ({ type: i.type, entity: i.entity, enabled: i.enabled }) as UserQuickAccessEdit);
+    return [...this.enabledItems, ...this.disabledItems].map(
+      i => ({ type: i.type, entity: i.entity, enabled: i.enabled } as UserQuickAccessEdit)
+    );
   }
-
 
   private save(items: UserQuickAccessEdit[]) {
-    this.addSub(this.frontendService.saveUserQuickAccess({
-      user: this.param,
-      body: {
-        quickAccess: items
-      }
-    }).subscribe());
+    this.addSub(
+      this.frontendService
+        .saveUserQuickAccess({
+          user: this.param,
+          body: {
+            quickAccess: items
+          }
+        })
+        .subscribe()
+    );
   }
-
 }

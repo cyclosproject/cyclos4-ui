@@ -1,8 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import {
-  FrontendContentLayoutEnum,
-  FrontendHomeContent
-} from 'app/api/models';
+import { FrontendContentLayoutEnum, FrontendHomeContent } from 'app/api/models';
 import { FrontendService } from 'app/api/services/frontend.service';
 import { CardMode } from 'app/ui/content/card-mode';
 import { BasePageComponent, UpdateTitleFrom } from 'app/ui/shared/base-page.component';
@@ -14,16 +11,13 @@ import { BasePageComponent, UpdateTitleFrom } from 'app/ui/shared/base-page.comp
   // tslint:disable-next-line:component-selector
   selector: 'help',
   templateUrl: 'help.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HelpComponent extends BasePageComponent<FrontendHomeContent> implements OnInit {
-
   FrontendContentLayoutEnum = FrontendContentLayoutEnum;
   cardMode: CardMode;
 
-  constructor(
-    injector: Injector,
-    private frontendService: FrontendService) {
+  constructor(injector: Injector, private frontendService: FrontendService) {
     super(injector);
   }
 
@@ -40,7 +34,7 @@ export class HelpComponent extends BasePageComponent<FrontendHomeContent> implem
     this.emulateKeyboardScroll();
 
     // Fetch the help page
-    this.addSub(this.frontendService.getFrontendHelp().subscribe(data => this.data = data));
+    this.addSub(this.frontendService.getFrontendHelp().subscribe(data => (this.data = data)));
   }
 
   protected onDataInitialized(data: FrontendHomeContent): void {

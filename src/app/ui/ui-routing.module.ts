@@ -15,19 +15,19 @@ const rootRoutes: Routes = [
   {
     path: '',
     component: RedirectToLandingPageComponent,
-    pathMatch: 'full',
+    pathMatch: 'full'
   },
   {
     path: 'login',
-    component: LoginComponent,
+    component: LoginComponent
   },
   {
     path: 'home',
-    component: HomeComponent,
+    component: HomeComponent
   },
   {
     path: 'help',
-    component: HelpComponent,
+    component: HelpComponent
   },
   {
     path: 'forgot-password',
@@ -35,61 +35,61 @@ const rootRoutes: Routes = [
   },
   {
     path: 'page/:slug',
-    component: ContentPageComponent,
+    component: ContentPageComponent
   },
   {
     path: 'redirect/:location',
-    component: RedirectToLocationComponent,
+    component: RedirectToLocationComponent
   },
   {
     path: 'invite/:token',
-    component: InviteTokenComponent,
+    component: InviteTokenComponent
   },
   {
     path: 'banking',
-    loadChildren: () => import('app/ui/banking/banking.module').then(m => m.BankingModule),
+    loadChildren: () => import('app/ui/banking/banking.module').then(m => m.BankingModule)
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('app/ui/dashboard/dashboard.module').then(m => m.DashboardModule),
+    loadChildren: () => import('app/ui/dashboard/dashboard.module').then(m => m.DashboardModule)
   },
   {
     // Rename to login-extras
     path: 'post-login',
-    loadChildren: () => import('app/ui/login/post-login.module').then(m => m.PostLoginModule),
+    loadChildren: () => import('app/ui/login/post-login.module').then(m => m.PostLoginModule)
   },
   {
     path: 'marketplace',
-    loadChildren: () => import('app/ui/marketplace/marketplace.module').then(m => m.MarketplaceModule),
+    loadChildren: () => import('app/ui/marketplace/marketplace.module').then(m => m.MarketplaceModule)
   },
   {
     path: 'operations',
-    loadChildren: () => import('app/ui/operations/operations.module').then(m => m.OperationsModule),
+    loadChildren: () => import('app/ui/operations/operations.module').then(m => m.OperationsModule)
   },
   {
     path: 'personal',
-    loadChildren: () => import('app/ui/personal/personal.module').then(m => m.PersonalModule),
+    loadChildren: () => import('app/ui/personal/personal.module').then(m => m.PersonalModule)
   },
   {
     path: 'records',
-    loadChildren: () => import('app/ui/records/records.module').then(m => m.RecordsModule),
+    loadChildren: () => import('app/ui/records/records.module').then(m => m.RecordsModule)
   },
   {
     path: 'users',
-    loadChildren: () => import('app/ui/users/users.module').then(m => m.UsersModule),
+    loadChildren: () => import('app/ui/users/users.module').then(m => m.UsersModule)
   },
   {
     path: 'wizards',
-    loadChildren: () => import('app/ui/wizards/wizards.module').then(m => m.WizardsModule),
+    loadChildren: () => import('app/ui/wizards/wizards.module').then(m => m.WizardsModule)
   },
   {
     path: 'imports',
-    loadChildren: () => import('app/ui/imports/imports.module').then(m => m.ImportsModule),
+    loadChildren: () => import('app/ui/imports/imports.module').then(m => m.ImportsModule)
   },
   {
     path: '**',
-    component: NotFoundComponent,
-  },
+    component: NotFoundComponent
+  }
 ];
 
 /**
@@ -99,15 +99,11 @@ const rootRoutes: Routes = [
   imports: [
     RouterModule.forRoot(rootRoutes, {
       onSameUrlNavigation: 'reload',
-      preloadingStrategy: NoPreloading,
+      preloadingStrategy: NoPreloading
     }),
-    SharedModule,
+    SharedModule
   ],
-  exports: [
-    RouterModule,
-  ],
-  providers: [
-    LoggedUserGuard
-  ],
+  exports: [RouterModule],
+  providers: [LoggedUserGuard]
 })
-export class UiRoutingModule { }
+export class UiRoutingModule {}

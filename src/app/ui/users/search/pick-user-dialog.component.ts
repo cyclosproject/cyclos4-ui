@@ -11,10 +11,9 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'pick-user-dialog',
   templateUrl: 'pick-user-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PickUserDialogComponent extends BaseComponent {
-
   @Input() title: string;
   @Input() label: string;
   @Input() excludeContacts: boolean;
@@ -28,10 +27,7 @@ export class PickUserDialogComponent extends BaseComponent {
 
   control = new FormControl(null, Validators.required);
 
-  constructor(
-    injector: Injector,
-    public modalRef: BsModalRef
-  ) {
+  constructor(injector: Injector, public modalRef: BsModalRef) {
     super(injector);
   }
 
@@ -49,5 +45,4 @@ export class PickUserDialogComponent extends BaseComponent {
   clear() {
     this.control.reset(null, { emitEvent: false });
   }
-
 }

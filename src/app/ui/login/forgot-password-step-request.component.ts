@@ -9,11 +9,9 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'forgot-password-step-request',
   templateUrl: 'forgot-password-step-request.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ForgotPasswordStepRequestComponent
-  extends BaseComponent implements OnInit {
-
+export class ForgotPasswordStepRequestComponent extends BaseComponent implements OnInit {
   @Input() data: DataForLogin;
   @Input() form: FormGroup;
 
@@ -25,10 +23,6 @@ export class ForgotPasswordStepRequestComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.principalTypes = [
-      ...(this.data.extraForgotPasswordPrincipalTypes || []),
-      ...(this.data.principalTypes || []),
-    ];
+    this.principalTypes = [...(this.data.extraForgotPasswordPrincipalTypes || []), ...(this.data.principalTypes || [])];
   }
-
 }

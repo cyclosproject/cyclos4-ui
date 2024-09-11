@@ -1,8 +1,10 @@
-<div class="card" *ngIf="(initialized$ | async); else spinner"
-  [ngSwitch]="state.step$ | async">
+<div class="card" *ngIf="initialized$ | async; else spinner" [ngSwitch]="state.step$ | async">
   <div class="system">
-    <img class="system-image" [src]="data.applicationLogo.url"
-      [alt]="data.applicationName" [tooltip]="data.applicationName">
+    <img
+      class="system-image"
+      [src]="data.applicationLogo.url"
+      [alt]="data.applicationName"
+      [tooltip]="data.applicationName" />
   </div>
   <div class="title">{{ i18n.unsubscribe.title }}</div>
   <ng-container></ng-container>

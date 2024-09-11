@@ -1,24 +1,26 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [heading]="i18n.quickAccessSettings.title"
+    <page-content
+      [heading]="i18n.quickAccessSettings.title"
       [mobileHeading]="i18n.quickAccessSettings.mobileTitle"
       [headingActions]="headingActions$ | async">
       <ng-container *ngIf="!self">
         <user-info [user]="data.user"></user-info>
-        <hr>
+        <hr />
       </ng-container>
       <div>{{ i18n.quickAccessSettings.information }}</div>
-      <hr>
-      <div
-        class="quick-access-container d-flex flex-column flex-md-row w-100">
+      <hr />
+      <div class="quick-access-container d-flex flex-column flex-md-row w-100">
         <div class="d-flex flex-column flex-grow-1 w-100">
           <div class="mb-2">{{ i18n.quickAccessSettings.enabled }}</div>
-          <div class="enabled-quick-access" cdkDropList
-            (cdkDropListSorted)="sort($event)">
-            <div class="quick-access-setting-item"
-              [ngClass]="{'cursor-pointer': data.canEdit}"
+          <div class="enabled-quick-access" cdkDropList (cdkDropListSorted)="sort($event)">
+            <div
+              class="quick-access-setting-item"
+              [ngClass]="{ 'cursor-pointer': data.canEdit }"
               *ngFor="let item of enabledItems; let i = index"
-              cdkDragLockAxis="y" cdkDrag [cdkDragDisabled]="!data.canEdit"
+              cdkDragLockAxis="y"
+              cdkDrag
+              [cdkDragDisabled]="!data.canEdit"
               (click)="disableItem(i)">
               <div class="quick-access-icon">
                 <icon [icon]="item.icon" size="2.2rem"></icon>
@@ -26,19 +28,19 @@
               <div class="quick-access-text">
                 {{ item.label }}
               </div>
-              <div *ngIf="layout.ltlg" class="quick-access-drag-handle"
-                cdkDragHandle>
+              <div *ngIf="layout.ltlg" class="quick-access-drag-handle" cdkDragHandle>
                 <icon [icon]="SvgIcon.ArrowDownUp"></icon>
               </div>
             </div>
           </div>
         </div>
-        <hr *ngIf="layout.ltmd$ | async">
+        <hr *ngIf="layout.ltmd$ | async" />
         <div class="d-flex flex-column flex-grow-1 w-100">
           <div class="mb-2">{{ i18n.quickAccessSettings.disabled }}</div>
           <div class="disabled-quick-access">
-            <div class="quick-access-setting-item disabled"
-              [ngClass]="{'cursor-pointer': data.canEdit}"
+            <div
+              class="quick-access-setting-item disabled"
+              [ngClass]="{ 'cursor-pointer': data.canEdit }"
               *ngFor="let item of disabledItems; let i = index"
               (click)="enableItem(i)">
               <div class="quick-access-icon">

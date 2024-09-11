@@ -1,5 +1,5 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data then content"></ng-container>
+  <ng-container *ngIf="data; then content"></ng-container>
 </page-layout>
 
 <ng-template #content>
@@ -10,12 +10,8 @@
   </page-content>
   <results-layout [results]="data.history">
     <mobile-result *mobileResult="let row" [date]="row.period?.date">
-      <div class="cell-main">
-        {{ i18n.general.status }}: {{ userHelper.userStatus(row.status) }}
-      </div>
-      <div class="cell-text" *ngIf="row.by">
-        {{ i18n.general.performedBy }}: {{ row.by.display }}
-      </div>
+      <div class="cell-main">{{ i18n.general.status }}: {{ userHelper.userStatus(row.status) }}</div>
+      <div class="cell-text" *ngIf="row.by">{{ i18n.general.performedBy }}: {{ row.by.display }}</div>
     </mobile-result>
     <table *resultTable class="table table-hover">
       <thead>

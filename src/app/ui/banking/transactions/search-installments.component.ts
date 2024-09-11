@@ -1,7 +1,13 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  Currency, CustomFieldDetailed, InstallmentOverviewDataForSearch, InstallmentOverviewQueryFilters, InstallmentOverviewResult, InstallmentStatusEnum, TransactionDataForSearch
+  Currency,
+  CustomFieldDetailed,
+  InstallmentOverviewDataForSearch,
+  InstallmentOverviewQueryFilters,
+  InstallmentOverviewResult,
+  InstallmentStatusEnum,
+  TransactionDataForSearch
 } from 'app/api/models';
 import { InstallmentsService } from 'app/api/services/installments.service';
 import { empty } from 'app/shared/helper';
@@ -16,12 +22,16 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'search-installments',
   templateUrl: 'search-installments.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchInstallmentsComponent
-  extends BaseSearchPageComponent<InstallmentOverviewDataForSearch, InstallmentOverviewQueryFilters, InstallmentOverviewResult>
-  implements OnInit {
-
+  extends BaseSearchPageComponent<
+    InstallmentOverviewDataForSearch,
+    InstallmentOverviewQueryFilters,
+    InstallmentOverviewResult
+  >
+  implements OnInit
+{
   currencies = new Map<string, Currency>();
   hasTransactionNumber: boolean;
   transactionNumberPattern: string;
@@ -31,7 +41,8 @@ export class SearchInstallmentsComponent
   constructor(
     injector: Injector,
     private installmentsService: InstallmentsService,
-    public bankingHelper: BankingHelperService) {
+    public bankingHelper: BankingHelperService
+  ) {
     super(injector);
   }
 
@@ -39,15 +50,31 @@ export class SearchInstallmentsComponent
     super.ngOnInit();
 
     // Get the installments search data
-    this.stateManager.cache('data', this.installmentsService.getInstallmentsOverviewDataForSearch({
-      fields: ['accountTypes', 'preselectedPeriods', 'query', 'fieldsInBasicSearch', 'fieldsInList', 'customFields', 'archivingDate']
-    })).subscribe(data => this.data = data);
+    this.stateManager
+      .cache(
+        'data',
+        this.installmentsService.getInstallmentsOverviewDataForSearch({
+          fields: [
+            'accountTypes',
+            'preselectedPeriods',
+            'query',
+            'fieldsInBasicSearch',
+            'fieldsInList',
+            'customFields',
+            'archivingDate'
+          ]
+        })
+      )
+      .subscribe(data => (this.data = data));
   }
 
   prepareForm(data: InstallmentOverviewDataForSearch) {
     this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInBasicSearch.includes(cf.internalName));
     this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
-    this.form.setControl('customFields', this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields));
+    this.form.setControl(
+      'customFields',
+      this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields)
+    );
   }
 
   onDataInitialized(data: InstallmentOverviewDataForSearch) {
@@ -63,15 +90,27 @@ export class SearchInstallmentsComponent
     const transactionNumberPatterns = (data.accountTypes || [])
       .map(a => a.currency?.transactionNumberPattern)
       .filter(p => p)
-      .reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], []);
+      .reduce((unique, item) => (unique.includes(item) ? unique : [...unique, item]), []);
     this.hasTransactionNumber = transactionNumberPatterns.length > 0;
     this.transactionNumberPattern = transactionNumberPatterns.length === 1 ? transactionNumberPatterns[0] : null;
     this.headingActions = [this.moreFiltersAction];
   }
 
   getFormControlNames() {
-    return ['status', 'fromAccountTypes', 'toAccountTypes', 'transferFilter', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd',
-      'direction', 'transactionNumber', 'customFields', 'orderBy'];
+    return [
+      'status',
+      'fromAccountTypes',
+      'toAccountTypes',
+      'transferFilter',
+      'user',
+      'preselectedPeriod',
+      'periodBegin',
+      'periodEnd',
+      'direction',
+      'transactionNumber',
+      'customFields',
+      'orderBy'
+    ];
   }
 
   getInitialFormValue(data: TransactionDataForSearch) {
@@ -84,7 +123,7 @@ export class SearchInstallmentsComponent
     const statuses = Object.values(InstallmentStatusEnum) as InstallmentStatusEnum[];
     return statuses.map(st => ({
       value: st,
-      text: this.apiI18n.installmentStatus(st),
+      text: this.apiI18n.installmentStatus(st)
     }));
   }
 
@@ -120,7 +159,8 @@ export class SearchInstallmentsComponent
   number(row: InstallmentOverviewResult): string {
     if (row.totalInstallments) {
       return this.i18n.transaction.installmentNumberOfTotal({
-        number: row.number, total: row.totalInstallments
+        number: row.number,
+        total: row.totalInstallments
       });
     }
     return String(row.number);

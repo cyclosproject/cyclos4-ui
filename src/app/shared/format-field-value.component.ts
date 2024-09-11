@@ -1,7 +1,12 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Inject, Injector, Input, OnInit } from '@angular/core';
 import {
-  CustomField, CustomFieldDetailed, CustomFieldTypeEnum, CustomFieldValue,
-  Image, LinkedEntityTypeEnum, StoredFile
+  CustomField,
+  CustomFieldDetailed,
+  CustomFieldTypeEnum,
+  CustomFieldValue,
+  Image,
+  LinkedEntityTypeEnum,
+  StoredFile
 } from 'app/api/models';
 import { FilesService } from 'app/api/services/files.service';
 import { ImagesService } from 'app/api/services/images.service';
@@ -25,7 +30,7 @@ const DIRECT_TYPES = [
   CustomFieldTypeEnum.DECIMAL,
   CustomFieldTypeEnum.DATE,
   CustomFieldTypeEnum.URL,
-  CustomFieldTypeEnum.LINKED_ENTITY,
+  CustomFieldTypeEnum.LINKED_ENTITY
 ];
 
 /**
@@ -37,7 +42,7 @@ const DIRECT_TYPES = [
 @Component({
   selector: 'format-field-value',
   templateUrl: 'format-field-value.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormatFieldValueComponent extends AbstractComponent implements OnInit {
   constructor(
@@ -47,7 +52,8 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
     private filesService: FilesService,
     private imagesService: ImagesService,
     private fieldHelper: FieldHelperService,
-    private storedFileCacheService: StoredFileCacheService) {
+    private storedFileCacheService: StoredFileCacheService
+  ) {
     super(injector);
   }
 
@@ -142,7 +148,9 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
       this.type = CustomFieldTypeEnum.STRING;
     }
     this.internalValue = valueAndLink.value;
-    this.hasValue$.next(this.internalValue != null && (this.internalValue.length === undefined || this.internalValue.length > 0));
+    this.hasValue$.next(
+      this.internalValue != null && (this.internalValue.length === undefined || this.internalValue.length > 0)
+    );
     if (valueAndLink.link) {
       if (valueAndLink.link.includes('://')) {
         this.externalLink = valueAndLink.link;
@@ -152,13 +160,13 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
     }
   }
 
-  private getValue(): { value: any, link?: string; } {
+  private getValue(): { value: any; link?: string } {
     return this.fieldHelper.getValue(this.fieldValue, this.plainText) || { value: null };
   }
 
   private createFieldValue(): CustomFieldValue {
     // First get the actual value
-    let value = this.object == null ? null : this.object[this.fieldName] as string;
+    let value = this.object == null ? null : (this.object[this.fieldName] as string);
     if (value == null && this.customValues) {
       // Attempt a custom field value
       value = this.customValues[this.fieldName] as string;
@@ -175,14 +183,14 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
 
     // Then create a new CustomFieldValue
     const fieldValue: CustomFieldValue = {
-      field: this.fields.find(cf => cf.internalName === this.fieldName),
+      field: this.fields.find(cf => cf.internalName === this.fieldName)
     };
     if (fieldValue.field == null) {
       // When no custom field is found, assume one of type string
       fieldValue.field = {
         name: this.fieldName,
         internalName: this.fieldName,
-        type: CustomFieldTypeEnum.STRING,
+        type: CustomFieldTypeEnum.STRING
       };
     }
     switch (fieldValue.field.type) {
@@ -199,17 +207,29 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
         break;
       case CustomFieldTypeEnum.DYNAMIC_SELECTION:
       case CustomFieldTypeEnum.DYNAMIC_MULTI_SELECTION:
-        if (fieldValue.field.type === CustomFieldTypeEnum.DYNAMIC_SELECTION) {
-          // For single dynamic selection, strip away the second part, if any
-          if (parts.length > 1) {
-            parts.splice(1, parts.length - 1);
+        const cf = fieldValue.field as CustomFieldDetailed;
+        const dynamicValues = (cf || {}).dynamicValues || [];
+        if (dynamicValues.length > 0) {
+          if (fieldValue.field.type === CustomFieldTypeEnum.DYNAMIC_SELECTION) {
+            // For single dynamic selection, strip away the second part, if any
+            if (parts.length > 1) {
+              parts.splice(1, parts.length - 1);
+            }
+          }
+          fieldValue.dynamicValues = parts.map(ref => dynamicValues.find(dv => dv.value === ref)).filter(dv => !!dv);
+        } else {
+          if (fieldValue.field.type === CustomFieldTypeEnum.DYNAMIC_SELECTION) {
+            // For single dynamic selection, try to resolve the value and label from the reference value
+            if (parts.length > 1) {
+              fieldValue.dynamicValues = [
+                {
+                  value: parts[0],
+                  label: parts[1]
+                }
+              ];
+            }
           }
         }
-        fieldValue.dynamicValues = parts.map(ref => {
-          const cf = (fieldValue.field as CustomFieldDetailed);
-          const dynamicValues = (cf || {}).dynamicValues || [];
-          return dynamicValues.find(dv => dv.value === ref);
-        }).filter(dv => !!dv);
         break;
       case CustomFieldTypeEnum.INTEGER:
         if (value != null) {
@@ -218,11 +238,13 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
         break;
       case CustomFieldTypeEnum.SINGLE_SELECTION:
       case CustomFieldTypeEnum.MULTI_SELECTION:
-        fieldValue.enumeratedValues = parts.map(ref => {
-          const cf = (fieldValue.field as CustomFieldDetailed);
-          const possibleValues = (cf || {}).possibleValues || [];
-          return possibleValues.find(pv => pv.id === ref || pv.internalName === ref);
-        }).filter(pv => !!pv);
+        fieldValue.enumeratedValues = parts
+          .map(ref => {
+            const cf = fieldValue.field as CustomFieldDetailed;
+            const possibleValues = (cf || {}).possibleValues || [];
+            return possibleValues.find(pv => pv.id === ref || pv.internalName === ref);
+          })
+          .filter(pv => !!pv);
         break;
       case CustomFieldTypeEnum.LINKED_ENTITY:
         if (value != null) {
@@ -232,53 +254,57 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
             case LinkedEntityTypeEnum.USER:
               fieldValue.userValue = {
                 id,
-                display,
+                display
               };
               break;
             case LinkedEntityTypeEnum.ADVERTISEMENT:
               fieldValue.adValue = {
                 id,
-                name: display,
+                name: display
               };
               break;
             case LinkedEntityTypeEnum.TRANSACTION:
               fieldValue.transactionValue = {
                 id,
-                display,
+                display
               };
               break;
             case LinkedEntityTypeEnum.TRANSFER:
               fieldValue.transferValue = {
                 id,
-                display,
+                display
               };
               break;
             case LinkedEntityTypeEnum.RECORD:
               fieldValue.recordValue = {
                 id,
-                display,
+                display
               };
               break;
           }
         }
         break;
       case CustomFieldTypeEnum.FILE:
-        fieldValue.fileValues = parts.map(id => {
-          let file = (this.files || []).find(f => f.id === id);
-          if (!file) {
-            file = this.storedFileCacheService.read(id);
-          }
-          return file;
-        }).filter(f => f);
+        fieldValue.fileValues = parts
+          .map(id => {
+            let file = (this.files || []).find(f => f.id === id);
+            if (!file) {
+              file = this.storedFileCacheService.read(id);
+            }
+            return file;
+          })
+          .filter(f => f);
         break;
       case CustomFieldTypeEnum.IMAGE:
-        fieldValue.imageValues = parts.map(id => {
-          let image = (this.images || []).find(i => i.id === id);
-          if (!image) {
-            image = this.storedFileCacheService.read(id);
-          }
-          return image;
-        }).filter(i => i);
+        fieldValue.imageValues = parts
+          .map(id => {
+            let image = (this.images || []).find(i => i.id === id);
+            if (!image) {
+              image = this.storedFileCacheService.read(id);
+            }
+            return image;
+          })
+          .filter(i => i);
         break;
       default:
         fieldValue.stringValue = value;
@@ -288,7 +314,10 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
   }
 
   isLinkedUser(): boolean {
-    return this.type === CustomFieldTypeEnum.LINKED_ENTITY && this.fieldValue.field.linkedEntityType === LinkedEntityTypeEnum.USER;
+    return (
+      this.type === CustomFieldTypeEnum.LINKED_ENTITY &&
+      this.fieldValue.field.linkedEntityType === LinkedEntityTypeEnum.USER
+    );
   }
 
   appendAuth(url: string): string {
@@ -296,17 +325,21 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
   }
 
   downloadFile(event: MouseEvent, file: StoredFile) {
-    this.addSub(this.filesService.getRawFileContent({ id: file.id }).subscribe(blob => {
-      download(blob, file.name, file.contentType);
-    }));
+    this.addSub(
+      this.filesService.getRawFileContent({ id: file.id }).subscribe(blob => {
+        download(blob, file.name, file.contentType);
+      })
+    );
     event.stopPropagation();
     event.preventDefault();
   }
 
   downloadImage(event: MouseEvent, image: Image) {
-    this.addSub(this.imagesService.getImageContent({ id: image.id }).subscribe(blob => {
-      download(blob, image.name, image.contentType);
-    }));
+    this.addSub(
+      this.imagesService.getImageContent({ id: image.id }).subscribe(blob => {
+        download(blob, image.name, image.contentType);
+      })
+    );
     event.stopPropagation();
     event.preventDefault();
   }

@@ -1,8 +1,32 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostBinding, Injector, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  HostBinding,
+  Injector,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 import {
-  AvailabilityEnum, BasicProfileFieldEnum, CustomFieldBinaryValues, CustomFieldDetailed, GeographicalCoordinate,
-  Image, PhoneKind, SendMediumEnum, StoredFile, TempImageTargetEnum, UserDataForNew, WizardExecutionData, WizardKind, WizardStepDetailed, WizardStepField, WizardStepFieldKind
+  AvailabilityEnum,
+  BasicProfileFieldEnum,
+  CustomFieldBinaryValues,
+  CustomFieldDetailed,
+  GeographicalCoordinate,
+  Image,
+  PhoneKind,
+  SendMediumEnum,
+  StoredFile,
+  TempImageTargetEnum,
+  UserDataForNew,
+  WizardExecutionData,
+  WizardKind,
+  WizardStepDetailed,
+  WizardStepField,
+  WizardStepFieldKind
 } from 'app/api/models';
 import { ImagesService } from 'app/api/services/images.service';
 import { WizardsService } from 'app/api/services/wizards.service';
@@ -20,16 +44,13 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 @Component({
   selector: '0,run-wizard-step-field',
   templateUrl: 'run-wizard-step-field.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RunWizardStepFieldComponent
-  extends BaseComponent
-  implements OnInit {
-
-  @HostBinding("class.any-label-value") anyLabelValueClass = true;
-  @HostBinding("class.d-flex") dFlexClass = true;
-  @HostBinding("class.flex-column") flexColumnClass = true;
-  @HostBinding("class.keep-margins") keepMarginsClass = true;
+export class RunWizardStepFieldComponent extends BaseComponent implements OnInit {
+  @HostBinding('class.any-label-value') anyLabelValueClass = true;
+  @HostBinding('class.d-flex') dFlexClass = true;
+  @HostBinding('class.flex-column') flexColumnClass = true;
+  @HostBinding('class.keep-margins') keepMarginsClass = true;
 
   WizardStepFieldKind = WizardStepFieldKind;
   BasicProfileFieldEnum = BasicProfileFieldEnum;
@@ -46,7 +67,7 @@ export class RunWizardStepFieldComponent
   }
   set user(user: FormGroup) {
     this._user = user;
-    this.customProfileValues = user ? user.controls.customValues as FormGroup : null;
+    this.customProfileValues = user ? (user.controls.customValues as FormGroup) : null;
   }
   @Input() mobilePhone: FormGroup;
   @Input() landLinePhone: FormGroup;
@@ -103,7 +124,8 @@ export class RunWizardStepFieldComponent
     public maps: MapsService,
     private wizardsService: WizardsService,
     public fieldHelper: FieldHelperService,
-    public runWizard: RunWizardComponent) {
+    public runWizard: RunWizardComponent
+  ) {
     super(injector);
   }
 
@@ -135,7 +157,8 @@ export class RunWizardStepFieldComponent
           BasicProfileFieldEnum.NAME,
           BasicProfileFieldEnum.USERNAME,
           BasicProfileFieldEnum.EMAIL,
-          BasicProfileFieldEnum.PHONE].includes(this.field.basicProfileField);
+          BasicProfileFieldEnum.PHONE
+        ].includes(this.field.basicProfileField);
         switch (this.field.basicProfileField) {
           case BasicProfileFieldEnum.IMAGE:
             this.label = this.i18n.user.title.image;
@@ -189,11 +212,13 @@ export class RunWizardStepFieldComponent
 
   onUploadDone(image: Image) {
     // First remove any previous image, then emit that a new image is uploaded
-    this.addSub(this.doRemoveImage().subscribe(() => {
-      this.image = image;
-      this.imageUploaded.emit(this.image);
-      this.changeDetector.detectChanges();
-    }));
+    this.addSub(
+      this.doRemoveImage().subscribe(() => {
+        this.image = image;
+        this.imageUploaded.emit(this.image);
+        this.changeDetector.detectChanges();
+      })
+    );
   }
 
   removeImage() {
@@ -221,10 +246,15 @@ export class RunWizardStepFieldComponent
   locateAddress() {
     const value = this.address.value;
     this.locatingAddress$.next(true);
-    this.addSub(this.maps.geocode(value).subscribe(coords => {
-      this.address.patchValue({ location: coords });
-      this.changeDetector.detectChanges();
-    }, () => this.mapShown()));
+    this.addSub(
+      this.maps.geocode(value).subscribe(
+        coords => {
+          this.address.patchValue({ location: coords });
+          this.changeDetector.detectChanges();
+        },
+        () => this.mapShown()
+      )
+    );
   }
 
   mapShown() {
@@ -233,8 +263,8 @@ export class RunWizardStepFieldComponent
   }
 
   passwordForm(index: number): FormGroup {
-    const passwords = this.user ? this.user.controls.passwords as FormArray : null;
-    return passwords ? passwords.controls[index] as FormGroup : null;
+    const passwords = this.user ? (this.user.controls.passwords as FormArray) : null;
+    return passwords ? (passwords.controls[index] as FormGroup) : null;
   }
 
   sendEmailCode(button: CountdownButtonComponent) {
@@ -256,12 +286,16 @@ export class RunWizardStepFieldComponent
     mergeValidity(nonValid).subscribe(isValid => {
       const to = control.value;
       if (isValid) {
-        this.addSub(this.wizardsService.sendWizardVerificationCode({
-          key: this.data.key,
-          body: { medium, to }
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.general.sentCodeTo(to));
-        }));
+        this.addSub(
+          this.wizardsService
+            .sendWizardVerificationCode({
+              key: this.data.key,
+              body: { medium, to }
+            })
+            .subscribe(() => {
+              this.notification.snackBar(this.i18n.general.sentCodeTo(to));
+            })
+        );
       } else {
         button.reenable();
         focusFirstInvalid();

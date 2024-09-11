@@ -9,14 +9,10 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'snack-bar',
   templateUrl: 'snack-bar.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SnackBarComponent implements OnInit, SnackBarProvider {
-  constructor(
-    private notification: NotificationService,
-    private _element: ElementRef,
-  ) {
-  }
+  constructor(private notification: NotificationService, private _element: ElementRef) {}
 
   message$ = new BehaviorSubject('');
   private timeoutHandle: any;
@@ -51,5 +47,4 @@ export class SnackBarComponent implements OnInit, SnackBarProvider {
     style.opacity = '';
     style.transform = '';
   }
-
 }

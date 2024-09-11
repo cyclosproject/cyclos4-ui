@@ -1,6 +1,18 @@
-import { ChangeDetectionStrategy, Component, Host, HostBinding, Injector, Input, Optional, SkipSelf } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Host,
+  HostBinding,
+  Injector,
+  Input,
+  Optional,
+  SkipSelf
+} from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BaseFormFieldWithOptionsComponent, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
+import {
+  BaseFormFieldWithOptionsComponent,
+  FORM_FIELD_WITH_OPTIONS
+} from 'app/shared/base-form-field-with-options.component';
 import { empty, truthyAttr } from 'app/shared/helper';
 
 /**
@@ -12,11 +24,10 @@ import { empty, truthyAttr } from 'app/shared/helper';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: RadioGroupFieldComponent, multi: true },
-    { provide: FORM_FIELD_WITH_OPTIONS, useExisting: RadioGroupFieldComponent },
-  ],
+    { provide: FORM_FIELD_WITH_OPTIONS, useExisting: RadioGroupFieldComponent }
+  ]
 })
 export class RadioGroupFieldComponent extends BaseFormFieldWithOptionsComponent<string> {
-
   @HostBinding('class.d-block') classBlock = true;
   @HostBinding('class.w-100') classW100 = true;
 
@@ -28,10 +39,7 @@ export class RadioGroupFieldComponent extends BaseFormFieldWithOptionsComponent<
     this._asColumn = truthyAttr(flag);
   }
 
-  constructor(
-    injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-  ) {
+  constructor(injector: Injector, @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
     super(injector, controlContainer);
   }
 
@@ -43,5 +51,4 @@ export class RadioGroupFieldComponent extends BaseFormFieldWithOptionsComponent<
   protected getFocusableControl() {
     return null;
   }
-
 }

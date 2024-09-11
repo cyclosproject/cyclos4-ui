@@ -1,26 +1,18 @@
 <label class="label-value-label" [attr.for]="forId">
-  <span>{{ label }}<span class="required-marker"
-      *ngIf="required">&nbsp;*</span></span>
+  <span>{{ label }}<span class="required-marker" *ngIf="required">&nbsp;*</span></span>
 </label>
 <div class="label-value-container">
   <div class="d-flex label-value-value">
-    <ng-container *ngIf="value != null && valueFormat == 'plain'">{{
-      value
-      }}</ng-container>
-    <div *ngIf="value != null && valueFormat == 'break'" class="break-nl">{{
-      value
-      }}</div>
-    <div *ngIf="value != null && valueFormat == 'html'"
-      [innerHTML]="value | trust"></div>
+    <ng-container *ngIf="value != null && valueFormat == 'plain'">{{ value }}</ng-container>
+    <div *ngIf="value != null && valueFormat == 'break'" class="break-nl">{{ value }}</div>
+    <div *ngIf="value != null && valueFormat == 'html'" [innerHTML]="value | trust"></div>
     <ng-container *ngIf="value == null">
       <ng-content></ng-content>
     </ng-container>
   </div>
-  <information-text *ngIf="informationText" class="informationText"
-    [informationText]="informationText">
+  <information-text *ngIf="informationText" class="informationText" [informationText]="informationText">
   </information-text>
-  <div *ngIf="extraCell" [ngClass]="{'flex-grow-0' : informationText}"
-    class="label-value-extra">
+  <div *ngIf="extraCell" [ngClass]="{ 'flex-grow-0': informationText }" class="label-value-extra">
     <ng-container *ngTemplateOutlet="extraCell"></ng-container>
   </div>
 </div>

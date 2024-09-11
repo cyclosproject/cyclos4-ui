@@ -2039,6 +2039,7 @@
     "listAds": "Mostrar anúncios",
     "showFavorites": "Apenas favoritos",
     "warningDisabledAd": "Este anúncio tem o estado de desabilitado e não pode ser visualizado por outros usuários. Para ativar o anúncio, por favor, escolha um preço e moeda e salve o anúncio novamente",
+    "warningCurrencyNotAvailable": "A moeda do anúncio está indisponível no momento, por favor selecione outra moeda ou contate a administração. ",
     "title": {
       "search": "Buscar anúncios",
       "myAdvertisements": "Meus anúncios",

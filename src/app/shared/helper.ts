@@ -53,15 +53,20 @@ export function urlJoin(...parts: string[]) {
     return '';
   }
   const prefix = parts[0].startsWith('/') ? '/' : '';
-  return prefix + parts.map(p => {
-    if (p.startsWith('/')) {
-      p = p.substring(1);
-    }
-    if (p.endsWith('/')) {
-      p = p.substring(0, p.length - 1);
-    }
-    return p;
-  }).join('/');
+  return (
+    prefix +
+    parts
+      .map(p => {
+        if (p.startsWith('/')) {
+          p = p.substring(1);
+        }
+        if (p.endsWith('/')) {
+          p = p.substring(0, p.length - 1);
+        }
+        return p;
+      })
+      .join('/')
+  );
 }
 
 /**
@@ -175,8 +180,8 @@ const entityMap = {
   '<': '&lt;',
   '>': '&gt;',
   '"': '&quot;',
-  '\'': '&#39;',
-  '/': '&#x2F;',
+  "'": '&#39;',
+  '/': '&#x2F;'
 };
 
 /**
@@ -212,7 +217,11 @@ export function escapeHtml(value: string, nl2br: boolean = false) {
  * @param locator The locator
  * @param customValuesProp The property name which holds custom values. Defaults to `customValues`
  */
-export function locateControl(container: any, locator: FormControlLocator, customValuesProp = 'customValues'): AbstractControl {
+export function locateControl(
+  container: any,
+  locator: FormControlLocator,
+  customValuesProp = 'customValues'
+): AbstractControl {
   let result: AbstractControl;
 
   if (container instanceof AbstractControl) {
@@ -220,7 +229,8 @@ export function locateControl(container: any, locator: FormControlLocator, custo
     result = container;
   } else {
     // Attempt to locate by nested property / index
-    const control = container == null ? null : container[locator.nestedProperty] as AbstractControl | AbstractControl[];
+    const control =
+      container == null ? null : (container[locator.nestedProperty] as AbstractControl | AbstractControl[]);
     if (control == null) {
       return null;
     } else if (control instanceof AbstractControl) {
@@ -315,7 +325,7 @@ export function isTouched(control: AbstractControl) {
  * Recursively returns all errors from a control, handling recursively forms and arrays
  * @param control The control
  */
-export function getAllErrors(control: AbstractControl): { [key: string]: any; } | null {
+export function getAllErrors(control: AbstractControl): { [key: string]: any } | null {
   if (control instanceof FormControl) {
     return control.errors;
   } else if (control instanceof FormArray) {
@@ -334,7 +344,7 @@ export function getAllErrors(control: AbstractControl): { [key: string]: any; } 
         hasError = true;
       }
       return acc;
-    }, {} as { [key: string]: any; });
+    }, {} as { [key: string]: any });
     return hasError ? result : null;
   } else {
     return null;
@@ -398,7 +408,10 @@ export function mergeValidity(controls: AbstractControl[]): Observable<boolean> 
         subject.next(true);
       }
     });
-    return subject.pipe(first(), tap(() => sub.unsubscribe()));
+    return subject.pipe(
+      first(),
+      tap(() => sub.unsubscribe())
+    );
   }
 }
 
@@ -485,7 +498,7 @@ export function resizeImage(original: Blob, maxWidth: number, maxHeight: number)
     img.onload = () => {
       const iw = img.width;
       const ih = img.height;
-      const scale = Math.min((maxWidth / iw), (maxHeight / ih));
+      const scale = Math.min(maxWidth / iw, maxHeight / ih);
       const iwScaled = iw * scale;
       const ihScaled = ih * scale;
       if (iw <= iwScaled && ih <= ihScaled) {
@@ -493,7 +506,7 @@ export function resizeImage(original: Blob, maxWidth: number, maxHeight: number)
         observer.next({
           width: iw,
           height: ih,
-          content: original,
+          content: original
         });
         observer.complete();
         URL.revokeObjectURL(url);
@@ -508,7 +521,7 @@ export function resizeImage(original: Blob, maxWidth: number, maxHeight: number)
           observer.next({
             width: iwScaled,
             height: ihScaled,
-            content: blob,
+            content: blob
           });
           observer.complete();
           URL.revokeObjectURL(url);
@@ -531,7 +544,11 @@ export function resizeImage(original: Blob, maxWidth: number, maxHeight: number)
  * @param separator The separator
  * @param isValid When passed in, is a validation function that will retain only valid values
  */
-export function preprocessValueWithSeparator(value: any, separator: string, isValid?: (val: string) => boolean): string | string[] {
+export function preprocessValueWithSeparator(
+  value: any,
+  separator: string,
+  isValid?: (val: string) => boolean
+): string | string[] {
   let array: string[];
   if (separator == null) {
     // No separator means value is string[]
@@ -543,7 +560,7 @@ export function preprocessValueWithSeparator(value: any, separator: string, isVa
   if (isValid != null) {
     array = array.filter(isValid);
   }
-  return (separator == null) ? array : array.join(separator);
+  return separator == null ? array : array.join(separator);
 }
 
 /**
@@ -569,7 +586,7 @@ export function scrollTop(to?: number | ElementReference) {
     const el = resolveElement(to);
     if (el) {
       window.scrollBy({
-        top: el.getBoundingClientRect().top - 54,
+        top: el.getBoundingClientRect().top - 54
       });
       return;
     } else {
@@ -606,8 +623,11 @@ export function resolveElement(el: ElementReference): HTMLElement {
  * @param el The element reference
  */
 export function elementPosition(el: ElementReference): {
-  top: number, left: number, bottom: number, right: number,
-  client: ClientRect | DOMRect,
+  top: number;
+  left: number;
+  bottom: number;
+  right: number;
+  client: ClientRect | DOMRect;
 } {
   el = resolveElement(el);
   if (!el) {
@@ -621,7 +641,7 @@ export function elementPosition(el: ElementReference): {
     bottom: top + bbox.height,
     left,
     right: left + bbox.width,
-    client: bbox,
+    client: bbox
   };
 }
 
@@ -760,11 +780,15 @@ export function isChildElement(el: Element, parent: Element) {
 /**
  * Set the focus to another focusable element on page, according to a captured keyboard event
  */
-export function handleKeyboardFocus(layout: LayoutService, element: ElementReference, event: KeyboardEvent, options?: {
-  horizontalOffset?: number;
-  verticalOffset?: number;
-}) {
-
+export function handleKeyboardFocus(
+  layout: LayoutService,
+  element: ElementReference,
+  event: KeyboardEvent,
+  options?: {
+    horizontalOffset?: number;
+    verticalOffset?: number;
+  }
+) {
   element = resolveElement(element);
   if (!element) {
     return false;
@@ -778,8 +802,8 @@ export function handleKeyboardFocus(layout: LayoutService, element: ElementRefer
 
   // Figure out all focusable elements, and sort them in the natural order
   const focusable = htmlCollectionToArray(
-    (focusTrap || element).querySelectorAll('input,textarea,select,button,a,.focusable'))
-    .filter(e => e.offsetParent != null);
+    (focusTrap || element).querySelectorAll('input,textarea,select,button,a,.focusable')
+  ).filter(e => e.offsetParent != null);
   if (empty(focusable)) {
     // No focusable elements
     return false;
@@ -907,7 +931,7 @@ export function galleryImage(image: Image): INgxGalleryImage {
   return {
     big: image.url,
     medium: `${image.url}?width=${MediumThumbSize[0]}&height=${MediumThumbSize[1]}`,
-    small: `${image.url}?width=${SmallThumbSize[0]}&height=${SmallThumbSize[1]}`,
+    small: `${image.url}?width=${SmallThumbSize[0]}&height=${SmallThumbSize[1]}`
   };
 }
 
@@ -929,10 +953,7 @@ export function copyToClipboard(text: string) {
   el.style.position = 'absolute';
   el.style.left = '-9999px';
   document.body.appendChild(el);
-  const selected =
-    document.getSelection().rangeCount > 0
-      ? document.getSelection().getRangeAt(0)
-      : false;
+  const selected = document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
   el.select();
   document.execCommand('copy');
   document.body.removeChild(el);
@@ -958,7 +979,9 @@ export function initializeStyleLinks() {
  * Uses lodash's deburr() method, also using trim() and toLowerCase()
  */
 export function normalizeKeywords(text: string) {
-  return deburr(text || '').trim().toLowerCase();
+  return deburr(text || '')
+    .trim()
+    .toLowerCase();
 }
 
 /**
@@ -977,7 +1000,6 @@ export function isDevServer(): boolean {
 export function i18nRoot(apiRoot: string): string {
   return environment.standalone ? 'i18n' : apiRoot + '/../ui/i18n';
 }
-
 
 /**
  * Truncates the given string without cutting words in the middle, and appending ellipsis in the end. Line breaks

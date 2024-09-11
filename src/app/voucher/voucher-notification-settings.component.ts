@@ -6,7 +6,7 @@ import { VoucherBasePageComponent } from 'app/voucher/voucher-base-page.componen
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
-  selector: "voucher-notification-settings",
+  selector: 'voucher-notification-settings',
   templateUrl: 'voucher-notification-settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -32,11 +32,16 @@ export class VoucherNotificationSettingsComponent extends VoucherBasePageCompone
       return;
     }
     const settings: ChangeVoucherNotificationSettings = this.form.value;
-    this.voucherService.changeVoucherInfoNotificationSettings({ token: this.state.token, pin: this.state.pin, body: settings })
+    this.voucherService
+      .changeVoucherInfoNotificationSettings({
+        token: this.state.token,
+        pin: this.state.pin,
+        body: settings
+      })
       .subscribe(_resp => {
         this.notification.snackBar(this.i18n.voucher.notificationSettings.done);
         this.state.updateNotificationSettings(settings);
-        this.router.navigate(["details"]);
+        this.router.navigate(['details']);
       });
   }
 

@@ -1,5 +1,13 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, Host, Injector, Input, Optional, SkipSelf, ViewChild
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Host,
+  Injector,
+  Input,
+  Optional,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { LayoutService } from 'app/core/layout.service';
@@ -16,12 +24,9 @@ import { BehaviorSubject } from 'rxjs';
   selector: 'button-toggle',
   templateUrl: 'button-toggle.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: ButtonToggleComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: ButtonToggleComponent, multi: true }]
 })
 export class ButtonToggleComponent extends BaseControlComponent<boolean> {
-
   icon$ = new BehaviorSubject<string>(null);
 
   @Input() onIcon: SvgIcon | string;
@@ -38,7 +43,8 @@ export class ButtonToggleComponent extends BaseControlComponent<boolean> {
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private layout: LayoutService) {
+    private layout: LayoutService
+  ) {
     super(injector, controlContainer);
   }
 
@@ -73,5 +79,4 @@ export class ButtonToggleComponent extends BaseControlComponent<boolean> {
     const currentState = this.state ? this.i18n.general.enabled : this.i18n.general.disabled;
     return this.iconTooltip + ': ' + currentState.toLowerCase();
   }
-
 }

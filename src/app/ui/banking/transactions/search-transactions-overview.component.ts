@@ -1,10 +1,17 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AccountType, Currency,
+  AccountType,
+  Currency,
   CustomFieldDetailed,
   ExternalPaymentStatusEnum,
-  PaymentRequestStatusEnum, RoleEnum, TransactionAuthorizationStatusEnum, TransactionDataForSearch,
-  TransactionKind, TransactionOverviewDataForSearch, TransactionOverviewQueryFilters, TransactionOverviewResult
+  PaymentRequestStatusEnum,
+  RoleEnum,
+  TransactionAuthorizationStatusEnum,
+  TransactionDataForSearch,
+  TransactionKind,
+  TransactionOverviewDataForSearch,
+  TransactionOverviewQueryFilters,
+  TransactionOverviewResult
 } from 'app/api/models';
 import { TransactionsService } from 'app/api/services/transactions.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -19,12 +26,16 @@ import { Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'search-transactions-overview',
   templateUrl: 'search-transactions-overview.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchTransactionsOverviewComponent
-  extends BaseSearchPageComponent<TransactionOverviewDataForSearch, TransactionOverviewQueryFilters, TransactionOverviewResult>
-  implements OnInit {
-
+  extends BaseSearchPageComponent<
+    TransactionOverviewDataForSearch,
+    TransactionOverviewQueryFilters,
+    TransactionOverviewResult
+  >
+  implements OnInit
+{
   kind: 'authorized' | 'myAuth' | 'payment-request' | 'external-payment';
   heading: string;
   mobileHeading: string;
@@ -38,7 +49,8 @@ export class SearchTransactionsOverviewComponent
   constructor(
     injector: Injector,
     private transactionsService: TransactionsService,
-    public bankingHelper: BankingHelperService) {
+    public bankingHelper: BankingHelperService
+  ) {
     super(injector);
   }
 
@@ -67,11 +79,25 @@ export class SearchTransactionsOverviewComponent
     }
 
     // Get the transactions search data
-    this.stateManager.cache('data', this.transactionsService.getTransactionsOverviewDataForSearch({
-      fields: ['user', 'accountTypes', 'preselectedPeriods', 'query', 'fieldsInBasicSearch', 'fieldsInList', 'customFields', 'archivingDate',
-        ...(this.kind === 'authorized' ? ['authorizationRoles'] : [])],
-      pendingMyAuthorization: this.kind === 'myAuth'
-    })).subscribe(data => this.data = data);
+    this.stateManager
+      .cache(
+        'data',
+        this.transactionsService.getTransactionsOverviewDataForSearch({
+          fields: [
+            'user',
+            'accountTypes',
+            'preselectedPeriods',
+            'query',
+            'fieldsInBasicSearch',
+            'fieldsInList',
+            'customFields',
+            'archivingDate',
+            ...(this.kind === 'authorized' ? ['authorizationRoles'] : [])
+          ],
+          pendingMyAuthorization: this.kind === 'myAuth'
+        })
+      )
+      .subscribe(data => (this.data = data));
   }
 
   prepareForm(data: TransactionOverviewDataForSearch) {
@@ -79,7 +105,10 @@ export class SearchTransactionsOverviewComponent
 
     this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInBasicSearch.includes(cf.internalName));
     this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
-    this.form.setControl('customFields', this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields));
+    this.form.setControl(
+      'customFields',
+      this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields)
+    );
   }
 
   onDataInitialized(data: TransactionOverviewDataForSearch) {
@@ -91,18 +120,19 @@ export class SearchTransactionsOverviewComponent
     const transactionNumberPatterns = this.currencies
       .map(c => c.transactionNumberPattern)
       .filter(p => p)
-      .reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], []);
+      .reduce((unique, item) => (unique.includes(item) ? unique : [...unique, item]), []);
     this.hasTransactionNumber = transactionNumberPatterns.length > 0;
     this.transactionNumberPattern = transactionNumberPatterns.length === 1 ? transactionNumberPatterns[0] : null;
     this.addSub(this.form.controls.currency.valueChanges.subscribe(currencyId => this.updateAccountTypes(currencyId)));
 
     this.headingActions = [
-      ...(!this.isMyAuth() || this.fieldsInSearch?.length > 0) ? [this.moreFiltersAction] : [],
-      ...this.exportHelper.headingActions(data.exportFormats,
-        f => this.transactionsService.exportTransactionsOverview$Response({
+      ...(!this.isMyAuth() || this.fieldsInSearch?.length > 0 ? [this.moreFiltersAction] : []),
+      ...this.exportHelper.headingActions(data.exportFormats, f =>
+        this.transactionsService.exportTransactionsOverview$Response({
           format: f.internalName,
           ...this.toSearchParams(this.form.value)
-        }))
+        })
+      )
     ];
   }
 
@@ -111,11 +141,13 @@ export class SearchTransactionsOverviewComponent
     const selectedTo = this.form.controls.toAccountTypes.value;
     if (currencyId && selectedFrom) {
       this.form.controls.fromAccountTypes.setValue(
-        this.data.accountTypes.find(at => at.id === selectedFrom).currency?.id === currencyId ? selectedFrom : null);
+        this.data.accountTypes.find(at => at.id === selectedFrom).currency?.id === currencyId ? selectedFrom : null
+      );
     }
     if (currencyId && selectedTo) {
       this.form.controls.toAccountTypes.setValue(
-        this.data.accountTypes.find(at => at.id === selectedTo).currency?.id === currencyId ? selectedTo : null);
+        this.data.accountTypes.find(at => at.id === selectedTo).currency?.id === currencyId ? selectedTo : null
+      );
     }
   }
 
@@ -124,9 +156,23 @@ export class SearchTransactionsOverviewComponent
   }
 
   getFormControlNames() {
-    return ['status', 'currency', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd', 'transactionNumber',
-      'expirationBegin', 'expirationEnd', 'transferTypes', 'authorizationPerformedBy', 'fromAccountTypes',
-      'toAccountTypes', 'customFields', 'authorizationRoles'];
+    return [
+      'status',
+      'currency',
+      'user',
+      'preselectedPeriod',
+      'periodBegin',
+      'periodEnd',
+      'transactionNumber',
+      'expirationBegin',
+      'expirationEnd',
+      'transferTypes',
+      'authorizationPerformedBy',
+      'fromAccountTypes',
+      'toAccountTypes',
+      'customFields',
+      'authorizationRoles'
+    ];
   }
 
   getInitialFormValue(data: TransactionDataForSearch) {
@@ -151,7 +197,7 @@ export class SearchTransactionsOverviewComponent
         const statuses = Object.values(TransactionAuthorizationStatusEnum) as TransactionAuthorizationStatusEnum[];
         return statuses.map(st => ({
           value: st,
-          text: this.apiI18n.authorizationStatus(st),
+          text: this.apiI18n.authorizationStatus(st)
         }));
       case 'payment-request':
         return (Object.values(PaymentRequestStatusEnum) as PaymentRequestStatusEnum[]).map(st => ({

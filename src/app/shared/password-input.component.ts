@@ -1,9 +1,33 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Host, HostBinding, Injector,
-  Input, OnInit, Optional, Output, SkipSelf, ViewChild
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Host,
+  HostBinding,
+  Injector,
+  Input,
+  OnInit,
+  Optional,
+  Output,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
-import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
-import { PasswordInput, PasswordInputMethodEnum, PasswordModeEnum, PaymentPreview, SendMediumEnum } from 'app/api/models';
+import {
+  AbstractControl,
+  ControlContainer,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator
+} from '@angular/forms';
+import {
+  PasswordInput,
+  PasswordInputMethodEnum,
+  PasswordModeEnum,
+  PaymentPreview,
+  SendMediumEnum
+} from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
 import { PosService } from 'app/api/services/pos.service';
 import { LayoutService } from 'app/core/layout.service';
@@ -24,13 +48,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: PasswordInputComponent, multi: true },
-    { provide: NG_VALIDATORS, useExisting: PasswordInputComponent, multi: true },
-  ],
+    { provide: NG_VALIDATORS, useExisting: PasswordInputComponent, multi: true }
+  ]
 })
-export class PasswordInputComponent
-  extends BaseControlComponent<string>
-  implements OnInit, Validator {
-
+export class PasswordInputComponent extends BaseControlComponent<string> implements OnInit, Validator {
   @HostBinding('class.form-field') classFormField = true;
 
   @Input() passwordInput: PasswordInput;
@@ -85,7 +106,8 @@ export class PasswordInputComponent
     private authService: AuthService,
     private posService: PosService,
     private notificationService: NotificationService,
-    public layout: LayoutService) {
+    public layout: LayoutService
+  ) {
     super(injector, controlContainer);
   }
 
@@ -97,7 +119,7 @@ export class PasswordInputComponent
     this.otp = input.mode === PasswordModeEnum.OTP;
     if (this.otp) {
       this.otpCountdownLabel$ = new BehaviorSubject(null);
-      this.otpCountdownAction = (remainingSeconds) => {
+      this.otpCountdownAction = remainingSeconds => {
         if (remainingSeconds > 0) {
           this.otpCountdownLabel$.next(this.i18n.password.otp.countdownLabel(remainingSeconds));
         } else {
@@ -111,7 +133,9 @@ export class PasswordInputComponent
       }
       if (input.otpSendMediums.includes(SendMediumEnum.SMS)) {
         if (input.mobilePhonesToSendOtp?.length > 0) {
-          input.mobilePhonesToSendOtp.forEach(phone => this.otpActions.push(this.requestOtpAction(SendMediumEnum.SMS, phone.number, phone.id)));
+          input.mobilePhonesToSendOtp.forEach(phone =>
+            this.otpActions.push(this.requestOtpAction(SendMediumEnum.SMS, phone.number, phone.id))
+          );
         } else {
           this.otpActions.push(this.requestOtpAction(SendMediumEnum.SMS, null));
         }
@@ -146,8 +170,8 @@ export class PasswordInputComponent
 
   hasTextSecurityDisc(): boolean {
     let present = false;
-    ((document as any).fonts).forEach(p1 => {
-      if (!present && p1.family && 'text-security-disc' === (p1.family.replace(/"/g, ''))) {
+    (document as any).fonts.forEach(p1 => {
+      if (!present && p1.family && 'text-security-disc' === p1.family.replace(/"/g, '')) {
         present = true;
       }
       return null;
@@ -156,7 +180,7 @@ export class PasswordInputComponent
   }
 
   otpCountdownButtonDisabledKey(label: string): (remainingSeconds: string) => string {
-    return () => (label + ' *');
+    return () => label + ' *';
   }
 
   onKeypress(event: KeyboardEvent): void {
@@ -200,12 +224,18 @@ export class PasswordInputComponent
           ? this.authService.newOtpForLoginConfirmation({ medium, mobilePhones })
           : this.authService.newOtp({ medium, mobilePhones });
       }
-      this.addSub(request.subscribe(res => {
-        this.notificationService.snackBar(this.i18n.password.otp.sent(
-          this.pos ? this.paymentPreview.fromOperator?.display ?? this.paymentPreview.fromAccount.user.display : (res || []).join(', ')
-        ));
-        this.otpSent.emit(null);
-      }));
+      this.addSub(
+        request.subscribe(res => {
+          this.notificationService.snackBar(
+            this.i18n.password.otp.sent(
+              this.pos
+                ? this.paymentPreview.fromOperator?.display ?? this.paymentPreview.fromAccount.user.display
+                : (res || []).join(', ')
+            )
+          );
+          this.otpSent.emit(null);
+        })
+      );
     });
   }
 
@@ -226,10 +256,16 @@ export class PasswordInputComponent
 
   private updateVKButtons(): void {
     if (this.enteredVKPassword.length < this.passwordInput.buttons.length) {
-      this.currentVKCombinations = chunk(this.passwordInput.buttons[this.enteredVKPassword.length], this.passwordInput.buttonsPerRow);
+      this.currentVKCombinations = chunk(
+        this.passwordInput.buttons[this.enteredVKPassword.length],
+        this.passwordInput.buttonsPerRow
+      );
     }
-    this.formControl.setValue(this.enteredVKPassword.length === 0 ? ''
-      : this.passwordInput.virtualKeyboardId + '|' + this.enteredVKPassword.join('|'));
+    this.formControl.setValue(
+      this.enteredVKPassword.length === 0
+        ? ''
+        : this.passwordInput.virtualKeyboardId + '|' + this.enteredVKPassword.join('|')
+    );
   }
 
   onDisabledChange(isDisabled: boolean): void {
@@ -252,7 +288,7 @@ export class PasswordInputComponent
     const value = c.value;
     if (value == null || value === '') {
       return {
-        required: true,
+        required: true
       };
     }
     return null;
@@ -262,11 +298,9 @@ export class PasswordInputComponent
     return () => this.i18n.password.otp.receiveBySent(medium);
   }
 
-  registerOnValidatorChange() {
-  }
+  registerOnValidatorChange() {}
 
   toggleVisibility() {
     this.visible = !this.visible;
   }
-
 }

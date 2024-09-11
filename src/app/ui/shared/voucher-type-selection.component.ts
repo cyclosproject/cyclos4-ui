@@ -9,7 +9,7 @@ import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.componen
 import { ResultType } from 'app/ui/shared/result-type';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 
-export type Query = { keywords?: string, category?: string; } & QueryFilters;
+export type Query = { keywords?: string; category?: string } & QueryFilters;
 
 /**
  * A selection of a voucher type for either generate / buy / send vouchers.
@@ -17,9 +17,12 @@ export type Query = { keywords?: string, category?: string; } & QueryFilters;
 @Component({
   selector: 'voucher-type-selection',
   templateUrl: 'voucher-type-selection.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VoucherTypeSelectionComponent extends BaseSearchPageComponent<any, Query, VoucherTypeDetailed> implements OnInit {
+export class VoucherTypeSelectionComponent
+  extends BaseSearchPageComponent<any, Query, VoucherTypeDetailed>
+  implements OnInit
+{
   @Input() heading: string;
   @Input() mobileHeading: string;
   @Input() categories: VoucherCategory[];
@@ -35,9 +38,7 @@ export class VoucherTypeSelectionComponent extends BaseSearchPageComponent<any, 
   showCategoriesAction: HeadingAction;
   showTypesAction: HeadingAction;
 
-  constructor(
-    injector: Injector,
-    public authHelper: AuthHelperService) {
+  constructor(injector: Injector, public authHelper: AuthHelperService) {
     super(injector);
   }
 
@@ -52,14 +53,16 @@ export class VoucherTypeSelectionComponent extends BaseSearchPageComponent<any, 
       if (noCategory.length > 0) {
         const other: VoucherCategory = { id: 'other', name: this.i18n.voucher.otherCategory };
         this.categories = [...this.categories, other];
-        noCategory.forEach(t => t.category = other);
+        noCategory.forEach(t => (t.category = other));
       }
 
-      this.showCategoriesAction = new HeadingAction(SvgIcon.Handbag, this.i18n.voucher.showCategories, () => this.showCategories());
+      this.showCategoriesAction = new HeadingAction(SvgIcon.Handbag, this.i18n.voucher.showCategories, () =>
+        this.showCategories()
+      );
       this.showTypesAction = new HeadingAction(SvgIcon.Ticket, this.i18n.voucher.listTypes, () => this.showTypes());
     }
     this.hasFilters = this.hasCategories || this.types.length > 6;
-    this.showForm = this.hasFilters || this.user && !this.authHelper.isSelf(this.user);
+    this.showForm = this.hasFilters || (this.user && !this.authHelper.isSelf(this.user));
     this.data = {};
     this.allowedResultTypes = this.hasCategories ? [ResultType.CATEGORIES, ResultType.LIST] : [ResultType.LIST];
     this.resultType = this.hasCategories ? ResultType.CATEGORIES : ResultType.LIST;
@@ -80,11 +83,13 @@ export class VoucherTypeSelectionComponent extends BaseSearchPageComponent<any, 
     let types = [...this.types];
     if (kw.length > 0) {
       // When there's a keyword filter, apply it
-      types = types.filter(t =>
-        normalizeKeywords(t.voucherTitle).includes(kw)
-        || normalizeKeywords(t.voucherDescription).includes(kw)
-        || normalizeKeywords(t.name).includes(kw)
-        || t.category && normalizeKeywords(t.category.name).includes(kw));
+      types = types.filter(
+        t =>
+          normalizeKeywords(t.voucherTitle).includes(kw) ||
+          normalizeKeywords(t.voucherDescription).includes(kw) ||
+          normalizeKeywords(t.name).includes(kw) ||
+          (t.category && normalizeKeywords(t.category.name).includes(kw))
+      );
     }
     if (filter.category) {
       types = types.filter(t => t.category.id === filter.category);

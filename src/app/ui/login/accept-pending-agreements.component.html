@@ -1,20 +1,15 @@
 <page-layout [ready]="data$ | async" size="small" hideMenu>
-  <page-content *ngIf="data" layout="centered" [heading]="title"
-    [mobileHeading]="mobileTitle">
+  <page-content *ngIf="data" layout="centered" [heading]="title" [mobileHeading]="mobileTitle">
     <notification type="warning">
       <div [innerHTML]="message | trust"></div>
     </notification>
     <div class="mt-3 text-left">
-      <accept-agreements [agreements]="agreements" [formControl]="accepted">
-      </accept-agreements>
+      <accept-agreements [agreements]="agreements" [formControl]="accepted"> </accept-agreements>
     </div>
     <actions>
-      <action-button [disabled]="requesting$ | async" (action)="submit()"
-        [label]="i18n.general.submit">
+      <action-button [disabled]="requesting$ | async" (action)="submit()" [label]="i18n.general.submit">
       </action-button>
-      <action-button outline (action)="cancel()"
-        [label]="i18n.general.cancel">
-      </action-button>
+      <action-button outline (action)="cancel()" [label]="i18n.general.cancel"> </action-button>
     </actions>
   </page-content>
 </page-layout>

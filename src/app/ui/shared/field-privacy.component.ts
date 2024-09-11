@@ -15,7 +15,7 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'field-privacy',
   templateUrl: 'field-privacy.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FieldPrivacyComponent implements OnInit {
   private _justifyStart: boolean | string = false;
@@ -34,20 +34,21 @@ export class FieldPrivacyComponent implements OnInit {
 
   icon$ = new BehaviorSubject<string>(null);
 
-  constructor(@Inject(I18nInjectionToken) private i18n: I18n) {
-  }
+  constructor(@Inject(I18nInjectionToken) private i18n: I18n) {}
 
   ngOnInit() {
     this.updateClass();
   }
 
   private updateClass() {
-    this.clazz = 'h-100 d-flex flex-column align-items-center' + (this._justifyStart ? 'justify-content-start' : 'justify-content-end');
+    this.clazz =
+      'h-100 d-flex flex-column align-items-center' +
+      (this._justifyStart ? 'justify-content-start' : 'justify-content-end');
   }
 
   get hidden(): boolean {
     if (this.field) {
-      const hiddenFields = this.control.value as string[] || [];
+      const hiddenFields = (this.control.value as string[]) || [];
       return hiddenFields.includes(this.field);
     } else {
       return this.control.value === true;
@@ -60,7 +61,7 @@ export class FieldPrivacyComponent implements OnInit {
 
   toggle() {
     if (this.field) {
-      let hiddenFields = this.control.value as string[] || [];
+      let hiddenFields = (this.control.value as string[]) || [];
       if (hiddenFields.includes(this.field)) {
         hiddenFields = hiddenFields.filter(el => el !== this.field);
       } else {

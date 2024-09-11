@@ -1,45 +1,62 @@
-<label-value *ngIf="label; else widget" [formField]="self"
-  [informationText]="informationText">
+<label-value *ngIf="label; else widget" [formField]="self" [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
 <ng-template #widget>
-  <div class="w-100" dropdown #dropdown="bs-dropdown" (onShown)="onShown();"
+  <div
+    class="w-100"
+    dropdown
+    #dropdown="bs-dropdown"
+    (onShown)="onShown()"
     (onHidden)="onHidden(); toggleButton.focus()">
-    <button #toggleButton dropdownToggle [id]="id" type="button"
+    <button
+      #toggleButton
+      dropdownToggle
+      [id]="id"
+      type="button"
       class="form-control text-left custom-select w-100"
-      [title]="display$ | async" [attr.aria-controls]="dropdownMenuId"
+      [title]="display$ | async"
+      [attr.aria-controls]="dropdownMenuId"
       [ngClass]="{
         'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
       }">
-      <div class="w-100 mw-100 text-truncate pr-3"
-        [innerHTML]="display$ | async | trust"></div>
+      <div class="w-100 mw-100 text-truncate pr-3" [innerHTML]="display$ | async | trust"></div>
     </button>
 
-    <div #dropDownMenu class="dropdown-menu" *dropdownMenu role="menu"
+    <div
+      #dropDownMenu
+      class="dropdown-menu"
+      *dropdownMenu
+      role="menu"
       [ngClass]="dropdownOnRight ? 'dropdown-menu-right' : null"
-      style="visibility: hidden" [attr.id]="dropdownMenuId"
+      style="visibility: hidden"
+      [attr.id]="dropdownMenuId"
       attr.aria-labelledby="id"
-      (click)="$event.preventDefault(); $event.stopPropagation();">
-      <ng-container
-        *ngFor="let category of categories | async; let firstCat = first">
-        <div *ngIf="category.name" class="pl-2 font-weight-bold"
-          [ngClass]="{'mt-3': !firstCat}">
+      (click)="$event.preventDefault(); $event.stopPropagation()">
+      <ng-container *ngFor="let category of categories | async; let firstCat = first">
+        <div *ngIf="category.name" class="pl-2 font-weight-bold" [ngClass]="{ 'mt-3': !firstCat }">
           {{ category.name }}
         </div>
-        <div #check
+        <div
+          #check
           *ngFor="let option of category.options | async; let firstOpt = first"
           class="custom-control custom-checkbox d-flex align-content-center"
-          [class]="resolveStyle(option, category.name)" [ngClass]="{
-            'mt-1': !(firstCat &&  !category.name )
-          }" (click)="toggle(option.value)"
+          [class]="resolveStyle(option, category.name)"
+          [ngClass]="{
+            'mt-1': !(firstCat && !category.name)
+          }"
+          (click)="toggle(option.value)"
           (keydown.space)="$event.preventDefault(); $event.stopPropagation()"
-          (keyup.enter)="toggle(option.value)" (keyup.esc)="close()">
-          <input type="checkbox" [name]="name" class="custom-control-input"
-            [id]="id + '_' + option.value" [value]="option.value"
-            [checked]="isSelected(option)">
-          <label class="custom-control-label" [for]="id + '_' + option.value"
-            [ngClass]="">
+          (keyup.enter)="toggle(option.value)"
+          (keyup.esc)="close()">
+          <input
+            type="checkbox"
+            [name]="name"
+            class="custom-control-input"
+            [id]="id + '_' + option.value"
+            [value]="option.value"
+            [checked]="isSelected(option)" />
+          <label class="custom-control-label" [for]="id + '_' + option.value" [ngClass]="">
             {{ option.text }}
           </label>
         </div>

@@ -8,14 +8,14 @@ import { Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'view-order-history',
   templateUrl: 'view-order-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewOrderHistoryComponent extends BaseViewPageComponent<OrderView> implements OnInit {
-
   constructor(
     injector: Injector,
     private marketplaceHelper: MarketplaceHelperService,
-    private orderService: OrdersService) {
+    private orderService: OrdersService
+  ) {
     super(injector);
   }
 
@@ -26,9 +26,11 @@ export class ViewOrderHistoryComponent extends BaseViewPageComponent<OrderView> 
   ngOnInit() {
     super.ngOnInit();
     this.id = this.route.snapshot.params.id;
-    this.addSub(this.orderService.viewOrder({ order: this.id, fields: ['seller', 'buyer', 'history'] }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.orderService.viewOrder({ order: this.id, fields: ['seller', 'buyer', 'history'] }).subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized(data: OrderView) {

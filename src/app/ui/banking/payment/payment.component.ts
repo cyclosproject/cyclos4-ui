@@ -1,8 +1,20 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import {
-  AccountWithCurrency, AvailabilityEnum, Currency, CustomFieldDetailed, DataForTransaction, PaymentPreview, PaymentSchedulingEnum,
-  PerformPayment, RoleEnum, TimeFieldEnum, TimeInterval, Transaction, TransactionTypeData, TransferType
+  AccountWithCurrency,
+  AvailabilityEnum,
+  Currency,
+  CustomFieldDetailed,
+  DataForTransaction,
+  PaymentPreview,
+  PaymentSchedulingEnum,
+  PerformPayment,
+  RoleEnum,
+  TimeFieldEnum,
+  TimeInterval,
+  Transaction,
+  TransactionTypeData,
+  TransferType
 } from 'app/api/models';
 import { PaymentsService } from 'app/api/services/payments.service';
 import { PosService } from 'app/api/services/pos.service';
@@ -24,10 +36,12 @@ const FIRST_INSTALLMENT_DATE_VAL: ValidatorFn = control => {
   if (parent) {
     const scheduling = parent.get('scheduling').value;
     const firstInstallmentIsNow = parent.get('firstInstallmentIsNow').value;
-    if (empty(control.value) && (scheduling === 'futureDate'
-      || scheduling === PaymentSchedulingEnum.SCHEDULED && !firstInstallmentIsNow)) {
+    if (
+      empty(control.value) &&
+      (scheduling === 'futureDate' || (scheduling === PaymentSchedulingEnum.SCHEDULED && !firstInstallmentIsNow))
+    ) {
       return {
-        required: true,
+        required: true
       };
     }
   }
@@ -45,7 +59,7 @@ const OCCURRENCES_COUNT_VAL: ValidatorFn = control => {
       if (isNaN(value)) {
         // The occurrences count is required
         return {
-          required: true,
+          required: true
         };
       } else {
         // Needs at least 2 occurrences
@@ -64,7 +78,7 @@ const FIRST_OCCURRENCE_DATE_VAL: ValidatorFn = control => {
     const firstOccurrenceIsNow = parent.get('firstOccurrenceIsNow').value;
     if (empty(control.value) && scheduling === PaymentSchedulingEnum.RECURRING && !firstOccurrenceIsNow) {
       return {
-        required: true,
+        required: true
       };
     }
   }
@@ -78,10 +92,9 @@ const FIRST_OCCURRENCE_DATE_VAL: ValidatorFn = control => {
   // tslint:disable-next-line: component-selector
   selector: 'payment',
   templateUrl: 'payment.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaymentComponent extends BasePageComponent<DataForTransaction> implements OnInit {
-
   @ViewChild('paymentStepForm') paymentStepForm: PaymentStepFormComponent;
 
   fromParam: string;
@@ -136,7 +149,8 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
     private bankingHelper: BankingHelperService,
     private paymentsService: PaymentsService,
     private posService: PosService,
-    private changeDetector: ChangeDetectorRef) {
+    private changeDetector: ChangeDetectorRef
+  ) {
     super(injector);
   }
 
@@ -150,8 +164,10 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
       this.fromSelf = this.authHelper.isSelf(this.fromParam);
       this.fromSystem = this.authHelper.isSystem(this.fromParam);
       this.toParam = route.params.to;
-      this.toSelf = this.toParam != null && this.dataForFrontendHolder.auth.role != RoleEnum.ADMINISTRATOR
-        && this.authHelper.isSelf(this.toParam);
+      this.toSelf =
+        this.toParam != null &&
+        this.dataForFrontendHolder.auth.role != RoleEnum.ADMINISTRATOR &&
+        this.authHelper.isSelf(this.toParam);
       this.toSystem = this.toParam != null && this.authHelper.isSystem(this.toParam);
     }
 
@@ -188,25 +204,30 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
 
     // Get the payment / pos data
     if (this.pos) {
-      this.addSub(this.posService.dataForReceivePayment({})
-        .subscribe(data => this.data = data));
+      this.addSub(this.posService.dataForReceivePayment({}).subscribe(data => (this.data = data)));
     } else {
-      this.addSub(this.paymentsService.dataForPerformPayment({
-        owner: this.fromParam,
-        to: this.toParam,
-      }).subscribe(data => this.data = data));
+      this.addSub(
+        this.paymentsService
+          .dataForPerformPayment({
+            owner: this.fromParam,
+            to: this.toParam
+          })
+          .subscribe(data => (this.data = data))
+      );
     }
 
     // When the account changes, update the currency
     this.addSub(this.form.get('account').valueChanges.subscribe(type => this.updateCurrency(this.data, type)));
 
     // When the payment type data changes, update the form validation and fields
-    this.addSub(this.paymentTypeData$.subscribe(typeData => {
-      if (this.lastPaymentTypeData == null || !isEqual(this.lastPaymentTypeData, typeData)) {
-        this.adjustForm(typeData);
-      }
-      this.lastPaymentTypeData = typeData;
-    }));
+    this.addSub(
+      this.paymentTypeData$.subscribe(typeData => {
+        if (this.lastPaymentTypeData == null || !isEqual(this.lastPaymentTypeData, typeData)) {
+          this.adjustForm(typeData);
+        }
+        this.lastPaymentTypeData = typeData;
+      })
+    );
 
     // Adjust the conditional validators (for example, for scheduling)
     this.addSub(this.form.valueChanges.subscribe(value => this.adjustFormValidators(value)));
@@ -256,7 +277,10 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
     }
     this.lastValue = value;
     const firstInstallmentDate = this.form.get('firstInstallmentDate');
-    if (value.scheduling === 'futureDate' || value.scheduling === PaymentSchedulingEnum.SCHEDULED && !value.firstInstallmentIsNow) {
+    if (
+      value.scheduling === 'futureDate' ||
+      (value.scheduling === PaymentSchedulingEnum.SCHEDULED && !value.firstInstallmentIsNow)
+    ) {
       firstInstallmentDate.setValidators(Validators.required);
     } else {
       clearValidatorsAndErrors(firstInstallmentDate);
@@ -320,7 +344,7 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
   toConfirm() {
     this.paymentStepForm.removeSubscriptions();
     // Before proceeding, copy the value of all valid custom fields
-    const customValueControls: { [key: string]: AbstractControl; } = {};
+    const customValueControls: { [key: string]: AbstractControl } = {};
     const typeData = this.paymentTypeData;
     if (typeData && typeData.customFields) {
       for (const cf of typeData.customFields) {
@@ -332,23 +356,27 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
       this.paymentStepForm.createSubscriptions();
       return;
     }
-    this.addSub(this.confirmDataRequest().subscribe(preview => {
-      this.preview = preview;
-      if (this.preview.skipConfirmation) {
-        // Attempt the payment directly
-        this.perform();
-      } else {
-        // Go to the confirmation step
-        this.step = 'confirm';
-        this.canConfirm = this.authHelper.canConfirm(preview.confirmationPasswordInput);
-        if (!this.canConfirm) {
-          this.notification.warning(this.authHelper.getConfirmationMessage(preview.confirmationPasswordInput, null, this.pos));
+    this.addSub(
+      this.confirmDataRequest().subscribe(preview => {
+        this.preview = preview;
+        if (this.preview.skipConfirmation) {
+          // Attempt the payment directly
+          this.perform();
+        } else {
+          // Go to the confirmation step
+          this.step = 'confirm';
+          this.canConfirm = this.authHelper.canConfirm(preview.confirmationPasswordInput);
+          if (!this.canConfirm) {
+            this.notification.warning(
+              this.authHelper.getConfirmationMessage(preview.confirmationPasswordInput, null, this.pos)
+            );
+          }
+          const val = preview.confirmationPasswordInput ? Validators.required : null;
+          this.confirmationPassword.setValidators(val);
+          scrollTop();
         }
-        const val = preview.confirmationPasswordInput ? Validators.required : null;
-        this.confirmationPassword.setValidators(val);
-        scrollTop();
-      }
-    }));
+      })
+    );
   }
 
   perform(password?: string) {
@@ -362,18 +390,19 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
     if (this.pos) {
       request = this.posService.receivePayment({
         body: this.preview.payment,
-        confirmationPassword: this.confirmationPassword.value,
+        confirmationPassword: this.confirmationPassword.value
       });
     } else {
       request = this.paymentsService.performPayment({
         owner: this.fromParam,
         body: this.preview.payment,
-        confirmationPassword: this.confirmationPassword.value,
+        confirmationPassword: this.confirmationPassword.value
       });
     }
     request.pipe(first()).subscribe(performed => {
-      this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(performed)],
-        { state: { url: this.router.url } });
+      this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(performed)], {
+        state: { url: this.router.url }
+      });
     });
   }
 
@@ -412,12 +441,12 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
     // Preview
     if (this.pos) {
       return this.posService.previewReceivePayment({
-        body: payment,
+        body: payment
       });
     } else {
       return this.paymentsService.previewPayment({
         owner: this.fromParam,
-        body: payment,
+        body: payment
       });
     }
   }
@@ -446,10 +475,12 @@ export class PaymentComponent extends BasePageComponent<DataForTransaction> impl
       return this.toSystem ? Menu.PAYMENT_TO_SYSTEM : Menu.PAYMENT_TO_USER;
     } else {
       // Payment from user
-      const ownMenu = this.toSystem ? Menu.PAYMENT_TO_SYSTEM
-        : this.toSelf ? Menu.PAYMENT_TO_SELF : Menu.PAYMENT_TO_USER;
+      const ownMenu = this.toSystem
+        ? Menu.PAYMENT_TO_SYSTEM
+        : this.toSelf
+        ? Menu.PAYMENT_TO_SELF
+        : Menu.PAYMENT_TO_USER;
       return this.menu.userMenu(data.fromUser, ownMenu);
     }
   }
-
 }

@@ -1,34 +1,51 @@
-<div class="d-flex flex-wrap flex-xs-nowrap"
-  [ngClass]="'has-buttons-' + buttonCount" [formGroup]="form">
-  <single-selection-field *ngIf="adminType && !options" class="flex-grow-1"
-    [emptyOption]="false" formControlName="internal" [disabled]="disabled">
-    <field-option [value]="true" [text]="i18n.general.enabled">
-    </field-option>
-    <field-option [value]="false" [text]="i18n.general.disabled">
-    </field-option>
+<div class="d-flex flex-wrap flex-xs-nowrap" [ngClass]="'has-buttons-' + buttonCount" [formGroup]="form">
+  <single-selection-field
+    *ngIf="adminType && !options"
+    class="flex-grow-1"
+    [emptyOption]="false"
+    formControlName="internal"
+    [disabled]="disabled">
+    <field-option [value]="true" [text]="i18n.general.enabled"> </field-option>
+    <field-option [value]="false" [text]="i18n.general.disabled"> </field-option>
   </single-selection-field>
-  <multi-selection-field *ngIf="adminType && options" class="flex-grow-1"
-    [formControl]="multiSelectionControl" [fieldOptions]="options"
+  <multi-selection-field
+    *ngIf="adminType && options"
+    class="flex-grow-1"
+    [formControl]="multiSelectionControl"
+    [fieldOptions]="options"
     [disabled]="disabled">
   </multi-selection-field>
   <div *ngIf="adminType" class="d-xs-none"></div>
-  <button-toggle *ngIf="!adminType" [onIcon]="SvgIcon.Bell"
+  <button-toggle
+    *ngIf="!adminType"
+    [onIcon]="SvgIcon.Bell"
     [offIcon]="SvgIcon.BellSlash"
     [iconTooltip]="i18n.notificationSettings.internalNotification"
-    formControlName="internal" [readOnly]="disabled">
+    formControlName="internal"
+    [readOnly]="disabled">
   </button-toggle>
-  <button-toggle *ngIf="setting.email != null" [onIcon]="SvgIcon.Envelope"
+  <button-toggle
+    *ngIf="setting.email != null"
+    [onIcon]="SvgIcon.Envelope"
     [offIcon]="SvgIcon.EnvelopeSlash"
-    [iconTooltip]="i18n.general.sendMedium.email" formControlName="email"
+    [iconTooltip]="i18n.general.sendMedium.email"
+    formControlName="email"
     [readOnly]="disabled">
   </button-toggle>
-  <button-toggle *ngIf="setting.sms != null" [onIcon]="SvgIcon.ChatLeftText"
+  <button-toggle
+    *ngIf="setting.sms != null"
+    [onIcon]="SvgIcon.ChatLeftText"
     [offIcon]="SvgIcon.ChatLeftTextSlash"
-    [iconTooltip]="i18n.general.sendMedium.sms" formControlName="sms"
+    [iconTooltip]="i18n.general.sendMedium.sms"
+    formControlName="sms"
     [readOnly]="disabled">
   </button-toggle>
-  <button-toggle *ngIf="setting.app != null" [onIcon]="SvgIcon.Phone"
-    [offIcon]="SvgIcon.PhoneSlash" [iconTooltip]="i18n.general.sendMedium.app"
-    formControlName="app" [readOnly]="disabled">
+  <button-toggle
+    *ngIf="setting.app != null"
+    [onIcon]="SvgIcon.Phone"
+    [offIcon]="SvgIcon.PhoneSlash"
+    [iconTooltip]="i18n.general.sendMedium.app"
+    formControlName="app"
+    [readOnly]="disabled">
   </button-toggle>
 </div>

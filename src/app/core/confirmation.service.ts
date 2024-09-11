@@ -8,16 +8,16 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
  * Options to call the confirm method
  */
 export interface ConfirmOptions {
-  title?: string,
-  message?: string,
-  cancelLabel?: string,
-  confirmLabel?: string,
-  labelPosition?: FieldLabelPosition,
-  customFields?: CustomFieldDetailed[],
-  createDeviceConfirmation?: () => CreateDeviceConfirmation,
-  passwordInput?: PasswordInput,
-  callback: (params: ConfirmCallbackParams) => void,
-  cancelCallback?: () => void,
+  title?: string;
+  message?: string;
+  cancelLabel?: string;
+  confirmLabel?: string;
+  labelPosition?: FieldLabelPosition;
+  customFields?: CustomFieldDetailed[];
+  createDeviceConfirmation?: () => CreateDeviceConfirmation;
+  passwordInput?: PasswordInput;
+  callback: (params: ConfirmCallbackParams) => void;
+  cancelCallback?: () => void;
 }
 
 /**
@@ -25,18 +25,17 @@ export interface ConfirmOptions {
  */
 export interface ConfirmCallbackParams {
   confirmationPassword?: string;
-  customValues?: { [key: string]: string; };
+  customValues?: { [key: string]: string };
 }
 
 /**
  * Service used to manage notifications being displayed for users
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ConfirmationService {
-
-  // This handler is used to break the dependency on ConfirmationComponent, 
+  // This handler is used to break the dependency on ConfirmationComponent,
   // which uses custom fields, and would increase the initial bundle size a lot.
   confirmHandler: (modal: BsModalService, options: ConfirmOptions) => BsModalRef;
 
@@ -45,10 +44,7 @@ export class ConfirmationService {
   // This flag is true for each confirmation if it was successful
   confirmed = false;
 
-  constructor(
-    private modal: BsModalService,
-    apiInterceptor: ApiInterceptor
-  ) {
+  constructor(private modal: BsModalService, apiInterceptor: ApiInterceptor) {
     apiInterceptor.hideConfirmationHandler = () => this.hide();
   }
 
@@ -70,7 +66,7 @@ export class ConfirmationService {
   confirm(options: ConfirmOptions): void {
     this.confirmed = false;
     if (options.passwordInput && !options.createDeviceConfirmation) {
-      throw new Error('When there\'s a passwordInput it is also required to set the createDeviceConfirmation callback');
+      throw new Error("When there's a passwordInput it is also required to set the createDeviceConfirmation callback");
     }
     if (options.passwordInput == null) {
       // When no password input, set the confirmation as confirmed when the callback is called.

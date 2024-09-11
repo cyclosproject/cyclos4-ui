@@ -1,7 +1,19 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
   Inject,
-  Injector, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild
+  Injector,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import { Event, Router } from '@angular/router';
 import { User } from 'app/api/models';
@@ -37,10 +49,9 @@ const ProfileMenus = [Menu.MY_PROFILE, Menu.EDIT_MY_PROFILE];
 @Component({
   selector: 'top-bar',
   templateUrl: 'top-bar.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TopBarComponent extends AbstractComponent implements OnInit, OnDestroy, OnChanges {
-
   @HostBinding('class.has-top-bar') hasTopBar = true;
   @HostBinding('class.has-menu') hasMenu = false;
   @HostBinding('class.has-user') @Input() user: User;
@@ -83,7 +94,8 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnDest
     public breadcrumb: BreadcrumbService,
     public login: LoginService,
     public marketplaceHelper: MarketplaceHelperService,
-    public messageHelper: MessageHelperService) {
+    public messageHelper: MessageHelperService
+  ) {
     super(injector);
   }
 
@@ -97,22 +109,28 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnDest
 
     if (!this.dataForFrontendHolder.dataForFrontend.menuBar) {
       this.hasMenu = true;
-      this.addSub(this.menu.menu(MenuType.BAR).subscribe(roots => {
-        this.roots$.next(roots.filter(r => r.rootMenu !== RootMenu.PERSONAL));
-        this.updateTitle();
-      }));
+      this.addSub(
+        this.menu.menu(MenuType.BAR).subscribe(roots => {
+          this.roots$.next(roots.filter(r => r.rootMenu !== RootMenu.PERSONAL));
+          this.updateTitle();
+        })
+      );
     }
     const maxDisplaySize = this.hasMenu ? MaxUserDisplaySizeMenu : MaxUserDisplaySize;
-    this.addSub(this.login.user$.subscribe(user => {
-      this.userName = user == null ? '' : words(user.display, maxDisplaySize);
-      this.shoppingCart = this.dataForFrontendHolder.auth.permissions?.marketplace?.userWebshop?.purchase;
-      this.updateTitle();
-    }));
+    this.addSub(
+      this.login.user$.subscribe(user => {
+        this.userName = user == null ? '' : words(user.display, maxDisplaySize);
+        this.shoppingCart = this.dataForFrontendHolder.auth.permissions?.marketplace?.userWebshop?.purchase;
+        this.updateTitle();
+      })
+    );
     this.addSub(this.uiLayout.currentPage$.subscribe(() => this.updateTitle()));
 
-    this.addSub(fromEvent(window, 'resize').pipe(
-      debounceTime(50)
-    ).subscribe(() => this.updateTitle()));
+    this.addSub(
+      fromEvent(window, 'resize')
+        .pipe(debounceTime(50))
+        .subscribe(() => this.updateTitle())
+    );
 
     setTimeout(() => this.updateTitle(), 10);
   }
@@ -144,7 +162,7 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnDest
         const activeMenu = onClick instanceof Menu ? new ActiveMenu(onClick) : onClick;
         onClick = () => {
           this.menu.navigate({
-            menu: activeMenu,
+            menu: activeMenu
           });
         };
       }
@@ -172,7 +190,7 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnDest
           addAction('back', SvgIcon.ArrowLeft, this.i18n.general.back, () => {
             if (!this.breadcrumb.back()) {
               this.menu.navigate({
-                menu: new ActiveMenu(home),
+                menu: new ActiveMenu(home)
               });
             }
           });
@@ -199,9 +217,11 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnDest
     }
     const threshold = this.breakpoints.has('xl') ? MenuThesholdExtraLarge : MenuThesholdLarge;
     const roots = this.roots;
-    return roots.length < threshold ? MenuDensity.Spacious
-      : roots.length === threshold ? MenuDensity.Medium
-        : MenuDensity.Dense;
+    return roots.length < threshold
+      ? MenuDensity.Spacious
+      : roots.length === threshold
+      ? MenuDensity.Medium
+      : MenuDensity.Dense;
   }
 
   dropdownShown(root: RootMenuEntry) {
@@ -260,9 +280,7 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnDest
     // Only use special classes for custom menus if the menu is integrated in the top bar
     if (this.hasMenu) {
       classes.push(`menu-item`);
-      const density = this.user == null
-        ? this.density
-        : MenuDensity.Custom; // When there's a logged user with menu, use the custom density
+      const density = this.user == null ? this.density : MenuDensity.Custom; // When there's a logged user with menu, use the custom density
       classes.push(`density-${density}`);
       if (this.isActive(menu)) {
         classes.push('active');

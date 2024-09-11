@@ -1,54 +1,43 @@
 <ng-container *ngIf="data$ | async; else spinner">
   <page-layout hideMenu>
     <div class="dashboard">
-      <div class="notifications"
+      <div
+        class="notifications"
         *ngIf="data.passwordsNeedingAttention?.length > 0 || data.pendingSecurityQuestion || data.pendingTotp">
-        <notification *ngFor="let password of data.passwordsNeedingAttention"
-          type="warning">
+        <notification *ngFor="let password of data.passwordsNeedingAttention" type="warning">
           {{ passwordMessage(password) }}
-          <br>
-          <a [routerLink]="['/personal', 'passwords']" class="mt-2"
-            (click)="goToPasswords($event)">
+          <br />
+          <a [routerLink]="['/personal', 'passwords']" class="mt-2" (click)="goToPasswords($event)">
             {{ i18n.dashboard.passwords.proceed }}
           </a>
         </notification>
 
         <notification *ngIf="data.pendingTotp" type="warning">
           {{ i18n.dashboard.passwords.totp }}
-          <br>
-          <a [routerLink]="['/personal', 'passwords']" class="mt-2"
-            (click)="goToPasswords($event)">
+          <br />
+          <a [routerLink]="['/personal', 'passwords']" class="mt-2" (click)="goToPasswords($event)">
             {{ i18n.dashboard.passwords.proceed }}
           </a>
         </notification>
 
         <notification *ngIf="data.pendingSecurityQuestion" type="warning">
           {{ i18n.dashboard.passwords.securityAnswer }}
-          <br>
-          <a [routerLink]="['/personal', 'passwords']" class="mt-2"
-            (click)="goToPasswords($event)">
+          <br />
+          <a [routerLink]="['/personal', 'passwords']" class="mt-2" (click)="goToPasswords($event)">
             {{ i18n.dashboard.passwords.proceed }}
           </a>
         </notification>
       </div>
 
       <div class="dashboard-cards">
-        <quick-access *ngIf="actions?.length > 0" [data]="data"
-          [actions]="actions">
-        </quick-access>
+        <quick-access *ngIf="actions?.length > 0" [data]="data" [actions]="actions"> </quick-access>
         <ng-container *ngFor="let accts of accounts">
-          <account-status *ngIf="!data.mergeAccounts" [account]="accts[0]">
-          </account-status>
-          <combined-account-status *ngIf="data.mergeAccounts"
-            [accounts]="accts">
-          </combined-account-status>
+          <account-status *ngIf="!data.mergeAccounts" [account]="accts[0]"> </account-status>
+          <combined-account-status *ngIf="data.mergeAccounts" [accounts]="accts"> </combined-account-status>
         </ng-container>
-        <latest-ads *ngIf="data.showLatestAds" [ads]="data.latestAds">
-        </latest-ads>
-        <latest-users *ngIf="data.showLatestUsers" [users]="data.latestUsers">
-        </latest-users>
-        <div *ngIf="data.content" class="dashboard-item"
-          [ngClass]="{'dashboard-item-full': data.content.fullWidth}">
+        <latest-ads *ngIf="data.showLatestAds" [ads]="data.latestAds"> </latest-ads>
+        <latest-users *ngIf="data.showLatestUsers" [users]="data.latestUsers"> </latest-users>
+        <div *ngIf="data.content" class="dashboard-item" [ngClass]="{ 'dashboard-item-full': data.content.fullWidth }">
           <ng-container *ngTemplateOutlet="showContent"></ng-container>
         </div>
       </div>
@@ -57,14 +46,17 @@
 </ng-container>
 
 <ng-template #showContent>
-  <page-content *ngIf="data.content.layout !== FrontendContentLayoutEnum.FULL"
-    [heading]="data.content.title" [mobileHeading]="data.content.title" last
+  <page-content
+    *ngIf="data.content.layout !== FrontendContentLayoutEnum.FULL"
+    [heading]="data.content.title"
+    [mobileHeading]="data.content.title"
+    last
     hideBack
     [mode]="data.content.layout === FrontendContentLayoutEnum.CARD_TIGHT ? 'tight' : 'normal'">
-    <div class="custom-content-container"
-      [innerHTML]="data.content.content | trust"></div>
+    <div class="custom-content-container" [innerHTML]="data.content.content | trust"></div>
   </page-content>
-  <div class="custom-content-container"
+  <div
+    class="custom-content-container"
     *ngIf="data.content.layout === FrontendContentLayoutEnum.FULL"
     [innerHTML]="data.content.content | trust"></div>
 </ng-template>

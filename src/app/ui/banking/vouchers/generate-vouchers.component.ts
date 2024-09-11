@@ -16,11 +16,9 @@ export type GenerateVouchersStep = 'select-type' | 'form' | 'confirm';
 @Component({
   selector: 'generate-vouchers',
   templateUrl: 'generate-vouchers.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GenerateVouchersComponent extends BasePageComponent<VoucherDataForGenerate>
-  implements OnInit {
-
+export class GenerateVouchersComponent extends BasePageComponent<VoucherDataForGenerate> implements OnInit {
   step$ = new BehaviorSubject<GenerateVouchersStep>(null);
 
   singleType = false;
@@ -46,7 +44,7 @@ export class GenerateVouchersComponent extends BasePageComponent<VoucherDataForG
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.voucherService.getVoucherDataForGenerate().subscribe(data => this.data = data));
+    this.addSub(this.voucherService.getVoucherDataForGenerate().subscribe(data => (this.data = data)));
   }
 
   onDataInitialized(data: VoucherDataForGenerate) {
@@ -80,14 +78,13 @@ export class GenerateVouchersComponent extends BasePageComponent<VoucherDataForG
     delete body.userData;
     const params = {
       confirmationPassword: this.confirmationPasswordInput ? this.confirmationPassword.value : null,
-      body,
+      body
     };
     this.addSub(
-      this.voucherService.generateVouchers(params)
-        .subscribe(() => {
-          this.reload();
-          this.notification.snackBar(this.i18n.voucher.generate.done);
-        }),
+      this.voucherService.generateVouchers(params).subscribe(() => {
+        this.reload();
+        this.notification.snackBar(this.i18n.voucher.generate.done);
+      })
     );
   }
 
@@ -103,12 +100,12 @@ export class GenerateVouchersComponent extends BasePageComponent<VoucherDataForG
    * Go to second step
    */
   toForm(type: VoucherTypeDetailed): void {
-    this.addSub(this.voucherService.getVoucherDataForGenerate({ type: type.id })
-      .subscribe(data => {
+    this.addSub(
+      this.voucherService.getVoucherDataForGenerate({ type: type.id }).subscribe(data => {
         this.dataTypeForGenerate = data;
         this.buildForm();
         this.step = 'form';
-      }),
+      })
     );
   }
 
@@ -124,7 +121,8 @@ export class GenerateVouchersComponent extends BasePageComponent<VoucherDataForG
     if (!this.canConfirm) {
       this.notification.warning(this.authHelper.getConfirmationMessage(this.confirmationPasswordInput));
       return;
-    } else if (this.confirmationPasswordInput) { // can confirm and confirmation is required
+    } else if (this.confirmationPasswordInput) {
+      // can confirm and confirmation is required
       if (!this.confirmationPassword) {
         // The confirmation password is hold in a separated control
         this.confirmationPassword = this.formBuilder.control(null);
@@ -147,7 +145,10 @@ export class GenerateVouchersComponent extends BasePageComponent<VoucherDataForG
       user: new FormControl(''),
       userData: new FormControl('') // Used to get the user info in the confirmation page
     });
-    this.form.addControl('voucherCustomValues', this.fieldHelper.customValuesFormGroup(this.dataTypeForGenerate.voucherCustomFields));
+    this.form.addControl(
+      'voucherCustomValues',
+      this.fieldHelper.customValuesFormGroup(this.dataTypeForGenerate.voucherCustomFields)
+    );
     const amount = this.form.controls.amount;
     if (this.data.generationAmount === VoucherGenerationAmountEnum.GENERATION) {
       amount.setValidators(Validators.required);

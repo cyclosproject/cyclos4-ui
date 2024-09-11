@@ -1,21 +1,25 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup, Validators } from '@angular/forms';
 import {
-  ChangeForgottenPassword, DataForChangeForgottenPassword, DataForLogin,
+  ChangeForgottenPassword,
+  DataForChangeForgottenPassword,
+  DataForLogin,
   ForbiddenError,
   ForbiddenErrorCode,
-  ForgottenPasswordRequest, PasswordModeEnum, SendMediumEnum,
+  ForgottenPasswordRequest,
+  PasswordModeEnum,
+  SendMediumEnum
 } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
+import { CaptchaHelperService } from 'app/core/captcha-helper.service';
+import { ErrorStatus } from 'app/core/error-status';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { locateControl, validateBeforeSubmit } from 'app/shared/helper';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ErrorStatus } from 'app/core/error-status';
-import { CaptchaHelperService } from 'app/core/captcha-helper.service';
 
 export type ForgotPasswordStep = 'request' | 'code' | 'change';
 
@@ -25,10 +29,9 @@ export type ForgotPasswordStep = 'request' | 'code' | 'change';
 @Component({
   selector: 'forgot-password',
   templateUrl: 'forgot-password.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> implements OnInit {
-
   step$ = new BehaviorSubject<ForgotPasswordStep>('request');
   get step(): ForgotPasswordStep {
     return this.step$.value;
@@ -43,11 +46,7 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
   changeData: DataForChangeForgottenPassword;
   changeForm: FormGroup;
 
-  constructor(
-    injector: Injector,
-    private authService: AuthService,
-    private captchaHelper: CaptchaHelperService
-  ) {
+  constructor(injector: Injector, private authService: AuthService, private captchaHelper: CaptchaHelperService) {
     super(injector);
   }
 
@@ -64,7 +63,7 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
   onDataInitialized(data: DataForLogin) {
     this.requestForm = this.formBuilder.group({
       user: [null, Validators.required],
-      sendMedium: data.forgotPasswordMediums[0],
+      sendMedium: data.forgotPasswordMediums[0]
     });
     if (data.forgotPasswordCaptchaInput) {
       this.requestForm.addControl('captcha', this.captchaHelper.captchaFormGroup(data.forgotPasswordCaptchaInput));
@@ -78,21 +77,25 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
     const params = this.requestForm.value as ForgottenPasswordRequest;
     params.user = ApiHelper.escapeNumeric(params.user);
     this.errorHandler.requestWithCustomErrorHandler(() =>
-      this.authService.forgottenPasswordRequest({ body: params }).subscribe(resp => {
-        this.sendMedium = resp.sendMedium;
-        this.notification.snackBar(this.i18n.password.forgotten.codeSent(resp.sentTo.join(', ')));
-        this.codeForm = this.formBuilder.group({
-          user: [this.requestForm.value.user, Validators.required],
-          code: [null, Validators.required],
-        });
-        this.step = 'code';
-      }, (error: HttpErrorResponse) => {
-        if (error.status == ErrorStatus.NOT_FOUND) {
-          this.notification.error(this.i18n.password.forgotten.invalidUser);
-        } else {
-          this.errorHandler.handleHttpError(error);
+      this.authService.forgottenPasswordRequest({ body: params }).subscribe(
+        resp => {
+          this.sendMedium = resp.sendMedium;
+          this.notification.snackBar(this.i18n.password.forgotten.codeSent(resp.sentTo.join(', ')));
+          this.codeForm = this.formBuilder.group({
+            user: [this.requestForm.value.user, Validators.required],
+            code: [null, Validators.required]
+          });
+          this.step = 'code';
+        },
+        (error: HttpErrorResponse) => {
+          if (error.status == ErrorStatus.NOT_FOUND) {
+            this.notification.error(this.i18n.password.forgotten.invalidUser);
+          } else {
+            this.errorHandler.handleHttpError(error);
+          }
         }
-      }));
+      )
+    );
   }
 
   toChange() {
@@ -102,12 +105,12 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
     const params = this.codeForm.value;
     params.user = ApiHelper.escapeNumeric(params.user);
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
-      this.authService.getDataForChangeForgottenPassword(params)
-        .subscribe(changeData => {
+      this.authService.getDataForChangeForgottenPassword(params).subscribe(
+        changeData => {
           this.changeData = changeData;
           this.changeForm = this.formBuilder.group({
             user: [this.codeForm.value.user, Validators.required],
-            code: [this.codeForm.value.code, Validators.required],
+            code: [this.codeForm.value.code, Validators.required]
           });
           if (changeData.securityQuestion) {
             this.changeForm.addControl('securityAnswer', this.formBuilder.control(null, Validators.required));
@@ -120,7 +123,8 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
             this.changeForm.addControl('sendMedium', this.formBuilder.control(this.requestForm.value.sendMedium));
           }
           this.step = 'change';
-        }, (err: HttpErrorResponse) => {
+        },
+        (err: HttpErrorResponse) => {
           if (err.status === ErrorStatus.FORBIDDEN) {
             let error = err.error;
             if (typeof error === 'string') {
@@ -146,7 +150,8 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
           } else {
             defaultHandling(err);
           }
-        });
+        }
+      );
     });
   }
 
@@ -156,17 +161,18 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
     }
     const params: ChangeForgottenPassword = this.changeForm.value;
     params.user = ApiHelper.escapeNumeric(params.user);
-    this.addSub(this.authService.changeForgottenPassword({ body: params })
-      .subscribe(() => {
-        const msg = this.changeData.passwordType.mode === PasswordModeEnum.GENERATED
-          ?
-          this.sendMedium === SendMediumEnum.SMS
-            ? this.i18n.password.forgotten.generatedDoneSms
-            : this.i18n.password.forgotten.generatedDoneEmail
-          : this.i18n.password.forgotten.manualDone;
+    this.addSub(
+      this.authService.changeForgottenPassword({ body: params }).subscribe(() => {
+        const msg =
+          this.changeData.passwordType.mode === PasswordModeEnum.GENERATED
+            ? this.sendMedium === SendMediumEnum.SMS
+              ? this.i18n.password.forgotten.generatedDoneSms
+              : this.i18n.password.forgotten.generatedDoneEmail
+            : this.i18n.password.forgotten.manualDone;
         this.notification.info(msg);
         this.cancel();
-      }));
+      })
+    );
   }
 
   locateControl(locator: FormControlLocator): AbstractControl {

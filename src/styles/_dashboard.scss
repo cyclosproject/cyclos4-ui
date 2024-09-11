@@ -5,6 +5,11 @@
   margin-top: -$layout-spacer;
   margin-left: -$layout-spacer;
 
+  .custom-content-container {
+    display: flex;
+    flex-direction: column;
+  }
+
   .notifications {
     display: none;
   }

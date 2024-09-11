@@ -1,23 +1,28 @@
 <page-layout [ready]="data$ | async" size="medium" hideMenu>
-  <page-content *ngIf="passwordInput" layout="centered"
+  <page-content
+    *ngIf="passwordInput"
+    layout="centered"
     [heading]="i18n.login.titleConfirmation"
     [mobileHeading]="i18n.login.mobileTitleConfirmation">
-    <confirmation-password focused [formControl]="control"
+    <confirmation-password
+      focused
+      [formControl]="control"
       [passwordInput]="passwordInput"
       [createDeviceConfirmation]="createDeviceConfirmation"
-      (showSubmit)="showSubmit$.next($event)" (confirmed)="submit($event)"
+      (showSubmit)="showSubmit$.next($event)"
+      (confirmed)="submit($event)"
       [alertMessage]="i18n.login.confirmationText">
     </confirmation-password>
 
     <actions forceRow>
-      <action-button *ngIf="showSubmit$ | async; else blank"
-        [disabled]="!canConfirm || (requesting$ | async)" (action)="submit()"
+      <action-button
+        *ngIf="showSubmit$ | async; else blank"
+        [disabled]="!canConfirm || (requesting$ | async)"
+        (action)="submit()"
         [label]="i18n.general.submit">
       </action-button>
       <ng-template #blank>&nbsp;</ng-template>
-      <action-button outline (action)="cancel()"
-        [label]="i18n.general.cancel">
-      </action-button>
+      <action-button outline (action)="cancel()" [label]="i18n.general.cancel"> </action-button>
     </actions>
   </page-content>
 </page-layout>

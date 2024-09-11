@@ -4,13 +4,13 @@ import { HeadingAction } from 'app/shared/action';
 import { VoucherBaseComponent } from 'app/voucher/voucher-base.component';
 
 /**
- * Simple toolbar containing heading actions. 
+ * Simple toolbar containing heading actions.
  * It groups the actions into two groups: the actions on the left and the actions on the right.
  */
 @Component({
   selector: 'voucher-toolbar',
   templateUrl: 'voucher-toolbar.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VoucherToolbarComponent extends VoucherBaseComponent {
   SvgIcon = SvgIcon;
@@ -22,4 +22,3 @@ export class VoucherToolbarComponent extends VoucherBaseComponent {
     super(injector);
   }
 }
-

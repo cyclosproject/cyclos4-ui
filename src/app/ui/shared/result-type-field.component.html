@@ -1,12 +1,18 @@
-<div *ngIf="allowedResultTypes?.length > 0" class="btn-group" btnRadioGroup
-  [formControl]="formControl">
-  <label #button class="btn btn-icon"
+<div *ngIf="allowedResultTypes?.length > 0" class="btn-group" btnRadioGroup [formControl]="formControl">
+  <label
+    #button
+    class="btn btn-icon"
     [ngClass]="['focusable', 'resultType-' + resultType]"
     *ngFor="let resultType of allowedResultTypes"
-    [tooltip]="tooltip(resultType)" triggers=""
-    (focus)="onFocus(pop, resultType)" #pop="bs-tooltip"
-    (blur)="onBlur(pop, resultType)" [btnRadio]="resultType" tabindex="0"
-    role="button" (click)="pop.hide()">
+    [tooltip]="tooltip(resultType)"
+    triggers=""
+    (focus)="onFocus(pop, resultType)"
+    #pop="bs-tooltip"
+    (blur)="onBlur(pop, resultType)"
+    [btnRadio]="resultType"
+    tabindex="0"
+    role="button"
+    (click)="pop.hide()">
     <icon size="1.2rem" [icon]="icon(resultType)"></icon>
   </label>
 </div>

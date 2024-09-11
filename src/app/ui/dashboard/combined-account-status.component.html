@@ -5,19 +5,28 @@
       <div class="col" [ngClass]="cellClass(i)">
         <div class="balance">
           <div class="balance-label">
-            <a href="#" class="account-name" (click)="menu.navigate({
-                entry: this.menu.accountEntry(entry.account.type),
-                clear: false,
-                event: $event
-              })" [tooltip]="entry.account.type.name">
+            <a
+              href="#"
+              class="account-name"
+              (click)="
+                menu.navigate({
+                  entry: this.menu.accountEntry(entry.account.type),
+                  clear: false,
+                  event: $event
+                })
+              "
+              [tooltip]="entry.account.type.name">
               {{ entry.account.type.name }}
             </a>
           </div>
-          <div class="balance-value" *ngIf="entry.balance" [ngClass]="{
-            negative: format.isNegative(entry.balance),
-            positive: format.isPositive(entry.balance)
+          <div
+            class="balance-value"
+            *ngIf="entry.balance"
+            [ngClass]="{
+              negative: format.isNegative(entry.balance),
+              positive: format.isPositive(entry.balance)
             }">
-            {{ entry.balance | currency:entry.account.currency }}
+            {{ entry.balance | currency : entry.account.currency }}
           </div>
         </div>
         <div class="px-3">

@@ -1,15 +1,36 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import {
-  BuyVoucherError, BuyVoucherErrorCode, ConflictError, ConflictErrorCode,
+  BuyVoucherError,
+  BuyVoucherErrorCode,
+  ConflictError,
+  ConflictErrorCode,
   CredentialTypeEnum,
-  ErrorKind, ForbiddenError, ForbiddenErrorCode, ForgottenPasswordError,
-  ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError, NotFoundError,
-  PasswordStatusEnum, PaymentError, PaymentErrorCode, RedeemVoucherError,
-  RedeemVoucherErrorCode, ShoppingCartCheckoutError, ShoppingCartCheckoutErrorCode, ShoppingCartError, ShoppingCartErrorCode,
+  ErrorKind,
+  ForbiddenError,
+  ForbiddenErrorCode,
+  ForgottenPasswordError,
+  ForgottenPasswordErrorCode,
+  InputError,
+  InputErrorCode,
+  NestedError,
+  NotFoundError,
+  PasswordStatusEnum,
+  PaymentError,
+  PaymentErrorCode,
+  RedeemVoucherError,
+  RedeemVoucherErrorCode,
+  ShoppingCartCheckoutError,
+  ShoppingCartCheckoutErrorCode,
+  ShoppingCartError,
+  ShoppingCartErrorCode,
   TopUpVoucherError,
   TopUpVoucherErrorCode,
-  UnauthorizedError, UnauthorizedErrorCode, UnavailableError, UnavailableErrorCode, UserStatusEnum
+  UnauthorizedError,
+  UnauthorizedErrorCode,
+  UnavailableError,
+  UnavailableErrorCode,
+  UserStatusEnum
 } from 'app/api/models';
 import { ApiI18nService } from 'app/core/api-i18n.service';
 import { AuthHelperService } from 'app/core/auth-helper.service';
@@ -26,10 +47,9 @@ import { NextRequestState } from './next-request-state';
  * Service used to handle application errors
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ErrorHandlerService {
-
   // These handlers are used to reduce the initial bundle, so other apps (not the ui)
   // can use the same error handler without pulling a lot of dependencies.
   goToLoginPageHandler: () => any;
@@ -43,7 +63,7 @@ export class ErrorHandlerService {
     @Inject(I18nInjectionToken) private i18n: I18n,
     private apiI18n: ApiI18nService,
     private authHelper: AuthHelperService
-  ) { }
+  ) {}
 
   /**
    * Used to perform an HTTP request with a custom error handling code.
@@ -140,18 +160,18 @@ export class ErrorHandlerService {
    * It only handles a handful of server errors (the most common ones) when the translations were not loaded.
    */
   handleErrorWhenNoTranslations(httpStatus: number, error: any) {
-    console.error("Translations are not loaded. Error:");
+    console.error('Translations are not loaded. Error:');
     console.dir(error);
     switch (httpStatus) {
       case ErrorStatus.NOT_FOUND:
-        this.notification.error("The location you typed or tried to access was not found");
+        this.notification.error('The location you typed or tried to access was not found');
         return;
       case ErrorStatus.UNAUTHORIZED:
       case ErrorStatus.FORBIDDEN:
         this.notification.error("You don't have sufficient permissions to perform the requested action");
         return;
     }
-    this.notification.error("There was an unexpected error while processing your request");
+    this.notification.error('There was an unexpected error while processing your request');
   }
 
   public parseError(err: any): any {
@@ -184,7 +204,10 @@ export class ErrorHandlerService {
     } else if (error?.code === UnauthorizedErrorCode.LOGGED_OUT) {
       // Was logged out. Fetch the DataForFrontend again (as guest) and go to the login page.
       this.nextRequestState.setSessionToken(null);
-      this.dataForFrontendHolder.reload().pipe(first()).subscribe(() => goToLogin());
+      this.dataForFrontendHolder
+        .reload()
+        .pipe(first())
+        .subscribe(() => goToLogin());
     } else {
       this.notification.error(this.unauthorizedErrorMessage(error));
     }
@@ -259,11 +282,20 @@ export class ErrorHandlerService {
   private buyVoucherErrorMessage(error: BuyVoucherError): string {
     switch (error?.code) {
       case BuyVoucherErrorCode.MAX_AMOUNT_FOR_PERIOD:
-        return this.i18n.voucher.error.buy.amountForPeriod({ date: error.dateAllowedAgain, amount: error.amountLeftForBuying });
+        return this.i18n.voucher.error.buy.amountForPeriod({
+          date: error.dateAllowedAgain,
+          amount: error.amountLeftForBuying
+        });
       case BuyVoucherErrorCode.MAX_OPEN_AMOUNT:
-        return this.i18n.voucher.error.buy.openAmount({ maxAmount: error.maxOpenAmount, currentAmount: error.currentOpenAmount });
+        return this.i18n.voucher.error.buy.openAmount({
+          maxAmount: error.maxOpenAmount,
+          currentAmount: error.currentOpenAmount
+        });
       case BuyVoucherErrorCode.MAX_TOTAL_OPEN_AMOUNT:
-        return this.i18n.voucher.error.totalOpenAmount({ maxAmount: error.maxOpenAmount, currentAmount: error.currentOpenAmount });
+        return this.i18n.voucher.error.totalOpenAmount({
+          maxAmount: error.maxOpenAmount,
+          currentAmount: error.currentOpenAmount
+        });
       case BuyVoucherErrorCode.NOT_ALLOWED_FOR_USER:
         return this.i18n.voucher.error.buy.notAllowedForUser;
     }
@@ -383,7 +415,7 @@ export class ErrorHandlerService {
    * @param error The error
    */
   public conflictErrorMessage(error: ConflictError): string {
-    error = error || {} as ConflictError;
+    error = error || ({} as ConflictError);
     switch (error.code) {
       case ConflictErrorCode.STALE_ENTITY:
         return this.i18n.error.staleEntity;
@@ -395,7 +427,7 @@ export class ErrorHandlerService {
   }
 
   public unavailableErrorMessage(error: UnavailableError): string {
-    error = error || {} as UnavailableError;
+    error = error || ({} as UnavailableError);
     switch (error.code) {
       case UnavailableErrorCode.EMAIL_SENDING:
         return this.i18n.error.emailSending;
@@ -419,7 +451,7 @@ export class ErrorHandlerService {
       if (error.key) {
         return this.i18n.error.notFound.typeKey({
           type: error.entityType,
-          key: error.key,
+          key: error.key
         });
       } else {
         return this.i18n.error.notFound.type(error.entityType);
@@ -434,7 +466,7 @@ export class ErrorHandlerService {
    * @param error The error
    */
   public unauthorizedErrorMessage(error: UnauthorizedError): string {
-    error = error || {} as UnauthorizedError;
+    error = error || ({} as UnauthorizedError);
     switch (error.code) {
       case UnauthorizedErrorCode.LOGIN:
         const missingCredentials = error.missingLoginConfirmationCredentials;
@@ -445,11 +477,15 @@ export class ErrorHandlerService {
             case CredentialTypeEnum.TOTP:
               return this.i18n.login.error.confirmation.missing.totp;
             default:
-              return this.i18n.login.error.confirmation.missing.password(error.missingLoginConfirmationPasswordType?.name);
+              return this.i18n.login.error.confirmation.missing.password(
+                error.missingLoginConfirmationPasswordType?.name
+              );
           }
         } else if (missingCredentials?.length > 1) {
-          const names = missingCredentials.map(ct => this.authHelper.credentialTypeLabel({ passwordType: error.missingLoginConfirmationPasswordType }, ct));
-          return this.i18n.login.error.confirmation.missing.multiple(names.join(", "));
+          const names = missingCredentials.map(ct =>
+            this.authHelper.credentialTypeLabel({ passwordType: error.missingLoginConfirmationPasswordType }, ct)
+          );
+          return this.i18n.login.error.confirmation.missing.multiple(names.join(', '));
         }
 
         switch (error.passwordStatus) {
@@ -521,7 +557,7 @@ export class ErrorHandlerService {
    * @param error The error
    */
   public paymentErrorMessage(error: PaymentError): string {
-    error = error || {} as PaymentError;
+    error = error || ({} as PaymentError);
     const count = () => this.format.formatAsNumber(error.maxPayments, 0);
     const amount = () => this.format.formatAsCurrency(error.currency, error.maxAmount);
     switch (error.code) {
@@ -603,5 +639,4 @@ export class ErrorHandlerService {
     }
     return this.general;
   }
-
 }

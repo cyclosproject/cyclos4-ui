@@ -15,7 +15,7 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
     const origVal = parent.get('newPassword') == null ? '' : parent.get('newPassword').value;
     if (origVal !== currVal) {
       return {
-        passwordsMatch: true,
+        passwordsMatch: true
       };
     }
   }
@@ -28,10 +28,9 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
 @Component({
   selector: 'change-password-dialog',
   templateUrl: 'change-password-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChangePasswordDialogComponent extends BaseComponent implements OnInit {
-
   @Input() param: string;
   @Input() user: User;
   @Input() type: PasswordTypeDetailed;
@@ -45,7 +44,8 @@ export class ChangePasswordDialogComponent extends BaseComponent implements OnIn
     injector: Injector,
     public modalRef: BsModalRef,
     private passwordsService: PasswordsService,
-    private authHelper: AuthHelperService) {
+    private authHelper: AuthHelperService
+  ) {
     super(injector);
   }
 
@@ -56,7 +56,7 @@ export class ChangePasswordDialogComponent extends BaseComponent implements OnIn
 
     this.form = this.formBuilder.group({
       newPassword: [null, Validators.required],
-      newPasswordConfirmation: [null, Validators.compose([Validators.required, PASSWORDS_MATCH_VAL])],
+      newPasswordConfirmation: [null, Validators.compose([Validators.required, PASSWORDS_MATCH_VAL])]
     });
 
     if (this.requireOld) {
@@ -70,13 +70,17 @@ export class ChangePasswordDialogComponent extends BaseComponent implements OnIn
     }
     const params: ChangePassword = this.form.value;
     params.checkConfirmation = true;
-    this.addSub(this.passwordsService.changePassword({
-      user: this.param,
-      type: this.type.id,
-      body: params,
-    }).subscribe(() => {
-      this.done.emit();
-      this.modalRef.hide();
-    }));
+    this.addSub(
+      this.passwordsService
+        .changePassword({
+          user: this.param,
+          type: this.type.id,
+          body: params
+        })
+        .subscribe(() => {
+          this.done.emit();
+          this.modalRef.hide();
+        })
+    );
   }
 }

@@ -1,6 +1,11 @@
-import { Directive,  Injector, OnInit } from '@angular/core';
+import { Directive, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { VoucherBasicDataForTransaction, VoucherInitialDataForTransaction, VoucherTransactionPreview, VoucherTransactionResult } from 'app/api/models';
+import {
+  VoucherBasicDataForTransaction,
+  VoucherInitialDataForTransaction,
+  VoucherTransactionPreview,
+  VoucherTransactionResult
+} from 'app/api/models';
 import { VouchersService } from 'app/api/services/vouchers.service';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
@@ -11,10 +16,12 @@ export type VoucherTransactionStep = 'token' | 'form' | 'confirm';
 
 @Directive()
 export abstract class BaseVoucherTransactionComponent<
-  D extends VoucherBasicDataForTransaction,
-  P extends VoucherTransactionPreview
-> extends BasePageComponent<VoucherInitialDataForTransaction> implements OnInit {
-
+    D extends VoucherBasicDataForTransaction,
+    P extends VoucherTransactionPreview
+  >
+  extends BasePageComponent<VoucherInitialDataForTransaction>
+  implements OnInit
+{
   protected vouchersService: VouchersService;
 
   step$ = new BehaviorSubject<VoucherTransactionStep>(null);
@@ -55,11 +62,13 @@ export abstract class BaseVoucherTransactionComponent<
   ngOnInit() {
     super.ngOnInit();
     this.userId = this.route.snapshot.paramMap.get('user');
-    this.addSub(this.getInitialData(this.userId).subscribe(data => {
-      this.data = data;
-      this.mask = this.data.mask ? this.data.mask : '';
-      this.self = this.authHelper.isSelf(data.user);
-    }));
+    this.addSub(
+      this.getInitialData(this.userId).subscribe(data => {
+        this.data = data;
+        this.mask = this.data.mask ? this.data.mask : '';
+        this.self = this.authHelper.isSelf(data.user);
+      })
+    );
     this.step = 'token';
   }
 
@@ -72,20 +81,24 @@ export abstract class BaseVoucherTransactionComponent<
     if (!validateBeforeSubmit(this.token)) {
       return;
     }
-    this.addSub(this.getVoucherTransactionData({ user: this.userId, token: this.token.value })
-      .subscribe(data => {
-        this.dataForTransaction$.next(data);
-        this.form = new FormGroup({});
-        this.setupForm(this.form, data);
-        this.form.addControl('paymentCustomValues', this.fieldHelper.customValuesFormGroup(data.paymentCustomFields));
-        this.step = 'form';
-      }, () => this.token.reset()));
+    this.addSub(
+      this.getVoucherTransactionData({ user: this.userId, token: this.token.value }).subscribe(
+        data => {
+          this.dataForTransaction$.next(data);
+          this.form = new FormGroup({});
+          this.setupForm(this.form, data);
+          this.form.addControl('paymentCustomValues', this.fieldHelper.customValuesFormGroup(data.paymentCustomFields));
+          this.step = 'form';
+        },
+        () => this.token.reset()
+      )
+    );
   }
 
   /**
    * Setup the request to get data for the transaction
    */
-  protected abstract getVoucherTransactionData(params: { user: string, token: string; }): Observable<D>;
+  protected abstract getVoucherTransactionData(params: { user: string; token: string }): Observable<D>;
 
   /**
    * Prepare the form with the data
@@ -122,10 +135,12 @@ export abstract class BaseVoucherTransactionComponent<
     };
     if (this.dataForTransaction.shouldPreview) {
       // Go th the 3rd step
-      this.addSub(this.previewTransaction(params).subscribe(preview => {
-        this.preview$.next(preview);
-        this.step = 'confirm';
-      }));
+      this.addSub(
+        this.previewTransaction(params).subscribe(preview => {
+          this.preview$.next(preview);
+          this.step = 'confirm';
+        })
+      );
     } else {
       // We can perform the transaction
       this.performFromForm();
@@ -142,10 +157,14 @@ export abstract class BaseVoucherTransactionComponent<
       token: data.token,
       body: this.form.value
     };
-   
-    this.addSub(this.performTransaction(null, params).subscribe(result => {
-      this.router.navigate(['/banking', 'voucher-transactions', 'view', result.id], { state: { url: this.router.url } });
-    }));
+
+    this.addSub(
+      this.performTransaction(null, params).subscribe(result => {
+        this.router.navigate(['/banking', 'voucher-transactions', 'view', result.id], {
+          state: { url: this.router.url }
+        });
+      })
+    );
   }
 
   performFromPreview() {
@@ -156,21 +175,28 @@ export abstract class BaseVoucherTransactionComponent<
       user: this.preview.user.id,
       token: this.preview.token
     };
-    this.addSub(this.performTransaction(this.preview, params).subscribe(result => {
-      this.router.navigate(['/banking', 'voucher-transactions', 'view', result.id], { state: { url: this.router.url } });
-    }));
+    this.addSub(
+      this.performTransaction(this.preview, params).subscribe(result => {
+        this.router.navigate(['/banking', 'voucher-transactions', 'view', result.id], {
+          state: { url: this.router.url }
+        });
+      })
+    );
   }
 
   /**
    * Setup the request for the transaction preview
    */
-  protected abstract previewTransaction(params: { user: string, token: string, body: any; }): Observable<P>;
+  protected abstract previewTransaction(params: { user: string; token: string; body: any }): Observable<P>;
 
   /**
    * Performs the voucher transaction itself. If preview is null it means there was no preview step
    * The body param will be empty when fromPreview is true.
    */
-  protected abstract performTransaction(preview: P | null, params: { user: string, token: string, body?: any; }): Observable<VoucherTransactionResult>;
+  protected abstract performTransaction(
+    preview: P | null,
+    params: { user: string; token: string; body?: any }
+  ): Observable<VoucherTransactionResult>;
 
   /**
    * Validates the attempt to perform the transaction from the form step

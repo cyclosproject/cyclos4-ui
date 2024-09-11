@@ -5,5 +5,5 @@ export enum MenuDensity {
   Spacious = 'spacious',
   Medium = 'medium',
   Dense = 'dense',
-  Custom = 'custom',
+  Custom = 'custom'
 }

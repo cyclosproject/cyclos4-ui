@@ -12,18 +12,14 @@ import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 @Component({
   selector: 'view-imported-line',
   templateUrl: 'view-imported-line.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewImportedLineComponent extends BaseViewPageComponent<ImportedLineView> implements OnInit {
-
   id: string;
 
   importedUrl: string;
 
-  constructor(
-    injector: Injector,
-    private importsService: ImportsService,
-    public importsHelper: ImportsHelperService) {
+  constructor(injector: Injector, private importsService: ImportsService, public importsHelper: ImportsHelperService) {
     super(injector);
   }
 
@@ -34,8 +30,7 @@ export class ViewImportedLineComponent extends BaseViewPageComponent<ImportedLin
   ngOnInit() {
     super.ngOnInit();
     this.id = this.route.snapshot.paramMap.get('id');
-    this.addSub(this.importsService.viewImportedLine({ id: this.id })
-      .subscribe(file => this.data = file));
+    this.addSub(this.importsService.viewImportedLine({ id: this.id }).subscribe(file => (this.data = file)));
   }
 
   onDataInitialized(line: ImportedLineView) {
@@ -48,7 +43,9 @@ export class ViewImportedLineComponent extends BaseViewPageComponent<ImportedLin
       headingActions.push(new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => this.edit(), true));
     }
     if (line.canInclude) {
-      headingActions.push(new HeadingAction(SvgIcon.PlusCircle, this.i18n.imports.include.label, () => this.include(), true));
+      headingActions.push(
+        new HeadingAction(SvgIcon.PlusCircle, this.i18n.imports.include.label, () => this.include(), true)
+      );
     }
     if (line.canSkip) {
       headingActions.push(new HeadingAction(SvgIcon.DashCircle, this.i18n.imports.skip.label, () => this.skip(), true));
@@ -66,23 +63,31 @@ export class ViewImportedLineComponent extends BaseViewPageComponent<ImportedLin
   }
 
   private skip() {
-    this.addSub(this.importsService.skipImportedLines({
-      id: this.line.file.id,
-      lines: [this.id]
-    }).subscribe(() => {
-      this.notification.snackBar(this.i18n.imports.skip.done);
-      this.reload();
-    }));
+    this.addSub(
+      this.importsService
+        .skipImportedLines({
+          id: this.line.file.id,
+          lines: [this.id]
+        })
+        .subscribe(() => {
+          this.notification.snackBar(this.i18n.imports.skip.done);
+          this.reload();
+        })
+    );
   }
 
   private include() {
-    this.addSub(this.importsService.includeImportedLines({
-      id: this.line.file.id,
-      lines: [this.id]
-    }).subscribe(() => {
-      this.notification.snackBar(this.i18n.imports.include.done);
-      this.reload();
-    }));
+    this.addSub(
+      this.importsService
+        .includeImportedLines({
+          id: this.line.file.id,
+          lines: [this.id]
+        })
+        .subscribe(() => {
+          this.notification.snackBar(this.i18n.imports.include.done);
+          this.reload();
+        })
+    );
   }
 
   resolveMenu() {

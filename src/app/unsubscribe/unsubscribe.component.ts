@@ -28,15 +28,14 @@ export class UnsubscribeComponent implements OnInit {
     public state: UnsubscribeState,
     private apiConfiguration: ApiConfiguration,
     private titleRef: Title
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     const paths = window.location.pathname.split('/');
     const locator = paths[paths.length - 1];
 
     if (!apiRoot) {
-      apiRoot = "/api";
+      apiRoot = '/api';
     }
     this.apiConfiguration.rootUrl = apiRoot;
 

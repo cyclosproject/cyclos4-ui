@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Host, Injector, Input, Optional, SkipSelf, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Host,
+  Injector,
+  Input,
+  Optional,
+  SkipSelf,
+  ViewChild
+} from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty } from 'app/shared/helper';
@@ -11,13 +21,9 @@ import { empty } from 'app/shared/helper';
   selector: 'url-field',
   templateUrl: 'url-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: UrlFieldComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: UrlFieldComponent, multi: true }]
 })
-export class UrlFieldComponent
-  extends BaseFormFieldComponent<string> {
-
+export class UrlFieldComponent extends BaseFormFieldComponent<string> {
   /** A placeholder to be shown inside the component */
   @Input() placeholder = '';
 
@@ -26,9 +32,7 @@ export class UrlFieldComponent
 
   @ViewChild('input') inputRef: ElementRef;
 
-  constructor(
-    injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
+  constructor(injector: Injector, @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
     super(injector, controlContainer);
   }
 

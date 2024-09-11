@@ -5,15 +5,12 @@ import { FormatService } from 'app/core/format.service';
  * Pipe used to format a date / string as time using the current configuration
  */
 @Pipe({
-  name: 'time',
+  name: 'time'
 })
 export class TimePipe implements PipeTransform {
-
-  constructor(private formatService: FormatService) {
-  }
+  constructor(private formatService: FormatService) {}
 
   public transform(value: string | Date): string {
     return this.formatService.formatAsTime(value);
   }
-
 }

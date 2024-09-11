@@ -9,14 +9,10 @@ import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 @Component({
   selector: 'view-authorization-history',
   templateUrl: 'view-authorization-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewAuthorizationHistoryComponent extends BaseViewPageComponent<TransactionView> implements OnInit {
-
-  constructor(
-    injector: Injector,
-    private transactionsService: TransactionsService
-  ) {
+  constructor(injector: Injector, private transactionsService: TransactionsService) {
     super(injector);
   }
 
@@ -27,15 +23,16 @@ export class ViewAuthorizationHistoryComponent extends BaseViewPageComponent<Tra
   ngOnInit() {
     super.ngOnInit();
     const key = this.route.snapshot.paramMap.get('key');
-    this.addSub(this.transactionsService.viewTransaction({
-      key,
-      fields: [
-        'transactionNumber', 'date', 'amount', 'kind', 'type',
-        'from', 'to', 'authorizations'],
-    })
-      .subscribe(transaction => {
-        this.data = transaction;
-      }));
+    this.addSub(
+      this.transactionsService
+        .viewTransaction({
+          key,
+          fields: ['transactionNumber', 'date', 'amount', 'kind', 'type', 'from', 'to', 'authorizations']
+        })
+        .subscribe(transaction => {
+          this.data = transaction;
+        })
+    );
   }
 
   actionLabel(auth: TransactionAuthorization): string {
@@ -45,5 +42,4 @@ export class ViewAuthorizationHistoryComponent extends BaseViewPageComponent<Tra
   resolveMenu(view: TransactionView) {
     return this.menu.accountMenu(view.from, view.to);
   }
-
 }

@@ -1,12 +1,16 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
-import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import {
-  CreateDeviceConfirmation, DeviceConfirmationTypeEnum, RecurringPaymentActionEnum,
-  RecurringPaymentDataForEdit, RecurringPaymentEdit, Transaction
+  CreateDeviceConfirmation,
+  DeviceConfirmationTypeEnum,
+  RecurringPaymentActionEnum,
+  RecurringPaymentDataForEdit,
+  RecurringPaymentEdit,
+  Transaction
 } from 'app/api/models';
 import { RecurringPaymentsService } from 'app/api/services/recurring-payments.service';
+import { empty, validateBeforeSubmit } from 'app/shared/helper';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 
 /** Validates that occurrences count is required and > 2 when payment is recurring and not until manually cancel */
 const OCCURRENCES_COUNT_VAL: ValidatorFn = control => {
@@ -18,7 +22,7 @@ const OCCURRENCES_COUNT_VAL: ValidatorFn = control => {
       if (isNaN(value)) {
         // The occurrences count is required
         return {
-          required: true,
+          required: true
         };
       } else {
         // Needs at least 2 occurrences
@@ -36,7 +40,7 @@ const FIRST_OCCURRENCE_DATE_VAL: ValidatorFn = control => {
     const firstOccurrenceIsNow = parent.get('firstOccurrenceIsNow').value;
     if (empty(control.value) && !firstOccurrenceIsNow) {
       return {
-        required: true,
+        required: true
       };
     }
   }
@@ -49,27 +53,24 @@ const FIRST_OCCURRENCE_DATE_VAL: ValidatorFn = control => {
 @Component({
   selector: 'edit-recurring-payment',
   templateUrl: 'edit-recurring-payment.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditRecurringPaymentComponent
-  extends BasePageComponent<RecurringPaymentDataForEdit>
-  implements OnInit {
-
+export class EditRecurringPaymentComponent extends BasePageComponent<RecurringPaymentDataForEdit> implements OnInit {
   id: string;
   form: FormGroup;
 
-  constructor(
-    injector: Injector,
-    private recurringPaymentService: RecurringPaymentsService) {
+  constructor(injector: Injector, private recurringPaymentService: RecurringPaymentsService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.id = this.route.snapshot.params.id;
-    this.addSub(this.recurringPaymentService.getRecurringPaymentDataForEdit({ key: this.id }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.recurringPaymentService.getRecurringPaymentDataForEdit({ key: this.id }).subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized(data: RecurringPaymentDataForEdit) {
@@ -102,14 +103,17 @@ export class EditRecurringPaymentComponent
       createDeviceConfirmation: this.recurringDeviceConfirmation(RecurringPaymentActionEnum.MODIFY),
       passwordInput: this.data.confirmationPasswordInput,
       callback: res => {
-        this.addSub(this.recurringPaymentService.modifyRecurringPayment({
-          key: this.id,
-          confirmationPassword: res.confirmationPassword,
-          body: value
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.transaction.editRecurringDone);
-          history.back();
-        })
+        this.addSub(
+          this.recurringPaymentService
+            .modifyRecurringPayment({
+              key: this.id,
+              confirmationPassword: res.confirmationPassword,
+              body: value
+            })
+            .subscribe(() => {
+              this.notification.snackBar(this.i18n.transaction.editRecurringDone);
+              history.back();
+            })
         );
       }
     });
@@ -119,7 +123,7 @@ export class EditRecurringPaymentComponent
     return () => ({
       type: DeviceConfirmationTypeEnum.MANAGE_RECURRING_PAYMENT,
       transaction: this.id,
-      recurringPaymentAction: action,
+      recurringPaymentAction: action
     });
   }
 
@@ -130,5 +134,4 @@ export class EditRecurringPaymentComponent
   resolveMenu(data: RecurringPaymentDataForEdit) {
     return this.menu.accountMenu(data.originalRecurringPayment.from, data.originalRecurringPayment.to);
   }
-
 }

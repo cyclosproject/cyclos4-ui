@@ -11,7 +11,7 @@ import { PickUserDialogComponent } from 'app/ui/users/search/pick-user-dialog.co
 import { UsersResultsComponent } from 'app/ui/users/search/users-results.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
-type ContactListSearchParams = ContactListQueryFilters & { user: string; };
+type ContactListSearchParams = ContactListQueryFilters & { user: string };
 
 /**
  * Search the user's contact list
@@ -19,22 +19,18 @@ type ContactListSearchParams = ContactListQueryFilters & { user: string; };
 @Component({
   selector: 'contact-list',
   templateUrl: 'contact-list.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContactListComponent
   extends BaseSearchPageComponent<ContactListDataForSearch, ContactListSearchParams, ContactResult>
-  implements OnInit {
-
+  implements OnInit
+{
   // Export enum to the template
   ResultType = ResultType;
 
   @ViewChild('usersResults') usersResults: UsersResultsComponent;
 
-  constructor(
-    injector: Injector,
-    private modal: BsModalService,
-    private contactsService: ContactsService,
-  ) {
+  constructor(injector: Injector, private modal: BsModalService, private contactsService: ContactsService) {
     super(injector);
   }
 
@@ -49,8 +45,9 @@ export class ContactListComponent
   ngOnInit() {
     super.ngOnInit();
     this.allowedResultTypes = [ResultType.TILES, ResultType.LIST];
-    this.stateManager.cache('data',
-      this.contactsService.getContactListDataForSearch({ user: ApiHelper.SELF })).subscribe(data => this.data = data);
+    this.stateManager
+      .cache('data', this.contactsService.getContactListDataForSearch({ user: ApiHelper.SELF }))
+      .subscribe(data => (this.data = data));
   }
 
   protected toSearchParams(value: any): ContactListSearchParams {
@@ -76,7 +73,7 @@ export class ContactListComponent
     // If can search or pay to other users, allow the add contacts dialog
     if (canAddContact) {
       this.headingActions = [
-        new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () => this.addNew(), true),
+        new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () => this.addNew(), true)
       ];
     }
   }
@@ -93,15 +90,21 @@ export class ContactListComponent
       }
     });
     const component = ref.content as PickUserDialogComponent;
-    this.addSub(component.done.subscribe(user => {
-      this.addSub(this.contactsService.createContact({
-        user: ApiHelper.SELF,
-        body: { contact: user.id }
-      }).subscribe(() => {
-        this.notification.snackBar(this.i18n.user.profile.addContactDone(user.display));
-        this.reload();
-      }));
-    }));
+    this.addSub(
+      component.done.subscribe(user => {
+        this.addSub(
+          this.contactsService
+            .createContact({
+              user: ApiHelper.SELF,
+              body: { contact: user.id }
+            })
+            .subscribe(() => {
+              this.notification.snackBar(this.i18n.user.profile.addContactDone(user.display));
+              this.reload();
+            })
+        );
+      })
+    );
   }
 
   resolveMenu(data: ContactListDataForSearch) {

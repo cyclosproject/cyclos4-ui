@@ -1,8 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AdCategoryWithParent, AdKind, AdQuestionView, AdView,
-  DeliveryMethod, DeliveryMethodChargeTypeEnum, RoleEnum
+  AdCategoryWithParent,
+  AdKind,
+  AdQuestionView,
+  AdView,
+  DeliveryMethod,
+  DeliveryMethodChargeTypeEnum,
+  RoleEnum
 } from 'app/api/models';
 import { AdQuestionsService } from 'app/api/services/ad-questions.service';
 import { MarketplaceService } from 'app/api/services/marketplace.service';
@@ -26,10 +31,9 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'view-ad',
   templateUrl: 'view-ad.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewAdComponent extends BaseViewPageComponent<AdView> implements OnInit {
-
   title: string;
   id: string;
   webshop: boolean;
@@ -44,7 +48,8 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     private adQuestionService: AdQuestionsService,
     private marketplaceHelper: MarketplaceHelperService,
     private marketplaceService: MarketplaceService,
-    private shoppingCartService: ShoppingCartsService) {
+    private shoppingCartService: ShoppingCartsService
+  ) {
     super(injector);
   }
 
@@ -57,17 +62,21 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     this.guest = this.loginService.user == null;
     this.id = this.route.snapshot.paramMap.get('id');
     this.errorHandler.requestWithCustomErrorHandler(handle => {
-      this.addSub(this.marketplaceService.viewAd({ ad: this.id })
-        .subscribe(ad => {
-          this.data = ad;
-        }, (err: HttpErrorResponse) => {
-          // When not logged in and got a not found, redirect to login
-          if (err.status === ErrorStatus.NOT_FOUND && this.dataForFrontendHolder.user == null) {
-            this.login.goToLoginPage(this.router.url);
-          } else {
-            handle(err);
+      this.addSub(
+        this.marketplaceService.viewAd({ ad: this.id }).subscribe(
+          ad => {
+            this.data = ad;
+          },
+          (err: HttpErrorResponse) => {
+            // When not logged in and got a not found, redirect to login
+            if (err.status === ErrorStatus.NOT_FOUND && this.dataForFrontendHolder.user == null) {
+              this.login.goToLoginPage(this.router.url);
+            } else {
+              handle(err);
+            }
           }
-        }));
+        )
+      );
     });
   }
 
@@ -75,53 +84,64 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
    * Removes this advertisement and goes back to the list page
    */
   protected doRemove() {
-    this.addSub(this.marketplaceService.deleteAd({ ad: this.id }).subscribe(() => {
-      this.notification.snackBar(this.i18n.general.removeDone(this.ad.name));
-      history.back();
-    }));
+    this.addSub(
+      this.marketplaceService.deleteAd({ ad: this.id }).subscribe(() => {
+        this.notification.snackBar(this.i18n.general.removeDone(this.ad.name));
+        history.back();
+      })
+    );
   }
 
   /**
    * Executes the given request, displays the given message and reloads page after finish
    */
   protected updateStatus(request: Observable<any>, message: string, checkRole?: boolean) {
-    this.addSub(request.subscribe(() => {
-      this.notification.snackBar(message);
-      if (checkRole &&
-        (this.dataForFrontendHolder.role === RoleEnum.BROKER &&
-          !this.authHelper.isSelfOrOwner(this.data.user)) ||
-        this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR) {
-        // A broker or admin cannot view the ad after perform
-        // some actions (e.g set it to draft, reject), so go
-        // back to the ad list
-        history.back();
-      } else {
+    this.addSub(
+      request.subscribe(() => {
+        this.notification.snackBar(message);
+        if (
+          (checkRole &&
+            this.dataForFrontendHolder.role === RoleEnum.BROKER &&
+            !this.authHelper.isSelfOrOwner(this.data.user)) ||
+          this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR
+        ) {
+          // A broker or admin cannot view the ad after perform
+          // some actions (e.g set it to draft, reject), so go
+          // back to the ad list
+          history.back();
+        } else {
+          this.reload();
+        }
         this.reload();
-      }
-      this.reload();
-    }));
+      })
+    );
   }
 
   /**
    * Adds the current ad to cart, displays a message and updates the top bar
    */
   protected addToCart() {
-    this.addSub(this.shoppingCartService.addItemToShoppingCart({ ad: this.ad.id }).subscribe(items => {
-      // Assume if the amount of items has not changed is
-      // because this product was already in cart
-      this.notification.snackBar(
-        items === this.marketplaceHelper.cartItems ?
-          this.i18n.ad.addedProductAlreadyInCart :
-          this.i18n.ad.addedProduct);
-      this.marketplaceHelper.cartItems = items;
-    }));
+    this.addSub(
+      this.shoppingCartService.addItemToShoppingCart({ ad: this.ad.id }).subscribe(items => {
+        // Assume if the amount of items has not changed is
+        // because this product was already in cart
+        this.notification.snackBar(
+          items === this.marketplaceHelper.cartItems
+            ? this.i18n.ad.addedProductAlreadyInCart
+            : this.i18n.ad.addedProduct
+        );
+        this.marketplaceHelper.cartItems = items;
+      })
+    );
   }
 
   onDataInitialized(ad: AdView) {
     this.webshop = ad.kind === AdKind.WEBSHOP;
-    this.hasStatus = !this.guest && (this.authHelper.isSelfOrOwner(ad.user) ||
-      (this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR ||
-        this.dataForFrontendHolder.role === RoleEnum.BROKER));
+    this.hasStatus =
+      !this.guest &&
+      (this.authHelper.isSelfOrOwner(ad.user) ||
+        this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR ||
+        this.dataForFrontendHolder.role === RoleEnum.BROKER);
 
     const headingActions: HeadingAction[] = [];
     if (ad.canSetAsFavorite) {
@@ -129,52 +149,51 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
       headingActions.push(new HeadingAction(conf.icon, conf.label, () => this.markAsFavorite()));
     }
     if (ad.canBuy) {
-      headingActions.push(
-        new HeadingAction(SvgIcon.CartPlus, this.i18n.ad.addToCart, () => this.addToCart()));
+      headingActions.push(new HeadingAction(SvgIcon.CartPlus, this.i18n.ad.addToCart, () => this.addToCart()));
     }
     if (ad.canAsk) {
-      headingActions.push(
-        new HeadingAction(SvgIcon.ChatLeft, this.i18n.ad.askQuestion, () => this.ask()));
+      headingActions.push(new HeadingAction(SvgIcon.ChatLeft, this.i18n.ad.askQuestion, () => this.ask()));
     }
     if (ad.canHide) {
       headingActions.push(
-        new HeadingAction(SvgIcon.EyeSlash, this.i18n.ad.hide, () => this.updateStatus(
-          this.marketplaceService.hideAd({ ad: this.id }),
-          this.i18n.ad.adHidden,
-        )));
+        new HeadingAction(SvgIcon.EyeSlash, this.i18n.ad.hide, () =>
+          this.updateStatus(this.marketplaceService.hideAd({ ad: this.id }), this.i18n.ad.adHidden)
+        )
+      );
     }
     if (ad.canUnhide) {
       headingActions.push(
-        new HeadingAction(SvgIcon.Eye, this.i18n.ad.unhide, () => this.updateStatus(
-          this.marketplaceService.unhideAd({ ad: this.id }),
-          this.i18n.ad.adUnhidden,
-        )));
+        new HeadingAction(SvgIcon.Eye, this.i18n.ad.unhide, () =>
+          this.updateStatus(this.marketplaceService.unhideAd({ ad: this.id }), this.i18n.ad.adUnhidden)
+        )
+      );
     }
     if (ad.canRequestAuthorization) {
       headingActions.push(
-        new HeadingAction(SvgIcon.FileEarmarkCheck, this.i18n.ad.submitForAuthorization, () => this.updateStatus(
-          this.marketplaceService.submitAdForAuthorization({ ad: this.id }),
-          this.i18n.ad.pendingForAuth,
-        )));
+        new HeadingAction(SvgIcon.FileEarmarkCheck, this.i18n.ad.submitForAuthorization, () =>
+          this.updateStatus(
+            this.marketplaceService.submitAdForAuthorization({ ad: this.id }),
+            this.i18n.ad.pendingForAuth
+          )
+        )
+      );
     }
     if (ad.canSetAsDraft) {
       headingActions.push(
-        new HeadingAction(SvgIcon.Pencil, this.i18n.ad.setAsDraft, () => this.updateStatus(
-          this.marketplaceService.setAdAsDraft({ ad: this.id }),
-          this.i18n.ad.backToDraft,
-          true,
-        )));
+        new HeadingAction(SvgIcon.Pencil, this.i18n.ad.setAsDraft, () =>
+          this.updateStatus(this.marketplaceService.setAdAsDraft({ ad: this.id }), this.i18n.ad.backToDraft, true)
+        )
+      );
     }
     if (ad.canApprove) {
       headingActions.push(
-        new HeadingAction(SvgIcon.HandThumbsUp, this.i18n.ad.authorize, () => this.updateStatus(
-          this.marketplaceService.approveAd({ ad: this.id }),
-          this.i18n.ad.authorized,
-        )));
+        new HeadingAction(SvgIcon.HandThumbsUp, this.i18n.ad.authorize, () =>
+          this.updateStatus(this.marketplaceService.approveAd({ ad: this.id }), this.i18n.ad.authorized)
+        )
+      );
     }
     if (ad.canReject) {
-      headingActions.push(
-        new HeadingAction(SvgIcon.HandThumbsDown, this.i18n.ad.reject, () => this.reject()));
+      headingActions.push(new HeadingAction(SvgIcon.HandThumbsDown, this.i18n.ad.reject, () => this.reject()));
     }
     if (ad.canEdit) {
       const edit = new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => {
@@ -187,14 +206,19 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
         new HeadingAction(SvgIcon.Trash, this.i18n.general.remove, () => {
           this.confirmation.confirm({
             message: this.i18n.general.removeConfirm(this.ad.name),
-            callback: () => this.doRemove(),
+            callback: () => this.doRemove()
           });
-        }));
+        })
+      );
     }
-    this.exportHelper.headingActions(ad.exportFormats, f => this.marketplaceService.exportAd$Response({
-      format: f.internalName,
-      ad: ad.id
-    })).forEach(a => headingActions.push(a));
+    this.exportHelper
+      .headingActions(ad.exportFormats, f =>
+        this.marketplaceService.exportAd$Response({
+          format: f.internalName,
+          ad: ad.id
+        })
+      )
+      .forEach(a => headingActions.push(a));
     for (const operation of ad.operations || []) {
       headingActions.push(this.runOperationHelper.headingAction(operation, ad.id));
     }
@@ -212,15 +236,19 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
 
   protected markAsFavorite() {
     if (this.ad.favorite) {
-      this.addSub(this.marketplaceService.unmarkAsFavorite({ ad: this.ad.id }).subscribe(() => {
-        this.notification.snackBar(this.i18n.ad.removedFromFavorites);
-        this.reload();
-      }));
+      this.addSub(
+        this.marketplaceService.unmarkAsFavorite({ ad: this.ad.id }).subscribe(() => {
+          this.notification.snackBar(this.i18n.ad.removedFromFavorites);
+          this.reload();
+        })
+      );
     } else {
-      this.addSub(this.marketplaceService.markAsFavorite({ ad: this.ad.id }).subscribe(() => {
-        this.notification.snackBar(this.i18n.ad.addedToFavorites);
-        this.reload();
-      }));
+      this.addSub(
+        this.marketplaceService.markAsFavorite({ ad: this.ad.id }).subscribe(() => {
+          this.notification.snackBar(this.i18n.ad.addedToFavorites);
+          this.reload();
+        })
+      );
     }
   }
 
@@ -229,23 +257,25 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
    */
   protected reject() {
     const ref = this.modal.show(TextDialogComponent, {
-      class: 'modal-form', initialState: {
-        title: this.i18n.ad.reject,
-      },
+      class: 'modal-form',
+      initialState: {
+        title: this.i18n.ad.reject
+      }
     });
     const component = ref.content as TextDialogComponent;
-    this.addSub(component.done.subscribe((comments: string) => {
-      this.updateStatus(
-        this.marketplaceService.rejectAd({ ad: this.id, body: comments }),
-        this.i18n.ad.rejected,
-        true,
-      );
-    }));
+    this.addSub(
+      component.done.subscribe((comments: string) => {
+        this.updateStatus(
+          this.marketplaceService.rejectAd({ ad: this.id, body: comments }),
+          this.i18n.ad.rejected,
+          true
+        );
+      })
+    );
   }
 
   get categoryLabel(): string {
-    return (this.ad.categories || []).length === 1 ?
-      this.i18n.general.category : this.i18n.ad.categories;
+    return (this.ad.categories || []).length === 1 ? this.i18n.general.category : this.i18n.ad.categories;
   }
 
   /**
@@ -286,12 +316,10 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
       return false;
     } else if (this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR) {
       return this.data.canEdit;
-    } else if (this.dataForFrontendHolder.role === RoleEnum.BROKER ||
-      this.authHelper.isSelfOrOwner(this.data.user) ||
-      (this.authHelper.isSelfOrOwner(question.user) && this.dataForFrontendHolder.role !== RoleEnum.OPERATOR)) {
-      return this.data.canEdit && empty(question.answer);
+    } else {
+      const canManage = (this.authHelper.isSelfOrOwner(question.user) && this.data.canAsk) || this.data.canEdit;
+      return canManage && empty(question.answer);
     }
-    return false;
   }
 
   /**
@@ -323,23 +351,29 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
    */
   ask() {
     const ref = this.modal.show(TextDialogComponent, {
-      class: 'modal-form', initialState: {
-        title: this.i18n.ad.askQuestion,
-      },
+      class: 'modal-form',
+      initialState: {
+        title: this.i18n.ad.askQuestion
+      }
     });
     const component = ref.content as TextDialogComponent;
-    this.addSub(component.done.subscribe((question: string) => {
-      if (!empty(question)) {
-        this.addSub(this.adQuestionService.createAdQuestion({
-          ad: this.id,
-          body: question,
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.ad.questionAsked);
-          this.reload();
-        }));
-      }
-    },
-    ));
+    this.addSub(
+      component.done.subscribe((question: string) => {
+        if (!empty(question)) {
+          this.addSub(
+            this.adQuestionService
+              .createAdQuestion({
+                ad: this.id,
+                body: question
+              })
+              .subscribe(() => {
+                this.notification.snackBar(this.i18n.ad.questionAsked);
+                this.reload();
+              })
+          );
+        }
+      })
+    );
   }
 
   resolveMenu() {
@@ -350,9 +384,11 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
    * Removes a question with the given id
    */
   removeQuestion(id: string) {
-    this.addSub(this.adQuestionService.deleteAdQuestion({ id }).subscribe(() => {
-      this.notification.snackBar(this.i18n.ad.questionRemoved);
-      this.reload();
-    }));
+    this.addSub(
+      this.adQuestionService.deleteAdQuestion({ id }).subscribe(() => {
+        this.notification.snackBar(this.i18n.ad.questionRemoved);
+        this.reload();
+      })
+    );
   }
 }

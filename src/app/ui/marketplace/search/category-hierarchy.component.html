@@ -1,7 +1,9 @@
-<a class="d-block mb-1 undecorated" [ngClass]="'category-level-' + level"
-  href="#" (click)="emit(category, $event)">
+<a class="d-block mb-1 undecorated" [ngClass]="'category-level-' + level" href="#" (click)="emit(category, $event)">
   {{ category.name }}
 </a>
 
-<category-hierarchy *ngFor="let sub of category.children" [category]="sub"
-  [level]="level + 1" (select)="select.next($event)"></category-hierarchy>
+<category-hierarchy
+  *ngFor="let sub of category.children"
+  [category]="sub"
+  [level]="level + 1"
+  (select)="select.next($event)"></category-hierarchy>

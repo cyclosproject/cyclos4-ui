@@ -10,13 +10,14 @@ import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 @Component({
   selector: 'view-user-group-history',
   templateUrl: 'view-user-group-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewUserGroupHistoryComponent extends BaseViewPageComponent<GroupMembershipData> implements OnInit {
   constructor(
     injector: Injector,
     private groupMembershipService: GroupMembershipService,
-    private userHelper: UserHelperService) {
+    private userHelper: UserHelperService
+  ) {
     super(injector);
   }
 
@@ -25,9 +26,13 @@ export class ViewUserGroupHistoryComponent extends BaseViewPageComponent<GroupMe
   ngOnInit() {
     super.ngOnInit();
     this.param = this.route.snapshot.params.user;
-    this.addSub(this.groupMembershipService.getGroupMembershipData({ user: this.param, fields: ['user', 'history'] }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.groupMembershipService
+        .getGroupMembershipData({ user: this.param, fields: ['user', 'history'] })
+        .subscribe(data => {
+          this.data = data;
+        })
+    );
   }
 
   get operator() {

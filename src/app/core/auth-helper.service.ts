@@ -1,9 +1,17 @@
 import { Inject, Injectable } from '@angular/core';
 import {
-  AccountKind, AccountWithOwner, CredentialTypeEnum,
+  AccountKind,
+  AccountWithOwner,
+  CredentialTypeEnum,
   IdentityProvider,
-  IdentityProviderCallbackResult, IdentityProviderRequestResult,
-  PasswordInput, PasswordModeEnum, PasswordType, RoleEnum, User, UserLocale
+  IdentityProviderCallbackResult,
+  IdentityProviderRequestResult,
+  PasswordInput,
+  PasswordModeEnum,
+  PasswordType,
+  RoleEnum,
+  User,
+  UserLocale
 } from 'app/api/models';
 import { IdentityProvidersService } from 'app/api/services/identity-providers.service';
 import { LocalizationService } from 'app/api/services/localization.service';
@@ -20,10 +28,9 @@ import { first } from 'rxjs/operators';
  * Helper service for authentication / password common functions
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthHelperService {
-
   private identityProviderSubscription: Subscription;
 
   constructor(
@@ -32,8 +39,8 @@ export class AuthHelperService {
     private identityProvidersService: IdentityProvidersService,
     private pushNotifications: PushNotificationsService,
     private localizationService: LocalizationService,
-    private nextRequestState: NextRequestState) {
-  }
+    private nextRequestState: NextRequestState
+  ) {}
 
   /**
    * Returns a key used for guests to upload temporary images / files
@@ -114,8 +121,7 @@ export class AuthHelperService {
       if (user.user && user.user.id) {
         possibleIds.push(user.user.id);
       }
-      return loggedUser.user && possibleIds.includes(loggedUser.user.id)
-        || possibleIds.includes(loggedUser.id);
+      return (loggedUser.user && possibleIds.includes(loggedUser.user.id)) || possibleIds.includes(loggedUser.id);
     }
     return false;
   }
@@ -227,13 +233,9 @@ export class AuthHelperService {
             ? this.i18n.transaction.posConfirmation.password(passwordInput.passwordType?.name)
             : this.i18n.password.confirmation.password(passwordInput.passwordType?.name);
         case CredentialTypeEnum.DEVICE:
-          return pos
-            ? this.i18n.transaction.posConfirmation.device
-            : this.i18n.password.confirmation.device;
+          return pos ? this.i18n.transaction.posConfirmation.device : this.i18n.password.confirmation.device;
         case CredentialTypeEnum.TOTP:
-          return pos
-            ? this.i18n.transaction.posConfirmation.totp
-            : this.i18n.password.confirmation.totp;
+          return pos ? this.i18n.transaction.posConfirmation.totp : this.i18n.password.confirmation.totp;
         case CredentialTypeEnum.PIN:
           // Not used in this frontend
           return this.i18n.password.confirmation.notPossible;
@@ -245,7 +247,7 @@ export class AuthHelperService {
   /**
    * Returns the display label of a credential type
    */
-  credentialTypeLabel(passwordInput: { passwordType?: PasswordType; }, credentialType: CredentialTypeEnum) {
+  credentialTypeLabel(passwordInput: { passwordType?: PasswordType }, credentialType: CredentialTypeEnum) {
     switch (credentialType) {
       case CredentialTypeEnum.DEVICE:
         return this.i18n.password.confirmModeDevice;
@@ -292,15 +294,20 @@ export class AuthHelperService {
       `-${actualPrefix}permissions.systemRecords`,
       `-${actualPrefix}permissions.userRecords`,
       `-${actualPrefix}permissions.operations`,
-      `-${actualPrefix}permissions.accounts`,
+      `-${actualPrefix}permissions.accounts`
     ];
   }
 
   /**
    * Opens a popup with a request for an identity provider
    */
-  identityProviderPopup(idp: IdentityProvider, type: 'login' | 'register' | 'wizard' | 'link', group?: string, key?: string, userAgentId?: string):
-    Observable<IdentityProviderCallbackResult> {
+  identityProviderPopup(
+    idp: IdentityProvider,
+    type: 'login' | 'register' | 'wizard' | 'link',
+    group?: string,
+    key?: string,
+    userAgentId?: string
+  ): Observable<IdentityProviderCallbackResult> {
     const observable = new Subject<IdentityProviderCallbackResult>();
 
     // Open a popup which will redirect the user to the identity provider
@@ -311,7 +318,10 @@ export class AuthHelperService {
     switch (type) {
       case 'login':
         this.nextRequestState.nextAsGuest();
-        request = this.identityProvidersService.prepareIdentityProviderLogin({ identityProvider: idp.internalName, userAgentId: userAgentId });
+        request = this.identityProvidersService.prepareIdentityProviderLogin({
+          identityProvider: idp.internalName,
+          userAgentId: userAgentId
+        });
         break;
       case 'register':
         this.nextRequestState.nextAsGuest();
@@ -369,16 +379,17 @@ export class AuthHelperService {
     localStorage.setItem(PreferredLocale, code);
     if (this.dataForFrontendHolder.user) {
       // Save the user locale, then refresh
-      this.localizationService.saveLocalizationSettings({
-        body: { locale: code }
-      }).subscribe(() => {
-        // Need to refresh the page to reload the correct translations
-        window.location.reload();
-      });
+      this.localizationService
+        .saveLocalizationSettings({
+          body: { locale: code }
+        })
+        .subscribe(() => {
+          // Need to refresh the page to reload the correct translations
+          window.location.reload();
+        });
     } else {
       // Need to refresh the page to reload the correct translations
       window.location.reload();
     }
   }
-
 }

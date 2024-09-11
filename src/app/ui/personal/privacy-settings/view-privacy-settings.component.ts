@@ -11,30 +11,26 @@ import { Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'view-privacy-settings',
   templateUrl: 'view-privacy-settings.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewPrivacySettingsComponent
-  extends BasePageComponent<PrivacySettingsData>
-  implements OnInit {
-
+export class ViewPrivacySettingsComponent extends BasePageComponent<PrivacySettingsData> implements OnInit {
   user: string;
 
-  constructor(
-    injector: Injector,
-    private privacySettingsService: PrivacySettingsService) {
+  constructor(injector: Injector, private privacySettingsService: PrivacySettingsService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.user = this.route.snapshot.params.user;
-    this.addSub(this.privacySettingsService.getPrivacySettingsData({ user: this.user || ApiHelper.SELF })
-      .subscribe(data => {
+    this.addSub(
+      this.privacySettingsService.getPrivacySettingsData({ user: this.user || ApiHelper.SELF }).subscribe(data => {
         if (data.canEdit) {
           this.router.navigate(['/users', this.user, 'privacy-settings', 'edit'], { replaceUrl: true });
         }
         this.data = data;
-      }));
+      })
+    );
   }
 
   fields(): Array<string> {

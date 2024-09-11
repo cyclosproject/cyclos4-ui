@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Host,
+  Injector,
+  Input,
+  OnInit,
+  Optional,
+  SkipSelf,
+  ViewChild
+} from '@angular/core';
 import { ControlContainer, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PrincipalType, User } from 'app/api/models';
 import { UserCacheService } from 'app/core/user-cache.service';
@@ -14,13 +24,9 @@ import { map } from 'rxjs/operators';
   selector: 'multiple-users-field',
   templateUrl: 'multiple-users-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: MultipleUsersFieldComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: MultipleUsersFieldComponent, multi: true }]
 })
-export class MultipleUsersFieldComponent
-  extends BaseFormFieldComponent<string[]> implements OnInit {
-
+export class MultipleUsersFieldComponent extends BaseFormFieldComponent<string[]> implements OnInit {
   users$ = new BehaviorSubject<User[]>([]);
   get users(): User[] {
     return this.users$.value;
@@ -42,7 +48,8 @@ export class MultipleUsersFieldComponent
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private userCache: UserCacheService) {
+    private userCache: UserCacheService
+  ) {
     super(injector, controlContainer);
   }
 
@@ -81,8 +88,9 @@ export class MultipleUsersFieldComponent
 
   preprocessValue(value: string[]): any {
     if (value && value.length > 0) {
-      return forkJoin((value || []).map(u => this.userCache.get(u)))
-        .pipe(map(users => users.map(u => this.toValue(u))));
+      return forkJoin((value || []).map(u => this.userCache.get(u))).pipe(
+        map(users => users.map(u => this.toValue(u)))
+      );
     } else {
       return null;
     }

@@ -1,19 +1,27 @@
-<results-layout (update)="update.emit($event)" [results]="results"
-  [rendering$]="rendering$" [resultType]="resultType" [toAddress]="address"
-  [referencePoint]="referencePoint" [toMarkerTitle]="displayFunction()"
+<results-layout
+  (update)="update.emit($event)"
+  [results]="results"
+  [rendering$]="rendering$"
+  [resultType]="resultType"
+  [toAddress]="address"
+  [referencePoint]="referencePoint"
+  [toMarkerTitle]="displayFunction()"
   [toLink]="canViewProfile ? toLink : null">
-
-  <mobile-result *mobileResult="let row"
+  <mobile-result
+    *mobileResult="let row"
     [avatarImage]="canViewImages ? user(row).image : null"
     [avatarIcon]="resultKind === 'operator' ? null : SvgIcon.Person">
-    <ng-container
-      *ngFor="let field of fieldsWithValue(row); let first = first">
-      <div [ngClass]="{
-        'cell-main': first,
-        'cell-text': !first
-      }">
-        <format-field-value [fields]="data.customFields" [plainText]="true"
-          [fieldName]="field" [object]="user(row)"
+    <ng-container *ngFor="let field of fieldsWithValue(row); let first = first">
+      <div
+        [ngClass]="{
+          'cell-main': first,
+          'cell-text': !first
+        }">
+        <format-field-value
+          [fields]="data.customFields"
+          [plainText]="true"
+          [fieldName]="field"
+          [object]="user(row)"
           [customValues]="customValues(row)"></format-field-value>
       </div>
     </ng-container>
@@ -22,31 +30,33 @@
     </div>
   </mobile-result>
 
-  <table *resultTable class="table table-hover"
-    [ngClass]="{'cursor-pointer': canViewProfile}">
+  <table *resultTable class="table table-hover" [ngClass]="{ 'cursor-pointer': canViewProfile }">
     <thead>
-      <th *ngIf="canViewImages && resultKind !== 'operator'" class="avatar">
-      </th>
+      <th *ngIf="canViewImages && resultKind !== 'operator'" class="avatar"></th>
       <th *ngFor="let field of fieldsInList">{{ fieldName(field) }}</th>
       <th *ngIf="resultKind === 'operator'">{{ i18n.user.group }}</th>
       <th *ngIf="removeAction" class="actions"></th>
     </thead>
     <tbody>
-      <tr *ngFor="let row of results?.results"
-        (click)="canViewProfile ? router.navigate(path(row)) : null">
+      <tr *ngFor="let row of results?.results" (click)="canViewProfile ? router.navigate(path(row)) : null">
         <td *ngIf="canViewImages && resultKind !== 'operator'" class="avatar">
           <avatar [image]="user(row).image"></avatar>
         </td>
         <td *ngFor="let field of fieldsInList">
-          <format-field-value [fields]="data.customFields" [plainText]="true"
-            [fieldName]="field" [object]="user(row)"
+          <format-field-value
+            [fields]="data.customFields"
+            [plainText]="true"
+            [fieldName]="field"
+            [object]="user(row)"
             [customValues]="customValues(row)"></format-field-value>
         </td>
         <td *ngIf="resultKind === 'operator'">{{ operatorGroup(row) }}</td>
         <td *ngIf="removeAction" class="actions">
-          <button type="button" [tooltip]="i18n.user.remove"
+          <button
+            type="button"
+            [tooltip]="i18n.user.remove"
             class="btn btn-icon"
-            (click)="removeAction(row); $event.stopPropagation(); $event.preventDefault() ">
+            (click)="removeAction(row); $event.stopPropagation(); $event.preventDefault()">
             <icon [icon]="SvgIcon.Trash"></icon>
           </button>
         </td>
@@ -54,34 +64,36 @@
     </tbody>
   </table>
 
-  <tiled-result *resultTile="let row" [image]="user(row).image"
-    [icon]="SvgIcon.PersonCircle" zoom>
+  <tiled-result *resultTile="let row" [image]="user(row).image" [icon]="SvgIcon.PersonCircle" zoom>
     <ng-container *ngIf="fieldsWithValue(row) as withValue">
-      <div *ngFor="let field of withValue; let first = first"
-        [ngClass]="first ? 'card-title' : 'card-text'">
-        <format-field-value class="d-block text-truncate"
-          [fields]="data.customFields" plainText [fieldName]="field"
-          [object]="user(row)" [customValues]="customValues(row)">
+      <div *ngFor="let field of withValue; let first = first" [ngClass]="first ? 'card-title' : 'card-text'">
+        <format-field-value
+          class="d-block text-truncate"
+          [fields]="data.customFields"
+          plainText
+          [fieldName]="field"
+          [object]="user(row)"
+          [customValues]="customValues(row)">
         </format-field-value>
       </div>
-      <div *ngFor="let _ of blankSpaces(withValue)" class="card-text">&nbsp;
-      </div>
+      <div *ngFor="let _ of blankSpaces(withValue)" class="card-text">&nbsp;</div>
     </ng-container>
   </tiled-result>
 
-  <map-result *resultInfoWindow="let row; let addr = address"
-    [image]="user(row).image" [address]="addr">
+  <map-result *resultInfoWindow="let row; let addr = address" [image]="user(row).image" [address]="addr">
     <div
-      *ngFor="let field of fieldsWithValue(row); let first = first; let last = last;"
+      *ngFor="let field of fieldsWithValue(row); let first = first; let last = last"
       [ngClass]="{
-          'font-weight-bold': first,
-          'mb-2': last
-        }">
-      <format-field-value [fields]="data.customFields" [plainText]="true"
-        [fieldName]="field" [object]="user(row)"
+        'font-weight-bold': first,
+        'mb-2': last
+      }">
+      <format-field-value
+        [fields]="data.customFields"
+        [plainText]="true"
+        [fieldName]="field"
+        [object]="user(row)"
         [customValues]="customValues(row)">
       </format-field-value>
     </div>
   </map-result>
-
 </results-layout>

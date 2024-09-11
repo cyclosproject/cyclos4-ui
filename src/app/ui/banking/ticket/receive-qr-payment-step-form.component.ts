@@ -10,10 +10,9 @@ import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
 @Component({
   selector: 'receive-qr-payment-step-form',
   templateUrl: 'receive-qr-payment-step-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReceiveQrPaymentStepFormComponent extends BaseComponent {
-
   @Input() data: DataForTransaction;
   @Input() form: FormGroup;
   @Input() transferTypes: TransferType[];

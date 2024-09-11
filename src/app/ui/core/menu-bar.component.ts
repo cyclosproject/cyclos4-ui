@@ -17,10 +17,9 @@ const MenuThersholdExtraLarge = 6;
 @Component({
   selector: 'menu-bar',
   templateUrl: 'menu-bar.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuBarComponent extends AbstractComponent implements OnInit {
-
   // Export to the template
   MenuType = MenuType;
 
@@ -31,7 +30,8 @@ export class MenuBarComponent extends AbstractComponent implements OnInit {
     public layout: LayoutService,
     public uiLayout: UiLayoutService,
     public login: LoginService,
-    private menu: MenuService) {
+    private menu: MenuService
+  ) {
     super(injector);
   }
 
@@ -46,5 +46,4 @@ export class MenuBarComponent extends AbstractComponent implements OnInit {
     const threshold = breakpoints.has('xl') ? MenuThersholdExtraLarge : MenuThresholdLarge;
     return roots.length > threshold ? MenuDensity.Dense : MenuDensity.Medium;
   }
-
 }

@@ -25,21 +25,19 @@ export interface AccountQuery extends QueryFilters {
 @Component({
   selector: 'list-accounts',
   templateUrl: 'list-accounts.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListAccountsComponent
   extends BaseSearchPageComponent<OwnerAccountsListData, AccountQuery, AccountWithStatus>
-  implements OnInit {
-
+  implements OnInit
+{
   self: boolean;
   showFilters: boolean;
   owner: string;
   currencyOptions: FieldOption[];
   anyHasBalance: boolean;
 
-  constructor(
-    injector: Injector,
-    private accountsService: AccountsService) {
+  constructor(injector: Injector, private accountsService: AccountsService) {
     super(injector);
   }
 
@@ -74,7 +72,9 @@ export class ListAccountsComponent
   ngOnInit() {
     super.ngOnInit();
     this.owner = this.route.snapshot.params.owner;
-    this.addSub(this.accountsService.getOwnerAccountsListData({ owner: this.owner }).subscribe(data => this.data = data));
+    this.addSub(
+      this.accountsService.getOwnerAccountsListData({ owner: this.owner }).subscribe(data => (this.data = data))
+    );
   }
 
   onDataInitialized(data: OwnerAccountsListData) {
@@ -90,7 +90,10 @@ export class ListAccountsComponent
     });
     currencies.sort((c1, c2) => c1.name.localeCompare(c2.name));
     this.currencyOptions = currencies.map(c => ({
-      value: c.id, id: c.id, internalName: c.internalName, text: c.name
+      value: c.id,
+      id: c.id,
+      internalName: c.internalName,
+      text: c.name
     }));
 
     this.anyHasBalance = !!data.accounts?.find(a => a.status?.balance != null);
@@ -105,6 +108,8 @@ export class ListAccountsComponent
   }
 
   resolveMenu() {
-    return ApiHelper.SYSTEM === this.owner || ApiHelper.SELF === this.owner ? Menu.ACCOUNTS_SUMMARY : this.menu.searchUsersMenu();
+    return ApiHelper.SYSTEM === this.owner || ApiHelper.SELF === this.owner
+      ? Menu.ACCOUNTS_SUMMARY
+      : this.menu.searchUsersMenu();
   }
 }

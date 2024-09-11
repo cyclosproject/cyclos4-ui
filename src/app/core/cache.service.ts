@@ -13,10 +13,9 @@ const DEFAULT_CACHE_SECONDS = 60 * 60;
  * Service used to manage the persistent cache
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CacheService {
-
   constructor() {
     lscache.setExpiryMilliseconds(1000);
     lscache.flushExpired();
@@ -60,7 +59,7 @@ export class CacheService {
     if (producer) {
       return producer(key).pipe(
         take(1),
-        tap(value => lscache.set(key, value, timeoutSeconds)),
+        tap(value => lscache.set(key, value, timeoutSeconds))
       );
     } else {
       return EMPTY;

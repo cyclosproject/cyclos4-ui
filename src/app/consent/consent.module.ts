@@ -24,16 +24,8 @@ import { PasswordInputComponent } from 'app/shared/password-input.component';
     NumbersOnlyDirective,
     CountdownButtonComponent
   ],
-  imports: [
-    BrowserModule,
-    ConsentRoutingModule,
-    HttpClientModule,
-    CoreBasicModule,
-  ],
-  providers: [
-    OidcService,
-    ConsentState,
-  ],
-  bootstrap: [ConsentComponent],
+  imports: [BrowserModule, ConsentRoutingModule, HttpClientModule, CoreBasicModule],
+  providers: [OidcService, ConsentState],
+  bootstrap: [ConsentComponent]
 })
-export class ConsentModule { }
+export class ConsentModule {}

@@ -8,14 +8,10 @@ import { Menu } from 'app/ui/shared/menu';
  * Helper service for imports functions
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ImportsHelperService {
-
-  constructor(
-    @Inject(I18nInjectionToken) private i18n: I18n,
-    private menu: MenuService
-  ) { }
+  constructor(@Inject(I18nInjectionToken) private i18n: I18n, private menu: MenuService) {}
 
   kindLabel(kind: ImportedFileKind): string {
     switch (kind) {
@@ -101,7 +97,7 @@ export class ImportsHelperService {
     }
   }
 
-  resolveMenu(file: { status?: ImportedFileStatusEnum, user?: User; }) {
+  resolveMenu(file: { status?: ImportedFileStatusEnum; user?: User }) {
     return this.menu.userMenu(file?.user, Menu.PAYMENT_IMPORTS);
   }
 }

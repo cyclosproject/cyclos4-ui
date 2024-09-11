@@ -9,29 +9,25 @@ import { BasePageComponent } from 'app/ui/shared/base-page.component';
 @Component({
   selector: 'validate-email-change',
   template: '',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ValidateEmailChangeComponent
-  extends BasePageComponent<boolean>
-  implements OnInit {
-
+export class ValidateEmailChangeComponent extends BasePageComponent<boolean> implements OnInit {
   get userId() {
     return this.data;
   }
 
-  constructor(
-    injector: Injector,
-    private validationService: ValidationService,
-  ) {
+  constructor(injector: Injector, private validationService: ValidationService) {
     super(injector);
   }
 
   ngOnInit() {
     const key = this.route.snapshot.params.key;
-    this.addSub(this.validationService.validateEmailChange({ key }).subscribe(() => {
-      this.notification.snackBar(this.i18n.user.newEmailConfirmed);
-      this.router.navigate(['/users', 'self', 'profile']);
-    }));
+    this.addSub(
+      this.validationService.validateEmailChange({ key }).subscribe(() => {
+        this.notification.snackBar(this.i18n.user.newEmailConfirmed);
+        this.router.navigate(['/users', 'self', 'profile']);
+      })
+    );
   }
 
   goToLogin() {

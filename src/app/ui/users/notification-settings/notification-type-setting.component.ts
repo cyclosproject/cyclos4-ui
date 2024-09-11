@@ -11,10 +11,9 @@ import { FieldOption } from 'app/shared/field-option';
 @Component({
   selector: 'notification-type-setting',
   templateUrl: 'notification-type-setting.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotificationTypeSettingComponent extends BaseComponent implements OnInit {
-
   @Input() label: string;
   @Input() setting: NotificationTypeMediums;
   @Input() options: FieldOption[];
@@ -29,9 +28,11 @@ export class NotificationTypeSettingComponent extends BaseComponent implements O
   ngOnInit() {
     if (this.adminType && this.multiSelectionControl) {
       // Update internal control when selection is checked
-      this.addSub(this.multiSelectionControl.valueChanges.subscribe(values => {
-        this.form.controls.internal.setValue(values.length > 0);
-      }));
+      this.addSub(
+        this.multiSelectionControl.valueChanges.subscribe(values => {
+          this.form.controls.internal.setValue(values.length > 0);
+        })
+      );
     }
   }
 
@@ -72,5 +73,4 @@ export class NotificationTypeSettingComponent extends BaseComponent implements O
     }
     return count;
   }
-
 }

@@ -1,15 +1,20 @@
 <h1>{{ title }}</h1>
-<user-field #field required focused [filters]="{
-    excludeContacts: excludeContacts, excludedUsers: excludedUsers }"
-  [allowContacts]="false" [allowPrincipal]="allowPrincipal"
-  [allowSearch]="allowSearch" [formControl]="control" [label]="label">
+<user-field
+  #field
+  required
+  focused
+  [filters]="{
+    excludeContacts: excludeContacts,
+    excludedUsers: excludedUsers
+  }"
+  [allowContacts]="false"
+  [allowPrincipal]="allowPrincipal"
+  [allowSearch]="allowSearch"
+  [formControl]="control"
+  [label]="label">
 </user-field>
 
 <actions forceRow>
-  <action-button [disabled]="requesting$ | async" (action)="add()"
-    [label]="i18n.general.submit">
-  </action-button>
-  <action-button outline (action)="modalRef.hide()"
-    [label]="i18n.general.cancel">
-  </action-button>
+  <action-button [disabled]="requesting$ | async" (action)="add()" [label]="i18n.general.submit"> </action-button>
+  <action-button outline (action)="modalRef.hide()" [label]="i18n.general.cancel"> </action-button>
 </actions>

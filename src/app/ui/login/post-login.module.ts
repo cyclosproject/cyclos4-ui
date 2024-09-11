@@ -20,11 +20,8 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
     ForgotPasswordStepCodeComponent,
     ForgotPasswordStepChangeComponent,
     ChangeExpiredPasswordComponent,
-    AcceptPendingAgreementsComponent,
+    AcceptPendingAgreementsComponent
   ],
-  imports: [
-    PostLoginRoutingModule,
-    UiSharedModule,
-  ]
+  imports: [PostLoginRoutingModule, UiSharedModule]
 })
-export class PostLoginModule { }
+export class PostLoginModule {}

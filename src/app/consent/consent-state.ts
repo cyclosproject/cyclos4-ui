@@ -21,10 +21,7 @@ export class ConsentState {
 
   private locator: string;
 
-  constructor(
-    private oidcService: OidcService,
-    private errorHandler: ErrorHandlerService) {
-  }
+  constructor(private oidcService: OidcService, private errorHandler: ErrorHandlerService) {}
 
   /**
    * Initializes the data
@@ -37,8 +34,10 @@ export class ConsentState {
     } else {
       // We're on development. Fetch the data.
       return this.oidcService.getData(locator).pipe(
-        tap(d => this.data$.next(d),
-          err => this.errorHandler.handleHttpError(err))
+        tap(
+          d => this.data$.next(d),
+          err => this.errorHandler.handleHttpError(err)
+        )
       );
     }
   }
@@ -55,16 +54,16 @@ export class ConsentState {
       return;
     }
     this.processing$.next(true);
-    this.oidcService.approve(this.locator, user, password)
-      .subscribe(
-        res => {
-          this.processing$.next(false);
-          this.redirect(res);
-        },
-        e => {
-          this.processing$.next(false);
-          this.errorHandler.handleHttpError(e);
-        });
+    this.oidcService.approve(this.locator, user, password).subscribe(
+      res => {
+        this.processing$.next(false);
+        this.redirect(res);
+      },
+      e => {
+        this.processing$.next(false);
+        this.errorHandler.handleHttpError(e);
+      }
+    );
   }
 
   /**
@@ -75,16 +74,16 @@ export class ConsentState {
       return;
     }
     this.processing$.next(true);
-    this.oidcService.deny(this.locator)
-      .subscribe(
-        res => {
-          this.processing$.next(false);
-          this.redirect(res);
-        },
-        e => {
-          this.processing$.next(false);
-          this.errorHandler.handleHttpError(e);
-        });
+    this.oidcService.deny(this.locator).subscribe(
+      res => {
+        this.processing$.next(false);
+        this.redirect(res);
+      },
+      e => {
+        this.processing$.next(false);
+        this.errorHandler.handleHttpError(e);
+      }
+    );
   }
 
   private redirect(resp: OidcAuthorizeResult) {
@@ -109,5 +108,4 @@ export class ConsentState {
       window.location.assign(resp.url);
     }
   }
-
 }

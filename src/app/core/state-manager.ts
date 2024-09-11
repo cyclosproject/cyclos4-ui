@@ -10,17 +10,14 @@ import { tap } from 'rxjs/operators';
  * Service used to navigate between pages and managing the component state
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class StateManager {
-
   private state = new Map<string, any>();
   private subscriptions: Subscription[] = [];
   private global = new Map<string, any>();
 
-  constructor(
-    dataForFrontendHolder: DataForFrontendHolder,
-    @Optional() private router: Router) {
+  constructor(dataForFrontendHolder: DataForFrontendHolder, @Optional() private router: Router) {
     dataForFrontendHolder.subscribe(() => this.clear());
   }
 
@@ -44,9 +41,7 @@ export class StateManager {
       return observableOf(this.state.get(k));
     }
     // Save the value whenever the operator is subscribed
-    return fetch.pipe(
-      tap(value => this.state.set(k, value)),
-    );
+    return fetch.pipe(tap(value => this.state.set(k, value)));
   }
 
   /**
@@ -150,5 +145,4 @@ export class StateManager {
   private get url(): string {
     return this.router ? this.router.url : 'local';
   }
-
 }

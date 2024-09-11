@@ -1,6 +1,16 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CreateDeviceConfirmation, CustomField, CustomFieldTypeEnum, DeviceConfirmationTypeEnum, GenerateVoucher, PasswordInput, User, VoucherDataForGenerate, VoucherGenerationAmountEnum } from 'app/api/models';
+import {
+  CreateDeviceConfirmation,
+  CustomField,
+  CustomFieldTypeEnum,
+  DeviceConfirmationTypeEnum,
+  GenerateVoucher,
+  PasswordInput,
+  User,
+  VoucherDataForGenerate,
+  VoucherGenerationAmountEnum
+} from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { Enter } from 'app/core/shortcut.service';
 import { BaseComponent } from 'app/shared/base.component';
@@ -8,10 +18,9 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'generate-vouchers-step-confirm',
   templateUrl: 'generate-vouchers-step-confirm.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GenerateVouchersStepConfirmComponent extends BaseComponent implements OnInit {
-
   @Input() confirmationPasswordInput: PasswordInput;
   @Input() confirmationPassword: FormControl;
   @Input() generateVoucher: GenerateVoucher;
@@ -25,8 +34,7 @@ export class GenerateVouchersStepConfirmComponent extends BaseComponent implemen
   form: FormGroup;
   createDeviceConfirmation: () => CreateDeviceConfirmation;
 
-  constructor(injector: Injector,
-    public fieldHelper: FieldHelperService) {
+  constructor(injector: Injector, public fieldHelper: FieldHelperService) {
     super(injector);
   }
 
@@ -43,7 +51,7 @@ export class GenerateVouchersStepConfirmComponent extends BaseComponent implemen
         type: DeviceConfirmationTypeEnum.GENERATE_VOUCHERS,
         amount: this.generateVoucher.amount,
         voucherType: this.data.type.id,
-        numberOfVouchers: this.generateVoucher.count,
+        numberOfVouchers: this.generateVoucher.count
       };
     };
     // When there's no confirmation password, the Enter key will confirm

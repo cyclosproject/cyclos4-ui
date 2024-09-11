@@ -7,8 +7,8 @@ import { ImportsHelperService } from 'app/ui/core/imports-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 
 export interface FieldControl {
-  field: ImportedField,
-  control: FormControl,
+  field: ImportedField;
+  control: FormControl;
   multiline: boolean;
 }
 
@@ -18,18 +18,14 @@ export interface FieldControl {
 @Component({
   selector: 'edit-imported-line',
   templateUrl: 'edit-imported-line.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditImportedLineComponent extends BasePageComponent<ImportedLineDataForEdit> implements OnInit {
-
   id: string;
   form: FormGroup;
   controls: FieldControl[];
 
-  constructor(
-    injector: Injector,
-    private importsService: ImportsService,
-    public importsHelper: ImportsHelperService) {
+  constructor(injector: Injector, private importsService: ImportsService, public importsHelper: ImportsHelperService) {
     super(injector);
   }
 
@@ -39,7 +35,7 @@ export class EditImportedLineComponent extends BasePageComponent<ImportedLineDat
     const route = this.route.snapshot;
     this.id = route.params.id;
 
-    this.addSub(this.importsService.getImportedLineDataForEdit({ id: this.id }).subscribe(data => this.data = data));
+    this.addSub(this.importsService.getImportedLineDataForEdit({ id: this.id }).subscribe(data => (this.data = data)));
   }
 
   onDataInitialized(data: ImportedLineDataForEdit) {
@@ -62,12 +58,16 @@ export class EditImportedLineComponent extends BasePageComponent<ImportedLineDat
       return;
     }
     const params = { ...this.data.importedLine, ...this.form.value } as ImportedLineEdit;
-    this.addSub(this.importsService.updateImportedLine({
-      id: this.id,
-      body: params
-    }).subscribe(() => {
-      this.router.navigate(['/imports', 'lines', 'view', this.id], { replaceUrl: true });
-    }));
+    this.addSub(
+      this.importsService
+        .updateImportedLine({
+          id: this.id,
+          body: params
+        })
+        .subscribe(() => {
+          this.router.navigate(['/imports', 'lines', 'view', this.id], { replaceUrl: true });
+        })
+    );
   }
 
   resolveMenu() {

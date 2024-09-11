@@ -12,14 +12,13 @@ export type VoucherSearchParams = VouchersQueryFilters & {
  * Common methods for pages that search voucher
  */
 @Directive()
-export abstract class BaseSearchVouchersComponent<D extends BaseVouchersDataForSearch, P extends VoucherSearchParams>
-  extends BaseSearchPageComponent<D, P, VoucherResult> {
-
+export abstract class BaseSearchVouchersComponent<
+  D extends BaseVouchersDataForSearch,
+  P extends VoucherSearchParams
+> extends BaseSearchPageComponent<D, P, VoucherResult> {
   protected vouchersService: VouchersService;
 
-  constructor(
-    injector: Injector
-  ) {
+  constructor(injector: Injector) {
     super(injector);
     this.vouchersService = injector.get(VouchersService);
   }
@@ -33,7 +32,7 @@ export abstract class BaseSearchVouchersComponent<D extends BaseVouchersDataForS
   }
 
   get statusOptions(): FieldOption[] {
-    let statuses = (Object.values(VoucherStatusEnum) as VoucherStatusEnum[]);
+    let statuses = Object.values(VoucherStatusEnum) as VoucherStatusEnum[];
     if (!this.useInactiveStatus()) {
       statuses = statuses.filter(st => st !== VoucherStatusEnum.INACTIVE);
     }

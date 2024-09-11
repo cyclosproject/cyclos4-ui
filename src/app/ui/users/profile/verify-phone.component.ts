@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { CodeVerificationStatusEnum, PhoneEditWithId } from 'app/api/models';
 import { PhonesService } from 'app/api/services/phones.service';
@@ -14,10 +23,9 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'verify-phone',
   templateUrl: 'verify-phone.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VerifyPhoneComponent extends BaseComponent implements OnInit {
-
   @Input() phone: PhoneEditWithId;
   @Output() verified = new EventEmitter<boolean>();
 
@@ -27,10 +35,7 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
 
   @ViewChild('codeField', { static: true }) codeField: InputFieldComponent;
 
-  constructor(
-    injector: Injector,
-    public modalRef: BsModalRef,
-    private phonesService: PhonesService) {
+  constructor(injector: Injector, public modalRef: BsModalRef, private phonesService: PhonesService) {
     super(injector);
 
     this.code = this.formBuilder.control(null, Validators.required);
@@ -45,12 +50,13 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
    * Sends the verification code
    */
   sendCode() {
-    this.addSub(this.phonesService.sendPhoneVerificationCode({ idOrNumber: this.phone.id })
-      .subscribe(phoneNumber => {
+    this.addSub(
+      this.phonesService.sendPhoneVerificationCode({ idOrNumber: this.phone.id }).subscribe(phoneNumber => {
         this.message = this.i18n.phone.verify.done(phoneNumber);
         this.code.setValue(null);
         this.codeField.focus();
-      }));
+      })
+    );
   }
 
   private set message(message: string) {
@@ -68,22 +74,26 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
     if (!validateBeforeSubmit(this.code)) {
       return;
     }
-    this.addSub(this.phonesService.verifyPhone({
-      idOrNumber: this.phone.id,
-      code: this.code.value,
-    }).subscribe(status => {
-      switch (status) {
-        case CodeVerificationStatusEnum.SUCCESS:
-          this.disabled = true;
-          this.verified.emit(true);
-          break;
-        case CodeVerificationStatusEnum.MAX_ATTEMPTS_REACHED:
-          this.notification.error(this.i18n.phone.error.verify.maxAttempts);
-          break;
-        default:
-          this.notification.error(this.i18n.phone.error.verify.invalid);
-          break;
-      }
-    }));
+    this.addSub(
+      this.phonesService
+        .verifyPhone({
+          idOrNumber: this.phone.id,
+          code: this.code.value
+        })
+        .subscribe(status => {
+          switch (status) {
+            case CodeVerificationStatusEnum.SUCCESS:
+              this.disabled = true;
+              this.verified.emit(true);
+              break;
+            case CodeVerificationStatusEnum.MAX_ATTEMPTS_REACHED:
+              this.notification.error(this.i18n.phone.error.verify.maxAttempts);
+              break;
+            default:
+              this.notification.error(this.i18n.phone.error.verify.invalid);
+              break;
+          }
+        })
+    );
   }
 }

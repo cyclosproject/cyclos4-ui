@@ -3,16 +3,16 @@ import { Directive, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { QueryFilters, ResultTypeEnum } from 'app/api/models';
 import { NextRequestState } from 'app/core/next-request-state';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
+import { PagedResults } from 'app/shared/paged-results';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { PageData } from 'app/ui/shared/page-data';
-import { PagedResults } from 'app/shared/paged-results';
 import { ResultType } from 'app/ui/shared/result-type';
 import { isEqual } from 'lodash-es';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Base class implemented by search pages.
@@ -21,7 +21,10 @@ import { SvgIcon } from 'app/core/svg-icon';
  * @param R The result type
  */
 @Directive()
-export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> extends BasePageComponent<D> implements OnInit {
+export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R>
+  extends BasePageComponent<D>
+  implements OnInit
+{
   // Export ResultType to the template
   ResultType = ResultType;
 
@@ -44,7 +47,7 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
 
   private _moreFiltersAction: HeadingAction;
 
-  protected getInitialFormValue(data: D): { [key: string]: any; } {
+  protected getInitialFormValue(data: D): { [key: string]: any } {
     return data['query'] || {};
   }
 
@@ -54,8 +57,7 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
    * IMPORTANT: Any control or value added after the data intilialization will cause unwanted behaviours with the filters, like don't
    * remember the filters when going back from a row.
    */
-  protected prepareForm(_data: D) {
-  }
+  protected prepareForm(_data: D) {}
 
   protected onDataInitialized(data: D) {
     // First prepare the form, filling all necessary controls
@@ -68,28 +70,33 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
     this.previousValue = this.form.value;
     this.previousResultType = this.resultType;
     this.resultType$.next(this.previousResultType);
-    this.addSub(this.resultTypeControl.valueChanges.subscribe(rt => {
-      const previous = this.previousResultType;
-      this.previousResultType = rt;
-      this.resultType$.next(rt);
-      if (this.shouldUpdateOnResultTypeChange(rt, previous)) {
-        this.update();
-      }
-      if (previous == null || previous !== rt) {
-        this.rendering = true;
-        this.stateManager.set('resultType', rt);
-        this.onResultTypeChanged(rt, previous);
-      }
-    }));
+    this.addSub(
+      this.resultTypeControl.valueChanges.subscribe(rt => {
+        const previous = this.previousResultType;
+        this.previousResultType = rt;
+        this.resultType$.next(rt);
+        if (this.shouldUpdateOnResultTypeChange(rt, previous)) {
+          this.update();
+        }
+        if (previous == null || previous !== rt) {
+          this.rendering = true;
+          this.stateManager.set('resultType', rt);
+          this.onResultTypeChanged(rt, previous);
+        }
+      })
+    );
 
     // Only after finishing initialization add a listener to form values to update the results. This avoids duplicated searches.
     setTimeout(() => {
-      this.addSub(this.form.valueChanges.pipe(debounceTime(ApiHelper.DEBOUNCE_TIME)).subscribe(value => {
-        if (this.shouldUpdateOnChange(value)) {
-          this.update();
-        }
-        this.previousValue = value;
-      }), true);
+      this.addSub(
+        this.form.valueChanges.pipe(debounceTime(ApiHelper.DEBOUNCE_TIME)).subscribe(value => {
+          if (this.shouldUpdateOnChange(value)) {
+            this.update();
+          }
+          this.previousValue = value;
+        }),
+        true
+      );
       // When starting with categories, don't initially search
       if (this.previousResultType !== ResultType.CATEGORIES) {
         this.update();
@@ -128,8 +135,7 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
     this.results$.next(results);
   }
 
-  protected onBeforeRender(_results: PagedResults<R>) {
-  }
+  protected onBeforeRender(_results: PagedResults<R>) {}
 
   get rendering(): boolean {
     return this.rendering$.value;
@@ -156,7 +162,7 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
     const val = this.form.value;
     return {
       page: val.page,
-      pageSize: val.pageSize,
+      pageSize: val.pageSize
     };
   }
   set pageData(pageData: PageData) {
@@ -195,11 +201,16 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
       return this._moreFiltersAction;
     }
 
-    this._moreFiltersAction = new HeadingAction(this.showMoreFiltersIcon(), this.showMoreFiltersLabel(), () => {
-      this.moreFilters = !this.moreFilters;
-      this._moreFiltersAction.icon = this.moreFilters ? this.showLessFiltersIcon() : this.showMoreFiltersIcon();
-      this._moreFiltersAction.label = this.moreFilters ? this.showLessFiltersLabel() : this.showMoreFiltersLabel();
-    }, true);
+    this._moreFiltersAction = new HeadingAction(
+      this.showMoreFiltersIcon(),
+      this.showMoreFiltersLabel(),
+      () => {
+        this.moreFilters = !this.moreFilters;
+        this._moreFiltersAction.icon = this.moreFilters ? this.showLessFiltersIcon() : this.showMoreFiltersIcon();
+        this._moreFiltersAction.label = this.moreFilters ? this.showLessFiltersLabel() : this.showMoreFiltersLabel();
+      },
+      true
+    );
     this._moreFiltersAction.breakpoint = 'gt-xxs';
     this._moreFiltersAction.maybeRoot = true;
 
@@ -264,8 +275,7 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
    * @param _resultType The new result type
    * @param _previous The previous result type
    */
-  protected onResultTypeChanged(_resultType: ResultType, _previous: ResultType): void {
-  }
+  protected onResultTypeChanged(_resultType: ResultType, _previous: ResultType): void {}
 
   /**
    * Must be implemented to return the names for each form control
@@ -307,12 +317,14 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
     this.nextRequestState.leaveNotification = true;
     const value = this.form.value;
     value.pageSize = this.uiLayout.searchPageSize;
-    this.addSub(this.doSearch(this.toSearchParams(value)).subscribe(response => {
-      if (this.resultType === ResultType.CATEGORIES) {
-        this.resultType = this.getDefaultResultType();
-      }
-      this.results = PagedResults.from(response);
-    }));
+    this.addSub(
+      this.doSearch(this.toSearchParams(value)).subscribe(response => {
+        if (this.resultType === ResultType.CATEGORIES) {
+          this.resultType = this.getDefaultResultType();
+        }
+        this.results = PagedResults.from(response);
+      })
+    );
   }
 
   /**
@@ -339,5 +351,4 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
       this.ignoreNextUpdate = false;
     }
   }
-
 }

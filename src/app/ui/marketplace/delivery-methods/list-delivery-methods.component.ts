@@ -1,5 +1,10 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { DeliveryMethod, DeliveryMethodChargeTypeEnum, DeliveryMethodTypeEnum, UserDeliveryMethodsListData } from 'app/api/models';
+import {
+  DeliveryMethod,
+  DeliveryMethodChargeTypeEnum,
+  DeliveryMethodTypeEnum,
+  UserDeliveryMethodsListData
+} from 'app/api/models';
 import { DeliveryMethodsService } from 'app/api/services/delivery-methods.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
@@ -12,18 +17,13 @@ import { Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'list-delivery-methods',
   templateUrl: 'list-delivery-methods.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListDeliveryMethodsComponent
-  extends BasePageComponent<UserDeliveryMethodsListData>
-  implements OnInit {
-
+export class ListDeliveryMethodsComponent extends BasePageComponent<UserDeliveryMethodsListData> implements OnInit {
   self: boolean;
   param: string;
 
-  constructor(
-    injector: Injector,
-    private deliveryMethodService: DeliveryMethodsService) {
+  constructor(injector: Injector, private deliveryMethodService: DeliveryMethodsService) {
     super(injector);
   }
 
@@ -31,20 +31,26 @@ export class ListDeliveryMethodsComponent
     super.ngOnInit();
     this.param = this.route.snapshot.params.user || this.ApiHelper.SELF;
 
-    this.addSub(this.deliveryMethodService.getUserDeliveryMethodsListData({ user: this.param }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.deliveryMethodService.getUserDeliveryMethodsListData({ user: this.param }).subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized(data: UserDeliveryMethodsListData) {
-
     this.self = this.authHelper.isSelfOrOwner(data.user);
 
     if (data.canCreate) {
       this.headingActions = [
-        new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () => {
-          this.router.navigate(['/marketplace', this.param, 'delivery-methods', 'new']);
-        }, true),
+        new HeadingAction(
+          SvgIcon.PlusCircle,
+          this.i18n.general.addNew,
+          () => {
+            this.router.navigate(['/marketplace', this.param, 'delivery-methods', 'new']);
+          },
+          true
+        )
       ];
     }
   }
@@ -60,15 +66,17 @@ export class ListDeliveryMethodsComponent
   remove(deliveryMethod: DeliveryMethod) {
     this.confirmation.confirm({
       message: this.i18n.general.removeConfirm(deliveryMethod.name),
-      callback: () => this.doRemove(deliveryMethod),
+      callback: () => this.doRemove(deliveryMethod)
     });
   }
 
   private doRemove(deliveryMethod: DeliveryMethod) {
-    this.addSub(this.deliveryMethodService.deleteDeliveryMethod({ id: deliveryMethod.id }).subscribe(() => {
-      this.notification.snackBar(this.i18n.general.removeDone(deliveryMethod.name));
-      this.reload();
-    }));
+    this.addSub(
+      this.deliveryMethodService.deleteDeliveryMethod({ id: deliveryMethod.id }).subscribe(() => {
+        this.notification.snackBar(this.i18n.general.removeDone(deliveryMethod.name));
+        this.reload();
+      })
+    );
   }
 
   /**

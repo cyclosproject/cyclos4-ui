@@ -1,33 +1,31 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content mode="viewForm" [heading]="i18n.ad.title.webshopSettings"
+    <page-content
+      mode="viewForm"
+      [heading]="i18n.ad.title.webshopSettings"
       [mobileHeading]="i18n.ad.mobileTitle.webshopSettings"
       [headingActions]="headingActions$ | async">
-      <label-value *ngIf="!self" [label]="i18n.general.user"
-        labelPosition="side">
+      <label-value *ngIf="!self" [label]="i18n.general.user" labelPosition="side">
         <user-link [user]="data.user"></user-link>
       </label-value>
-      <label-value [label]="i18n.ad.productNumber"
+      <label-value
+        [label]="i18n.ad.productNumber"
         [value]="data.productNumberGenerated ? i18n.ad.generated : i18n.ad.manual">
       </label-value>
-      <label-value *ngIf="!data.productNumberGenerated"
-        [label]="i18n.ad.productNumberMask" [value]="data.productNumberMask">
+      <label-value
+        *ngIf="!data.productNumberGenerated"
+        [label]="i18n.ad.productNumberMask"
+        [value]="data.productNumberMask">
       </label-value>
-      <hr
-        *ngIf="!data.productNumberGenerated || data.customOrderNumberFormat">
-      <label-value [label]="i18n.ad.orderNumber"
+      <hr *ngIf="!data.productNumberGenerated || data.customOrderNumberFormat" />
+      <label-value
+        [label]="i18n.ad.orderNumber"
         [value]="!data.customOrderNumberFormat ? i18n.ad.generated : i18n.ad.manual">
       </label-value>
       <ng-container *ngIf="data.customOrderNumberFormat">
-        <label-value [label]="i18n.ad.prefix"
-          [value]="data.orderNumberPrefix">
-        </label-value>
-        <label-value [label]="i18n.ad.length"
-          [value]="data.orderNumberInnerLength">
-        </label-value>
-        <label-value [label]="i18n.ad.suffix"
-          [value]="data.orderNumberSuffix">
-        </label-value>
+        <label-value [label]="i18n.ad.prefix" [value]="data.orderNumberPrefix"> </label-value>
+        <label-value [label]="i18n.ad.length" [value]="data.orderNumberInnerLength"> </label-value>
+        <label-value [label]="i18n.ad.suffix" [value]="data.orderNumberSuffix"> </label-value>
       </ng-container>
     </page-content>
   </ng-container>

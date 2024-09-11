@@ -1,31 +1,43 @@
 <h1>{{ i18n.voucher.changePin.title }}</h1>
 <ng-container [formGroup]="form">
-  <input-field *ngIf="voucher.requireOldPinForChange" required focused
-    formControlName="oldPin" type="password"
+  <input-field
+    *ngIf="voucher.requireOldPinForChange"
+    required
+    focused
+    formControlName="oldPin"
+    type="password"
     [label]="i18n.voucher.changePin.oldPin"></input-field>
-  <input-field required [focused]="!voucher.requireOldPinForChange"
-    formControlName="newPin" type="password"
+  <input-field
+    required
+    [focused]="!voucher.requireOldPinForChange"
+    formControlName="newPin"
+    type="password"
     [label]="i18n.voucher.changePin.newPin"></input-field>
-  <input-field required formControlName="newPinConfirmation" type="password"
+  <input-field
+    required
+    formControlName="newPinConfirmation"
+    type="password"
     [label]="i18n.voucher.changePin.pinConfirmation"></input-field>
 
   <confirmation-password
     *ngIf="!voucher.requireOldPinForChange && voucher.confirmationPasswordInput"
-    class="mt-4" formControlName="confirmationPassword"
+    class="mt-4"
+    formControlName="confirmationPassword"
     [createDeviceConfirmation]="createDeviceConfirmation"
-    (showSubmit)="showSubmit$.next($event)" (confirmed)="submit($event)"
+    (showSubmit)="showSubmit$.next($event)"
+    (confirmed)="submit($event)"
     [passwordInput]="voucher.confirmationPasswordInput">
   </confirmation-password>
 </ng-container>
 
 <actions forceRow>
-  <action-button *ngIf="showSubmit$ | async; else emptyDiv"
-    [disabled]="requesting$ | async" (action)="submit()"
+  <action-button
+    *ngIf="showSubmit$ | async; else emptyDiv"
+    [disabled]="requesting$ | async"
+    (action)="submit()"
     [label]="i18n.general.submit">
   </action-button>
-  <action-button outline (action)="modalRef.hide()"
-    [label]="i18n.general.cancel">
-  </action-button>
+  <action-button outline (action)="modalRef.hide()" [label]="i18n.general.cancel"> </action-button>
   <ng-template #emptyDiv>
     <div></div>
   </ng-template>

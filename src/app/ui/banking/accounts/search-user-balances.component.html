@@ -1,117 +1,144 @@
-<page-layout [ready]="(data$ | async)">
-  <ng-container *ngIf="data then content">
-  </ng-container>
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data; then content"> </ng-container>
 </page-layout>
 
 <ng-template #content>
-  <page-content mode="filters" [heading]="i18n.account.userBalances.title"
+  <page-content
+    mode="filters"
+    [heading]="i18n.account.userBalances.title"
     [mobileHeading]="i18n.account.userBalances.mobileTitle"
     [headingActions]="headingActions$ | async">
-    <div [formGroup]="form"
-      class="filters-form filters-form-separator border-bottom">
+    <div [formGroup]="form" class="filters-form filters-form-separator border-bottom">
       <div class="row filters-row">
         <div class="col-12 col-md-6">
-          <single-selection-field formControlName="accountType"
-            [label]="i18n.account.account">
-            <field-option *ngFor="let accountType of data.accountTypes"
-              [id]="accountType.id" [value]="accountType.id"
+          <single-selection-field formControlName="accountType" [label]="i18n.account.account">
+            <field-option
+              *ngFor="let accountType of data.accountTypes"
+              [id]="accountType.id"
+              [value]="accountType.id"
               [internalName]="accountType.internalName"
               [text]="accountType.name">
             </field-option>
           </single-selection-field>
         </div>
         <div class="col-12 col-md-6" *ngFor="let f of fieldsInBasicSearch">
-          <basic-profile-field-filter *ngIf="!(f.id)" [field]="f"
-            [formControl]="form.get('profileFields').get(f.field)">
+          <basic-profile-field-filter *ngIf="!f.id" [field]="f" [formControl]="form.get('profileFields').get(f.field)">
           </basic-profile-field-filter>
-          <custom-field-filter *ngIf="f.id" [field]="f"
-            [formControl]="form.get('profileFields').get(f.internalName)">
+          <custom-field-filter *ngIf="f.id" [field]="f" [formControl]="form.get('profileFields').get(f.internalName)">
           </custom-field-filter>
         </div>
-        <ng-container *ngIf="(moreFilters$ | async)">
+        <ng-container *ngIf="moreFilters$ | async">
           <!-- Force a new line to keep range in same row -->
           <div class="w-100"></div>
           <div class="col-12 col-md-6">
-            <decimal-field formControlName="minBalance"
-              [label]="i18n.account.userBalances.minBalance" fieldSize="full"
-              [scale]="currencyDecimalDigits()" allowNegative>
+            <decimal-field
+              formControlName="minBalance"
+              [label]="i18n.account.userBalances.minBalance"
+              fieldSize="full"
+              [scale]="currencyDecimalDigits()"
+              allowNegative>
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
-            <decimal-field formControlName="maxBalance"
-              [label]="i18n.account.userBalances.maxBalance" fieldSize="full"
-              [scale]="currencyDecimalDigits()" allowNegative>
+            <decimal-field
+              formControlName="maxBalance"
+              [label]="i18n.account.userBalances.maxBalance"
+              fieldSize="full"
+              [scale]="currencyDecimalDigits()"
+              allowNegative>
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
-            <decimal-field formControlName="minMediumRange"
+            <decimal-field
+              formControlName="minMediumRange"
               [label]="i18n.account.userBalances.fromYellowBalance"
-              fieldSize="full" [scale]="0">
+              fieldSize="full"
+              [scale]="0">
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
-            <decimal-field formControlName="maxMediumRange"
+            <decimal-field
+              formControlName="maxMediumRange"
               [label]="i18n.account.userBalances.toYellowBalance"
-              fieldSize="full" [scale]="0">
+              fieldSize="full"
+              [scale]="0">
             </decimal-field>
           </div>
           <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
-            <distance-selection-field [data]="data.searchByDistanceData"
+            <distance-selection-field
+              [data]="data.searchByDistanceData"
               formControlName="distanceFilter"
               [label]="i18n.general.distanceFilter">
             </distance-selection-field>
           </div>
           <div class="col-12 col-md-6">
             <!-- active and blocked statuses are always there -->
-            <multi-selection-field *ngIf="data.statuses?.length ?? 0 > 2"
+            <multi-selection-field
+              *ngIf="data.statuses?.length ?? 0 > 2"
               formControlName="statuses"
               [emptyLabel]="i18n.user.statusEmptyLabel"
               [label]="i18n.general.status">
-              <field-option *ngFor="let status of data.statuses"
-                [value]="status" [text]="userHelper.userStatus(status)">
+              <field-option
+                *ngFor="let status of data.statuses"
+                [value]="status"
+                [text]="userHelper.userStatus(status)">
               </field-option>
             </multi-selection-field>
           </div>
           <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field hierarchyProperty="groupSet"
-              formControlName="groups" [emptyLabel]="i18n.general.notApplied"
+            <multi-selection-field
+              hierarchyProperty="groupSet"
+              formControlName="groups"
+              [emptyLabel]="i18n.general.notApplied"
               [label]="i18n.user.groupFilter">
-              <field-option *ngFor="let group of data.groups"
+              <field-option
+                *ngFor="let group of data.groups"
                 [value]="ApiHelper.internalNameOrId(group)"
-                [internalName]="group.internalName" [id]="group.id"
-                [text]="group.name" [parent]="group.groupSet">
+                [internalName]="group.internalName"
+                [id]="group.id"
+                [text]="group.name"
+                [parent]="group.groupSet">
               </field-option>
             </multi-selection-field>
           </div>
           <div *ngIf="data.products?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field formControlName="products"
+            <multi-selection-field
+              formControlName="products"
               [emptyLabel]="i18n.general.notApplied"
               [label]="i18n.user.assignedProducts">
-              <field-option *ngFor="let prod of data.products"
+              <field-option
+                *ngFor="let prod of data.products"
                 [value]="ApiHelper.internalNameOrId(prod)"
-                [internalName]="prod.internalName" [id]="prod.id"
+                [internalName]="prod.internalName"
+                [id]="prod.id"
                 [text]="prod.name">
               </field-option>
             </multi-selection-field>
           </div>
           <div *ngIf="data.agreements?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field formControlName="acceptedAgreements"
+            <multi-selection-field
+              formControlName="acceptedAgreements"
               [emptyLabel]="i18n.general.notApplied"
               [label]="i18n.user.acceptedAgreements">
-              <field-option *ngFor="let agr of data.agreements"
+              <field-option
+                *ngFor="let agr of data.agreements"
                 [value]="ApiHelper.internalNameOrId(agr)"
-                [internalName]="agr.internalName" [id]="agr.id"
+                [internalName]="agr.internalName"
+                [id]="agr.id"
                 [text]="agr.name">
               </field-option>
             </multi-selection-field>
           </div>
           <div *ngIf="data.agreements?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field formControlName="notAcceptedAgreements"
+            <multi-selection-field
+              formControlName="notAcceptedAgreements"
               [emptyLabel]="i18n.general.notApplied"
               [label]="i18n.user.notAcceptedAgreements">
-              <field-option *ngFor="let agr of data.agreements"
+              <field-option
+                *ngFor="let agr of data.agreements"
                 [value]="ApiHelper.internalNameOrId(agr)"
-                [internalName]="agr.internalName" [id]="agr.id"
+                [internalName]="agr.internalName"
+                [id]="agr.id"
                 [text]="agr.name">
               </field-option>
             </multi-selection-field>
@@ -119,76 +146,102 @@
           <!-- Creation date -->
           <div class="row no-gutters col-12">
             <div class="col-12 col-md-6">
-              <date-field formControlName="beginCreationPeriod"
-                [label]="i18n.user.creationBegin" minDate="past100"
-                maxDate="todayEnd" fieldSize="full" class>
+              <date-field
+                formControlName="beginCreationPeriod"
+                [label]="i18n.user.creationBegin"
+                minDate="past100"
+                maxDate="todayEnd"
+                fieldSize="full"
+                class>
               </date-field>
             </div>
             <div class="col-12 col-md-6">
-              <date-field formControlName="endCreationPeriod"
-                [label]="i18n.user.creationEnd" minDate="past100"
-                maxDate="todayEnd" fieldSize="full">
+              <date-field
+                formControlName="endCreationPeriod"
+                [label]="i18n.user.creationEnd"
+                minDate="past100"
+                maxDate="todayEnd"
+                fieldSize="full">
               </date-field>
             </div>
           </div>
           <!-- Activation date -->
           <div class="row no-gutters col-12">
             <div class="col-12 col-md-6">
-              <date-field formControlName="beginActivationPeriod"
-                [label]="i18n.user.beginUserActivationDate" minDate="past100"
-                maxDate="todayEnd" fieldSize="full" class>
+              <date-field
+                formControlName="beginActivationPeriod"
+                [label]="i18n.user.beginUserActivationDate"
+                minDate="past100"
+                maxDate="todayEnd"
+                fieldSize="full"
+                class>
               </date-field>
             </div>
             <div class="col-12 col-md-6">
-              <date-field formControlName="endActivationPeriod"
-                [label]="i18n.user.endUserActivationDate" minDate="past100"
-                maxDate="todayEnd" fieldSize="full">
+              <date-field
+                formControlName="endActivationPeriod"
+                [label]="i18n.user.endUserActivationDate"
+                minDate="past100"
+                maxDate="todayEnd"
+                fieldSize="full">
               </date-field>
             </div>
           </div>
           <!-- Last login date -->
           <div class="row no-gutters col-12">
             <div class="col-12 col-md-6">
-              <date-field formControlName="beginLastLoginPeriod"
-                [label]="i18n.user.beginLastLoginDate" minDate="past100"
-                maxDate="todayEnd" fieldSize="full" class>
+              <date-field
+                formControlName="beginLastLoginPeriod"
+                [label]="i18n.user.beginLastLoginDate"
+                minDate="past100"
+                maxDate="todayEnd"
+                fieldSize="full"
+                class>
               </date-field>
             </div>
             <div class="col-12 col-md-6">
-              <date-field formControlName="endLastLoginPeriod"
-                [label]="i18n.user.endLastLoginDate" minDate="past100"
-                maxDate="todayEnd" fieldSize="full">
+              <date-field
+                formControlName="endLastLoginPeriod"
+                [label]="i18n.user.endLastLoginDate"
+                minDate="past100"
+                maxDate="todayEnd"
+                fieldSize="full">
               </date-field>
             </div>
           </div>
           <!-- Negative since -->
           <div class="row no-gutters col-12">
             <div class="col-12 col-md-6">
-              <date-field formControlName="beginNegativeSincePeriod"
+              <date-field
+                formControlName="beginNegativeSincePeriod"
                 [label]="i18n.account.userBalances.beginNegativeSince"
-                minDate="past100" maxDate="todayEnd" fieldSize="full" class>
+                minDate="past100"
+                maxDate="todayEnd"
+                fieldSize="full"
+                class>
               </date-field>
             </div>
             <div class="col-12 col-md-6">
-              <date-field formControlName="endNegativeSincePeriod"
+              <date-field
+                formControlName="endNegativeSincePeriod"
                 [label]="i18n.account.userBalances.endNegativeSince"
-                minDate="past100" maxDate="todayEnd" fieldSize="full">
+                minDate="past100"
+                maxDate="todayEnd"
+                fieldSize="full">
               </date-field>
             </div>
           </div>
           <div class="col-12 col-md-6">
-            <user-field formControlName="brokers"
-              [label]="i18n.general.usersOfBroker"
-              [filters]="userSearchFilters()">
+            <user-field formControlName="brokers" [label]="i18n.general.usersOfBroker" [filters]="userSearchFilters()">
             </user-field>
           </div>
-          <div class="col-12 col-md-6"
-            *ngFor="let f of fieldsInAdvancedSearch">
-            <basic-profile-field-filter *ngIf="!(f.id)" [field]="f"
+          <div class="col-12 col-md-6" *ngFor="let f of fieldsInAdvancedSearch">
+            <basic-profile-field-filter
+              *ngIf="!f.id"
+              [field]="f"
               [formControl]="form.get('profileFields').get(f.field)">
             </basic-profile-field-filter>
-            <custom-field-filter *ngIf="f.id" [field]="f"
-              [formControl]="form.get('profileFields').get(f.internalName)">
+            <custom-field-filter *ngIf="f.id" [field]="f" [formControl]="form.get('profileFields').get(f.internalName)">
             </custom-field-filter>
           </div>
         </ng-container>
@@ -196,51 +249,42 @@
     </div>
     <div class="row filters-row">
       <div class="col-12 col-md-9 col-xs-5">
-        <result-type-field [allowedResultTypes]="allowedResultTypes$ | async"
-          [formControl]="resultTypeControl">
+        <result-type-field [allowedResultTypes]="allowedResultTypes$ | async" [formControl]="resultTypeControl">
         </result-type-field>
       </div>
-      <div class="col-12 col-md-3 col-xs-7"
-        *ngIf="(resultType$ | async) !== 'map'">
-        <single-selection-field [formControl]="form.get('orderBy')"
-          [display]="i18n.general.orderBy">
-          <field-option value="alphabeticallyDesc"
-            [text]="i18n.account.userBalances.orderBy.alphabeticallyDesc">
+      <div class="col-12 col-md-3 col-xs-7" *ngIf="(resultType$ | async) !== 'map'">
+        <single-selection-field [formControl]="form.get('orderBy')" [display]="i18n.general.orderBy">
+          <field-option value="alphabeticallyDesc" [text]="i18n.account.userBalances.orderBy.alphabeticallyDesc">
           </field-option>
-          <field-option value="alphabeticallyAsc"
-            [text]="i18n.account.userBalances.orderBy.alphabeticallyAsc">
+          <field-option value="alphabeticallyAsc" [text]="i18n.account.userBalances.orderBy.alphabeticallyAsc">
           </field-option>
-          <field-option value="balanceDesc"
-            [text]="i18n.account.userBalances.orderBy.balanceDesc">
-          </field-option>
-          <field-option value="balanceAsc"
-            [text]="i18n.account.userBalances.orderBy.balanceAsc">
-          </field-option>
+          <field-option value="balanceDesc" [text]="i18n.account.userBalances.orderBy.balanceDesc"> </field-option>
+          <field-option value="balanceAsc" [text]="i18n.account.userBalances.orderBy.balanceAsc"> </field-option>
         </single-selection-field>
       </div>
-
     </div>
     <!-- Account status -->
     <ng-container>
-      <balances-summary *ngIf="(summary$ | async)" [summary$]="summary$"
-        [currency]="(currency$ | async)">
+      <balances-summary *ngIf="summary$ | async" [summary$]="summary$" [currency]="currency$ | async">
       </balances-summary>
       <spinner *ngIf="(summary$ | async) === null"></spinner>
     </ng-container>
   </page-content>
 
-  <results-layout [resultType]="resultType" [results]="results$ | async"
-    [toLink]="toLink" (update)="update($event)" [rendering$]="rendering$"
+  <results-layout
+    [resultType]="resultType"
+    [results]="results$ | async"
+    [toLink]="toLink"
+    (update)="update($event)"
+    [rendering$]="rendering$"
     [toAddress]="toAddress">
-
-    <mobile-result *mobileResult="let row" [avatarImage]="row.image"
-      [avatarIcon]="SvgIcon.Person">
+    <mobile-result *mobileResult="let row" [avatarImage]="row.image" [avatarIcon]="SvgIcon.Person">
       <div class="cell-text cell-main row">
         <div class="col-6 align-text-start">
           {{ row.display }}
         </div>
         <div class="col-6 align-text-end amount">
-          {{ row.balance | currency:findCurrency() }}
+          {{ row.balance | currency : findCurrency() }}
         </div>
       </div>
     </mobile-result>
@@ -251,7 +295,8 @@
         <th>{{ i18n.general.user }}</th>
         <th *ngIf="showAccountNumber$ | async">{{ i18n.account.number }}</th>
         <th *ngIf="showNegativeSince$ | async">
-          {{ i18n.account.userBalances.negativeSince }}</th>
+          {{ i18n.account.userBalances.negativeSince }}
+        </th>
         <th class="amount">{{ i18n.account.balance }}</th>
       </thead>
       <tbody>
@@ -261,25 +306,24 @@
               <avatar [image]="row.image" [icon]="SvgIcon.Person"></avatar>
             </td>
             <td>{{ row.display }}</td>
-            <td *ngIf="showAccountNumber$ | async">{{ row.accountNumber }}
-            </td>
+            <td *ngIf="showAccountNumber$ | async">{{ row.accountNumber }}</td>
             <td *ngIf="showNegativeSince$ | async">
-              {{ row.negativeSince | date }}</td>
+              {{ row.negativeSince | date }}
+            </td>
             <td class="amount">
-              {{ row.balance | currency:findCurrency() }}
+              {{ row.balance | currency : findCurrency() }}
             </td>
           </tr>
         </ng-container>
       </tbody>
     </table>
 
-    <map-result *resultInfoWindow="let row" [image]="row.image"
-      [address]="row.address">
-      <div class="font-weight-bold"> {{ row.display }}</div>
+    <map-result *resultInfoWindow="let row" [image]="row.image" [address]="row.address">
+      <div class="font-weight-bold">{{ row.display }}</div>
       <div class="font-weight-bold">
-        {{ row.balance | currency:findCurrency() }}</div>
+        {{ row.balance | currency : findCurrency() }}
+      </div>
     </map-result>
-
   </results-layout>
 </ng-template>
 

@@ -26,24 +26,32 @@ export class Shortcut {
     }
   }
 
-  get key(): string { return this._key; }
-  get ctrl(): boolean { return this._ctrl; }
-  get alt(): boolean { return this._alt; }
-  get shift(): boolean { return this._shift; }
+  get key(): string {
+    return this._key;
+  }
+  get ctrl(): boolean {
+    return this._ctrl;
+  }
+  get alt(): boolean {
+    return this._alt;
+  }
+  get shift(): boolean {
+    return this._shift;
+  }
 
   matches(event: KeyboardEvent): boolean {
-    return this.key === event.key
-      && this._ctrl === event.ctrlKey
-      && this._shift === event.shiftKey
-      && this._alt === event.altKey;
+    return (
+      this.key === event.key &&
+      this._ctrl === event.ctrlKey &&
+      this._shift === event.shiftKey &&
+      this._alt === event.altKey
+    );
   }
 
   equals(o: Shortcut) {
-    return o != null
-      && this._key === o._key
-      && this._ctrl === o._ctrl
-      && this._alt === o._alt
-      && this._shift === o._shift;
+    return (
+      o != null && this._key === o._key && this._ctrl === o._ctrl && this._alt === o._alt && this._shift === o._shift
+    );
   }
 
   toString(): string {
@@ -102,11 +110,7 @@ export const Home = 'Home';
 export const End = 'End';
 
 class ShortcutDescriptor {
-  constructor(
-    public shortcuts: Shortcut[],
-    public handler: (event: KeyboardEvent) => boolean,
-    public stop: boolean) {
-  }
+  constructor(public shortcuts: Shortcut[], public handler: (event: KeyboardEvent) => boolean, public stop: boolean) {}
 
   /**
    * Maybe handle the event, according to whether any shortcut matches
@@ -130,10 +134,9 @@ class ShortcutDescriptor {
  * Provides registration to keyboard shortcuts
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ShortcutService {
-
   private descriptors: ShortcutDescriptor[] = [];
 
   constructor() {
@@ -147,11 +150,15 @@ export class ShortcutService {
    * @param handler The event handler in case any of the shortcut matched
    * @param stop Whether to prevent default. True by default, so, must be set to true if the default action should be allowed
    */
-  subscribe(shortcut: string | Shortcut | (string | Shortcut)[], handler: (event: KeyboardEvent) => any, stop = true): Subscription {
+  subscribe(
+    shortcut: string | Shortcut | (string | Shortcut)[],
+    handler: (event: KeyboardEvent) => any,
+    stop = true
+  ): Subscription {
     if (!(shortcut instanceof Array)) {
       shortcut = [shortcut];
     }
-    const shortcuts: Shortcut[] = shortcut.map(s => typeof s === 'string' ? new Shortcut(s) : s);
+    const shortcuts: Shortcut[] = shortcut.map(s => (typeof s === 'string' ? new Shortcut(s) : s));
 
     // Add a descriptor
     const descriptor = new ShortcutDescriptor(shortcuts, handler, stop);
@@ -180,5 +187,4 @@ export class ShortcutService {
     }
     return false;
   }
-
 }

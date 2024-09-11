@@ -8,9 +8,9 @@ import { ValueFormat } from 'app/shared/value-format';
 /** Injection token for the form field itself */
 export const FORM_FIELD = new InjectionToken<BaseFormFieldComponent<any>>('FormField');
 
-export type FieldLabelPosition
+export type FieldLabelPosition =
   /** Always on side, even on xxs */
-  = 'sideForced'
+  | 'sideForced'
 
   /** Above on xxs, on side otherwise */
   | 'side'
@@ -26,7 +26,6 @@ export type FieldLabelPosition
  */
 @Directive()
 export abstract class BaseFormFieldComponent<T> extends BaseControlComponent<T> {
-
   @HostBinding('class.form-field') classFormField = true;
   @HostBinding('class.any-label-value') get classAnyLabelValue() {
     return !blank(this.label);

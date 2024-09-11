@@ -3,12 +3,14 @@ import {
   AccountTypeWithDefaultMediumBalanceRange,
   BasicProfileFieldInput,
   Currency,
-  CustomFieldDetailed, DataForUserBalancesSearch,
+  CustomFieldDetailed,
+  DataForUserBalancesSearch,
   RoleEnum,
   UserAddressResultEnum,
   UserQueryFilters,
   UserWithBalanceResult,
-  UsersWithBalanceQueryFilters, UsersWithBalanceSummary
+  UsersWithBalanceQueryFilters,
+  UsersWithBalanceSummary
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services/accounts.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -32,12 +34,12 @@ type UserBalancesSearchParams = UsersWithBalanceQueryFilters & {
 @Component({
   selector: 'search-user-balances',
   templateUrl: 'search-user-balances.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchUserBalancesComponent
   extends BaseSearchPageComponent<DataForUserBalancesSearch, UserBalancesSearchParams, UserWithBalanceResult>
-  implements OnInit {
-
+  implements OnInit
+{
   summary$ = new BehaviorSubject<UsersWithBalanceSummary>(null);
   currency$ = new BehaviorSubject<Currency>(null);
   customFieldsInSearch: CustomFieldDetailed[] = [];
@@ -59,16 +61,34 @@ export class SearchUserBalancesComponent
 
   getFormControlNames() {
     return [
-      'accountType', 'minMediumRange', 'maxMediumRange', 'minBalance', 'maxBalance', 'orderBy', 'groups', 'distanceFilter', 'brokers',
-      'statuses', 'beginActivationPeriod', 'endActivationPeriod', 'beginCreationPeriod', 'endCreationPeriod', 'beginLastLoginPeriod',
-      'customValues', 'endLastLoginPeriod', 'beginNegativeSincePeriod', 'endNegativeSincePeriod', 'notAcceptedAgreements',
-      'acceptedAgreements', 'products'
+      'accountType',
+      'minMediumRange',
+      'maxMediumRange',
+      'minBalance',
+      'maxBalance',
+      'orderBy',
+      'groups',
+      'distanceFilter',
+      'brokers',
+      'statuses',
+      'beginActivationPeriod',
+      'endActivationPeriod',
+      'beginCreationPeriod',
+      'endCreationPeriod',
+      'beginLastLoginPeriod',
+      'customValues',
+      'endLastLoginPeriod',
+      'beginNegativeSincePeriod',
+      'endNegativeSincePeriod',
+      'notAcceptedAgreements',
+      'acceptedAgreements',
+      'products'
     ];
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.stateManager.cache('data', this.accountsService.getUserBalancesData()).subscribe(data => this.data = data);
+    this.stateManager.cache('data', this.accountsService.getUserBalancesData()).subscribe(data => (this.data = data));
     const allowMap = (((this.login.auth || {}).permissions || {}).users || {}).map;
     this.allowedResultTypes = allowMap ? [ResultType.LIST, ResultType.MAP] : [ResultType.LIST];
   }
@@ -95,8 +115,14 @@ export class SearchUserBalancesComponent
       this.fieldsInAdvancedSearch.push(field);
     });
 
-    this.form.setControl('profileFields',
-      this.fieldHelper.profileFieldsForSearchFormGroup(this.basicFieldsInSearch, this.customFieldsInSearch, data.query.profileFields));
+    this.form.setControl(
+      'profileFields',
+      this.fieldHelper.profileFieldsForSearchFormGroup(
+        this.basicFieldsInSearch,
+        this.customFieldsInSearch,
+        data.query.profileFields
+      )
+    );
   }
 
   onDataInitialized(data: DataForUserBalancesSearch) {
@@ -105,18 +131,22 @@ export class SearchUserBalancesComponent
     const filterAction = this.moreFiltersAction;
     filterAction.breakpoint = null;
     this.headingActions = [filterAction];
-    this.exportHelper.headingActions(data.exportFormats, f =>
-      this.accountsService.exportUsersWithBalances$Response({
-        format: f.internalName,
-        ...this.toSearchParams(this.form.value)
-      })).forEach(a => this.headingActions.push(a));
+    this.exportHelper
+      .headingActions(data.exportFormats, f =>
+        this.accountsService.exportUsersWithBalances$Response({
+          format: f.internalName,
+          ...this.toSearchParams(this.form.value)
+        })
+      )
+      .forEach(a => this.headingActions.push(a));
     this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
-    this.addSub(this.form.controls.accountType.valueChanges.subscribe(
-      accountTypeId => {
+    this.addSub(
+      this.form.controls.accountType.valueChanges.subscribe(accountTypeId => {
         const accType = this.data.accountTypes.find(a => a.id === accountTypeId);
         this.updateYellowRange(accType);
         this.currency$.next(accType.currency);
-      }));
+      })
+    );
     const type = data.accountTypes[0];
     this.currency$.next(type.currency);
     this.updateYellowRange(type);
@@ -187,9 +217,13 @@ export class SearchUserBalancesComponent
   }
 
   doSearch(query: UserBalancesSearchParams) {
-    return this.accountsService.searchUsersWithBalances$Response(query).pipe(tap(() => {
-      this.addSub(this.accountsService.getUserBalancesSummary(query).subscribe(summary => this.summary$.next(summary)));
-    }));
+    return this.accountsService.searchUsersWithBalances$Response(query).pipe(
+      tap(() => {
+        this.addSub(
+          this.accountsService.getUserBalancesSummary(query).subscribe(summary => this.summary$.next(summary))
+        );
+      })
+    );
   }
 
   findCurrency(): Currency {

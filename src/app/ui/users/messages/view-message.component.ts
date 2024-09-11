@@ -13,12 +13,10 @@ import { Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'view-message',
   templateUrl: 'view-message.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewMessageComponent extends BaseViewPageComponent<MessageView> implements OnInit {
-  constructor(
-    injector: Injector,
-    private messagesService: MessagesService) {
+  constructor(injector: Injector, private messagesService: MessagesService) {
     super(injector);
   }
 
@@ -31,13 +29,14 @@ export class ViewMessageComponent extends BaseViewPageComponent<MessageView> imp
   ngOnInit() {
     super.ngOnInit();
     this.id = this.route.snapshot.params.id;
-    this.addSub(this.messagesService.viewMessage({ id: this.id }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.messagesService.viewMessage({ id: this.id }).subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized(data: MessageView) {
-
     if (data.replies) {
       // Insert current message into the replies
       data.replies.splice(data.replyPosition, 0, data);
@@ -47,31 +46,25 @@ export class ViewMessageComponent extends BaseViewPageComponent<MessageView> imp
     if (data.canReply) {
       actions.push(
         new HeadingAction(SvgIcon.Pencil, this.i18n.message.actions.reply, () =>
-          this.router.navigate(['/users', 'messages', 'reply', this.id])));
+          this.router.navigate(['/users', 'messages', 'reply', this.id])
+        )
+      );
     }
     if (data.canMarkUnread) {
       actions.push(
-        new HeadingAction(SvgIcon.EnvelopeOpen, this.i18n.message.actions.markAsUnread, () =>
-          this.markAsUnread()
-        ));
+        new HeadingAction(SvgIcon.EnvelopeOpen, this.i18n.message.actions.markAsUnread, () => this.markAsUnread())
+      );
     }
     if (data.canMoveToTrash) {
-      actions.push(
-        new HeadingAction(SvgIcon.Trash, this.i18n.message.actions.moveToTrash, () =>
-          this.moveToTrash()
-        ));
+      actions.push(new HeadingAction(SvgIcon.Trash, this.i18n.message.actions.moveToTrash, () => this.moveToTrash()));
     }
     if (data.canRemove) {
-      actions.push(
-        new HeadingAction(SvgIcon.Trash, this.i18n.message.actions.remove, () =>
-          this.remove()
-        ));
+      actions.push(new HeadingAction(SvgIcon.Trash, this.i18n.message.actions.remove, () => this.remove()));
     }
     if (data.canRestore) {
       actions.push(
-        new HeadingAction(SvgIcon.ArrowCounterclockwise, this.i18n.message.actions.restore, () =>
-          this.restore()
-        ));
+        new HeadingAction(SvgIcon.ArrowCounterclockwise, this.i18n.message.actions.restore, () => this.restore())
+      );
     }
     this.headingActions = actions;
   }
@@ -87,44 +80,53 @@ export class ViewMessageComponent extends BaseViewPageComponent<MessageView> imp
     if (this.data.removedAt) {
       this.confirmation.confirm({
         message: this.i18n.general.removeItemConfirm,
-        callback: () => this.addSub(this.messagesService.deleteMessage({ id: this.data.id })
-          .subscribe(() => {
-            this.notification.snackBar(this.i18n.message.removeDone);
-            history.back();
-          })),
+        callback: () =>
+          this.addSub(
+            this.messagesService.deleteMessage({ id: this.data.id }).subscribe(() => {
+              this.notification.snackBar(this.i18n.message.removeDone);
+              history.back();
+            })
+          )
       });
     } else {
-      this.addSub(this.messagesService.moveMessagesToTrash({ ids: [this.data.id] }).subscribe(() => {
-        this.notification.snackBar(this.i18n.message.moveToTrashDone);
-        this.reload();
-      }));
+      this.addSub(
+        this.messagesService.moveMessagesToTrash({ ids: [this.data.id] }).subscribe(() => {
+          this.notification.snackBar(this.i18n.message.moveToTrashDone);
+          this.reload();
+        })
+      );
     }
   }
 
   private restore() {
-    this.addSub(this.messagesService.restoreMessagesFromTrash({ ids: [this.data.id] }).subscribe(() => {
-      this.notification.snackBar(this.i18n.message.messageRestored);
-      this.reload();
-    }));
+    this.addSub(
+      this.messagesService.restoreMessagesFromTrash({ ids: [this.data.id] }).subscribe(() => {
+        this.notification.snackBar(this.i18n.message.messageRestored);
+        this.reload();
+      })
+    );
   }
 
   private moveToTrash() {
-    this.addSub(this.messagesService.moveMessagesToTrash({ ids: [this.data.id] }).subscribe(() => {
-      this.notification.snackBar(this.i18n.message.moveToTrashDone);
-      this.reload();
-    }));
+    this.addSub(
+      this.messagesService.moveMessagesToTrash({ ids: [this.data.id] }).subscribe(() => {
+        this.notification.snackBar(this.i18n.message.moveToTrashDone);
+        this.reload();
+      })
+    );
   }
 
   private markAsUnread() {
-    this.addSub(this.messagesService.markMessagesAsUnread({ ids: [this.data.id] }).subscribe(() => {
-      this.notification.snackBar(this.i18n.message.markAsUnreadDone);
-      history.back();
-    }));
+    this.addSub(
+      this.messagesService.markMessagesAsUnread({ ids: [this.data.id] }).subscribe(() => {
+        this.notification.snackBar(this.i18n.message.markAsUnreadDone);
+        history.back();
+      })
+    );
   }
 
   resolveMenu() {
-    return this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR ?
-      Menu.SYSTEM_MESSAGES : Menu.MESSAGES;
+    return this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR ? Menu.SYSTEM_MESSAGES : Menu.MESSAGES;
   }
 
   /**

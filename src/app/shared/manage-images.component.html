@@ -3,15 +3,17 @@
 <div class="mb-3">{{ i18n.field.image.manageMessage }}</div>
 
 <div cdkDropList (cdkDropListDropped)="drop($event)">
-  <div *ngFor="let image of images" cdkDrag
-    class="d-flex justify-items-center mb-2 cursor-move">
+  <div *ngFor="let image of images" cdkDrag class="d-flex justify-items-center mb-2 cursor-move">
     <avatar size="medium" [image]="image"></avatar>
     <div class="ml-2 flex-grow-1 d-flex align-items-center text-truncate">
       {{ image.name }}
     </div>
     <div class="ml-2">
-      <button *ngIf="!(requireAtLeastOne && images?.length === 1)"
-        type="button" class="btn btn-icon" (click)="remove(image)">
+      <button
+        *ngIf="!(requireAtLeastOne && images?.length === 1)"
+        type="button"
+        class="btn btn-icon"
+        (click)="remove(image)">
         <icon [icon]="SvgIcon.X"></icon>
       </button>
     </div>
@@ -23,9 +25,6 @@
 </div>
 
 <actions forceRow>
-  <action-button (action)="ok()" [label]="i18n.general.confirm">
-  </action-button>
-  <action-button outline (action)="modalRef.hide()"
-    [label]="i18n.general.cancel">
-  </action-button>
+  <action-button (action)="ok()" [label]="i18n.general.confirm"> </action-button>
+  <action-button outline (action)="modalRef.hide()" [label]="i18n.general.cancel"> </action-button>
 </actions>

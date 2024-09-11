@@ -1,25 +1,27 @@
 <h1>{{ i18n.ad.addProducts }}</h1>
 <div [formGroup]="form" class="mb-2 mb-md-0">
-  <input-field formControlName="keywords" [label]="i18n.general.keywords">
-  </input-field>
+  <input-field formControlName="keywords" [label]="i18n.general.keywords"> </input-field>
 </div>
-<results-layout resultType="list" [results]="results$ | async"
-  (update)="update($event)" [onClick]="onClick" [rendering$]="rendering$"
-  [ngStyle]="{'min-height': '44vh'}">
-  <mobile-result *mobileResult="let row" [avatarImage]="row.image"
-    [avatarIcon]="SvgIcon.Basket">
+<results-layout
+  resultType="list"
+  [results]="results$ | async"
+  (update)="update($event)"
+  [onClick]="onClick"
+  [rendering$]="rendering$"
+  [ngStyle]="{ 'min-height': '44vh' }">
+  <mobile-result *mobileResult="let row" [avatarImage]="row.image" [avatarIcon]="SvgIcon.Basket">
     <div class="cell-date-amount">
       <div class="cell-amount">
-        {{ (row.promotionalPrice || row.price) | currency:currency }}
+        {{ row.promotionalPrice || row.price | currency : currency }}
       </div>
-      <div class="cell-date cell-main" [ngStyle]="{'text-decoration': isOutOfStock(row) ? 'line-through' : '',
-      'max-width': '75%'}">
+      <div
+        class="cell-date cell-main"
+        [ngStyle]="{ 'text-decoration': isOutOfStock(row) ? 'line-through' : '', 'max-width': '75%' }">
         {{ row.name }}
       </div>
     </div>
     <div class="clearfix"></div>
-    <div class="cell-text">
-      {{ i18n.ad.stock }}: {{ resolveStockLabel(row) }}</div>
+    <div class="cell-text">{{ i18n.ad.stock }}: {{ resolveStockLabel(row) }}</div>
   </mobile-result>
   <table *resultTable class="table table-hover cursor-pointer">
     <thead>
@@ -31,17 +33,17 @@
     <tbody>
       <ng-container *ngFor="let row of (results$ | async)?.results">
         <tr (click)="addProduct(row)">
-          <td class=" avatar">
+          <td class="avatar">
             <avatar [image]="row.image" [icon]="SvgIcon.Basket"></avatar>
           </td>
-          <td
-            [ngStyle]="{'text-decoration': isOutOfStock(row) ? 'line-through' : ''}">
+          <td [ngStyle]="{ 'text-decoration': isOutOfStock(row) ? 'line-through' : '' }">
             <span class="ellipsis-clamp-2">{{ row.name }}</span>
           </td>
-          <td [ngClass]="{'text-muted': isOutOfStock(row)}">
-            {{ resolveStockLabel(row) }}</td>
+          <td [ngClass]="{ 'text-muted': isOutOfStock(row) }">
+            {{ resolveStockLabel(row) }}
+          </td>
           <td class="text-right">
-            {{ (row.promotionalPrice || row.price) | currency: currency }}
+            {{ row.promotionalPrice || row.price | currency : currency }}
           </td>
         </tr>
       </ng-container>
@@ -49,8 +51,7 @@
   </table>
 </results-layout>
 <actions>
-  <action-button (action)="close()" [label]="i18n.general.close">
-  </action-button>
+  <action-button (action)="close()" [label]="i18n.general.close"> </action-button>
 </actions>
 
 <ng-template #spinner>

@@ -15,10 +15,9 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'assign-token',
   templateUrl: 'assign-token.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AssignTokenComponent extends BaseComponent implements OnInit {
-
   @Input() token: string;
   @Input() updateAction: () => void;
 
@@ -29,20 +28,22 @@ export class AssignTokenComponent extends BaseComponent implements OnInit {
     injector: Injector,
     public modalRef: BsModalRef,
     private tokensService: TokensService,
-    private operatorsService: OperatorsService) {
+    private operatorsService: OperatorsService
+  ) {
     super(injector);
   }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
       user: [null, Validators.required],
-      operator: null,
+      operator: null
     });
     this.form.get('user').valueChanges.subscribe(user => this.fillOperatorsField(user));
   }
 
   fillOperatorsField(user: User) {
-    this.operatorsService.searchUserOperators$Response({ user: user.id, skipTotalCount: true, pageSize: 999999 })
+    this.operatorsService
+      .searchUserOperators$Response({ user: user.id, skipTotalCount: true, pageSize: 999999 })
       .subscribe(response => {
         if (response.ok) {
           this.operators$.next(response.body);
@@ -57,10 +58,12 @@ export class AssignTokenComponent extends BaseComponent implements OnInit {
       return;
     }
     const values = cloneDeep(this.form.value);
-    this.tokensService.assignToken({ id: this.token, user: values.operator ? values.operator : values.user }).subscribe(() => {
-      this.notification.snackBar(this.i18n.token.action.done.assigned);
-      this.updateAction();
-    });
+    this.tokensService
+      .assignToken({ id: this.token, user: values.operator ? values.operator : values.user })
+      .subscribe(() => {
+        this.notification.snackBar(this.i18n.token.action.done.assigned);
+        this.updateAction();
+      });
     this.modalRef.hide();
   }
 }

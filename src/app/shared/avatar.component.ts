@@ -1,6 +1,14 @@
 import {
-  AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef,
-  Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output,
+  AfterContentChecked,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
   SimpleChanges
 } from '@angular/core';
 import { Image } from 'app/api/models';
@@ -12,14 +20,14 @@ import { truthyAttr } from 'app/shared/helper';
  * Profile is a special value that adapts to the max image width / height and layout size
  */
 export type AvatarSize = 'small' | 'small-medium' | 'medium' | 'medium-large' | 'large' | 'xlarge' | 'huge' | 'full';
-export const SIZES: { [key: string]: number; } = {
+export const SIZES: { [key: string]: number } = {
   small: 24,
   'small-medium': 30,
   medium: 36,
   'medium-large': 50,
   large: 64,
   xlarge: 96,
-  huge: 128,
+  huge: 128
 };
 
 /**
@@ -30,10 +38,9 @@ export const SIZES: { [key: string]: number; } = {
   // tslint:disable-next-line:component-selector
   selector: 'avatar',
   templateUrl: 'avatar.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
-
   /**
    * The icon show when no image is available
    */
@@ -95,10 +102,7 @@ export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
   url: string;
   visible = false;
 
-  constructor(
-    private element: ElementRef,
-    private changeDetector: ChangeDetectorRef) {
-  }
+  constructor(private element: ElementRef, private changeDetector: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.update();

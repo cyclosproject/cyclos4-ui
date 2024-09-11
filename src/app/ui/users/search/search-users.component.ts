@@ -1,8 +1,15 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   BasicProfileFieldInput,
-  Country, CustomFieldDetailed, RoleEnum, User, UserAddressResultEnum,
-  UserDataForMap, UserDataForSearch, UserQueryFilters, UserStatusEnum
+  Country,
+  CustomFieldDetailed,
+  RoleEnum,
+  User,
+  UserAddressResultEnum,
+  UserDataForMap,
+  UserDataForSearch,
+  UserQueryFilters,
+  UserStatusEnum
 } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { UsersService } from 'app/api/services/users.service';
@@ -32,11 +39,12 @@ export enum UserSearchKind {
 @Component({
   selector: 'search-users',
   templateUrl: 'search-users.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchUsersComponent
-  extends BaseSearchPageComponent<UserDataForSearch | UserDataForMap, UserQueryFilters, UserResult> implements OnInit {
-
+  extends BaseSearchPageComponent<UserDataForSearch | UserDataForMap, UserQueryFilters, UserResult>
+  implements OnInit
+{
   // Export enum to the template
   ResultType = ResultType;
   UserSearchKind = UserSearchKind;
@@ -70,14 +78,34 @@ export class SearchUsersComponent
   }
 
   protected getFormControlNames() {
-    return ['keywords', 'groups', 'customValues', 'distanceFilter', 'orderBy', 'statuses', 'beginActivationPeriod', 'endActivationPeriod',
-      'beginCreationPeriod', 'endCreationPeriod', 'beginLastLoginPeriod', 'endLastLoginPeriod', 'notAcceptedAgreements',
-      'acceptedAgreements', 'products', 'brokers', 'invitedBy', 'invitedByMe'];
+    return [
+      'keywords',
+      'groups',
+      'customValues',
+      'distanceFilter',
+      'orderBy',
+      'statuses',
+      'beginActivationPeriod',
+      'endActivationPeriod',
+      'beginCreationPeriod',
+      'endCreationPeriod',
+      'beginLastLoginPeriod',
+      'endLastLoginPeriod',
+      'notAcceptedAgreements',
+      'acceptedAgreements',
+      'products',
+      'brokers',
+      'invitedBy',
+      'invitedByMe'
+    ];
   }
 
   doCanSearch() {
     const usersSearch = this.login.auth?.permissions?.users?.search;
-    return this.router.url.includes('brokerings') || (!this.dataForFrontendHolder.dataForUi.hideUserSearchInMenu && usersSearch);
+    return (
+      this.router.url.includes('brokerings') ||
+      (!this.dataForFrontendHolder.dataForUi.hideUserSearchInMenu && usersSearch)
+    );
   }
 
   ngOnInit() {
@@ -130,7 +158,9 @@ export class SearchUsersComponent
     // Get the permissions to search users and view map directory
     const permissions = (auth || {}).permissions || {};
     const users = permissions.users || {};
-    this.canSearch = this.kind === UserSearchKind.Broker || (users.search && !this.dataForFrontendHolder.dataForUi.hideUserSearchInMenu);
+    this.canSearch =
+      this.kind === UserSearchKind.Broker ||
+      (users.search && !this.dataForFrontendHolder.dataForUi.hideUserSearchInMenu);
     this.canViewMap = publicOrMember && users.map && this.mapService.enabled;
     if (!this.canSearch && !this.canViewMap) {
       this.errorHandler.handleForbiddenError({});
@@ -141,12 +171,14 @@ export class SearchUsersComponent
       this.removeAction = user => {
         this.confirmation.confirm({
           message: this.i18n.general.removeConfirm(user.display),
-          callback: () => this.addSub(this.usersService.deletePendingUser({ user: user.id }).subscribe(() => {
-            this.update(this.pageData);
-            this.notification.snackBar(this.i18n.general.removeDone(user.display));
-          }))
-        }
-        );
+          callback: () =>
+            this.addSub(
+              this.usersService.deletePendingUser({ user: user.id }).subscribe(() => {
+                this.update(this.pageData);
+                this.notification.snackBar(this.i18n.general.removeDone(user.display));
+              })
+            )
+        });
       };
     }
 
@@ -192,8 +224,14 @@ export class SearchUsersComponent
       }
       this.fieldsInAdvancedSearch.push(field);
     });
-    this.form.setControl('profileFields',
-      this.fieldHelper.profileFieldsForSearchFormGroup(this.basicFieldsInSearch, this.customFieldsInSearch, data.query.profileFields));
+    this.form.setControl(
+      'profileFields',
+      this.fieldHelper.profileFieldsForSearchFormGroup(
+        this.basicFieldsInSearch,
+        this.customFieldsInSearch,
+        data.query.profileFields
+      )
+    );
   }
 
   protected onResultTypeChanged(resultType: ResultType, previousResultType: ResultType) {
@@ -242,9 +280,10 @@ export class SearchUsersComponent
         }
         this.data = data;
         this.headingActions = [
-          ...this.doShowMoreFilters() ? [this.moreFiltersAction] : [],
-          ...this.exportHelper.headingActions(this.data.exportFormats,
-            f => this.usersService.exportUsers$Response({ format: f.internalName, ...this.toSearchParams(this.form.value) }))
+          ...(this.doShowMoreFilters() ? [this.moreFiltersAction] : []),
+          ...this.exportHelper.headingActions(this.data.exportFormats, f =>
+            this.usersService.exportUsers$Response({ format: f.internalName, ...this.toSearchParams(this.form.value) })
+          )
         ];
       });
     };
@@ -257,17 +296,26 @@ export class SearchUsersComponent
         this.stateManager.cache('dataForMap', this.usersService.getDataForMapDirectory()).subscribe(setData);
       } else {
         // Get the data for regular user search
-        this.stateManager.cache('dataForSearch', this.usersService.getUserDataForSearch({
-          fromMenu: true,
-          broker: this.kind === UserSearchKind.Broker ? this.param : null,
-        })).subscribe(setData);
+        this.stateManager
+          .cache(
+            'dataForSearch',
+            this.usersService.getUserDataForSearch({
+              fromMenu: true,
+              broker: this.kind === UserSearchKind.Broker ? this.param : null
+            })
+          )
+          .subscribe(setData);
       }
     }
   }
 
   doShowMoreFilters() {
-    return !empty(this.data.fieldsInAdvancedSearch) || this.byManager || this.dataForFrontendHolder.auth?.permissions?.invite?.send
-      || this.data.searchByDistanceData;
+    return (
+      !empty(this.data.fieldsInAdvancedSearch) ||
+      this.byManager ||
+      this.dataForFrontendHolder.auth?.permissions?.invite?.send ||
+      this.data.searchByDistanceData
+    );
   }
 
   get brokeringSearch() {

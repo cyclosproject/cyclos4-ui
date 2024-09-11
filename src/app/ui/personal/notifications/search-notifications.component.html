@@ -1,28 +1,28 @@
 <page-layout>
-  <page-content mode="filters" [heading]="i18n.notification.title"
+  <page-content
+    mode="filters"
+    [heading]="i18n.notification.title"
     [mobileHeading]="i18n.notification.mobileTitle"
     [headingActions]="headingActions$ | async">
     <div [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row">
         <div class="col-12">
-          <boolean-field [label]="i18n.notification.onlyUnread"
-            formControlName="onlyUnread"></boolean-field>
+          <boolean-field [label]="i18n.notification.onlyUnread" formControlName="onlyUnread"></boolean-field>
         </div>
       </div>
     </div>
-
   </page-content>
-  <results-layout resultType="list" [results]="results$ | async"
-    (update)="update($event)" [onClick]="onClick" [rendering$]="rendering$">
-
-    <mobile-result *mobileResult="let row"
-      [avatarImage]="row.relatedUser?.image" [avatarIcon]="SvgIcon.Bell">
-
+  <results-layout
+    resultType="list"
+    [results]="results$ | async"
+    (update)="update($event)"
+    [onClick]="onClick"
+    [rendering$]="rendering$">
+    <mobile-result *mobileResult="let row" [avatarImage]="row.relatedUser?.image" [avatarIcon]="SvgIcon.Bell">
       <div class="cell-main" [tooltip]="row.message">{{ row.subject }}</div>
       <div class="cell-cell-date" [tooltip]="row.message">
         {{ row.date | dateTime }}
       </div>
-
     </mobile-result>
 
     <table *resultTable class="table table-hover cursor-pointer">
@@ -34,20 +34,22 @@
       </thead>
       <tbody>
         <ng-container *ngFor="let row of (results$ | async)?.results">
-          <tr (click)="rowClick(row)"
-            [ngClass]="{'font-weight-bold': !row.read}">
-            <td class="avatar" [ngClass]="{
-              'pb-0': layout.xxs$ | async,
-              'border-0': layout.xxs$ | async
-            }">
-              <avatar [image]="row.relatedUser?.image"
-                [tooltip]="row.relatedUser?.display" [icon]="SvgIcon.Bell">
+          <tr (click)="rowClick(row)" [ngClass]="{ 'font-weight-bold': !row.read }">
+            <td
+              class="avatar"
+              [ngClass]="{
+                'pb-0': layout.xxs$ | async,
+                'border-0': layout.xxs$ | async
+              }">
+              <avatar [image]="row.relatedUser?.image" [tooltip]="row.relatedUser?.display" [icon]="SvgIcon.Bell">
               </avatar>
             </td>
             <td>{{ row.date | dateTime }}</td>
             <td [innerHTML]="row.message"></td>
             <td class="actions">
-              <button type="button" class="btn btn-icon"
+              <button
+                type="button"
+                class="btn btn-icon"
                 [tooltip]="i18n.notification.actions.remove"
                 (click)="remove(row); $event.stopPropagation()">
                 <icon [icon]="SvgIcon.Trash"></icon>

@@ -10,10 +10,9 @@ import { FieldLabelPosition } from 'app/shared/base-form-field.component';
 @Component({
   selector: 'custom-field-value',
   templateUrl: 'custom-field-value.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomFieldValueComponent implements OnInit {
-
   @HostBinding('class.any-label-value') classAnyLabelValue = true;
   @HostBinding('class.view') classView = true;
 
@@ -26,13 +25,9 @@ export class CustomFieldValueComponent implements OnInit {
     this.value = this.fieldHelper.getValue(this.fieldValue);
   }
 
-  constructor(
-    public layout: LayoutService,
-    protected fieldHelper: FieldHelperService) {
-  }
+  constructor(public layout: LayoutService, protected fieldHelper: FieldHelperService) {}
 
   get field(): CustomField {
     return this.fieldValue ? this.fieldValue.field : null;
   }
-
 }

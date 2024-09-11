@@ -1,6 +1,23 @@
-import { AfterViewChecked, ChangeDetectionStrategy, Component, Injector, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectionStrategy,
+  Component,
+  Injector,
+  Input,
+  OnInit,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { AddressNew, CustomFieldDetailed, GroupForRegistration, Image, StoredFile, UserDataForNew, UserNew } from 'app/api/models';
+import {
+  AddressNew,
+  CustomFieldDetailed,
+  GroupForRegistration,
+  Image,
+  StoredFile,
+  UserDataForNew,
+  UserNew
+} from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { blank, empty, focus } from 'app/shared/helper';
 import { InputFieldComponent } from 'app/shared/input-field.component';
@@ -12,12 +29,9 @@ import { LoginService } from 'app/ui/core/login.service';
 @Component({
   selector: 'registration-step-confirm',
   templateUrl: 'registration-step-confirm.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegistrationStepConfirmComponent
-  extends BaseComponent
-  implements OnInit, AfterViewChecked {
-
+export class RegistrationStepConfirmComponent extends BaseComponent implements OnInit, AfterViewChecked {
   empty = empty;
 
   focusSecurityAnswer = false;
@@ -33,27 +47,29 @@ export class RegistrationStepConfirmComponent
 
   agreementsControl: FormArray;
 
-  constructor(
-    injector: Injector,
-    public login: LoginService) {
+  constructor(injector: Injector, public login: LoginService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
     if (!empty(this.data.securityQuestions)) {
-      this.addSub(this.form.get('securityQuestion').valueChanges.subscribe(question => {
-        this.focusSecurityAnswer = !blank(question);
-      }));
+      this.addSub(
+        this.form.get('securityQuestion').valueChanges.subscribe(question => {
+          this.focusSecurityAnswer = !blank(question);
+        })
+      );
     }
 
     if (!empty(this.data.agreements)) {
       const agreements = this.data.agreements.map(() => false);
       this.agreementsControl = this.formBuilder.array(agreements);
-      this.addSub(this.agreementsControl.valueChanges.subscribe((flags: boolean[]) => {
-        const all = flags.length === flags.filter(f => f).length;
-        this.form.patchValue({ acceptAgreement: all });
-      }));
+      this.addSub(
+        this.agreementsControl.valueChanges.subscribe((flags: boolean[]) => {
+          const all = flags.length === flags.filter(f => f).length;
+          this.form.patchValue({ acceptAgreement: all });
+        })
+      );
     }
   }
 
@@ -106,7 +122,7 @@ export class RegistrationStepConfirmComponent
     } else {
       return this.i18n.phone.numberExtensionValue({
         number: phoneNumber,
-        extension,
+        extension
       });
     }
   }
@@ -129,5 +145,4 @@ export class RegistrationStepConfirmComponent
     // Will autocomplete passwords only in public registration
     return role ? 'off' : 'on';
   }
-
 }

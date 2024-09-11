@@ -8,15 +8,14 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'voucher-details',
   templateUrl: 'voucher-details.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VoucherDetailsComponent extends BaseComponent {
   VoucherCreationTypeEnum = VoucherCreationTypeEnum;
 
   @Input() voucher: Voucher;
 
-  constructor(
-    injector: Injector) {
+  constructor(injector: Injector) {
     super(injector);
   }
 }

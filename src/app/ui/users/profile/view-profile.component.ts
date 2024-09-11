@@ -1,8 +1,18 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AdKind, BasicProfileFieldEnum, FieldSection, PhoneKind, PhoneView, RoleEnum, User, UserCustomField, UserImportedFileKind, UserProfileSectionEnum,
-  UserRelationshipEnum, UserView
+  AdKind,
+  BasicProfileFieldEnum,
+  FieldSection,
+  PhoneKind,
+  PhoneView,
+  RoleEnum,
+  User,
+  UserCustomField,
+  UserImportedFileKind,
+  UserProfileSectionEnum,
+  UserRelationshipEnum,
+  UserView
 } from 'app/api/models';
 import { ContactsService } from 'app/api/services/contacts.service';
 import { UsersService } from 'app/api/services/users.service';
@@ -28,7 +38,7 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'view-profile',
   templateUrl: 'view-profile.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewProfileComponent extends BaseViewPageComponent<UserView> implements OnInit {
   constructor(
@@ -41,7 +51,8 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     private recordHelper: RecordHelperService,
     private tokenHelper: TokenHelperService,
     public maps: MapsService,
-    public userHelper: UserHelperService) {
+    public userHelper: UserHelperService
+  ) {
     super(injector);
   }
 
@@ -68,21 +79,25 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     this.stateManager.manageValue(this.showActions$, 'showActions');
     this.param = this.route.snapshot.params.user || ApiHelper.SELF;
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
-      this.addSub(this.usersService.viewUser({ user: this.param })
-        .subscribe(user => {
-          this.data = user;
-        }, (resp: HttpErrorResponse) => {
-          if (resp.status === ErrorStatus.NOT_FOUND && this.dataForFrontendHolder.user == null) {
-            // When not logged in and got a not found, redirect to login
-            this.login.goToLoginPage(this.router.url);
-          } else if ([ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
-            this.notification.error(this.i18n.user.profile.noPermission);
-            this.breadcrumb.back();
-            this.data = {};
-          } else {
-            defaultHandling(resp);
+      this.addSub(
+        this.usersService.viewUser({ user: this.param }).subscribe(
+          user => {
+            this.data = user;
+          },
+          (resp: HttpErrorResponse) => {
+            if (resp.status === ErrorStatus.NOT_FOUND && this.dataForFrontendHolder.user == null) {
+              // When not logged in and got a not found, redirect to login
+              this.login.goToLoginPage(this.router.url);
+            } else if ([ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
+              this.notification.error(this.i18n.user.profile.noPermission);
+              this.breadcrumb.back();
+              this.data = {};
+            } else {
+              defaultHandling(resp);
+            }
           }
-        }));
+        )
+      );
     });
   }
 
@@ -135,17 +150,22 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const quickAccess = permissions.quickAccess || {};
     const imports = permissions.imports || {};
 
-    const manager = [UserRelationshipEnum.ADMINISTRATOR, UserRelationshipEnum.BROKER, UserRelationshipEnum.OWNER]
-      .includes(user.relationship);
+    const manager = [
+      UserRelationshipEnum.ADMINISTRATOR,
+      UserRelationshipEnum.BROKER,
+      UserRelationshipEnum.OWNER
+    ].includes(user.relationship);
 
     const customValues = user.customValues || [];
     this.fieldsWithoutSection = customValues.filter(v => v.field.section == null) || [];
     const sections = new Map();
-    customValues.map(v => v.field.section).forEach(s => {
-      if (s != null) {
-        sections.set(s.id, s);
-      }
-    });
+    customValues
+      .map(v => v.field.section)
+      .forEach(s => {
+        if (s != null) {
+          sections.set(s.id, s);
+        }
+      });
     sections.forEach(s => {
       const filter = customValues.filter(v => v.field.section != null && v.field.section.id === s.id);
       if (!empty(filter)) {
@@ -158,368 +178,514 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       const headingActions: HeadingAction[] = [];
       const myPermissions = this.dataForFrontendHolder.auth?.permissions || {};
       if (myPermissions.privacySettings?.view) {
-        headingActions.push(new HeadingAction(SvgIcon.EyeSlash, this.i18n.user.profile.privacySettings, () => {
-          this.router.navigate(['/users', this.param, 'privacy-settings']);
-        }, true));
+        headingActions.push(
+          new HeadingAction(
+            SvgIcon.EyeSlash,
+            this.i18n.user.profile.privacySettings,
+            () => {
+              this.router.navigate(['/users', this.param, 'privacy-settings']);
+            },
+            true
+          )
+        );
       }
       if (myPermissions.myProfile?.editProfile || myPermissions.myProfile?.manageContactInfos) {
-        const edit = new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => {
-          this.router.navigateByUrl(this.router.url + '/edit');
-        }, true);
+        const edit = new HeadingAction(
+          SvgIcon.Pencil,
+          this.i18n.general.edit,
+          () => {
+            this.router.navigateByUrl(this.router.url + '/edit');
+          },
+          true
+        );
         headingActions.push(edit);
       }
       this.headingActions = headingActions;
     } else {
       // For others, will have actions in sections
       if (accountTypes.length > 6) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2, this.i18n.user.profile.accountsSummary, () => {
-          this.router.navigate(['/banking', this.param, 'accounts-summary']);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.Wallet2, this.i18n.user.profile.accountsSummary, () => {
+            this.router.navigate(['/banking', this.param, 'accounts-summary']);
+          })
+        );
       } else {
         for (const accountType of accountTypes) {
-          this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2, this.i18n.user.profile.viewAccount(accountType.name), () => {
-            this.router.navigate(['/banking', this.param, 'account', ApiHelper.internalNameOrId(accountType)]);
-          }));
+          this.bankingActions.push(
+            new HeadingAction(SvgIcon.Wallet2, this.i18n.user.profile.viewAccount(accountType.name), () => {
+              this.router.navigate(['/banking', this.param, 'account', ApiHelper.internalNameOrId(accountType)]);
+            })
+          );
         }
       }
       if (accountVisibilitySettings.view) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Eye, this.i18n.user.profile.accountVisibility, () => {
-          this.router.navigate(['/banking', this.param, 'account-visibility']);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.Eye, this.i18n.user.profile.accountVisibility, () => {
+            this.router.navigate(['/banking', this.param, 'account-visibility']);
+          })
+        );
       }
       if (payment.userToUser) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowRight, this.i18n.user.profile.pay, () => {
-          this.router.navigate(['/banking', ApiHelper.SELF, 'payment', this.param]);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.Wallet2ArrowRight, this.i18n.user.profile.pay, () => {
+            this.router.navigate(['/banking', ApiHelper.SELF, 'payment', this.param]);
+          })
+        );
       }
       if (payment.systemToUser) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowRight, this.i18n.user.profile.paySystemToUser, () => {
-          this.router.navigate(['/banking', ApiHelper.SYSTEM, 'payment', this.param]);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.Wallet2ArrowRight, this.i18n.user.profile.paySystemToUser, () => {
+            this.router.navigate(['/banking', ApiHelper.SYSTEM, 'payment', this.param]);
+          })
+        );
       }
       if (payment.asUserToUser) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowRight, this.i18n.user.profile.payAsUserToUser, () => {
-          this.router.navigate(['/banking', this.param, 'payment']);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.Wallet2ArrowRight, this.i18n.user.profile.payAsUserToUser, () => {
+            this.router.navigate(['/banking', this.param, 'payment']);
+          })
+        );
       }
       if (payment.asUserToSelf) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowLeftRight, this.i18n.user.profile.payAsUserToSelf, () => {
-          this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SELF]);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.Wallet2ArrowLeftRight, this.i18n.user.profile.payAsUserToSelf, () => {
+            this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SELF]);
+          })
+        );
       }
       if (payment.asUserToSystem) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowRight, this.i18n.user.profile.payAsUserToSystem, () => {
-          this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SYSTEM]);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.Wallet2ArrowRight, this.i18n.user.profile.payAsUserToSystem, () => {
+            this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SYSTEM]);
+          })
+        );
       }
       if (imports.kinds?.includes(UserImportedFileKind.USER_PAYMENTS)) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.ArrowUpCircle, this.i18n.user.profile.batchPayments, () => {
-          this.router.navigate(['/imports', this.param, UserImportedFileKind.USER_PAYMENTS, 'files']);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.ArrowUpCircle, this.i18n.user.profile.batchPayments, () => {
+            this.router.navigate(['/imports', this.param, UserImportedFileKind.USER_PAYMENTS, 'files']);
+          })
+        );
       }
       if (scheduledPayments.view) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Clock, this.i18n.user.profile.viewScheduledPayments, () => {
-          this.router.navigate(['/banking', this.param, 'installments']);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.Clock, this.i18n.user.profile.viewScheduledPayments, () => {
+            this.router.navigate(['/banking', this.param, 'installments']);
+          })
+        );
       }
       if (paymentRequests.view) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowLeft, this.i18n.user.profile.paymentRequests, () => {
-          this.router.navigate(['/banking', this.param, 'payment-requests']);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.Wallet2ArrowLeft, this.i18n.user.profile.paymentRequests, () => {
+            this.router.navigate(['/banking', this.param, 'payment-requests']);
+          })
+        );
       }
       if (paymentRequests.sendFromUser) {
         const label = manager ? this.i18n.user.profile.requestPayment : this.i18n.user.profile.requestPayment;
-        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowLeft, label, () => {
-          this.router.navigate(['/banking', ApiHelper.SELF, 'payment-request', this.param]);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.Wallet2ArrowLeft, label, () => {
+            this.router.navigate(['/banking', ApiHelper.SELF, 'payment-request', this.param]);
+          })
+        );
       }
       if (externalPayments.view) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowUpRight, this.i18n.user.profile.externalPayments, () => {
-          this.router.navigate(['/banking', this.param, 'external-payments']);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.Wallet2ArrowUpRight, this.i18n.user.profile.externalPayments, () => {
+            this.router.navigate(['/banking', this.param, 'external-payments']);
+          })
+        );
       }
 
       if (tickets.view) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Wallet2Check, this.i18n.user.profile.tickets, () => {
-          this.router.navigate(['/banking', this.param, 'tickets']);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.Wallet2Check, this.i18n.user.profile.tickets, () => {
+            this.router.navigate(['/banking', this.param, 'tickets']);
+          })
+        );
       }
 
       const balanceLimitsPermissions = permissions.balanceLimits || {};
       if (balanceLimitsPermissions.view) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.ArrowDownUp, this.i18n.user.profile.accountsBalanceLimits, () => {
-          this.router.navigate(['/banking', this.param, 'account-balance-limits']);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.ArrowDownUp, this.i18n.user.profile.accountsBalanceLimits, () => {
+            this.router.navigate(['/banking', this.param, 'account-balance-limits']);
+          })
+        );
       }
       const paymentLimitsPermissions = permissions.paymentLimits || {};
       if (paymentLimitsPermissions.view) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.ArrowDownUp, this.i18n.user.profile.accountsPaymentLimits, () => {
-          this.router.navigate(['/banking', this.param, 'account-payment-limits']);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.ArrowDownUp, this.i18n.user.profile.accountsPaymentLimits, () => {
+            this.router.navigate(['/banking', this.param, 'account-payment-limits']);
+          })
+        );
       }
       if (authorizedPayments.view) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.CheckCircle, this.i18n.user.profile.viewAuthorizedPayments, () => {
-          this.router.navigate(['/banking', this.param, 'authorized-payments']);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.CheckCircle, this.i18n.user.profile.viewAuthorizedPayments, () => {
+            this.router.navigate(['/banking', this.param, 'authorized-payments']);
+          })
+        );
       }
       if (vouchers.view) {
-        this.bankingActions.push(new HeadingAction(SvgIcon.Ticket, this.i18n.user.profile.vouchers, () => {
-          this.router.navigate(['/banking', this.param, 'vouchers']);
-        }));
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.Ticket, this.i18n.user.profile.vouchers, () => {
+            this.router.navigate(['/banking', this.param, 'vouchers']);
+          })
+        );
         if (vouchers.buy) {
-          this.bankingActions.push(new HeadingAction(SvgIcon.TicketArrowLeft, this.i18n.user.profile.voucherBuy, () => {
-            this.router.navigate(['/banking', this.param, 'vouchers', 'buy']);
-          }));
+          this.bankingActions.push(
+            new HeadingAction(SvgIcon.TicketArrowLeft, this.i18n.user.profile.voucherBuy, () => {
+              this.router.navigate(['/banking', this.param, 'vouchers', 'buy']);
+            })
+          );
         }
         if (vouchers.send) {
-          this.bankingActions.push(new HeadingAction(SvgIcon.TicketArrowRight, this.i18n.user.profile.voucherSend, () => {
-            this.router.navigate(['/banking', this.param, 'vouchers', 'send']);
-          }));
+          this.bankingActions.push(
+            new HeadingAction(SvgIcon.TicketArrowRight, this.i18n.user.profile.voucherSend, () => {
+              this.router.navigate(['/banking', this.param, 'vouchers', 'send']);
+            })
+          );
         }
       }
       if (vouchers.viewTransactions) {
-        const voucherTransactionsLabel = vouchers.topUpEnabled ? this.i18n.user.profile.voucherTransactions :
-          this.i18n.user.profile.voucherTransactionsRedeems;
-        this.bankingActions.push(new HeadingAction(SvgIcon.TicketDetailed, voucherTransactionsLabel, () => {
-          this.router.navigate(['/banking', this.param, 'voucher-transactions']);
-        }));
+        const voucherTransactionsLabel = vouchers.topUpEnabled
+          ? this.i18n.user.profile.voucherTransactions
+          : this.i18n.user.profile.voucherTransactionsRedeems;
+        this.bankingActions.push(
+          new HeadingAction(SvgIcon.TicketDetailed, voucherTransactionsLabel, () => {
+            this.router.navigate(['/banking', this.param, 'voucher-transactions']);
+          })
+        );
         if (vouchers.redeem) {
-          this.bankingActions.push(new HeadingAction(SvgIcon.TicketArrowDown, this.i18n.user.profile.voucherRedeem, () => {
-            this.router.navigate(['/banking', this.param, 'vouchers', 'redeem']);
-          }));
+          this.bankingActions.push(
+            new HeadingAction(SvgIcon.TicketArrowDown, this.i18n.user.profile.voucherRedeem, () => {
+              this.router.navigate(['/banking', this.param, 'vouchers', 'redeem']);
+            })
+          );
         }
         if (vouchers.topUp) {
-          this.bankingActions.push(new HeadingAction(SvgIcon.TicketArrowUp, this.i18n.user.profile.voucherTopUp, () => {
-            this.router.navigate(['/banking', this.param, 'vouchers', 'top-up']);
-          }));
+          this.bankingActions.push(
+            new HeadingAction(SvgIcon.TicketArrowUp, this.i18n.user.profile.voucherTopUp, () => {
+              this.router.navigate(['/banking', this.param, 'vouchers', 'top-up']);
+            })
+          );
         }
       }
       if (profile.editProfile || profile.manageContactInfos) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Pencil, this.i18n.user.profile.edit, () => {
-          this.router.navigateByUrl(this.router.url + '/edit');
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Pencil, this.i18n.user.profile.edit, () => {
+            this.router.navigateByUrl(this.router.url + '/edit');
+          })
+        );
       }
       if (passwords.manage) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Key, this.i18n.user.profile.managePasswords, () => {
-          this.router.navigate(['/users', this.param, 'passwords']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Key, this.i18n.user.profile.managePasswords, () => {
+            this.router.navigate(['/users', this.param, 'passwords']);
+          })
+        );
       }
       if (identityProviders.view) {
-        this.managementActions.push(new HeadingAction(SvgIcon.PersonBadge, this.i18n.user.profile.viewIdentityProviders, () => {
-          this.router.navigate(['/users', this.param, 'identity-providers']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.PersonBadge, this.i18n.user.profile.viewIdentityProviders, () => {
+            this.router.navigate(['/users', this.param, 'identity-providers']);
+          })
+        );
       }
 
       const validation = permissions.validation || {};
       if (validation.resendEmailChange) {
-        this.managementActions.push(new HeadingAction(SvgIcon.EnvelopeCheck, this.i18n.user.profile.resendEmailChange, () => {
-          this.addSub(this.validationService.resendEmailChangeEmail({ user: this.param }).subscribe(
-            () => this.notification.snackBar(this.i18n.user.profile.resendEmailChangeDone)));
-
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.EnvelopeCheck, this.i18n.user.profile.resendEmailChange, () => {
+            this.addSub(
+              this.validationService
+                .resendEmailChangeEmail({ user: this.param })
+                .subscribe(() => this.notification.snackBar(this.i18n.user.profile.resendEmailChangeDone))
+            );
+          })
+        );
       }
       if (validation.validateEmailChange) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Check2, this.i18n.user.profile.validateEmailChange, () => {
-          this.addSub(this.validationService.manuallyValidateEmailChange({ user: this.param }).subscribe(
-            () => {
-              this.reload();
-              this.notification.snackBar(this.i18n.user.profile.validateEmailChangeDone);
-            }));
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Check2, this.i18n.user.profile.validateEmailChange, () => {
+            this.addSub(
+              this.validationService.manuallyValidateEmailChange({ user: this.param }).subscribe(() => {
+                this.reload();
+                this.notification.snackBar(this.i18n.user.profile.validateEmailChangeDone);
+              })
+            );
+          })
+        );
       }
 
       if (validation.resendRegistrationValidation) {
-        this.managementActions.push(new HeadingAction(SvgIcon.EnvelopeCheck, this.i18n.user.profile.resendRegistrationValidation, () => {
-          this.addSub(this.validationService.resendUserRegistrationEmail({ user: this.param }).subscribe(
-            () => this.notification.snackBar(this.i18n.user.profile.resendRegistrationValidationDone)));
-
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.EnvelopeCheck, this.i18n.user.profile.resendRegistrationValidation, () => {
+            this.addSub(
+              this.validationService
+                .resendUserRegistrationEmail({ user: this.param })
+                .subscribe(() => this.notification.snackBar(this.i18n.user.profile.resendRegistrationValidationDone))
+            );
+          })
+        );
       }
       if (validation.validateRegistration) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Check2, this.i18n.user.profile.validateRegistration, () => {
-          this.addSub(this.validationService.manuallyValidateUserRegistration({ user: this.param }).subscribe(
-            () => {
-              this.reload();
-              this.notification.snackBar(this.i18n.user.profile.validateRegistrationDone);
-            }));
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Check2, this.i18n.user.profile.validateRegistration, () => {
+            this.addSub(
+              this.validationService.manuallyValidateUserRegistration({ user: this.param }).subscribe(() => {
+                this.reload();
+                this.notification.snackBar(this.i18n.user.profile.validateRegistrationDone);
+              })
+            );
+          })
+        );
       }
 
       if (profile.physicallyRemove) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Trash, this.i18n.user.profile.remove, () => {
-          this.confirmation.confirm({
-            message: this.i18n.general.removeConfirm(user.display),
-            callback: () => this.addSub(this.usersService.deletePendingUser({ user: this.param }).subscribe(() => {
-              if (this.breadcrumb.empty || this.breadcrumb.breadcrumb$.value.length === 1) {
-                this.router.navigate(['/users', 'search']);
-              } else {
-                this.breadcrumb.back();
-              }
-              this.notification.snackBar(this.i18n.general.removeDone(user.display));
-            }))
-          });
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Trash, this.i18n.user.profile.remove, () => {
+            this.confirmation.confirm({
+              message: this.i18n.general.removeConfirm(user.display),
+              callback: () =>
+                this.addSub(
+                  this.usersService.deletePendingUser({ user: this.param }).subscribe(() => {
+                    if (this.breadcrumb.empty || this.breadcrumb.breadcrumb$.value.length === 1) {
+                      this.router.navigate(['/users', 'search']);
+                    } else {
+                      this.breadcrumb.back();
+                    }
+                    this.notification.snackBar(this.i18n.general.removeDone(user.display));
+                  })
+                )
+            });
+          })
+        );
       }
 
       if (status.view) {
-        this.managementActions.push(new HeadingAction(SvgIcon.PersonCheck,
-          operator ? this.i18n.user.profile.statusOperator : this.i18n.user.profile.statusUser,
-          () => {
-            this.router.navigate(['/users', this.param, 'status']);
-          }));
+        this.managementActions.push(
+          new HeadingAction(
+            SvgIcon.PersonCheck,
+            operator ? this.i18n.user.profile.statusOperator : this.i18n.user.profile.statusUser,
+            () => {
+              this.router.navigate(['/users', this.param, 'status']);
+            }
+          )
+        );
       }
       if (group.view) {
-        this.managementActions.push(new HeadingAction(SvgIcon.People,
-          operator ? this.i18n.user.profile.groupOperator : this.i18n.user.profile.groupUser,
-          () => {
-            this.router.navigate(['/users', this.param, 'group']);
-          }));
+        this.managementActions.push(
+          new HeadingAction(
+            SvgIcon.People,
+            operator ? this.i18n.user.profile.groupOperator : this.i18n.user.profile.groupUser,
+            () => {
+              this.router.navigate(['/users', this.param, 'group']);
+            }
+          )
+        );
       }
       if (agreements.view) {
-        this.managementActions.push(new HeadingAction(SvgIcon.UiChecks, this.i18n.user.profile.agreements,
-          () => {
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.UiChecks, this.i18n.user.profile.agreements, () => {
             this.router.navigate(['/users', this.param, 'agreements']);
-          }));
+          })
+        );
       }
       if (brokering.viewMembers) {
-        this.managementActions.push(new HeadingAction(SvgIcon.PersonSquareOutline, this.i18n.user.profile.viewBrokerings, () => {
-          this.router.navigate(['/users', this.param, 'brokerings']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.PersonSquareOutline, this.i18n.user.profile.viewBrokerings, () => {
+            this.router.navigate(['/users', this.param, 'brokerings']);
+          })
+        );
       }
       if (brokering.viewBrokers) {
-        this.managementActions.push(new HeadingAction(SvgIcon.PersonSquareOutline, this.i18n.user.profile.viewBrokers, () => {
-          this.router.navigate(['/users', this.param, 'brokers']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.PersonSquareOutline, this.i18n.user.profile.viewBrokers, () => {
+            this.router.navigate(['/users', this.param, 'brokers']);
+          })
+        );
       }
       if (operators.viewOperators) {
-        this.managementActions.push(new HeadingAction(SvgIcon.PersonCircleOutline, this.i18n.user.profile.viewOperators, () => {
-          this.router.navigate(['/users', this.param, 'operators']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.PersonCircleOutline, this.i18n.user.profile.viewOperators, () => {
+            this.router.navigate(['/users', this.param, 'operators']);
+          })
+        );
       }
       if (operators.viewGroups) {
-        this.managementActions.push(new HeadingAction(SvgIcon.People, this.i18n.user.profile.viewOperatorGroups, () => {
-          this.router.navigate(['/users', this.param, 'operator-groups']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.People, this.i18n.user.profile.viewOperatorGroups, () => {
+            this.router.navigate(['/users', this.param, 'operator-groups']);
+          })
+        );
       }
       if (products.view) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Shield, this.i18n.user.profile.products, () => {
-          this.router.navigate(['/users', this.param, 'product-assignment']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Shield, this.i18n.user.profile.products, () => {
+            this.router.navigate(['/users', this.param, 'product-assignment']);
+          })
+        );
       }
       if (contact.add) {
-        this.managementActions.push(new HeadingAction(SvgIcon.PersonPlus, this.i18n.user.profile.addContact, () => {
-          this.addContact();
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.PersonPlus, this.i18n.user.profile.addContact, () => {
+            this.addContact();
+          })
+        );
       }
       if (contact.remove) {
-        this.managementActions.push(new HeadingAction(SvgIcon.PersonDash, this.i18n.user.profile.removeContact, () => {
-          this.removeContact();
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.PersonDash, this.i18n.user.profile.removeContact, () => {
+            this.removeContact();
+          })
+        );
       }
       if (messages.send) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Envelope, this.i18n.user.profile.sendMessage, () => {
-          this.router.navigate(['/users', 'messages', 'send'], { queryParams: { to: this.param } });
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Envelope, this.i18n.user.profile.sendMessage, () => {
+            this.router.navigate(['/users', 'messages', 'send'], { queryParams: { to: this.param } });
+          })
+        );
       }
       if (simpleAds.view) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Basket, this.i18n.user.profile.viewAds, () => {
-          this.router.navigate(['/marketplace', this.param, AdKind.SIMPLE, 'list']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Basket, this.i18n.user.profile.viewAds, () => {
+            this.router.navigate(['/marketplace', this.param, AdKind.SIMPLE, 'list']);
+          })
+        );
       }
       if (webshop.view) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Basket, this.i18n.user.profile.viewWebshop, () => {
-          this.router.navigate(['/marketplace', this.param, AdKind.WEBSHOP, 'list']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Basket, this.i18n.user.profile.viewWebshop, () => {
+            this.router.navigate(['/marketplace', this.param, AdKind.WEBSHOP, 'list']);
+          })
+        );
       }
       if (webshop.viewPurchases) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Bag2, this.i18n.user.profile.purchases, () => {
-          this.router.navigate(['/marketplace', this.param, 'purchases']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Bag2, this.i18n.user.profile.purchases, () => {
+            this.router.navigate(['/marketplace', this.param, 'purchases']);
+          })
+        );
       }
       if (webshop.viewSales) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Receipt, this.i18n.user.profile.sales, () => {
-          this.router.navigate(['/marketplace', this.param, 'sales']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Receipt, this.i18n.user.profile.sales, () => {
+            this.router.navigate(['/marketplace', this.param, 'sales']);
+          })
+        );
       }
       if (marketplace.viewInterests) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Star, this.i18n.user.profile.adInterests, () => {
-          this.router.navigate(['/marketplace', this.param, 'ad-interests']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Star, this.i18n.user.profile.adInterests, () => {
+            this.router.navigate(['/marketplace', this.param, 'ad-interests']);
+          })
+        );
       }
       if (marketplace.viewFavorites) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Heart, this.i18n.user.profile.favoriteAds, () => {
-          this.router.navigate(['/marketplace', this.param, 'list-favorites']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Heart, this.i18n.user.profile.favoriteAds, () => {
+            this.router.navigate(['/marketplace', this.param, 'list-favorites']);
+          })
+        );
       }
       if (webshop.viewSettings) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Truck, this.i18n.user.profile.deliveryMethods, () => {
-          this.router.navigate(['/marketplace', this.param, 'delivery-methods']);
-        }));
-        this.managementActions.push(new HeadingAction(SvgIcon.Gear, this.i18n.user.profile.webshopSettings, () => {
-          this.router.navigate(['/marketplace', this.param, 'webshop-settings', 'view']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Truck, this.i18n.user.profile.deliveryMethods, () => {
+            this.router.navigate(['/marketplace', this.param, 'delivery-methods']);
+          })
+        );
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Gear, this.i18n.user.profile.webshopSettings, () => {
+            this.router.navigate(['/marketplace', this.param, 'webshop-settings', 'view']);
+          })
+        );
       }
       for (const token of tokens) {
-        this.managementActions.push(new HeadingAction(this.tokenHelper.icon(token.type), token.type.pluralName, () => {
-          this.router.navigate(['/users', this.param, 'tokens', token.type.id]);
-        }));
+        this.managementActions.push(
+          new HeadingAction(this.tokenHelper.icon(token.type), token.type.pluralName, () => {
+            this.router.navigate(['/users', this.param, 'tokens', token.type.id]);
+          })
+        );
       }
       if (notificationSettings.view) {
-        this.managementActions.push(new HeadingAction(SvgIcon.BellSlash, this.i18n.user.profile.notificationSettings, () => {
-          this.router.navigate(['/users', this.param, 'notification-settings']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.BellSlash, this.i18n.user.profile.notificationSettings, () => {
+            this.router.navigate(['/users', this.param, 'notification-settings']);
+          })
+        );
       }
       if (permissions.privacySettings?.view) {
-        this.managementActions.push(new HeadingAction(SvgIcon.EyeSlash, this.i18n.user.profile.privacySettings, () => {
-          this.router.navigate(['/users', this.param, 'privacy-settings']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.EyeSlash, this.i18n.user.profile.privacySettings, () => {
+            this.router.navigate(['/users', this.param, 'privacy-settings']);
+          })
+        );
       }
       // References
       if (permissions.references?.view) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Star, this.i18n.user.profile.references, () => {
-          this.router.navigate(['/users', this.param, 'references', 'search']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Star, this.i18n.user.profile.references, () => {
+            this.router.navigate(['/users', this.param, 'references', 'search']);
+          })
+        );
       }
       // Quick access
       if (quickAccess.view) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Grid2, this.i18n.user.profile.quickAccess, () => {
-          this.router.navigate(['/users', this.param, 'quick-access', 'settings']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Grid2, this.i18n.user.profile.quickAccess, () => {
+            this.router.navigate(['/users', this.param, 'quick-access', 'settings']);
+          })
+        );
       }
       // Feedbacks
       if (permissions.paymentFeedbacks?.view) {
-        this.managementActions.push(new HeadingAction(SvgIcon.Award, this.i18n.user.profile.feedbacks, () => {
-          this.router.navigate(['/users', this.param, 'feedbacks', 'search']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.Award, this.i18n.user.profile.feedbacks, () => {
+            this.router.navigate(['/users', this.param, 'feedbacks', 'search']);
+          })
+        );
       }
       // Documents
       if (documents.view) {
-        this.managementActions.push(new HeadingAction(SvgIcon.FileEarmarkText, this.i18n.document.action(user.documents?.count), () => {
-          this.router.navigate(['/users', this.param, 'documents', 'search']);
-        }));
+        this.managementActions.push(
+          new HeadingAction(SvgIcon.FileEarmarkText, this.i18n.document.action(user.documents?.count), () => {
+            this.router.navigate(['/users', this.param, 'documents', 'search']);
+          })
+        );
       }
       // Records
       for (const record of permissions.records || []) {
         const type = record.type;
-        const addTo = type.userProfileSection === UserProfileSectionEnum.BANKING
-          ? this.bankingActions : this.managementActions;
+        const addTo =
+          type.userProfileSection === UserProfileSectionEnum.BANKING ? this.bankingActions : this.managementActions;
         const icon = this.recordHelper.icon(type);
         const recordDetails = user.records[type.id] || user.records[type.internalName];
-        addTo.push(new HeadingAction(icon, this.i18n.record.action(
-          { type: type.pluralName, count: recordDetails?.count }), () => {
-            this.router.navigateByUrl(this.recordHelper.resolvePath(record, this.param));
-          }));
+        addTo.push(
+          new HeadingAction(
+            icon,
+            this.i18n.record.action({ type: type.pluralName, count: recordDetails?.count }),
+            () => {
+              this.router.navigateByUrl(this.recordHelper.resolvePath(record, this.param));
+            }
+          )
+        );
       }
       // Custom operations
       for (const operation of permissions.operations || []) {
-        const addTo = operation.userProfileSection === UserProfileSectionEnum.BANKING
-          ? this.bankingActions : this.managementActions;
+        const addTo =
+          operation.userProfileSection === UserProfileSectionEnum.BANKING
+            ? this.bankingActions
+            : this.managementActions;
         addTo.push(this.runOperationHelper.headingAction(operation, user.id));
       }
       // Wizards
       for (const wizard of permissions.wizards || []) {
-        const addTo = wizard.userProfileSection === UserProfileSectionEnum.BANKING
-          ? this.bankingActions : this.managementActions;
+        const addTo =
+          wizard.userProfileSection === UserProfileSectionEnum.BANKING ? this.bankingActions : this.managementActions;
         addTo.push(this.wizardHelper.headingAction(wizard, user.id));
       }
       const actionsCount = this.bankingActions.length + this.managementActions.length;
@@ -546,35 +712,45 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     return ['/users', this.param, 'feedbacks', 'search'];
   }
 
-
   private updateHeadingActions() {
     const show = !this.showActions$.value;
     const icon = show ? SvgIcon.FilePlay : SvgIcon.FileX;
     const label = show ? this.i18n.user.profile.showActions : this.i18n.user.profile.hideActions;
-    const headingAction = new HeadingAction(icon, label, () => {
-      this.showActions$.next(show);
-      this.updateHeadingActions();
-    }, true);
+    const headingAction = new HeadingAction(
+      icon,
+      label,
+      () => {
+        this.showActions$.next(show);
+        this.updateHeadingActions();
+      },
+      true
+    );
     this.headingActions = [headingAction];
   }
 
   private addContact(): any {
-    this.addSub(this.contactsService.createContact({
-      user: ApiHelper.SELF,
-      body: {
-        contact: this.user.id,
-      },
-    }).subscribe(() => {
-      this.notification.snackBar(this.i18n.user.profile.addContactDone(this.user.name || this.user.display));
-      this.reload();
-    }));
+    this.addSub(
+      this.contactsService
+        .createContact({
+          user: ApiHelper.SELF,
+          body: {
+            contact: this.user.id
+          }
+        })
+        .subscribe(() => {
+          this.notification.snackBar(this.i18n.user.profile.addContactDone(this.user.name || this.user.display));
+          this.reload();
+        })
+    );
   }
 
   private removeContact(): any {
-    this.addSub(this.contactsService.deleteContact({ id: this.user.contact.id }).subscribe(() => {
-      this.notification.snackBar(this.i18n.user.profile.removeContactDone(this.user.name || this.user.display));
-      this.reload();
-    }));
+    this.addSub(
+      this.contactsService.deleteContact({ id: this.user.contact.id }).subscribe(() => {
+        this.notification.snackBar(this.i18n.user.profile.removeContactDone(this.user.name || this.user.display));
+        this.reload();
+      })
+    );
   }
 
   get myProfile(): boolean {
@@ -593,13 +769,17 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
    * Will show the activation date when it is different than the registration date
    */
   get showActivationDate(): boolean {
-    return this.user.activationDate
-      && this.format.formatAsDate(this.user.activationDate) !== this.format.formatAsDate(this.user.registrationDate);
+    return (
+      this.user.activationDate &&
+      this.format.formatAsDate(this.user.activationDate) !== this.format.formatAsDate(this.user.registrationDate)
+    );
   }
 
   get showOperatorOwner(): boolean {
-    return this.user.role === RoleEnum.OPERATOR &&
-      ![UserRelationshipEnum.OWNER, UserRelationshipEnum.SAME_OWNER].includes(this.user.relationship);
+    return (
+      this.user.role === RoleEnum.OPERATOR &&
+      ![UserRelationshipEnum.OWNER, UserRelationshipEnum.SAME_OWNER].includes(this.user.relationship)
+    );
   }
 
   get mainBroker(): User {

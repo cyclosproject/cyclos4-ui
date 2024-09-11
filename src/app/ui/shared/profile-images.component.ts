@@ -3,7 +3,13 @@ import { Image } from 'app/api/models';
 import { SvgIcon } from 'app/core/svg-icon';
 import { BaseComponent } from 'app/shared/base.component';
 import { galleryImage } from 'app/shared/helper';
-import { NgxGalleryAnimation, NgxGalleryComponent, NgxGalleryImage, NgxGalleryImageSize, NgxGalleryOptions } from 'ngx-gallery-9';
+import {
+  NgxGalleryAnimation,
+  NgxGalleryComponent,
+  NgxGalleryImage,
+  NgxGalleryImageSize,
+  NgxGalleryOptions
+} from 'ngx-gallery-9';
 
 const ProfileGalleryOptions: NgxGalleryOptions = {
   imageSize: NgxGalleryImageSize.Contain,
@@ -12,22 +18,24 @@ const ProfileGalleryOptions: NgxGalleryOptions = {
   previewKeyboardNavigation: true,
   previewCloseOnClick: true,
   previewCloseOnEsc: true,
-  thumbnailsAutoHide: true,
+  thumbnailsAutoHide: true
 };
 
 const MultiProfileGalleryOptions: NgxGalleryOptions[] = [ProfileGalleryOptions];
 
 // When a single image is used, a plain `<img>` tag is shown. The gallery is hidden, and used to show the preview (full image)
-const SingleProfileGalleryOptions: NgxGalleryOptions[] = [{
-  width: '0',
-  height: '0',
-  image: false,
-  thumbnails: false,
-  previewArrows: false,
-  previewKeyboardNavigation: true,
-  previewCloseOnClick: true,
-  previewCloseOnEsc: true,
-}];
+const SingleProfileGalleryOptions: NgxGalleryOptions[] = [
+  {
+    width: '0',
+    height: '0',
+    image: false,
+    thumbnails: false,
+    previewArrows: false,
+    previewKeyboardNavigation: true,
+    previewCloseOnClick: true,
+    previewCloseOnEsc: true
+  }
+];
 
 /**
  * Shows the user / advertisement image(s) in the view page
@@ -35,7 +43,7 @@ const SingleProfileGalleryOptions: NgxGalleryOptions[] = [{
 @Component({
   selector: 'profile-images',
   templateUrl: 'profile-images.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileImagesComponent extends BaseComponent implements OnInit {
   constructor(injector: Injector) {
@@ -79,5 +87,4 @@ export class ProfileImagesComponent extends BaseComponent implements OnInit {
   showLightbox() {
     this.gallery.openPreview(0);
   }
-
 }

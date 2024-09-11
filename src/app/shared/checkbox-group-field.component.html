@@ -1,27 +1,28 @@
-<label-value *ngIf="label; else widget" [formField]="self"
-  [informationText]="informationText">
+<label-value *ngIf="label; else widget" [formField]="self" [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
 <ng-template #widget>
-  <ng-container
-    *ngFor="let category of categories | async; let firstCat = first">
-    <div *ngIf="category.name" class="font-weight-bold"
-      [ngClass]="{'mt-3': !firstCat}">{{
-      category.name }}</div>
+  <ng-container *ngFor="let category of categories | async; let firstCat = first">
+    <div *ngIf="category.name" class="font-weight-bold" [ngClass]="{ 'mt-3': !firstCat }">{{ category.name }}</div>
 
-    <div class="input-group-container"
-      [ngClass]="{ horizontal, 'no-category': category.name }">
-      <div #check
+    <div class="input-group-container" [ngClass]="{ horizontal, 'no-category': category.name }">
+      <div
+        #check
         *ngFor="let option of category.options | async; let firstOpt = first; let last = last"
         class="custom-control custom-checkbox d-inline-flex mr-3 align-content-center"
-        [ngClass]="{ 'mt-1': !(firstCat &&  !category.name && firstOpt) || horizontal}"
+        [ngClass]="{ 'mt-1': !(firstCat && !category.name && firstOpt) || horizontal }"
         (click)="toggle(option.value); $event.preventDefault(); $event.stopPropagation()"
         (keydown.space)="$event.preventDefault(); $event.stopPropagation()"
         (keyup.enter)="toggle(option.value); $event.preventDefault(); $event.stopPropagation()">
-        <input type="checkbox" [name]="name" class="custom-control-input"
-          [id]="id + '_' + option.value" [value]="option.value"
-          [checked]="isSelected(option)" [disabled]="option.disabled">
+        <input
+          type="checkbox"
+          [name]="name"
+          class="custom-control-input"
+          [id]="id + '_' + option.value"
+          [value]="option.value"
+          [checked]="isSelected(option)"
+          [disabled]="option.disabled" />
         <label class="custom-control-label" [for]="id + '_' + option.value">
           {{ option.text }}
         </label>

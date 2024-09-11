@@ -9,16 +9,14 @@ import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 @Component({
   selector: 'registration-step-idp',
   templateUrl: 'registration-step-idp.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegistrationStepIdPComponent extends BaseComponent implements OnInit {
   @Input() identityProviders: IdentityProvider[];
 
   @Output() continue = new EventEmitter<IdentityProvider>();
 
-  constructor(
-    injector: Injector,
-    public uiLayout: UiLayoutService) {
+  constructor(injector: Injector, public uiLayout: UiLayoutService) {
     super(injector);
   }
 

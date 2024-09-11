@@ -1,5 +1,14 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { Currency, PerformVoucherTransaction, TopUpVoucher, VoucherBasicDataForTransaction, VoucherDataForRedeem, VoucherTopUpPreview, VoucherTransactionKind, VoucherTransactionPreview } from 'app/api/models';
+import {
+  Currency,
+  PerformVoucherTransaction,
+  TopUpVoucher,
+  VoucherBasicDataForTransaction,
+  VoucherDataForRedeem,
+  VoucherTopUpPreview,
+  VoucherTransactionKind,
+  VoucherTransactionPreview
+} from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { BaseComponent } from 'app/shared/base.component';
 
@@ -9,10 +18,9 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'voucher-transaction-step-confirm',
   templateUrl: './voucher-transaction-step-confirm.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VoucherTransactionStepConfirmComponent extends BaseComponent implements OnInit {
-
   @Input() preview: VoucherTransactionPreview;
   @Input() data: VoucherBasicDataForTransaction;
   @Input() transaction: PerformVoucherTransaction;
@@ -24,10 +32,7 @@ export class VoucherTransactionStepConfirmComponent extends BaseComponent implem
   topUpPreview: VoucherTopUpPreview;
   topUp: TopUpVoucher;
 
-  constructor(
-    injector: Injector,
-    private authHelper: AuthHelperService
-  ) {
+  constructor(injector: Injector, private authHelper: AuthHelperService) {
     super(injector);
   }
 

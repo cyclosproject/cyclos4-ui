@@ -4,20 +4,14 @@
   <div class="row">
     <div class="col-12 col-sm-4">
       <div class="d-flex justify-content-center justify-content-sm-start">
-        <avatar-lightbox *ngIf="image$ | async; else noImage" [image]="image"
-          size="huge">
-        </avatar-lightbox>
+        <avatar-lightbox *ngIf="image$ | async; else noImage" [image]="image" size="huge"> </avatar-lightbox>
         <ng-template #noImage>
           <div class="d-flex flex-column">
-            <ng-container *ngIf="
-              data.imageConfiguration.availability === 'required'; 
-              else noImageOptional">
-              <div tabindex="0"
-                [ngClass]="{'is-invalid': imageControl.hasError}">
+            <ng-container *ngIf="data.imageConfiguration.availability === 'required'; else noImageOptional">
+              <div tabindex="0" [ngClass]="{ 'is-invalid': imageControl.hasError }">
                 {{ i18n.user.noImageRequired }}
                 <span class="required-marker">&nbsp;*</span>
-                <field-errors *ngIf="imageControl" [control]="imageControl">
-                </field-errors>
+                <field-errors *ngIf="imageControl" [control]="imageControl"> </field-errors>
               </div>
             </ng-container>
           </div>
@@ -26,17 +20,28 @@
           {{ i18n.user.noImage }}
         </ng-template>
       </div>
-      <image-upload #upload containerClass="mt-3" target="userRegistration"
-        keepUrls (uploadDone)="onUploadDone($event[0])"></image-upload>
+      <image-upload
+        #upload
+        containerClass="mt-3"
+        target="userRegistration"
+        keepUrls
+        (uploadDone)="onUploadDone($event[0])"></image-upload>
     </div>
     <div
       class="col-12 col-sm-8 mt-3 mt-sm-0 d-flex justify-content-between justify-content-sm-end align-items-end"
       *ngIf="(upload.uploading$ | async) === false">
-      <action-button [disabled]="requesting$ | async"
-        (action)="upload.perform()" [label]="i18n.field.image.upload" outline>
+      <action-button
+        [disabled]="requesting$ | async"
+        (action)="upload.perform()"
+        [label]="i18n.field.image.upload"
+        outline>
       </action-button>
-      <action-button *ngIf="image" class="ml-3" outline
-        [disabled]="requesting$ | async" (action)="removeImage()"
+      <action-button
+        *ngIf="image"
+        class="ml-3"
+        outline
+        [disabled]="requesting$ | async"
+        (action)="removeImage()"
         [label]="i18n.field.image.remove">
       </action-button>
     </div>
@@ -49,27 +54,33 @@
   <label-value *ngIf="data.broker" [label]="i18n.user.broker">
     <user-link [user]="data.broker" hideLink></user-link>
   </label-value>
-  <input-field *ngIf="canEdit('name')" formControlName="name"
-    [label]="data.nameLabel || i18n.user.name" required></input-field>
-  <input-field *ngIf="canEdit('username')" formControlName="username"
-    [label]="i18n.user.username" required></input-field>
-  <ng-container
-    *ngIf="fromExternalPayment && data.user.email; else fillEmail">
+  <input-field
+    *ngIf="canEdit('name')"
+    formControlName="name"
+    [label]="data.nameLabel || i18n.user.name"
+    required></input-field>
+  <input-field
+    *ngIf="canEdit('username')"
+    formControlName="username"
+    [label]="i18n.user.username"
+    required></input-field>
+  <ng-container *ngIf="fromExternalPayment && data.user.email; else fillEmail">
     <label-value [label]="i18n.user.email" kind="fieldView">
       {{ data.user.email }}
     </label-value>
   </ng-container>
   <ng-template #fillEmail>
     <ng-container *ngIf="canEdit('email')">
-      <label-value [label]="i18n.user.email" kind="field"
+      <label-value
+        [label]="i18n.user.email"
+        kind="field"
         [ignoreExtraCell]="!canManagePrivacy('email')"
         [required]="data.emailRequired">
-        <input-field formControlName="email" [required]="data.emailRequired">
-        </input-field>
-        <field-privacy *extraCell field="email"
-          [control]="form.get('hiddenFields')"></field-privacy>
+        <input-field formControlName="email" [required]="data.emailRequired"> </input-field>
+        <field-privacy *extraCell field="email" [control]="form.get('hiddenFields')"></field-privacy>
       </label-value>
-      <boolean-field *ngIf="data.allowSetSendActivationEmail"
+      <boolean-field
+        *ngIf="data.allowSetSendActivationEmail"
         [label]="i18n.user.registration.skipActivationEmail"
         formControlName="skipActivationEmail"></boolean-field>
     </ng-container>
@@ -77,97 +88,121 @@
 </ng-container>
 
 <!-- Custom profile fields -->
-<ng-container *ngFor="let cf of fieldsWithoutSection"
-  [formGroup]="form.get('customValues')">
-  <label-value *ngIf="canEdit(cf)" [label]="cf.name" kind="field"
-    [ignoreExtraCell]="!canManagePrivacy(cf)" [fieldSize]="cf.size"
-    [required]="cf.required" [informationText]="cf.informationText">
-    <custom-field-input [field]="cf" hideLabel
-      [formControlName]="cf.internalName" hideInformationText
+<ng-container *ngFor="let cf of fieldsWithoutSection" [formGroup]="form.get('customValues')">
+  <label-value
+    *ngIf="canEdit(cf)"
+    [label]="cf.name"
+    kind="field"
+    [ignoreExtraCell]="!canManagePrivacy(cf)"
+    [fieldSize]="cf.size"
+    [required]="cf.required"
+    [informationText]="cf.informationText">
+    <custom-field-input
+      [field]="cf"
+      hideLabel
+      [formControlName]="cf.internalName"
+      hideInformationText
       (imagesUploaded)="customImagesUploaded.emit($event)"
       (filesUploaded)="customFilesUploaded.emit($event)">
     </custom-field-input>
-    <field-privacy *extraCell [field]="cf.internalName"
-      [control]="form.get('hiddenFields')"></field-privacy>
+    <field-privacy *extraCell [field]="cf.internalName" [control]="form.get('hiddenFields')"></field-privacy>
   </label-value>
 </ng-container>
 <ng-container *ngFor="let key of fieldsWithSection.keys()">
   <h2>{{ key.name }}</h2>
   <div class="mb-3" *ngIf="key.informationText">
-    {{ key.informationText }}</div>
-  <ng-container *ngFor="let cf of fieldsWithSection.get(key)"
-    [formGroup]="form.get('customValues')">
-    <label-value *ngIf="canEdit(cf)" [label]="cf.name" kind="field"
-      [ignoreExtraCell]="!canManagePrivacy(cf)" [fieldSize]="cf.size"
-      [required]="cf.required" [informationText]="cf.informationText">
-      <custom-field-input [field]="cf" hideLabel
-        [formControlName]="cf.internalName" hideInformationText
+    {{ key.informationText }}
+  </div>
+  <ng-container *ngFor="let cf of fieldsWithSection.get(key)" [formGroup]="form.get('customValues')">
+    <label-value
+      *ngIf="canEdit(cf)"
+      [label]="cf.name"
+      kind="field"
+      [ignoreExtraCell]="!canManagePrivacy(cf)"
+      [fieldSize]="cf.size"
+      [required]="cf.required"
+      [informationText]="cf.informationText">
+      <custom-field-input
+        [field]="cf"
+        hideLabel
+        [formControlName]="cf.internalName"
+        hideInformationText
         (imagesUploaded)="customImagesUploaded.emit($event)"
         (filesUploaded)="customFilesUploaded.emit($event)">
       </custom-field-input>
-      <field-privacy *extraCell [field]="cf.internalName"
-        [control]="form.get('hiddenFields')"></field-privacy>
+      <field-privacy *extraCell [field]="cf.internalName" [control]="form.get('hiddenFields')"></field-privacy>
     </label-value>
   </ng-container>
 </ng-container>
 <!-- Add a separator for next sections -->
 <hr
-  *ngIf="(fieldsWithSection.size > 0 || fieldsWithoutSection.length > 0) && (mobileAvailability !== 'disabled' || landLineAvailability !== 'disabled' || addressAvailability !== 'disabled')" />
+  *ngIf="
+    (fieldsWithSection.size > 0 || fieldsWithoutSection.length > 0) &&
+    (mobileAvailability !== 'disabled' || landLineAvailability !== 'disabled' || addressAvailability !== 'disabled')
+  " />
 
 <!-- Mobile phone -->
 <ng-container *ngIf="mobileAvailability !== 'disabled'">
-  <ng-container
-    *ngIf="fromExternalPayment && data.user.mobilePhones?.length > 0; else fillMobile">
+  <ng-container *ngIf="fromExternalPayment && data.user.mobilePhones?.length > 0; else fillMobile">
     <label-value [label]="i18n.phone.mobile" kind="fieldView">
       {{ data.user.mobilePhones[0].number }}
     </label-value>
   </ng-container>
   <ng-template #fillMobile>
-    <label-value [label]="i18n.phone.mobile"
-      [required]="mobileAvailability === 'required'" kind="field"
+    <label-value
+      [label]="i18n.phone.mobile"
+      [required]="mobileAvailability === 'required'"
+      kind="field"
       [formGroup]="mobileForm">
-      <input-field formControlName="number"
-        [placeholder]="data.phoneConfiguration.mobileExample"></input-field>
-      <field-privacy *extraCell [control]="mobileForm.get('hidden')">
-      </field-privacy>
+      <input-field formControlName="number" [placeholder]="data.phoneConfiguration.mobileExample"></input-field>
+      <field-privacy *extraCell [control]="mobileForm.get('hidden')"> </field-privacy>
     </label-value>
   </ng-template>
 </ng-container>
 
 <!-- Land-line phone -->
-<ng-container *ngIf="landLineAvailability !== 'disabled'"
-  [formGroup]="landLineForm">
-  <label-value [label]="i18n.phone.landLine"
+<ng-container *ngIf="landLineAvailability !== 'disabled'" [formGroup]="landLineForm">
+  <label-value
+    [label]="i18n.phone.landLine"
     [required]="data.phoneConfiguration.landLineAvailability === 'required'"
     kind="field">
-    <input-field formControlName="number"
-      [placeholder]="data.phoneConfiguration.landLineExample"></input-field>
-    <field-privacy *extraCell [control]="landLineForm.get('hidden')">
-    </field-privacy>
+    <input-field formControlName="number" [placeholder]="data.phoneConfiguration.landLineExample"></input-field>
+    <field-privacy *extraCell [control]="landLineForm.get('hidden')"> </field-privacy>
   </label-value>
-  <input-field *ngIf="data.phoneConfiguration.extensionEnabled"
-    formControlName="extension" fieldSize="tiny"
+  <input-field
+    *ngIf="data.phoneConfiguration.extensionEnabled"
+    formControlName="extension"
+    fieldSize="tiny"
     [label]="i18n.phone.extension"></input-field>
 </ng-container>
 
 <!-- Address -->
 <ng-container *ngIf="addressAvailability !== 'disabled'">
   <h2 class="mt-4">{{ i18n.address.address }}</h2>
-  <boolean-field *ngIf="data.addressConfiguration.availability !== 'required'"
-    [formControl]="defineAddress" [label]="i18n.user.addressDefine" switch>
+  <boolean-field
+    *ngIf="data.addressConfiguration.availability !== 'required'"
+    [formControl]="defineAddress"
+    [label]="i18n.user.addressDefine"
+    switch>
   </boolean-field>
-  <address-form *ngIf="defineAddress.value" [addressForm]="addressForm"
-    ignoreContactFields [configuration]="data.addressConfiguration"
+  <address-form
+    *ngIf="defineAddress.value"
+    [addressForm]="addressForm"
+    ignoreContactFields
+    [configuration]="data.addressConfiguration"
     [managePrivacy]="data.addressConfiguration.managePrivacy">
   </address-form>
-  <label-value [label]="i18n.general.map" kind="field"
-    *ngIf="defineAddress.value && maps.enabled">
+  <label-value [label]="i18n.general.map" kind="field" *ngIf="defineAddress.value && maps.enabled">
     <static-map
       *ngIf="(addressForm.get('location').valueChanges | async)?.latitude != null; else viewMap"
-      (imageLoaded)="mapShown()" [address]="addressForm.value"></static-map>
+      (imageLoaded)="mapShown()"
+      [address]="addressForm.value"></static-map>
     <ng-template #viewMap>
-      <action-button outline [disabled]="locatingAddress$ | async"
-        (action)="locateAddress()" [label]="i18n.general.mapView">
+      <action-button
+        outline
+        [disabled]="locatingAddress$ | async"
+        (action)="locateAddress()"
+        [label]="i18n.general.mapView">
       </action-button>
     </ng-template>
   </label-value>

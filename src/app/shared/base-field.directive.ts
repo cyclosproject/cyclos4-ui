@@ -5,10 +5,7 @@ import { DefaultValueAccessor } from '@angular/forms';
  * Base class for directives that operate over fields (both inputs and custom form fields).
  */
 export abstract class BaseFieldDirective {
-  constructor(
-    private el: ElementRef,
-    private valueAccessor: any,
-  ) { }
+  constructor(private el: ElementRef, private valueAccessor: any) {}
 
   get field(): any {
     let result = null;

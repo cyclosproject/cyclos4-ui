@@ -1,13 +1,16 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  CustomFieldControlEnum, CustomFieldTypeEnum, ProductKind,
-  ProductWithUserAccount, UserProductAssignmentData
+  CustomFieldControlEnum,
+  CustomFieldTypeEnum,
+  ProductKind,
+  ProductWithUserAccount,
+  UserProductAssignmentData
 } from 'app/api/models';
 import { ProductAssignmentService } from 'app/api/services/product-assignment.service';
-import { HeadingAction } from 'app/shared/action';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
-import { empty } from 'app/shared/helper';
 import { SvgIcon } from 'app/core/svg-icon';
+import { HeadingAction } from 'app/shared/action';
+import { empty } from 'app/shared/helper';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 
 /**
  * Displays the products of an owner including self, group and group set assignments.
@@ -15,35 +18,39 @@ import { SvgIcon } from 'app/core/svg-icon';
 @Component({
   selector: 'list-product-assignment',
   templateUrl: 'list-product-assignment.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListProductAssignmentComponent extends BasePageComponent<UserProductAssignmentData> implements OnInit {
-
   empty = empty;
   private user: string;
 
-  constructor(
-    injector: Injector,
-    private productAssignmentService: ProductAssignmentService) {
+  constructor(injector: Injector, private productAssignmentService: ProductAssignmentService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.user = this.route.snapshot.params.user;
-    this.addSub(this.productAssignmentService.getUserProductsData({ user: this.user }).subscribe(data => this.data = data));
+    this.addSub(
+      this.productAssignmentService.getUserProductsData({ user: this.user }).subscribe(data => (this.data = data))
+    );
   }
 
   onDataInitialized(data: UserProductAssignmentData) {
     const headingActions: HeadingAction[] = [];
 
     if (data.assignable) {
-      headingActions.push(new HeadingAction(SvgIcon.PlusCircle, this.i18n.product.assignIndividualProduct, () => this.assign()));
+      headingActions.push(
+        new HeadingAction(SvgIcon.PlusCircle, this.i18n.product.assignIndividualProduct, () => this.assign())
+      );
     }
 
     if (data.history) {
-      headingActions.push(new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
-        this.router.navigate(['/users', this.user, 'product-assignment', 'history'])));
+      headingActions.push(
+        new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
+          this.router.navigate(['/users', this.user, 'product-assignment', 'history'])
+        )
+      );
     }
 
     this.headingActions = headingActions;
@@ -82,21 +89,25 @@ export class ListProductAssignmentComponent extends BasePageComponent<UserProduc
           possibleValues: this.data.assignable.map(type => {
             return {
               id: type.id,
-              value: type.name,
+              value: type.name
             };
           }),
-          required: true,
+          required: true
         }
       ],
       callback: res => {
-        this.addSub(this.productAssignmentService.assignIndividualProduct({
-          product: res.customValues.products,
-          user: this.user
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.product.productAssigned);
-          this.reload();
-        }));
-      },
+        this.addSub(
+          this.productAssignmentService
+            .assignIndividualProduct({
+              product: res.customValues.products,
+              user: this.user
+            })
+            .subscribe(() => {
+              this.notification.snackBar(this.i18n.product.productAssigned);
+              this.reload();
+            })
+        );
+      }
     });
   }
 
@@ -114,13 +125,15 @@ export class ListProductAssignmentComponent extends BasePageComponent<UserProduc
     this.confirmation.confirm({
       message: this.i18n.general.removeItemConfirm,
       callback: () => {
-        this.addSub(this.productAssignmentService.unassignIndividualProduct({ product: product.id, user: this.user })
-          .subscribe(() => {
-            this.notification.snackBar(this.i18n.general.removeItemDone);
-            this.reload();
-          }));
-      },
+        this.addSub(
+          this.productAssignmentService
+            .unassignIndividualProduct({ product: product.id, user: this.user })
+            .subscribe(() => {
+              this.notification.snackBar(this.i18n.general.removeItemDone);
+              this.reload();
+            })
+        );
+      }
     });
   }
-
 }

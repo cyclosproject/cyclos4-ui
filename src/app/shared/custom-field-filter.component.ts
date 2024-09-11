@@ -1,6 +1,23 @@
-import { ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Host,
+  Injector,
+  Input,
+  OnInit,
+  Optional,
+  SkipSelf,
+  ViewChild
+} from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from '@angular/forms';
-import { CustomFieldDetailed, CustomFieldSizeEnum, CustomFieldTypeEnum, LinkedEntityTypeEnum, UserQueryFilters, UserStatusEnum } from 'app/api/models';
+import {
+  CustomFieldDetailed,
+  CustomFieldSizeEnum,
+  CustomFieldTypeEnum,
+  LinkedEntityTypeEnum,
+  UserQueryFilters,
+  UserStatusEnum
+} from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { LayoutService } from 'app/core/layout.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -13,11 +30,12 @@ import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field
 import { UserFieldComponent } from 'app/shared/user-field.component';
 
 const INPUT = [
-  CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.TEXT,
-  CustomFieldTypeEnum.RICH_TEXT, CustomFieldTypeEnum.URL];
-const RANGE = [
-  CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.DECIMAL,
-  CustomFieldTypeEnum.DATE];
+  CustomFieldTypeEnum.STRING,
+  CustomFieldTypeEnum.TEXT,
+  CustomFieldTypeEnum.RICH_TEXT,
+  CustomFieldTypeEnum.URL
+];
+const RANGE = [CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.DECIMAL, CustomFieldTypeEnum.DATE];
 const ENUMERATED = [CustomFieldTypeEnum.SINGLE_SELECTION, CustomFieldTypeEnum.MULTI_SELECTION];
 
 /**
@@ -29,13 +47,10 @@ const ENUMERATED = [CustomFieldTypeEnum.SINGLE_SELECTION, CustomFieldTypeEnum.MU
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: CustomFieldFilterComponent, multi: true },
-    { provide: NG_VALIDATORS, useExisting: CustomFieldFilterComponent, multi: true },
-  ],
+    { provide: NG_VALIDATORS, useExisting: CustomFieldFilterComponent, multi: true }
+  ]
 })
-export class CustomFieldFilterComponent
-  extends BaseFormFieldComponent<string>
-  implements Validator, OnInit {
-
+export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> implements Validator, OnInit {
   private _field: CustomFieldDetailed;
   @Input() get field(): CustomFieldDetailed {
     return this._field;
@@ -85,7 +100,7 @@ export class CustomFieldFilterComponent
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private fieldHelper: FieldHelperService,
     private formBuilder: FormBuilder,
-    public layout: LayoutService,
+    public layout: LayoutService
   ) {
     super(injector, controlContainer);
   }
@@ -97,9 +112,11 @@ export class CustomFieldFilterComponent
     }
     if (RANGE.includes(this.type)) {
       this.range = this.formBuilder.array([null, null]);
-      this.addSub(this.range.valueChanges.subscribe((arr: string[]) => {
-        this.setValue(empty(arr) || empty(arr[0]) && empty(arr[1]) ? '' : arr.join(ApiHelper.VALUE_SEPARATOR));
-      }));
+      this.addSub(
+        this.range.valueChanges.subscribe((arr: string[]) => {
+          this.setValue(empty(arr) || (empty(arr[0]) && empty(arr[1])) ? '' : arr.join(ApiHelper.VALUE_SEPARATOR));
+        })
+      );
     }
   }
 
@@ -120,10 +137,13 @@ export class CustomFieldFilterComponent
   }
 
   get input(): boolean {
-    return INPUT.includes(this.type)
-      || ((this.type === CustomFieldTypeEnum.DYNAMIC_SELECTION || this.type === CustomFieldTypeEnum.DYNAMIC_MULTI_SELECTION)
-        && !this.field.hasValuesList)
-      || (this.type === CustomFieldTypeEnum.LINKED_ENTITY && !this.user);
+    return (
+      INPUT.includes(this.type) ||
+      ((this.type === CustomFieldTypeEnum.DYNAMIC_SELECTION ||
+        this.type === CustomFieldTypeEnum.DYNAMIC_MULTI_SELECTION) &&
+        !this.field.hasValuesList) ||
+      (this.type === CustomFieldTypeEnum.LINKED_ENTITY && !this.user)
+    );
   }
 
   get enumerated(): boolean {
@@ -150,17 +170,11 @@ export class CustomFieldFilterComponent
   }
 
   protected getFocusableControl() {
-    return [
-      this.inputField,
-      this.multiSelectionField,
-      this.singleSelectionField,
-      this.userField,
-    ].find(c => c != null);
+    return [this.inputField, this.multiSelectionField, this.singleSelectionField, this.userField].find(c => c != null);
   }
 
   protected getDisabledValue(): string {
     // It is not practical to disable a search field. Still...
     return this.value;
   }
-
 }

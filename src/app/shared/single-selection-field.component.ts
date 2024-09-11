@@ -15,11 +15,10 @@ import { empty } from 'app/shared/helper';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: SingleSelectionFieldComponent, multi: true },
-    { provide: FORM_FIELD_WITH_OPTIONS, useExisting: SingleSelectionFieldComponent },
-  ],
+    { provide: FORM_FIELD_WITH_OPTIONS, useExisting: SingleSelectionFieldComponent }
+  ]
 })
 export class SingleSelectionFieldComponent extends BaseSelectionFieldComponent<string> {
-
   /** Can be a boolean, indicating the empty option exists, or the empty option label */
   @Input() emptyOption: boolean | string = false;
 
@@ -33,9 +32,7 @@ export class SingleSelectionFieldComponent extends BaseSelectionFieldComponent<s
     }
   }
 
-  constructor(
-    injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
+  constructor(injector: Injector, @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
     super(injector, controlContainer);
   }
 

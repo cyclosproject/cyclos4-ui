@@ -12,13 +12,11 @@ import { BehaviorSubject, Observable, Subscription, timer } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CountdownButtonComponent implements OnInit {
-
   @HostBinding('class.d-inline-block') classInlineBlock = true;
   @HostBinding('class.button') classButton = true;
 
   text$ = new BehaviorSubject<string>(null);
   disabled$ = new BehaviorSubject<boolean>(false);
-
 
   private _outline: boolean | string = false;
   @Input() get outline(): boolean | string {
@@ -40,7 +38,7 @@ export class CountdownButtonComponent implements OnInit {
   countdown: Observable<number>;
   subscription: Subscription;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.countdown = timer(1000, 1000);

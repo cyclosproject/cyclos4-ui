@@ -1,6 +1,5 @@
 <ng-container *ngIf="preview.user && !authHelper.isSelf(preview.user)">
-  <user-info [user]="preview.user">
-  </user-info>
+  <user-info [user]="preview.user"> </user-info>
 </ng-container>
 <!-- description + image -->
 <label-value [label]="i18n.voucher.voucher">
@@ -13,18 +12,21 @@
   <user-link [user]="preview.owner"></user-link>
 </label-value>
 <label-value [label]="i18n.transaction.amount">
-  {{ sendVoucher.amount | currency:preview.type.configuration.currency }}
+  {{ sendVoucher.amount | currency : preview.type.configuration.currency }}
 </label-value>
-<label-value *ngIf="sendVoucher.message" [label]="i18n.voucher.send.message"
-  valueFormat="break">{{ sendVoucher.message }}</label-value>
+<label-value *ngIf="sendVoucher.message" [label]="i18n.voucher.send.message" valueFormat="break">{{
+  sendVoucher.message
+}}</label-value>
 <!-- payment fields -->
 <ng-container *ngFor="let cf of paymentCustomFields">
   <label-value
     [hidden]="!fieldHelper.hasValue(cf.internalName, sendVoucher.paymentCustomValues)"
     [label]="cf.name"
-    [labelPosition]="labelOnTop((layout.ltsm$ | async), cf) ? 'top' : 'auto'">
-    <format-field-value [customValues]="sendVoucher.paymentCustomValues"
-      [fields]="paymentCustomFields" [fieldName]="cf.internalName">
+    [labelPosition]="labelOnTop(layout.ltsm$ | async, cf) ? 'top' : 'auto'">
+    <format-field-value
+      [customValues]="sendVoucher.paymentCustomValues"
+      [fields]="paymentCustomFields"
+      [fieldName]="cf.internalName">
     </format-field-value>
   </label-value>
 </ng-container>
@@ -33,16 +35,19 @@
   <label-value
     [hidden]="!fieldHelper.hasValue(cf.internalName, sendVoucher.voucherCustomValues)"
     [label]="cf.name"
-    [labelPosition]="labelOnTop((layout.ltsm$ | async), cf) ? 'top' : 'auto'">
-    <format-field-value [customValues]="sendVoucher.voucherCustomValues"
-      [fields]="voucherCustomFields" [fieldName]="cf.internalName">
+    [labelPosition]="labelOnTop(layout.ltsm$ | async, cf) ? 'top' : 'auto'">
+    <format-field-value
+      [customValues]="sendVoucher.voucherCustomValues"
+      [fields]="voucherCustomFields"
+      [fieldName]="cf.internalName">
     </format-field-value>
   </label-value>
 </ng-container>
 
 <ng-container *ngIf="preview.confirmationPasswordInput">
-  <hr *ngIf="layout.gtxxs$ | async">
-  <confirmation-password focused
+  <hr *ngIf="layout.gtxxs$ | async" />
+  <confirmation-password
+    focused
     [formControl]="form.get('confirmationPassword')"
     [passwordInput]="preview.confirmationPasswordInput"
     [createDeviceConfirmation]="createDeviceConfirmation"

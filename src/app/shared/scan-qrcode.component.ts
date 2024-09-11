@@ -1,4 +1,14 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Injector, OnDestroy, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Injector,
+  OnDestroy,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
@@ -14,7 +24,7 @@ export const Timeout = 60_000;
 @Component({
   selector: 'scan-qrcode',
   templateUrl: 'scan-qrcode.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit, OnDestroy {
   static PreferredCameraKey = 'preferredCamera';
@@ -29,10 +39,7 @@ export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit,
 
   @Output() select = new EventEmitter<string>();
 
-  constructor(
-    injector: Injector,
-    public modalRef: BsModalRef
-  ) {
+  constructor(injector: Injector, public modalRef: BsModalRef) {
     super(injector);
   }
 
@@ -61,19 +68,24 @@ export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit,
       preferredCamera,
       highlightScanRegion: true
     });
-    this.qrScanner.start()
+    this.qrScanner
+      .start()
       .then(() => this.initialize())
       .catch(() => this.noPermission());
-    this.addSub(this.cameras$.subscribe(cams => {
-      if (empty(this.cameraControl.value)) {
-        const cam = cams.find(cam => cam.id === preferredCamera) ?? cams[0];
-        this.cameraControl.setValue(cam?.id);
-      }
-    }));
-    this.addSub(this.cameraControl.valueChanges.subscribe((cam: string) => {
-      this.preferredCamera = cam;
-      this.qrScanner.setCamera(cam);
-    }));
+    this.addSub(
+      this.cameras$.subscribe(cams => {
+        if (empty(this.cameraControl.value)) {
+          const cam = cams.find(cam => cam.id === preferredCamera) ?? cams[0];
+          this.cameraControl.setValue(cam?.id);
+        }
+      })
+    );
+    this.addSub(
+      this.cameraControl.valueChanges.subscribe((cam: string) => {
+        this.preferredCamera = cam;
+        this.qrScanner.setCamera(cam);
+      })
+    );
   }
 
   ngOnDestroy() {
@@ -116,7 +128,6 @@ export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit,
     this.notification.error(this.i18n.field.camera.noPermission);
     this.close();
   }
-
 
   private get preferredCamera(): string {
     return localStorage.getItem(ScanQrCodeComponent.PreferredCameraKey);

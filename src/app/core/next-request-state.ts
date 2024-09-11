@@ -16,10 +16,9 @@ export const PreferredLocale = 'Preferred-Locale';
  * Stores data which will be set in the next API request
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class NextRequestState {
-
   /**
    * Observable indicating if a request is currently being performed
    */
@@ -53,13 +52,12 @@ export class NextRequestState {
 
   private pending$ = new BehaviorSubject<HttpRequest<any>[]>([]);
   private nextAuth: string;
-  private nextHeaders: { [key: string]: string; };
+  private nextHeaders: { [key: string]: string };
 
-  constructor(
-    private authService: AuthService) {
+  constructor(private authService: AuthService) {
     this.requesting$ = this.pending$.asObservable().pipe(
       map(reqs => reqs.length > 0),
-      distinctUntilChanged(),
+      distinctUntilChanged()
     );
   }
 
@@ -67,7 +65,6 @@ export class NextRequestState {
    * Applies the current authorization headers to the next request
    */
   apply(req: HttpRequest<any>): HttpRequest<any> {
-
     const headers = {};
 
     // This front-end is presented as main channel
@@ -107,7 +104,7 @@ export class NextRequestState {
 
     // Apply the headers to the request
     let result = req.clone({
-      setHeaders: headers,
+      setHeaders: headers
     });
 
     // When there are additional parameters to append, do it
@@ -117,7 +114,7 @@ export class NextRequestState {
         httpParams = httpParams.append(key, this.queryParams[key]);
       }
       result = result.clone({
-        params: httpParams,
+        params: httpParams
       });
       this.queryParams = null;
     }
@@ -173,7 +170,7 @@ export class NextRequestState {
     this.nextHeaders[header] = value;
   }
 
-  setNextHeaders(headers: { [key: string]: string; }): void {
+  setNextHeaders(headers: { [key: string]: string }): void {
     this.nextHeaders = headers;
   }
 
@@ -194,21 +191,24 @@ export class NextRequestState {
    */
   replaceSession(sessionToken: string): Observable<any> {
     this.nextAsGuest();
-    return this.authService.replaceSession({
-      sessionToken,
-      cookie: this.useCookie,
-    }).pipe(switchMap(newToken => {
-      this.setSessionToken(newToken);
-      return of(null);
-    }));
+    return this.authService
+      .replaceSession({
+        sessionToken,
+        cookie: this.useCookie
+      })
+      .pipe(
+        switchMap(newToken => {
+          this.setSessionToken(newToken);
+          return of(null);
+        })
+      );
   }
 
   /**
    * Returns whether a session is used
    */
   get hasSession(): boolean {
-    return !empty(localStorage.getItem(SessionToken))
-      || !empty(localStorage.getItem(SessionPrefix));
+    return !empty(localStorage.getItem(SessionToken)) || !empty(localStorage.getItem(SessionPrefix));
   }
 
   /**
@@ -240,8 +240,8 @@ export class NextRequestState {
   /**
    * Returns headers for requests using the current session
    */
-  get headers(): { [key: string]: string; } {
-    const result: { [key: string]: string; } = {};
+  get headers(): { [key: string]: string } {
+    const result: { [key: string]: string } = {};
     const token = localStorage.getItem(SessionToken);
     if (!empty(token)) {
       result[SessionToken] = token;
@@ -259,5 +259,4 @@ export class NextRequestState {
   clearRequests() {
     this.pending$.next([]);
   }
-
 }

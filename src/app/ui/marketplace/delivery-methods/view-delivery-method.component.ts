@@ -12,12 +12,10 @@ import { Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'view-delivery-method',
   templateUrl: 'view-delivery-method.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewDeliveryMethodComponent extends BaseViewPageComponent<DeliveryMethodView> implements OnInit {
-  constructor(
-    injector: Injector,
-    private deliveryMethodService: DeliveryMethodsService) {
+  constructor(injector: Injector, private deliveryMethodService: DeliveryMethodsService) {
     super(injector);
   }
 
@@ -27,21 +25,26 @@ export class ViewDeliveryMethodComponent extends BaseViewPageComponent<DeliveryM
   ngOnInit() {
     super.ngOnInit();
     this.id = this.route.snapshot.params.id;
-    this.addSub(this.deliveryMethodService.viewDeliveryMethod({ id: this.id }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.deliveryMethodService.viewDeliveryMethod({ id: this.id }).subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized(data: DeliveryMethodView) {
-
     this.self = this.authHelper.isSelfOrOwner(data.user);
 
     const actions = [];
     if (data.canEdit) {
       actions.push(
-        new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () =>
-          this.router.navigate(['/marketplace', 'delivery-methods', 'edit', this.id]), true,
-        ));
+        new HeadingAction(
+          SvgIcon.Pencil,
+          this.i18n.general.edit,
+          () => this.router.navigate(['/marketplace', 'delivery-methods', 'edit', this.id]),
+          true
+        )
+      );
     }
     this.headingActions = actions;
   }
@@ -75,5 +78,4 @@ export class ViewDeliveryMethodComponent extends BaseViewPageComponent<DeliveryM
   resolveMenu(data: DeliveryMethodView) {
     return this.menu.userMenu(data.user, Menu.DELIVERY_METHODS);
   }
-
 }

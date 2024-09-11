@@ -14,7 +14,7 @@
  * - `empty`: Just title, no content
  */
 export type CardMode =
-  'normal'
+  | 'normal'
   | 'tight'
   | 'viewForm'
   | 'filters'

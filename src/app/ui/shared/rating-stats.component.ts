@@ -9,10 +9,9 @@ import { ReferenceHelperService } from 'app/ui/users/references/reference-helper
 @Component({
   selector: 'rating-stats',
   templateUrl: 'rating-stats.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RatingStatsComponent {
-
   /**
    * From 1 to 5 allowing decimals
    */
@@ -23,10 +22,7 @@ export class RatingStatsComponent {
   @Input() textLeft: string;
   @Input() textRight: string;
 
-  constructor(
-    private referenceHelper: ReferenceHelperService
-  ) {
-  }
+  constructor(private referenceHelper: ReferenceHelperService) {}
 
   /**
    * Returns a score between 1 and 5 based on
@@ -92,5 +88,4 @@ export class RatingStatsComponent {
       return SvgIcon.Star;
     }
   }
-
 }

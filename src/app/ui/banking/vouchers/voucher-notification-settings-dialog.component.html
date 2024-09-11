@@ -1,30 +1,37 @@
 <h1>{{ i18n.voucher.notificationSettings.title }}</h1>
 <ng-container [formGroup]="form">
   <input-field
-    [required]="voucher.creationType === VoucherCreationTypeEnum.SENT" focused
-    formControlName="email" type="text" [label]="i18n.voucher.email">
+    [required]="voucher.creationType === VoucherCreationTypeEnum.SENT"
+    focused
+    formControlName="email"
+    type="text"
+    [label]="i18n.voucher.email">
   </input-field>
-  <input-field *ngIf="voucher.creationType != VoucherCreationTypeEnum.SENT"
-    formControlName="mobilePhone" type="tel"
+  <input-field
+    *ngIf="voucher.creationType != VoucherCreationTypeEnum.SENT"
+    formControlName="mobilePhone"
+    type="tel"
     [label]="i18n.voucher.mobilePhone"></input-field>
-  <boolean-field formControlName="enableNotifications" switch
-    [label]="i18n.voucher.enableNotifications">
+  <boolean-field formControlName="enableNotifications" switch [label]="i18n.voucher.enableNotifications">
   </boolean-field>
-  <confirmation-password *ngIf="voucher.confirmationPasswordInput"
-    class="mt-4" formControlName="confirmationPassword"
+  <confirmation-password
+    *ngIf="voucher.confirmationPasswordInput"
+    class="mt-4"
+    formControlName="confirmationPassword"
     [createDeviceConfirmation]="createDeviceConfirmation"
-    (showSubmit)="showSubmit$.next($event)" (confirmed)="submit($event)"
+    (showSubmit)="showSubmit$.next($event)"
+    (confirmed)="submit($event)"
     [passwordInput]="voucher.confirmationPasswordInput">
   </confirmation-password>
 </ng-container>
 
 <actions forceRow>
-  <action-button *ngIf="showSubmit$ | async; else blank"
-    [disabled]="requesting$ | async" (action)="submit()"
+  <action-button
+    *ngIf="showSubmit$ | async; else blank"
+    [disabled]="requesting$ | async"
+    (action)="submit()"
     [label]="i18n.general.submit">
   </action-button>
   <ng-template #blank>&nbsp;</ng-template>
-  <action-button outline (action)="modalRef.hide()"
-    [label]="i18n.general.cancel">
-  </action-button>
+  <action-button outline (action)="modalRef.hide()" [label]="i18n.general.cancel"> </action-button>
 </actions>

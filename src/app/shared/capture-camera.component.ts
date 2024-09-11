@@ -1,4 +1,14 @@
-import { AfterViewChecked, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Inject, Input, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  Input,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { FormatService } from 'app/core/format.service';
 import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import b64toBlob from 'b64-to-blob';
@@ -12,10 +22,9 @@ import { BehaviorSubject, Subject } from 'rxjs';
 @Component({
   selector: 'capture-camera',
   templateUrl: 'capture-camera.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CaptureCameraComponent implements AfterViewChecked {
-
   dimensions$ = new BehaviorSubject<number[]>(null);
   trigger$ = new Subject<boolean>();
 
@@ -28,8 +37,7 @@ export class CaptureCameraComponent implements AfterViewChecked {
     public modalRef: BsModalRef,
     public format: FormatService,
     @Inject(I18nInjectionToken) public i18n: I18n
-  ) {
-  }
+  ) {}
 
   ngAfterViewChecked() {
     if (this.dimensions$.value == null) {

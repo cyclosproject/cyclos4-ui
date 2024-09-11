@@ -40,5 +40,5 @@ export enum ErrorStatus {
   /**
    * Status Code: 503.
    */
-  SERVICE_UNAVAILABLE = 503,
+  SERVICE_UNAVAILABLE = 503
 }

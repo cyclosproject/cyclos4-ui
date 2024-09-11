@@ -1,6 +1,16 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, ElementRef,
-  HostBinding, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChild,
+  ElementRef,
+  HostBinding,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  TemplateRef
 } from '@angular/core';
 import { CustomFieldSizeEnum } from 'app/api/models';
 import { Breakpoint as LayoutBreakpoint, LayoutService } from 'app/core/layout.service';
@@ -9,7 +19,6 @@ import { ExtraCellDirective } from 'app/shared/extra-cell.directive';
 import { truthyAttr } from 'app/shared/helper';
 import { ValueFormat } from 'app/shared/value-format';
 import { Subscription } from 'rxjs';
-
 
 export const COLS = 12;
 
@@ -29,10 +38,9 @@ export type LabelValueKind = 'view' | 'field' | 'fieldView';
 @Component({
   selector: 'label-value',
   templateUrl: 'label-value.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
-
   @HostBinding('class.label-value') classLabelValue = true;
   @HostBinding('class.any-label-value') classAnyLabelValue = true;
   @HostBinding('class.label-on-side') classLabelOnSide = false;
@@ -41,7 +49,7 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
     private changeDetector: ChangeDetectorRef,
     private layout: LayoutService,
     private element: ElementRef<HTMLElement>
-  ) { }
+  ) {}
 
   private subs: Subscription[] = [];
 
@@ -155,9 +163,11 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
       this.changeDetector.detectChanges();
     }
     // Update the indication that the label is on side
-    this.subs.push(this.layout.breakpointChanges$.subscribe(bs => {
-      this.updateLabelOnSideClass(bs);
-    }));
+    this.subs.push(
+      this.layout.breakpointChanges$.subscribe(bs => {
+        this.updateLabelOnSideClass(bs);
+      })
+    );
     this.updateLabelOnSideClass(this.layout.activeBreakpoints);
     this.updateSizeClass();
   }
@@ -182,10 +192,7 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateLabelOnSideClass(bs: Set<LayoutBreakpoint>) {
-    const bp: Breakpoint = bs.has('xxs')
-      ? 'xxs' : bs.has('xs')
-        ? 'xs' : bs.has('sm')
-          ? 'sm' : 'md';
+    const bp: Breakpoint = bs.has('xxs') ? 'xxs' : bs.has('xs') ? 'xs' : bs.has('sm') ? 'sm' : 'md';
     const labelOnSide = this.isLabelOnSide(bp);
     if (this.classLabelOnSide !== labelOnSide) {
       this.classLabelOnSide = labelOnSide;
@@ -197,8 +204,8 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   /**
-    * Returns whether, for the given breakpoint, labels should be rendered on side.
-    */
+   * Returns whether, for the given breakpoint, labels should be rendered on side.
+   */
   private isLabelOnSide(breakpoint: Breakpoint): boolean {
     if (this.labelPosition === 'sideForced') {
       return true;
@@ -218,7 +225,11 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
           }
           element = element.parentElement;
         }
-        return isFilter || this.labelPosition === 'side' || this.labelPosition === 'auto' && ['view', 'fieldView'].includes(this.kind);
+        return (
+          isFilter ||
+          this.labelPosition === 'side' ||
+          (this.labelPosition === 'auto' && ['view', 'fieldView'].includes(this.kind))
+        );
       default:
         // For larger resolutions, will always use labels on side, unless explicitly stated as above
         return this.labelPosition !== 'above';

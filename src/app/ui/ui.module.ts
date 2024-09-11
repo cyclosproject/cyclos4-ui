@@ -9,20 +9,9 @@ import { UiRoutingModule } from 'app/ui/ui-routing.module';
 import { UiComponent } from './ui.component';
 
 @NgModule({
-  declarations: [
-    UiComponent
-  ],
-  imports: [
-    HttpClientModule,
-    CoreBasicModule,
-    UiCoreModule,
-    SharedModule,
-    BrowserAnimationsModule,
-    UiRoutingModule,
-  ],
-  providers: [
-    INITIALIZE
-  ],
-  bootstrap: [UiComponent],
+  declarations: [UiComponent],
+  imports: [HttpClientModule, CoreBasicModule, UiCoreModule, SharedModule, BrowserAnimationsModule, UiRoutingModule],
+  providers: [INITIALIZE],
+  bootstrap: [UiComponent]
 })
-export class UiModule { }
+export class UiModule {}

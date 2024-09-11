@@ -1,24 +1,26 @@
 <page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
-
-  <page-content *ngSwitchCase="'form'" [heading]="data.document.name"
-    [mobileHeading]="data.document.name">
+  <page-content *ngSwitchCase="'form'" [heading]="data.document.name" [mobileHeading]="data.document.name">
     <ng-container *ngFor="let cf of formFields; let first = first">
-      <custom-field-input [field]="cf"
-        [formControl]="formControl(cf.internalName)" [focused]="first"
+      <custom-field-input
+        [field]="cf"
+        [formControl]="formControl(cf.internalName)"
+        [focused]="first"
         [labelPosition]="'auto'">
       </custom-field-input>
     </ng-container>
     <actions>
-      <action-button (action)="process()" [disabled]="requesting$ | async"
-        [label]="i18n.general.submit">
+      <action-button (action)="process()" [disabled]="requesting$ | async" [label]="i18n.general.submit">
       </action-button>
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'preview'" [heading]="data.document.name"
-    [mobileHeading]="data.document.name" printContentOnly
-    [headingActions]="headingActions$ | async" last>
+  <page-content
+    *ngSwitchCase="'preview'"
+    [heading]="data.document.name"
+    [mobileHeading]="data.document.name"
+    printContentOnly
+    [headingActions]="headingActions$ | async"
+    last>
     <div [innerHTML]="result | trust"></div>
   </page-content>
-
 </page-layout>

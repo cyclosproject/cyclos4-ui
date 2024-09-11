@@ -52,16 +52,12 @@ const rootRoutes: Routes = [
   },
   {
     path: '**',
-    component: NotFoundComponent,
-  },
+    component: NotFoundComponent
+  }
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(rootRoutes)
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [RouterModule.forRoot(rootRoutes)],
+  exports: [RouterModule]
 })
-export class VoucherRoutingModule { }
+export class VoucherRoutingModule {}

@@ -1,6 +1,7 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [mode]="'normal'"
+    <page-content
+      [mode]="'normal'"
       [heading]="i18n.account.balanceLimits.title.list"
       [mobileHeading]="i18n.account.balanceLimits.mobileTitle.list"
       [headingActions]="headingActions$ | async">
@@ -8,22 +9,23 @@
     </page-content>
 
     <results-layout [results]="data.accountLimits">
-
-      <mobile-result *mobileResult="let row"
+      <mobile-result
+        *mobileResult="let row"
         (click)="router.navigate(path(row.account.type)); $event.stopPropagation()">
         <div class="d-flex">
           <div class="w-100">
-            <label-value [label]="i18n.account.account"
-              labelPosition="sideForced">
+            <label-value [label]="i18n.account.account" labelPosition="sideForced">
               {{ row.account.type.name }}
             </label-value>
-            <label-value [label]="i18n.account.balanceLimits.negative"
-              labelPosition="sideForced">
-              {{ row.creditLimit | currency:row.account.currency }}
+            <label-value [label]="i18n.account.balanceLimits.negative" labelPosition="sideForced">
+              {{ row.creditLimit | currency : row.account.currency }}
             </label-value>
-            <label-value [label]="i18n.account.balanceLimits.positive"
-              labelPosition="sideForced">
-              {{ row.upperCreditLimit ? (row.upperCreditLimit | currency:row.account.currency) : i18n.account.limits.unlimited }}
+            <label-value [label]="i18n.account.balanceLimits.positive" labelPosition="sideForced">
+              {{
+                row.upperCreditLimit
+                  ? (row.upperCreditLimit | currency : row.account.currency)
+                  : i18n.account.limits.unlimited
+              }}
             </label-value>
           </div>
         </div>
@@ -36,12 +38,17 @@
           <th>{{ i18n.account.balanceLimits.positiveLimit }}</th>
         </thead>
         <tbody>
-          <tr *ngFor="let row of data.accountLimits"
+          <tr
+            *ngFor="let row of data.accountLimits"
             (click)="router.navigate(path(row.account.type)); $event.stopPropagation()">
             <td width="20%">{{ row.account.type.name }}</td>
-            <td>{{ row.creditLimit | currency:row.account.currency }}</td>
+            <td>{{ row.creditLimit | currency : row.account.currency }}</td>
             <td>
-              {{ row.upperCreditLimit ? (row.upperCreditLimit | currency:row.account.currency) : i18n.account.limits.unlimited }}
+              {{
+                row.upperCreditLimit
+                  ? (row.upperCreditLimit | currency : row.account.currency)
+                  : i18n.account.limits.unlimited
+              }}
             </td>
           </tr>
         </tbody>

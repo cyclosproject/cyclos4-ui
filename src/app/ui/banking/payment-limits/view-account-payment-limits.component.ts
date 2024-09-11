@@ -14,21 +14,16 @@ export type PaymentLimitsStep = 'details' | 'history';
 @Component({
   selector: 'view-account-payment-limits',
   templateUrl: 'view-account-payment-limits.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewAccountPaymentLimitsComponent
-  extends BasePageComponent<AccountPaymentLimitsData>
-  implements OnInit {
-
+export class ViewAccountPaymentLimitsComponent extends BasePageComponent<AccountPaymentLimitsData> implements OnInit {
   user: string;
   accountType: string;
   detailsHeadingActions: HeadingAction[];
   historyHeadingActions: HeadingAction[];
   step$ = new BehaviorSubject<PaymentLimitsStep>('details');
 
-  constructor(
-    injector: Injector,
-    private paymentLimitsService: PaymentLimitsService) {
+  constructor(injector: Injector, private paymentLimitsService: PaymentLimitsService) {
     super(injector);
   }
 
@@ -43,47 +38,75 @@ export class ViewAccountPaymentLimitsComponent
     super.ngOnInit();
     this.user = this.route.snapshot.params.user;
     this.accountType = this.route.snapshot.params.accountType;
-    this.addSub(this.paymentLimitsService.getAccountPaymentLimits({ user: this.user, accountType: this.accountType })
-      .subscribe(data => this.data = data));
+    this.addSub(
+      this.paymentLimitsService
+        .getAccountPaymentLimits({ user: this.user, accountType: this.accountType })
+        .subscribe(data => (this.data = data))
+    );
   }
 
   onDataInitialized(data: AccountBalanceLimitsData) {
     super.onDataInitialized(data);
     this.detailsHeadingActions = [];
     if (data.editable) {
-      this.detailsHeadingActions.push(new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => this.navigateToEdit()));
+      this.detailsHeadingActions.push(
+        new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => this.navigateToEdit())
+      );
     }
-    this.detailsHeadingActions.push(new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () => this.showHistory()));
+    this.detailsHeadingActions.push(
+      new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () => this.showHistory())
+    );
     this.headingActions = this.detailsHeadingActions;
 
     this.historyHeadingActions = [];
     if (data.editable) {
-      this.historyHeadingActions.push(new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => this.navigateToEdit()));
+      this.historyHeadingActions.push(
+        new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => this.navigateToEdit())
+      );
     }
-    this.historyHeadingActions.push(new HeadingAction(SvgIcon.ArrowLeft, this.i18n.general.details, () => this.showView()));
+    this.historyHeadingActions.push(
+      new HeadingAction(SvgIcon.ArrowLeft, this.i18n.general.details, () => this.showView())
+    );
   }
 
   amountLimitValue(): string {
-    return this.resolveAmountLimitValue(this.data.customAmountLimit, this.data.amountLimit, this.data.productAmountLimit);
+    return this.resolveAmountLimitValue(
+      this.data.customAmountLimit,
+      this.data.amountLimit,
+      this.data.productAmountLimit
+    );
   }
 
   amountPerDayLimitValue(): string {
-    return this.resolveAmountLimitValue(this.data.customAmountPerDayLimit, this.data.amountPerDayLimit, this.data.productAmountPerDayLimit);
+    return this.resolveAmountLimitValue(
+      this.data.customAmountPerDayLimit,
+      this.data.amountPerDayLimit,
+      this.data.productAmountPerDayLimit
+    );
   }
 
   amountPerWeekLimitValue(): string {
     return this.resolveAmountLimitValue(
-      this.data.customAmountPerWeekLimit, this.data.amountPerWeekLimit, this.data.productAmountPerWeekLimit);
+      this.data.customAmountPerWeekLimit,
+      this.data.amountPerWeekLimit,
+      this.data.productAmountPerWeekLimit
+    );
   }
 
   amountPerMonthLimitValue(): string {
     return this.resolveAmountLimitValue(
-      this.data.customAmountPerMonthLimit, this.data.amountPerMonthLimit, this.data.productAmountPerMonthLimit);
+      this.data.customAmountPerMonthLimit,
+      this.data.amountPerMonthLimit,
+      this.data.productAmountPerMonthLimit
+    );
   }
 
   amountPerYearLimitValue(): string {
     return this.resolveAmountLimitValue(
-      this.data.customAmountPerYearLimit, this.data.amountPerYearLimit, this.data.productAmountPerYearLimit);
+      this.data.customAmountPerYearLimit,
+      this.data.amountPerYearLimit,
+      this.data.productAmountPerYearLimit
+    );
   }
 
   resolveAmountLimitValue(custom: boolean, customAmount: string, productAmount: string): string {

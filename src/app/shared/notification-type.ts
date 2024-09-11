@@ -1,10 +1,7 @@
 /**
  * The possible types of notifications displayed to users
  */
-export type NotificationType =
-  'info' |
-  'warning' |
-  'error';
+export type NotificationType = 'info' | 'warning' | 'error';
 
 export namespace NotificationType {
   export const INFO: NotificationType = 'info';

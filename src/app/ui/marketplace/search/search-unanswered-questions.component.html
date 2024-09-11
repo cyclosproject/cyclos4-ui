@@ -1,25 +1,25 @@
 <page-layout>
-  <page-content class="no-padding"
+  <page-content
+    class="no-padding"
     [mode]="simpleQuestions && webshopQuestions ? 'filters' : 'empty'"
     [heading]="i18n.ad.title.unansweredQuestions"
     [mobileHeading]="i18n.ad.mobileTitle.unansweredQuestions">
     <div [formGroup]="form" class="filters-form filters-form-separator">
-      <div *ngIf="simpleQuestions && webshopQuestions"
-        class="col-12 col-md-6">
-        <single-selection-field formControlName="kind"
-          [label]="i18n.general.type">
-          <field-option [text]="i18n.ad.type.simple" value="simple">
-          </field-option>
-          <field-option [text]="i18n.ad.type.webshop" value="webshop">
-          </field-option>
+      <div *ngIf="simpleQuestions && webshopQuestions" class="col-12 col-md-6">
+        <single-selection-field formControlName="kind" [label]="i18n.general.type">
+          <field-option [text]="i18n.ad.type.simple" value="simple"> </field-option>
+          <field-option [text]="i18n.ad.type.webshop" value="webshop"> </field-option>
         </single-selection-field>
       </div>
     </div>
   </page-content>
-  <results-layout [results]="results$ | async" resultType="list"
-    [toLink]="toLink" (update)="update($event)" [rendering$]="rendering$">
-    <mobile-result *mobileResult="let row"
-      [avatarImage]="row.advertisement.image" [avatarIcon]="SvgIcon.Basket">
+  <results-layout
+    [results]="results$ | async"
+    resultType="list"
+    [toLink]="toLink"
+    (update)="update($event)"
+    [rendering$]="rendering$">
+    <mobile-result *mobileResult="let row" [avatarImage]="row.advertisement.image" [avatarIcon]="SvgIcon.Basket">
       <div class="d-flex">
         <div>
           <div class="cell-main">
@@ -33,7 +33,9 @@
           </div>
         </div>
         <div class="ml-auto text-right d-flex flex-column">
-          <button type="button" [tooltip]="i18n.general.remove"
+          <button
+            type="button"
+            [tooltip]="i18n.general.remove"
             class="btn btn-icon mt-2"
             (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
             <icon [icon]="SvgIcon.Trash"></icon>
@@ -51,18 +53,19 @@
         <th class="actions"></th>
       </thead>
       <tbody>
-        <tr *ngFor="let row of (results$ | async)?.results"
-          (click)="router.navigate(path(row))">
-          <td class=" avatar" [ngClass]="{
+        <tr *ngFor="let row of (results$ | async)?.results" (click)="router.navigate(path(row))">
+          <td
+            class="avatar"
+            [ngClass]="{
               'pb-0': layout.xxs$ | async,
               'border-0': layout.xxs$ | async
             }">
-            <avatar [image]="row.advertisement.image"
-              [tooltip]="row.advertisement.name" [icon]="SvgIcon.Basket">
+            <avatar [image]="row.advertisement.image" [tooltip]="row.advertisement.name" [icon]="SvgIcon.Basket">
             </avatar>
+          </td>
+
           <td class="link">
-            <span (click)="navigateToAd(row)">{{ row.advertisement.name
-              }}</span>
+            <span (click)="navigateToAd(row)">{{ row.advertisement.name }}</span>
           </td>
           <td>
             {{ row.question }}
@@ -71,7 +74,9 @@
             {{ row.questionDate | date }}
           </td>
           <td class="actions actions-multiple">
-            <button type="button" [tooltip]="i18n.general.remove"
+            <button
+              type="button"
+              [tooltip]="i18n.general.remove"
               class="btn btn-icon"
               (click)="remove(row); $event.stopPropagation()">
               <icon [icon]="SvgIcon.Trash"></icon>
@@ -81,5 +86,4 @@
       </tbody>
     </table>
   </results-layout>
-
 </page-layout>

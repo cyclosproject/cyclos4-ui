@@ -5,23 +5,31 @@ import { empty } from 'app/shared/helper';
 import { Mask, MaskField } from 'app/shared/mask';
 
 const ALLOWED = [
-  'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
-  'End', 'Home', 'Delete', 'Backspace', 'Tab',
-  'Shift', 'Control', 'Alt', 'Super', 'Meta', 'Enter'
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowUp',
+  'ArrowDown',
+  'End',
+  'Home',
+  'Delete',
+  'Backspace',
+  'Tab',
+  'Shift',
+  'Control',
+  'Alt',
+  'Super',
+  'Meta',
+  'Enter'
 ];
 
 /**
  * A directive to apply a mask to inputs
  */
 @Directive({
-  selector: '[mask]',
+  selector: '[mask]'
 })
 export class MaskDirective {
-  constructor(
-    @Inject(I18nInjectionToken) public i18n: I18n,
-    private el: ElementRef,
-    private control: NgControl,
-  ) { }
+  constructor(@Inject(I18nInjectionToken) public i18n: I18n, private el: ElementRef, private control: NgControl) {}
 
   private _mask: Mask;
   private fields: MaskField[];
@@ -76,8 +84,7 @@ export class MaskDirective {
     // Apply the typed character
     if (field && field.accepted(event.key)) {
       const key = field.transform(event.key);
-      value = value.substring(0, caret)
-        + key + value.substring(caret + 1);
+      value = value.substring(0, caret) + key + value.substring(caret + 1);
       el.selectionStart = el.selectionEnd = ++caret;
 
       // If inserting chars before the end of the string, ensure the rest is still valid
@@ -88,8 +95,7 @@ export class MaskDirective {
           value = value.substring(0, i);
           break;
         } else if (caret === value.length && f.literal) {
-          value = value.substring(0, caret)
-            + f.allowed + value.substring(caret + 1);
+          value = value.substring(0, caret) + f.allowed + value.substring(caret + 1);
           caret++;
         }
       }
@@ -118,7 +124,10 @@ export class MaskDirective {
     const selectionEnd = el.selectionEnd || el.value.length;
 
     const value = el.value;
-    const text = value.substring(0, caret) + (event.clipboardData.getData('text/plain') || '').trim() + value.substring(selectionEnd);
+    const text =
+      value.substring(0, caret) +
+      (event.clipboardData.getData('text/plain') || '').trim() +
+      value.substring(selectionEnd);
     const masked = this._mask.apply(text);
 
     event.preventDefault();
@@ -152,5 +161,4 @@ export class MaskDirective {
     }
     event.stopPropagation();
   }
-
 }

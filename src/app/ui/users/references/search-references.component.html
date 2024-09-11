@@ -1,8 +1,9 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
     <page-content
-      [mode]="userFilter || directionsFilter ? 'filters' : 'emptyFilters' "
-      [heading]="resolveHeading()" [mobileHeading]="resolveHeading(true)"
+      [mode]="userFilter || directionsFilter ? 'filters' : 'emptyFilters'"
+      [heading]="resolveHeading()"
+      [mobileHeading]="resolveHeading(true)"
       [headingActions]="headingActions$ | async">
       <div [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row">
@@ -12,16 +13,16 @@
                 <user-link [user]="data.user"></user-link>
               </label-value>
             </div>
-            <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
-            </div>
+            <div *ngIf="layout.gtsm$" class="col-12 col-md-6"></div>
           </ng-container>
           <ng-container *ngIf="directionsFilter">
             <div class="col-12 col-md-6">
-              <radio-group-field formControlName="direction"
-                [label]="i18n.reference.direction.direction">
-                <field-option [value]="ReferenceDirectionEnum.GIVEN"
+              <radio-group-field formControlName="direction" [label]="i18n.reference.direction.direction">
+                <field-option
+                  [value]="ReferenceDirectionEnum.GIVEN"
                   [text]="i18n.reference.direction.given"></field-option>
-                <field-option [value]="ReferenceDirectionEnum.RECEIVED"
+                <field-option
+                  [value]="ReferenceDirectionEnum.RECEIVED"
                   [text]="i18n.reference.direction.received"></field-option>
               </radio-group-field>
             </div>
@@ -30,8 +31,7 @@
       </div>
     </page-content>
 
-    <page-content *ngIf="(layout.gtsm$ | async) && (stats$ | async)"
-      mode="table">
+    <page-content *ngIf="(layout.gtsm$ | async) && (stats$ | async)" mode="table">
       <table class="table table-hover small-height">
         <thead>
           <th width="40%">{{ i18n.reference.value }}</th>
@@ -41,49 +41,51 @@
         <tbody>
           <tr *ngFor="let entry of levels">
             <td>
-              <rating-stats class="w-100 pr-3" [level]="entry.level"
-                [textLeft]="entry.text">
-              </rating-stats>
+              <rating-stats class="w-100 pr-3" [level]="entry.level" [textLeft]="entry.text"> </rating-stats>
             </td>
-            <td (click)="filter(entry.level, true)"
-              class="link link-undecorated">
+            <td (click)="filter(entry.level, true)" class="link link-undecorated">
               <ng-container
-                *ngTemplateOutlet="columnData; context: {count: allTime?.counts[entry.level], total: allTime?.total }">
+                *ngTemplateOutlet="columnData; context: { count: allTime?.counts[entry.level], total: allTime?.total }">
               </ng-container>
             </td>
             <td (click)="filter(entry.level)" class="link link-undecorated">
               <ng-container
-                *ngTemplateOutlet="columnData; context: {count: last30Days?.counts[entry.level], total: last30Days?.total }">
+                *ngTemplateOutlet="
+                  columnData;
+                  context: { count: last30Days?.counts[entry.level], total: last30Days?.total }
+                ">
               </ng-container>
             </td>
           </tr>
           <tr>
             <td class="font-weight-bold">{{ i18n.reference.total }}</td>
-            <td (click)="filter(null, true)" class="link link-undecorated"> {{
-              allTime?.total }} </td>
+            <td (click)="filter(null, true)" class="link link-undecorated">{{ allTime?.total }}</td>
             <td (click)="filter()" class="link link-undecorated">
-              {{ last30Days?.total }}</td>
+              {{ last30Days?.total }}
+            </td>
           </tr>
           <tr>
             <td class="font-weight-bold">
-              {{ i18n.reference.percentagePositive }}</td>
-            <td>
-              {{ ((allTime?.totalPositive / allTime?.total) || 0 | percent) }}
+              {{ i18n.reference.percentagePositive }}
             </td>
             <td>
-              {{ ((last30Days?.totalPositive / last30Days?.total) || 0 |
-              percent) }}
+              {{ allTime?.totalPositive / allTime?.total || 0 | percent }}
+            </td>
+            <td>
+              {{ last30Days?.totalPositive / last30Days?.total || 0 | percent }}
             </td>
           </tr>
         </tbody>
       </table>
     </page-content>
 
-    <results-layout resultType="list" [results]="results$ | async"
-      (update)="update($event)" [rendering$]="rendering$" [toLink]="toLink">
-
-      <mobile-result *mobileResult="let row"
-        [avatarImage]="row.relatedUser.image" [avatarIcon]="SvgIcon.Person">
+    <results-layout
+      resultType="list"
+      [results]="results$ | async"
+      (update)="update($event)"
+      [rendering$]="rendering$"
+      [toLink]="toLink">
+      <mobile-result *mobileResult="let row" [avatarImage]="row.relatedUser.image" [avatarIcon]="SvgIcon.Person">
         <div class="d-flex">
           <div>
             <div class="cell-main">
@@ -107,7 +109,7 @@
           <th class="actions"></th>
         </thead>
         <tbody>
-          <ng-container *ngFor=" let row of (results$ | async)?.results">
+          <ng-container *ngFor="let row of (results$ | async)?.results">
             <tr (click)="router.navigate(path(row))">
               <td>{{ row.date | dateTime }}</td>
               <td>{{ row.relatedUser.display }}</td>
@@ -115,8 +117,11 @@
                 <rating-stats [level]="row.level"></rating-stats>
               </td>
               <td class="actions actions-multiple">
-                <button *ngIf="data.manage" type="button"
-                  [tooltip]="i18n.general.remove" class="btn btn-icon"
+                <button
+                  *ngIf="data.manage"
+                  type="button"
+                  [tooltip]="i18n.general.remove"
+                  class="btn btn-icon"
                   (click)="remove(row)">
                   <icon [icon]="SvgIcon.Trash"></icon>
                 </button>
@@ -131,10 +136,7 @@
 
 <ng-template #columnData let-count="count" let-total="total">
   <div class="stats">
-    <div *ngIf="count > 0" class="bar"
-      [ngStyle]="{'width': (count / total) * 190 + 'px'}">
-      &nbsp;</div>
-    <span class="count" [ngClass]="{'pl-2': count > 0}">{{ count }}</span>
+    <div *ngIf="count > 0" class="bar" [ngStyle]="{ width: (count / total) * 190 + 'px' }">&nbsp;</div>
+    <span class="count" [ngClass]="{ 'pl-2': count > 0 }">{{ count }}</span>
   </div>
-
 </ng-template>

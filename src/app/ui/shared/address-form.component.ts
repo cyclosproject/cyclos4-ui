@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Injector, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import {
-  AddressConfiguration, AddressConfigurationForUserProfile,
-  AddressFieldEnum, Country, CustomFieldBinaryValues
+  AddressConfiguration,
+  AddressConfigurationForUserProfile,
+  AddressFieldEnum,
+  Country,
+  CustomFieldBinaryValues
 } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { truthyAttr } from 'app/shared/helper';
@@ -15,10 +18,9 @@ import { CountriesResolve } from 'app/ui/countries.resolve';
 @Component({
   selector: 'address-form',
   templateUrl: 'address-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddressFormComponent extends BaseComponent implements OnInit {
-
   @HostBinding('class.d-block') displayBlock = true;
 
   @Input() configuration: AddressConfiguration;
@@ -49,7 +51,7 @@ export class AddressFormComponent extends BaseComponent implements OnInit {
   constructor(
     injector: Injector,
     private addressHelper: AddressHelperService,
-    public countriesResolve: CountriesResolve,
+    public countriesResolve: CountriesResolve
   ) {
     super(injector);
   }
@@ -66,5 +68,4 @@ export class AddressFormComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
     this.profileConfiguration = this.configuration as AddressConfigurationForUserProfile;
   }
-
 }

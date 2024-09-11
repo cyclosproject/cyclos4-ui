@@ -16,10 +16,9 @@ export const IframeResizerUrl = 'https://cdnjs.cloudflare.com/ajax/libs/iframe-r
 @Component({
   selector: 'content-page',
   templateUrl: 'content-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContentPageComponent extends BaseViewPageComponent<FrontendPageWithContent> implements OnInit {
-
   private static nextId = 0;
 
   FrontendContentLayoutEnum = FrontendContentLayoutEnum;
@@ -32,11 +31,7 @@ export class ContentPageComponent extends BaseViewPageComponent<FrontendPageWith
     return this.data;
   }
 
-  constructor(
-    injector: Injector,
-    private frontendService: FrontendService,
-    private scriptLoader: ScriptLoaderService
-  ) {
+  constructor(injector: Injector, private frontendService: FrontendService, private scriptLoader: ScriptLoaderService) {
     super(injector);
   }
 
@@ -60,10 +55,12 @@ export class ContentPageComponent extends BaseViewPageComponent<FrontendPageWith
         break;
       case FrontendPageTypeEnum.IFRAME:
         // For iframe, make sure the script is loaded, then assign the content and initialize
-        this.addSub(this.scriptLoader.loadScript(IframeResizerUrl).subscribe(() => {
-          page.content = this.iframe(page.url);
-          this.data = page;
-        }));
+        this.addSub(
+          this.scriptLoader.loadScript(IframeResizerUrl).subscribe(() => {
+            page.content = this.iframe(page.url);
+            this.data = page;
+          })
+        );
         break;
       case FrontendPageTypeEnum.URL:
         // For URL, open the new tab and navigate back to home
@@ -75,11 +72,17 @@ export class ContentPageComponent extends BaseViewPageComponent<FrontendPageWith
       case FrontendPageTypeEnum.OPERATION:
         // For custom operation, navigate to the execution page
         this.breadcrumb.clear();
-        this.router.navigate(['/operations', 'menu',
-          this.ApiHelper.internalNameOrId(page),
-          this.ApiHelper.internalNameOrId(page.operation)], {
-          replaceUrl: true
-        });
+        this.router.navigate(
+          [
+            '/operations',
+            'menu',
+            this.ApiHelper.internalNameOrId(page),
+            this.ApiHelper.internalNameOrId(page.operation)
+          ],
+          {
+            replaceUrl: true
+          }
+        );
         break;
       case FrontendPageTypeEnum.WIZARD:
         // For wizard, navigate to the execution page
@@ -143,5 +146,4 @@ export class ContentPageComponent extends BaseViewPageComponent<FrontendPageWith
     }
     return new ActiveMenu(menu, { menuItem: page, contentPage: this.slug });
   }
-
 }

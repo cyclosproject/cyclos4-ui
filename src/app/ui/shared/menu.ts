@@ -4,7 +4,6 @@ import { empty } from 'app/shared/helper';
 
 /** The types of menus in the application */
 export enum MenuType {
-
   /** The sidenav shown on small devices */
   SIDENAV,
 
@@ -15,7 +14,7 @@ export enum MenuType {
   BAR,
 
   /** The second-level side menu shown on medium+ devices */
-  SIDE,
+  SIDE
 }
 
 /** Contains the top-level (root) menus */
@@ -39,10 +38,7 @@ export enum RootMenu {
 
 /** Represents an available menu item */
 export class Menu {
-  constructor(
-    public readonly root: RootMenu,
-    public readonly name: string) {
-  }
+  constructor(public readonly root: RootMenu, public readonly name: string) {}
 
   toString() {
     return `${this.root}.${this.name}`;
@@ -53,7 +49,6 @@ export class Menu {
   }
 }
 export namespace Menu {
-
   // Standalone
   export const HOME = new Menu(RootMenu.HOME, 'HOME');
   export const DASHBOARD = new Menu(RootMenu.DASHBOARD, 'DASHBOARD');
@@ -91,8 +86,14 @@ export namespace Menu {
   export const SEARCH_MY_VOUCHERS_BANKING = new Menu(RootMenu.BANKING, 'SEARCH_MY_VOUCHERS_BANKING');
   export const PAYMENT_IMPORTS = new Menu(RootMenu.BANKING, 'GENERAL_PAYMENT_IMPORTS');
   export const TICKETS = new Menu(RootMenu.BANKING, 'TICKETS');
-  export const ADMIN_ACCOUNT_BALANCE_LIMITS_OVERVIEW = new Menu(RootMenu.BANKING, 'ADMIN_ACCOUNT_BALANCE_LIMITS_OVERVIEW');
-  export const ADMIN_ACCOUNT_PAYMENT_LIMITS_OVERVIEW = new Menu(RootMenu.BANKING, 'ADMIN_ACCOUNT_PAYMENT_LIMITS_OVERVIEW');
+  export const ADMIN_ACCOUNT_BALANCE_LIMITS_OVERVIEW = new Menu(
+    RootMenu.BANKING,
+    'ADMIN_ACCOUNT_BALANCE_LIMITS_OVERVIEW'
+  );
+  export const ADMIN_ACCOUNT_PAYMENT_LIMITS_OVERVIEW = new Menu(
+    RootMenu.BANKING,
+    'ADMIN_ACCOUNT_PAYMENT_LIMITS_OVERVIEW'
+  );
 
   // Users / Marketplace
   export const SEARCH_USERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USERS');
@@ -126,10 +127,19 @@ export namespace Menu {
   export const BROKER_REGISTRATION = new Menu(RootMenu.BROKERING, 'BROKER_REGISTRATION');
   export const BROKER_TRANSFERS_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_TRANSFERS_OVERVIEW');
   export const BROKER_USER_BALANCES_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_USER_BALANCES_OVERVIEW');
-  export const BROKER_AUTHORIZED_PAYMENTS_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_AUTHORIZED_PAYMENTS_OVERVIEW');
+  export const BROKER_AUTHORIZED_PAYMENTS_OVERVIEW = new Menu(
+    RootMenu.BROKERING,
+    'BROKER_AUTHORIZED_PAYMENTS_OVERVIEW'
+  );
   export const BROKER_CONNECTED_USERS = new Menu(RootMenu.BROKERING, 'BROKER_CONNECTED_USERS');
-  export const BROKER_ACCOUNT_BALANCE_LIMITS_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_ACCOUNT_BALANCE_LIMITS_OVERVIEW');
-  export const BROKER_ACCOUNT_PAYMENT_LIMITS_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_ACCOUNT_PAYMENT_LIMITS_OVERVIEW');
+  export const BROKER_ACCOUNT_BALANCE_LIMITS_OVERVIEW = new Menu(
+    RootMenu.BROKERING,
+    'BROKER_ACCOUNT_BALANCE_LIMITS_OVERVIEW'
+  );
+  export const BROKER_ACCOUNT_PAYMENT_LIMITS_OVERVIEW = new Menu(
+    RootMenu.BROKERING,
+    'BROKER_ACCOUNT_PAYMENT_LIMITS_OVERVIEW'
+  );
   export const BROKER_SCHEDULED_PAYMENTS_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_SCHEDULED_PAYMENTS_OVERVIEW');
 
   // Personal
@@ -210,10 +220,7 @@ export interface ActiveMenuData {
  * Contains information about the active menu
  */
 export class ActiveMenu {
-  constructor(
-    public menu: Menu,
-    public data?: ActiveMenuData,
-  ) {
+  constructor(public menu: Menu, public data?: ActiveMenuData) {
     if (!menu) {
       throw new Error('null menu');
     }
@@ -241,14 +248,15 @@ export class ActiveMenu {
     // At this point the menu matches. See if the data matches
     const data1 = this.data || {};
     const data2 = other.data || {};
-    return empty(Object.keys(data1)) && empty(Object.keys(data2))
-      || (data1.accountType && data2.accountType && data1.accountType.id === data2.accountType.id)
-      || (data1.operation && data2.operation && data1.operation.id === data2.operation.id)
-      || (data1.wizard && data2.wizard && data1.wizard.id === data2.wizard.id)
-      || (data1.contentPage && data1.contentPage === data2.contentPage)
-      || (data1.recordType && data2.recordType && data1.recordType.id === data2.recordType.id)
-      || (data1.tokenType && data2.tokenType && data1.tokenType.id === data2.tokenType.id);
-
+    return (
+      (empty(Object.keys(data1)) && empty(Object.keys(data2))) ||
+      (data1.accountType && data2.accountType && data1.accountType.id === data2.accountType.id) ||
+      (data1.operation && data2.operation && data1.operation.id === data2.operation.id) ||
+      (data1.wizard && data2.wizard && data1.wizard.id === data2.wizard.id) ||
+      (data1.contentPage && data1.contentPage === data2.contentPage) ||
+      (data1.recordType && data2.recordType && data1.recordType.id === data2.recordType.id) ||
+      (data1.tokenType && data2.tokenType && data1.tokenType.id === data2.tokenType.id)
+    );
   }
 }
 
@@ -256,21 +264,12 @@ export class ActiveMenu {
  * The entries to show in the side menu
  */
 export class SideMenuEntries {
-  constructor(
-    public title: string,
-    public icon: SvgIcon | string,
-    public entries: MenuEntry[],
-  ) {
-  }
+  constructor(public title: string, public icon: SvgIcon | string, public entries: MenuEntry[]) {}
 }
 
 /** Base class for a resolved menu entry */
 export abstract class BaseMenuEntry {
-  constructor(
-    public icon: SvgIcon | string,
-    public label: string,
-    public showIn: MenuType[],
-  ) { }
+  constructor(public icon: SvgIcon | string, public label: string, public showIn: MenuType[]) {}
 }
 /** Resolved root menu entry */
 export class RootMenuEntry extends BaseMenuEntry {
@@ -280,7 +279,7 @@ export class RootMenuEntry extends BaseMenuEntry {
     label: string,
     public title: string = null,
     showIn: MenuType[] = null,
-    public dropdown = false,
+    public dropdown = false
   ) {
     super(icon, label, showIn);
     if (this.title == null) {
@@ -307,7 +306,7 @@ export class MenuEntry extends BaseMenuEntry {
     label: string,
     showIn: MenuType[] = null,
     private urlHandler: () => string,
-    public menuData?: ActiveMenuData,
+    public menuData?: ActiveMenuData
   ) {
     super(icon, label, showIn);
     this.menu = menu instanceof ActiveMenu ? menu.menu : menu;

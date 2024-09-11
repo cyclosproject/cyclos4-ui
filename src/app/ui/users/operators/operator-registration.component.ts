@@ -1,10 +1,17 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { AvailabilityEnum, CustomField, OperatorDataForNew, UserRegistrationResult, UserRegistrationStatusEnum, OperatorNew } from 'app/api/models';
+import {
+  AvailabilityEnum,
+  CustomField,
+  OperatorDataForNew,
+  OperatorNew,
+  UserRegistrationResult,
+  UserRegistrationStatusEnum
+} from 'app/api/models';
 import { OperatorsService } from 'app/api/services/operators.service';
+import { cloneControl, empty, validateBeforeSubmit } from 'app/shared/helper';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
-import { cloneControl, validateBeforeSubmit, empty } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 
@@ -14,12 +21,9 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'operator-registration',
   templateUrl: 'operator-registration.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OperatorRegistrationComponent
-  extends BasePageComponent<OperatorDataForNew>
-  implements OnInit {
-
+export class OperatorRegistrationComponent extends BasePageComponent<OperatorDataForNew> implements OnInit {
   user: string;
   self: boolean;
   form: FormGroup;
@@ -29,10 +33,7 @@ export class OperatorRegistrationComponent
   editableFields: Set<string>;
   result$ = new BehaviorSubject<UserRegistrationResult>(null);
 
-  constructor(
-    injector: Injector,
-    private userHelper: UserHelperService,
-    private operatorsService: OperatorsService) {
+  constructor(injector: Injector, private userHelper: UserHelperService, private operatorsService: OperatorsService) {
     super(injector);
   }
 
@@ -41,14 +42,13 @@ export class OperatorRegistrationComponent
     this.user = this.route.snapshot.params.user || this.ApiHelper.SELF;
     this.self = this.authHelper.isSelf(this.user);
 
-    this.addSub(this.operatorsService.getOperatorDataForNew({ user: this.user }).subscribe(data =>
-      this.data = data));
+    this.addSub(this.operatorsService.getOperatorDataForNew({ user: this.user }).subscribe(data => (this.data = data)));
   }
 
   onDataInitialized(data: OperatorDataForNew) {
     // Setup the forms
     this.form = this.formBuilder.group({
-      group: null,
+      group: null
     });
     [this.mobileForm, this.landLineForm] = this.userHelper.setupRegistrationForm(this.form, data, false);
     this.passwordForms = this.userHelper.passwordRegistrationForms(data);
@@ -87,9 +87,14 @@ export class OperatorRegistrationComponent
     operator.mobilePhones = operator.mobilePhones?.filter(p => !empty(p.number));
     operator.landLinePhones = operator.landLinePhones?.filter(p => !empty(p.number));
     // Register the operator
-    this.addSub(this.operatorsService.registerOperator({
-      user: this.user, body: operator,
-    }).subscribe(result => this.result$.next(result)));
+    this.addSub(
+      this.operatorsService
+        .registerOperator({
+          user: this.user,
+          body: operator
+        })
+        .subscribe(result => this.result$.next(result))
+    );
   }
 
   get doneMessageHtml(): string {
@@ -118,5 +123,4 @@ export class OperatorRegistrationComponent
   resolveMenu(data: OperatorDataForNew) {
     return this.menu.userMenu(data.user, Menu.MY_OPERATORS);
   }
-
 }

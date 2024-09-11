@@ -1,14 +1,25 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Host, Injector, Input, OnInit, Optional, Output, SkipSelf } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Host,
+  Injector,
+  Input,
+  OnInit,
+  Optional,
+  Output,
+  SkipSelf
+} from '@angular/core';
 import { ControlContainer, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MapsService } from 'app/ui/core/maps.service';
+import { LayoutService } from 'app/core/layout.service';
+import { ArrowLeft, ArrowsHorizontal } from 'app/core/shortcut.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { focus } from 'app/shared/helper';
-import { LayoutService } from 'app/core/layout.service';
+import { MapsService } from 'app/ui/core/maps.service';
 import { ResultType } from 'app/ui/shared/result-type';
-import { ArrowLeft, ArrowsHorizontal } from 'app/core/shortcut.service';
-import { Subscription } from 'rxjs';
-import { SvgIcon } from 'app/core/svg-icon';
 import { TooltipDirective } from 'ngx-bootstrap/tooltip';
+import { Subscription } from 'rxjs';
 
 /**
  * Renders a widget for a result type field
@@ -17,14 +28,9 @@ import { TooltipDirective } from 'ngx-bootstrap/tooltip';
   selector: 'result-type-field',
   templateUrl: 'result-type-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: ResultTypeFieldComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: ResultTypeFieldComponent, multi: true }]
 })
-export class ResultTypeFieldComponent
-  extends BaseControlComponent<ResultType>
-  implements OnInit {
-
+export class ResultTypeFieldComponent extends BaseControlComponent<ResultType> implements OnInit {
   @Input() name: string;
   @Input() required: boolean;
   @Input() placeholder: string;
@@ -42,7 +48,7 @@ export class ResultTypeFieldComponent
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     public layout: LayoutService,
-    private maps: MapsService,
+    private maps: MapsService
   ) {
     super(injector, controlContainer);
   }
@@ -91,8 +97,7 @@ export class ResultTypeFieldComponent
       return;
     }
     const sub = this.shortcut.subscribe(ArrowsHorizontal, event => {
-      let index = this.allowedResultTypes.indexOf(resultType)
-        + (event.key === ArrowLeft ? -1 : 1);
+      let index = this.allowedResultTypes.indexOf(resultType) + (event.key === ArrowLeft ? -1 : 1);
       index = Math.min(Math.max(0, index), this.allowedResultTypes.length - 1);
       const newResultType = this.allowedResultTypes[index];
       const toFocus = element.getElementsByClassName(`resultType-${newResultType}`);

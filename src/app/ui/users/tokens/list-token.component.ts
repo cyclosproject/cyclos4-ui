@@ -1,13 +1,20 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { CustomFieldTypeEnum, PhysicalTokenTypeEnum, RoleEnum, TokenResult, TokenStatusEnum, UserTokensListData } from 'app/api/models';
+import {
+  CustomFieldTypeEnum,
+  PhysicalTokenTypeEnum,
+  RoleEnum,
+  TokenResult,
+  TokenStatusEnum,
+  UserTokensListData
+} from 'app/api/models';
 import { TokensService } from 'app/api/services/tokens.service';
-import { UserHelperService } from 'app/ui/core/user-helper.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
+import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { CreateTokenComponent } from 'app/ui/users/tokens/create-token.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * List a user tokens
@@ -15,12 +22,9 @@ import { SvgIcon } from 'app/core/svg-icon';
 @Component({
   selector: 'list-token',
   templateUrl: 'list-token.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListTokenComponent
-  extends BasePageComponent<UserTokensListData>
-  implements OnInit {
-
+export class ListTokenComponent extends BasePageComponent<UserTokensListData> implements OnInit {
   user: string;
   type: string;
   self: boolean;
@@ -29,7 +33,8 @@ export class ListTokenComponent
     injector: Injector,
     private modal: BsModalService,
     private userHelper: UserHelperService,
-    private tokenService: TokensService) {
+    private tokenService: TokensService
+  ) {
     super(injector);
   }
 
@@ -37,7 +42,9 @@ export class ListTokenComponent
     super.ngOnInit();
     this.user = this.route.snapshot.params.user;
     this.type = this.route.snapshot.params.type;
-    this.addSub(this.tokenService.getUserTokens({ user: this.user, type: this.type }).subscribe(data => this.data = data));
+    this.addSub(
+      this.tokenService.getUserTokens({ user: this.user, type: this.type }).subscribe(data => (this.data = data))
+    );
   }
 
   onDataInitialized(data: UserTokensListData) {
@@ -49,33 +56,50 @@ export class ListTokenComponent
     super.onDataInitialized(data);
     this.self = this.authHelper.isSelf(data.user);
     if (this.canCreate() && data.type.physicalType !== PhysicalTokenTypeEnum.NFC_TAG) {
-      this.headingActions = [new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.add, () => {
-        this.modal.show(CreateTokenComponent, {
-          class: 'modal-form',
-          initialState: { type: data.type, user: data.user, required: true, updateAction: () => this.reload() },
-        });
-      }, true)];
+      this.headingActions = [
+        new HeadingAction(
+          SvgIcon.PlusCircle,
+          this.i18n.general.add,
+          () => {
+            this.modal.show(CreateTokenComponent, {
+              class: 'modal-form',
+              initialState: { type: data.type, user: data.user, required: true, updateAction: () => this.reload() }
+            });
+          },
+          true
+        )
+      ];
     }
 
     if (this.canActivate()) {
-      this.headingActions = [new HeadingAction(SvgIcon.CheckCircle, this.i18n.token.action.activate, () => {
-        this.confirmation.confirm({
-          title: this.i18n.token.action.activate,
-          customFields: [{
-            internalName: 'value',
-            name: this.i18n.token.value,
-            type: CustomFieldTypeEnum.STRING,
-            pattern: data.type.mask,
-            required: true
-          }],
-          callback: params =>
-            this.tokenService.activateToken({ user: this.user, type: this.type, body: params.customValues.value })
-              .subscribe(() => {
-                this.notification.snackBar(this.i18n.token.action.done.expiryChanged);
-                this.reload();
-              })
-        });
-      }, true)];
+      this.headingActions = [
+        new HeadingAction(
+          SvgIcon.CheckCircle,
+          this.i18n.token.action.activate,
+          () => {
+            this.confirmation.confirm({
+              title: this.i18n.token.action.activate,
+              customFields: [
+                {
+                  internalName: 'value',
+                  name: this.i18n.token.value,
+                  type: CustomFieldTypeEnum.STRING,
+                  pattern: data.type.mask,
+                  required: true
+                }
+              ],
+              callback: params =>
+                this.tokenService
+                  .activateToken({ user: this.user, type: this.type, body: params.customValues.value })
+                  .subscribe(() => {
+                    this.notification.snackBar(this.i18n.token.action.done.expiryChanged);
+                    this.reload();
+                  })
+            });
+          },
+          true
+        )
+      ];
     }
   }
 

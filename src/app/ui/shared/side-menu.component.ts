@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { MenuService } from 'app/ui/core/menu.service';
+import { LayoutService } from 'app/core/layout.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { blurIfClick } from 'app/shared/helper';
-import { LayoutService } from 'app/core/layout.service';
+import { MenuService } from 'app/ui/core/menu.service';
 import { ActiveMenu, MenuEntry, RootMenu, SideMenuEntries } from 'app/ui/shared/menu';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
@@ -12,13 +12,10 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 @Component({
   selector: 'side-menu',
   templateUrl: 'side-menu.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SideMenuComponent implements OnInit {
-  constructor(
-    public layout: LayoutService,
-    public menu: MenuService,
-  ) { }
+  constructor(public layout: LayoutService, public menu: MenuService) {}
 
   // Namespace for template
   ApiHelper = ApiHelper;
@@ -48,9 +45,7 @@ export class SideMenuComponent implements OnInit {
       this.subscription.unsubscribe();
     }
     if (activeMenu != null) {
-      this.subscription = this.menu.sideMenu(activeMenu.menu)
-        .subscribe(entries => this.entries$.next(entries));
+      this.subscription = this.menu.sideMenu(activeMenu.menu).subscribe(entries => this.entries$.next(entries));
     }
   }
-
 }

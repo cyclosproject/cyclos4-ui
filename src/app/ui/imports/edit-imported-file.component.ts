@@ -12,18 +12,14 @@ import { BasePageComponent } from 'app/ui/shared/base-page.component';
 @Component({
   selector: 'edit-imported-file',
   templateUrl: 'edit-imported-file.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditImportedFileComponent extends BasePageComponent<ImportedFileDataForEdit> implements OnInit {
-
   id: string;
 
   form: FormGroup;
 
-  constructor(
-    injector: Injector,
-    private importsService: ImportsService,
-    public importsHelper: ImportsHelperService) {
+  constructor(injector: Injector, private importsService: ImportsService, public importsHelper: ImportsHelperService) {
     super(injector);
   }
 
@@ -33,7 +29,7 @@ export class EditImportedFileComponent extends BasePageComponent<ImportedFileDat
     const route = this.route.snapshot;
     this.id = route.params.id;
 
-    this.addSub(this.importsService.getImportedFileDataForEdit({ id: this.id }).subscribe(data => this.data = data));
+    this.addSub(this.importsService.getImportedFileDataForEdit({ id: this.id }).subscribe(data => (this.data = data)));
   }
 
   onDataInitialized(data: ImportedFileDataForEdit) {
@@ -49,12 +45,16 @@ export class EditImportedFileComponent extends BasePageComponent<ImportedFileDat
       return;
     }
     const params = { ...this.data.importedFile, ...this.form.value } as ImportedFileEdit;
-    this.addSub(this.importsService.updateImportedFile({
-      id: this.id,
-      body: params
-    }).subscribe(() => {
-      this.router.navigate(['/imports', 'files', 'view', this.id], { replaceUrl: true });
-    }));
+    this.addSub(
+      this.importsService
+        .updateImportedFile({
+          id: this.id,
+          body: params
+        })
+        .subscribe(() => {
+          this.router.navigate(['/imports', 'files', 'view', this.id], { replaceUrl: true });
+        })
+    );
   }
 
   resolveMenu() {

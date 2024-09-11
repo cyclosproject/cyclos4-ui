@@ -1,8 +1,17 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
+import { ActionsRight, Escape } from 'app/core/shortcut.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseComponent } from 'app/shared/base.component';
 import { blurIfClick, truthyAttr } from 'app/shared/helper';
-import { ActionsRight, Escape } from 'app/core/shortcut.service';
 import { HeadingSubActionsComponent } from 'app/ui/shared/heading-sub-actions.component';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -16,7 +25,7 @@ const HeadingActionsMenu = 'heading-actions-menu';
 @Component({
   selector: 'heading-actions',
   templateUrl: 'heading-actions.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeadingActionsComponent extends BaseComponent implements OnInit {
   blurIfClick = blurIfClick;
@@ -47,34 +56,34 @@ export class HeadingActionsComponent extends BaseComponent implements OnInit {
   groupActions$ = new BehaviorSubject(false);
   shortcutsSub: Subscription;
 
-  constructor(
-    injector: Injector,
-    private modal: BsModalService) {
+  constructor(injector: Injector, private modal: BsModalService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
 
-    this.addSub(this.shortcut.subscribe(ActionsRight, () => {
-      if (this.layout.gtxs) {
-        // Don't show the menu when not on mobile
-        return;
-      }
-      const focusTrap = this.layout.focusTrap;
-      if (focusTrap != null && focusTrap !== HeadingActionsMenu) {
-        // Ignore when there's some element trapping focus that is not the menu itself
-        return;
-      }
-      const actions = this.visibleActions$.value || [];
-      if (actions.length === 1) {
-        // Execute the action directly
-        actions[0].onClick();
-      } else if (actions.length > 1 && this.dropdown) {
-        // Show the menu
-        this.dropdown.toggle(true);
-      }
-    }));
+    this.addSub(
+      this.shortcut.subscribe(ActionsRight, () => {
+        if (this.layout.gtxs) {
+          // Don't show the menu when not on mobile
+          return;
+        }
+        const focusTrap = this.layout.focusTrap;
+        if (focusTrap != null && focusTrap !== HeadingActionsMenu) {
+          // Ignore when there's some element trapping focus that is not the menu itself
+          return;
+        }
+        const actions = this.visibleActions$.value || [];
+        if (actions.length === 1) {
+          // Execute the action directly
+          actions[0].onClick();
+        } else if (actions.length > 1 && this.dropdown) {
+          // Show the menu
+          this.dropdown.toggle(true);
+        }
+      })
+    );
 
     // Update the visible actions when conditions change
     this.addSub(this.layout.breakpointChanges$.subscribe(() => this.updateVisible()));
@@ -83,8 +92,7 @@ export class HeadingActionsComponent extends BaseComponent implements OnInit {
 
   private updateVisible() {
     const activeBreakpoints = this.layout.activeBreakpoints;
-    let actions = (this.headingActions || [])
-      .filter(action => action.showOn(activeBreakpoints));
+    let actions = (this.headingActions || []).filter(action => action.showOn(activeBreakpoints));
     const hasRoot = actions.findIndex(a => a.maybeRoot) >= 0;
     if (activeBreakpoints.has('gt-xs')) {
       if (this.root) {

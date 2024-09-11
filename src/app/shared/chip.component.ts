@@ -10,7 +10,7 @@ import { AbstractComponent } from 'app/shared/abstract.component';
   // tslint:disable-next-line:component-selector
   selector: 'chip',
   templateUrl: 'chip.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChipComponent extends AbstractComponent {
   @HostBinding('class.mw-100') classMaxWidth = true;

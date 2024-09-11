@@ -45,55 +45,55 @@ const bankingRoutes: Routes = [
     children: [
       {
         path: ':owner/account/:type',
-        component: AccountHistoryComponent,
+        component: AccountHistoryComponent
       },
       {
         path: ':owner/accounts-summary',
-        component: ListAccountsComponent,
+        component: ListAccountsComponent
       },
       {
         path: ':user/account-visibility',
-        component: AccountVisibilitySettingsComponent,
+        component: AccountVisibilitySettingsComponent
       },
       {
         path: 'transfer/:key',
-        component: ViewTransferComponent,
+        component: ViewTransferComponent
       },
       {
         path: 'transfer/:account/:key',
-        component: ViewTransferComponent,
+        component: ViewTransferComponent
       },
       {
         path: 'transaction/:key',
-        component: ViewTransactionComponent,
+        component: ViewTransactionComponent
       },
       {
         path: 'transfers-overview',
-        component: SearchTransfersOverviewComponent,
+        component: SearchTransfersOverviewComponent
       },
       {
         path: 'transaction/:key/authorization-history',
-        component: ViewAuthorizationHistoryComponent,
+        component: ViewAuthorizationHistoryComponent
       },
       {
         path: ':from/payment',
-        component: PaymentComponent,
+        component: PaymentComponent
       },
       {
         path: ':from/payment/:to',
-        component: PaymentComponent,
+        component: PaymentComponent
       },
       {
         path: ':from/payment-request',
-        component: RequestPaymentComponent,
+        component: RequestPaymentComponent
       },
       {
         path: 'payment-request/:key/accept',
-        component: AcceptPaymentRequestComponent,
+        component: AcceptPaymentRequestComponent
       },
       {
         path: ':from/payment-request/:to',
-        component: RequestPaymentComponent,
+        component: RequestPaymentComponent
       },
       {
         path: ':owner/payment-requests',
@@ -139,23 +139,23 @@ const bankingRoutes: Routes = [
       },
       {
         path: ':owner/external-payment',
-        component: ExternalPaymentComponent,
+        component: ExternalPaymentComponent
       },
       {
         path: 'pos',
-        component: PaymentComponent,
+        component: PaymentComponent
       },
       {
         path: 'qr',
-        component: ReceiveQrPaymentComponent,
+        component: ReceiveQrPaymentComponent
       },
       {
         path: ':owner/installments',
-        component: SearchOwnerInstallmentsComponent,
+        component: SearchOwnerInstallmentsComponent
       },
       {
         path: 'installments-overview',
-        component: SearchInstallmentsComponent,
+        component: SearchInstallmentsComponent
       },
       {
         path: ':owner/authorized-payments',
@@ -180,97 +180,93 @@ const bankingRoutes: Routes = [
       },
       {
         path: ':user/vouchers',
-        component: SearchUserVouchersComponent,
+        component: SearchUserVouchersComponent
       },
       {
         path: ':user/vouchers/redeem',
-        component: RedeemVoucherComponent,
+        component: RedeemVoucherComponent
       },
       {
         path: ':user/vouchers/top-up',
-        component: TopUpVoucherComponent,
+        component: TopUpVoucherComponent
       },
       {
         path: ':user/vouchers/buy',
-        component: BuyVouchersComponent,
+        component: BuyVouchersComponent
       },
       {
         path: ':user/vouchers/send',
-        component: SendVoucherComponent,
+        component: SendVoucherComponent
       },
       {
         path: 'vouchers',
-        component: SearchVouchersComponent,
+        component: SearchVouchersComponent
       },
       {
         path: 'vouchers/view/:key',
-        component: ViewVoucherComponent,
+        component: ViewVoucherComponent
       },
       {
         path: ':user/voucher-transactions',
-        component: SearchVoucherTransactionsComponent,
+        component: SearchVoucherTransactionsComponent
       },
       {
         path: 'voucher-transactions/view/:id',
-        component: ViewVoucherTransactionComponent,
+        component: ViewVoucherTransactionComponent
       },
       {
         path: ':user/account-balance-limits',
-        component: ListAccountsBalanceLimitsComponent,
+        component: ListAccountsBalanceLimitsComponent
       },
       {
         path: ':user/account-balance-limits/:accountType',
-        component: ViewAccountBalanceLimitsComponent,
+        component: ViewAccountBalanceLimitsComponent
       },
       {
         path: ':user/account-balance-limits/:accountType/edit',
-        component: EditAccountBalanceLimitsComponent,
+        component: EditAccountBalanceLimitsComponent
       },
       {
         path: 'account-balance-limits-overview',
-        component: SearchBalanceLimitsOverviewComponent,
+        component: SearchBalanceLimitsOverviewComponent
       },
       {
         path: ':user/account-payment-limits',
-        component: ListAccountsPaymentLimitsComponent,
+        component: ListAccountsPaymentLimitsComponent
       },
       {
         path: ':user/account-payment-limits/:accountType',
-        component: ViewAccountPaymentLimitsComponent,
+        component: ViewAccountPaymentLimitsComponent
       },
       {
         path: ':user/account-payment-limits/:accountType/edit',
-        component: EditAccountPaymentLimitsComponent,
+        component: EditAccountPaymentLimitsComponent
       },
       {
         path: 'account-payment-limits-overview',
-        component: SearchPaymentLimitsOverviewComponent,
+        component: SearchPaymentLimitsOverviewComponent
       },
       {
         path: 'user-balances-overview',
-        component: SearchUserBalancesComponent,
+        component: SearchUserBalancesComponent
       },
       {
         path: 'vouchers/generate',
-        component: GenerateVouchersComponent,
+        component: GenerateVouchersComponent
       },
       {
         path: 'edit-recurring-payment/:id',
-        component: EditRecurringPaymentComponent,
+        component: EditRecurringPaymentComponent
       }
-    ],
-  },
+    ]
+  }
 ];
 
 /**
  * Routes for the banking module
  */
 @NgModule({
-  imports: [
-    RouterModule.forChild(bankingRoutes),
-  ],
-  exports: [
-    RouterModule,
-  ],
+  imports: [RouterModule.forChild(bankingRoutes)],
+  exports: [RouterModule]
 })
-export class BankingRoutingModule { }
+export class BankingRoutingModule {}

@@ -17,11 +17,9 @@ export type SendVouchersStep = 'select-type' | 'form' | 'confirm';
 @Component({
   selector: 'send-voucher',
   templateUrl: 'send-voucher.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SendVoucherComponent extends BasePageComponent<VoucherDataForBuy>
-  implements OnInit {
-
+export class SendVoucherComponent extends BasePageComponent<VoucherDataForBuy> implements OnInit {
   step$ = new BehaviorSubject<SendVouchersStep>(null);
 
   singleType = false;
@@ -51,7 +49,7 @@ export class SendVoucherComponent extends BasePageComponent<VoucherDataForBuy>
     super.ngOnInit();
     const params = this.route.snapshot.params;
     this.user = this.authHelper.isSelf(params.user) ? this.ApiHelper.SELF : params.user;
-    this.addSub(this.voucherService.getVoucherDataForSend({ user: this.user }).subscribe(data => this.data = data));
+    this.addSub(this.voucherService.getVoucherDataForSend({ user: this.user }).subscribe(data => (this.data = data)));
   }
 
   onDataInitialized(data: VoucherDataForBuy) {
@@ -85,15 +83,14 @@ export class SendVoucherComponent extends BasePageComponent<VoucherDataForBuy>
     const params = {
       user: this.user,
       confirmationPassword: confirmationPasswordInput ? this.confirmationPassword.value : null,
-      body: sendVoucher,
+      body: sendVoucher
     };
     this.addSub(
-      this.voucherService.sendVoucher(params)
-        .subscribe(result => {
-          const id = result.vouchers[0];
-          this.router.navigate(['/banking', 'vouchers', 'view', id]);
-          this.notification.snackBar(this.i18n.voucher.send.done(sendVoucher.email));
-        }),
+      this.voucherService.sendVoucher(params).subscribe(result => {
+        const id = result.vouchers[0];
+        this.router.navigate(['/banking', 'vouchers', 'view', id]);
+        this.notification.snackBar(this.i18n.voucher.send.done(sendVoucher.email));
+      })
     );
   }
 
@@ -109,17 +106,19 @@ export class SendVoucherComponent extends BasePageComponent<VoucherDataForBuy>
    * Go to second step
    */
   toForm(type: VoucherTypeDetailed): void {
-    this.addSub(this.voucherService.getVoucherDataForSend({
-      user: this.user,
-      type: type.id,
-      fields: ['-type']
-    })
-      .subscribe(data => {
-        data.type = type;
-        this.dataTypeForBuy = data;
-        this.buildForm();
-        this.step = 'form';
-      }),
+    this.addSub(
+      this.voucherService
+        .getVoucherDataForSend({
+          user: this.user,
+          type: type.id,
+          fields: ['-type']
+        })
+        .subscribe(data => {
+          data.type = type;
+          this.dataTypeForBuy = data;
+          this.buildForm();
+          this.step = 'form';
+        })
     );
   }
 
@@ -134,30 +133,35 @@ export class SendVoucherComponent extends BasePageComponent<VoucherDataForBuy>
     const type = this.dataTypeForBuy.type;
     const body = this.form.value as SendVoucher;
     body.type = type.id;
-    this.addSub(this.voucherService.previewSendVoucher({
-      fields: ['confirmationPasswordInput', 'owner', 'sendVoucher'],
-      user: this.user,
-      body
-    }).subscribe(preview => {
-      preview.type = type;
-      preview.user = this.data.user;
-      const confirmationPasswordInput = preview.confirmationPasswordInput;
-      this.canConfirm = this.authHelper.canConfirm(preview.confirmationPasswordInput);
-      if (!this.canConfirm) {
-        this.notification.warning(this.authHelper.getConfirmationMessage(confirmationPasswordInput));
-        return;
-      } else if (confirmationPasswordInput) { // can confirm and confirmation is required
-        if (!this.confirmationPassword) {
-          // The confirmation password is held in a separated control
-          this.confirmationPassword = this.formBuilder.control(null);
-          this.confirmationPassword.setValidators(Validators.required);
-        } else {
-          this.confirmationPassword.reset();
-        }
-      }
-      this.step = 'confirm';
-      this.preview = preview;
-    }));
+    this.addSub(
+      this.voucherService
+        .previewSendVoucher({
+          fields: ['confirmationPasswordInput', 'owner', 'sendVoucher'],
+          user: this.user,
+          body
+        })
+        .subscribe(preview => {
+          preview.type = type;
+          preview.user = this.data.user;
+          const confirmationPasswordInput = preview.confirmationPasswordInput;
+          this.canConfirm = this.authHelper.canConfirm(preview.confirmationPasswordInput);
+          if (!this.canConfirm) {
+            this.notification.warning(this.authHelper.getConfirmationMessage(confirmationPasswordInput));
+            return;
+          } else if (confirmationPasswordInput) {
+            // can confirm and confirmation is required
+            if (!this.confirmationPassword) {
+              // The confirmation password is held in a separated control
+              this.confirmationPassword = this.formBuilder.control(null);
+              this.confirmationPassword.setValidators(Validators.required);
+            } else {
+              this.confirmationPassword.reset();
+            }
+          }
+          this.step = 'confirm';
+          this.preview = preview;
+        })
+    );
   }
 
   private buildForm(): void {
@@ -169,14 +173,23 @@ export class SendVoucherComponent extends BasePageComponent<VoucherDataForBuy>
         email: ['', Validators.compose([Validators.required, Validators.email])],
         message: ''
       });
-      this.form.addControl('paymentCustomValues', this.fieldHelper.customValuesFormGroup(this.dataTypeForBuy.paymentCustomFields));
-      this.form.addControl('voucherCustomValues', this.fieldHelper.customValuesFormGroup(this.dataTypeForBuy.voucherCustomFields));
+      this.form.addControl(
+        'paymentCustomValues',
+        this.fieldHelper.customValuesFormGroup(this.dataTypeForBuy.paymentCustomFields)
+      );
+      this.form.addControl(
+        'voucherCustomValues',
+        this.fieldHelper.customValuesFormGroup(this.dataTypeForBuy.voucherCustomFields)
+      );
     }
   }
 
   resolveMenu(data: VoucherDataForBuy) {
-    return this.menu.userMenu(data.user, this.dataForFrontendHolder.dataForFrontend.voucherBuyingMenu == UserMenuEnum.MARKETPLACE ?
-      Menu.SEARCH_MY_VOUCHERS_MARKETPLACE : Menu.SEARCH_MY_VOUCHERS_BANKING);
+    return this.menu.userMenu(
+      data.user,
+      this.dataForFrontendHolder.dataForFrontend.voucherBuyingMenu == UserMenuEnum.MARKETPLACE
+        ? Menu.SEARCH_MY_VOUCHERS_MARKETPLACE
+        : Menu.SEARCH_MY_VOUCHERS_BANKING
+    );
   }
-
 }

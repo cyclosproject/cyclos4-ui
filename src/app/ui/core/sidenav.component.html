@@ -1,44 +1,41 @@
 <nav class="navbar navbar-expand-md">
   <div class="navbar-container">
-    <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
+    <a
+      href="#"
+      class="icon"
+      [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
       (click)="toggle(); $event.preventDefault()"
       [attr.aria-label]="i18n.general.close">
       <icon [icon]="SvgIcon.XCircle"></icon>
     </a>
     <div class="navbar-brand flex-grow-1">
-      <div class="top-title">{{
-        dataForFrontend.dataForFrontend.mobileMenuTitle
-        }}</div>
+      <div class="top-title">{{ dataForFrontend.dataForFrontend.mobileMenuTitle }}</div>
     </div>
-    <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
+    <a
+      href="#"
+      class="icon"
+      [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
       (click)="loginOrLogout($event)"
       [attr.aria-label]="(login.user$ | async) ? i18n.menu.login : i18n.menu.logout">
-      <icon [icon]="(login.user$ | async) ? SvgIcon.Logout2 : SvgIcon.Login2">
-      </icon>
+      <icon [icon]="(login.user$ | async) ? SvgIcon.Logout2 : SvgIcon.Login2"> </icon>
     </a>
   </div>
 </nav>
 <div id="sidenav-menu" #sidenavMenu class="sidenav-menu d-flex flex-column">
   <ng-container *ngFor="let root of roots$ | async; let last = last">
-    <ng-container
-      *ngIf="!root.dropdown && (login.user$ | async) == null || isHome(root)">
+    <ng-container *ngIf="(!root.dropdown && (login.user$ | async) == null) || isHome(root)">
       <div class="menu-standalone">
-        <ng-container
-          *ngTemplateOutlet="menuEntry; context: {$implicit: root.entries[0]}">
-        </ng-container>
+        <ng-container *ngTemplateOutlet="menuEntry; context: { $implicit: root.entries[0] }"> </ng-container>
       </div>
     </ng-container>
-    <ng-container
-      *ngIf="root.dropdown || ((login.user$ | async) != null && !isHome(root))">
-      <div class="menu-group" [ngClass]="{'border-bottom-0': last}">
+    <ng-container *ngIf="root.dropdown || ((login.user$ | async) != null && !isHome(root))">
+      <div class="menu-group" [ngClass]="{ 'border-bottom-0': last }">
         <div class="group-title">
           {{ root.label }}
         </div>
         <div class="group-entries">
           <ng-container *ngFor="let entry of root.entries; let first = first">
-            <ng-container
-              *ngTemplateOutlet="menuEntry; context: {$implicit: entry}">
-            </ng-container>
+            <ng-container *ngTemplateOutlet="menuEntry; context: { $implicit: entry }"> </ng-container>
           </ng-container>
         </div>
       </div>
@@ -47,7 +44,9 @@
 </div>
 
 <ng-template #menuEntry let-entry>
-  <a [routerLink]="entry.url" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
+  <a
+    [routerLink]="entry.url"
+    [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
     (click)="navigate(entry, $event); close()"
     class="menu-item d-flex align-items-center">
     <icon [icon]="icon(entry)"></icon>

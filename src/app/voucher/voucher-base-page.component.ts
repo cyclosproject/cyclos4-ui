@@ -7,12 +7,11 @@ import { VoucherBaseComponent } from './voucher-base.component';
 
 /**
  * Base class for all voucher pages.
- * New page components MUST extends this class to apply the right CSS styles 
+ * New page components MUST extends this class to apply the right CSS styles
  * Subclasses overwriting the ngOnInit() method MUST invoke super.ngOnInit()
  */
 @Directive()
 export abstract class VoucherBasePageComponent extends VoucherBaseComponent implements OnInit, OnDestroy {
-
   @HostBinding('class.is-voucher-page') isVoucherPage = true;
 
   protected notification: NotificationService;
@@ -20,8 +19,7 @@ export abstract class VoucherBasePageComponent extends VoucherBaseComponent impl
   protected router: Router;
   private shortcutSubs: Subscription[] = [];
 
-  constructor(
-    injector: Injector) {
+  constructor(injector: Injector) {
     super(injector);
     this.notification = injector.get(NotificationService);
     this.shortcut = injector.get(ShortcutService);
@@ -46,7 +44,11 @@ export abstract class VoucherBasePageComponent extends VoucherBaseComponent impl
    * @param handler The action handler
    * @param stop By default, the event will be stopped if matched the shortcut. Can be set to false to allow the default action.
    */
-  addShortcut(shortcut: string | Shortcut | (string | Shortcut)[], handler: (event: KeyboardEvent) => any, stop = true): Subscription {
+  addShortcut(
+    shortcut: string | Shortcut | (string | Shortcut)[],
+    handler: (event: KeyboardEvent) => any,
+    stop = true
+  ): Subscription {
     const sub = this.shortcut.subscribe(shortcut, handler, stop);
     this.shortcutSubs.push(sub);
     return new Subscription(() => {
@@ -74,5 +76,4 @@ export abstract class VoucherBasePageComponent extends VoucherBaseComponent impl
     this.shortcutSubs.forEach(sub => sub.unsubscribe());
     this.shortcutSubs = [];
   }
-
 }

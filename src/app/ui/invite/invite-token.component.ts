@@ -7,17 +7,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'invite-token',
   templateUrl: 'invite-token.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InviteTokenComponent implements OnInit {
-
-  constructor(private router: Router, private route: ActivatedRoute) {
-  }
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
     const route = this.route.snapshot;
     localStorage.setItem('inviteToken', route.params.token);
     this.router.navigate(['/home']);
   }
-
 }

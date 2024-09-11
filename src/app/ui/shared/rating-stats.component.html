@@ -1,8 +1,7 @@
 <span class="ellipsis mr-2" *ngIf="textLeft"> {{ textLeft }} </span>
 <div [tooltip]="resolveLevelLabel()" class="stars" [class]="resolveStyle()">
   <ng-container *ngFor="let level of [1, 2, 3, 4, 5]">
-    <icon class="icon" [icon]="resolveIcon(level)">
-    </icon>
+    <icon class="icon" [icon]="resolveIcon(level)"> </icon>
   </ng-container>
 </div>
 <span class="ellipsis ml-2" *ngIf="textRight"> {{ textRight }} </span>

@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from 
 import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { PasswordModeEnum, PasswordStatusAndActions } from 'app/api/models';
 import { PasswordsService } from 'app/api/services/passwords.service';
-import { LoginState } from 'app/ui/core/login-state';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { LoginState } from 'app/ui/core/login-state';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -18,7 +18,7 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
     const origVal = parent.get('newPassword') == null ? '' : parent.get('newPassword').value;
     if (origVal !== currVal) {
       return {
-        passwordsMatch: true,
+        passwordsMatch: true
       };
     }
   }
@@ -31,12 +31,12 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
 @Component({
   selector: 'change-expired-password',
   templateUrl: 'change-expired-password.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChangeExpiredPasswordComponent
   extends BasePageComponent<PasswordStatusAndActions>
-  implements OnInit, OnDestroy {
-
+  implements OnInit, OnDestroy
+{
   form: FormGroup;
   typeId: string;
   typeName: string;
@@ -44,14 +44,9 @@ export class ChangeExpiredPasswordComponent
 
   generatedValue$ = new BehaviorSubject<string>(null);
 
-  constructor(
-    injector: Injector,
-    private passwordsService: PasswordsService,
-    private loginState: LoginState,
-  ) {
+  constructor(injector: Injector, private passwordsService: PasswordsService, private loginState: LoginState) {
     super(injector);
-    this.form = this.formBuilder.group({
-    });
+    this.form = this.formBuilder.group({});
   }
 
   ngOnInit() {
@@ -64,13 +59,17 @@ export class ChangeExpiredPasswordComponent
     }
     this.typeId = auth.passwordType.id;
 
-    this.addSub(this.passwordsService.getUserPasswordsData({
-      user: ApiHelper.SELF,
-      type: this.typeId,
-      fields: ['type.name', 'type.mode', 'status', 'permissions', 'requireOldPasswordForChange'],
-    }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.passwordsService
+        .getUserPasswordsData({
+          user: ApiHelper.SELF,
+          type: this.typeId,
+          fields: ['type.name', 'type.mode', 'status', 'permissions', 'requireOldPasswordForChange']
+        })
+        .subscribe(data => {
+          this.data = data;
+        })
+    );
   }
 
   onDataInitialized(data: PasswordStatusAndActions) {
@@ -82,8 +81,10 @@ export class ChangeExpiredPasswordComponent
         this.form.setControl('oldPassword', this.formBuilder.control('', Validators.required));
       }
       this.form.setControl('newPassword', this.formBuilder.control('', Validators.required));
-      this.form.setControl('newPasswordConfirmation', this.formBuilder.control('',
-        Validators.compose([Validators.required, PASSWORDS_MATCH_VAL])));
+      this.form.setControl(
+        'newPasswordConfirmation',
+        this.formBuilder.control('', Validators.compose([Validators.required, PASSWORDS_MATCH_VAL]))
+      );
     }
   }
 
@@ -93,18 +94,27 @@ export class ChangeExpiredPasswordComponent
     }
     const type = this.data.type;
     if (this.generated) {
-      this.addSub(this.passwordsService.generatePassword({ type: this.typeId }).subscribe(newValue => {
-        this.generatedValue$.next(newValue);
-      }));
+      this.addSub(
+        this.passwordsService.generatePassword({ type: this.typeId }).subscribe(newValue => {
+          this.generatedValue$.next(newValue);
+        })
+      );
     } else {
-      this.addSub(this.passwordsService.changePassword({
-        user: ApiHelper.SELF,
-        type: this.typeId,
-        body: this.form.value,
-      }).subscribe(() => {
-        this.notification.snackBar(this.i18n.password.expired.changed(type.name));
-        this.dataForFrontendHolder.reload().pipe(first()).subscribe(() => this.router.navigateByUrl(this.loginState.redirectUrl || ''));
-      }));
+      this.addSub(
+        this.passwordsService
+          .changePassword({
+            user: ApiHelper.SELF,
+            type: this.typeId,
+            body: this.form.value
+          })
+          .subscribe(() => {
+            this.notification.snackBar(this.i18n.password.expired.changed(type.name));
+            this.dataForFrontendHolder
+              .reload()
+              .pipe(first())
+              .subscribe(() => this.router.navigateByUrl(this.loginState.redirectUrl || ''));
+          })
+      );
     }
   }
 

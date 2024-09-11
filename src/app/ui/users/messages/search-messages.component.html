@@ -1,42 +1,48 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content mode="filters" [heading]="i18n.message.title.search"
+    <page-content
+      mode="filters"
+      [heading]="i18n.message.title.search"
       [mobileHeading]="i18n.message.mobileTitle.search"
       [headingActions]="headingActions$ | async">
       <div [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row">
           <div class="col-12">
-            <radio-group-field formControlName="messageBox" fieldSize="full"
+            <radio-group-field
+              formControlName="messageBox"
+              fieldSize="full"
               [label]="i18n.message.messageBox.messageBox">
-              <field-option [value]="MessageBoxEnum.INBOX"
-                [text]="i18n.message.messageBox.inbox"></field-option>
-              <field-option [value]="MessageBoxEnum.SENT"
-                [text]="i18n.message.messageBox.sent"></field-option>
-              <field-option [value]="MessageBoxEnum.TRASH"
-                [text]="i18n.message.messageBox.trash"></field-option>
+              <field-option [value]="MessageBoxEnum.INBOX" [text]="i18n.message.messageBox.inbox"></field-option>
+              <field-option [value]="MessageBoxEnum.SENT" [text]="i18n.message.messageBox.sent"></field-option>
+              <field-option [value]="MessageBoxEnum.TRASH" [text]="i18n.message.messageBox.trash"></field-option>
             </radio-group-field>
           </div>
-          <div class="col-12 col-md-6"
-            *ngIf="(data.visibleCategories || []).length > 0">
-            <single-selection-field formControlName="category"
+          <div class="col-12 col-md-6" *ngIf="(data.visibleCategories || []).length > 0">
+            <single-selection-field
+              formControlName="category"
               [label]="i18n.general.category"
               [emptyOption]="i18n.general.all">
-              <field-option *ngFor="let category of data.visibleCategories"
-                [id]="category.id" [value]="category.id"
+              <field-option
+                *ngFor="let category of data.visibleCategories"
+                [id]="category.id"
+                [value]="category.id"
                 [text]="category.name">
               </field-option>
             </single-selection-field>
           </div>
-          <div class="col-12 col-md-6"
+          <div
+            class="col-12 col-md-6"
             *ngIf="
-            dataForFrontendHolder.role !== RoleEnum.ADMINISTRATOR && (
-            (data.destinations || []).length > 0 || ((form.controls.messageBox.valueChanges | async) && (data.destinations || []).length > 0))">
+              dataForFrontendHolder.role !== RoleEnum.ADMINISTRATOR &&
+              ((data.destinations || []).length > 0 ||
+                ((form.controls.messageBox.valueChanges | async) && (data.destinations || []).length > 0))
+            ">
             <!-- Use label-value otherwise when we use label attr of the single-selection itself
               the label would not be updated when messageBox changes -->
             <label-value [label]="resolveProfileTitle()">
-              <single-selection-field formControlName="destination"
-                [emptyOption]="i18n.general.all">
-                <field-option *ngFor="let destination of destinations"
+              <single-selection-field formControlName="destination" [emptyOption]="i18n.general.all">
+                <field-option
+                  *ngFor="let destination of destinations"
                   [value]="destination"
                   [text]="messageHelper.resolveDestination(destination)">
                 </field-option>
@@ -44,67 +50,67 @@
             </label-value>
           </div>
           <div class="col-12 col-md-6">
-            <input-field formControlName="keywords"
-              [label]="i18n.general.keywords"></input-field>
+            <input-field formControlName="keywords" [label]="i18n.general.keywords"></input-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field formControlName="user" [label]="i18n.general.user">
-            </user-field>
+            <user-field formControlName="user" [label]="i18n.general.user"> </user-field>
           </div>
         </div>
       </div>
     </page-content>
-    <results-layout resultType="list" [results]="results$ | async"
-      (update)="update($event)" [onClick]="onClick" [rendering$]="rendering$">
-
-      <mobile-result *mobileResult="let row"
-        [avatarImage]="resolveProfile(row).image" avatarIcon="bell">
-
+    <results-layout
+      resultType="list"
+      [results]="results$ | async"
+      (update)="update($event)"
+      [onClick]="onClick"
+      [rendering$]="rendering$">
+      <mobile-result *mobileResult="let row" [avatarImage]="resolveProfile(row).image" avatarIcon="bell">
         <div class="cell-main" [tooltip]="row.subject">{{ row.subject }}</div>
         <div class="cell-cell-date">
           {{ row.date | dateTime }}
         </div>
-
       </mobile-result>
 
       <table *resultTable class="table table-hover cursor-pointer">
         <thead>
           <th class="avatar"></th>
           <th class="max-width: 15rem" width="30%">
-            {{
-            resolveProfileTitle() }}
+            {{ resolveProfileTitle() }}
           </th>
           <th>{{ i18n.message.subject }}</th>
           <th>{{ i18n.general.date }}</th>
           <th class="actions"></th>
         </thead>
         <tbody>
-          <ng-container *ngFor="let row of (results$ | async)?.results;">
-            <tr (click)="rowClick(row)"
-              [ngClass]="{'font-weight-bold': !row.read}">
+          <ng-container *ngFor="let row of (results$ | async)?.results">
+            <tr (click)="rowClick(row)" [ngClass]="{ 'font-weight-bold': !row.read }">
               <ng-container *ngIf="resolveProfile(row) as profile">
-                <td class="avatar" [ngClass]="{
-              'pb-0': layout.xxs$ | async,
-              'border-0': layout.xxs$ | async
-            }">
-                  <avatar [image]="profile.image" [tooltip]="profile.display"
-                    [icon]="profile.icon">
-                  </avatar>
+                <td
+                  class="avatar"
+                  [ngClass]="{
+                    'pb-0': layout.xxs$ | async,
+                    'border-0': layout.xxs$ | async
+                  }">
+                  <avatar [image]="profile.image" [tooltip]="profile.display" [icon]="profile.icon"> </avatar>
                 </td>
                 <td>
-                  <span class="ellipsis d-inline-block"
-                    style="max-width: 15rem">{{
-                    profile.display }}</span>
+                  <span class="ellipsis d-inline-block" style="max-width: 15rem">{{ profile.display }}</span>
                 </td>
               </ng-container>
               <td>{{ row.subject }}</td>
               <td>{{ row.date | dateTime }}</td>
               <td class="actions">
-                <button type="button"
-                  [tooltip]="form.controls.messageBox.value === MessageBoxEnum.TRASH ?
-                  i18n.message.actions.remove : i18n.message.actions.moveToTrash"
+                <button
+                  type="button"
+                  [tooltip]="
+                    form.controls.messageBox.value === MessageBoxEnum.TRASH
+                      ? i18n.message.actions.remove
+                      : i18n.message.actions.moveToTrash
+                  "
                   class="btn btn-icon"
-                  (click)="remove(form.controls.messageBox.value !== MessageBoxEnum.TRASH, row); $event.stopPropagation()">
+                  (click)="
+                    remove(form.controls.messageBox.value !== MessageBoxEnum.TRASH, row); $event.stopPropagation()
+                  ">
                   <icon [icon]="SvgIcon.Trash"></icon>
                 </button>
               </td>

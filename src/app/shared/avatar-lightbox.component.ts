@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { Image } from 'app/api/models';
 import { SvgIcon } from 'app/core/svg-icon';
 import { galleryImage, truthyAttr } from 'app/shared/helper';
@@ -9,14 +18,14 @@ import { INgxGalleryImage, NgxGalleryComponent, NgxGalleryOptions } from 'ngx-ga
  * Profile is a special value that adapts to the max image width / height and layout size
  */
 export type AvatarSize = 'small' | 'small-medium' | 'medium' | 'medium-large' | 'large' | 'xlarge' | 'huge' | 'full';
-export const SIZES: { [key: string]: number; } = {
+export const SIZES: { [key: string]: number } = {
   small: 24,
   'small-medium': 30,
   medium: 36,
   'medium-large': 50,
   large: 64,
   xlarge: 96,
-  huge: 128,
+  huge: 128
 };
 
 /**
@@ -27,10 +36,9 @@ export const SIZES: { [key: string]: number; } = {
   // tslint:disable-next-line:component-selector
   selector: 'avatar-lightbox',
   templateUrl: 'avatar-lightbox.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AvatarLightboxComponent implements OnChanges {
-
   /**
    * The icon show when no image is available
    */
@@ -96,22 +104,24 @@ export class AvatarLightboxComponent implements OnChanges {
 
   private update() {
     if (this.image) {
-      const additional = (this.additionalImages || []);
+      const additional = this.additionalImages || [];
       this.allImages = [...additional];
       if (this.allImages.findIndex(i => i.url === this.image.url) < 0) {
         this.allImages.unshift(this.image);
       }
       this.galleryImages = this.allImages.map(galleryImage);
-      this.galleryOptions = [{
-        width: '0',
-        height: '0',
-        image: false,
-        thumbnails: false,
-        previewKeyboardNavigation: true,
-        previewCloseOnClick: true,
-        previewCloseOnEsc: true,
-        previewArrows: additional.length > 0,
-      }];
+      this.galleryOptions = [
+        {
+          width: '0',
+          height: '0',
+          image: false,
+          thumbnails: false,
+          previewKeyboardNavigation: true,
+          previewCloseOnClick: true,
+          previewCloseOnEsc: true,
+          previewArrows: additional.length > 0
+        }
+      ];
       if (this.gallery) {
         this.gallery.images = this.galleryImages;
         this.gallery.options = this.galleryOptions;

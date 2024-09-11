@@ -1,4 +1,12 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostBinding,
+  Input,
+  ViewChild
+} from '@angular/core';
 import { blurIfClick, htmlCollectionToArray, truthyAttr } from 'app/shared/helper';
 
 /**
@@ -7,10 +15,9 @@ import { blurIfClick, htmlCollectionToArray, truthyAttr } from 'app/shared/helpe
 @Component({
   selector: 'rich-text-container',
   templateUrl: 'rich-text-container.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RichTextContainerComponent implements AfterViewInit {
-
   /**
    * Either this has to be specified or the other 3: fields + fieldName + object
    */
@@ -32,10 +39,13 @@ export class RichTextContainerComponent implements AfterViewInit {
       if (a.href) {
         a.target = '_blank';
       }
-      a.addEventListener('click', e => {
-        blurIfClick(a, e);
-      }, false);
+      a.addEventListener(
+        'click',
+        e => {
+          blurIfClick(a, e);
+        },
+        false
+      );
     });
   }
-
 }

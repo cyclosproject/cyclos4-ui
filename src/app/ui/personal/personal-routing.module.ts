@@ -15,39 +15,34 @@ const personalRoutes: Routes = [
         component: SearchNotificationsComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          menu: Menu.NOTIFICATIONS,
-        },
+          menu: Menu.NOTIFICATIONS
+        }
       },
       {
         path: 'settings',
         component: ManageSettingsComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          menu: Menu.SETTINGS,
-        },
+          menu: Menu.SETTINGS
+        }
       },
       {
         path: 'invite',
         component: SendInvitationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          menu: Menu.INVITE,
-        },
+          menu: Menu.INVITE
+        }
       }
-    ],
-  },
+    ]
+  }
 ];
 
 /**
  * * Routes for the personal module
  */
 @NgModule({
-  imports: [
-    RouterModule.forChild(personalRoutes),
-  ],
-  exports: [
-    RouterModule,
-  ],
+  imports: [RouterModule.forChild(personalRoutes)],
+  exports: [RouterModule]
 })
-export class PersonalRoutingModule {
-}
+export class PersonalRoutingModule {}

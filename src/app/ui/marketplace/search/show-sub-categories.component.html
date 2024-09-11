@@ -1,18 +1,13 @@
 <h1 class="d-flex justify-content-center modal-header">
-  <avatar [image]="image" size="medium" [icon]="icon" [iconColor]="color">
-  </avatar>
-  <a class="ml-3 pt-1 flex-grow-1 undecorated" href="#"
-    (click)="emit(category, $event)">
+  <avatar [image]="image" size="medium" [icon]="icon" [iconColor]="color"> </avatar>
+  <a class="ml-3 pt-1 flex-grow-1 undecorated" href="#" (click)="emit(category, $event)">
     {{ category.name }}
   </a>
 </h1>
 
-<category-hierarchy *ngFor="let sub of category.children" [category]="sub"
-  (select)="emit($event)"></category-hierarchy>
+<category-hierarchy *ngFor="let sub of category.children" [category]="sub" (select)="emit($event)"></category-hierarchy>
 
 <actions class="modal-footer">
   <span></span>
-  <action-button outline (action)="modalRef.hide()"
-    [label]="i18n.general.cancel">
-  </action-button>
+  <action-button outline (action)="modalRef.hide()" [label]="i18n.general.cancel"> </action-button>
 </actions>

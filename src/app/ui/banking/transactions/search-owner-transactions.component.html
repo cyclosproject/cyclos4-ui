@@ -1,9 +1,11 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data then content"></ng-container>
+  <ng-container *ngIf="data; then content"></ng-container>
 </page-layout>
 
 <ng-template #content>
-  <page-content mode="filters" [heading]="heading"
+  <page-content
+    mode="filters"
+    [heading]="heading"
     [mobileHeading]="mobileHeading"
     [headingActions]="headingActions$ | async">
     <div [formGroup]="form" class="filters-form">
@@ -14,86 +16,98 @@
               <user-link [user]="data.user"></user-link>
             </label-value>
           </div>
-          <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
-          </div>
+          <div *ngIf="layout.gtsm$" class="col-12 col-md-6"></div>
         </ng-container>
         <div class="col-12 col-md-6">
-          <single-selection-field formControlName="status"
-            [label]="i18n.general.status" [fieldOptions]="statusOptions"
+          <single-selection-field
+            formControlName="status"
+            [label]="i18n.general.status"
+            [fieldOptions]="statusOptions"
             [emptyOption]="i18n.general.notApplied">
           </single-selection-field>
         </div>
         <div *ngIf="isPaymentRequest()" class="col-12 col-md-6">
-          <single-selection-field formControlName="direction"
+          <single-selection-field
+            formControlName="direction"
             [label]="i18n.transaction.direction"
             [emptyOption]="i18n.general.all">
-            <field-option value="credit" [text]="i18n.transaction.sent">
-            </field-option>
-            <field-option value="debit" [text]="i18n.transaction.received">
-            </field-option>
+            <field-option value="credit" [text]="i18n.transaction.sent"> </field-option>
+            <field-option value="debit" [text]="i18n.transaction.received"> </field-option>
           </single-selection-field>
         </div>
-        <ng-container *ngIf="(moreFilters$ | async)">
+        <ng-container *ngIf="moreFilters$ | async">
           <div *ngIf="hasTransactionNumber" class="col-12 col-md-6">
-            <input-field formControlName="transactionNumber"
+            <input-field
+              formControlName="transactionNumber"
               [mask]="transactionNumberPattern"
               [label]="i18n.transaction.number"></input-field>
           </div>
-          <div class="col-12 col-md-6"
-            *ngIf="(data.accountTypes?.length > 1)">
-            <single-selection-field formControlName="accountType"
+          <div class="col-12 col-md-6" *ngIf="data.accountTypes?.length > 1">
+            <single-selection-field
+              formControlName="accountType"
               [label]="i18n.transaction.account"
               [emptyOption]="i18n.general.notApplied">
-              <field-option *ngFor="let at of data.accountTypes"
-                [value]="at.id" [text]="at.name"></field-option>
+              <field-option *ngFor="let at of data.accountTypes" [value]="at.id" [text]="at.name"></field-option>
             </single-selection-field>
           </div>
-          <div class="col-12 col-md-6"
-            *ngIf="usePreselectedPeriods && data.preselectedPeriods?.length > 0">
-            <single-selection-field formControlName="preselectedPeriod"
-              [label]="i18n.general.period">
-              <field-option *ngFor="let period of data.preselectedPeriods"
-                [id]="period['id']" [value]="period" [text]="period.name">
+          <div class="col-12 col-md-6" *ngIf="usePreselectedPeriods && data.preselectedPeriods?.length > 0">
+            <single-selection-field formControlName="preselectedPeriod" [label]="i18n.general.period">
+              <field-option
+                *ngFor="let period of data.preselectedPeriods"
+                [id]="period['id']"
+                [value]="period"
+                [text]="period.name">
               </field-option>
             </single-selection-field>
           </div>
           <ng-container
-            *ngIf="!usePreselectedPeriods || (form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null">
+            *ngIf="
+              !usePreselectedPeriods || (form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null
+            ">
             <!-- Force a line break on sm and up -->
             <div class="w-100 d-none d-sm-block"></div>
             <div class="col-12 col-md-6">
-              <date-field formControlName="periodBegin"
-                [label]="i18n.general.beginDate" minDate="past5"
-                maxDate="today" fieldSize="full">
+              <date-field
+                formControlName="periodBegin"
+                [label]="i18n.general.beginDate"
+                minDate="past5"
+                maxDate="today"
+                fieldSize="full">
               </date-field>
             </div>
           </ng-container>
           <div
-            *ngIf="!usePreselectedPeriods || (form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
+            *ngIf="
+              !usePreselectedPeriods || (form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null
+            "
             class="col-12 col-md-6">
-            <date-field formControlName="periodEnd"
-              [label]="i18n.general.endDate" minDate="past5" maxDate="today"
+            <date-field
+              formControlName="periodEnd"
+              [label]="i18n.general.endDate"
+              minDate="past5"
+              maxDate="today"
               fieldSize="full">
             </date-field>
           </div>
-          <div *ngIf="(transferFilters$ | async).length > 0"
-            class="col-12 col-md-6">
-            <single-selection-field formControlName="transferFilter"
+          <div *ngIf="(transferFilters$ | async).length > 0" class="col-12 col-md-6">
+            <single-selection-field
+              formControlName="transferFilter"
               [label]="i18n.account.transferFilter"
               [emptyOption]="i18n.general.notApplied">
-              <field-option *ngFor="let filter of transferFilters$.value"
-                [value]="filter" [id]="filter.id" [text]="filter.name">
+              <field-option
+                *ngFor="let filter of transferFilters$.value"
+                [value]="filter"
+                [id]="filter.id"
+                [text]="filter.name">
               </field-option>
             </single-selection-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field formControlName="user" [label]="i18n.general.user">
-            </user-field>
+            <user-field formControlName="user" [label]="i18n.general.user"> </user-field>
           </div>
 
           <div class="col-12 col-md-6" *ngFor="let f of fieldsInSearch">
-            <custom-field-filter [field]="f"
-              [formControl]="form.get('customFields').get(f.internalName)">
+            <custom-field-filter [field]="f" [formControl]="form.get('customFields').get(f.internalName)">
             </custom-field-filter>
           </div>
         </ng-container>
@@ -101,17 +115,22 @@
     </div>
   </page-content>
 
-  <results-layout resultType="list" [results]="results$ | async"
-    (update)="update($event)" [toLink]="toLink" [rendering$]="rendering$">
-
-    <mobile-result *mobileResult="let row"
+  <results-layout
+    resultType="list"
+    [results]="results$ | async"
+    (update)="update($event)"
+    [toLink]="toLink"
+    [rendering$]="rendering$">
+    <mobile-result
+      *mobileResult="let row"
       [avatarImage]="bankingHelper.avatarImage(row.related)"
-      [avatarIcon]="bankingHelper.avatarIcon(row.related)" [date]="row.date"
-      [amount]="row.amount" [currency]="currencies.get(row.currency)"
+      [avatarIcon]="bankingHelper.avatarIcon(row.related)"
+      [date]="row.date"
+      [amount]="row.amount"
+      [currency]="currencies.get(row.currency)"
       forceSign>
       <div class="cell-text cell-main">
-        {{ isTicket() && hasTransactionNumber ? row.transactionNumber :
-        bankingHelper.subjectName(row.related) }}
+        {{ isTicket() && hasTransactionNumber ? row.transactionNumber : bankingHelper.subjectName(row.related) }}
       </div>
     </mobile-result>
 
@@ -119,18 +138,13 @@
       <thead>
         <th *ngIf="!isExternalPayment() && !isTicket()" class="avatar"></th>
         <th>{{ i18n.general.date }}</th>
-        <th *ngIf="isTicket() && hasTransactionNumber">{{
-          i18n.transaction.number }}</th>
-        <th *ngIf="!isPaymentRequest() && !isTicket()">{{ isExternalPayment()
-          ?
-          i18n.transaction.to : i18n.transaction.fromTo }}</th>
-        <th *ngIf="isPaymentRequest()">{{ i18n.transaction.senderOrReceiver }}
+        <th *ngIf="isTicket() && hasTransactionNumber">{{ i18n.transaction.number }}</th>
+        <th *ngIf="!isPaymentRequest() && !isTicket()">
+          {{ isExternalPayment() ? i18n.transaction.to : i18n.transaction.fromTo }}
         </th>
-        <th *ngIf="isPaymentRequest() || isExternalPayment() || isTicket()">{{
-          i18n.general.status }}</th>
-        <th *ngIf="!isExternalPayment() && !isTicket()">{{
-          i18n.transaction.scheduling }}
-        </th>
+        <th *ngIf="isPaymentRequest()">{{ i18n.transaction.senderOrReceiver }}</th>
+        <th *ngIf="isPaymentRequest() || isExternalPayment() || isTicket()">{{ i18n.general.status }}</th>
+        <th *ngIf="!isExternalPayment() && !isTicket()">{{ i18n.transaction.scheduling }}</th>
         <th *ngFor="let field of fieldsInList">
           {{ field.name }}
         </th>
@@ -140,37 +154,38 @@
         <ng-container *ngFor="let row of (results$ | async)?.results">
           <tr (click)="router.navigate(bankingHelper.transactionPath(row))">
             <td *ngIf="!isExternalPayment() && !isTicket()" class="avatar">
-              <avatar [image]="bankingHelper.avatarImage(row.related)"
-                [icon]="bankingHelper.avatarIcon(row.related)">
+              <avatar [image]="bankingHelper.avatarImage(row.related)" [icon]="bankingHelper.avatarIcon(row.related)">
               </avatar>
             </td>
             <td>
               {{ row.date | date }}
             </td>
-            <td *ngIf="isTicket() && hasTransactionNumber">{{
-              row.transactionNumber }}</td>
+            <td *ngIf="isTicket() && hasTransactionNumber">{{ row.transactionNumber }}</td>
             <td *ngIf="!isTicket()">
-              {{ isExternalPayment()
-              ? row.toPrincipalValue
-              : bankingHelper.subjectName(row.related) }}
+              {{ isExternalPayment() ? row.toPrincipalValue : bankingHelper.subjectName(row.related) }}
             </td>
-            <td
-              *ngIf="isPaymentRequest() || isExternalPayment() || isTicket()">
+            <td *ngIf="isPaymentRequest() || isExternalPayment() || isTicket()">
               {{ apiI18n.transactionStatus(row) }}
             </td>
             <td *ngIf="!isExternalPayment() && !isTicket()">
               {{ bankingHelper.scheduling(row) }}
             </td>
             <td *ngFor="let field of fieldsInList">
-              <format-field-value [fields]="fieldsInList" [plainText]="true"
-                [fieldName]="field.internalName" [object]="row">
+              <format-field-value
+                [fields]="fieldsInList"
+                [plainText]="true"
+                [fieldName]="field.internalName"
+                [object]="row">
               </format-field-value>
             </td>
-            <td class="amount" [ngClass]="{
-              'pb-0': layout.xxs$ | async,
-              positive: format.isPositive(row.amount),
-              negative: format.isNegative(row.amount)}">
-              {{ row.amount | currency:currencies.get(row.currency):true }}
+            <td
+              class="amount"
+              [ngClass]="{
+                'pb-0': layout.xxs$ | async,
+                positive: format.isPositive(row.amount),
+                negative: format.isNegative(row.amount)
+              }">
+              {{ row.amount | currency : currencies.get(row.currency) : true }}
             </td>
           </tr>
         </ng-container>

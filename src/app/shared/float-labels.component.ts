@@ -5,10 +5,6 @@ export const FLOAT_LABELS = new InjectionToken<FloatLabelsComponent>('floatLabel
 @Component({
   selector: 'float-labels',
   template: '<ng-content></ng-content>',
-  providers: [
-    { provide: FLOAT_LABELS, useExisting: FloatLabelsComponent, multi: true },
-  ],
+  providers: [{ provide: FLOAT_LABELS, useExisting: FloatLabelsComponent, multi: true }]
 })
-export class FloatLabelsComponent {
-
-}
+export class FloatLabelsComponent {}

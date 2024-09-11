@@ -1,13 +1,19 @@
-<label-value *ngIf="label; else widget" [formField]="self"
-  [informationText]="informationText">
+<label-value *ngIf="label; else widget" [formField]="self" [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
 <ng-template #widget>
-  <input #input [id]="id" [formControl]="formControl" [name]="name"
-    (blur)="updateValue()" [placeholder]="placeholder"
-    [autocomplete]="autocomplete" class="form-control w-100" [ngClass]="{
+  <input
+    #input
+    [id]="id"
+    [formControl]="formControl"
+    [name]="name"
+    (blur)="updateValue()"
+    [placeholder]="placeholder"
+    [autocomplete]="autocomplete"
+    class="form-control w-100"
+    [ngClass]="{
       'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
-    }">
+    }" />
   <field-errors [control]="formControl"></field-errors>
 </ng-template>

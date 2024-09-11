@@ -21,13 +21,9 @@ import { ViewImportedLineComponent } from 'app/ui/imports/view-imported-line.com
     EditImportedFileComponent,
     SearchImportedLinesComponent,
     ViewImportedLineComponent,
-    EditImportedLineComponent,
+    EditImportedLineComponent
   ],
-  imports: [
-    ImportsRoutingModule,
-    UiSharedModule
-  ],
+  imports: [ImportsRoutingModule, UiSharedModule],
   exports: []
 })
-export class ImportsModule {
-}
+export class ImportsModule {}

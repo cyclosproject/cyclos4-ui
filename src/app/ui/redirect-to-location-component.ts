@@ -8,14 +8,10 @@ import { ApiHelper } from 'app/shared/api-helper';
 @Component({
   selector: 'redirect-to-location',
   template: ' ',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RedirectToLocationComponent implements OnInit {
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute) {
-  }
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
     const location = this.route.snapshot.params.location;

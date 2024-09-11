@@ -13,25 +13,20 @@ import { Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'view-document',
   templateUrl: 'view-document.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewDocumentComponent
-  extends BasePageComponent<DocumentView>
-  implements OnInit {
-
+export class ViewDocumentComponent extends BasePageComponent<DocumentView> implements OnInit {
   id: string;
   empty = empty;
 
-  constructor(
-    injector: Injector,
-    private documentsService: DocumentsService) {
+  constructor(injector: Injector, private documentsService: DocumentsService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.id = this.route.snapshot.params.id;
-    this.addSub(this.documentsService.viewDocument({ id: this.id }).subscribe(data => this.data = data));
+    this.addSub(this.documentsService.viewDocument({ id: this.id }).subscribe(data => (this.data = data)));
   }
 
   onDataInitialized(data: DocumentView) {
@@ -49,15 +44,17 @@ export class ViewDocumentComponent
   remove() {
     this.confirmation.confirm({
       message: this.i18n.general.removeItemConfirm,
-      callback: () => this.doRemove(),
+      callback: () => this.doRemove()
     });
   }
 
   private doRemove() {
-    this.addSub(this.documentsService.deleteDocument({ id: this.id }).subscribe(() => {
-      this.notification.snackBar(this.i18n.general.removeItemDone);
-      this.router.navigate(['/users', this.data.user.id, 'documents', 'search']);
-    }));
+    this.addSub(
+      this.documentsService.deleteDocument({ id: this.id }).subscribe(() => {
+        this.notification.snackBar(this.i18n.general.removeItemDone);
+        this.router.navigate(['/users', this.data.user.id, 'documents', 'search']);
+      })
+    );
   }
 
   download() {

@@ -12,13 +12,13 @@ import { VoucherBasePageComponent } from 'app/voucher/voucher-base-page.componen
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VoucherForgotPinComponent extends VoucherBasePageComponent implements OnInit {
-
   public form: FormGroup;
 
   constructor(
     private captchaHelper: CaptchaHelperService,
     private nextRequestState: NextRequestState,
-    injector: Injector) {
+    injector: Injector
+  ) {
     super(injector);
   }
 
@@ -33,7 +33,8 @@ export class VoucherForgotPinComponent extends VoucherBasePageComponent implemen
   public message(): string {
     const mediums = this.state.voucher.forgotPinSendMediums;
     if (mediums.length == 1) {
-      const mediumName = mediums[0] === SendMediumEnum.EMAIL ? this.i18n.general.sendMedium.email : this.i18n.general.sendMedium.sms;
+      const mediumName =
+        mediums[0] === SendMediumEnum.EMAIL ? this.i18n.general.sendMedium.email : this.i18n.general.sendMedium.sms;
       return this.i18n.voucher.info.forgotPin.message(mediumName);
     } else {
       const email = this.i18n.general.sendMedium.email;

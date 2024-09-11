@@ -1,9 +1,17 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
-  AccountHistoryQueryFilters, AccountHistoryResult, AccountKind,
-  AccountWithHistoryStatus, Currency, CustomFieldDetailed, DataForAccountHistory,
-  EntityReference, Image, PreselectedPeriod, TransferFilter
+  AccountHistoryQueryFilters,
+  AccountHistoryResult,
+  AccountKind,
+  AccountWithHistoryStatus,
+  Currency,
+  CustomFieldDetailed,
+  DataForAccountHistory,
+  EntityReference,
+  Image,
+  PreselectedPeriod,
+  TransferFilter
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services/accounts.service';
 import { SvgIcon } from 'app/core/svg-icon';
@@ -28,12 +36,12 @@ type AccountHistorySearchParams = AccountHistoryQueryFilters & {
 @Component({
   selector: 'account-history',
   templateUrl: 'account-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccountHistoryComponent
   extends BaseSearchPageComponent<DataForAccountHistory, AccountHistorySearchParams, AccountHistoryResult>
-  implements OnInit {
-
+  implements OnInit
+{
   truncate = truncate;
 
   ownerParam: string;
@@ -51,7 +59,7 @@ export class AccountHistoryComponent
   constructor(
     injector: Injector,
     private accountsService: AccountsService,
-    private bankingHelper: BankingHelperService,
+    private bankingHelper: BankingHelperService
   ) {
     super(injector);
   }
@@ -87,8 +95,21 @@ export class AccountHistoryComponent
 
   getFormControlNames() {
     return [
-      'transferFilters', 'preselectedPeriod', 'periodBegin', 'periodEnd', 'minAmount', 'maxAmount', 'transactionNumber',
-      'direction', 'user', 'by', 'groups', 'channels', 'description', 'orderBy', 'customFields'
+      'transferFilters',
+      'preselectedPeriod',
+      'periodBegin',
+      'periodEnd',
+      'minAmount',
+      'maxAmount',
+      'transactionNumber',
+      'direction',
+      'user',
+      'by',
+      'groups',
+      'channels',
+      'description',
+      'orderBy',
+      'customFields'
     ];
   }
 
@@ -105,17 +126,24 @@ export class AccountHistoryComponent
     this.multipleAccounts = this.accountTypes.length > 1;
 
     // Get the account history data
-    this.stateManager.cache('data',
-      this.accountsService.getAccountHistoryDataByOwnerAndType({
-        owner: this.ownerParam, accountType: this.typeParam,
-      }),
-    ).subscribe(data => this.data = data);
+    this.stateManager
+      .cache(
+        'data',
+        this.accountsService.getAccountHistoryDataByOwnerAndType({
+          owner: this.ownerParam,
+          accountType: this.typeParam
+        })
+      )
+      .subscribe(data => (this.data = data));
   }
 
   prepareForm(data: DataForAccountHistory) {
     this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInBasicSearch.includes(cf.internalName));
     this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
-    this.form.setControl('customFields', this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields));
+    this.form.setControl(
+      'customFields',
+      this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields)
+    );
 
     this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
 
@@ -132,14 +160,15 @@ export class AccountHistoryComponent
       this.accountsService.exportAccountHistory$Response({
         format: f.internalName,
         ...this.toSearchParams(this.form.value)
-      }));
+      })
+    );
     this.addSub(this.layout.xxs$.subscribe(() => this.updateShowForm(data)));
     this.addSub(this.moreFilters$.subscribe(() => this.updateShowForm(data)));
     this.updateShowForm(data);
   }
 
   private updateShowForm(data: DataForAccountHistory) {
-    this.showForm$.next(this.layout.xxs && !empty(data.preselectedPeriods) || this.moreFilters);
+    this.showForm$.next((this.layout.xxs && !empty(data.preselectedPeriods)) || this.moreFilters);
   }
 
   toSearchParams(value: any): AccountHistorySearchParams {
@@ -161,8 +190,8 @@ export class AccountHistoryComponent
     // Fetch both the status and the entries in parallel
     const entries = this.accountsService.searchAccountHistory$Response(query);
     const status = this.accountsService.getAccountStatusByOwnerAndType({ ...query, fields: ['status'] });
-    return forkJoin([entries, status])
-      .pipe(map(res => {
+    return forkJoin([entries, status]).pipe(
+      map(res => {
         const [entriesResult, statusResult] = res;
         const accountWithStatus = { ...this.data.account, status: statusResult?.status };
         if (accountWithStatus.status == null) {
@@ -171,14 +200,12 @@ export class AccountHistoryComponent
           this.moreFilters = true;
           this.headingActions = this.exportActions;
         } else {
-          this.headingActions = [
-            this.moreFiltersAction,
-            ...this.exportActions
-          ];
+          this.headingActions = [this.moreFiltersAction, ...this.exportActions];
         }
         this.status$.next(accountWithStatus);
         return entriesResult;
-      }));
+      })
+    );
   }
 
   private get accountTypes(): EntityReference[] {

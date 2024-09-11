@@ -1,7 +1,14 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef,
-  EventEmitter, Injector, Input, Output, ViewChild
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Injector,
+  Input,
+  Output,
+  ViewChild
 } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { CustomFieldDetailed, InputErrorCode, StoredFile } from 'app/api/models';
@@ -16,7 +23,6 @@ import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
  * Represents a file being uploaded
  */
 export class FileToUpload {
-
   private _file: File;
   progress$ = new BehaviorSubject(0);
   subscription: Subscription;
@@ -46,7 +52,6 @@ export class FileToUpload {
   get file(): File {
     return this._file;
   }
-
 }
 
 /**
@@ -55,10 +60,9 @@ export class FileToUpload {
 @Component({
   selector: 'temp-file-upload',
   templateUrl: 'temp-file-upload.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TempFileUploadComponent extends BaseComponent {
-
   uploading$ = new BehaviorSubject(false);
 
   @Input() containerClass = '';
@@ -85,7 +89,8 @@ export class TempFileUploadComponent extends BaseComponent {
     private apiConfiguration: ApiConfiguration,
     private changeDetector: ChangeDetectorRef,
     private authHelper: AuthHelperService,
-    private storedFileCacheService: StoredFileCacheService) {
+    private storedFileCacheService: StoredFileCacheService
+  ) {
     super(injector);
   }
 
@@ -134,7 +139,7 @@ export class TempFileUploadComponent extends BaseComponent {
     if (tooLarge.length > 0) {
       this.errorHandler.handleInputError({
         code: InputErrorCode.FILE_UPLOAD_SIZE,
-        maxFileSize: maxSize,
+        maxFileSize: maxSize
       });
     }
     if (observables.length === 0) {
@@ -159,43 +164,50 @@ export class TempFileUploadComponent extends BaseComponent {
       const data = new FormData();
       data.append('file', file.file, file.name);
 
-      file.subscription = this.http.post(url, data, {
-        observe: 'events',
-        reportProgress: true,
-        responseType: 'text',
-        params: {
-          guestKey: this.authHelper.guestKey,
-          customField: this.customField == null ? null : this.customField.id,
-          customFieldKind: this.customField == null ? null : this.customField.kind,
-        },
-      }).subscribe(event => {
-        if (event.type === HttpEventType.UploadProgress) {
-          file.progress = event.loaded;
-        } else if (event.type === HttpEventType.Response) {
-          // Once the upload is complete, we have to fetch the stored file model
-          file.subscription.unsubscribe();
-          file.uploadDone = true;
-          this.addSub(this.filesService.viewRawFile({ id: event.body }).subscribe(storedFile => {
-            file.storedFile = storedFile;
-            this.storedFileCacheService.write(storedFile);
-            // Complete the observer
-            observer.next(storedFile);
+      file.subscription = this.http
+        .post(url, data, {
+          observe: 'events',
+          reportProgress: true,
+          responseType: 'text',
+          params: {
+            guestKey: this.authHelper.guestKey,
+            customField: this.customField == null ? null : this.customField.id,
+            customFieldKind: this.customField == null ? null : this.customField.kind
+          }
+        })
+        .subscribe(
+          event => {
+            if (event.type === HttpEventType.UploadProgress) {
+              file.progress = event.loaded;
+            } else if (event.type === HttpEventType.Response) {
+              // Once the upload is complete, we have to fetch the stored file model
+              file.subscription.unsubscribe();
+              file.uploadDone = true;
+              this.addSub(
+                this.filesService.viewRawFile({ id: event.body }).subscribe(storedFile => {
+                  file.storedFile = storedFile;
+                  this.storedFileCacheService.write(storedFile);
+                  // Complete the observer
+                  observer.next(storedFile);
+                  observer.complete();
+                  this.changeDetector.detectChanges();
+                })
+              );
+            }
+          },
+          err => {
+            this.files.forEach(f => {
+              if (f.subscription) {
+                f.subscription.unsubscribe();
+              }
+            });
+            this.files = [];
+            this.uploading$.next(false);
+            observer.error(err);
             observer.complete();
             this.changeDetector.detectChanges();
-          }));
-        }
-      }, err => {
-        this.files.forEach(f => {
-          if (f.subscription) {
-            f.subscription.unsubscribe();
           }
-        });
-        this.files = [];
-        this.uploading$.next(false);
-        observer.error(err);
-        observer.complete();
-        this.changeDetector.detectChanges();
-      });
+        );
     });
   }
 }

@@ -1,20 +1,15 @@
-<label-value *ngIf="label; else widget" [formField]="self"
-  [informationText]="informationText">
+<label-value *ngIf="label; else widget" [formField]="self" [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
 <ng-template #widget>
   <div class="input-fields">
-    <div
-      *ngFor="let control of array.controls; let index = index; let last = last"
-      class="field-and-action">
+    <div *ngFor="let control of array.controls; let index = index; let last = last" class="field-and-action">
       <input-field [formControl]="getControl(index)"></input-field>
-      <button type="button" *ngIf="last && index < maxItems - 1"
-        class="btn btn-icon" (click)="add()">
+      <button type="button" *ngIf="last && index < maxItems - 1" class="btn btn-icon" (click)="add()">
         <icon [icon]="SvgIcon.PlusCircle"></icon>
       </button>
-      <button type="button" *ngIf="!last" class="btn btn-icon"
-        (click)="remove(index)">
+      <button type="button" *ngIf="!last" class="btn btn-icon" (click)="remove(index)">
         <icon [icon]="SvgIcon.DashCircle"></icon>
       </button>
     </div>

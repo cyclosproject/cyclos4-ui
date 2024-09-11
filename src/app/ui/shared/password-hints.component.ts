@@ -16,10 +16,9 @@ const SpecialCharacters = /[\`\@\!\"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\[\\\]
 @Component({
   selector: 'password-hints',
   templateUrl: 'password-hints.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PasswordHintsComponent extends BaseComponent implements OnInit {
-
   @Input() passwordType: PasswordTypeDetailed;
   @Input() control: FormControl;
 
@@ -50,14 +49,16 @@ export class PasswordHintsComponent extends BaseComponent implements OnInit {
     this.numbers = pt.numbers == AvailabilityEnum.REQUIRED;
     this.specialCharacters = pt.specialCharacters == AvailabilityEnum.REQUIRED;
 
-    this.addSub(this.control.valueChanges.subscribe(v => {
-      v = v ?? '';
-      this.fixedLength$.next(v.length == this.fixedLength && (!this.passwordType.onlyNumeric || isNumeric(v)));
-      this.minLength$.next(v.length >= this.minLength && (!this.passwordType.onlyNumeric || isNumeric(v)));
-      this.lowerCaseLetters$.next(LowerCaseLetters.test(v));
-      this.upperCaseLetters$.next(UpperCaseLetters.test(v));
-      this.numbers$.next(Numbers.test(v));
-      this.specialCharacters$.next(SpecialCharacters.test(v));
-    }));
+    this.addSub(
+      this.control.valueChanges.subscribe(v => {
+        v = v ?? '';
+        this.fixedLength$.next(v.length == this.fixedLength && (!this.passwordType.onlyNumeric || isNumeric(v)));
+        this.minLength$.next(v.length >= this.minLength && (!this.passwordType.onlyNumeric || isNumeric(v)));
+        this.lowerCaseLetters$.next(LowerCaseLetters.test(v));
+        this.upperCaseLetters$.next(UpperCaseLetters.test(v));
+        this.numbers$.next(Numbers.test(v));
+        this.specialCharacters$.next(SpecialCharacters.test(v));
+      })
+    );
   }
 }

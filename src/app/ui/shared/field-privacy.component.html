@@ -1,7 +1,10 @@
-<button type="button" #ttip="bs-tooltip"
-  class="btn btn-icon d-flex align-content-center" (click)="toggle()"
-  [tooltip]="tooltip" [disabled]="control.disabled">
+<button
+  type="button"
+  #ttip="bs-tooltip"
+  class="btn btn-icon d-flex align-content-center"
+  (click)="toggle()"
+  [tooltip]="tooltip"
+  [disabled]="control.disabled">
   <icon [icon]="icon"></icon>
 </button>
-<field-errors [control]="control">
-</field-errors>
+<field-errors [control]="control"> </field-errors>

@@ -6,13 +6,10 @@ import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
  * Helper service for references functions
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ReferenceHelperService {
-
-  constructor(
-    @Inject(I18nInjectionToken) private i18n: I18n) {
-  }
+  constructor(@Inject(I18nInjectionToken) private i18n: I18n) {}
 
   resolveLevelLabel(level: ReferenceLevelEnum) {
     switch (level) {

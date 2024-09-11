@@ -3,8 +3,15 @@ import { Injectable } from '@angular/core';
 import { Params, Router } from '@angular/router';
 import {
   DeviceConfirmationTypeEnum,
-  ExportFormat, NotificationLevelEnum, Operation, OperationDataForRun,
-  OperationResultTypeEnum, OperationScopeEnum, OperationShowFormEnum, RunOperation, RunOperationResult
+  ExportFormat,
+  NotificationLevelEnum,
+  Operation,
+  OperationDataForRun,
+  OperationResultTypeEnum,
+  OperationScopeEnum,
+  OperationShowFormEnum,
+  RunOperation,
+  RunOperationResult
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services/operations.service';
 import { ConfirmationService } from 'app/core/confirmation.service';
@@ -28,17 +35,16 @@ const TypesRunDirectly: OperationResultTypeEnum[] = [
   OperationResultTypeEnum.NOTIFICATION,
   OperationResultTypeEnum.FILE_DOWNLOAD,
   OperationResultTypeEnum.URL,
-  OperationResultTypeEnum.EXTERNAL_REDIRECT,
+  OperationResultTypeEnum.EXTERNAL_REDIRECT
 ];
 
 /**
  * Helper for registering known operations and running them
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class RunOperationHelperService {
-
   /** Flag to allow the next execution of an operation because it was caused by a user interaction with operations and not a reload */
   allowActionExecution = false;
 
@@ -55,8 +61,8 @@ export class RunOperationHelperService {
     private operationsService: OperationsService,
     private nextRequestState: NextRequestState,
     private confirmation: ConfirmationService,
-    private uiLayout: UiLayoutService) {
-  }
+    private uiLayout: UiLayoutService
+  ) {}
 
   /**
    * If the operation can be executed directly, run it.
@@ -64,24 +70,25 @@ export class RunOperationHelperService {
    * @param operation The operation to run
    * @param scopeId The id of the scoping entity, such as user, advertisement, etc
    */
-  run(operation: Operation, scopeId?: string, formParameters?: { [key: string]: string; }) {
+  run(operation: Operation, scopeId?: string, formParameters?: { [key: string]: string }) {
     const loggedUser = this.dataForFrontendHolder.user;
     if (!loggedUser) {
       return;
     }
     if (this.canRunDirectly(operation)) {
       // Run the operation right now
-      var doRun = (confirmationPassword?: string) => this.runRequest(operation, {
-        scopeId,
-        formParameters,
-        confirmationPassword
-      }).subscribe(response => {
-        if (operation.requireConfirmationPassword) {
-          this.alreadyConfirmedSession = true;
-        }
-        this.allowActionExecution = false;
-        this.handleResult(response);
-      });
+      var doRun = (confirmationPassword?: string) =>
+        this.runRequest(operation, {
+          scopeId,
+          formParameters,
+          confirmationPassword
+        }).subscribe(response => {
+          if (operation.requireConfirmationPassword) {
+            this.alreadyConfirmedSession = true;
+          }
+          this.allowActionExecution = false;
+          this.handleResult(response);
+        });
 
       var confirmAndRun = () => {
         if (operation.confirmationText) {
@@ -102,7 +109,7 @@ export class RunOperationHelperService {
         // Get the run data in order to get the password input
         const createDeviceConfirmation = () => ({
           type: DeviceConfirmationTypeEnum.RUN_OPERATION,
-          operation: operation.id,
+          operation: operation.id
         });
         this.getDataForRunRequest(operation, scopeId).subscribe(data => {
           if (data.confirmationPasswordInput) {
@@ -159,16 +166,18 @@ export class RunOperationHelperService {
   /**
    * Returns the request to run the given custom operation
    */
-  runRequest(operation: Operation, options: {
-    scopeId?: string,
-    confirmationPassword?: string,
-    scannedQrCode?: string,
-    formParameters?: { [key: string]: string; },
-    pageData?: PageData,
-    upload?: Blob,
-    exportFormat?: ExportFormat;
-  }): Observable<HttpResponse<any>> {
-
+  runRequest(
+    operation: Operation,
+    options: {
+      scopeId?: string;
+      confirmationPassword?: string;
+      scannedQrCode?: string;
+      formParameters?: { [key: string]: string };
+      pageData?: PageData;
+      upload?: Blob;
+      exportFormat?: ExportFormat;
+    }
+  ): Observable<HttpResponse<any>> {
     // The request body (RunOperation)
     const run: RunOperation = {};
     run.formParameters = options.formParameters;
@@ -190,8 +199,8 @@ export class RunOperationHelperService {
       operation: operation.id,
       body: {
         params: run,
-        file: options.upload,
-      },
+        file: options.upload
+      }
     };
 
     const scopeId = options.scopeId;
@@ -243,22 +252,26 @@ export class RunOperationHelperService {
       case OperationScopeEnum.USER:
         // Over a user
         return this.operationsService.getOwnerOperationDataForRun({
-          operation: operation.id, owner: scopeId
+          operation: operation.id,
+          owner: scopeId
         });
       case OperationScopeEnum.ADVERTISEMENT:
         // Over an advertisement
         return this.operationsService.getOwnerOperationDataForRun({
-          operation: operation.id, owner: scopeId
+          operation: operation.id,
+          owner: scopeId
         });
       case OperationScopeEnum.RECORD:
         // Over a record
         return this.operationsService.getRecordOperationDataForRun({
-          operation: operation.id, id: scopeId
+          operation: operation.id,
+          id: scopeId
         });
       case OperationScopeEnum.TRANSFER:
         // Over a transfer
         return this.operationsService.getTransferOperationDataForRun({
-          operation: operation.id, key: scopeId
+          operation: operation.id,
+          key: scopeId
         });
       case OperationScopeEnum.MENU:
         // Over a menu item
@@ -353,8 +366,8 @@ export class RunOperationHelperService {
         this.nextRequestState.leaveNotification = true;
         break;
       case OperationResultTypeEnum.URL:
-        // Open the URL in a new window        
-        window.open(result.url, result.newWindow == null || result.newWindow ? '_blank' : '_self');        
+        // Open the URL in a new window
+        window.open(result.url, result.newWindow == null || result.newWindow ? '_blank' : '_self');
         handled = true;
         break;
       case OperationResultTypeEnum.EXTERNAL_REDIRECT:
@@ -369,11 +382,11 @@ export class RunOperationHelperService {
     // Check if we need to go back to a previous custom operation or go back to the url before all custom operations
     const backTo = ApiHelper.internalNameOrId(result.backTo);
     if (backTo || result.backToRoot) {
-      const pathCondition = backTo ?
-        // We need to go back to a previous custom operation
-        path => path.startsWith('/operations/') && path.includes('/' + backTo) :
-        // We need to go back to the first page which is not a custom operation
-        path => !path.startsWith('/operations/');
+      const pathCondition = backTo
+        ? // We need to go back to a previous custom operation
+          path => path.startsWith('/operations/') && path.includes('/' + backTo)
+        : // We need to go back to the first page which is not a custom operation
+          path => !path.startsWith('/operations/');
       const path = cloneDeep(this.breadcrumb.breadcrumb$.value).reverse();
       let index = path.findIndex(pathCondition);
       if (index < 0 && result.backToRoot) {
@@ -418,14 +431,16 @@ export class RunOperationHelperService {
   /**
    * Returns a heading action suitable to run the given custom operation
    */
-  headingAction(operation: Operation, scopeId: string, formParameters?: { [key: string]: string; }): HeadingAction {
-    return new HeadingAction(this.operationHelper.icon(operation), operation.label, () => this.run(operation, scopeId, formParameters));
+  headingAction(operation: Operation, scopeId: string, formParameters?: { [key: string]: string }): HeadingAction {
+    return new HeadingAction(this.operationHelper.icon(operation), operation.label, () =>
+      this.run(operation, scopeId, formParameters)
+    );
   }
 
   private doNavigate(path: string, replaceUrl = false) {
     const url = new URL(path, location.href);
     const params: Params = {};
-    url.searchParams.forEach((value, name) => params[name] = value);
+    url.searchParams.forEach((value, name) => (params[name] = value));
     this.router.navigate([url.pathname], {
       queryParams: params,
       replaceUrl

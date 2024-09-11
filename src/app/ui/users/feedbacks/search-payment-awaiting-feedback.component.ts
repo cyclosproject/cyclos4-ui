@@ -8,7 +8,7 @@ import { Menu } from 'app/ui/shared/menu';
 import { Observable } from 'rxjs';
 
 type SearchPaymentAwaitingFeedbackParams = QueryFilters & {
-  user: string
+  user: string;
 };
 
 /**
@@ -17,12 +17,12 @@ type SearchPaymentAwaitingFeedbackParams = QueryFilters & {
 @Component({
   selector: 'search-payment-awaiting-feedback',
   templateUrl: 'search-payment-awaiting-feedback.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchPaymentAwaitingFeedbackComponent
   extends BaseSearchPageComponent<any, SearchPaymentAwaitingFeedbackParams, TransactionResult>
-  implements OnInit {
-
+  implements OnInit
+{
   private currencies: Currency[];
 
   constructor(
@@ -36,10 +36,12 @@ export class SearchPaymentAwaitingFeedbackComponent
   ngOnInit() {
     super.ngOnInit();
     // Get the user accounts so we can display a correct formatted amount with currency
-    this.addSub(this.accountsApi.listAccountsByOwner({ owner: this.ApiHelper.SELF }).subscribe(data => {
-      this.currencies = [...new Set(data.map(a => a.currency))];
-      this.data = {};
-    }));
+    this.addSub(
+      this.accountsApi.listAccountsByOwner({ owner: this.ApiHelper.SELF }).subscribe(data => {
+        this.currencies = [...new Set(data.map(a => a.currency))];
+        this.data = {};
+      })
+    );
   }
 
   protected getFormControlNames(): string[] {
@@ -47,13 +49,13 @@ export class SearchPaymentAwaitingFeedbackComponent
   }
 
   protected toSearchParams(value: any): SearchPaymentAwaitingFeedbackParams {
-    value.user = this.ApiHelper.SELF
+    value.user = this.ApiHelper.SELF;
     return value;
   }
 
   /**
-  * Resolves the route to set payment feedback page
-  */
+   * Resolves the route to set payment feedback page
+   */
   get toLink() {
     return (row: TransactionResult) => this.path(row);
   }
@@ -76,5 +78,4 @@ export class SearchPaymentAwaitingFeedbackComponent
   resolveMenu() {
     return Menu.FEEDBACKS;
   }
-
 }

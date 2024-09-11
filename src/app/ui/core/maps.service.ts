@@ -19,10 +19,9 @@ const MarkerClustererPlusUrl = 'https://unpkg.com/@google/markerclustererplus@5.
  * Helper classes to work with Google Maps
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class MapsService {
-
   private geocoder: google.maps.Geocoder;
   private geocoderCache = new Map<string, GeographicalCoordinate>();
   private _data: MapData;
@@ -32,8 +31,9 @@ export class MapsService {
     private dataForFrontendHolder: DataForFrontendHolder,
     private layout: LayoutService,
     private uiLayout: UiLayoutService,
-    private scriptLoader: ScriptLoaderService) {
-    this.dataForFrontendHolder.subscribe(dataForFrontend => this._data = dataForFrontend.dataForUi.mapData);
+    private scriptLoader: ScriptLoaderService
+  ) {
+    this.dataForFrontendHolder.subscribe(dataForFrontend => (this._data = dataForFrontend.dataForUi.mapData));
     if (dataForFrontendHolder.dataForUi) {
       this._data = dataForFrontendHolder.dataForUi.mapData;
     }
@@ -64,7 +64,7 @@ export class MapsService {
     }
     return this.ensureScriptLoaded().pipe(
       first(),
-      switchMap(() => this.doGeocode(fields)),
+      switchMap(() => this.doGeocode(fields))
     );
   }
 
@@ -82,9 +82,11 @@ export class MapsService {
     const icon = encodeURIComponent(this.dataForFrontendHolder.dataForFrontend.mapMarkerUrl);
     const key = this.data.googleMapsApiKey;
     const scale = (window.devicePixelRatio || 0) >= 2 ? 2 : 1;
-    return `${StaticUrl}?size=${width}x${height}&scale=${scale}&zoom=15`
-      + `&markers=icon:${icon}|${coords.latitude},${coords.longitude}&key=${key}`
-      + this.styles();
+    return (
+      `${StaticUrl}?size=${width}x${height}&scale=${scale}&zoom=15` +
+      `&markers=icon:${icon}|${coords.latitude},${coords.longitude}&key=${key}` +
+      this.styles()
+    );
   }
 
   private styles(): string {
@@ -151,7 +153,7 @@ export class MapsService {
         a.city,
         a.zip,
         a.region,
-        a.country,
+        a.country
       ];
     }
     fields = (fields || []).filter(f => !empty(f));
@@ -170,7 +172,7 @@ export class MapsService {
 
     const req: google.maps.GeocoderRequest = {
       region: this.dataForFrontendHolder.dataForUi.country,
-      address: query,
+      address: query
     };
     return new Observable(observer => {
       this.geocoder.geocode(req, (results, status) => {
@@ -205,7 +207,7 @@ export class MapsService {
       gestureHandling: this.layout.ltsm ? 'cooperative' : 'greedy',
       minZoom: 2,
       maxZoom: 17,
-      styles: this.uiLayout.googleMapStyles,
+      styles: this.uiLayout.googleMapStyles
     });
   }
 
@@ -215,11 +217,9 @@ export class MapsService {
   ensureScriptLoaded(): Observable<void> {
     if (this.loader == null) {
       this.loader = new Loader({
-        apiKey: this.data.googleMapsApiKey,
+        apiKey: this.data.googleMapsApiKey
       });
     }
-    return from(this.loader.loadPromise()).pipe(
-      switchMap(() => this.scriptLoader.loadScript(MarkerClustererPlusUrl))
-    );
+    return from(this.loader.loadPromise()).pipe(switchMap(() => this.scriptLoader.loadScript(MarkerClustererPlusUrl)));
   }
 }

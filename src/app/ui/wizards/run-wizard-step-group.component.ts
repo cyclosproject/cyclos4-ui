@@ -9,12 +9,9 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'run-wizard-step-group',
   templateUrl: 'run-wizard-step-group.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RunWizardStepGroupComponent
-  extends BaseComponent
-  implements OnInit {
-
+export class RunWizardStepGroupComponent extends BaseComponent implements OnInit {
   @Input() groups: GroupForRegistration[];
   @Input() control: FormControl;
 

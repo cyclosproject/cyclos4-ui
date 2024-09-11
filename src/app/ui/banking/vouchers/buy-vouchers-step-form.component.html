@@ -1,76 +1,87 @@
 <ng-container [formGroup]="form">
-  <user-info *ngIf="data.user && !authHelper.isSelf(data.user)"
-    [user]="data.user"></user-info>
+  <user-info *ngIf="data.user && !authHelper.isSelf(data.user)" [user]="data.user"></user-info>
   <!-- description + image -->
   <label-value [label]="i18n.voucher.originAccount" kind="fieldView">
     {{ data.account.type.name }}
   </label-value>
   <label-value [label]="i18n.account.availableBalance" kind="fieldView">
-    {{ data.account.status.availableBalance | currency:currency }}
+    {{ data.account.status.availableBalance | currency : currency }}
   </label-value>
-  <label-value *ngIf="data.minimumTimeToRedeem" kind="fieldView"
-    [label]="i18n.voucher.buy.minTimeToRedeem">
-    {{ i18n.voucher.buy.minTimeToRedeemAfterBuy(
-    format.formatTimeInterval(data.minimumTimeToRedeem)) }}
+  <label-value *ngIf="data.minimumTimeToRedeem" kind="fieldView" [label]="i18n.voucher.buy.minTimeToRedeem">
+    {{ i18n.voucher.buy.minTimeToRedeemAfterBuy(format.formatTimeInterval(data.minimumTimeToRedeem)) }}
   </label-value>
-  <label-value *ngIf="data.expirationDate" kind="fieldView"
-    [label]="i18n.general.expirationDate">
+  <label-value *ngIf="data.expirationDate" kind="fieldView" [label]="i18n.general.expirationDate">
     {{ data.expirationDate | date }}
   </label-value>
-  <label-value *ngIf="data.redeemOnWeekDays" kind="fieldView"
-    [label]="i18n.voucher.redeem.onDays">
-    {{ format.formatWeekDays(data.redeemOnWeekDays) ||
-    i18n.voucher.redeem.onDaysAny }}
+  <label-value *ngIf="data.redeemOnWeekDays" kind="fieldView" [label]="i18n.voucher.redeem.onDays">
+    {{ format.formatWeekDays(data.redeemOnWeekDays) || i18n.voucher.redeem.onDaysAny }}
   </label-value>
   <input-field
     *ngIf="data.type.maxVouchersPerBuy == null || data.type.maxVouchersPerBuy > 1"
-    type="number" formControlName="count" required fieldSize="small"
+    type="number"
+    formControlName="count"
+    required
+    fieldSize="small"
     [label]="i18n.voucher.numberOfVouchers">
   </input-field>
-  <label-value *ngIf="fixedAmount; else regularAmount" kind="fieldView"
-    [label]="countLabel$ | async">
-    {{ fixedAmount | currency:currency }}
+  <label-value *ngIf="fixedAmount; else regularAmount" kind="fieldView" [label]="countLabel$ | async">
+    {{ fixedAmount | currency : currency }}
   </label-value>
   <ng-template #regularAmount>
-    <label-value kind="field" required [label]="countLabel$ | async"
-      fieldSize="medium">
-      <decimal-field formControlName="amount" [prefix]="currency.prefix"
-        required [suffix]="currency.suffix" [scale]="currency.decimalDigits">
+    <label-value kind="field" required [label]="countLabel$ | async" fieldSize="medium">
+      <decimal-field
+        formControlName="amount"
+        [prefix]="currency.prefix"
+        required
+        [suffix]="currency.suffix"
+        [scale]="currency.decimalDigits">
       </decimal-field>
     </label-value>
-    <label-value kind="fieldView"
+    <label-value
+      kind="fieldView"
       *ngIf="data.amountRange?.min && data.amountRange?.max"
-      [label]="i18n.voucher.buy.amountRange" [value]="
-      format.formatRange({
-        min: data.amountRange.min | currency:currency,
-        max: data.amountRange.max | currency:currency
-      })">
+      [label]="i18n.voucher.buy.amountRange"
+      [value]="
+        format.formatRange({
+          min: data.amountRange.min | currency : currency,
+          max: data.amountRange.max | currency : currency
+        })
+      ">
     </label-value>
-    <label-value kind="fieldView"
+    <label-value
+      kind="fieldView"
       *ngIf="data.amountRange?.min && !data.amountRange?.max"
       [label]="i18n.voucher.buy.minimumAmount"
-      [value]="data.amountRange.min | currency:currency">
+      [value]="data.amountRange.min | currency : currency">
     </label-value>
-    <label-value kind="fieldView"
+    <label-value
+      kind="fieldView"
       *ngIf="!data.amountRange?.min && data.amountRange?.max"
       [label]="i18n.voucher.buy.maximumAmount"
-      [value]="data.amountRange.max | currency:currency">
+      [value]="data.amountRange.max | currency : currency">
     </label-value>
   </ng-template>
-  <radio-group-field *ngIf="data.type.gift === 'choose'" asColumn
-    [label]="i18n.voucher.buy.usage" formControlName="gift">
-    <field-option [value]="false" [text]="i18n.voucher.buy.usageSelf">
-    </field-option>
-    <field-option [value]="true" [text]="i18n.voucher.buy.usageGift">
-    </field-option>
+  <radio-group-field
+    *ngIf="data.type.gift === 'choose'"
+    asColumn
+    [label]="i18n.voucher.buy.usage"
+    formControlName="gift">
+    <field-option [value]="false" [text]="i18n.voucher.buy.usageSelf"> </field-option>
+    <field-option [value]="true" [text]="i18n.voucher.buy.usageGift"> </field-option>
   </radio-group-field>
-  <label-value *ngIf="data.type.gift === 'never'" kind="fieldView"
+  <label-value
+    *ngIf="data.type.gift === 'never'"
+    kind="fieldView"
     [label]="i18n.voucher.buy.usage"
     [value]="i18n.voucher.buy.usageAlwaysSelf"></label-value>
-  <custom-field-input *ngFor="let cf of data.paymentCustomFields" [field]="cf"
+  <custom-field-input
+    *ngFor="let cf of data.paymentCustomFields"
+    [field]="cf"
     [formControl]="form.controls.paymentCustomValues.get(cf.internalName)">
   </custom-field-input>
-  <custom-field-input *ngFor="let cf of data.voucherCustomFields" [field]="cf"
+  <custom-field-input
+    *ngFor="let cf of data.voucherCustomFields"
+    [field]="cf"
     [formControl]="form.controls.voucherCustomValues.get(cf.internalName)">
   </custom-field-input>
 </ng-container>

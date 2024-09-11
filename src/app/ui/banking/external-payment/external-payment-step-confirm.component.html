@@ -1,5 +1,4 @@
-<label-value *ngIf="!fromSelf && fromUser"
-  [label]="i18n.transaction.fromUser">
+<label-value *ngIf="!fromSelf && fromUser" [label]="i18n.transaction.fromUser">
   <user-link [user]="fromUser"></user-link>
 </label-value>
 <label-value *ngIf="fromSystem" [label]="i18n.transaction.fromAccount">
@@ -14,31 +13,32 @@
 <label-value
   *ngIf="preview.mainAmount != null && preview.totalAmount !== preview.mainAmount"
   [label]="i18n.transaction.amount">
-  {{ preview.mainAmount | currency:preview.currency }}
+  {{ preview.mainAmount | currency : preview.currency }}
 </label-value>
 <label-value *ngIf="fees?.length > 0" [label]="i18n.transaction.appliedFees">
   <div class="row no-gutters align-items-end" *ngFor="let feePreview of fees">
     <div class="col-3">{{ feePreview.fee.name }}:</div>
-    <div class="col pl-1">{{ feePreview.amount |
-      currency:preview.currency }}</div>
+    <div class="col pl-1">{{ feePreview.amount | currency : preview.currency }}</div>
   </div>
 </label-value>
-<custom-field-value *ngFor="let fv of preview.customValues" [fieldValue]="fv">
-</custom-field-value>
-<label-value [label]="i18n.general.description"
-  *ngIf="preview.payment.description" [value]="preview.payment.description"
+<custom-field-value *ngFor="let fv of preview.customValues" [fieldValue]="fv"> </custom-field-value>
+<label-value
+  [label]="i18n.general.description"
+  *ngIf="preview.payment.description"
+  [value]="preview.payment.description"
   valueFormat="break"></label-value>
-<hr *ngIf="layout.gtxxs$ | async">
+<hr *ngIf="layout.gtxxs$ | async" />
 <label-value class="totalAmount" [label]="i18n.transaction.totalAmount">
-  {{ preview.totalAmount | currency:preview.currency }}
+  {{ preview.totalAmount | currency : preview.currency }}
 </label-value>
 <ng-container *ngIf="(preview.confirmationMessage || '').length > 0">
-  <hr *ngIf="layout.gtxxs$ | async">
-  <div class="break-nl">{{preview.confirmationMessage}}</div>
+  <hr *ngIf="layout.gtxxs$ | async" />
+  <div class="break-nl">{{ preview.confirmationMessage }}</div>
 </ng-container>
 <ng-container *ngIf="preview.confirmationPasswordInput">
-  <hr *ngIf="layout.gtxxs$ | async">
-  <confirmation-password focused
+  <hr *ngIf="layout.gtxxs$ | async" />
+  <confirmation-password
+    focused
     [formControl]="form.get('confirmationPassword')"
     [passwordInput]="preview.confirmationPasswordInput"
     [createDeviceConfirmation]="createDeviceConfirmation"

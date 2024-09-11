@@ -23,8 +23,8 @@ export class UnsubscribeState {
 
   constructor(
     private errorHandler: ErrorHandlerService,
-    private notificationSettingsService: NotificationSettingsService) {
-  }
+    private notificationSettingsService: NotificationSettingsService
+  ) {}
 
   /**
    * Initializes the data
@@ -36,9 +36,7 @@ export class UnsubscribeState {
       return of(data);
     } else {
       // We're on development. Fetch the data.
-      return this.notificationSettingsService.getDataForEmailUnsubscribe({ key }).pipe(
-        tap(d => this.data$.next(d))
-      );
+      return this.notificationSettingsService.getDataForEmailUnsubscribe({ key }).pipe(tap(d => this.data$.next(d)));
     }
   }
 
@@ -54,16 +52,16 @@ export class UnsubscribeState {
       return;
     }
     this.processing$.next(true);
-    this.notificationSettingsService.emailUnsubscribe({ key: this.key })
-      .subscribe(
-        () => {
-          this.processing$.next(false);
-          this.step$.next('done');
-        },
-        e => {
-          this.processing$.next(false);
-          this.errorHandler.handleHttpError(e);
-        });
+    this.notificationSettingsService.emailUnsubscribe({ key: this.key }).subscribe(
+      () => {
+        this.processing$.next(false);
+        this.step$.next('done');
+      },
+      e => {
+        this.processing$.next(false);
+        this.errorHandler.handleHttpError(e);
+      }
+    );
   }
 
   /**
@@ -72,5 +70,4 @@ export class UnsubscribeState {
   exit() {
     location.assign(this.data.homeUrl);
   }
-
 }

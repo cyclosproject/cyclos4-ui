@@ -1,14 +1,21 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="data" last mode="viewForm" [heading]="title"
-    [mobileHeading]="mobileTitle" [headingActions]="headingActions$ | async">
-
-    <notification class="mb-3" *ngIf="showDoneMessage()"
+  <page-content
+    *ngIf="data"
+    last
+    mode="viewForm"
+    [heading]="title"
+    [mobileHeading]="mobileTitle"
+    [headingActions]="headingActions$ | async">
+    <notification
+      class="mb-3"
+      *ngIf="showDoneMessage()"
       [type]="resolveLastPaymentNotificationType()"
       [icon]="resolveLastPaymentNotificationIcon()">
       <div>{{ resolveLastPaymentNotificationMessage() }}</div>
     </notification>
 
-    <transfer-details *ngIf="transaction.transfer; else transactionFields"
+    <transfer-details
+      *ngIf="transaction.transfer; else transactionFields"
       [transfer]="transaction.transfer"
       [usersWhichCanAddToContacts]="transaction.usersWhichCanAddToContacts">
     </transfer-details>
@@ -19,26 +26,23 @@
   <label-value [label]="i18n.general.status">
     {{ status }}
   </label-value>
-  <label-value *ngIf="transaction.authorizationStatus === 'pending'"
-    [label]="i18n.transaction.awaitingAuthorizationBy">
+  <label-value *ngIf="transaction.authorizationStatus === 'pending'" [label]="i18n.transaction.awaitingAuthorizationBy">
     {{ authorizer }}
   </label-value>
   <label-value [label]="i18n.transaction.amount">
-    {{ (transaction.feesOnAuthorization?.mainAmount || transaction.amount) |
-    currency:transaction.currency }}
+    {{ transaction.feesOnAuthorization?.mainAmount || transaction.amount | currency : transaction.currency }}
   </label-value>
   <label-value
-    *ngIf="transaction.feesOnAuthorization && transaction.feesOnAuthorization.mainAmount != transaction.feesOnAuthorization.totalAmount"
+    *ngIf="
+      transaction.feesOnAuthorization &&
+      transaction.feesOnAuthorization.mainAmount != transaction.feesOnAuthorization.totalAmount
+    "
     [label]="i18n.transaction.totalAmount">
-    {{ transaction.feesOnAuthorization.totalAmount |
-    currency:transaction.currency }}
+    {{ transaction.feesOnAuthorization.totalAmount | currency : transaction.currency }}
   </label-value>
 
-  <label-value *ngIf="transaction.kind === 'recurringPayment'"
-    [label]="i18n.transaction.repeatUntil">
-    {{ transaction.occurrencesCount ?
-    i18n.transaction.repeatUntilFixed :
-    i18n.transaction.repeatUntilManual }}
+  <label-value *ngIf="transaction.kind === 'recurringPayment'" [label]="i18n.transaction.repeatUntil">
+    {{ transaction.occurrencesCount ? i18n.transaction.repeatUntilFixed : i18n.transaction.repeatUntilManual }}
   </label-value>
   <label-value
     *ngIf="transaction.kind === 'recurringPayment' && transaction.occurrencesCount"
@@ -50,46 +54,45 @@
     [label]="i18n.transaction.occurrenceInterval">
     {{ format.formatTimeInterval(transaction.occurrenceInterval) }}
   </label-value>
-  <label-value *ngIf="transaction.nextOccurrenceDate"
-    [label]="i18n.transaction.nextOccurrence">
+  <label-value *ngIf="transaction.nextOccurrenceDate" [label]="i18n.transaction.nextOccurrence">
     {{ transaction.nextOccurrenceDate | date }}
   </label-value>
 
   <label-value *ngIf="hasDueAmount" [label]="i18n.transaction.dueAmount">
-    {{ transaction.dueAmount | currency:transaction.currency }}
+    {{ transaction.dueAmount | currency : transaction.currency }}
   </label-value>
-  <label-value *ngIf="(transaction.installments || []).length === 1"
-    [label]="i18n.transaction.dueDate">
+  <label-value *ngIf="(transaction.installments || []).length === 1" [label]="i18n.transaction.dueDate">
     {{ transaction.installments[0].dueDate | date }}
   </label-value>
 
   <label-value *ngIf="transaction.by" [label]="i18n.general.performedBy">
     <user-link [user]="transaction.by"></user-link>
   </label-value>
-  <label-value *ngIf="transaction?.receivedBy"
-    [label]="i18n.transaction.receivedBy">
+  <label-value *ngIf="transaction?.receivedBy" [label]="i18n.transaction.receivedBy">
     <user-link [user]="transaction.receivedBy"></user-link>
   </label-value>
   <label-value [label]="i18n.general.date">
     {{ transaction.date | dateTime }}
   </label-value>
-  <label-value *ngIf="transaction.expirationDate && !transaction.processDate"
-    [label]="i18n.general.expirationDate">
+  <label-value *ngIf="transaction.expirationDate && !transaction.processDate" [label]="i18n.general.expirationDate">
     {{ transaction.expirationDate | dateTime }}
   </label-value>
-  <label-value *ngIf="transaction.processDate"
-    [label]="i18n.transaction.processDate">
+  <label-value *ngIf="transaction.processDate" [label]="i18n.transaction.processDate">
     {{ transaction.processDate | dateTime }}
   </label-value>
 
   <!-- Payment request - Scheduled -->
   <ng-container
-    *ngIf="transaction.kind === 'paymentRequest' && transaction.paymentRequestStatus !== 'denied' && transaction.paymentRequestStatus !== 'processed'">
-    <label-value *ngIf="transaction.installmentsCount"
-      [label]="i18n.transaction.installmentsCount">
+    *ngIf="
+      transaction.kind === 'paymentRequest' &&
+      transaction.paymentRequestStatus !== 'denied' &&
+      transaction.paymentRequestStatus !== 'processed'
+    ">
+    <label-value *ngIf="transaction.installmentsCount" [label]="i18n.transaction.installmentsCount">
       {{ transaction.installmentsCount }}
     </label-value>
-    <label-value *ngIf="transaction.firstInstallmentIsImmediate != null"
+    <label-value
+      *ngIf="transaction.firstInstallmentIsImmediate != null"
       [label]="i18n.transaction.firstInstallmentIsImmediate">
       {{ transaction.firstInstallmentIsImmediate | boolean }}
     </label-value>
@@ -97,15 +100,18 @@
     <label-value
       *ngIf="transaction.kind === 'paymentRequest' && transaction.scheduling === 'recurring'"
       [label]="i18n.transaction.repeatUntil">
-      {{ transaction.occurrencesCount ?
-      i18n.transaction.repeatUntilNumberOfOccurrences(transaction.occurrencesCount)
-      : i18n.transaction.repeatUntilManual }}
+      {{
+        transaction.occurrencesCount
+          ? i18n.transaction.repeatUntilNumberOfOccurrences(transaction.occurrencesCount)
+          : i18n.transaction.repeatUntilManual
+      }}
     </label-value>
-    <label-value *ngIf="transaction.firstOccurrenceIsImmediate != null"
-      [label]="i18n.transaction.firstOccurrence">
-      {{ transaction.firstOccurrenceIsImmediate ?
-      i18n.transaction.firstOccurrenceImmediate :
-      i18n.transaction.firstOccurrenceAfterInterval(format.formatTimeInterval(transaction.occurrenceInterval))}}
+    <label-value *ngIf="transaction.firstOccurrenceIsImmediate != null" [label]="i18n.transaction.firstOccurrence">
+      {{
+        transaction.firstOccurrenceIsImmediate
+          ? i18n.transaction.firstOccurrenceImmediate
+          : i18n.transaction.firstOccurrenceAfterInterval(format.formatTimeInterval(transaction.occurrenceInterval))
+      }}
     </label-value>
     <label-value
       *ngIf="transaction.kind === 'paymentRequest' && transaction.occurrenceInterval"
@@ -114,57 +120,50 @@
     </label-value>
   </ng-container>
 
-  <ng-container
-    *ngTemplateOutlet="isPaymentRequest() ? transactionToOrSender : transactionFromOrReceiver">
+  <ng-container *ngTemplateOutlet="isPaymentRequest() ? transactionToOrSender : transactionFromOrReceiver">
   </ng-container>
-  <ng-container
-    *ngTemplateOutlet="isPaymentRequest() ? transactionFromOrReceiver : transactionToOrSender">
+  <ng-container *ngTemplateOutlet="isPaymentRequest() ? transactionFromOrReceiver : transactionToOrSender">
   </ng-container>
 
   <ng-template #transactionFromOrReceiver>
-    <label-value *ngIf="transaction.fromName; else transactionFrom"
+    <label-value
+      *ngIf="transaction.fromName; else transactionFrom"
       [label]="isPaymentRequest() ? i18n.transaction.receiver : i18n.transaction.from">
-      <user-link [user]="transaction.from?.user"
-        [display]="transaction.fromName"></user-link>
+      <user-link [user]="transaction.from?.user" [display]="transaction.fromName"></user-link>
     </label-value>
     <ng-template #transactionFrom>
-      <label-value *ngIf="transaction.from"
+      <label-value
+        *ngIf="transaction.from"
         [label]="isPaymentRequest() ? i18n.transaction.receiver : i18n.transaction.from">
-        <user-link *ngIf="transaction.from.user; else fromSystem"
-          [user]="transaction.from.user"></user-link>
+        <user-link *ngIf="transaction.from.user; else fromSystem" [user]="transaction.from.user"></user-link>
         <ng-template #fromSystem>
           {{ transaction.from.type.name }}
         </ng-template>
       </label-value>
-      <label-value *ngIf="transaction.from?.number"
-        [label]="i18n.transaction.fromAccount">
-        {{ transaction.from.number}}
+      <label-value *ngIf="transaction.from?.number" [label]="i18n.transaction.fromAccount">
+        {{ transaction.from.number }}
       </label-value>
     </ng-template>
   </ng-template>
   <ng-template #transactionToOrSender>
-    <label-value *ngIf="transaction.toName; else transactionTo"
+    <label-value
+      *ngIf="transaction.toName; else transactionTo"
       [label]="isPaymentRequest() ? i18n.transaction.sender : i18n.transaction.to">
-      <user-link [user]="transaction.to?.user" [display]="transaction.toName">
-      </user-link>
+      <user-link [user]="transaction.to?.user" [display]="transaction.toName"> </user-link>
     </label-value>
     <ng-template #transactionTo>
-      <label-value *ngIf="transaction.to"
-        [label]="isPaymentRequest() ? i18n.transaction.sender : i18n.transaction.to">
-        <user-link *ngIf="transaction.to.user; else toSystem"
-          [user]="transaction.to.user"></user-link>
+      <label-value *ngIf="transaction.to" [label]="isPaymentRequest() ? i18n.transaction.sender : i18n.transaction.to">
+        <user-link *ngIf="transaction.to.user; else toSystem" [user]="transaction.to.user"></user-link>
         <ng-template #toSystem>
           {{ transaction.to.type.name }}
         </ng-template>
       </label-value>
-      <label-value *ngIf="transaction.to?.number"
-        [label]="i18n.transaction.toAccount">
-        {{ transaction.to.number}}
+      <label-value *ngIf="transaction.to?.number" [label]="i18n.transaction.toAccount">
+        {{ transaction.to.number }}
       </label-value>
     </ng-template>
   </ng-template>
-  <label-value *ngIf="transaction.toPrincipalType"
-    [label]="transaction.toPrincipalType.name">
+  <label-value *ngIf="transaction.toPrincipalType" [label]="transaction.toPrincipalType.name">
     {{ transaction.toPrincipalValue }}
   </label-value>
   <label-value [label]="i18n.transaction.type">
@@ -173,34 +172,37 @@
   <label-value *ngIf="transaction.channel" [label]="i18n.transaction.channel">
     {{ transaction.channel.name }}
   </label-value>
-  <label-value *ngIf="transaction.transactionNumber"
-    [label]="i18n.transaction.number">
+  <label-value *ngIf="transaction.transactionNumber" [label]="i18n.transaction.number">
     {{ transaction.transactionNumber }}
   </label-value>
 
   <!-- External payment, Ticket, Payment request -->
-  <label-value *ngIf="transaction.transaction"
-    [label]="i18n.transaction.generatedTransaction">
+  <label-value *ngIf="transaction.transaction" [label]="i18n.transaction.generatedTransaction">
     <a [routerLink]="bankingHelper.transactionPath(transaction.transaction)">
       {{ transaction.transaction.display }}
     </a>
   </label-value>
 
-  <custom-field-value *ngFor="let value of transaction.customValues"
-    [fieldValue]="value">
-  </custom-field-value>
-  <label-value *ngIf="transaction.description"
-    [label]="i18n.general.description" [value]="transaction.description"
+  <custom-field-value *ngFor="let value of transaction.customValues" [fieldValue]="value"> </custom-field-value>
+  <label-value
+    *ngIf="transaction.description"
+    [label]="i18n.general.description"
+    [value]="transaction.description"
     valueFormat="break">
   </label-value>
 
-  <label-value *ngIf="lastAuthComment"
-    [label]="i18n.transaction.authorizationComments" [value]="lastAuthComment"
+  <label-value
+    *ngIf="lastAuthComment"
+    [label]="i18n.transaction.authorizationComments"
+    [value]="lastAuthComment"
     valueFormat="break">
   </label-value>
 
-  <label-value *ngIf="transaction.comments" [label]="i18n.general.comments"
-    [value]="transaction.comments" valueFormat="break">
+  <label-value
+    *ngIf="transaction.comments"
+    [label]="i18n.general.comments"
+    [value]="transaction.comments"
+    valueFormat="break">
   </label-value>
 
   <ng-container *ngIf="(transaction.installments || []).length > 1">
@@ -214,8 +216,9 @@
         <th class="actions" *ngIf="hasActions"></th>
       </thead>
       <tbody>
-        <tr *ngFor="let installment of transaction.installments"
-          [ngClass]="{'cursor-pointer': path(installment)}"
+        <tr
+          *ngFor="let installment of transaction.installments"
+          [ngClass]="{ 'cursor-pointer': path(installment) }"
           (click)="path(installment) ? router.navigate(path(installment)) : null">
           <td>
             <maybe-link [link]="path(installment)">
@@ -234,20 +237,24 @@
           </td>
           <td class="text-right">
             <maybe-link [link]="path(installment)">
-              {{ installment.amount | currency:transaction.currency }}
+              {{ installment.amount | currency : transaction.currency }}
             </maybe-link>
           </td>
           <td *ngIf="hasActions" class="actions actions-multiple">
-            <button type="button" *ngIf="installment.canProcess"
+            <button
+              type="button"
+              *ngIf="installment.canProcess"
               [tooltip]="i18n.transaction.processInstallment"
               class="btn btn-icon align-items-center"
               (click)="processInstallment(installment)">
               <icon [icon]="SvgIcon.Play"></icon>
             </button>
-            <button type="button" *ngIf="installment.canSettle"
+            <button
+              type="button"
+              *ngIf="installment.canSettle"
               [tooltip]="i18n.transaction.settleInstallment"
               class="btn btn-icon align-items-center"
-              [ngClass]="{'ml-2': installment.canProcess}"
+              [ngClass]="{ 'ml-2': installment.canProcess }"
               (click)="settleInstallment(installment)">
               <icon [icon]="SvgIcon.Check2"></icon>
             </button>
@@ -259,10 +266,10 @@
 
   <ng-container *ngIf="showNewPaymentButton()">
     <actions forceRow>
-      <action-button (action)="navigateToPerformNew()"
-        [label]="i18n.transaction.doneNew">
-      </action-button>
-      <action-button *ngIf="canAddReceiverToContacts$ | async" outline
+      <action-button (action)="navigateToPerformNew()" [label]="i18n.transaction.doneNew"> </action-button>
+      <action-button
+        *ngIf="canAddReceiverToContacts$ | async"
+        outline
         (action)="addReceiverToContacts()"
         [label]="i18n.transaction.doneAddReceiverToContacts">
       </action-button>
@@ -282,8 +289,9 @@
         <th class="actions" *ngIf="hasActions"></th>
       </thead>
       <tbody>
-        <tr *ngFor="let occurrence of transaction.occurrences"
-          [ngClass]="{'cursor-pointer': path(occurrence)}"
+        <tr
+          *ngFor="let occurrence of transaction.occurrences"
+          [ngClass]="{ 'cursor-pointer': path(occurrence) }"
           (click)="path(occurrence) ? router.navigate(path(occurrence)) : null">
           <td>
             <maybe-link [link]="path(occurrence)">
@@ -302,11 +310,13 @@
           </td>
           <td class="text-right">
             <maybe-link [link]="path(occurrence)">
-              {{ occurrence.amount | currency:transaction.currency }}
+              {{ occurrence.amount | currency : transaction.currency }}
             </maybe-link>
           </td>
           <td *ngIf="hasActions" class="actions">
-            <button type="button" *ngIf="occurrence.canProcess"
+            <button
+              type="button"
+              *ngIf="occurrence.canProcess"
               [tooltip]="i18n.transaction.processFailedOccurrence"
               class="btn btn-icon align-items-center"
               (click)="processOccurrence(occurrence)">
@@ -325,34 +335,29 @@
     <ng-container *ngFor="let fee of transaction.feesOnAuthorization.fees">
       <h3>{{ fee.fee.name }}</h3>
       <label-value [label]="i18n.transaction.amount">
-        {{ fee.amount | currency:fee.currency }}
+        {{ fee.amount | currency : fee.currency }}
       </label-value>
       <label-value [label]="i18n.transaction.type">
         {{ fee.type.name }}
       </label-value>
       <label-value [label]="i18n.transaction.from">
-        <user-link *ngIf="fee.from.user; else feeFromSystem"
-          [user]="fee.from.user"></user-link>
+        <user-link *ngIf="fee.from.user; else feeFromSystem" [user]="fee.from.user"></user-link>
         <ng-template #feeFromSystem>
           {{ fee.from.type.name }}
         </ng-template>
       </label-value>
-      <label-value *ngIf="fee.from?.number"
-        [label]="i18n.transaction.fromAccount">
-        {{ fee.from.number}}
+      <label-value *ngIf="fee.from?.number" [label]="i18n.transaction.fromAccount">
+        {{ fee.from.number }}
       </label-value>
       <label-value [label]="i18n.transaction.to">
-        <user-link *ngIf="fee.to.user; else feeToSystem" [user]="fee.to.user">
-        </user-link>
+        <user-link *ngIf="fee.to.user; else feeToSystem" [user]="fee.to.user"> </user-link>
         <ng-template #feeToSystem>
           {{ fee.to.type.name }}
         </ng-template>
       </label-value>
-      <label-value *ngIf="fee.to?.number"
-        [label]="i18n.transaction.toAccount">
-        {{ fee.to.number}}
+      <label-value *ngIf="fee.to?.number" [label]="i18n.transaction.toAccount">
+        {{ fee.to.number }}
       </label-value>
     </ng-container>
   </ng-container>
-
 </ng-template>

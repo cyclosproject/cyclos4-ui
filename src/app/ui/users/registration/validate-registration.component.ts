@@ -10,18 +10,12 @@ import { BasePageComponent } from 'app/ui/shared/base-page.component';
 @Component({
   selector: 'validate-registration',
   templateUrl: 'validate-registration.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ValidateRegistrationComponent
-  extends BasePageComponent<UserRegistrationResult>
-  implements OnInit {
-
+export class ValidateRegistrationComponent extends BasePageComponent<UserRegistrationResult> implements OnInit {
   public result: UserRegistrationResult;
 
-  constructor(
-    injector: Injector,
-    private validationService: ValidationService,
-  ) {
+  constructor(injector: Injector, private validationService: ValidationService) {
     super(injector);
   }
 
@@ -29,10 +23,12 @@ export class ValidateRegistrationComponent
     this.result = this.stateManager.getGlobal('result');
     const key = this.route.snapshot.params.key;
     if (key) {
-      this.addSub(this.validationService.validateUserRegistration({ key }).subscribe(result => {
-        this.stateManager.setGlobal('result', result);
-        this.router.navigate(['/users', 'validate-registration']);
-      }));
+      this.addSub(
+        this.validationService.validateUserRegistration({ key }).subscribe(result => {
+          this.stateManager.setGlobal('result', result);
+          this.router.navigate(['/users', 'validate-registration']);
+        })
+      );
     } else if (this.result) {
       this.data = this.result;
     } else {

@@ -1,5 +1,13 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, Host, Injector, Input, Optional, SkipSelf, ViewChild
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Host,
+  Injector,
+  Input,
+  Optional,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FIELD_OPTIONS_SORTER, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
@@ -16,11 +24,10 @@ import { blank, empty, getValueAsArray, preprocessValueWithSeparator } from 'app
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: MultiSelectionFieldComponent, multi: true },
-    { provide: FORM_FIELD_WITH_OPTIONS, useExisting: MultiSelectionFieldComponent },
-  ],
+    { provide: FORM_FIELD_WITH_OPTIONS, useExisting: MultiSelectionFieldComponent }
+  ]
 })
 export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<string | string[]> {
-
   /**
    * When a separator is set, the value will be a single string, using the given separator.
    * Otherwise, the value will be a string array.
@@ -41,10 +48,7 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
 
   @ViewChild('container') container: ElementRef;
 
-  constructor(
-    injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-  ) {
+  constructor(injector: Injector, @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
     super(injector, controlContainer);
   }
 
@@ -58,8 +62,7 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
     const childValues = this.optionsByParent(value).map(o => o.value);
     if (index >= 0) {
       // De-select the value, the parent value and any child values
-      selected = selected.filter((v, i) =>
-        i !== index && (v !== option.parent) && !childValues.includes(v));
+      selected = selected.filter((v, i) => i !== index && v !== option.parent && !childValues.includes(v));
     } else {
       // Select the value and all children
       selected.push(value);
@@ -84,7 +87,10 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
       // When there's a parent option selected, don't show the children, as they're implicit
       const selectedValues = selected.map(o => o.value);
       const toShow = selected.filter(o => !o.parent || !selectedValues.includes(o.parent));
-      return toShow.sort(FIELD_OPTIONS_SORTER).map(opt => opt.category ? `${opt.category} - ${opt.text}` : opt.text).join(', ');
+      return toShow
+        .sort(FIELD_OPTIONS_SORTER)
+        .map(opt => (opt.category ? `${opt.category} - ${opt.text}` : opt.text))
+        .join(', ');
     }
   }
 
@@ -105,5 +111,4 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
   hasEmptyOption() {
     return false;
   }
-
 }

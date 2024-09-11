@@ -5,6 +5,6 @@ import { Directive } from '@angular/core';
  * Currently a single `extraCell` is supported by `label-value`.
  */
 @Directive({
-  selector: '[extraCell]',
+  selector: '[extraCell]'
 })
-export class ExtraCellDirective { }
+export class ExtraCellDirective {}

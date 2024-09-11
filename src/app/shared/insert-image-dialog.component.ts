@@ -17,11 +17,9 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'insert-image-dialog',
   templateUrl: 'insert-image-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InsertImageDialogComponent
-  extends BaseComponent implements OnInit {
-
+export class InsertImageDialogComponent extends BaseComponent implements OnInit {
   @Output() select = new EventEmitter<string>();
 
   allowUrl = false;
@@ -38,11 +36,7 @@ export class InsertImageDialogComponent
   uploadKind: ImageKind;
   uploadOwner$ = new BehaviorSubject<string>(null);
 
-  constructor(
-    injector: Injector,
-    private imagesService: ImagesService,
-    public modalRef: BsModalRef,
-  ) {
+  constructor(injector: Injector, private imagesService: ImagesService, public modalRef: BsModalRef) {
     super(injector);
   }
 
@@ -52,37 +46,47 @@ export class InsertImageDialogComponent
     if (auth.role === RoleEnum.ADMINISTRATOR) {
       this.allowUrl = true;
       this.uploadKind = ImageKind.SYSTEM_CUSTOM;
-      this.addSub(this.imagesService.getSystemCustomImagesListData().subscribe(data => {
-        this.systemCustom$.next(data);
-        this.urlOnly = empty(data.categories) || !data.categories.find(c => c.canEdit || !empty(c.images));
-        this.addSub(this.categoryControl.valueChanges.subscribe(catId => {
-          const category = data.categories.find(c => c.category.id === catId);
-          this.canUpload$.next(category != null && category.canCreate);
-          this.uploadOwner$.next(catId);
-        }));
-        if (!empty(data.categories)) {
-          const category = data.categories[0];
-          this.categoryControl.setValue(category.category.id);
-          this.canUpload$.next(category.canCreate);
-        }
-        this.ready$.next(true);
-      }));
-      this.addSub(this.categoryControl.valueChanges.subscribe(cat => {
-        const category = ((this.systemCustom$.value || {}).categories || []).find(c => c.category.id === cat) || {};
-        this.images$.next(category.images || []);
-      }));
+      this.addSub(
+        this.imagesService.getSystemCustomImagesListData().subscribe(data => {
+          this.systemCustom$.next(data);
+          this.urlOnly = empty(data.categories) || !data.categories.find(c => c.canEdit || !empty(c.images));
+          this.addSub(
+            this.categoryControl.valueChanges.subscribe(catId => {
+              const category = data.categories.find(c => c.category.id === catId);
+              this.canUpload$.next(category != null && category.canCreate);
+              this.uploadOwner$.next(catId);
+            })
+          );
+          if (!empty(data.categories)) {
+            const category = data.categories[0];
+            this.categoryControl.setValue(category.category.id);
+            this.canUpload$.next(category.canCreate);
+          }
+          this.ready$.next(true);
+        })
+      );
+      this.addSub(
+        this.categoryControl.valueChanges.subscribe(cat => {
+          const category = ((this.systemCustom$.value || {}).categories || []).find(c => c.category.id === cat) || {};
+          this.images$.next(category.images || []);
+        })
+      );
     } else {
       this.uploadKind = ImageKind.USER_CUSTOM;
       this.uploadOwner$.next(this.ApiHelper.SELF);
-      this.addSub(this.imagesService.getUserImagesListData({
-        user: this.ApiHelper.SELF,
-        kind: UserImageKind.CUSTOM,
-      }).subscribe(data => {
-        this.userCustom$.next(data);
-        this.canUpload$.next(data.canCreate);
-        this.images$.next(data.images);
-        this.ready$.next(true);
-      }));
+      this.addSub(
+        this.imagesService
+          .getUserImagesListData({
+            user: this.ApiHelper.SELF,
+            kind: UserImageKind.CUSTOM
+          })
+          .subscribe(data => {
+            this.userCustom$.next(data);
+            this.canUpload$.next(data.canCreate);
+            this.images$.next(data.images);
+            this.ready$.next(true);
+          })
+      );
     }
   }
 

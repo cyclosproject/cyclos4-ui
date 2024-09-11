@@ -1,18 +1,12 @@
 <div class="content">
-  <div class="message"> {{ message() }}</div>
-  <label-value class="voucher-token" kind="fieldView"
-    [label]="i18n.voucher.token" [value]="state.token"></label-value>
+  <div class="message">{{ message() }}</div>
+  <label-value class="voucher-token" kind="fieldView" [label]="i18n.voucher.token" [value]="state.token"></label-value>
 
-  <label-value *ngIf="state.forgotPinCaptchaInput" [label]="i18n.user.captcha"
-    kind="field">
-    <captcha [captchaInput]="state.forgotPinCaptchaInput" focused
-      [form]="form">
-    </captcha>
+  <label-value *ngIf="state.forgotPinCaptchaInput" [label]="i18n.user.captcha" kind="field">
+    <captcha [captchaInput]="state.forgotPinCaptchaInput" focused [form]="form"> </captcha>
   </label-value>
 </div>
 <div class="actions actions-primary">
-  <action-button (action)="confirm()" [label]="i18n.general.confirm">
-  </action-button>
-  <action-button (action)="back()" outline [label]="i18n.general.back">
-  </action-button>
+  <action-button (action)="confirm()" [label]="i18n.general.confirm"> </action-button>
+  <action-button (action)="back()" outline [label]="i18n.general.back"> </action-button>
 </div>

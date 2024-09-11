@@ -1,21 +1,24 @@
 <page-layout [ready]="data$ | async">
-  <page-content [heading]="i18n.account.paymentLimits.title.edit"
+  <page-content
+    [heading]="i18n.account.paymentLimits.title.edit"
     [mobileHeading]="i18n.account.paymentLimits.mobileTitle.edit"
     [headingActions]="headingActions$ | async">
     <ng-container *ngIf="data" [formGroup]="form">
-      <label-value [label]="i18n.general.user" kind="fieldView"
-        labelPosition="side">
+      <label-value [label]="i18n.general.user" kind="fieldView" labelPosition="side">
         <user-link [user]="data.user"></user-link>
       </label-value>
       <label-value [label]="i18n.account.account">
         {{ data.account.type.name }}
       </label-value>
       <h2 class="mb-2">{{ i18n.account.paymentLimits.paymentLimit }}</h2>
-      <single-selection-field labelPosition="side"
-        formControlName="paymentLimitMode" [label]="i18n.account.limits.mode"
+      <single-selection-field
+        labelPosition="side"
+        formControlName="paymentLimitMode"
+        [label]="i18n.account.limits.mode"
         [fieldOptions]="modeOptions">
       </single-selection-field>
-      <decimal-field [hidden]="isDefaultPaymentLimit$ | async"
+      <decimal-field
+        [hidden]="isDefaultPaymentLimit$ | async"
         formControlName="amountLimit"
         [required]="!(isDefaultPaymentLimit$ | async)"
         [label]="i18n.account.paymentLimits.paymentLimit"
@@ -23,17 +26,18 @@
         [prefix]="data.account.currency.prefix"
         [suffix]="data.account.currency.suffix">
       </decimal-field>
-      <label-value [hidden]="!(isDefaultPaymentLimit$ | async)"
-        [label]="i18n.account.paymentLimits.paymentLimit">
-        {{ (data.productAmountLimit ? data.productAmountLimit : 0) |
-        currency:data.account.currency}}
+      <label-value [hidden]="!(isDefaultPaymentLimit$ | async)" [label]="i18n.account.paymentLimits.paymentLimit">
+        {{ (data.productAmountLimit ? data.productAmountLimit : 0) | currency : data.account.currency }}
       </label-value>
       <h2 class="mb-2">{{ i18n.account.paymentLimits.dailyLimit }}</h2>
-      <single-selection-field labelPosition="side"
-        formControlName="dailyLimitMode" [label]="i18n.account.limits.mode"
+      <single-selection-field
+        labelPosition="side"
+        formControlName="dailyLimitMode"
+        [label]="i18n.account.limits.mode"
         [fieldOptions]="modeOptions">
       </single-selection-field>
-      <decimal-field [hidden]="isDefaultDailyLimit$ | async"
+      <decimal-field
+        [hidden]="isDefaultDailyLimit$ | async"
         formControlName="amountPerDayLimit"
         [required]="!(isDefaultDailyLimit$ | async)"
         [label]="i18n.account.paymentLimits.dailyLimit"
@@ -41,17 +45,18 @@
         [prefix]="data.account.currency.prefix"
         [suffix]="data.account.currency.suffix">
       </decimal-field>
-      <label-value [hidden]="!(isDefaultDailyLimit$ | async)"
-        [label]="i18n.account.paymentLimits.dailyLimit">
-        {{ (data.productAmountPerDayLimit ? data.productAmountPerDayLimit : 0)
-        | currency:data.account.currency}}
+      <label-value [hidden]="!(isDefaultDailyLimit$ | async)" [label]="i18n.account.paymentLimits.dailyLimit">
+        {{ (data.productAmountPerDayLimit ? data.productAmountPerDayLimit : 0) | currency : data.account.currency }}
       </label-value>
       <h2 class="mb-2">{{ i18n.account.paymentLimits.weeklyLimit }}</h2>
-      <single-selection-field labelPosition="side"
-        formControlName="weeklyLimitMode" [label]="i18n.account.limits.mode"
+      <single-selection-field
+        labelPosition="side"
+        formControlName="weeklyLimitMode"
+        [label]="i18n.account.limits.mode"
         [fieldOptions]="modeOptions">
       </single-selection-field>
-      <decimal-field [hidden]="isDefaultWeeklyLimit$ | async"
+      <decimal-field
+        [hidden]="isDefaultWeeklyLimit$ | async"
         formControlName="amountPerWeekLimit"
         [required]="!(isDefaultWeeklyLimit$ | async)"
         [label]="i18n.account.paymentLimits.weeklyLimit"
@@ -59,17 +64,18 @@
         [prefix]="data.account.currency.prefix"
         [suffix]="data.account.currency.suffix">
       </decimal-field>
-      <label-value [hidden]="!(isDefaultWeeklyLimit$ | async)"
-        [label]="i18n.account.paymentLimits.weeklyLimit">
-        {{ (data.productAmountPerWeekLimit ? data.productAmountPerWeekLimit :
-        0) | currency:data.account.currency}}
+      <label-value [hidden]="!(isDefaultWeeklyLimit$ | async)" [label]="i18n.account.paymentLimits.weeklyLimit">
+        {{ (data.productAmountPerWeekLimit ? data.productAmountPerWeekLimit : 0) | currency : data.account.currency }}
       </label-value>
       <h2 class="mb-2">{{ i18n.account.paymentLimits.monthlyLimit }}</h2>
-      <single-selection-field labelPosition="side"
-        formControlName="monthlyLimitMode" [label]="i18n.account.limits.mode"
+      <single-selection-field
+        labelPosition="side"
+        formControlName="monthlyLimitMode"
+        [label]="i18n.account.limits.mode"
         [fieldOptions]="modeOptions">
       </single-selection-field>
-      <decimal-field [hidden]="isDefaultMonthlyLimit$ | async"
+      <decimal-field
+        [hidden]="isDefaultMonthlyLimit$ | async"
         formControlName="amountPerMonthLimit"
         [required]="!(isDefaultMonthlyLimit$ | async)"
         [label]="i18n.account.paymentLimits.monthlyLimit"
@@ -77,17 +83,18 @@
         [prefix]="data.account.currency.prefix"
         [suffix]="data.account.currency.suffix">
       </decimal-field>
-      <label-value [hidden]="!(isDefaultMonthlyLimit$ | async)"
-        [label]="i18n.account.paymentLimits.monthlyLimit">
-        {{ (data.productAmountPerMonthLimit ? data.productAmountPerMonthLimit
-        : 0) | currency:data.account.currency}}
+      <label-value [hidden]="!(isDefaultMonthlyLimit$ | async)" [label]="i18n.account.paymentLimits.monthlyLimit">
+        {{ (data.productAmountPerMonthLimit ? data.productAmountPerMonthLimit : 0) | currency : data.account.currency }}
       </label-value>
       <h2 class="mb-2">{{ i18n.account.paymentLimits.yearlyLimit }}</h2>
-      <single-selection-field labelPosition="side"
-        formControlName="yearlyLimitMode" [label]="i18n.account.limits.mode"
+      <single-selection-field
+        labelPosition="side"
+        formControlName="yearlyLimitMode"
+        [label]="i18n.account.limits.mode"
         [fieldOptions]="modeOptions">
       </single-selection-field>
-      <decimal-field [hidden]="isDefaultYearlyLimit$ | async"
+      <decimal-field
+        [hidden]="isDefaultYearlyLimit$ | async"
         formControlName="amountPerYearLimit"
         [required]="!(isDefaultYearlyLimit$ | async)"
         [label]="i18n.account.paymentLimits.yearlyLimit"
@@ -95,19 +102,14 @@
         [prefix]="data.account.currency.prefix"
         [suffix]="data.account.currency.suffix">
       </decimal-field>
-      <label-value [hidden]="!(isDefaultYearlyLimit$ | async)"
-        [label]="i18n.account.paymentLimits.yearlyLimit">
-        {{ (data.productAmountPerYearLimit ? data.productAmountPerYearLimit :
-        0) | currency:data.account.currency}}
+      <label-value [hidden]="!(isDefaultYearlyLimit$ | async)" [label]="i18n.account.paymentLimits.yearlyLimit">
+        {{ (data.productAmountPerYearLimit ? data.productAmountPerYearLimit : 0) | currency : data.account.currency }}
       </label-value>
-      <hr>
-      <textarea-field class="mt-4" formControlName="comment"
-        [label]="i18n.general.comments"></textarea-field>
+      <hr />
+      <textarea-field class="mt-4" formControlName="comment" [label]="i18n.general.comments"></textarea-field>
     </ng-container>
     <actions>
-      <action-button (action)="save()" [disabled]="requesting$ | async"
-        [label]="i18n.general.save">
-      </action-button>
+      <action-button (action)="save()" [disabled]="requesting$ | async" [label]="i18n.general.save"> </action-button>
     </actions>
   </page-content>
 </page-layout>

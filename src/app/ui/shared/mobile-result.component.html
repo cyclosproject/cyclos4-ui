@@ -1,10 +1,7 @@
-<div *ngIf="title" class="mobile-result-container cell-main pb-0">{{ title }}
-</div>
+<div *ngIf="title" class="mobile-result-container cell-main pb-0">{{ title }}</div>
 <div class="mobile-result-container">
   <div *ngIf="hasAvatar" class="avatar">
-    <avatar [image]="avatarImage" [icon]="avatarIcon"
-      [roundBorders]="avatarRoundBorders">
-    </avatar>
+    <avatar [image]="avatarImage" [icon]="avatarIcon" [roundBorders]="avatarRoundBorders"> </avatar>
   </div>
   <div class="mobile-result-content">
     <ng-container *ngIf="amount || date || topLeft || topRight">
@@ -13,7 +10,7 @@
           {{ topRight }}
         </div>
         <div *ngIf="amount" class="cell-amount" [ngClass]="amountClass">
-          {{ amount | currency:currency:forceSign }}
+          {{ amount | currency : currency : forceSign }}
         </div>
         <div *ngIf="date" class="cell-date">
           {{ date | date }}

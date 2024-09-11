@@ -36,22 +36,17 @@ const wizardRoutes: Routes = [
       },
       {
         path: 'callback/:key',
-        component: WizardCallbackComponent,
-      },
-    ],
-  },
+        component: WizardCallbackComponent
+      }
+    ]
+  }
 ];
 
 /**
  * * Routes for the wizards module
  */
 @NgModule({
-  imports: [
-    RouterModule.forChild(wizardRoutes),
-  ],
-  exports: [
-    RouterModule,
-  ],
+  imports: [RouterModule.forChild(wizardRoutes)],
+  exports: [RouterModule]
 })
-export class WizardsRoutingModule {
-}
+export class WizardsRoutingModule {}

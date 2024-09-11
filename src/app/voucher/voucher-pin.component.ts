@@ -13,12 +13,10 @@ import { VoucherBasePageComponent } from 'app/voucher/voucher-base-page.componen
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VoucherPinComponent extends VoucherBasePageComponent implements OnInit {
-
   pin: FormControl;
   VoucherStatus: VoucherStatusEnum;
 
-  constructor(
-    injector: Injector) {
+  constructor(injector: Injector) {
     super(injector);
   }
 
@@ -48,14 +46,12 @@ export class VoucherPinComponent extends VoucherBasePageComponent implements OnI
     if (!validateBeforeSubmit(this.pin)) {
       return;
     } else if (this.isBlocked()) {
-      this.voucherService.unblockVoucherInfo({ token: this.state.token, pin: this.pin.value })
-        .subscribe(_resp => {
-          this.state.fetchWithPin(this.pin.value);
-        });
+      this.voucherService.unblockVoucherInfo({ token: this.state.token, pin: this.pin.value }).subscribe(_resp => {
+        this.state.fetchWithPin(this.pin.value);
+      });
     } else {
       this.state.fetchWithPin(this.pin.value);
     }
-
   }
 
   forgotPin() {

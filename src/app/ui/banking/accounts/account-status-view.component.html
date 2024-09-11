@@ -1,8 +1,10 @@
 <div class="container mw-100 px-0" *ngIf="(indicators$ | async)?.length > 0">
-  <hr class="mt-0" *ngIf="showSeparator">
+  <hr class="mt-0" *ngIf="showSeparator" />
   <div class="row no-gutters">
-    <div *ngIf="showAccount" class="status-label col-12"
-      [ngClass]="{'status-label-last': !account.user || !showUser}">
+    <div
+      *ngIf="showAccount"
+      class="status-label col-12"
+      [ngClass]="{ 'status-label-last': !account.user || !showUser }">
       {{ account.type.name }}
     </div>
     <ng-container *ngIf="account.user && showUser">
@@ -13,20 +15,20 @@
         <user-link [user]="account.user"></user-link>
       </div>
     </ng-container>
-    <hr *ngIf="showAccount || (account.user && showUser)">
-    <ng-container
-      *ngFor="let indicator of indicators$.value; let last = last">
-      <div class="status-label col-6 col-sm-3"
-        [ngClass]="last ? 'status-label-last' : ''">
+    <hr *ngIf="showAccount || (account.user && showUser)" />
+    <ng-container *ngFor="let indicator of indicators$.value; let last = last">
+      <div class="status-label col-6 col-sm-3" [ngClass]="last ? 'status-label-last' : ''">
         <span class="ellipsis">{{ indicator.label }}</span>
       </div>
-      <div class="status-value col-6 col-sm-3" [ngClass]="{
-        negative: (!indicator.skipColor && (indicator.alwaysNegative || format.isNegative(indicator.amount))),
-        positive: (!indicator.skipColor && (!indicator.alwaysNegative && format.isPositive(indicator.amount))),
-        'status-value-last': last
-      }">
+      <div
+        class="status-value col-6 col-sm-3"
+        [ngClass]="{
+          negative: !indicator.skipColor && (indicator.alwaysNegative || format.isNegative(indicator.amount)),
+          positive: !indicator.skipColor && !indicator.alwaysNegative && format.isPositive(indicator.amount),
+          'status-value-last': last
+        }">
         <ng-container *ngIf="indicator.amount">
-          {{ indicator.amount | currency:currency }}
+          {{ indicator.amount | currency : currency }}
         </ng-container>
       </div>
     </ng-container>

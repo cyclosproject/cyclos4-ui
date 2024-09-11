@@ -1,10 +1,24 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
-  AccountWithStatus, Currency, CustomFieldDetailed, DataForTransaction,
+  AccountWithStatus,
+  Currency,
+  CustomFieldDetailed,
+  DataForTransaction,
   PrincipalTypeInput,
-  TransactionTypeData, TransferType, User
+  TransactionTypeData,
+  TransferType,
+  User
 } from 'app/api/models';
 import { ExternalPaymentsService } from 'app/api/services/external-payments.service';
 import { AuthHelperService } from 'app/core/auth-helper.service';
@@ -26,10 +40,9 @@ const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, Error
 @Component({
   selector: 'external-payment-step-form',
   templateUrl: 'external-payment-step-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExternalPaymentStepFormComponent extends BaseComponent implements OnInit {
-
   @Input() data: DataForTransaction;
   @Input() form: FormGroup;
   @Input() currency: Currency;
@@ -60,7 +73,8 @@ export class ExternalPaymentStepFormComponent extends BaseComponent implements O
     injector: Injector,
     public bankingHelper: BankingHelperService,
     private externalPaymentsService: ExternalPaymentsService,
-    private authHelper: AuthHelperService) {
+    private authHelper: AuthHelperService
+  ) {
     super(injector);
   }
 
@@ -79,20 +93,28 @@ export class ExternalPaymentStepFormComponent extends BaseComponent implements O
 
     this.toPrincipalType$.next(this.data.principalTypes[0]);
     // Whenever the account changes, filter out the available types
-    this.addSub(this.form.get('account').valueChanges
-      .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
-      .subscribe(() => this.adjustPaymentTypes()),
+    this.addSub(
+      this.form
+        .get('account')
+        .valueChanges.pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
+        .subscribe(() => this.adjustPaymentTypes())
     );
 
     // Whenever the payment type changes, fetch the payment type data for it
-    this.addSub(this.form.get('type').valueChanges
-      .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
-      .subscribe(type => this.fetchPaymentTypeData(type)));
+    this.addSub(
+      this.form
+        .get('type')
+        .valueChanges.pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
+        .subscribe(type => this.fetchPaymentTypeData(type))
+    );
 
     // Whenever the principal type changes, update the principal type reference
-    this.addSub(this.form.get('toPrincipalType').valueChanges
-      .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
-      .subscribe(id => this.toPrincipalType$.next(this.data?.principalTypes.find(pt => pt.id === id))));
+    this.addSub(
+      this.form
+        .get('toPrincipalType')
+        .valueChanges.pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
+        .subscribe(id => this.toPrincipalType$.next(this.data?.principalTypes.find(pt => pt.id === id)))
+    );
 
     this.addSub(this.layout.xxs$.subscribe(() => this.updateAccountBalanceLabel()));
 
@@ -173,18 +195,25 @@ export class ExternalPaymentStepFormComponent extends BaseComponent implements O
 
     // Finally, fetch the data
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
-      this.addSub(this.externalPaymentsService.dataForPerformExternalPayment({
-        owner: this.ownerParam,
-        type,
-        fields: ['paymentTypeData'],
-      }).subscribe(data => {
-        const typeData = data.paymentTypeData;
-        this.setPaymentTypeData(typeData);
-      }, (err: HttpErrorResponse) => {
-        if (!IGNORED_STATUSES.includes(err.status)) {
-          defaultHandling(err);
-        }
-      }));
+      this.addSub(
+        this.externalPaymentsService
+          .dataForPerformExternalPayment({
+            owner: this.ownerParam,
+            type,
+            fields: ['paymentTypeData']
+          })
+          .subscribe(
+            data => {
+              const typeData = data.paymentTypeData;
+              this.setPaymentTypeData(typeData);
+            },
+            (err: HttpErrorResponse) => {
+              if (!IGNORED_STATUSES.includes(err.status)) {
+                defaultHandling(err);
+              }
+            }
+          )
+      );
     });
   }
 
@@ -212,5 +241,4 @@ export class ExternalPaymentStepFormComponent extends BaseComponent implements O
     const accounts = this.data.accounts || [];
     return accounts.length === 1 ? accounts[0] : null;
   }
-
 }

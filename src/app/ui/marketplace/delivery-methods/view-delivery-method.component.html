@@ -1,41 +1,32 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content mode="viewForm" [heading]="i18n.ad.title.deliveryMethod"
+    <page-content
+      mode="viewForm"
+      [heading]="i18n.ad.title.deliveryMethod"
       [mobileHeading]="i18n.ad.mobileTitle.deliveryMethod"
       [headingActions]="headingActions$ | async">
-      <label-value *ngIf="!self" [label]="i18n.general.user"
-        labelPosition="side">
+      <label-value *ngIf="!self" [label]="i18n.general.user" labelPosition="side">
         <user-link [user]="data.user"></user-link>
       </label-value>
-      <label-value [label]="i18n.general.name" [value]="data.name">
-      </label-value>
-      <label-value [label]="i18n.ad.chargeType"
-        [value]="resolveChargeTypeLabel()">
-      </label-value>
-      <label-value [label]="i18n.ad.deliveryType"
-        [value]="resolveDeliveryTypeLabel()">
-      </label-value>
-      <label-value *ngIf="data.deliveryType === 'pickup'"
-        [label]="i18n.address.address" [value]="data.address.name">
+      <label-value [label]="i18n.general.name" [value]="data.name"> </label-value>
+      <label-value [label]="i18n.ad.chargeType" [value]="resolveChargeTypeLabel()"> </label-value>
+      <label-value [label]="i18n.ad.deliveryType" [value]="resolveDeliveryTypeLabel()"> </label-value>
+      <label-value *ngIf="data.deliveryType === 'pickup'" [label]="i18n.address.address" [value]="data.address.name">
       </label-value>
       <label-value *ngIf="data.chargeAmount" [label]="i18n.ad.price">
-        {{ data.chargeAmount | currency: data.chargeCurrency }}
+        {{ data.chargeAmount | currency : data.chargeCurrency }}
       </label-value>
-      <label-value *ngIf="data.minDeliveryTime"
-        [label]="i18n.ad.minDeliveryTime">
+      <label-value *ngIf="data.minDeliveryTime" [label]="i18n.ad.minDeliveryTime">
         {{ format.formatTimeInterval(data.minDeliveryTime) }}
       </label-value>
       <label-value [label]="i18n.ad.maxDeliveryTime">
         {{ format.formatTimeInterval(data.maxDeliveryTime) }}
       </label-value>
       <label-value [label]="i18n.general.enabled">
-        {{ data.enabled ?
-        i18n.general.yes :
-        i18n.general.no }}
+        {{ data.enabled ? i18n.general.yes : i18n.general.no }}
       </label-value>
-      <ng-container *ngIf="data.description"
-        class="d-flex justify-content-start">
-        <h2 class="mt-3"> {{ i18n.general.description }} </h2>
+      <ng-container *ngIf="data.description" class="d-flex justify-content-start">
+        <h2 class="mt-3">{{ i18n.general.description }}</h2>
         <div class="break-nl">
           {{ data.description }}
         </div>

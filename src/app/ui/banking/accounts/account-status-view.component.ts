@@ -18,10 +18,9 @@ export interface StatusIndicator {
 @Component({
   selector: 'account-status-view',
   templateUrl: 'account-status-view.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccountStatusViewComponent extends BaseComponent implements OnInit, OnChanges {
-
   @Input() account: AccountWithHistoryStatus;
   @Input() mode: 'current' | 'period' = 'current';
 
@@ -123,5 +122,4 @@ export class AccountStatusViewComponent extends BaseComponent implements OnInit,
       this.updateIndicators();
     }
   }
-
 }

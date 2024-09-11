@@ -7,7 +7,6 @@ import { OidcClient } from './oidc-client';
  * Data for presenting an OAuth2 / OpenID Connect consent page
  */
 export interface OidcDataForConsent {
-
   /**
    * Application logo for the Cyclos instance
    */

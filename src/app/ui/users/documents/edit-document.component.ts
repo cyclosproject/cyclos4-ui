@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DocumentDataForEdit, DocumentDataForNew, DocumentEdit, DocumentKind, DocumentManage } from 'app/api/models';
 import { DocumentsService } from 'app/api/services/documents.service';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { downloadResponse, empty, validateBeforeSubmit } from 'app/shared/helper';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { cloneDeep } from 'lodash-es';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -13,12 +13,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Component({
   selector: 'edit-document',
   templateUrl: 'edit-document.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditDocumentComponent
   extends BasePageComponent<DocumentDataForEdit | DocumentDataForNew>
-  implements OnInit {
-
+  implements OnInit
+{
   DocumentKind = DocumentKind;
   id: string;
   form: FormGroup;
@@ -28,9 +28,7 @@ export class EditDocumentComponent
   fileName$ = new BehaviorSubject<string>(null);
   downloadUrl$ = new BehaviorSubject<string>(null);
 
-  constructor(
-    injector: Injector,
-    private documentsService: DocumentsService) {
+  constructor(injector: Injector, private documentsService: DocumentsService) {
     super(injector);
   }
 
@@ -45,9 +43,10 @@ export class EditDocumentComponent
     this.id = route.params.id;
     this.create = this.id == null;
 
-    const request: Observable<DocumentDataForEdit | DocumentDataForNew> = this.create ?
-      this.documentsService.getUserDocumentDataForNew({ user: this.user }) : this.documentsService.getDocumentDataForEdit({ id: this.id });
-    this.addSub(request.subscribe(data => this.data = data));
+    const request: Observable<DocumentDataForEdit | DocumentDataForNew> = this.create
+      ? this.documentsService.getUserDocumentDataForNew({ user: this.user })
+      : this.documentsService.getDocumentDataForEdit({ id: this.id });
+    this.addSub(request.subscribe(data => (this.data = data)));
   }
 
   download() {
@@ -80,16 +79,18 @@ export class EditDocumentComponent
     });
 
     const updateUrl = (value, publiclyAccessible) => {
-      this.downloadUrl = publiclyAccessible ?
-        this.urlFromTemplate(value || this.id,
-          (data as DocumentDataForEdit).downloadUrlTemplate) : null;
+      this.downloadUrl = publiclyAccessible
+        ? this.urlFromTemplate(value || this.id, (data as DocumentDataForEdit).downloadUrlTemplate)
+        : null;
     };
 
     this.form.controls.internalName.valueChanges.subscribe(val =>
-      updateUrl(val, this.form.controls.publiclyAccessible.value));
+      updateUrl(val, this.form.controls.publiclyAccessible.value)
+    );
 
     this.form.controls.publiclyAccessible.valueChanges.subscribe(val =>
-      updateUrl(this.form.controls.internalName.value, val));
+      updateUrl(this.form.controls.internalName.value, val)
+    );
   }
 
   asEdit(): DocumentDataForEdit {
@@ -111,14 +112,16 @@ export class EditDocumentComponent
       value.brokerManageable = false;
     }
     const onFinish = { next: (id?: string | void) => this.notifySavedAndReload(id || this.id) };
-    this.addSub(this.create ?
-      this.documentsService.createUserDocumentWithUpload({ user: this.user, body: { document: value, file, fileName: file.name } })
-        .subscribe(onFinish) :
-      file ?
-        this.documentsService.updateDocumentWithUpload({ id: this.id, body: { document: value, file, fileName: file.name } })
-          .subscribe(onFinish) :
-        this.documentsService.updateDocument({ id: this.id, body: value })
-          .subscribe(onFinish)
+    this.addSub(
+      this.create
+        ? this.documentsService
+            .createUserDocumentWithUpload({ user: this.user, body: { document: value, file, fileName: file.name } })
+            .subscribe(onFinish)
+        : file
+        ? this.documentsService
+            .updateDocumentWithUpload({ id: this.id, body: { document: value, file, fileName: file.name } })
+            .subscribe(onFinish)
+        : this.documentsService.updateDocument({ id: this.id, body: value }).subscribe(onFinish)
     );
   }
 

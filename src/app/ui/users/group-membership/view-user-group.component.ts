@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormGroup, Validators } from '@angular/forms';
 import { GroupMembershipData } from 'app/api/models/group-membership-data';
 import { GroupMembershipService } from 'app/api/services/group-membership.service';
-import { UserHelperService } from 'app/ui/core/user-helper.service';
-import { HeadingAction } from 'app/shared/action';
-import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
-import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { SvgIcon } from 'app/core/svg-icon';
+import { HeadingAction } from 'app/shared/action';
+import { empty, validateBeforeSubmit } from 'app/shared/helper';
+import { UserHelperService } from 'app/ui/core/user-helper.service';
+import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 
 /**
  * Displays the user group membership and allows changing the group
@@ -14,13 +14,14 @@ import { SvgIcon } from 'app/core/svg-icon';
 @Component({
   selector: 'view-user-group',
   templateUrl: 'view-user-group.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewUserGroupComponent extends BaseViewPageComponent<GroupMembershipData> implements OnInit {
   constructor(
     injector: Injector,
     private userHelper: UserHelperService,
-    private groupMembershipService: GroupMembershipService) {
+    private groupMembershipService: GroupMembershipService
+  ) {
     super(injector);
   }
 
@@ -40,9 +41,11 @@ export class ViewUserGroupComponent extends BaseViewPageComponent<GroupMembershi
   ngOnInit() {
     super.ngOnInit();
     this.param = this.route.snapshot.params.user;
-    this.addSub(this.groupMembershipService.getGroupMembershipData({ user: this.param, fields: ['-history'] }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.groupMembershipService.getGroupMembershipData({ user: this.param, fields: ['-history'] }).subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized(data: GroupMembershipData) {
@@ -50,11 +53,15 @@ export class ViewUserGroupComponent extends BaseViewPageComponent<GroupMembershi
     this.allowEmptyGroup = this.userHelper.isOperator(data.user) && !!data.group;
     this.form = this.formBuilder.group({
       group: this.allowEmptyGroup ? null : [null, Validators.required],
-      comment: null,
+      comment: null
     });
     this.headingActions = [
-      new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
-        this.router.navigate(['/users', this.param, 'group', 'history']), true),
+      new HeadingAction(
+        SvgIcon.Clock,
+        this.i18n.general.viewHistory,
+        () => this.router.navigate(['/users', this.param, 'group', 'history']),
+        true
+      )
     ];
   }
 
@@ -70,15 +77,13 @@ export class ViewUserGroupComponent extends BaseViewPageComponent<GroupMembershi
         ? this.i18n.userStatus.mobileTitle.changeOperator
         : this.i18n.userStatus.title.changeOperator;
     } else {
-      title = this.layout.ltsm
-        ? this.i18n.userStatus.mobileTitle.changeUser
-        : this.i18n.userStatus.title.changeUser;
+      title = this.layout.ltsm ? this.i18n.userStatus.mobileTitle.changeUser : this.i18n.userStatus.title.changeUser;
     }
     let message: string;
     if (group) {
       message = this.i18n.groupMembership.confirm({
         user: this.data.user.display,
-        group: group ? group.name : this.i18n.user.operatorNoGroup,
+        group: group ? group.name : this.i18n.user.operatorNoGroup
       });
     } else {
       message = this.i18n.groupMembership.confirmAliasOperator(this.data.user.display);
@@ -86,25 +91,26 @@ export class ViewUserGroupComponent extends BaseViewPageComponent<GroupMembershi
     this.confirmation.confirm({
       title,
       message,
-      callback: () => this.submit(),
+      callback: () => this.submit()
     });
   }
 
   private submit() {
-    this.addSub(this.groupMembershipService.changeGroupMembership({
-      user: this.param,
-      body: this.form.value,
-    }).subscribe(() => {
-      const message = this.operator
-        ? this.i18n.groupMembership.doneOperator
-        : this.i18n.groupMembership.doneUser;
-      this.notification.snackBar(message);
-      this.reload();
-    }));
+    this.addSub(
+      this.groupMembershipService
+        .changeGroupMembership({
+          user: this.param,
+          body: this.form.value
+        })
+        .subscribe(() => {
+          const message = this.operator ? this.i18n.groupMembership.doneOperator : this.i18n.groupMembership.doneUser;
+          this.notification.snackBar(message);
+          this.reload();
+        })
+    );
   }
 
   resolveMenu(data: GroupMembershipData) {
     return this.menu.searchUsersMenu(data.user);
   }
-
 }

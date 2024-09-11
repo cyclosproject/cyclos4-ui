@@ -15,13 +15,10 @@ import { LabelValueKind } from 'app/shared/label-value.component';
 @Component({
   selector: 'user-info',
   templateUrl: 'user-info.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserInfoComponent extends BaseComponent {
-
-  constructor(
-    injector: Injector,
-    public authHelper: AuthHelperService) {
+  constructor(injector: Injector, public authHelper: AuthHelperService) {
     super(injector);
   }
 
@@ -32,5 +29,4 @@ export class UserInfoComponent extends BaseComponent {
   get operator(): boolean {
     return !!this.user.user;
   }
-
 }

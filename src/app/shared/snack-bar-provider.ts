@@ -10,7 +10,6 @@ export interface SnackBarOptions {
  * Defines the API for a snack bar provider
  */
 export interface SnackBarProvider {
-
   /**
    * Shows the snackbar with the given message
    * @param message The snackbar message

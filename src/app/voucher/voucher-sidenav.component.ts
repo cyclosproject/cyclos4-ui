@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Injector, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostBinding,
+  Injector,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { ActionsLeft, ActionsRight, ArrowsVertical, ShortcutService } from 'app/core/shortcut.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { handleKeyboardFocus } from 'app/shared/helper';
@@ -11,7 +19,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 @Component({
   selector: 'voucher-sidenav',
   templateUrl: 'voucher-sidenav.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VoucherSidenavComponent extends VoucherBaseComponent implements OnInit {
   SvgIcon = SvgIcon;
@@ -20,10 +28,7 @@ export class VoucherSidenavComponent extends VoucherBaseComponent implements OnI
 
   @ViewChild('sidenavMenu', { static: true }) sidenavMenu: ElementRef;
 
-  constructor(
-    private _element: ElementRef,
-    private shortcut: ShortcutService,
-    injector: Injector) {
+  constructor(private _element: ElementRef, private shortcut: ShortcutService, injector: Injector) {
     super(injector);
   }
 
@@ -89,11 +94,14 @@ export class VoucherSidenavComponent extends VoucherBaseComponent implements OnI
           active.blur();
         }
       }, 5);
-      this.openSubs.push(this.shortcut.subscribe(ArrowsVertical, e =>
-        handleKeyboardFocus(this.layout, this.element, e)));
-      this.openSubs.push(this.shortcut.subscribe(ActionsRight, () => {
-        this.exit();
-      }));
+      this.openSubs.push(
+        this.shortcut.subscribe(ArrowsVertical, e => handleKeyboardFocus(this.layout, this.element, e))
+      );
+      this.openSubs.push(
+        this.shortcut.subscribe(ActionsRight, () => {
+          this.exit();
+        })
+      );
     }
   }
 

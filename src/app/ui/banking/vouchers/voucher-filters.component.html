@@ -1,61 +1,75 @@
-<page-content mode="filters" [heading]="heading"
-  [mobileHeading]="mobileHeading" [headingActions]="headingActions">
+<page-content mode="filters" [heading]="heading" [mobileHeading]="mobileHeading" [headingActions]="headingActions">
   <div [formGroup]="form" class="filters-form filters-form-separator">
     <div class="row no-gutters">
       <!-- Types -->
       <div *ngIf="data.types?.length > 1" class="col-12 col-md-6">
-        <multi-selection-field formControlName="types"
-          [label]="i18n.general.type">
-          <field-option *ngFor="let type of data.types" [value]="type.id"
-            [internalName]="type.internalName" [id]="type.id"
+        <multi-selection-field formControlName="types" [label]="i18n.general.type">
+          <field-option
+            *ngFor="let type of data.types"
+            [value]="type.id"
+            [internalName]="type.internalName"
+            [id]="type.id"
             [text]="type.name">
           </field-option>
         </multi-selection-field>
       </div>
       <!-- Statuses -->
       <div class="col-12 col-md-6">
-        <multi-selection-field formControlName="statuses"
-          [label]="i18n.general.status" [fieldOptions]="statusOptions"
+        <multi-selection-field
+          formControlName="statuses"
+          [label]="i18n.general.status"
+          [fieldOptions]="statusOptions"
           [emptyLabel]="i18n.general.notApplied">
         </multi-selection-field>
       </div>
       <!-- Token -->
       <div class="col-12 col-md-6">
-        <input-field type="text" [label]="i18n.voucher.token" [mask]="mask"
-          formControlName="token" [placeholder]="mask">
+        <input-field
+          type="text"
+          [label]="i18n.voucher.token"
+          [mask]="mask"
+          formControlName="token"
+          [placeholder]="mask">
         </input-field>
       </div>
       <!-- Creation type -->
       <div class="col-12 col-md-6">
-        <single-selection-field formControlName="creationType"
+        <single-selection-field
+          formControlName="creationType"
           [label]="i18n.voucher.creationType.label"
-          [fieldOptions]=creationTypeOptions
+          [fieldOptions]="creationTypeOptions"
           [emptyOption]="this.i18n.general.all">
         </single-selection-field>
       </div>
       <!-- Printed -->
       <div class="col-12 col-md-6">
-        <single-selection-field formControlName="printed"
-          [label]="i18n.general.printed" [emptyOption]="i18n.general.all">
-          <field-option [value]="'true'" [text]="i18n.general.yes">
-          </field-option>
-          <field-option [value]="'false'" [text]="i18n.general.no">
-          </field-option>
+        <single-selection-field
+          formControlName="printed"
+          [label]="i18n.general.printed"
+          [emptyOption]="i18n.general.all">
+          <field-option [value]="'true'" [text]="i18n.general.yes"> </field-option>
+          <field-option [value]="'false'" [text]="i18n.general.no"> </field-option>
         </single-selection-field>
       </div>
       <ng-container *ngIf="moreFilters">
-
         <!-- Creation date -->
         <div class="row no-gutters col-12">
           <div class="col-12 col-md-6">
-            <date-field formControlName="creationBegin"
-              [label]="i18n.general.creationDate" minDate="past100"
-              maxDate="todayEnd" fieldSize="full" class>
+            <date-field
+              formControlName="creationBegin"
+              [label]="i18n.general.creationDate"
+              minDate="past100"
+              maxDate="todayEnd"
+              fieldSize="full"
+              class>
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field formControlName="creationEnd"
-              [label]="i18n.general.to" minDate="past100" maxDate="todayEnd"
+            <date-field
+              formControlName="creationEnd"
+              [label]="i18n.general.to"
+              minDate="past100"
+              maxDate="todayEnd"
               fieldSize="full">
             </date-field>
           </div>
@@ -63,14 +77,21 @@
         <!-- Expiration date -->
         <div class="row no-gutters col-12">
           <div class="col-12 col-md-6">
-            <date-field formControlName="expirationBegin"
-              [label]="i18n.general.expirationDate" minDate="past100"
-              maxDate="todayEnd" fieldSize="full" class>
+            <date-field
+              formControlName="expirationBegin"
+              [label]="i18n.general.expirationDate"
+              minDate="past100"
+              maxDate="todayEnd"
+              fieldSize="full"
+              class>
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field formControlName="expirationEnd"
-              [label]="i18n.general.to" minDate="past100" maxDate="todayEnd"
+            <date-field
+              formControlName="expirationEnd"
+              [label]="i18n.general.to"
+              minDate="past100"
+              maxDate="todayEnd"
               fieldSize="full">
             </date-field>
           </div>
@@ -78,14 +99,21 @@
         <!-- Transaction date -->
         <div class="row no-gutters col-12">
           <div class="col-12 col-md-6">
-            <date-field formControlName="transactionDateBegin"
-              [label]="data.topUpEnabled ? i18n.voucher.generalSearchTransactionDate : i18n.voucher.redeem.date" minDate="past100"
-              maxDate="todayEnd" fieldSize="full" class>
+            <date-field
+              formControlName="transactionDateBegin"
+              [label]="data.topUpEnabled ? i18n.voucher.generalSearchTransactionDate : i18n.voucher.redeem.date"
+              minDate="past100"
+              maxDate="todayEnd"
+              fieldSize="full"
+              class>
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field formControlName="transactionDateEnd"
-              [label]="i18n.general.to" minDate="past100" maxDate="todayEnd"
+            <date-field
+              formControlName="transactionDateEnd"
+              [label]="i18n.general.to"
+              minDate="past100"
+              maxDate="todayEnd"
               fieldSize="full">
             </date-field>
           </div>
@@ -93,78 +121,86 @@
         <!-- Amount -->
         <div class="row no-gutters col-12">
           <div class="col-12 col-md-6">
-            <decimal-field #amount formControlName="amountMin"
-              [label]="i18n.transaction.amount" [scale]=maxScale>
+            <decimal-field #amount formControlName="amountMin" [label]="i18n.transaction.amount" [scale]="maxScale">
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
-            <decimal-field #amount formControlName="amountMax"
-              [label]="i18n.general.to" [scale]=maxScale></decimal-field>
+            <decimal-field
+              #amount
+              formControlName="amountMax"
+              [label]="i18n.general.to"
+              [scale]="maxScale"></decimal-field>
           </div>
         </div>
         <!-- Buyer groups -->
         <div *ngIf="data.userGroups?.length > 1" class="col-12 col-md-6">
-          <multi-selection-field hierarchyProperty="groupSet"
-            formControlName="buyerGroups" [label]="i18n.voucher.buyerGroups">
-            <field-option *ngFor="let group of data.userGroups"
-              [value]="group.id" [internalName]="group.internalName"
-              [id]="group.id" [text]="group.name" [parent]="group.groupSet">
+          <multi-selection-field
+            hierarchyProperty="groupSet"
+            formControlName="buyerGroups"
+            [label]="i18n.voucher.buyerGroups">
+            <field-option
+              *ngFor="let group of data.userGroups"
+              [value]="group.id"
+              [internalName]="group.internalName"
+              [id]="group.id"
+              [text]="group.name"
+              [parent]="group.groupSet">
             </field-option>
           </multi-selection-field>
         </div>
         <!-- Buyer -->
         <div class="col-12 col-md-6">
           <label-value kind="field" [label]="i18n.voucher.buy.buyer">
-            <user-field [autoSearch]="true" formControlName="buyer"
-              [allowContacts]="true" [allowSearch]="true">
+            <user-field [autoSearch]="true" formControlName="buyer" [allowContacts]="true" [allowSearch]="true">
             </user-field>
           </label-value>
         </div>
         <!-- Transaction user groups  -->
         <div *ngIf="data.userGroups?.length > 1" class="col-12 col-md-6">
-          <multi-selection-field hierarchyProperty="groupSet"
+          <multi-selection-field
+            hierarchyProperty="groupSet"
             formControlName="transactionUserGroups"
             [label]="i18n.voucher.transaction.userGroups">
-            <field-option *ngFor="let group of data.userGroups"
-              [value]="group.id" [internalName]="group.internalName"
-              [id]="group.id" [text]="group.name" [parent]="group.groupSet">
+            <field-option
+              *ngFor="let group of data.userGroups"
+              [value]="group.id"
+              [internalName]="group.internalName"
+              [id]="group.id"
+              [text]="group.name"
+              [parent]="group.groupSet">
             </field-option>
           </multi-selection-field>
         </div>
         <!-- Transaction user -->
         <div class="col-12 col-md-6">
           <label-value kind="field" [label]="i18n.voucher.transaction.user">
-            <user-field [autoSearch]="true" formControlName="transactionUser"
-              [allowContacts]="true" [allowSearch]="true">
+            <user-field
+              [autoSearch]="true"
+              formControlName="transactionUser"
+              [allowContacts]="true"
+              [allowSearch]="true">
             </user-field>
           </label-value>
         </div>
 
         <!-- E-mail and mobile phone -->
         <div class="col-12 col-md-6">
-          <input-field formControlName="email" [label]="i18n.user.email">
-          </input-field>
+          <input-field formControlName="email" [label]="i18n.user.email"> </input-field>
         </div>
         <div class="col-12 col-md-6">
-          <input-field formControlName="mobilePhone"
-            [label]="i18n.phone.mobile">
-          </input-field>
+          <input-field formControlName="mobilePhone" [label]="i18n.phone.mobile"> </input-field>
         </div>
 
         <!-- Custom fields -->
         <div class="col-12 col-md-6" *ngFor="let cf of customFieldsInSearch">
-          <custom-field-filter [field]="cf"
-            [formControl]="form.get('customFields').get(cf.internalName)">
+          <custom-field-filter [field]="cf" [formControl]="form.get('customFields').get(cf.internalName)">
           </custom-field-filter>
         </div>
       </ng-container>
       <!-- Order by -->
       <div class="col-12 col-md-6">
-        <single-selection-field formControlName="orderBy"
-          [label]="i18n.general.orderBy">
-          <field-option *ngFor="let order of orderByOptions()" [value]="order"
-            [text]="orderBy(order)">
-          </field-option>
+        <single-selection-field formControlName="orderBy" [label]="i18n.general.orderBy">
+          <field-option *ngFor="let order of orderByOptions()" [value]="order" [text]="orderBy(order)"> </field-option>
         </single-selection-field>
       </div>
     </div>

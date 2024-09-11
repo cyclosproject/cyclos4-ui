@@ -5,96 +5,99 @@
       [mobileHeading]="create ? i18n.operatorGroup.mobileTitle['new'] : i18n.operatorGroup.mobileTitle.edit"
       [headingActions]="headingActions$ | async">
       <ng-container [formGroup]="form">
-
-        <label-value *ngIf="!self" [label]="i18n.general.user"
-          mode="fieldView">
+        <label-value *ngIf="!self" [label]="i18n.general.user" mode="fieldView">
           <user-link [user]="data.user"></user-link>
         </label-value>
-        <input-field [label]="i18n.general.name" formControlName="name"
-          required></input-field>
-        <textarea-field [label]="i18n.general.description"
-          formControlName="description"></textarea-field>
+        <input-field [label]="i18n.general.name" formControlName="name" required></input-field>
+        <textarea-field [label]="i18n.general.description" formControlName="description"></textarea-field>
 
         <!--General -->
-        <h2 class="mt-3 mb-0">{{
-          (layout.ltsm$ | async)
-          ? i18n.operatorGroup.mobileTitle.general
-          : i18n.operatorGroup.title.general }}
+        <h2 class="mt-3 mb-0">
+          {{ (layout.ltsm$ | async) ? i18n.operatorGroup.mobileTitle.general : i18n.operatorGroup.title.general }}
         </h2>
-        <boolean-field [label]="i18n.operatorGroup.editOwnProfile"
-          formControlName="editOwnProfile"></boolean-field>
-        <boolean-field *ngIf="data.canHaveNotifications"
+        <boolean-field [label]="i18n.operatorGroup.editOwnProfile" formControlName="editOwnProfile"></boolean-field>
+        <boolean-field
+          *ngIf="data.canHaveNotifications"
           [label]="i18n.operatorGroup.notifications"
           formControlName="notifications"></boolean-field>
-        <boolean-field *ngIf="data.canViewAdvertisements"
+        <boolean-field
+          *ngIf="data.canViewAdvertisements"
           [label]="i18n.operatorGroup.viewAdvertisements"
           formControlName="viewAdvertisements"></boolean-field>
-        <boolean-field *ngIf="data.canManageAdvertisements"
+        <boolean-field
+          *ngIf="data.canManageAdvertisements"
           [label]="i18n.operatorGroup.manageAdvertisements"
           formControlName="manageAdvertisements"></boolean-field>
-        <boolean-field *ngIf="data.canHaveMessages"
-          [label]="i18n.operatorGroup.messages" formControlName="messages">
+        <boolean-field *ngIf="data.canHaveMessages" [label]="i18n.operatorGroup.messages" formControlName="messages">
         </boolean-field>
-        <checkbox-group-field *ngIf="hasTokenPermissions()" horizontal
-          masterValue="enable" [label]="i18n.operatorGroup.tokens.label"
+        <checkbox-group-field
+          *ngIf="hasTokenPermissions()"
+          horizontal
+          masterValue="enable"
+          [label]="i18n.operatorGroup.tokens.label"
           [formControl]="tokenPermissions">
-          <field-option *ngIf="data.canEnableToken" value="enable"
-            [text]="i18n.operatorGroup.tokens.enable">
+          <field-option *ngIf="data.canEnableToken" value="enable" [text]="i18n.operatorGroup.tokens.enable">
           </field-option>
-          <field-option *ngIf="data.canBlockToken" value="block"
-            [text]="i18n.operatorGroup.tokens.block">
+          <field-option *ngIf="data.canBlockToken" value="block" [text]="i18n.operatorGroup.tokens.block">
           </field-option>
-          <field-option *ngIf="data.canUnblockToken" value="unblock"
-            [text]="i18n.operatorGroup.tokens.unblock">
+          <field-option *ngIf="data.canUnblockToken" value="unblock" [text]="i18n.operatorGroup.tokens.unblock">
           </field-option>
-          <field-option *ngIf="data.canCancelToken" value="cancel"
-            [text]="i18n.operatorGroup.tokens.cancel">
+          <field-option *ngIf="data.canCancelToken" value="cancel" [text]="i18n.operatorGroup.tokens.cancel">
           </field-option>
         </checkbox-group-field>
-        <multi-selection-field *ngIf="data.recordTypes?.length > 0"
-          [label]="i18n.operatorGroup.records" formControlName="records">
-          <field-option *ngFor="let r of data.recordTypes"
-            [value]="ApiHelper.internalNameOrId(r)" [id]="r.id"
-            [internalName]="r.internalName" [text]="r.name">
+        <multi-selection-field
+          *ngIf="data.recordTypes?.length > 0"
+          [label]="i18n.operatorGroup.records"
+          formControlName="records">
+          <field-option
+            *ngFor="let r of data.recordTypes"
+            [value]="ApiHelper.internalNameOrId(r)"
+            [id]="r.id"
+            [internalName]="r.internalName"
+            [text]="r.name">
           </field-option>
         </multi-selection-field>
-        <multi-selection-field *ngIf="data.operations?.length > 0"
+        <multi-selection-field
+          *ngIf="data.operations?.length > 0"
           [label]="i18n.operatorGroup.runOperations"
           formControlName="operations">
-          <field-option *ngFor="let op of data.operations"
-            [value]="ApiHelper.internalNameOrId(op)" [id]="op.id"
-            [internalName]="op.internalName" [text]="op.name">
+          <field-option
+            *ngFor="let op of data.operations"
+            [value]="ApiHelper.internalNameOrId(op)"
+            [id]="op.id"
+            [internalName]="op.internalName"
+            [text]="op.name">
           </field-option>
         </multi-selection-field>
-        <boolean-field *ngIf="data.broker"
-          [label]="i18n.operatorGroup.brokering" formControlName="brokering">
+        <boolean-field *ngIf="data.broker" [label]="i18n.operatorGroup.brokering" formControlName="brokering">
         </boolean-field>
 
         <!--Account access -->
         <ng-container *ngIf="data.accountTypes?.length > 0">
-          <h2 class="mt-3 mb-0">{{ (layout.ltsm$ | async)
-            ? i18n.operatorGroup.mobileTitle.accountAccess
-            : i18n.operatorGroup.title.accountAccess }}
+          <h2 class="mt-3 mb-0">
+            {{
+              (layout.ltsm$ | async)
+                ? i18n.operatorGroup.mobileTitle.accountAccess
+                : i18n.operatorGroup.title.accountAccess
+            }}
           </h2>
           <ng-container *ngIf="!singleAccount">
             <ng-container *ngTemplateOutlet="generalAccounts"></ng-container>
           </ng-container>
           <ng-container *ngFor="let at of data.accountTypes">
-            <ng-container
-              *ngIf="form.get('accounts').get(at.id) as accountForm">
+            <ng-container *ngIf="form.get('accounts').get(at.id) as accountForm">
               <ng-container [formGroup]="accountForm">
                 <h3 class="mt-3 mb-0" *ngIf="!singleAccount">
                   {{ at.name }}
                 </h3>
                 <single-selection-field
                   [label]="i18n.operatorGroup.accountAccess"
-                  formControlName="access" required
+                  formControlName="access"
+                  required
                   [fieldOptions]="accountAccessOptions">
                 </single-selection-field>
                 <ng-container *ngIf="accountForm.value.access !== 'none'">
-                  <ng-container
-                    *ngTemplateOutlet="accountDetails; context: {$implicit: at}">
-                  </ng-container>
+                  <ng-container *ngTemplateOutlet="accountDetails; context: { $implicit: at }"> </ng-container>
                 </ng-container>
               </ng-container>
             </ng-container>
@@ -102,8 +105,7 @@
         </ng-container>
       </ng-container>
       <actions>
-        <action-button class="btn-main" [disabled]="requesting$ | async"
-          (action)="save()" [label]="i18n.general.save">
+        <action-button class="btn-main" [disabled]="requesting$ | async" (action)="save()" [label]="i18n.general.save">
         </action-button>
       </actions>
     </page-content>
@@ -111,28 +113,33 @@
 </page-layout>
 
 <ng-template #accountDetails let-at>
-  <ng-container *ngIf="form.get('notifications').value"
+  <ng-container
+    *ngIf="form.get('notifications').value"
     [formGroup]="form.get('accounts').get(at.id).get('notificationAmount')">
-    <decimal-field [label]="i18n.operatorGroup.paymentNotificationsAbove"
-      formControlName="min" [scale]="at.currency.decimalDigits"
-      [prefix]="at.currency.prefix" [suffix]="at.currency.suffix">
+    <decimal-field
+      [label]="i18n.operatorGroup.paymentNotificationsAbove"
+      formControlName="min"
+      [scale]="at.currency.decimalDigits"
+      [prefix]="at.currency.prefix"
+      [suffix]="at.currency.suffix">
     </decimal-field>
-    <decimal-field [label]="i18n.operatorGroup.paymentNotificationsBelow"
-      formControlName="max" [scale]="at.currency.decimalDigits"
-      [prefix]="at.currency.prefix" [suffix]="at.currency.suffix">
+    <decimal-field
+      [label]="i18n.operatorGroup.paymentNotificationsBelow"
+      formControlName="max"
+      [scale]="at.currency.decimalDigits"
+      [prefix]="at.currency.prefix"
+      [suffix]="at.currency.suffix">
     </decimal-field>
   </ng-container>
   <ng-container *ngIf="singleAccount">
     <ng-container *ngTemplateOutlet="generalAccounts"></ng-container>
   </ng-container>
-  <ng-container *ngFor="let pt of paymentTypes(at)"
-    [formGroup]="form.get('payments').get(pt.id)">
+  <ng-container *ngFor="let pt of paymentTypes(at)" [formGroup]="form.get('payments').get(pt.id)">
     <ng-container *ngIf="paymentTypes(at)?.length > 1">
-      <hr class="inner-separator">
+      <hr class="inner-separator" />
       <h4 class="mt-3 mb-2">{{ pt.name }}</h4>
     </ng-container>
-    <boolean-field [label]="i18n.operatorGroup.performPayments"
-      formControlName="perform"></boolean-field>
+    <boolean-field [label]="i18n.operatorGroup.performPayments" formControlName="perform"></boolean-field>
     <boolean-field
       *ngIf="form.get('payments').get(pt.id).get('perform').value"
       [label]="i18n.operatorGroup.performPaymentsRequiresAuthorization"
@@ -140,29 +147,35 @@
     <decimal-field
       *ngIf="form.get('payments').get(pt.id).get('perform').value"
       [label]="i18n.operatorGroup.performPaymentsMaxAmountPerDay"
-      formControlName="maxAmountPerDay" [scale]="pt.currency.decimalDigits"
-      [prefix]="pt.currency.prefix" [suffix]="pt.currency.suffix">
+      formControlName="maxAmountPerDay"
+      [scale]="pt.currency.decimalDigits"
+      [prefix]="pt.currency.prefix"
+      [suffix]="pt.currency.suffix">
     </decimal-field>
-    <boolean-field [label]="i18n.operatorGroup.authorizePayments"
-      formControlName="authorize"></boolean-field>
+    <boolean-field [label]="i18n.operatorGroup.authorizePayments" formControlName="authorize"></boolean-field>
   </ng-container>
 </ng-template>
 
 <ng-template #generalAccounts>
   <ng-container [formGroup]="form">
-    <boolean-field *ngIf="data.canChargebackPayments"
+    <boolean-field
+      *ngIf="data.canChargebackPayments"
       [label]="i18n.operatorGroup.chargebackPayments"
       formControlName="chargebackPayments"></boolean-field>
-    <boolean-field *ngIf="data.canReceivePayments"
+    <boolean-field
+      *ngIf="data.canReceivePayments"
       [label]="i18n.operatorGroup.receivePayments"
       formControlName="receivePayments"></boolean-field>
-    <boolean-field *ngIf="data.canRequestPayments"
+    <boolean-field
+      *ngIf="data.canRequestPayments"
       [label]="i18n.operatorGroup.requestPayments"
       formControlName="requestPayments"></boolean-field>
-    <boolean-field *ngIf="data.canPerformVoucherTransactions"
+    <boolean-field
+      *ngIf="data.canPerformVoucherTransactions"
       [label]="resolveVoucherTransactionsLabel()"
       formControlName="voucherTransactions"></boolean-field>
-    <multiple-users-field [label]="i18n.operatorGroup.restrictPaymentsToUsers"
+    <multiple-users-field
+      [label]="i18n.operatorGroup.restrictPaymentsToUsers"
       formControlName="restrictPaymentsToUsers"
       [preselectedUsers]="restrictPaymentsToUsers"></multiple-users-field>
   </ng-container>

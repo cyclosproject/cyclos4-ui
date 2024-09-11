@@ -1,103 +1,110 @@
 <page-layout [ready]="step$ | async" [ngSwitch]="step$ | async" size="large">
-  <page-content *ngSwitchCase="'group'"
+  <page-content
+    *ngSwitchCase="'group'"
     [heading]="i18n.user.title.registration"
     [mobileHeading]="i18n.user.mobileTitle.registration"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'"
+    last>
     <div class="flex-grow-1">
-      <registration-step-group [groupSets]="groupSets" [groups]="groups"
-        [control]="group">
-      </registration-step-group>
+      <registration-step-group [groupSets]="groupSets" [groups]="groups" [control]="group"> </registration-step-group>
     </div>
     <actions forceRow>
-      <action-button [disabled]="requesting$ | async"
-        (action)="showIdentityProviders()" [label]="i18n.general.next">
+      <action-button [disabled]="requesting$ | async" (action)="showIdentityProviders()" [label]="i18n.general.next">
       </action-button>
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'idp'" [heading]="i18n.user.title.registration"
+  <page-content
+    *ngSwitchCase="'idp'"
+    [heading]="i18n.user.title.registration"
     [mobileHeading]="i18n.user.mobileTitle.registration"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'"
+    last>
     <div class="flex-grow-1">
-      <registration-step-idp [identityProviders]="data.identityProviders"
-        (continue)="continueWithProvider($event)">
+      <registration-step-idp [identityProviders]="data.identityProviders" (continue)="continueWithProvider($event)">
       </registration-step-idp>
     </div>
     <actions forceRow>
-      <action-button [disabled]="requesting$ | async"
-        (action)="continueWithProvider(null)" [label]="i18n.general.skip">
+      <action-button [disabled]="requesting$ | async" (action)="continueWithProvider(null)" [label]="i18n.general.skip">
       </action-button>
-      <action-button *ngIf="groups.length > 1" outline
-        (action)="backToGroup()" [label]="i18n.general.previous">
+      <action-button *ngIf="groups.length > 1" outline (action)="backToGroup()" [label]="i18n.general.previous">
       </action-button>
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'fields'"
+  <page-content
+    *ngSwitchCase="'fields'"
     [heading]="i18n.user.title.registration"
     [mobileHeading]="i18n.user.mobileTitle.registration"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'"
+    last>
     <div class="flex-grow-1">
-      <registration-step-fields [data]="data" [form]="form"
-        [mobileForm]="mobileForm" [landLineForm]="landLineForm"
-        [defineAddress]="defineAddress" [addressForm]="addressForm"
-        [imageControl]="imageControl" [image]="image"
+      <registration-step-fields
+        [data]="data"
+        [form]="form"
+        [mobileForm]="mobileForm"
+        [landLineForm]="landLineForm"
+        [defineAddress]="defineAddress"
+        [addressForm]="addressForm"
+        [imageControl]="imageControl"
+        [image]="image"
         [fromExternalPayment]="fromExternalPayment()"
-        (imageUploaded)="image = $event" (imageRemoved)="image = null"
+        (imageUploaded)="image = $event"
+        (imageRemoved)="image = null"
         (customImagesUploaded)="addCustomImages($event)"
         (customFilesUploaded)="addCustomFiles($event)">
       </registration-step-fields>
     </div>
     <actions forceRow>
-      <action-button [disabled]="requesting$ | async" (action)="showConfirm()"
-        [label]="i18n.general.next">
+      <action-button [disabled]="requesting$ | async" (action)="showConfirm()" [label]="i18n.general.next">
       </action-button>
       <action-button
         *ngIf="groups.length > 1 || data.identityProviders?.length > 0"
-        outline (action)="backToIdentityProviders()"
+        outline
+        (action)="backToIdentityProviders()"
         [label]="i18n.general.previous">
       </action-button>
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'confirm'"
+  <page-content
+    *ngSwitchCase="'confirm'"
     [heading]="i18n.user.title.registrationConfirmation"
     [mobileHeading]="i18n.user.mobileTitle.registrationConfirmation"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'"
+    last>
     <div class="flex-grow-1">
-      <registration-step-confirm [data]="data" [form]="confirmForm"
-        [user]="userNew" [image]="image" [customImages]="customImages"
+      <registration-step-confirm
+        [data]="data"
+        [form]="confirmForm"
+        [user]="userNew"
+        [image]="image"
+        [customImages]="customImages"
         [customFiles]="customFiles">
       </registration-step-confirm>
     </div>
     <actions forceRow>
-      <action-button [disabled]="requesting$ | async" (action)="register()"
-        [label]="i18n.general.submit">
+      <action-button [disabled]="requesting$ | async" (action)="register()" [label]="i18n.general.submit">
       </action-button>
-      <action-button outline (action)="backToFields()"
-        [label]="i18n.general.previous">
-      </action-button>
+      <action-button outline (action)="backToFields()" [label]="i18n.general.previous"> </action-button>
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'done'"
+  <page-content
+    *ngSwitchCase="'done'"
     [heading]="i18n.user.title.registrationDone"
     [mobileHeading]="i18n.user.mobileTitle.registrationDone"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'"
+    last>
     <div class="flex-grow-1">
-      <registration-step-done [result]="result$ | async">
-      </registration-step-done>
+      <registration-step-done [result]="result$ | async"> </registration-step-done>
     </div>
     <actions forceRow>
-      <action-button *ngIf="login.user" (action)="reload()"
-        [label]="i18n.user.registration.registerAnotherUser">
+      <action-button *ngIf="login.user" (action)="reload()" [label]="i18n.user.registration.registerAnotherUser">
       </action-button>
-      <action-button *ngIf="login.user" (action)="viewProfile()"
-        [label]="i18n.user.registration.viewProfile">
+      <action-button *ngIf="login.user" (action)="viewProfile()" [label]="i18n.user.registration.viewProfile">
       </action-button>
-      <action-button *ngIf="!login.user" (action)="goToLogin()"
-        [label]="i18n.menu.login">
-      </action-button>
+      <action-button *ngIf="!login.user" (action)="goToLogin()" [label]="i18n.menu.login"> </action-button>
     </actions>
   </page-content>
 

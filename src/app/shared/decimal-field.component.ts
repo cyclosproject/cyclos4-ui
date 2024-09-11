@@ -1,15 +1,30 @@
 import {
-  ChangeDetectorRef, Component, ElementRef, Host, Injector, Input, OnChanges,
-  OnInit, Optional, SimpleChanges, SkipSelf, ViewChild,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Host,
+  Injector,
+  Input,
+  OnChanges,
+  OnInit,
+  Optional,
+  SimpleChanges,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
 import {
-  AbstractControl, ControlContainer, FormControl, NG_VALIDATORS,
-  NG_VALUE_ACCESSOR, ValidationErrors, Validator,
+  AbstractControl,
+  ControlContainer,
+  FormControl,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator
 } from '@angular/forms';
 import { CustomFieldSizeEnum } from 'app/api/models';
+import { LayoutService } from 'app/core/layout.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty, truthyAttr } from 'app/shared/helper';
-import { LayoutService } from 'app/core/layout.service';
 import { BehaviorSubject } from 'rxjs';
 
 /**
@@ -20,17 +35,16 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: 'decimal-field.component.html',
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: DecimalFieldComponent, multi: true },
-    { provide: NG_VALIDATORS, useExisting: DecimalFieldComponent, multi: true },
-  ],
+    { provide: NG_VALIDATORS, useExisting: DecimalFieldComponent, multi: true }
+  ]
 })
-export class DecimalFieldComponent extends BaseFormFieldComponent<string>
-  implements Validator, OnInit, OnChanges {
-
+export class DecimalFieldComponent extends BaseFormFieldComponent<string> implements Validator, OnInit, OnChanges {
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     public layout: LayoutService,
-    private changeDetector: ChangeDetectorRef) {
+    private changeDetector: ChangeDetectorRef
+  ) {
     super(injector, controlContainer);
   }
 
@@ -156,17 +170,19 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
       for (let index = this.minRange; index <= this.maxRange; index++) {
         this.fixedValues.push(this.format.numberToFixed(index, this.scale));
       }
-      this.addSub(this.fixedValuesControl.valueChanges.subscribe((input: string) => {
-        if (input === 'custom') {
-          this.internalControl.setValue(null);
-          this.useCustom = true;
-          setTimeout(() => this.inputRef.nativeElement.focus(), 100);
-        } else {
-          this.internalControl.setValue(input);
-          this.onBlur();
-          this.useCustom = false;
-        }
-      }));
+      this.addSub(
+        this.fixedValuesControl.valueChanges.subscribe((input: string) => {
+          if (input === 'custom') {
+            this.internalControl.setValue(null);
+            this.useCustom = true;
+            setTimeout(() => this.inputRef.nativeElement.focus(), 100);
+          } else {
+            this.internalControl.setValue(input);
+            this.onBlur();
+            this.useCustom = false;
+          }
+        })
+      );
     }
   }
 
@@ -240,7 +256,7 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
     // We're validating a value that was already passed to format.numberToFixed
     if (value === undefined) {
       return {
-        number: true,
+        number: true
       };
     }
     return null;
@@ -248,7 +264,6 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
 
   isIos() {
     var ua = navigator.userAgent.toLowerCase();
-    return ua.indexOf("ipad") > -1 || ua.indexOf("iphone") > -1 || ua.indexOf("ipod") > -1;
+    return ua.indexOf('ipad') > -1 || ua.indexOf('iphone') > -1 || ua.indexOf('ipod') > -1;
   }
-
 }

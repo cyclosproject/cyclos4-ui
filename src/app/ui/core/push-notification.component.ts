@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostBinding, Inject, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  HostBinding,
+  Inject,
+  Input,
+  Output
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Notification } from 'app/api/models';
 import { NotificationsService } from 'app/api/services/notifications.service';
@@ -19,10 +28,9 @@ const TimeoutMillis = 6000;
 @Component({
   selector: 'push-notification',
   templateUrl: 'push-notification.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PushNotificationComponent {
-
   SvgIcon = SvgIcon;
 
   @HostBinding('style.opacity') opacity: 1;
@@ -50,7 +58,7 @@ export class PushNotificationComponent {
     private menuService: MenuService,
     private errorHandler: ErrorHandlerService,
     private changeDetector: ChangeDetectorRef,
-    private router: Router,
+    private router: Router
   ) {
     this.closed.subscribe(() => {
       if (this.timeoutHandle) {
@@ -73,8 +81,10 @@ export class PushNotificationComponent {
 
   private markAsReadAndClose() {
     this.errorHandler.requestWithCustomErrorHandler(() => {
-      this.notificationsService.markNotificationsAsRead({ ids: [this.notification.id] })
-        .pipe(first()).subscribe(() => {
+      this.notificationsService
+        .markNotificationsAsRead({ ids: [this.notification.id] })
+        .pipe(first())
+        .subscribe(() => {
           this.closed.emit();
         });
     });

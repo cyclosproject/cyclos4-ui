@@ -1,6 +1,6 @@
-import { Injectable, Inject } from '@angular/core';
-import { ReplaySubject, Observable } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
+import { Observable, ReplaySubject } from 'rxjs';
 
 /**
  * Helper service that loads external scripts on demand
@@ -10,9 +10,9 @@ import { DOCUMENT } from '@angular/common';
   providedIn: 'root'
 })
 export class ScriptLoaderService {
-  _loadedLibraries: { [url: string]: ReplaySubject<any>; } = {};
+  _loadedLibraries: { [url: string]: ReplaySubject<any> } = {};
 
-  constructor(@Inject(DOCUMENT) private readonly document: HTMLDocument) { }
+  constructor(@Inject(DOCUMENT) private readonly document: HTMLDocument) {}
 
   /**
    * Loads a script from the given URL

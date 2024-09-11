@@ -1,72 +1,87 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data then content"></ng-container>
+  <ng-container *ngIf="data; then content"></ng-container>
 </page-layout>
 
 <ng-template #content>
-  <page-content mode="filters"
+  <page-content
+    mode="filters"
     [heading]="i18n.account.paymentLimits.title.overview"
     [mobileHeading]="i18n.account.paymentLimits.mobileTitle.overview"
     [headingActions]="headingActions$ | async">
     <div [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row no-gutters">
         <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
-          <multi-selection-field hierarchyProperty="groupSet"
-            formControlName="groups" [label]="i18n.user.groupFilter">
-            <field-option *ngFor="let group of data.groups"
+          <multi-selection-field hierarchyProperty="groupSet" formControlName="groups" [label]="i18n.user.groupFilter">
+            <field-option
+              *ngFor="let group of data.groups"
               [value]="ApiHelper.internalNameOrId(group)"
-              [internalName]="group.internalName" [id]="group.id"
-              [text]="group.name" [parent]="group.groupSet">
+              [internalName]="group.internalName"
+              [id]="group.id"
+              [text]="group.name"
+              [parent]="group.groupSet">
             </field-option>
           </multi-selection-field>
         </div>
         <div *ngIf="currencies?.length > 1" class="col-12 col-md-6">
-          <single-selection-field formControlName="currency"
+          <single-selection-field
+            formControlName="currency"
             [label]="i18n.general.currency"
             [emptyOption]="i18n.general.notApplied">
-            <field-option *ngFor="let currency of currencies"
-              [value]="currency.id" [text]="currency.name"></field-option>
+            <field-option
+              *ngFor="let currency of currencies"
+              [value]="currency.id"
+              [text]="currency.name"></field-option>
           </single-selection-field>
         </div>
-        <ng-container *ngIf="(moreFilters$ | async)">
+        <ng-container *ngIf="moreFilters$ | async">
           <div *ngIf="data.accountTypes?.length > 1" class="col-12 col-md-6">
-            <single-selection-field formControlName="accountType"
-              [label]="i18n.account.account" [emptyOption]="i18n.general.all">
-              <field-option *ngFor="let accountType of accountTypes()"
-                [id]="accountType.id" [value]="accountType.id"
+            <single-selection-field
+              formControlName="accountType"
+              [label]="i18n.account.account"
+              [emptyOption]="i18n.general.all">
+              <field-option
+                *ngFor="let accountType of accountTypes()"
+                [id]="accountType.id"
+                [value]="accountType.id"
                 [text]="accountType.name">
               </field-option>
             </single-selection-field>
           </div>
           <!-- Payment limit filter -->
           <div class="col-12 col-md-6">
-            <single-selection-field formControlName="customAmountLimit"
+            <single-selection-field
+              formControlName="customAmountLimit"
               [fieldOptions]="customLimitOptions"
               [emptyOption]="i18n.general.all"
               [label]="i18n.account.paymentLimits.personalizedPaymentLimit">
             </single-selection-field>
           </div>
           <!-- Force a new line to keep range in same row -->
-          <div class="w-100" [hidden]="!(isCustomPaymentLimit$ | async)">
-          </div>
-          <div class="col-12 col-md-6"
-            [hidden]="!(isCustomPaymentLimit$ | async)">
-            <decimal-field formControlName="paymentLimitFrom"
+          <div class="w-100" [hidden]="!(isCustomPaymentLimit$ | async)"></div>
+          <div class="col-12 col-md-6" [hidden]="!(isCustomPaymentLimit$ | async)">
+            <decimal-field
+              formControlName="paymentLimitFrom"
               [label]="i18n.account.paymentLimits.fromPaymentLimit"
-              fieldSize="full" [scale]="currencyDecimalDigits()"
-              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+              fieldSize="full"
+              [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()"
+              [suffix]="currencySuffix()">
             </decimal-field>
           </div>
-          <div class="col-12 col-md-6"
-            [hidden]="!(isCustomPaymentLimit$ | async)">
-            <decimal-field formControlName="paymentLimitTo"
+          <div class="col-12 col-md-6" [hidden]="!(isCustomPaymentLimit$ | async)">
+            <decimal-field
+              formControlName="paymentLimitTo"
               [label]="i18n.account.paymentLimits.toPaymentLimit"
-              fieldSize="full" [scale]="currencyDecimalDigits()"
-              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+              fieldSize="full"
+              [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()"
+              [suffix]="currencySuffix()">
             </decimal-field>
           </div>
           <!-- Daily limit filter -->
           <div class="col-12 col-md-6">
-            <single-selection-field formControlName="customAmountPerDayLimit"
+            <single-selection-field
+              formControlName="customAmountPerDayLimit"
               [fieldOptions]="customLimitOptions"
               [emptyOption]="i18n.general.all"
               [label]="i18n.account.paymentLimits.personalizedDailyLimit">
@@ -74,25 +89,30 @@
           </div>
           <!-- Force a new line to keep range in same row -->
           <div class="w-100" [hidden]="!(isCustomDailyLimit$ | async)"></div>
-          <div class="col-12 col-md-6"
-            [hidden]="!(isCustomDailyLimit$ | async)">
-            <decimal-field formControlName="dailyLimitFrom"
+          <div class="col-12 col-md-6" [hidden]="!(isCustomDailyLimit$ | async)">
+            <decimal-field
+              formControlName="dailyLimitFrom"
               [label]="i18n.account.paymentLimits.fromDailyLimit"
-              fieldSize="full" [scale]="currencyDecimalDigits()"
-              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+              fieldSize="full"
+              [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()"
+              [suffix]="currencySuffix()">
             </decimal-field>
           </div>
-          <div class="col-12 col-md-6"
-            [hidden]="!(isCustomDailyLimit$ | async)">
-            <decimal-field formControlName="dailyLimitTo"
+          <div class="col-12 col-md-6" [hidden]="!(isCustomDailyLimit$ | async)">
+            <decimal-field
+              formControlName="dailyLimitTo"
               [label]="i18n.account.paymentLimits.toDailyLimit"
-              fieldSize="full" [scale]="currencyDecimalDigits()"
-              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+              fieldSize="full"
+              [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()"
+              [suffix]="currencySuffix()">
             </decimal-field>
           </div>
           <!-- Weekly limit filter -->
           <div class="col-12 col-md-6">
-            <single-selection-field formControlName="customAmountPerWeekLimit"
+            <single-selection-field
+              formControlName="customAmountPerWeekLimit"
               [fieldOptions]="customLimitOptions"
               [emptyOption]="i18n.general.all"
               [label]="i18n.account.paymentLimits.personalizedWeeklyLimit">
@@ -100,20 +120,24 @@
           </div>
           <!-- Force a new line to keep range in same row -->
           <div class="w-100" [hidden]="!(isCustomWeeklyLimit$ | async)"></div>
-          <div class="col-12 col-md-6"
-            [hidden]="!(isCustomWeeklyLimit$ | async)">
-            <decimal-field formControlName="weeklyLimitFrom"
+          <div class="col-12 col-md-6" [hidden]="!(isCustomWeeklyLimit$ | async)">
+            <decimal-field
+              formControlName="weeklyLimitFrom"
               [label]="i18n.account.paymentLimits.fromWeeklyLimit"
-              fieldSize="full" [scale]="currencyDecimalDigits()"
-              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+              fieldSize="full"
+              [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()"
+              [suffix]="currencySuffix()">
             </decimal-field>
           </div>
-          <div class="col-12 col-md-6"
-            [hidden]="!(isCustomWeeklyLimit$ | async)">
-            <decimal-field formControlName="weeklyLimitTo"
+          <div class="col-12 col-md-6" [hidden]="!(isCustomWeeklyLimit$ | async)">
+            <decimal-field
+              formControlName="weeklyLimitTo"
               [label]="i18n.account.paymentLimits.toWeeklyLimit"
-              fieldSize="full" [scale]="currencyDecimalDigits()"
-              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+              fieldSize="full"
+              [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()"
+              [suffix]="currencySuffix()">
             </decimal-field>
           </div>
           <!-- Monthly limit filter -->
@@ -126,66 +150,76 @@
             </single-selection-field>
           </div>
           <!-- Force a new line to keep range in same row -->
-          <div class="w-100" [hidden]="!(isCustomMonthlyLimit$ | async)">
-          </div>
-          <div class="col-12 col-md-6"
-            [hidden]="!(isCustomMonthlyLimit$ | async)">
-            <decimal-field formControlName="monthlyLimitFrom"
+          <div class="w-100" [hidden]="!(isCustomMonthlyLimit$ | async)"></div>
+          <div class="col-12 col-md-6" [hidden]="!(isCustomMonthlyLimit$ | async)">
+            <decimal-field
+              formControlName="monthlyLimitFrom"
               [label]="i18n.account.paymentLimits.fromMonthlyLimit"
-              fieldSize="full" [scale]="currencyDecimalDigits()"
-              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+              fieldSize="full"
+              [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()"
+              [suffix]="currencySuffix()">
             </decimal-field>
           </div>
-          <div class="col-12 col-md-6"
-            [hidden]="!(isCustomMonthlyLimit$ | async)">
-            <decimal-field formControlName="monthlyLimitTo"
+          <div class="col-12 col-md-6" [hidden]="!(isCustomMonthlyLimit$ | async)">
+            <decimal-field
+              formControlName="monthlyLimitTo"
               [label]="i18n.account.paymentLimits.toMonthlyLimit"
-              fieldSize="full" [scale]="currencyDecimalDigits()"
-              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+              fieldSize="full"
+              [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()"
+              [suffix]="currencySuffix()">
             </decimal-field>
           </div>
           <!-- Yearly limit filter -->
           <div class="col-12 col-md-6">
-            <single-selection-field formControlName="customAmountPerYearLimit"
+            <single-selection-field
+              formControlName="customAmountPerYearLimit"
               [fieldOptions]="customLimitOptions"
               [emptyOption]="i18n.general.all"
               [label]="i18n.account.paymentLimits.personalizedYearlyLimit">
             </single-selection-field>
           </div>
           <!-- Force a new line to keep range in same row -->
-          <div class="w-100" [hidden]="!(isCustomYearlyLimit$ | async)">
-          </div>
-          <div class="col-12 col-md-6"
-            [hidden]="!(isCustomYearlyLimit$ | async)">
-            <decimal-field formControlName="yearlyLimitFrom"
+          <div class="w-100" [hidden]="!(isCustomYearlyLimit$ | async)"></div>
+          <div class="col-12 col-md-6" [hidden]="!(isCustomYearlyLimit$ | async)">
+            <decimal-field
+              formControlName="yearlyLimitFrom"
               [label]="i18n.account.paymentLimits.fromYearlyLimit"
-              fieldSize="full" [scale]="currencyDecimalDigits()"
-              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+              fieldSize="full"
+              [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()"
+              [suffix]="currencySuffix()">
             </decimal-field>
           </div>
-          <div class="col-12 col-md-6"
-            [hidden]="!(isCustomYearlyLimit$ | async)">
-            <decimal-field formControlName="yearlyLimitTo"
+          <div class="col-12 col-md-6" [hidden]="!(isCustomYearlyLimit$ | async)">
+            <decimal-field
+              formControlName="yearlyLimitTo"
               [label]="i18n.account.paymentLimits.toYearlyLimit"
-              fieldSize="full" [scale]="currencyDecimalDigits()"
-              [prefix]="currencyPrefix()" [suffix]="currencySuffix()">
+              fieldSize="full"
+              [scale]="currencyDecimalDigits()"
+              [prefix]="currencyPrefix()"
+              [suffix]="currencySuffix()">
             </decimal-field>
           </div>
 
           <div class="col-12 col-md-6">
-            <user-field formControlName="user" [label]="i18n.general.user"
+            <user-field formControlName="user" [label]="i18n.general.user" [allowContacts]="false"> </user-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <user-field
+              formControlName="broker"
+              [label]="i18n.general.usersOfBroker"
+              [filters]="userSearchFilters(true)"
               [allowContacts]="false">
             </user-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field formControlName="broker"
-              [label]="i18n.general.usersOfBroker"
-              [filters]="userSearchFilters(true)" [allowContacts]="false">
-            </user-field>
-          </div>
-          <div class="col-12 col-md-6">
-            <user-field formControlName="by" [label]="i18n.general.changedBy"
-              [filters]="userSearchFilters(false)" [allowContacts]="false">
+            <user-field
+              formControlName="by"
+              [label]="i18n.general.changedBy"
+              [filters]="userSearchFilters(false)"
+              [allowContacts]="false">
             </user-field>
           </div>
         </ng-container>
@@ -193,48 +227,50 @@
     </div>
   </page-content>
 
-  <results-layout [results]="results$ | async" [rendering$]="rendering$"
-    (update)="update($event)">
-    <mobile-result *mobileResult="let row"
-      (click)="router.navigate(view(row)); $event.stopPropagation()">
+  <results-layout [results]="results$ | async" [rendering$]="rendering$" (update)="update($event)">
+    <mobile-result *mobileResult="let row" (click)="router.navigate(view(row)); $event.stopPropagation()">
       <div class="d-flex">
         <div class="w-100">
           <label-value [label]="i18n.general.user" labelPosition="sideForced">
             {{ row.user.display }}
           </label-value>
-          <label-value [label]="i18n.account.account"
-            labelPosition="sideForced">
+          <label-value [label]="i18n.account.account" labelPosition="sideForced">
             {{ row.account.type.name }}
           </label-value>
-          <label-value [label]="i18n.account.paymentLimits.paymentLimit"
-            labelPosition="sideForced">
-            {{ row.customAmountLimit ?
-            (row.amountLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+          <label-value [label]="i18n.account.paymentLimits.paymentLimit" labelPosition="sideForced">
+            {{
+              row.customAmountLimit
+                ? (row.amountLimit | currency : row.account.currency)
+                : i18n.account.limits.productDefault
+            }}
           </label-value>
-          <label-value [label]="i18n.account.paymentLimits.dailyLimit"
-            labelPosition="sideForced">
-            {{ row.customAmountPerDayLimit ?
-            (row.amountPerDayLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+          <label-value [label]="i18n.account.paymentLimits.dailyLimit" labelPosition="sideForced">
+            {{
+              row.customAmountPerDayLimit
+                ? (row.amountPerDayLimit | currency : row.account.currency)
+                : i18n.account.limits.productDefault
+            }}
           </label-value>
-          <label-value [label]="i18n.account.paymentLimits.weeklyLimit"
-            labelPosition="sideForced">
-            {{ row.customAmountPerWeekLimit ?
-            (row.amountPerWeekLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+          <label-value [label]="i18n.account.paymentLimits.weeklyLimit" labelPosition="sideForced">
+            {{
+              row.customAmountPerWeekLimit
+                ? (row.amountPerWeekLimit | currency : row.account.currency)
+                : i18n.account.limits.productDefault
+            }}
           </label-value>
-          <label-value [label]="i18n.account.paymentLimits.monthlyLimit"
-            labelPosition="sideForced">
-            {{ row.customAmountPerMonthLimit ?
-            (row.amountPerMonthLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+          <label-value [label]="i18n.account.paymentLimits.monthlyLimit" labelPosition="sideForced">
+            {{
+              row.customAmountPerMonthLimit
+                ? (row.amountPerMonthLimit | currency : row.account.currency)
+                : i18n.account.limits.productDefault
+            }}
           </label-value>
-          <label-value [label]="i18n.account.paymentLimits.yearlyLimit"
-            labelPosition="sideForced">
-            {{ row.customAmountPerYearLimit ?
-            (row.amountPerYearLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+          <label-value [label]="i18n.account.paymentLimits.yearlyLimit" labelPosition="sideForced">
+            {{
+              row.customAmountPerYearLimit
+                ? (row.amountPerYearLimit | currency : row.account.currency)
+                : i18n.account.limits.productDefault
+            }}
           </label-value>
         </div>
       </div>
@@ -251,34 +287,45 @@
         <th>{{ i18n.account.paymentLimits.yearlyLimit }}</th>
       </thead>
       <tbody>
-        <tr *ngFor="let row of (results$ | async)?.results"
+        <tr
+          *ngFor="let row of (results$ | async)?.results"
           (click)="router.navigate(view(row)); $event.stopPropagation()">
           <td>{{ row.user.display }}</td>
           <td>{{ row.account.type.name }}</td>
           <td>
-            {{ row.customAmountLimit ?
-            (row.amountLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+            {{
+              row.customAmountLimit
+                ? (row.amountLimit | currency : row.account.currency)
+                : i18n.account.limits.productDefault
+            }}
           </td>
           <td>
-            {{ row.customAmountPerDayLimit?
-            (row.amountPerDayLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+            {{
+              row.customAmountPerDayLimit
+                ? (row.amountPerDayLimit | currency : row.account.currency)
+                : i18n.account.limits.productDefault
+            }}
           </td>
           <td>
-            {{ row.customAmountPerWeekLimit?
-            (row.amountPerWeekLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+            {{
+              row.customAmountPerWeekLimit
+                ? (row.amountPerWeekLimit | currency : row.account.currency)
+                : i18n.account.limits.productDefault
+            }}
           </td>
           <td>
-            {{ row.customAmountPerMonthLimit?
-            (row.amountPerMonthLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+            {{
+              row.customAmountPerMonthLimit
+                ? (row.amountPerMonthLimit | currency : row.account.currency)
+                : i18n.account.limits.productDefault
+            }}
           </td>
           <td>
-            {{ row.customAmountPerYearLimit?
-            (row.amountPerYearLimit | currency:row.account.currency) :
-            i18n.account.limits.productDefault }}
+            {{
+              row.customAmountPerYearLimit
+                ? (row.amountPerYearLimit | currency : row.account.currency)
+                : i18n.account.limits.productDefault
+            }}
           </td>
         </tr>
       </tbody>

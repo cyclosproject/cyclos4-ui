@@ -1,50 +1,54 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="data$ | async; else loading" [heading]="data.title"
-    [mobileHeading]="data.title" [headingActions]="headingActions$ | async">
-
+  <page-content
+    *ngIf="data$ | async; else loading"
+    [heading]="data.title"
+    [mobileHeading]="data.title"
+    [headingActions]="headingActions$ | async">
     <div class="d-flex flex-grow-1 flex-column">
-      <div
-        class="d-flex flex-column flex-sm-row-reverse justify-content-sm-between">
-        <div *ngIf="data.type.image"
-          class="image d-flex justify-content-center mt-2 mb-4">
-          <avatar-lightbox size="160" imageSize="200"
-            [image]="data.type.image"></avatar-lightbox>
+      <div class="d-flex flex-column flex-sm-row-reverse justify-content-sm-between">
+        <div *ngIf="data.type.image" class="image d-flex justify-content-center mt-2 mb-4">
+          <avatar-lightbox size="160" imageSize="200" [image]="data.type.image"></avatar-lightbox>
         </div>
         <div class="d-flex flex-column flex-grow-1">
-          <label-value *ngIf="data.showConfiguration"
+          <label-value
+            *ngIf="data.showConfiguration"
             [label]="i18n.voucher.configuration"
             [value]="data.type.configuration.name">
           </label-value>
-          <label-value *ngIf="data.showType" [label]="i18n.general.type"
-            [value]="data.type.name">
-          </label-value>
-          <label-value *ngIf="data.token" [label]="i18n.voucher.token"
-            [value]="data.token">
-          </label-value>
-          <label-value *ngIf="data.amount"
+          <label-value *ngIf="data.showType" [label]="i18n.general.type" [value]="data.type.name"> </label-value>
+          <label-value *ngIf="data.token" [label]="i18n.voucher.token" [value]="data.token"> </label-value>
+          <label-value
+            *ngIf="data.amount"
             [label]="data.allowPartialRedeems ? i18n.voucher.redeem.amountAtCreation : i18n.transaction.amount"
-            [value]="data.amount | currency:data.type.configuration.currency">
+            [value]="data.amount | currency : data.type.configuration.currency">
           </label-value>
-          <label-value *ngIf="data.balance" [label]="i18n.voucher.balance"
-            [value]="data.balance | currency:data.type.configuration.currency">
+          <label-value
+            *ngIf="data.balance"
+            [label]="i18n.voucher.balance"
+            [value]="data.balance | currency : data.type.configuration.currency">
           </label-value>
-          <label-value *ngIf="data.creationType"
+          <label-value
+            *ngIf="data.creationType"
             [label]="i18n.voucher.creationType.label"
             [value]="apiI18n.voucherCreationType(data.creationType)">
           </label-value>
           <label-value
             *ngIf="data.creationType === VoucherCreationTypeEnum.SENT"
-            [label]="i18n.voucher.sentToEmail" [value]="data.email">
+            [label]="i18n.voucher.sentToEmail"
+            [value]="data.email">
           </label-value>
-          <label-value *ngIf="data.creationDate"
+          <label-value
+            *ngIf="data.creationDate"
             [label]="i18n.general.creationDate"
             [value]="data.creationDate | dateTime"></label-value>
-          <label-value *ngIf="data.owner && !authHelper.isSelf(data.owner)"
-            [label]="i18n.voucher.owner">
+          <label-value *ngIf="data.owner && !authHelper.isSelf(data.owner)" [label]="i18n.voucher.owner">
             <user-link [user]="data.owner"></user-link>
           </label-value>
-          <label-value *ngIf="data.buyer && !authHelper.isSelf(data.buyer)"
-            [label]="data.creationType === VoucherCreationTypeEnum.SENT ? i18n.voucher.send.issuer : i18n.voucher.buy.buyer">
+          <label-value
+            *ngIf="data.buyer && !authHelper.isSelf(data.buyer)"
+            [label]="
+              data.creationType === VoucherCreationTypeEnum.SENT ? i18n.voucher.send.issuer : i18n.voucher.buy.buyer
+            ">
             <user-link [user]="data.buyer"></user-link>
           </label-value>
           <label-value *ngIf="data.buy" [label]="i18n.voucher.buy.payment">
@@ -55,29 +59,33 @@
           <label-value *ngIf="data.pin" [label]="i18n.voucher.pin">
             <hidden-text [text]="data.pin"></hidden-text>
           </label-value>
-          <label-value [label]="i18n.general.status"
-            [value]="apiI18n.voucherStatus(data.status)">
-          </label-value>
+          <label-value [label]="i18n.general.status" [value]="apiI18n.voucherStatus(data.status)"> </label-value>
           <label-value
             *ngIf="data.pinStatusForRedeem !== VoucherPinStatusForRedeemEnum.NOT_USED"
             [label]="i18n.voucher.pinStatusForRedeem.status"
             [value]="apiI18n.voucherPinStatusForRedeem(data.pinStatusForRedeem)">
           </label-value>
           <ng-container *ngIf="data.status !== VoucherStatusEnum.REDEEMED">
-            <label-value *ngIf="data.expirationDate"
+            <label-value
+              *ngIf="data.expirationDate"
               [label]="i18n.general.expirationDate"
               [value]="data.expirationDate | dateTime">
             </label-value>
-            <label-value *ngIf="data.expirationDateComments"
+            <label-value
+              *ngIf="data.expirationDateComments"
               [label]="i18n.voucher.expirationDateComments"
-              [value]="data.expirationDateComments" valueFormat="break">
+              [value]="data.expirationDateComments"
+              valueFormat="break">
             </label-value>
           </ng-container>
-          <label-value *ngIf="data.sendMessage"
-            [label]="i18n.voucher.send.message" [value]="data.sendMessage"
+          <label-value
+            *ngIf="data.sendMessage"
+            [label]="i18n.voucher.send.message"
+            [value]="data.sendMessage"
             valueFormat="break"></label-value>
           <ng-container *ngIf="data.singleRedeem as singleRedeem">
-            <label-value *ngIf="singleRedeem.date"
+            <label-value
+              *ngIf="singleRedeem.date"
               [label]="i18n.voucher.redeem.date"
               [value]="singleRedeem.date | dateTime">
             </label-value>
@@ -86,38 +94,33 @@
               [label]="i18n.voucher.redeem.redeemer">
               <user-link [user]="singleRedeem.user"></user-link>
             </label-value>
-            <label-value *ngIf="singleRedeem.by?.user"
-              [label]="i18n.voucher.redeem.by">
+            <label-value *ngIf="singleRedeem.by?.user" [label]="i18n.voucher.redeem.by">
               <user-link [user]="singleRedeem.by"></user-link>
             </label-value>
-            <label-value *ngIf="singleRedeem.amount != data.amount"
+            <label-value
+              *ngIf="singleRedeem.amount != data.amount"
               [label]="i18n.voucher.redeem.amount"
-              [value]="singleRedeem.amount | currency:data.type.configuration.currency">
+              [value]="singleRedeem.amount | currency : data.type.configuration.currency">
             </label-value>
-            <label-value *ngIf="singleRedeem.payment"
-              [label]="i18n.voucher.redeem.payment">
+            <label-value *ngIf="singleRedeem.payment" [label]="i18n.voucher.redeem.payment">
               <a [routerLink]="transactionPath(singleRedeem.payment)">
                 {{ singleRedeem.payment.display }}
               </a>
             </label-value>
           </ng-container>
-          <ng-container
-            *ngIf="data.amount && data.status === VoucherStatusEnum.OPEN">
-            <label-value *ngIf="!data.redeemAfterDateReached"
+          <ng-container *ngIf="data.amount && data.status === VoucherStatusEnum.OPEN">
+            <label-value
+              *ngIf="!data.redeemAfterDateReached"
               [label]="i18n.voucher.redeem.afterDate"
               [value]="data.redeemAfterDate | date">
             </label-value>
-            <label-value *ngIf="redeemOnDays"
-              [label]="i18n.voucher.redeem.onDays" [value]="redeemOnDays">
+            <label-value *ngIf="redeemOnDays" [label]="i18n.voucher.redeem.onDays" [value]="redeemOnDays">
             </label-value>
           </ng-container>
 
-          <label-value *ngIf="data.refundDate"
-            [label]="i18n.voucher.refundDate"
-            [value]="data.refundDate | dateTime">
+          <label-value *ngIf="data.refundDate" [label]="i18n.voucher.refundDate" [value]="data.refundDate | dateTime">
           </label-value>
-          <label-value *ngIf="data.refund"
-            [label]="i18n.voucher.refundPayment">
+          <label-value *ngIf="data.refund" [label]="i18n.voucher.refundPayment">
             <a [routerLink]="transactionPath(data.refund)">
               {{ data.refund.display }}
             </a>
@@ -125,46 +128,36 @@
         </div>
       </div>
       <!-- Custom values -->
-      <custom-field-value *ngFor="let value of data.customValues"
-        [fieldValue]="value">
-      </custom-field-value>
+      <custom-field-value *ngFor="let value of data.customValues" [fieldValue]="value"> </custom-field-value>
 
-      <ng-container
-        *ngIf="data.creationType !== VoucherCreationTypeEnum.SENT">
-        <label-value *ngIf="data.email" [label]="i18n.voucher.email"
-          [value]="data.email">
+      <ng-container *ngIf="data.creationType !== VoucherCreationTypeEnum.SENT">
+        <label-value *ngIf="data.email" [label]="i18n.voucher.email" [value]="data.email"> </label-value>
+        <label-value *ngIf="data.mobilePhone" [label]="i18n.voucher.mobilePhone" [value]="data.mobilePhone">
         </label-value>
-        <label-value *ngIf="data.mobilePhone"
-          [label]="i18n.voucher.mobilePhone" [value]="data.mobilePhone">
-        </label-value>
-        <label-value *ngIf="data.email || data.mobilePhone"
+        <label-value
+          *ngIf="data.email || data.mobilePhone"
           [label]="i18n.voucher.enableNotifications"
           [value]="data.enableNotifications">
         </label-value>
       </ng-container>
 
       <!-- Personal use notice -->
-      <ng-container *ngIf="data.gift === false"
-        class="d-flex justify-content-start">
+      <ng-container *ngIf="data.gift === false" class="d-flex justify-content-start">
         <hr />
         <div>{{ i18n.voucher.personal(data.buyer.display) }}</div>
       </ng-container>
 
       <!-- Description -->
-      <ng-container *ngIf="data.description"
-        class="d-flex justify-content-start">
-        <h2 class="mt-3"> {{ i18n.general.description }} </h2>
-        <div class="break-nl">{{
-          data.description
-          }}</div>
+      <ng-container *ngIf="data.description" class="d-flex justify-content-start">
+        <h2 class="mt-3">{{ i18n.general.description }}</h2>
+        <div class="break-nl">{{ data.description }}</div>
       </ng-container>
 
       <!-- QrCode -->
       <ng-container *ngIf="qrCodeUrl$ | async as url">
         <hr class="mt-3" />
-        <div
-          class="qr-container image d-flex justify-content-center mb-4 align-self-center">
-          <img [src]="url | trust:'url'" alt="QR-code" class="mw-100">
+        <div class="qr-container image d-flex justify-content-center mb-4 align-self-center">
+          <img [src]="url | trust : 'url'" alt="QR-code" class="mw-100" />
         </div>
       </ng-container>
     </div>
@@ -172,10 +165,13 @@
 
   <div *ngIf="data?.hasTransactions" class="no-top-margin-page-content">
     <h1 class="header-root">{{ resolveVoucherTransactionsTitle() }}</h1>
-    <results-layout [results]="transactions$ | async"
-      [toLink]="toVoucherTransactionLink">
-      <mobile-result *mobileResult="let row" [avatarImage]="row.user?.image"
-        [avatarIcon]="SvgIcon.Person" [date]="row.date" [amount]="row.amount"
+    <results-layout [results]="transactions$ | async" [toLink]="toVoucherTransactionLink">
+      <mobile-result
+        *mobileResult="let row"
+        [avatarImage]="row.user?.image"
+        [avatarIcon]="SvgIcon.Person"
+        [date]="row.date"
+        [amount]="row.amount"
         [currency]="data.type.configuration.currency">
         <div class="cell-text cell-main">
           {{ row.user?.display }}
@@ -186,16 +182,14 @@
         <thead>
           <th *ngIf="showTransactionsUser$ | async" class="avatar"></th>
           <th>{{ i18n.voucher.transaction.date }}</th>
-          <th *ngIf="showTransactionsUser$ | async">{{
-            i18n.voucher.transaction.user }}</th>
+          <th *ngIf="showTransactionsUser$ | async">{{ i18n.voucher.transaction.user }}</th>
           <th class="amount">{{ i18n.voucher.transaction.amount }}</th>
         </thead>
         <tbody>
           <ng-container *ngFor="let row of (transactions$ | async)?.results">
             <tr (click)="viewVoucherTransaction(row)">
               <td *ngIf="showTransactionsUser$ | async" class="avatar">
-                <avatar [image]="row.user?.image" [icon]="SvgIcon.Person">
-                </avatar>
+                <avatar [image]="row.user?.image" [icon]="SvgIcon.Person"> </avatar>
               </td>
               <td>
                 <a [routerLink]="voucherTransactionPath(row)">
@@ -208,12 +202,13 @@
                 </a>
               </td>
               <td class="amount">
-                <a [routerLink]="voucherTransactionPath(row)" [ngClass]="{
-                  positive: format.isPositive(row.amount),
-                  negative: format.isNegative(row.amount)
-                }">
-                  {{ row.amount |
-                  currency:data.type.configuration.currency:true }}
+                <a
+                  [routerLink]="voucherTransactionPath(row)"
+                  [ngClass]="{
+                    positive: format.isPositive(row.amount),
+                    negative: format.isNegative(row.amount)
+                  }">
+                  {{ row.amount | currency : data.type.configuration.currency : true }}
                 </a>
               </td>
             </tr>

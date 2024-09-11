@@ -35,10 +35,13 @@ export function initialize(
   return async () => {
     const apiRoot = apiUrl();
 
-    const themeLoaded$ = timer(1000, 500).pipe(filter(() => {
-      const style = getComputedStyle(document.body);
-      return !empty(style.getPropertyValue('--primary').trim());
-    }), first());
+    const themeLoaded$ = timer(1000, 500).pipe(
+      filter(() => {
+        const style = getComputedStyle(document.body);
+        return !empty(style.getPropertyValue('--primary').trim());
+      }),
+      first()
+    );
 
     // Will split the session token if running on the same origin as the API
     nextRequestState.useCookie = isSameOrigin(apiRoot);
@@ -65,14 +68,18 @@ export function initialize(
     dataForFrontendHolder.registerLoadHook(d => {
       const dataForUi = d?.dataForUi || {};
       // Initialize the translations loading
-      return i18nLoading.initialize(i18nRoot(apiRoot), { resourceCacheKey: dataForUi.resourceCacheKey, locale: dataForUi.currentLocale.code })
+      return i18nLoading
+        .initialize(i18nRoot(apiRoot), {
+          resourceCacheKey: dataForUi.resourceCacheKey,
+          locale: dataForUi.currentLocale.code
+        })
         .pipe(switchMap(() => of(d)));
     });
     dataForFrontendHolder.registerLoadHook(d => {
-      return iconLoading.load(d?.svgIconNames || [])
-        .pipe(
-          switchMap(() => of(d)),
-          catchError(() => of(d)));
+      return iconLoading.load(d?.svgIconNames || []).pipe(
+        switchMap(() => of(d)),
+        catchError(() => of(d))
+      );
     });
     dataForFrontendHolder.registerLoadHook(d => {
       if (ApiHelper.isRestrictedAccess(d)) {
@@ -110,23 +117,29 @@ export function initialize(
         const marker = '/ui/theme.css';
         const pos = url?.indexOf(marker);
         if (pos > 0) {
-          const newUrl = `${url.substring(0, pos + marker.length)}?id=${theme.id}&mod=${theme.lastModifiedInMillis}&k=${d.dataForUi?.resourceCacheKey}`;
+          const newUrl = `${url.substring(0, pos + marker.length)}?id=${theme.id}&mod=${theme.lastModifiedInMillis}&k=${
+            d.dataForUi?.resourceCacheKey
+          }`;
           const root = document.querySelector('ui-root') as HTMLElement;
           if (newUrl !== url && root) {
             root.style.display = 'none';
             root.classList.remove('d-flex');
             setRootSpinnerVisible(true);
             document.head.removeChild(stylesLink);
-            return timer(0).pipe(switchMap(() => {
-              stylesLink.href = newUrl;
-              document.head.appendChild(stylesLink);
-              return themeLoaded$.pipe(map(() => {
-                root.style.display = '';
-                root.classList.add('d-flex');
-                setRootSpinnerVisible(false);
-                return d;
-              }));
-            }));
+            return timer(0).pipe(
+              switchMap(() => {
+                stylesLink.href = newUrl;
+                document.head.appendChild(stylesLink);
+                return themeLoaded$.pipe(
+                  map(() => {
+                    root.style.display = '';
+                    root.classList.add('d-flex');
+                    setRootSpinnerVisible(false);
+                    return d;
+                  })
+                );
+              })
+            );
           }
         }
       }
@@ -145,11 +158,11 @@ export function initialize(
               });
             }
             return of(d);
-          }));
+          })
+        );
       });
     }
     const dataForFrontend$ = dataForFrontendHolder.initialize(dataForFrontend);
-
 
     return forkJoin([dataForFrontend$, themeLoaded$]).toPromise();
   };
@@ -169,5 +182,5 @@ export const INITIALIZE: Provider = {
     StateManager,
     ScriptLoaderService
   ],
-  multi: true,
+  multi: true
 };

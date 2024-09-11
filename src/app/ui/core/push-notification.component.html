@@ -1,15 +1,16 @@
-<div class="toast" role="alert" aria-live="assertive" aria-atomic="true"
-  style="opacity: 1">
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="opacity: 1">
   <div class="toast-header">
-    <avatar [image]="notification.relatedUser?.image" [icon]="SvgIcon.Bell">
-    </avatar>
+    <avatar [image]="notification.relatedUser?.image" [icon]="SvgIcon.Bell"> </avatar>
     <div class="subject">
       <maybe-link [link]="path" (click)="navigate()">
         {{ notification.subject }}
       </maybe-link>
     </div>
-    <button *ngIf="layout.gtxxs$ | async" type="button"
-      class="ml-2 mb-1 close" (click)="closed.emit()"
+    <button
+      *ngIf="layout.gtxxs$ | async"
+      type="button"
+      class="ml-2 mb-1 close"
+      (click)="closed.emit()"
       [attr.aria-label]="i18n.general.close">
       <span aria-hidden="true">&times;</span>
     </button>

@@ -4,9 +4,7 @@ import {
   DataForFrontend,
   DatePeriod,
   Entity,
-
   FrontendEnum,
-
   InternalNamedEntity,
   NamedEntity,
   Notification,
@@ -19,7 +17,6 @@ import { empty } from 'app/shared/helper';
  * Helper methods for working with API model
  */
 export class ApiHelper {
-
   /** Value separator for custom fields */
   static VALUE_SEPARATOR = '|';
 
@@ -117,7 +114,7 @@ export class ApiHelper {
     }
     const pos = value.trim().indexOf(':');
     value = pos >= 0 ? value.substring(pos + 1) : value;
-    if (value.startsWith('\'')) {
+    if (value.startsWith("'")) {
       value = value.substring(1);
     }
     return value;
@@ -174,9 +171,11 @@ export class ApiHelper {
       case NotificationEntityTypeEnum.USER:
         return `/users/${notification.entityId}/profile`;
       case NotificationEntityTypeEnum.TRANSACTION:
-        if (notification.type === NotificationTypeEnum.FEEDBACK_OPTIONAL ||
+        if (
+          notification.type === NotificationTypeEnum.FEEDBACK_OPTIONAL ||
           notification.type === NotificationTypeEnum.FEEDBACK_EXPIRATION_REMINDER ||
-          notification.type === NotificationTypeEnum.FEEDBACK_REQUIRED) {
+          notification.type === NotificationTypeEnum.FEEDBACK_REQUIRED
+        ) {
           return `/users/feedbacks/set/${notification.entityId}`;
         }
         return `/banking/transaction/${notification.entityId}`;
@@ -285,17 +284,16 @@ export class ApiHelper {
    * - Guest from an unauthorized IP address
    */
   static isRestrictedAccess(dataForFrontend: DataForFrontend): boolean {
-    if (dataForFrontend?.frontend === FrontendEnum.CLASSIC
-      && !environment.standalone
-      && dataForFrontend?.dataForUi?.auth?.user) {
+    if (
+      dataForFrontend?.frontend === FrontendEnum.CLASSIC &&
+      !environment.standalone &&
+      dataForFrontend?.dataForUi?.auth?.user
+    ) {
       // Must redirect to the new frontend
       return true;
     }
     const auth = dataForFrontend?.dataForUi?.auth || {};
-    return auth.expiredPassword
-      || auth.pendingAgreements
-      || !!auth.loginConfirmation
-      || auth.unauthorizedAddress;
+    return auth.expiredPassword || auth.pendingAgreements || !!auth.loginConfirmation || auth.unauthorizedAddress;
   }
 
   /**

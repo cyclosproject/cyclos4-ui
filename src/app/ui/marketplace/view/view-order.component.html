@@ -1,18 +1,17 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="data" mode="viewForm" [heading]="i18n.ad.title.order"
+  <page-content
+    *ngIf="data"
+    mode="viewForm"
+    [heading]="i18n.ad.title.order"
     [mobileHeading]="i18n.ad.mobileTitle.order"
     [headingActions]="headingActions$ | async">
-    <div *ngIf="data.image && (layout.ltsm$ | async)"
-      class="d-flex justify-content-center mt-2 mb-4">
-      <avatar-lightbox [roundBorders]="false" [zoom]="false" size="140"
-        [image]="data.image"></avatar-lightbox>
+    <div *ngIf="data.image && (layout.ltsm$ | async)" class="d-flex justify-content-center mt-2 mb-4">
+      <avatar-lightbox [roundBorders]="false" [zoom]="false" size="140" [image]="data.image"></avatar-lightbox>
     </div>
 
     <div class="d-flex flex-row-reverse">
       <div *ngIf="data.image && (layout.gtxs$ | async)" class="image ml-4">
-        <avatar-lightbox [roundBorders]="false" [zoom]="false" size="140"
-          [image]="data.image">
-        </avatar-lightbox>
+        <avatar-lightbox [roundBorders]="false" [zoom]="false" size="140" [image]="data.image"> </avatar-lightbox>
       </div>
       <div class="d-flex flex-grow-1 flex-column">
         <label-value [label]="i18n.ad.order">
@@ -35,77 +34,73 @@
         </label-value>
       </div>
     </div>
-    <h2 class="mt-4 mb-2">{{ i18n.ad.products }}
-    </h2>
+    <h2 class="mt-4 mb-2">{{ i18n.ad.products }}</h2>
     <table class="table table-hover small-height">
       <thead>
         <th *ngIf="layout.gtxs$ | async" class="no-border">
-          {{ i18n.ad.number }}</th>
+          {{ i18n.ad.number }}
+        </th>
         <th class="no-border">{{ i18n.ad.product }}</th>
         <th class="no-border">{{ i18n.ad.quantity }}</th>
         <th *ngIf="layout.gtxs$ | async" class="no-border text-right">
           {{ i18n.ad.unitPrice }}
         </th>
-        <th class="no-border text-right">{{ i18n.transaction.amount }}
-        </th>
+        <th class="no-border text-right">{{ i18n.transaction.amount }}</th>
       </thead>
       <tbody>
-        <tr *ngFor="let row of data.items"
-          (click)="router.navigate(path(row))" class="cursor-pointer">
-          <td *ngIf="layout.gtxs$ | async">{{ row.product.productNumber }}
-          </td>
+        <tr *ngFor="let row of data.items" (click)="router.navigate(path(row))" class="cursor-pointer">
+          <td *ngIf="layout.gtxs$ | async">{{ row.product.productNumber }}</td>
           <td class="link">{{ row.product.name }}</td>
           <td>{{ row.quantity }}</td>
           <td *ngIf="layout.gtxs$ | async" class="text-right">
-            {{ row.price | currency:data.currency }}</td>
+            {{ row.price | currency : data.currency }}
+          </td>
           <td class="text-right">
-            {{ row.totalPrice | currency:data.currency }}
+            {{ row.totalPrice | currency : data.currency }}
           </td>
         </tr>
         <tr class="no-hover">
-          <td class="table-head-color"
-            [attr.colspan]="(layout.gtxs$ | async) ? 4 : 2">
-            {{ i18n.ad.subtotal }}</td>
+          <td class="table-head-color" [attr.colspan]="(layout.gtxs$ | async) ? 4 : 2">
+            {{ i18n.ad.subtotal }}
+          </td>
           <td class="table-head-color text-right">
-            {{ subtotal | currency:data.currency }}</td>
+            {{ subtotal | currency : data.currency }}
+          </td>
         </tr>
         <tr class="no-hover">
           <td [attr.colspan]="(layout.gtxs$ | async) ? 4 : 2">
             {{ i18n.ad.deliveryMethod + ': ' + resolveDeliveryLabel() }}
           </td>
           <td class="text-right">
-            {{ data.deliveryMethod.price | currency:data.currency }}</td>
+            {{ data.deliveryMethod.price | currency : data.currency }}
+          </td>
         </tr>
         <tr class="totalAmount no-hover">
-          <td class="border-bottom-0 label label-value-label"
-            [attr.colspan]="(layout.gtxs$ | async) ? 4 : 2">
-            {{ i18n.ad.total }}</td>
+          <td class="border-bottom-0 label label-value-label" [attr.colspan]="(layout.gtxs$ | async) ? 4 : 2">
+            {{ i18n.ad.total }}
+          </td>
           <td class="border-bottom-0 text-right label-value-value">
-            {{ data.totalPrice | currency: data.currency }}</td>
+            {{ data.totalPrice | currency : data.currency }}
+          </td>
         </tr>
       </tbody>
     </table>
     <h2 class="mb-2">{{ i18n.ad.deliveryInformation }}</h2>
-    <label-value *ngIf="data.deliveryMethod.minTime"
-      [label]="i18n.ad.minDeliveryTime">
+    <label-value *ngIf="data.deliveryMethod.minTime" [label]="i18n.ad.minDeliveryTime">
       {{ format.formatTimeInterval(data.deliveryMethod.minTime) }}
     </label-value>
-    <label-value *ngIf="data.deliveryMethod.maxTime"
-      [label]="i18n.ad.maxDeliveryTime">
+    <label-value *ngIf="data.deliveryMethod.maxTime" [label]="i18n.ad.maxDeliveryTime">
       {{ format.formatTimeInterval(data.deliveryMethod.maxTime) }}
     </label-value>
     <label-value *ngIf="data.deliveryMethod.price" [label]="i18n.ad.price">
-      {{ data.deliveryMethod.price |currency: data.currency }}
+      {{ data.deliveryMethod.price | currency : data.currency }}
     </label-value>
-    <label-value *ngIf="hasAddressFields" [label]="i18n.ad.deliveryAddress"
-      class="align-items-baseline">
+    <label-value *ngIf="hasAddressFields" [label]="i18n.ad.deliveryAddress" class="align-items-baseline">
       <address-details [address]="data.deliveryAddress"></address-details>
     </label-value>
-    <h2 *ngIf="remarks || canSetRemarks" class="mb-2">{{ i18n.ad.remarks }}
-    </h2>
+    <h2 *ngIf="remarks || canSetRemarks" class="mb-2">{{ i18n.ad.remarks }}</h2>
     <label class="any-label-value" *ngIf="remarks">{{ remarks }}</label>
-    <div *ngIf="canSetRemarks" [ngClass]="{'mt-4': remarks}"
-      [formGroup]="form">
+    <div *ngIf="canSetRemarks" [ngClass]="{ 'mt-4': remarks }" [formGroup]="form">
       <textarea-field formControlName="remarks"></textarea-field>
     </div>
   </page-content>

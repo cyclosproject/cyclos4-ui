@@ -9,14 +9,7 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
  * Module for viewing notifications
  */
 @NgModule({
-  declarations: [
-    SearchNotificationsComponent,
-    ManageSettingsComponent,
-    SendInvitationComponent
-  ],
-  imports: [
-    PersonalRoutingModule,
-    UiSharedModule
-  ],
+  declarations: [SearchNotificationsComponent, ManageSettingsComponent, SendInvitationComponent],
+  imports: [PersonalRoutingModule, UiSharedModule]
 })
-export class PersonalModule { }
+export class PersonalModule {}

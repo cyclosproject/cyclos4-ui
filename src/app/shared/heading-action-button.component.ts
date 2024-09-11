@@ -9,10 +9,9 @@ import { blurIfClick, nextId } from 'app/shared/helper';
 @Component({
   selector: 'heading-action-button',
   templateUrl: 'heading-action-button.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeadingActionButtonComponent {
-
   blurIfClick = blurIfClick;
   id: string;
   dropdownMenuId: string;
@@ -23,5 +22,4 @@ export class HeadingActionButtonComponent {
   }
 
   @Input() action: HeadingAction;
-
 }

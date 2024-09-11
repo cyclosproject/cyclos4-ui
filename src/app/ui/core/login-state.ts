@@ -8,17 +8,16 @@ export enum LoginReason {
   NORMAL,
   LOGGED_OUT,
   FORGOT_PASSWORD_GENERATED,
-  FORGOT_PASSWORD_MANUAL,
+  FORGOT_PASSWORD_MANUAL
 }
 
 /**
  * Stores data for the login page
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class LoginState {
-
   private _redirectUrl: string;
   get redirectUrl(): string {
     return this._redirectUrl;
@@ -52,7 +51,11 @@ export class LoginState {
   /**
    * Adds a new observer notified when the logout process starts. The flag is cleared once the logout request is processed.
    */
-  subscribeForLoggingOut(next?: (value: boolean) => void, error?: (error: any) => void, complete?: () => void): Subscription {
+  subscribeForLoggingOut(
+    next?: (value: boolean) => void,
+    error?: (error: any) => void,
+    complete?: () => void
+  ): Subscription {
     return this._loggingOut.subscribe(next, error, complete);
   }
 }

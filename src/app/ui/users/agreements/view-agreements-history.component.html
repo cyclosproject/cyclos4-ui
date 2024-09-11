@@ -1,9 +1,10 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data then content"></ng-container>
+  <ng-container *ngIf="data; then content"></ng-container>
 </page-layout>
 
 <ng-template #content>
-  <page-content [heading]="i18n.agreements.title.history"
+  <page-content
+    [heading]="i18n.agreements.title.history"
     [mobileHeading]="i18n.agreements.mobileTitle.history"
     [mode]="self ? 'empty' : 'normal'">
     <user-info *ngIf="!self" [user]="data.user"></user-info>
@@ -30,20 +31,24 @@
         <th>{{ i18n.agreements.agreement }}</th>
         <th *ngIf="hasAccepted">{{ i18n.agreements.accepted }}</th>
         <th *ngIf="hasRemoteAddress" class="align-center">
-          {{ i18n.general.remoteAddress }}</th>
+          {{ i18n.general.remoteAddress }}
+        </th>
         <th class="actions"></th>
       </thead>
       <tbody>
-        <tr *ngFor="let row of data.history"
-          [ngClass]="{ 'cursor-pointer': row.accepted }">
+        <tr *ngFor="let row of data.history" [ngClass]="{ 'cursor-pointer': row.accepted }">
           <td>{{ row.date | dateTime }}</td>
           <td>{{ row.agreement.name }}</td>
           <td *ngIf="hasAccepted">{{ row.accepted | boolean }}</td>
           <td *ngIf="hasRemoteAddress" class="align-center">
-            {{ row.remoteAddress }}</td>
+            {{ row.remoteAddress }}
+          </td>
           <td class="actions">
-            <button *ngIf="row.accepted" type="button"
-              [tooltip]="i18n.general.view" class="btn btn-icon"
+            <button
+              *ngIf="row.accepted"
+              type="button"
+              [tooltip]="i18n.general.view"
+              class="btn btn-icon"
               (click)="showAgreement(row)">
               <icon [icon]="SvgIcon.Search"></icon>
             </button>

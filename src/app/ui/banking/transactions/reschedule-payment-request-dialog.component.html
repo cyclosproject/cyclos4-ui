@@ -1,44 +1,48 @@
 <h1>{{ i18n.transaction.reschedulePaymentRequest }}</h1>
 <ng-container [formGroup]="form">
-
-  <single-selection-field labelPosition="above"
+  <single-selection-field
+    labelPosition="above"
     [label]="i18n.transaction.reschedulePaymentRequestRescheduleTo"
     [formControl]="rescheduleTo">
-    <field-option [value]="PaymentRequestScheduledTo.NOW"
-      [text]="i18n.transaction.paymentRequestSchedulingNow">
+    <field-option [value]="PaymentRequestScheduledTo.NOW" [text]="i18n.transaction.paymentRequestSchedulingNow">
     </field-option>
-    <field-option [value]="PaymentRequestScheduledTo.DATE"
-      [text]="i18n.transaction.paymentRequestSchedulingDate">
+    <field-option [value]="PaymentRequestScheduledTo.DATE" [text]="i18n.transaction.paymentRequestSchedulingDate">
     </field-option>
-    <field-option [value]="PaymentRequestScheduledTo.EXPIRY"
+    <field-option
+      [value]="PaymentRequestScheduledTo.EXPIRY"
       [text]="i18n.transaction.paymentRequestSchedulingExpiration(format.formatAsDate(transaction.expirationDate))">
     </field-option>
   </single-selection-field>
 
-  <date-field required formControlName="processDate" labelPosition="above"
+  <date-field
+    required
+    formControlName="processDate"
+    labelPosition="above"
     *ngIf="(rescheduleTo.valueChanges | async) === PaymentRequestScheduledTo.DATE"
     [label]="i18n.transaction.reschedulePaymentRequestRescheduleToDate">
   </date-field>
 
-  <textarea-field formControlName="comments" labelPosition="above"
-    [label]="this.i18n.general.comments">
+  <textarea-field formControlName="comments" labelPosition="above" [label]="this.i18n.general.comments">
   </textarea-field>
 
-  <confirmation-password *ngIf="transaction.confirmationPasswordInput"
+  <confirmation-password
+    *ngIf="transaction.confirmationPasswordInput"
     formControlName="confirmationPassword"
     [createDeviceConfirmation]="createDeviceConfirmation"
     (showSubmit)="showSubmit$.next($event)"
-    (createDeviceConfirmationError)="hide()" (confirmed)="confirm($event)"
+    (createDeviceConfirmationError)="hide()"
+    (confirmed)="confirm($event)"
     [passwordInput]="transaction.confirmationPasswordInput">
   </confirmation-password>
 
   <actions forceRow>
-    <action-button *ngIf="showSubmit$ | async; else blank"
-      [disabled]="!canConfirm || (requesting$ | async)" (action)="confirm()"
+    <action-button
+      *ngIf="showSubmit$ | async; else blank"
+      [disabled]="!canConfirm || (requesting$ | async)"
+      (action)="confirm()"
       [label]="i18n.general.submit">
     </action-button>
     <ng-template #blank>&nbsp;</ng-template>
-    <action-button outline (action)="hide()" [label]="i18n.general.cancel">
-    </action-button>
+    <action-button outline (action)="hide()" [label]="i18n.general.cancel"> </action-button>
   </actions>
 </ng-container>

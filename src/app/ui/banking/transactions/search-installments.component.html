@@ -1,96 +1,107 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data then content"></ng-container>
+  <ng-container *ngIf="data; then content"></ng-container>
 </page-layout>
 
 <ng-template #content>
-  <page-content mode="filters" [heading]="i18n.transaction.title.scheduled"
+  <page-content
+    mode="filters"
+    [heading]="i18n.transaction.title.scheduled"
     [mobileHeading]="i18n.transaction.mobileTitle.scheduled"
     [headingActions]="headingActions$ | async"
     *ngIf="form.value || (form.valueChanges | async) as value">
     <div [formGroup]="form" class="filters-form">
       <div class="row">
         <div class="col-12 col-md-6">
-          <single-selection-field formControlName="status"
-            [label]="i18n.general.status" [fieldOptions]="statusOptions">
+          <single-selection-field formControlName="status" [label]="i18n.general.status" [fieldOptions]="statusOptions">
           </single-selection-field>
         </div>
         <ng-container *ngIf="data.accountTypes?.length > 1">
           <!-- Force a line break on sm and up -->
           <div class="w-100 d-none d-sm-block"></div>
           <div class="col-12 col-md-6">
-            <single-selection-field formControlName="fromAccountTypes"
+            <single-selection-field
+              formControlName="fromAccountTypes"
               [emptyOption]="i18n.general.notApplied"
               [label]="i18n.transaction.fromAccount">
-              <field-option *ngFor="let at of data.accountTypes"
-                [value]="at.id" [internalName]="at.internalName" [id]="at.id"
+              <field-option
+                *ngFor="let at of data.accountTypes"
+                [value]="at.id"
+                [internalName]="at.internalName"
+                [id]="at.id"
                 [text]="at.name">
               </field-option>
             </single-selection-field>
           </div>
           <div class="col-12 col-md-6">
-            <single-selection-field formControlName="toAccountTypes"
+            <single-selection-field
+              formControlName="toAccountTypes"
               [emptyOption]="i18n.general.notApplied"
               [label]="i18n.transaction.toAccount">
-              <field-option *ngFor="let at of data.accountTypes"
-                [value]="at.id" [internalName]="at.internalName" [id]="at.id"
+              <field-option
+                *ngFor="let at of data.accountTypes"
+                [value]="at.id"
+                [internalName]="at.internalName"
+                [id]="at.id"
                 [text]="at.name">
               </field-option>
             </single-selection-field>
           </div>
         </ng-container>
-        <ng-container *ngIf="(moreFilters$ | async)">
+        <ng-container *ngIf="moreFilters$ | async">
           <div *ngIf="hasTransactionNumber" class="col-12 col-md-6">
-            <input-field formControlName="transactionNumber"
+            <input-field
+              formControlName="transactionNumber"
               [mask]="transactionNumberPattern"
               [label]="i18n.transaction.number"></input-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field formControlName="user" [label]="i18n.general.user">
-            </user-field>
+            <user-field formControlName="user" [label]="i18n.general.user"> </user-field>
           </div>
           <ng-container>
-            <div class="col-12 col-md-6"
-              *ngIf="data.preselectedPeriods?.length > 0">
-              <single-selection-field formControlName="preselectedPeriod"
+            <div class="col-12 col-md-6" *ngIf="data.preselectedPeriods?.length > 0">
+              <single-selection-field
+                formControlName="preselectedPeriod"
                 [emptyOption]="i18n.general.notApplied"
                 [label]="i18n.general.period">
-                <field-option *ngFor="let period of data.preselectedPeriods"
-                  [id]="period['id']" [value]="period" [text]="period.name">
+                <field-option
+                  *ngFor="let period of data.preselectedPeriods"
+                  [id]="period['id']"
+                  [value]="period"
+                  [text]="period.name">
                 </field-option>
               </single-selection-field>
             </div>
-            <ng-container
-              *ngIf="value.preselectedPeriod && !value.preselectedPeriod?.begin">
+            <ng-container *ngIf="value.preselectedPeriod && !value.preselectedPeriod?.begin">
               <!-- Force a line break on sm and up -->
               <div class="w-100 d-none d-sm-block"></div>
               <div class="col-12 col-md-6">
-                <date-field formControlName="periodBegin"
-                  [label]="i18n.general.beginDate" minDate="past5"
-                  maxDate="today" fieldSize="full">
+                <date-field
+                  formControlName="periodBegin"
+                  [label]="i18n.general.beginDate"
+                  minDate="past5"
+                  maxDate="today"
+                  fieldSize="full">
                 </date-field>
               </div>
             </ng-container>
-            <div
-              *ngIf="value.preselectedPeriod && !value.preselectedPeriod?.end"
-              class="col-12 col-md-6">
-              <date-field formControlName="periodEnd"
-                [label]="i18n.general.endDate" minDate="past5" maxDate="today"
+            <div *ngIf="value.preselectedPeriod && !value.preselectedPeriod?.end" class="col-12 col-md-6">
+              <date-field
+                formControlName="periodEnd"
+                [label]="i18n.general.endDate"
+                minDate="past5"
+                maxDate="today"
                 fieldSize="full">
               </date-field>
             </div>
           </ng-container>
           <div class="col-12 col-md-6" *ngFor="let f of fieldsInSearch">
-            <custom-field-filter [field]="f"
-              [formControl]="form.get('customFields').get(f.internalName)">
+            <custom-field-filter [field]="f" [formControl]="form.get('customFields').get(f.internalName)">
             </custom-field-filter>
           </div>
           <div class="col-12 col-md-6">
-            <single-selection-field formControlName="orderBy"
-              [label]="i18n.general.orderBy">
-              <field-option value="dateDesc"
-                [text]="i18n.transaction.orderBy.dueDateDesc"></field-option>
-              <field-option value="dateAsc"
-                [text]="i18n.transaction.orderBy.dueDateAsc"></field-option>
+            <single-selection-field formControlName="orderBy" [label]="i18n.general.orderBy">
+              <field-option value="dateDesc" [text]="i18n.transaction.orderBy.dueDateDesc"></field-option>
+              <field-option value="dateAsc" [text]="i18n.transaction.orderBy.dueDateAsc"></field-option>
             </single-selection-field>
           </div>
         </ng-container>
@@ -98,14 +109,20 @@
     </div>
   </page-content>
 
-  <results-layout resultType="list" [results]="results$ | async"
-    (update)="update($event)" [toLink]="toLink" [rendering$]="rendering$">
-
-    <mobile-result *mobileResult="let row" [date]="row.date"
+  <results-layout
+    resultType="list"
+    [results]="results$ | async"
+    (update)="update($event)"
+    [toLink]="toLink"
+    [rendering$]="rendering$">
+    <mobile-result
+      *mobileResult="let row"
+      [date]="row.date"
       [amount]="row.amount"
       [avatarImage]="bankingHelper.avatarImage(row.transaction.related)"
       [avatarIcon]="bankingHelper.avatarIcon(row.transaction.related)"
-      [currency]="currencies.get(row.currency)" forceSign>
+      [currency]="currencies.get(row.currency)"
+      forceSign>
       <div class="cell-text cell-main">
         {{ bankingHelper.subjectName(row.transaction.related) }}
       </div>
@@ -124,21 +141,22 @@
       </thead>
       <tbody>
         <ng-container *ngFor="let row of (results$ | async)?.results">
-          <tr
-            (click)="router.navigate(bankingHelper.transactionPath(row.transaction))">
+          <tr (click)="router.navigate(bankingHelper.transactionPath(row.transaction))">
             <td>{{ row.dueDate | date }}</td>
             <td>{{ bankingHelper.subjectName(row.transaction.from) }}</td>
             <td>{{ bankingHelper.subjectName(row.transaction.to) }}</td>
             <td>{{ number(row) }}</td>
             <td *ngFor="let field of fieldsInList">
-              <format-field-value [fields]="fieldsInList" [plainText]="true"
-                [fieldName]="field.internalName" [object]="row"
+              <format-field-value
+                [fields]="fieldsInList"
+                [plainText]="true"
+                [fieldName]="field.internalName"
+                [object]="row"
                 [customValues]="row.transaction.customValues">
               </format-field-value>
             </td>
             <td class="amount">
-              {{ row.amount |
-              currency:currencies.get(row.transaction.currency) }}
+              {{ row.amount | currency : currencies.get(row.transaction.currency) }}
             </td>
           </tr>
         </ng-container>

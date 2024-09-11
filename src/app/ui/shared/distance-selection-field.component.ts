@@ -14,12 +14,9 @@ import { BehaviorSubject } from 'rxjs';
   selector: 'distance-selection-field',
   templateUrl: 'distance-selection-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: DistanceSelectionFieldComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: DistanceSelectionFieldComponent, multi: true }]
 })
 export class DistanceSelectionFieldComponent extends BaseFormFieldComponent<MaxDistance> implements OnInit {
-
   @Input() data: SearchByDistanceData;
 
   distance$ = new BehaviorSubject('');
@@ -27,7 +24,7 @@ export class DistanceSelectionFieldComponent extends BaseFormFieldComponent<MaxD
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private modal: BsModalService,
+    private modal: BsModalService
   ) {
     super(injector, controlContainer);
   }
@@ -46,10 +43,12 @@ export class DistanceSelectionFieldComponent extends BaseFormFieldComponent<MaxD
       }
     });
     const component = ref.content as DistanceSelectionComponent;
-    this.addSub(component.done.subscribe(maxDistance => {
-      this.value = maxDistance;
-      this.updateDistanceLabel();
-    }));
+    this.addSub(
+      component.done.subscribe(maxDistance => {
+        this.value = maxDistance;
+        this.updateDistanceLabel();
+      })
+    );
   }
 
   updateDistanceLabel() {
@@ -57,9 +56,10 @@ export class DistanceSelectionFieldComponent extends BaseFormFieldComponent<MaxD
     if (this.value) {
       const data = this.data || {};
       const unit = data.distanceUnit || DistanceUnitEnum.KILOMETER;
-      const from = unit === DistanceUnitEnum.KILOMETER
-        ? this.i18n.general.geolocation.kilometersFrom
-        : this.i18n.general.geolocation.milesFrom;
+      const from =
+        unit === DistanceUnitEnum.KILOMETER
+          ? this.i18n.general.geolocation.kilometersFrom
+          : this.i18n.general.geolocation.milesFrom;
       const address = data.addresses.find(a => a.id === this.value.id);
       const location = address ? address.name : this.i18n.general.geolocation.current;
       labelValue = [this.value.maxDistance, from, location].join(' ');
@@ -81,9 +81,10 @@ export class DistanceSelectionFieldComponent extends BaseFormFieldComponent<MaxD
 
     const data = this.data || {};
     const unit = data.distanceUnit || DistanceUnitEnum.KILOMETER;
-    const from = unit === DistanceUnitEnum.KILOMETER
-      ? this.i18n.general.geolocation.kilometersFrom
-      : this.i18n.general.geolocation.milesFrom;
+    const from =
+      unit === DistanceUnitEnum.KILOMETER
+        ? this.i18n.general.geolocation.kilometersFrom
+        : this.i18n.general.geolocation.milesFrom;
     const address = data.addresses.find(a => a.id === value.id);
     const location = address ? address.name : this.i18n.general.geolocation.current;
     return [value.maxDistance, from, location].join(' ');

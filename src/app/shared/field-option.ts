@@ -1,4 +1,3 @@
-
 /**
  * Does the given value matches either value, id or internal name of the given option?
  * @param option The option to match
@@ -11,15 +10,19 @@ export function fieldOptionMatches(option: FieldOption, value: any) {
   if (typeof value === 'string' && value.includes('|')) {
     value = value.split('|')[0];
   }
-  if (option.value === value
-    || option.id != null && option.id === value
-    || option.internalName != null && option.internalName === value) {
+  if (
+    option.value === value ||
+    (option.id != null && option.id === value) ||
+    (option.internalName != null && option.internalName === value)
+  ) {
     return true;
   }
-  if (typeof value === 'object'
-    && (option.id != null && option.id === value.id
-      || option.internalName != null && option.internalName === value.internalName
-      || option.value != null && option.value === value.value)) {
+  if (
+    typeof value === 'object' &&
+    ((option.id != null && option.id === value.id) ||
+      (option.internalName != null && option.internalName === value.internalName) ||
+      (option.value != null && option.value === value.value))
+  ) {
     return true;
   }
   return false;
@@ -29,7 +32,6 @@ export function fieldOptionMatches(option: FieldOption, value: any) {
  * Represents an option in an input field, such as selection / radio groups.
  */
 export interface FieldOption {
-
   /** The internal value */
   value: string;
 

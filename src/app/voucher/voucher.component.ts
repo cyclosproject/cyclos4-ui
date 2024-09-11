@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Inject, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostBinding,
+  Inject,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { DataForVoucherInfo } from 'app/api/models';
@@ -9,7 +18,12 @@ import { LayoutService } from 'app/core/layout.service';
 import { ArrowsVertical, ShortcutService } from 'app/core/shortcut.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
-import { handleKeyboardFocus, i18nRoot as getI18Root, initializeStyleLinks, setRootSpinnerVisible } from 'app/shared/helper';
+import {
+  i18nRoot as getI18Root,
+  handleKeyboardFocus,
+  initializeStyleLinks,
+  setRootSpinnerVisible
+} from 'app/shared/helper';
 import { VoucherSidenavComponent } from 'app/voucher/voucher-sidenav.component';
 import { VoucherState } from 'app/voucher/voucher-state';
 import { BehaviorSubject } from 'rxjs';
@@ -42,12 +56,11 @@ export class VoucherComponent implements OnInit {
     public layout: LayoutService,
     private shortcut: ShortcutService,
     private changeDetector: ChangeDetectorRef
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     if (!apiRoot) {
-      apiRoot = "/api";
+      apiRoot = '/api';
     }
     this.apiConfiguration.rootUrl = apiRoot;
 
@@ -68,15 +81,15 @@ export class VoucherComponent implements OnInit {
     let qrCodeScanIcon = document.getElementById('bi-qr-code-scan');
     let logout2Icon = document.getElementById('ci-logout2');
     let houseDoor2Icon = document.getElementById('ci-house-door2');
-	let backspace = document.getElementById('backspace');
-	let x = document.getElementById('x');
-	let lock = document.getElementById('lock');
-	let eyeSlash = document.getElementById('eye-slash');
-	let eye = document.getElementById('eye');
-	let envelope = document.getElementById('envelope');
-	let phone = document.getElementById('phone');
-	let person = document.getElementById('person');
-	let briefcase = document.getElementById('briefcase');
+    let backspace = document.getElementById('backspace');
+    let x = document.getElementById('x');
+    let lock = document.getElementById('lock');
+    let eyeSlash = document.getElementById('eye-slash');
+    let eye = document.getElementById('eye');
+    let envelope = document.getElementById('envelope');
+    let phone = document.getElementById('phone');
+    let person = document.getElementById('person');
+    let briefcase = document.getElementById('briefcase');
 
     const icons: Record<string, string> = {};
     icons[SvgIcon.ExclamationTriangle] = exclamationTriangleIcon.innerHTML.trim();
@@ -89,15 +102,15 @@ export class VoucherComponent implements OnInit {
     icons[SvgIcon.QrCodeScan] = qrCodeScanIcon.innerHTML.trim();
     icons[SvgIcon.Logout2] = logout2Icon.innerHTML.trim();
     icons[SvgIcon.HouseDoor2] = houseDoor2Icon.innerHTML.trim();
-	icons[SvgIcon.Backspace] = backspace.innerHTML.trim();
-	icons[SvgIcon.X] = x.innerHTML.trim();
-	icons[SvgIcon.Lock] = lock.innerHTML.trim();
-	icons[SvgIcon.EyeSlash] = eyeSlash.innerHTML.trim();
-	icons[SvgIcon.Eye] = eye.innerHTML.trim();
-	icons[SvgIcon.Envelope] = envelope.innerHTML.trim();
-	icons[SvgIcon.Phone] = phone.innerHTML.trim();
-	icons[SvgIcon.Person] = person.innerHTML.trim();
-	icons[SvgIcon.Briefcase] = briefcase.innerHTML.trim();
+    icons[SvgIcon.Backspace] = backspace.innerHTML.trim();
+    icons[SvgIcon.X] = x.innerHTML.trim();
+    icons[SvgIcon.Lock] = lock.innerHTML.trim();
+    icons[SvgIcon.EyeSlash] = eyeSlash.innerHTML.trim();
+    icons[SvgIcon.Eye] = eye.innerHTML.trim();
+    icons[SvgIcon.Envelope] = envelope.innerHTML.trim();
+    icons[SvgIcon.Phone] = phone.innerHTML.trim();
+    icons[SvgIcon.Person] = person.innerHTML.trim();
+    icons[SvgIcon.Briefcase] = briefcase.innerHTML.trim();
 
     this.iconLoading.store(icons);
 
@@ -106,18 +119,16 @@ export class VoucherComponent implements OnInit {
     // Hide the spinner, showing the application
     setRootSpinnerVisible(false);
 
-
     this.state.initialize().subscribe(data => {
       this.format.initialize(data.dataForUi);
       this.i18nLoading.initialize(i18nRoot, data).subscribe(() => this.initialize(data));
     });
 
     // Listen for vertical arrows events on mobile to change focus
-    this.shortcut.subscribe(ArrowsVertical, e =>
-      handleKeyboardFocus(this.layout, this.mainContainer.nativeElement, e));
+    this.shortcut.subscribe(ArrowsVertical, e => handleKeyboardFocus(this.layout, this.mainContainer.nativeElement, e));
     // This is a hack to make the change detection work.
-    // In a normal case, there is no need to do that becasue the usage of the pipe Async in the template. 
-    // But it doesn't work for this case ¿?, then we changed to use a timer an directly get the value from 
+    // In a normal case, there is no need to do that becasue the usage of the pipe Async in the template.
+    // But it doesn't work for this case ¿?, then we changed to use a timer an directly get the value from
     // the Observable in the template.
     this.state.title$.subscribe(() => setTimeout(() => this.changeDetector.detectChanges()));
   }

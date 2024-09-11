@@ -1,5 +1,6 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="data"
+  <page-content
+    *ngIf="data"
     [heading]="operator ? i18n.userStatus.title.statusOperator : i18n.userStatus.title.statusUser"
     [mobileHeading]="operator ? i18n.userStatus.mobileTitle.statusOperator : i18n.userStatus.mobileTitle.statusUser"
     [headingActions]="headingActions$ | async">
@@ -10,20 +11,19 @@
     </label-value>
 
     <ng-container *ngIf="editable">
-      <hr>
+      <hr />
       <ng-container [formGroup]="form">
-        <single-selection-field formControlName="status"
-          [label]="i18n.userStatus['new']" required>
-          <field-option *ngFor="let status of data.possibleNewStatuses"
-            [value]="status" [text]="userHelper.userStatus(status)">
+        <single-selection-field formControlName="status" [label]="i18n.userStatus['new']" required>
+          <field-option
+            *ngFor="let status of data.possibleNewStatuses"
+            [value]="status"
+            [text]="userHelper.userStatus(status)">
           </field-option>
         </single-selection-field>
-        <textarea-field formControlName="comment"
-          [label]="i18n.general.comments"></textarea-field>
+        <textarea-field formControlName="comment" [label]="i18n.general.comments"></textarea-field>
       </ng-container>
       <actions>
-        <action-button (action)="save()" [label]="i18n.general.submit">
-        </action-button>
+        <action-button (action)="save()" [label]="i18n.general.submit"> </action-button>
       </actions>
     </ng-container>
   </page-content>

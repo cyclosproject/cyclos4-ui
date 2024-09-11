@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import {
-  DataForFrontendHome, FrontendContentLayoutEnum
-} from 'app/api/models';
+import { DataForFrontendHome, FrontendContentLayoutEnum } from 'app/api/models';
 import { FrontendService } from 'app/api/services/frontend.service';
 import { BasePageComponent, UpdateTitleFrom } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
@@ -13,15 +11,12 @@ import { Menu } from 'app/ui/shared/menu';
   // tslint:disable-next-line:component-selector
   selector: 'home',
   templateUrl: 'home.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent extends BasePageComponent<DataForFrontendHome> implements OnInit {
-
   FrontendContentLayoutEnum = FrontendContentLayoutEnum;
 
-  constructor(
-    injector: Injector,
-    private frontendService: FrontendService) {
+  constructor(injector: Injector, private frontendService: FrontendService) {
     super(injector);
   }
 
@@ -43,9 +38,13 @@ export class HomeComponent extends BasePageComponent<DataForFrontendHome> implem
     this.emulateKeyboardScroll();
 
     // Fetch the home page
-    this.addSub(this.frontendService.dataForFrontendHome({
-      screenSize: this.layout.screenSize
-    }).subscribe(data => this.data = data));
+    this.addSub(
+      this.frontendService
+        .dataForFrontendHome({
+          screenSize: this.layout.screenSize
+        })
+        .subscribe(data => (this.data = data))
+    );
   }
 
   defaultFullWidthLayout(): boolean {

@@ -1,9 +1,20 @@
-import { AfterViewInit, Directive, ElementRef, EventEmitter, Injector, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  Injector,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { ControlContainer, FormControl } from '@angular/forms';
+import { LayoutService } from 'app/core/layout.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { blank, empty } from 'app/shared/helper';
-import { LayoutService } from 'app/core/layout.service';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
@@ -15,7 +26,9 @@ import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/oper
  */
 @Directive()
 export abstract class BaseAutocompleteFieldComponent<T, A>
-  extends BaseFormFieldComponent<T> implements OnInit, OnDestroy, AfterViewInit {
+  extends BaseFormFieldComponent<T>
+  implements OnInit, OnDestroy, AfterViewInit
+{
   inputFieldControl: FormControl;
   @ViewChild('inputField') inputField: ElementRef<HTMLInputElement>;
   @ViewChild('dropdown') dropdown: BsDropdownDirective;
@@ -38,9 +51,7 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
 
   layout: LayoutService;
 
-  constructor(
-    injector: Injector,
-    protected controlContainer: ControlContainer) {
+  constructor(injector: Injector, protected controlContainer: ControlContainer) {
     super(injector, controlContainer);
     this.inputFieldControl = new FormControl(null);
     this.layout = injector.get(LayoutService);
@@ -48,36 +59,42 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.inputFieldControl.valueChanges.pipe(
-      filter(text => blank(text)),
-    ).subscribe(() => {
-      this.close();
-    }));
+    this.addSub(
+      this.inputFieldControl.valueChanges.pipe(filter(text => blank(text))).subscribe(() => {
+        this.close();
+      })
+    );
     if (this.autoSearch && this.allowOptions) {
-      this.addSub(this.inputFieldControl.valueChanges.pipe(
-        filter(text => !blank(text)),
-        debounceTime(ApiHelper.DEBOUNCE_TIME),
-        distinctUntilChanged(),
-        switchMap(text => this.query(text)),
-      ).subscribe(rows => {
-        if (!this.allowOptions || blank(this.inputFieldControl.value)) {
-          this.options$.next([]);
-        } else {
-          this.options$.next(rows);
-          if (!empty(rows)) {
-            this.open();
-          }
-        }
-      }));
+      this.addSub(
+        this.inputFieldControl.valueChanges
+          .pipe(
+            filter(text => !blank(text)),
+            debounceTime(ApiHelper.DEBOUNCE_TIME),
+            distinctUntilChanged(),
+            switchMap(text => this.query(text))
+          )
+          .subscribe(rows => {
+            if (!this.allowOptions || blank(this.inputFieldControl.value)) {
+              this.options$.next([]);
+            } else {
+              this.options$.next(rows);
+              if (!empty(rows)) {
+                this.open();
+              }
+            }
+          })
+      );
     }
-    this.addSub(this.formControl.statusChanges.subscribe(status => {
-      // We should delegate the error to the input field control, so it is correctly marked as error
-      if (status === 'INVALID') {
-        this.inputFieldControl.setErrors(this.formControl.errors);
-      } else if (status === 'VALID') {
-        this.inputFieldControl.setErrors(null);
-      }
-    }));
+    this.addSub(
+      this.formControl.statusChanges.subscribe(status => {
+        // We should delegate the error to the input field control, so it is correctly marked as error
+        if (status === 'INVALID') {
+          this.inputFieldControl.setErrors(this.formControl.errors);
+        } else if (status === 'VALID') {
+          this.inputFieldControl.setErrors(null);
+        }
+      })
+    );
     this.bodyListener = () => this.close();
   }
 
@@ -92,14 +109,16 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
       this.options$.next([]);
       this.close();
     } else {
-      this.addSub(this.query(text).subscribe(rows => {
-        if (this.allowOptions) {
-          this.options$.next(rows);
-          if (!empty(rows)) {
-            this.open();
+      this.addSub(
+        this.query(text).subscribe(rows => {
+          if (this.allowOptions) {
+            this.options$.next(rows);
+            if (!empty(rows)) {
+              this.open();
+            }
           }
-        }
-      }));
+        })
+      );
     }
   }
 
@@ -118,7 +137,7 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     } else {
       this.fetch(this.value).subscribe(res => {
         this.select(res, this.value, {
-          emitEvent: false,
+          emitEvent: false
         });
       });
     }
@@ -156,7 +175,7 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     }
     const input = this.inputField.nativeElement as HTMLInputElement;
     const rect = input.getBoundingClientRect();
-    const docHeight = (window.innerHeight || document.documentElement.clientHeight);
+    const docHeight = window.innerHeight || document.documentElement.clientHeight;
     this.dropdown.dropup = rect.bottom > docHeight - 100;
     this.layout.setFocusTrap(this.dropdownMenuId);
 
@@ -225,7 +244,7 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   ngClassFor(option: A, index: number): any {
     const result = {
       'mt-1': index > 0,
-      selected: this.value === this.toValue(option),
+      selected: this.value === this.toValue(option)
     };
     result[`autocomplete-option-${index}`] = true;
     return result;

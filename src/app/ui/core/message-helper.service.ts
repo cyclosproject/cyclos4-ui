@@ -9,15 +9,13 @@ import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-
 /**
  * Helper service for messaging functions
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class MessageHelperService {
-
   messageStatus$ = new BehaviorSubject<MessagesStatus>(null);
 
   constructor(
@@ -27,18 +25,20 @@ export class MessageHelperService {
     pushNotifications: PushNotificationsService,
     protected dataForFrontendHolder: DataForFrontendHolder
   ) {
-
     // Subscribe for user changes: update the message status
     dataForFrontendHolder.subscribe(dataForFrontend => {
       const dataForUi = (dataForFrontend || {}).dataForUi;
       const auth = (dataForUi || {}).auth || {};
       const isAdmin = auth?.role === RoleEnum.ADMINISTRATOR;
-      const messagesPermissions = ((auth.permissions || {}).messages || {});
+      const messagesPermissions = (auth.permissions || {}).messages || {};
       if (auth.user && (isAdmin ? messagesPermissions.system?.view : messagesPermissions.my.view)) {
         nextRequestState.ignoreNextError = true;
-        messagesService.messagesStatus().pipe(first()).subscribe(status => {
-          this.messageStatus$.next(status);
-        });
+        messagesService
+          .messagesStatus()
+          .pipe(first())
+          .subscribe(status => {
+            this.messageStatus$.next(status);
+          });
         this.messageStatus$.next(null);
       } else {
         this.messageStatus$.next(null);
@@ -81,5 +81,4 @@ export class MessageHelperService {
         return this.i18n.message.messageDestination.user;
     }
   }
-
 }

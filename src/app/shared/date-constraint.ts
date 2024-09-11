@@ -5,25 +5,25 @@ import moment from 'moment-mini-ts';
  */
 export type DateConstraint =
   /** Any date */
-  'any' |
+  | 'any'
   /** Current date, begin of day */
-  'today' |
+  | 'today'
   /** Current date, end of date */
-  'todayEnd' |
+  | 'todayEnd'
   /** Current date + 1 */
-  'tomorrow' |
+  | 'tomorrow'
   /** Current date - 1 */
-  'yesterday' |
+  | 'yesterday'
   /** 100 years ago */
-  'past100' |
+  | 'past100'
   /** 100 years from now */
-  'future100' |
+  | 'future100'
   /** 5 years ago */
-  'past5' |
+  | 'past5'
   /** 5 years from now */
-  'future5' |
+  | 'future5'
   /** A specific date */
-  string;
+  | string;
 
 /**
  * Returns a date constraint as a moment instance

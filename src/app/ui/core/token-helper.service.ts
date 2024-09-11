@@ -7,10 +7,9 @@ import { SvgIcon } from 'app/core/svg-icon';
  * Helper for tokens
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class TokenHelperService {
-
   /**
    * Returns the icon name that should be used for the given operation
    */

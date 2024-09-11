@@ -1,6 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { BuyVoucher, CreateDeviceConfirmation, CustomField, CustomFieldDetailed, CustomFieldTypeEnum, DeviceConfirmationTypeEnum, VoucherBuyingPreview } from 'app/api/models';
+import {
+  BuyVoucher,
+  CreateDeviceConfirmation,
+  CustomField,
+  CustomFieldDetailed,
+  CustomFieldTypeEnum,
+  DeviceConfirmationTypeEnum,
+  VoucherBuyingPreview
+} from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { Enter } from 'app/core/shortcut.service';
@@ -9,10 +17,9 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'buy-vouchers-step-confirm',
   templateUrl: 'buy-vouchers-step-confirm.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BuyVouchersStepConfirmComponent extends BaseComponent implements OnInit {
-
   @Input() preview: VoucherBuyingPreview;
   @Input() paymentCustomFields: CustomFieldDetailed[];
   @Input() voucherCustomFields: CustomFieldDetailed[];
@@ -25,10 +32,7 @@ export class BuyVouchersStepConfirmComponent extends BaseComponent implements On
   form: FormGroup;
   createDeviceConfirmation: () => CreateDeviceConfirmation;
 
-  constructor(
-    injector: Injector,
-    public authHelper: AuthHelperService,
-    public fieldHelper: FieldHelperService) {
+  constructor(injector: Injector, public authHelper: AuthHelperService, public fieldHelper: FieldHelperService) {
     super(injector);
   }
 
@@ -44,7 +48,7 @@ export class BuyVouchersStepConfirmComponent extends BaseComponent implements On
         type: DeviceConfirmationTypeEnum.BUY_VOUCHERS,
         amount: this.buyVoucher.amount,
         voucherType: this.preview.buyVoucher.type,
-        numberOfVouchers: this.buyVoucher.count,
+        numberOfVouchers: this.buyVoucher.count
       };
     };
     // When there's no confirmation password, the Enter key will confirm

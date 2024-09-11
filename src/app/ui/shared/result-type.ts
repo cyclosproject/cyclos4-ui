@@ -5,5 +5,5 @@ export enum ResultType {
   CATEGORIES = 'categories',
   TILES = 'tiles',
   LIST = 'list',
-  MAP = 'map',
+  MAP = 'map'
 }

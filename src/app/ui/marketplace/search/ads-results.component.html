@@ -1,13 +1,19 @@
-<results-layout (update)="update.emit($event)" [categories]="data.categories"
-  [results]="results" [rendering$]="rendering$" [resultType]="resultType"
-  [referencePoint]="referencePoint" [toAddress]="toAddress"
-  [toMarkerTitle]="toMarkerTitle" [toLink]="toLink">
-
+<results-layout
+  (update)="update.emit($event)"
+  [categories]="data.categories"
+  [results]="results"
+  [rendering$]="rendering$"
+  [resultType]="resultType"
+  [referencePoint]="referencePoint"
+  [toAddress]="toAddress"
+  [toMarkerTitle]="toMarkerTitle"
+  [toLink]="toLink">
   <div *resultCategory="let cat" class="card">
     <div class="category-title">
-      <a class="category-title-text" href="#"
-        (click)="$event.preventDefault(); selectCategory(cat)">
-        <avatar [image]="cat.svgIcon ? null : cat.image" size="small"
+      <a class="category-title-text" href="#" (click)="$event.preventDefault(); selectCategory(cat)">
+        <avatar
+          [image]="cat.svgIcon ? null : cat.image"
+          size="small"
           [icon]="cat.svgIcon || SvgIcon.Basket"
           [iconColor]="cat.svgIconColor">
         </avatar>
@@ -16,29 +22,28 @@
     </div>
     <div class="card-body">
       <ng-container *ngFor="let child of categoryChildren(cat)">
-        <a class="sub-category-text" href="#"
-          (click)="$event.preventDefault(); selectCategory(child)">
+        <a class="sub-category-text" href="#" (click)="$event.preventDefault(); selectCategory(child)">
           {{ child.name }}
         </a>
       </ng-container>
     </div>
-    <a *ngIf="(layout.gtxxs$ | async) && hasMoreChildren(cat)"
-      class="category-footer" href="#"
+    <a
+      *ngIf="(layout.gtxxs$ | async) && hasMoreChildren(cat)"
+      class="category-footer"
+      href="#"
       (click)="$event.preventDefault(); showAllChildren(cat)">
       {{ i18n.ad.showAllCategories }}
     </a>
   </div>
 
-  <mobile-result *mobileResult="let ad" [avatarImage]="ad.image"
-    [avatarIcon]="SvgIcon.Basket">
+  <mobile-result *mobileResult="let ad" [avatarImage]="ad.image" [avatarIcon]="SvgIcon.Basket">
     <div class="d-flex">
       <div>
         <div *ngIf="ad.price" class="cell-main">
           <span *ngIf="ad.promotionalPrice" class="promo-price">
-            {{ ad.price | number:decimals(ad) }}
+            {{ ad.price | number : decimals(ad) }}
           </span>
-          {{ (ad.promotionalPrice || ad.price) | currency:lookupCurrency(ad)
-          }}
+          {{ ad.promotionalPrice || ad.price | currency : lookupCurrency(ad) }}
         </div>
         <div class="cell-text">
           {{ ad.name }}
@@ -47,13 +52,15 @@
           {{ i18n.ad.byOwner(ad.user.display) }}
         </div>
         <div *ngFor="let field of data.fieldsInList" class="cell-small">
-          <format-field-value [fields]="data.customFields" [plainText]="true"
-            [fieldName]="field" [object]="ad">
+          <format-field-value [fields]="data.customFields" [plainText]="true" [fieldName]="field" [object]="ad">
           </format-field-value>
         </div>
       </div>
       <div
-        *ngIf="dataForFrontendHolder.auth?.permissions?.marketplace?.favorites && ad.user.id !== dataForFrontendHolder.user.id"
+        *ngIf="
+          dataForFrontendHolder.auth?.permissions?.marketplace?.favorites &&
+          ad.user.id !== dataForFrontendHolder.user.id
+        "
         class="ml-auto text-right d-flex flex-column">
         <ad-favorite [ad]="ad"></ad-favorite>
       </div>
@@ -64,17 +71,13 @@
     <thead>
       <th class="avatar"></th>
       <th>{{ i18n.ad.name }}</th>
-      <th *ngIf="!singleUser && !data.hideOwner" colspan="2">{{ i18n.ad.owner
-        }}</th>
+      <th *ngIf="!singleUser && !data.hideOwner" colspan="2">{{ i18n.ad.owner }}</th>
       <th *ngFor="let field of data.fieldsInList">{{ fieldName(field) }}</th>
       <th *ngIf="!data.hidePrice" class="text-right">{{ i18n.ad.price }}</th>
-      <th
-        *ngIf="dataForFrontendHolder.auth?.permissions?.marketplace?.favorites"
-        class="actions"></th>
+      <th *ngIf="dataForFrontendHolder.auth?.permissions?.marketplace?.favorites" class="actions"></th>
     </thead>
     <tbody>
-      <tr *ngFor="let ad of results?.results"
-        (click)="router.navigate(path(ad))">
+      <tr *ngFor="let ad of results?.results" (click)="router.navigate(path(ad))">
         <td class="avatar">
           <avatar [image]="ad.image" [icon]="SvgIcon.Basket"></avatar>
         </td>
@@ -91,52 +94,53 @@
         </ng-container>
         <ng-container *ngIf="layout.gtxs$ | async">
           <td *ngFor="let field of data.fieldsInList">
-            <format-field-value [fields]="data.customFields"
-              [plainText]="true" [fieldName]="field" [object]="ad">
+            <format-field-value [fields]="data.customFields" [plainText]="true" [fieldName]="field" [object]="ad">
             </format-field-value>
           </td>
         </ng-container>
         <td *ngIf="!data.hidePrice" class="text-right">
           <span *ngIf="ad.promotionalPrice" class="promo-price">
-            {{ ad.price | number:decimals(ad) }}
+            {{ ad.price | number : decimals(ad) }}
           </span>
-          {{ (ad.promotionalPrice || ad.price) |
-          currency:lookupCurrency(ad) }}
+          {{ ad.promotionalPrice || ad.price | currency : lookupCurrency(ad) }}
         </td>
-        <td
-          *ngIf="dataForFrontendHolder.auth?.permissions?.marketplace?.favorites"
-          class="actions">
-          <ad-favorite *ngIf="ad.user.id !== dataForFrontendHolder.user.id"
-            [ad]="ad"></ad-favorite>
+        <td *ngIf="dataForFrontendHolder.auth?.permissions?.marketplace?.favorites" class="actions">
+          <ad-favorite *ngIf="ad.user.id !== dataForFrontendHolder.user.id" [ad]="ad"></ad-favorite>
         </td>
       </tr>
     </tbody>
   </table>
 
-  <tiled-result *resultTile="let ad" [image]="ad.image" [zoom]="true"
-    [icon]="SvgIcon.Basket">
-    <ng-container header
-      *ngIf="dataForFrontendHolder.auth?.permissions?.marketplace?.favorites && ad.user.id !== dataForFrontendHolder.user.id">
+  <tiled-result *resultTile="let ad" [image]="ad.image" [zoom]="true" [icon]="SvgIcon.Basket">
+    <ng-container
+      header
+      *ngIf="
+        dataForFrontendHolder.auth?.permissions?.marketplace?.favorites && ad.user.id !== dataForFrontendHolder.user.id
+      ">
       <ad-favorite [ad]="ad" class="btn-favorite"></ad-favorite>
     </ng-container>
     <ng-container *ngIf="!singleUser && ad.user">
       <div class="tile-floating-avatar">
-        <avatar class="solid-icon" [image]="ad.user.image"
-          [tooltip]="ad.user.display" size="medium-large"
-          (click)="$event.preventDefault(); $event.stopPropagation; router.navigate(['/users', ad.user.id, 'profile'])">
+        <avatar
+          class="solid-icon"
+          [image]="ad.user.image"
+          [tooltip]="ad.user.display"
+          size="medium-large"
+          (click)="
+            $event.preventDefault(); ($event.stopPropagation); router.navigate(['/users', ad.user.id, 'profile'])
+          ">
         </avatar>
       </div>
     </ng-container>
     <div *ngIf="ad.price; else blankPrice" class="card-title">
       <span *ngIf="ad.promotionalPrice" class="promo-price">
-        {{ ad.price | number:decimals(ad) }}
+        {{ ad.price | number : decimals(ad) }}
       </span>
-      {{ (ad.promotionalPrice || ad.price) |
-      currency:lookupCurrency(ad) }}
+      {{ ad.promotionalPrice || ad.price | currency : lookupCurrency(ad) }}
     </div>
     <ng-template #blankPrice>
       <div class="card-title">
-        <br>
+        <br />
       </div>
     </ng-template>
     <div class="card-text">
@@ -144,19 +148,16 @@
     </div>
   </tiled-result>
 
-  <map-result *resultInfoWindow="let ad; let addr = address"
-    [image]="ad.image" [address]="addr">
-
+  <map-result *resultInfoWindow="let ad; let addr = address" [image]="ad.image" [address]="addr">
     <div class="font-weight-bold mb-2">{{ ad.name }}</div>
 
     <div *ngIf="ad.price" class="font-weight-bold">
       <span *ngIf="ad.promotionalPrice" class="promo-price">
-        {{ ad.price | number:decimals(ad) }}
+        {{ ad.price | number : decimals(ad) }}
       </span>
-      {{ (ad.promotionalPrice || ad.price) | currency:lookupCurrency(ad) }}
+      {{ ad.promotionalPrice || ad.price | currency : lookupCurrency(ad) }}
     </div>
 
     <div *ngIf="ad.user">{{ i18n.ad.byOwner(ad.user.display) }}</div>
   </map-result>
-
 </results-layout>

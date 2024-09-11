@@ -1,12 +1,12 @@
 <h1>{{ action.label }}</h1>
 <ng-container>
   <actions class="mt-0">
-    <action-button class="w-100" *ngFor="let subAction of action.subActions;"
+    <action-button
+      class="w-100"
+      *ngFor="let subAction of action.subActions"
       [label]="subAction.label"
       (action)="subAction.onClick(); modalRef.hide()">
     </action-button>
-    <action-button class="w-100" outline [label]="i18n.general.cancel"
-      (action)="modalRef.hide()">
-    </action-button>
+    <action-button class="w-100" outline [label]="i18n.general.cancel" (action)="modalRef.hide()"> </action-button>
   </actions>
 </ng-container>

@@ -17,10 +17,9 @@ export interface IconAndLabel {
  * Helper for handling quick access items
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class QuickAccessHelperService {
-
   constructor(
     private dataForFrontendHolder: DataForFrontendHolder,
     private operationHelper: OperationHelperService,
@@ -28,8 +27,7 @@ export class QuickAccessHelperService {
     private recordHelper: RecordHelperService,
     private tokenHelper: TokenHelperService,
     @Inject(I18nInjectionToken) private i18n: I18n
-  ) {
-  }
+  ) {}
 
   /**
    * Returns the icon to be used in the given quick access
@@ -79,8 +77,10 @@ export class QuickAccessHelperService {
       case QuickAccessTypeEnum.SEND_VOUCHER:
         return { icon: SvgIcon.TicketArrowRight, label: this.i18n.dashboard.action.send };
       case QuickAccessTypeEnum.VOUCHER_TRANSACTIONS:
-        const voucherTransactionsLabel = isSelf && this.dataForFrontendHolder.dataForFrontend.topUpEnabled ?
-          this.i18n.dashboard.action.voucherTransactions : this.i18n.dashboard.action.voucherTransactionsRedeems;
+        const voucherTransactionsLabel =
+          isSelf && this.dataForFrontendHolder.dataForFrontend.topUpEnabled
+            ? this.i18n.dashboard.action.voucherTransactions
+            : this.i18n.dashboard.action.voucherTransactionsRedeems;
         return { icon: SvgIcon.TicketDetailed, label: voucherTransactionsLabel };
       case QuickAccessTypeEnum.REDEEM_VOUCHER:
         return { icon: SvgIcon.TicketArrowDown, label: this.i18n.dashboard.action.redeem };
@@ -117,9 +117,10 @@ export class QuickAccessHelperService {
       case QuickAccessTypeEnum.EDIT_PROFILE:
         return { icon: SvgIcon.Person, label: this.i18n.dashboard.action.editProfile };
       case QuickAccessTypeEnum.PASSWORDS:
-        const passwordsLabel = isSelf && permissions.passwords.passwords.length === 1 ?
-          this.i18n.dashboard.action.password :
-          this.i18n.dashboard.action.passwords;
+        const passwordsLabel =
+          isSelf && permissions.passwords.passwords.length === 1
+            ? this.i18n.dashboard.action.password
+            : this.i18n.dashboard.action.passwords;
         return { icon: SvgIcon.Key, label: passwordsLabel };
       case QuickAccessTypeEnum.DOCUMENTS:
         return { icon: SvgIcon.FileEarmarkText, label: this.i18n.dashboard.action.documents };
@@ -153,8 +154,7 @@ export class QuickAccessHelperService {
         const tokenType = quickAccess.tokenType;
         return { icon: this.tokenHelper.icon(tokenType), label: tokenType.pluralName };
       case QuickAccessTypeEnum.HELP:
-        return { icon: SvgIcon.QuestionCircle , label: this.i18n.dashboard.action.help };
+        return { icon: SvgIcon.QuestionCircle, label: this.i18n.dashboard.action.help };
     }
   }
-
 }

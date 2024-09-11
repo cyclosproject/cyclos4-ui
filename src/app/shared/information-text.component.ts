@@ -8,17 +8,14 @@ import { SvgIcon } from 'app/core/svg-icon';
 @Component({
   selector: 'information-text',
   templateUrl: 'information-text.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InformationTextComponent implements OnInit {
-
   @Input() informationText: string;
 
-  constructor(private notification: NotificationService) {
-  }
+  constructor(private notification: NotificationService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   get icon(): SvgIcon {
     return SvgIcon.InfoCircle;

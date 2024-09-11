@@ -10,15 +10,14 @@ import { LayoutService } from 'app/core/layout.service';
 @Component({
   selector: 'redirect-to-landing',
   template: ' ',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RedirectToLandingPageComponent implements OnInit {
-
   constructor(
     private dataForFrontendHolder: DataForFrontendHolder,
     private layout: LayoutService,
-    private router: Router) {
-  }
+    private router: Router
+  ) {}
 
   ngOnInit() {
     let landingPage = '/home';
@@ -28,8 +27,7 @@ export class RedirectToLandingPageComponent implements OnInit {
       landingPage = '/dashboard';
     } else {
       if (data.hasHomePage && this.layout.ltmd) {
-        landingPage = data.mobileLandingPage == FrontendLandingPageEnum.LOGIN
-          ? '/login' : '/home';
+        landingPage = data.mobileLandingPage == FrontendLandingPageEnum.LOGIN ? '/login' : '/home';
       }
     }
 

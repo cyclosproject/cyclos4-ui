@@ -1,6 +1,15 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { CreateDeviceConfirmation, DeviceConfirmationTypeEnum, GeneralImportedFileKind, ImportedFileDataForNew, ImportedFileKind, ImportedFileNew, UserImportedFileKind, VoucherTypeDetailed } from 'app/api/models';
+import {
+  CreateDeviceConfirmation,
+  DeviceConfirmationTypeEnum,
+  GeneralImportedFileKind,
+  ImportedFileDataForNew,
+  ImportedFileKind,
+  ImportedFileNew,
+  UserImportedFileKind,
+  VoucherTypeDetailed
+} from 'app/api/models';
 import { ImportsService } from 'app/api/services/imports.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { validateBeforeSubmit } from 'app/shared/helper';
@@ -40,10 +49,9 @@ const AMOUNT_VALIDATOR: ValidatorFn = control => {
 @Component({
   selector: 'import-file',
   templateUrl: 'import-file.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImportFileComponent extends BasePageComponent<ImportedFileDataForNew> implements OnInit {
-
   ImportedFileKind = ImportedFileKind;
 
   generalKind: GeneralImportedFileKind;
@@ -62,10 +70,7 @@ export class ImportFileComponent extends BasePageComponent<ImportedFileDataForNe
 
   showSubmit$ = new BehaviorSubject(true);
 
-  constructor(
-    injector: Injector,
-    private importsService: ImportsService,
-    public importsHelper: ImportsHelperService) {
+  constructor(injector: Injector, private importsService: ImportsService, public importsHelper: ImportsHelperService) {
     super(injector);
   }
 
@@ -89,7 +94,7 @@ export class ImportFileComponent extends BasePageComponent<ImportedFileDataForNe
         kind: this.userKind
       });
     }
-    this.stateManager.cache('data', request).subscribe(data => this.data = data);
+    this.stateManager.cache('data', request).subscribe(data => (this.data = data));
   }
 
   onDataInitialized(data: ImportedFileDataForNew) {
@@ -164,8 +169,13 @@ export class ImportFileComponent extends BasePageComponent<ImportedFileDataForNe
   }
 
   submit(confirmationPassword?: string) {
-    if (!validateBeforeSubmit(this.form) || !validateBeforeSubmit(this.fileControl)
-      || (!confirmationPassword && this.confirmationPasswordControl && !validateBeforeSubmit(this.confirmationPasswordControl))) {
+    if (
+      !validateBeforeSubmit(this.form) ||
+      !validateBeforeSubmit(this.fileControl) ||
+      (!confirmationPassword &&
+        this.confirmationPasswordControl &&
+        !validateBeforeSubmit(this.confirmationPasswordControl))
+    ) {
       return;
     }
 

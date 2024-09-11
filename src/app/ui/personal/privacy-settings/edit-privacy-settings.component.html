@@ -1,5 +1,6 @@
 <page-layout>
-  <page-content [heading]="i18n.privacySettings.title"
+  <page-content
+    [heading]="i18n.privacySettings.title"
     [mobileHeading]="i18n.privacySettings.mobileTitle"
     [headingActions]="headingActions$ | async">
     <ng-container *ngIf="data$ | async" [formGroup]="form">
@@ -8,20 +9,19 @@
       <ul>
         <li *ngFor="let field of fields()">{{ field }}</li>
       </ul>
-      <user-info *ngIf="data.user && !authHelper.isSelf(data.user)"
-        [user]="data.user"></user-info>
-      <boolean-field #enabled [formControlName]="'enabled'"
-        [label]='i18n.general.enabled'></boolean-field>
+      <user-info *ngIf="data.user && !authHelper.isSelf(data.user)" [user]="data.user"></user-info>
+      <boolean-field #enabled [formControlName]="'enabled'" [label]="i18n.general.enabled"></boolean-field>
       <ng-container *ngIf="enabled.value">
         <h2>{{ i18n.privacySettings.controlsSection }}</h2>
-        <boolean-field *ngFor="let control of data.availableControls"
-          [formControlName]="control.id" [label]="control.name"
+        <boolean-field
+          *ngFor="let control of data.availableControls"
+          [formControlName]="control.id"
+          [label]="control.name"
           [text]="control.informationText">
         </boolean-field>
       </ng-container>
       <actions>
-        <action-button [label]="i18n.general.save" (action)="save()"
-          [disabled]="requesting$ | async"></action-button>
+        <action-button [label]="i18n.general.save" (action)="save()" [disabled]="requesting$ | async"></action-button>
       </actions>
     </ng-container>
   </page-content>

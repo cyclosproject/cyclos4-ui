@@ -1,21 +1,30 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, Injector, Input, OnChanges, Output, SimpleChanges, ViewChild
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Injector,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import { SvgIcon } from 'app/core/svg-icon';
 import { BaseComponent } from 'app/shared/base.component';
 import { truthyAttr } from 'app/shared/helper';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
-export type ActionKind
+export type ActionKind =
   /** Primary actions like submit. Default kind */
-  = 'primary'
+  | 'primary'
 
   /** Actions "inside" a page which are not primary, like actions over images editing the profile or the button to add new addresses */
   | 'secondary'
 
   /** Actions with a flat background, shown like the result type selector */
-  | 'flat'
-  ;
+  | 'flat';
 
 /**
  * A button that displays a spinner, before the icon and/or text, if it is disabled.
@@ -26,7 +35,6 @@ export type ActionKind
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ActionButtonComponent extends BaseComponent implements OnChanges {
-
   @HostBinding('class.d-inline-block') classInlineBlock = true;
   @HostBinding('class.button') classButton = true;
 
@@ -57,8 +65,7 @@ export class ActionButtonComponent extends BaseComponent implements OnChanges {
   subscription: Subscription;
   showSpinner$ = new BehaviorSubject(false);
 
-  constructor(
-    injector: Injector) {
+  constructor(injector: Injector) {
     super(injector);
   }
 

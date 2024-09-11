@@ -11,12 +11,9 @@ import { environment } from 'environments/environment';
 @Component({
   selector: 'manage-settings',
   templateUrl: 'manage-settings.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ManageSettingsComponent
-  extends BasePageComponent<boolean>
-  implements OnInit {
-
+export class ManageSettingsComponent extends BasePageComponent<boolean> implements OnInit {
   darkThemeControl: FormControl;
   canSwitchFrontend: boolean;
 
@@ -34,21 +31,22 @@ export class ManageSettingsComponent
 
   onDataInitialized() {
     this.darkThemeControl = new FormControl(this.layout.darkTheme);
-    this.addSub(this.darkThemeControl.valueChanges.subscribe(value => {
-      this.layout.darkTheme = value;
-    }));
+    this.addSub(
+      this.darkThemeControl.valueChanges.subscribe(value => {
+        this.layout.darkTheme = value;
+      })
+    );
 
     const dataForUi = this.dataForFrontendHolder.dataForFrontend.dataForUi;
     const locales = dataForUi.allowedLocales;
     if (locales.length > 1) {
       this.localeControl = new FormControl(dataForUi.currentLocale?.code);
-      this.localeOptions = locales.map(l => (
-        { value: l.code, text: l.name }
-      ));
+      this.localeOptions = locales.map(l => ({ value: l.code, text: l.name }));
       this.addSub(this.localeControl.valueChanges.subscribe(locale => this.authHelper.setLocale(locale)));
     }
 
-    this.canSwitchFrontend = !environment.standalone && this.dataForFrontendHolder.dataForFrontend.allowFrontendSwitching;
+    this.canSwitchFrontend =
+      !environment.standalone && this.dataForFrontendHolder.dataForFrontend.allowFrontendSwitching;
   }
 
   switchFrontend() {

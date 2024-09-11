@@ -1,13 +1,14 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [heading]="data.type.pluralName"
+    <page-content
+      [heading]="data.type.pluralName"
       [mobileHeading]="data.type.pluralName"
       [headingActions]="headingActions$ | async">
       <ng-container *ngIf="data.user && !authHelper.isSelf(data.user)">
         <user-info [user]="data.user"></user-info>
-        <hr>
+        <hr />
       </ng-container>
-      <ng-container *ngFor="let row of (results$ | async); let first = first">
+      <ng-container *ngFor="let row of results$ | async; let first = first">
         <hr *ngIf="!first" />
         <label-value [label]="i18n.general.creationDate">
           {{ row.creationDate | dateTime }}
@@ -15,31 +16,38 @@
         <label-value [label]="i18n.record.createdBy">
           {{ row.createdBy.display }}
         </label-value>
-        <label-value *ngIf="row.lastModifiedBy"
-          [label]="i18n.record.lastModificationDate">
+        <label-value *ngIf="row.lastModifiedBy" [label]="i18n.record.lastModificationDate">
           {{ row.lastModificationDate | dateTime }}
         </label-value>
-        <label-value *ngIf="row.lastModifiedBy"
-          [label]="i18n.record.lastModifiedBy">
+        <label-value *ngIf="row.lastModifiedBy" [label]="i18n.record.lastModifiedBy">
           {{ row.lastModifiedBy.display }}
         </label-value>
         <label-value *ngFor="let field of fieldsInList" [label]="field.name">
-          <format-field-value [fields]="data.customFields" [plainText]="true"
-            [fieldName]="field.internalName" [object]="row"
+          <format-field-value
+            [fields]="data.customFields"
+            [plainText]="true"
+            [fieldName]="field.internalName"
+            [object]="row"
             [customValues]="row.customValues">
           </format-field-value>
         </label-value>
         <actions class="mb-3">
-          <action-button *ngIf="data.edit" [disabled]="requesting$ | async"
+          <action-button
+            *ngIf="data.edit"
+            [disabled]="requesting$ | async"
             (action)="router.navigate(editPath(row))"
             [label]="i18n.general.edit">
           </action-button>
-          <action-button [disabled]="requesting$ | async"
+          <action-button
+            [disabled]="requesting$ | async"
             (action)="router.navigate(viewPath(row))"
             [label]="i18n.general.view">
           </action-button>
-          <action-button *ngIf="data.remove" outline
-            [disabled]="requesting$ | async" (action)="remove(row)"
+          <action-button
+            *ngIf="data.remove"
+            outline
+            [disabled]="requesting$ | async"
+            (action)="remove(row)"
             [label]="i18n.general.remove">
           </action-button>
         </actions>

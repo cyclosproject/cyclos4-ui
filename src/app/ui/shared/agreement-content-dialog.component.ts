@@ -11,29 +11,28 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'agreement-content-dialog',
   templateUrl: 'agreement-content-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AgreementsContentDialogComponent
-  extends BaseComponent
-  implements OnInit {
-
+export class AgreementsContentDialogComponent extends BaseComponent implements OnInit {
   @Input() agreement: Agreement;
   @Input() version: number;
 
   content$ = new BehaviorSubject<string>(null);
 
-  constructor(
-    injector: Injector,
-    private agreementsService: AgreementsService,
-    public modalRef: BsModalRef) {
+  constructor(injector: Injector, private agreementsService: AgreementsService, public modalRef: BsModalRef) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.agreementsService.getAgreementContent({
-      key: this.agreement.id, version: this.version
-    }).subscribe(content => this.content$.next(content.content)));
+    this.addSub(
+      this.agreementsService
+        .getAgreementContent({
+          key: this.agreement.id,
+          version: this.version
+        })
+        .subscribe(content => this.content$.next(content.content))
+    );
   }
 
   print(element: HTMLElement, iframe: HTMLIFrameElement) {

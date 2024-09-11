@@ -18,7 +18,7 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'quick-access',
   templateUrl: 'quick-access.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QuickAccessComponent extends BaseDashboardComponent implements OnInit {
   /** Export to template */
@@ -28,10 +28,7 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
   @Input() actions: QuickAccessAction[];
   itemClass$ = new BehaviorSubject<string>(null);
 
-  constructor(
-    injector: Injector,
-    private menu: MenuService,
-    private breadcrumb: BreadcrumbService) {
+  constructor(injector: Injector, private menu: MenuService, private breadcrumb: BreadcrumbService) {
     super(injector);
   }
 
@@ -42,20 +39,25 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
     const dataForFrontend = this.dataForFrontendHolder.dataForFrontend;
     if (this.layout.gtsm && dataForFrontend.canManageQuickAccess) {
       this.headingActions = [
-        new HeadingAction(SvgIcon.Gear, this.i18n.dashboard.customizeQuickAccess,
-          event => this.menu.navigate({
-            menu: new ActiveMenu(Menu.QUICK_ACCESS_SETTINGS),
-            clear: false,
-            event
-          }), true)
+        new HeadingAction(
+          SvgIcon.Gear,
+          this.i18n.dashboard.customizeQuickAccess,
+          event =>
+            this.menu.navigate({
+              menu: new ActiveMenu(Menu.QUICK_ACCESS_SETTINGS),
+              clear: false,
+              event
+            }),
+          true
+        )
       ];
     }
-
 
     // Handle keyboard shortcuts: arrows to navigate correctly on the grid
     this.addShortcut(Arrows, event => {
       handleKeyboardFocus(this.layout, this.element, event, {
-        horizontalOffset: 1, verticalOffset: 2,
+        horizontalOffset: 1,
+        verticalOffset: 2
       });
     });
 
@@ -78,11 +80,15 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
 
   private updateItemClass(breakpoints: Set<Breakpoint>) {
     // Maximum number of items for the current resolution
-    const max = breakpoints.has('lt-sm') ? 2
-      : breakpoints.has('sm') ? 3
-        : breakpoints.has('md') ? 5
-          : breakpoints.has('lg') ? 6
-            : 8;
+    const max = breakpoints.has('lt-sm')
+      ? 2
+      : breakpoints.has('sm')
+      ? 3
+      : breakpoints.has('md')
+      ? 5
+      : breakpoints.has('lg')
+      ? 6
+      : 8;
 
     const len = this.actions.length;
     // With up to 6 items, we will show them in a box with the same height as others.
@@ -91,7 +97,7 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
     if (len <= 6) {
       size = Math.min(max, 3);
     } else {
-      const lines = Math.ceil(len * 1.0 / max);
+      const lines = Math.ceil((len * 1.0) / max);
       size = Math.ceil(len / lines);
     }
     this.itemClass$.next(`quick-access-item-container-${size}`);

@@ -12,10 +12,9 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 @Component({
   selector: 'order-products',
   templateUrl: 'order-products.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrderProductsComponent extends BaseComponent implements OnInit {
-
   @Input() products$: BehaviorSubject<OrderItem[]>;
   @Input() deliveryMethod$: BehaviorSubject<OrderDeliveryMethod>;
   @Input() currency: Currency;
@@ -23,9 +22,7 @@ export class OrderProductsComponent extends BaseComponent implements OnInit {
   data$ = new BehaviorSubject<OrderItem[]>(null);
   form: FormGroup;
 
-  constructor(
-    injector: Injector,
-  ) {
+  constructor(injector: Injector) {
     super(injector);
   }
 
@@ -42,19 +39,23 @@ export class OrderProductsComponent extends BaseComponent implements OnInit {
           const price = this.formBuilder.control(row.price);
           this.form.addControl(this.price(row), price);
 
-          this.addSub(discount.valueChanges
-            .pipe(distinctUntilChanged(), debounceTime(550))
-            .subscribe(val => this.applyDiscount(row, val)));
-          this.addSub(price.valueChanges
-            .pipe(distinctUntilChanged(), debounceTime(550))
-            .subscribe(val => this.applyPrice(row, val)));
+          this.addSub(
+            discount.valueChanges
+              .pipe(distinctUntilChanged(), debounceTime(550))
+              .subscribe(val => this.applyDiscount(row, val))
+          );
+          this.addSub(
+            price.valueChanges
+              .pipe(distinctUntilChanged(), debounceTime(550))
+              .subscribe(val => this.applyPrice(row, val))
+          );
 
           const quantity = this.formBuilder.control(row.quantity);
           this.form.addControl(this.quantity(row), quantity);
 
-          this.addSub(quantity.valueChanges
-            .pipe(distinctUntilChanged(), debounceTime(550))
-            .subscribe(val => row.quantity = val));
+          this.addSub(
+            quantity.valueChanges.pipe(distinctUntilChanged(), debounceTime(550)).subscribe(val => (row.quantity = val))
+          );
         });
       }
       this.data = data;
@@ -68,7 +69,7 @@ export class OrderProductsComponent extends BaseComponent implements OnInit {
     } else if (val > 100) {
       price = 0;
     } else {
-      price = +row.product.price - (+row.product.price * (val / 100));
+      price = +row.product.price - +row.product.price * (val / 100);
     }
     this.form.controls[this.price(row)].setValue(price, { emitEvent: false });
     row.price = price.toString();
@@ -85,7 +86,7 @@ export class OrderProductsComponent extends BaseComponent implements OnInit {
   }
 
   calculateDiscount(row: OrderItem, price: number): number {
-    const divide = (1 - (price / +row.product.price)) * 100;
+    const divide = (1 - price / +row.product.price) * 100;
     if (divide < 0) {
       return 0;
     } else if (divide > 100) {
@@ -113,7 +114,7 @@ export class OrderProductsComponent extends BaseComponent implements OnInit {
 
   get subtotal(): number {
     let sub = 0;
-    this.data$.value.forEach(row => sub += this.rowTotal(row));
+    this.data$.value.forEach(row => (sub += this.rowTotal(row)));
     return sub;
   }
 

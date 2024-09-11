@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostBinding,
+  Inject,
+  NgZone,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { DataForFrontend, UnauthorizedError, UnauthorizedErrorCode } from 'app/api/models';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
@@ -19,10 +29,9 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'ui-root',
   templateUrl: './ui.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UiComponent implements OnInit {
-
   @HostBinding('class.root') root = true;
   @ViewChild(SidenavComponent) sidenav: SidenavComponent;
   @ViewChild('mainContainer') mainContainer: ElementRef;
@@ -48,8 +57,7 @@ export class UiComponent implements OnInit {
     private errorHandler: ErrorHandlerService,
     private uiErrorHandler: UiErrorHandlerService,
     private changeDetector: ChangeDetectorRef
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     window['navigate'] = (url: string | HTMLAnchorElement, event?: Event) => {
@@ -79,7 +87,7 @@ export class UiComponent implements OnInit {
       if (focused.tagName === 'A') {
         try {
           focused.blur();
-        } catch (e) { }
+        } catch (e) {}
       }
     });
 
@@ -90,8 +98,7 @@ export class UiComponent implements OnInit {
     setRootSpinnerVisible(false);
 
     // Listen for vertical arrows events on mobile to change focus
-    this.shortcut.subscribe(ArrowsVertical, e =>
-      handleKeyboardFocus(this.layout, this.mainContainer.nativeElement, e));
+    this.shortcut.subscribe(ArrowsVertical, e => handleKeyboardFocus(this.layout, this.mainContainer.nativeElement, e));
 
     // Workaround: Without this, the footer doesn't show up without a click in the page
     this.uiLayout.fullWidth$.subscribe(() => setTimeout(() => this.changeDetector.detectChanges()));

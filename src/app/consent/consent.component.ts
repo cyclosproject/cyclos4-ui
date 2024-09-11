@@ -28,7 +28,7 @@ export class ConsentComponent implements OnInit {
     private errorHandler: ErrorHandlerService,
     private iconLoading: IconLoadingService,
     public state: ConsentState,
-    private oidcService: OidcService,
+    private oidcService: OidcService
   ) {
     oidcService.rootUrl = apiRoot.endsWith('/') ? apiRoot.substring(0, apiRoot.length - 1) : apiRoot;
     state.redirecting$.subscribe(flag => {
@@ -65,9 +65,12 @@ export class ConsentComponent implements OnInit {
     //in case of the consent app we do not request any api method (i.e below /api)
     //then the default error handling in the api-interceptor does not run
     //that is why we need to manually handle the errors on any request
-    this.state.initialize(locator).subscribe(data => {
-      this.i18nLoading.initialize(i18nRoot, data).subscribe(() => this.initialize(data));
-    }, e => this.errorHandler.handleHttpError(e));
+    this.state.initialize(locator).subscribe(
+      data => {
+        this.i18nLoading.initialize(i18nRoot, data).subscribe(() => this.initialize(data));
+      },
+      e => this.errorHandler.handleHttpError(e)
+    );
   }
 
   get data(): OidcDataForConsent {
@@ -79,9 +82,7 @@ export class ConsentComponent implements OnInit {
       client: data.client.name,
       app: data.applicationName
     };
-    this.title = data.openidOnly
-      ? this.i18n.consent.titleOpenidOnly(params)
-      : this.i18n.consent.title(params);
+    this.title = data.openidOnly ? this.i18n.consent.titleOpenidOnly(params) : this.i18n.consent.title(params);
 
     document.documentElement.setAttribute('lang', data.locale.split(/_/g)[0]);
     const shortcutIcon = document.createElement('link');

@@ -1,60 +1,63 @@
 <page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
-
   <!-- Step 1: Select voucher type -->
   <ng-container *ngSwitchCase="'select-type'">
-    <voucher-type-selection [user]="data.user"
+    <voucher-type-selection
+      [user]="data.user"
       [heading]="i18n.voucher.title.buy"
       [mobileHeading]="i18n.voucher.mobileTitle.buy"
-      [categories]="data.categories" [types]="data.types"
+      [categories]="data.categories"
+      [types]="data.types"
       (typeSelected)="toForm($event)">
     </voucher-type-selection>
   </ng-container>
 
   <!-- Step 2: Buy form -->
-  <page-content *ngSwitchCase="'form'"
+  <page-content
+    *ngSwitchCase="'form'"
     [heading]="dataTypeForBuy.type.voucherTitle"
     [mobileHeading]="dataTypeForBuy.type.voucherTitle"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
-    <buy-vouchers-step-form class="flex-grow-1" [data]="dataTypeForBuy"
-      [form]="form">
-    </buy-vouchers-step-form>
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'"
+    last>
+    <buy-vouchers-step-form class="flex-grow-1" [data]="dataTypeForBuy" [form]="form"> </buy-vouchers-step-form>
 
     <actions forceRow>
-      <action-button [disabled]="requesting$ | async" (action)="toConfirm()"
-        [label]="i18n.general.next">
+      <action-button [disabled]="requesting$ | async" (action)="toConfirm()" [label]="i18n.general.next">
       </action-button>
-      <action-button *ngIf="!singleType" outline (action)="backToSelectType()"
-        [label]="i18n.general.previous">
+      <action-button *ngIf="!singleType" outline (action)="backToSelectType()" [label]="i18n.general.previous">
       </action-button>
     </actions>
   </page-content>
 
   <!-- Step 3: Buy confirmation -->
-  <page-content *ngSwitchCase="'confirm'"
+  <page-content
+    *ngSwitchCase="'confirm'"
     [heading]="i18n.voucher.title.buyConfirmation"
     [mobileHeading]="i18n.voucher.mobileTitle.buyConfirmation"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
-    <buy-vouchers-step-confirm class="flex-grow-1" [preview]="preview"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'"
+    last>
+    <buy-vouchers-step-confirm
+      class="flex-grow-1"
+      [preview]="preview"
       [paymentCustomFields]="dataTypeForBuy.paymentCustomFields"
       [voucherCustomFields]="dataTypeForBuy.voucherCustomFields"
       [confirmationPassword]="confirmationPassword"
-      (showSubmit)="showSubmit$.next($event)" (confirmed)="buy($event)">
+      (showSubmit)="showSubmit$.next($event)"
+      (confirmed)="buy($event)">
     </buy-vouchers-step-confirm>
 
     <actions forceRow>
-      <action-button *ngIf="showSubmit$ | async; else spacer"
-        [disabled]="!canConfirm || (requesting$ | async)" (action)="buy()"
+      <action-button
+        *ngIf="showSubmit$ | async; else spacer"
+        [disabled]="!canConfirm || (requesting$ | async)"
+        (action)="buy()"
         [label]="i18n.general.confirm">
       </action-button>
       <ng-template #spacer>&nbsp;</ng-template>
-      <action-button outline (action)="backToForm()"
-        [label]="i18n.general.previous">
-      </action-button>
+      <action-button outline (action)="backToForm()" [label]="i18n.general.previous"> </action-button>
     </actions>
   </page-content>
 
   <page-content *ngSwitchDefault>
     <spinner></spinner>
   </page-content>
-
 </page-layout>

@@ -1,25 +1,28 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="form" [heading]="i18n.invite.title"
-    [mobileHeading]="i18n.invite.mobileTitle" last [formGroup]="form">
-
-    <input-list-field [maxItems]="data?.maxRecipients" focused [label]="data?.maxRecipients === 1
-        ? i18n.invite.toEmail
-        : i18n.invite.toEmails" formControlName="toEmails">
+  <page-content
+    *ngIf="form"
+    [heading]="i18n.invite.title"
+    [mobileHeading]="i18n.invite.mobileTitle"
+    last
+    [formGroup]="form">
+    <input-list-field
+      [maxItems]="data?.maxRecipients"
+      focused
+      [label]="data?.maxRecipients === 1 ? i18n.invite.toEmail : i18n.invite.toEmails"
+      formControlName="toEmails">
     </input-list-field>
 
-    <boolean-field *ngIf="dataForFrontendHolder.auth?.role === 'broker'"
-      formControlName="assignBroker" [label]="i18n.invite.assignBroker">
+    <boolean-field
+      *ngIf="dataForFrontendHolder.auth?.role === 'broker'"
+      formControlName="assignBroker"
+      [label]="i18n.invite.assignBroker">
     </boolean-field>
 
-    <label-value [label]="i18n.invite.subject" [value]="data.subject"
-      kind='fieldView'>
-    </label-value>
-    <label-value [label]="i18n.invite.body" [value]="data.body"
-      kind='fieldView' valueFormat="html"></label-value>
+    <label-value [label]="i18n.invite.subject" [value]="data.subject" kind="fieldView"> </label-value>
+    <label-value [label]="i18n.invite.body" [value]="data.body" kind="fieldView" valueFormat="html"></label-value>
 
     <actions>
-      <action-button [label]="i18n.invite.send" (action)="send()">
-      </action-button>
+      <action-button [label]="i18n.invite.send" (action)="send()"> </action-button>
     </actions>
   </page-content>
 </page-layout>

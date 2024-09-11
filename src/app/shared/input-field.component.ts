@@ -1,6 +1,15 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Host, Injector, Input,
-  Optional, Output, SkipSelf, ViewChild,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Host,
+  Injector,
+  Input,
+  Optional,
+  Output,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
@@ -12,13 +21,9 @@ import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
   selector: 'input-field',
   templateUrl: 'input-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: InputFieldComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: InputFieldComponent, multi: true }]
 })
-export class InputFieldComponent
-  extends BaseFormFieldComponent<string> {
-
+export class InputFieldComponent extends BaseFormFieldComponent<string> {
   /** HTML input type */
   @Input() type = 'text';
 
@@ -41,9 +46,7 @@ export class InputFieldComponent
 
   @ViewChild('input') inputRef: ElementRef;
 
-  constructor(
-    injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
+  constructor(injector: Injector, @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
     super(injector, controlContainer);
   }
 
@@ -72,5 +75,4 @@ export class InputFieldComponent
   protected getDisabledValue(): string {
     return this.value;
   }
-
 }

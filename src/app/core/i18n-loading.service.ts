@@ -10,7 +10,7 @@ import { map, switchMap } from 'rxjs/operators';
  * Handles loading of translation keys
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class I18nLoadingService {
   locales = I18nMeta.locales();
@@ -20,25 +20,23 @@ export class I18nLoadingService {
   private resourceCacheKey: string;
   private locale$ = new BehaviorSubject<string>(null);
 
-  constructor(
-    @Inject(I18nInjectionToken) private i18n: I18n,
-    private http: HttpClient) {
-  }
+  constructor(@Inject(I18nInjectionToken) private i18n: I18n, private http: HttpClient) {}
 
   /**
    * Called just after the application setup. Basically checks for a static locale
    */
-  initialize(i18nRoot: string, params: { resourceCacheKey?: string, locale?: string; }) {
+  initialize(i18nRoot: string, params: { resourceCacheKey?: string; locale?: string }) {
     this.i18nRoot = i18nRoot;
     this.resourceCacheKey = params.resourceCacheKey;
     // If running in development mode, read the default translations first
     if (isDevServer()) {
       const hash = I18nMeta.contentHash('en');
       return this.http.get(`${i18nRoot}/i18n.json?h=${hash}`).pipe(
-        switchMap((defaultValues) => {
+        switchMap(defaultValues => {
           this.i18n.$defaults(defaultValues);
           return this.load(params.locale);
-        }));
+        })
+      );
     } else {
       return this.load(params.locale);
     }
@@ -66,7 +64,7 @@ export class I18nLoadingService {
       map(values => {
         this.setLocale(locale, values);
         return this.i18n;
-      }),
+      })
     );
   }
 
@@ -74,7 +72,11 @@ export class I18nLoadingService {
    * Adds a new observer subscription for locale change events.
    * The event is only triggered when the translations are fetched
    */
-  subscribeForLocale(next?: (locale: string) => void, error?: (error: any) => void, complete?: () => void): Subscription {
+  subscribeForLocale(
+    next?: (locale: string) => void,
+    error?: (error: any) => void,
+    complete?: () => void
+  ): Subscription {
     return this.locale$.subscribe(next, error, complete);
   }
 

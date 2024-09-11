@@ -1,8 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  AccountKind, CreateDeviceConfirmation, DeviceConfirmationTypeEnum,
-  PaymentRequestActionEnum, PaymentRequestPreview, PerformPayment, TransferFeePreview, User
+  AccountKind,
+  CreateDeviceConfirmation,
+  DeviceConfirmationTypeEnum,
+  PaymentRequestActionEnum,
+  PaymentRequestPreview,
+  PerformPayment,
+  TransferFeePreview,
+  User
 } from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { Enter } from 'app/core/shortcut.service';
@@ -16,7 +22,7 @@ import { PaymentRequestScheduledTo } from 'app/ui/banking/request-payment/paymen
 @Component({
   selector: 'accept-payment-request-confirm',
   templateUrl: 'accept-payment-request-confirm.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AcceptPaymentRequestConfirmComponent extends BaseComponent implements OnInit {
   PaymentRequestScheduledTo = PaymentRequestScheduledTo;
@@ -40,9 +46,7 @@ export class AcceptPaymentRequestConfirmComponent extends BaseComponent implemen
 
   createDeviceConfirmation: () => CreateDeviceConfirmation | PerformPayment;
 
-  constructor(
-    injector: Injector,
-    private authHelper: AuthHelperService) {
+  constructor(injector: Injector, private authHelper: AuthHelperService) {
     super(injector);
   }
 
@@ -58,16 +62,18 @@ export class AcceptPaymentRequestConfirmComponent extends BaseComponent implemen
     this.toSystem = this.preview.toAccount.kind === AccountKind.SYSTEM;
 
     this.scheduleTo = new FormControl(PaymentRequestScheduledTo.NOW);
-    this.addSub(this.scheduleTo.valueChanges.subscribe(rescheduleTo => {
-      if (rescheduleTo === PaymentRequestScheduledTo.DATE) {
-        this.form.controls.processDate.setValidators(Validators.required);
-      } else {
-        this.form.controls.processDate.clearValidators();
-      }
-      const processDate: string = rescheduleTo === PaymentRequestScheduledTo.EXPIRY
-        ? this.preview.paymentRequest.expirationDate : null;
-      this.form.patchValue({ processDate });
-    }));
+    this.addSub(
+      this.scheduleTo.valueChanges.subscribe(rescheduleTo => {
+        if (rescheduleTo === PaymentRequestScheduledTo.DATE) {
+          this.form.controls.processDate.setValidators(Validators.required);
+        } else {
+          this.form.controls.processDate.clearValidators();
+        }
+        const processDate: string =
+          rescheduleTo === PaymentRequestScheduledTo.EXPIRY ? this.preview.paymentRequest.expirationDate : null;
+        this.form.patchValue({ processDate });
+      })
+    );
 
     this.form.setControl('confirmationPassword', this.confirmationPassword);
     this.fees = this.preview.fees;
@@ -87,5 +93,4 @@ export class AcceptPaymentRequestConfirmComponent extends BaseComponent implemen
       this.addShortcut(Enter, () => this.confirmed.emit());
     }
   }
-
 }

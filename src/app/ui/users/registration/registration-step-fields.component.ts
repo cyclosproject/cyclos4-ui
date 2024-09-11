@@ -1,6 +1,24 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Injector,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AvailabilityEnum, CustomField, FieldSection, GeographicalCoordinate, Image, StoredFile, UserCustomFieldDetailed, UserDataForNew } from 'app/api/models';
+import {
+  AvailabilityEnum,
+  CustomField,
+  FieldSection,
+  GeographicalCoordinate,
+  Image,
+  StoredFile,
+  UserCustomFieldDetailed,
+  UserDataForNew
+} from 'app/api/models';
 import { ImagesService } from 'app/api/services/images.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { BaseComponent } from 'app/shared/base.component';
@@ -15,12 +33,9 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 @Component({
   selector: 'registration-step-fields',
   templateUrl: 'registration-step-fields.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegistrationStepFieldsComponent
-  extends BaseComponent
-  implements OnInit {
-
+export class RegistrationStepFieldsComponent extends BaseComponent implements OnInit {
   @Input() data: UserDataForNew;
   @Input() form: FormGroup;
   @Input() mobileForm: FormGroup;
@@ -38,7 +53,6 @@ export class RegistrationStepFieldsComponent
   managePrivacyFields: Set<string>;
   fieldsWithoutSection: Array<UserCustomFieldDetailed>;
   fieldsWithSection = new Map<FieldSection, UserCustomFieldDetailed[]>();
-
 
   image$ = new BehaviorSubject<Image>(null);
   @Input() get image(): Image {
@@ -64,7 +78,8 @@ export class RegistrationStepFieldsComponent
     private imagesService: ImagesService,
     public maps: MapsService,
     public changeDetector: ChangeDetectorRef,
-    private fieldHelper: FieldHelperService) {
+    private fieldHelper: FieldHelperService
+  ) {
     super(injector);
   }
 
@@ -78,11 +93,13 @@ export class RegistrationStepFieldsComponent
     const fields = Array.from(this.data.customFields.values());
     this.fieldsWithoutSection = fields.filter(field => field.section == null) || [];
     const sections = new Map();
-    fields.map(v => v.section).forEach(s => {
-      if (s != null) {
-        sections.set(s.id, s);
-      }
-    });
+    fields
+      .map(v => v.section)
+      .forEach(s => {
+        if (s != null) {
+          sections.set(s.id, s);
+        }
+      });
     sections.forEach(s => {
       const filter = fields.filter(field => field.section != null && field.section.id === s.id);
       if (!empty(filter)) {
@@ -113,12 +130,14 @@ export class RegistrationStepFieldsComponent
 
   onUploadDone(image: Image) {
     // First remove any previous image, then emit that a new image is uploaded
-    this.addSub(this.doRemoveImage().subscribe(() => {
-      this.image = image;
-      this.imageControl.setValue(this.image.id);
-      this.imageUploaded.emit(this.image);
-      this.changeDetector.detectChanges();
-    }));
+    this.addSub(
+      this.doRemoveImage().subscribe(() => {
+        this.image = image;
+        this.imageControl.setValue(this.image.id);
+        this.imageUploaded.emit(this.image);
+        this.changeDetector.detectChanges();
+      })
+    );
   }
 
   removeImage() {
@@ -155,15 +174,19 @@ export class RegistrationStepFieldsComponent
   locateAddress() {
     const value = this.addressForm.value;
     this.locatingAddress$.next(true);
-    this.addSub(this.maps.geocode(value).subscribe(coords => {
-      this.addressForm.patchValue({ location: coords });
-      this.changeDetector.detectChanges();
-    }, () => this.mapShown()));
+    this.addSub(
+      this.maps.geocode(value).subscribe(
+        coords => {
+          this.addressForm.patchValue({ location: coords });
+          this.changeDetector.detectChanges();
+        },
+        () => this.mapShown()
+      )
+    );
   }
 
   mapShown() {
     this.locatingAddress$.next(false);
     this.changeDetector.detectChanges();
   }
-
 }

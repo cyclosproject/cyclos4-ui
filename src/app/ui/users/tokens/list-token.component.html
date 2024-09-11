@@ -1,6 +1,7 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [heading]="data?.type.pluralName"
+    <page-content
+      [heading]="data?.type.pluralName"
       [mobileHeading]="data?.type.pluralName"
       [headingActions]="headingActions$ | async"
       [mode]="!self ? 'normal' : 'empty'">
@@ -11,25 +12,19 @@
       <mobile-result *mobileResult="let row">
         <div class="d-flex">
           <div>
-            <label-value *ngIf="!self" [label]="i18n.general.operator"
-              labelPosition="above">
-              {{ row.user?.user? row.user.display : '' }}
+            <label-value *ngIf="!self" [label]="i18n.general.operator" labelPosition="above">
+              {{ row.user?.user ? row.user.display : '' }}
             </label-value>
-            <label-value
-              [label]="isNfc() ? i18n.token.label : i18n.token.value"
-              labelPosition="above">
+            <label-value [label]="isNfc() ? i18n.token.label : i18n.token.value" labelPosition="above">
               {{ row.value }}
             </label-value>
-            <label-value [label]="i18n.token.creationDate"
-              labelPosition="above">
+            <label-value [label]="i18n.token.creationDate" labelPosition="above">
               {{ row.creationDate | date }}
             </label-value>
-            <label-value [label]="i18n.token.activationDate"
-              labelPosition="above">
+            <label-value [label]="i18n.token.activationDate" labelPosition="above">
               {{ row.activationDate | date }}
             </label-value>
-            <label-value [label]="i18n.token.expiryDate"
-              labelPosition="above">
+            <label-value [label]="i18n.token.expiryDate" labelPosition="above">
               {{ row.expiryDate | date }}
             </label-value>
             <label-value [label]="i18n.general.status" labelPosition="above">
@@ -37,7 +32,9 @@
             </label-value>
           </div>
           <div class="ml-auto text-right d-flex flex-column">
-            <button type="button" [tooltip]="i18n.general.view"
+            <button
+              type="button"
+              [tooltip]="i18n.general.view"
               class="btn btn-icon"
               (click)="router.navigate(view(row)); $event.stopPropagation(); $event.preventDefault()">
               <icon [icon]="SvgIcon.Search"></icon>
@@ -56,10 +53,10 @@
           <th>{{ i18n.general.status }}</th>
         </thead>
         <tbody>
-          <tr *ngFor="let row of data.tokens"
+          <tr
+            *ngFor="let row of data.tokens"
             (click)="router.navigate(view(row)); $event.stopPropagation(); $event.preventDefault()">
-            <td *ngIf="!self">{{ row.user?.user? row.user.display : '' }}
-            </td>
+            <td *ngIf="!self">{{ row.user?.user ? row.user.display : '' }}</td>
             <td>{{ row.value }}</td>
             <td>{{ row.creationDate | date }}</td>
             <td>{{ row.activationDate | date }}</td>

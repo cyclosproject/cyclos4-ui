@@ -1,43 +1,53 @@
-<div *ngIf="results"
+<div
+  *ngIf="results"
   class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
   [formGroup]="form">
-  <div class="mb-3 mb-sm-0 w-100 text-center"
-    *ngIf="results.hasTotalCount; else noTotalCount">
-    {{ i18n.general.results.withTotal({
-    first: results.firstItem,
-    last: results.lastItem,
-    total: results.totalCount
-    }) }}
+  <div class="mb-3 mb-sm-0 w-100 text-center" *ngIf="results.hasTotalCount; else noTotalCount">
+    {{
+      i18n.general.results.withTotal({
+        first: results.firstItem,
+        last: results.lastItem,
+        total: results.totalCount
+      })
+    }}
   </div>
   <ng-template #noTotalCount>
     <div class="mb-3 mb-sm-0 w-100 text-center">
-      {{ i18n.general.results.noTotal({
-      first: results.firstItem,
-      last: results.lastItem
-      }) }}
+      {{
+        i18n.general.results.noTotal({
+          first: results.firstItem,
+          last: results.lastItem
+        })
+      }}
     </div>
   </ng-template>
   <div *ngIf="layout.xxs$ | async" class="row no-gutters w-100">
     <div class="col-6 px-2">
-      <action-button *ngIf="results.page > 0" outline
+      <action-button
+        *ngIf="results.page > 0"
+        outline
         (action)="nextOrPrevious(false)"
         [label]="i18n.general.results.previousXxs">
       </action-button>
     </div>
     <div class="col-6 px-2">
-      <action-button *ngIf="results.hasNext" (action)="nextOrPrevious(true)"
-        [label]="i18n.general.results.nextXxs">
+      <action-button *ngIf="results.hasNext" (action)="nextOrPrevious(true)" [label]="i18n.general.results.nextXxs">
       </action-button>
     </div>
   </div>
 
   <div *ngIf="layout.gtxxs$ | async" class="mt-2 mt-xs-0">
-    <pagination *ngIf="layout.gtxxs$ | async" [totalItems]="totalCount"
+    <pagination
+      *ngIf="layout.gtxxs$ | async"
+      [totalItems]="totalCount"
       [itemsPerPage]="results.pageSize"
       [maxSize]="maxSize(layout.breakpointChanges$ | async)"
-      formControlName="pageNumber" [rotate]="true"
+      formControlName="pageNumber"
+      [rotate]="true"
       [boundaryLinks]="results.hasTotalCount && (layout.gtxs$ | async)"
-      previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+      previousText="&lsaquo;"
+      nextText="&rsaquo;"
+      firstText="&laquo;"
       lastText="&raquo;"></pagination>
   </div>
 </div>

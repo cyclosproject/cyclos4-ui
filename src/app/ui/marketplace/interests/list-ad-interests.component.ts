@@ -13,21 +13,16 @@ import { Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'list-ad-interests',
   templateUrl: 'list-ad-interests.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListAdInterestsComponent
-  extends BasePageComponent<UserAdInterestsListData>
-  implements OnInit {
-
+export class ListAdInterestsComponent extends BasePageComponent<UserAdInterestsListData> implements OnInit {
   self: boolean;
   category: boolean;
   user: boolean;
   keywords: boolean;
   param: string;
 
-  constructor(
-    injector: Injector,
-    private adInterestService: AdInterestsService) {
+  constructor(injector: Injector, private adInterestService: AdInterestsService) {
     super(injector);
   }
 
@@ -35,13 +30,14 @@ export class ListAdInterestsComponent
     super.ngOnInit();
     this.param = this.route.snapshot.params.user || this.ApiHelper.SELF;
 
-    this.addSub(this.adInterestService.getUserAdInterestsListData({ user: this.param }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.adInterestService.getUserAdInterestsListData({ user: this.param }).subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized(data: UserAdInterestsListData) {
-
     data.adInterests?.forEach(v => {
       if (!empty(v.keywords || [])) {
         this.keywords = true;
@@ -58,9 +54,14 @@ export class ListAdInterestsComponent
 
     if (data.canCreate) {
       this.headingActions = [
-        new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () => {
-          this.router.navigate(['/marketplace', this.param, 'ad-interests', 'new']);
-        }, true),
+        new HeadingAction(
+          SvgIcon.PlusCircle,
+          this.i18n.general.addNew,
+          () => {
+            this.router.navigate(['/marketplace', this.param, 'ad-interests', 'new']);
+          },
+          true
+        )
       ];
     }
   }
@@ -76,15 +77,17 @@ export class ListAdInterestsComponent
   remove(adInterest: AdInterest) {
     this.confirmation.confirm({
       message: this.i18n.general.removeConfirm(adInterest.name),
-      callback: () => this.doRemove(adInterest),
+      callback: () => this.doRemove(adInterest)
     });
   }
 
   private doRemove(adInterest: AdInterest) {
-    this.addSub(this.adInterestService.deleteAdInterest({ id: adInterest.id }).subscribe(() => {
-      this.notification.snackBar(this.i18n.general.removeDone(adInterest.name));
-      this.reload();
-    }));
+    this.addSub(
+      this.adInterestService.deleteAdInterest({ id: adInterest.id }).subscribe(() => {
+        this.notification.snackBar(this.i18n.general.removeDone(adInterest.name));
+        this.reload();
+      })
+    );
   }
 
   resolveMenu(data: UserAdInterestsListData) {

@@ -68,9 +68,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.16.11/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.16.12/api-deprecation.html)
     for this version.
-  version: '4.16.11'
+  version: '4.16.12'
 servers:
   - url: 'http://root/api'
 
@@ -9668,6 +9668,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
         Returns an image details by id
       description: >-
         Returns metadata about an image given its id.
+        In case of images of kind `systemCustom` the id could be
+        also compund by the prefix `system_image_` and the file name.
       tags:
         - Images
       parameters:
@@ -9722,6 +9724,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
         Removes an image by id
       description: >-
         Removes the image with the given id.
+        In case of images of kind `systemCustom` the id could be
+        also compund by the prefix `system_image_` and the file name.
         Any image kind can be removed using this operation, but the authenticated
         user needs the appropriate permission to do so.
       tags:
@@ -9781,6 +9785,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
         Returns an image content by id
       description: >-
         Returns the content of an image, given the image id.
+        In case of images of kind `systemCustom` the id could be
+        also compund by the prefix `system_image_` and the file name.
         When neither `width` nor `height` are specified, returns the original
         content. The original ratio is always maintained. When only of one of the
         dimensions is specified, it is used as maximum, and the other is
@@ -60214,6 +60220,10 @@ components:
           properties:
             status:
               $ref: '#/components/schemas/AdStatusEnum'
+            currencyNotAvailable:
+              type: boolean
+              description: >-
+                Indicates the current currency is not available for the actual user
             canEdit:
               type: boolean
               description: >-

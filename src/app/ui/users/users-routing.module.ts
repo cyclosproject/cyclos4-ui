@@ -60,353 +60,348 @@ const usersRoutes: Routes = [
     children: [
       {
         path: 'search',
-        component: SearchUsersComponent,
+        component: SearchUsersComponent
       },
       {
         path: 'search/pending',
-        component: SearchUsersComponent,
+        component: SearchUsersComponent
       },
       {
         path: 'messages/search',
         component: SearchMessagesComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'messages/view/:id',
         component: ViewMessageComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'messages/send',
         component: EditMessageComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'messages/reply/:id',
         component: EditMessageComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'brokerings',
         component: SearchUsersComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/brokerings',
         component: SearchUsersComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/brokers',
         component: ListUserBrokersComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/brokers/history',
         component: ViewBrokerHistoryComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/brokers/new',
         component: BrokerFormComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/profile',
         component: ViewProfileComponent,
         resolve: {
-          countries: CountriesResolve,
-        },
+          countries: CountriesResolve
+        }
       },
       {
         path: ':user/profile/edit',
         component: EditProfileComponent,
         canActivate: [LoggedUserGuard],
         resolve: {
-          countries: CountriesResolve,
-        },
+          countries: CountriesResolve
+        }
       },
       {
         path: 'operators',
         component: SearchUserOperatorsComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/operators',
         component: SearchUserOperatorsComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/operators/registration',
         component: OperatorRegistrationComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'operators/:user',
         component: ViewProfileComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'operators/:user/edit',
         component: EditProfileComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/status',
         component: ViewUserStatusComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/status/history',
         component: ViewUserStatusHistoryComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/group',
         component: ViewUserGroupComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/group/history',
         component: ViewUserGroupHistoryComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/agreements',
         component: ViewUserAgreementsComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/agreements/history',
         component: ViewAgreementsHistoryComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'operator-groups',
         component: ListOperatorGroupsComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/operator-groups',
         component: ListOperatorGroupsComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/operator-groups/new',
         component: OperatorGroupFormComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'operator-groups/:id',
         component: ViewOperatorGroupComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'operator-groups/:id/edit',
         component: OperatorGroupFormComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'contacts',
         component: ContactListComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'contacts/:user',
         component: ViewProfileComponent,
         canActivate: [LoggedUserGuard],
         resolve: {
-          countries: CountriesResolve,
-        },
+          countries: CountriesResolve
+        }
       },
       {
         path: ':user/passwords',
         component: ManagePasswordsComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/passwords/history',
         component: ViewPasswordsHistoryComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/identity-providers',
         component: UserIdentityProvidersComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'registration',
         component: UserRegistrationComponent,
         resolve: {
-          countries: CountriesResolve,
-        },
+          countries: CountriesResolve
+        }
       },
       {
         path: 'registration/:externalPaymentToken',
         component: UserRegistrationComponent,
         resolve: {
-          countries: CountriesResolve,
-        },
+          countries: CountriesResolve
+        }
       },
       {
         path: 'validate-registration/:key',
-        component: ValidateRegistrationComponent,
+        component: ValidateRegistrationComponent
       },
       {
         path: 'validate-registration',
-        component: ValidateRegistrationComponent,
+        component: ValidateRegistrationComponent
       },
       {
         path: 'connected',
-        component: SearchConnectedComponent,
+        component: SearchConnectedComponent
       },
       {
         path: 'alerts',
-        component: SearchUserAlertsComponent,
+        component: SearchUserAlertsComponent
       },
       {
         path: 'validate-email-change/:key',
-        component: ValidateEmailChangeComponent,
+        component: ValidateEmailChangeComponent
       },
       {
         path: ':user/notification-settings',
         component: NotificationSettingsFormComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'documents',
         component: ListDocumentsComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/documents/search',
         component: SearchDocumentsComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'documents/edit/:id',
         component: EditDocumentComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'documents/view/:id',
         component: ViewDocumentComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/documents/new',
         component: EditDocumentComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'documents/process-dynamic/:id',
         component: ProcessDynamicDocumentComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/tokens/:type',
         component: ListTokenComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'tokens/search/:type',
         component: SearchTokenComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'tokens/view/:id',
         component: ViewTokenComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/product-assignment',
         component: ListProductAssignmentComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/product-assignment/history',
         component: ViewProductAssignmentHistoryComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/privacy-settings',
         component: ViewPrivacySettingsComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/privacy-settings/edit',
         component: EditPrivacySettingsComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'feedbacks/search-awaiting',
         component: SearchPaymentAwaitingFeedbackComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/feedbacks/search',
         component: SearchFeedbackComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/references/search',
         component: SearchReferencesComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'references/view/:id',
         component: ViewReferenceComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'feedbacks/view/:id',
         component: ViewFeedbackComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'references/set/:from/:to',
         component: SetReferenceComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'references/edit/:id',
         component: SetReferenceComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'feedbacks/set/:transactionId',
         component: SetFeedbackComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'feedbacks/edit/:id',
         component: SetFeedbackComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: 'feedbacks/settings',
         component: ListFeedbackIgnoredUsersComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       },
       {
         path: ':user/quick-access/settings',
         component: QuickAccessSettingsComponent,
-        canActivate: [LoggedUserGuard],
+        canActivate: [LoggedUserGuard]
       }
-    ],
-  },
+    ]
+  }
 ];
 
 /**
  * * Routes for the users module
  */
 @NgModule({
-  imports: [
-    RouterModule.forChild(usersRoutes),
-  ],
-  exports: [
-    RouterModule,
-  ],
+  imports: [RouterModule.forChild(usersRoutes)],
+  exports: [RouterModule]
 })
-export class UsersRoutingModule {
-}
+export class UsersRoutingModule {}

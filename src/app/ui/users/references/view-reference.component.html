@@ -1,6 +1,8 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content mode="viewForm" [heading]="i18n.reference.title.view"
+    <page-content
+      mode="viewForm"
+      [heading]="i18n.reference.title.view"
       [mobileHeading]="i18n.reference.mobileTitle.view"
       [headingActions]="headingActions$ | async">
       <label-value [label]="i18n.general.date">

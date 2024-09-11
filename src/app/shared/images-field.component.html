@@ -1,53 +1,73 @@
-<label-value *ngIf="label; else widget" [formField]="self"
-  [informationText]="informationText">
+<label-value *ngIf="label; else widget" [formField]="self" [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
 <ng-template #widget>
   <!-- This div will just capture the focus when the field is invalid -->
-  <div #focusHolder style="width:0;height:0;" tabindex="0" [ngClass]="{
+  <div
+    #focusHolder
+    style="width: 0; height: 0"
+    tabindex="0"
+    [ngClass]="{
       'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
     }"></div>
 
   <div class="d-flex flex-column flex-xs-row w-100">
-    <div
-      class="d-flex flex-wrap flex-grow-1 align-content-center mt-1 mb-2 mb-xs-0">
-      <avatar-lightbox class="d-block mr-2" *ngFor="let img of images"
-        [size]="avatarSize" [image]="img" [additionalImages]="images">
+    <div class="d-flex flex-wrap flex-grow-1 align-content-center mt-1 mb-2 mb-xs-0">
+      <avatar-lightbox
+        class="d-block mr-2"
+        *ngFor="let img of images"
+        [size]="avatarSize"
+        [image]="img"
+        [additionalImages]="images">
       </avatar-lightbox>
     </div>
     <ng-container *ngIf="!disabled">
       <div class="d-flex align-items-center">
         <ng-container *ngIf="maxFiles === 1 || images.length < maxFiles">
-          <button #upload type="button"
+          <button
+            #upload
+            type="button"
             class="btn btn-icon d-flex align-content-center"
             [tooltip]="i18n.field.image.upload"
             (click)="imageUpload.perform(); blurIfClick(upload, $event)">
             <icon [icon]="SvgIcon.Upload"></icon>
           </button>
-          <button type="button"
+          <button
+            type="button"
             class="ml-2 btn btn-icon d-flex align-content-center"
-            [tooltip]="i18n.field.image.camera" (click)="captureCamera()">
+            [tooltip]="i18n.field.image.camera"
+            (click)="captureCamera()">
             <icon [icon]="SvgIcon.Camera"></icon>
           </button>
         </ng-container>
-        <button type="button" *ngIf="maxFiles > 1 && images.length > 0"
+        <button
+          type="button"
+          *ngIf="maxFiles > 1 && images.length > 0"
           class="ml-2 btn btn-icon d-flex align-content-center"
-          [tooltip]="i18n.field.image.manage" (click)="manageImages()">
+          [tooltip]="i18n.field.image.manage"
+          (click)="manageImages()">
           <icon [icon]="SvgIcon.Pencil"></icon>
         </button>
-        <button type="button" *ngIf="maxFiles === 1 && images.length > 0"
+        <button
+          type="button"
+          *ngIf="maxFiles === 1 && images.length > 0"
           class="ml-2 btn btn-icon d-flex align-content-center"
-          [tooltip]="i18n.field.image.remove" (click)="removeAllImages()">
+          [tooltip]="i18n.field.image.remove"
+          (click)="removeAllImages()">
           <icon [icon]="SvgIcon.Trash"></icon>
         </button>
       </div>
     </ng-container>
   </div>
 
-  <image-upload #imageUpload containerClass="mt-3"
-    [max]="maxFiles == 1 ? 1 : maxFiles - images.length" [owner]="user"
-    [target]="target" [customField]="customField"
+  <image-upload
+    #imageUpload
+    containerClass="mt-3"
+    [max]="maxFiles == 1 ? 1 : maxFiles - images.length"
+    [owner]="user"
+    [target]="target"
+    [customField]="customField"
     (uploadDone)="onImagesUploaded($event)"></image-upload>
   <field-errors [control]="formControl"></field-errors>
 </ng-template>

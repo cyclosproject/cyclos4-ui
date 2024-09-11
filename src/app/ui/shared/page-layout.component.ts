@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostBinding,
+  Input,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { LayoutService } from 'app/core/layout.service';
 import { empty, truthyAttr } from 'app/shared/helper';
@@ -16,11 +26,10 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 @Component({
   selector: 'page-layout',
   templateUrl: 'page-layout.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PageLayoutComponent implements OnInit, OnDestroy {
-
-  @HostBinding("class.container-lg") classContainerLg = true;
+  @HostBinding('class.container-lg') classContainerLg = true;
 
   @Input() heading: string;
   @Input() ready = true;
@@ -56,7 +65,8 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
     private loginState: LoginState,
     public menu: MenuService,
     public uiLayout: UiLayoutService,
-    private dataForFrontendHolder: DataForFrontendHolder) { }
+    private dataForFrontendHolder: DataForFrontendHolder
+  ) {}
 
   ngOnInit() {
     this.uiLayout.currentPageLayout = this;
@@ -87,15 +97,19 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
       const hasLeftMenu = this.leftMenuVisible;
       const hasBanners = !empty(this.uiLayout.banners);
       const loginConfirmation = this.dataForFrontendHolder.auth?.loginConfirmation;
-      this.leftAreaVisible$.next(!this.hideMenu && gtmd && !fullWidth && (hasLeftMenu || hasBanners) && !loginConfirmation);
+      this.leftAreaVisible$.next(
+        !this.hideMenu && gtmd && !fullWidth && (hasLeftMenu || hasBanners) && !loginConfirmation
+      );
     };
     this.subs.push(this.layout.gtmd$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.leftMenuVisible$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.uiLayout.fullWidth$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.uiLayout.banners$.subscribe(updateLeftAreaVisible));
-    this.subs.push(this.loginState.subscribeForLoggingOut(flag => {
-      this.loggingOut$.next(flag);
-    }));
+    this.subs.push(
+      this.loginState.subscribeForLoggingOut(flag => {
+        this.loggingOut$.next(flag);
+      })
+    );
 
     updateLeftAreaVisible();
   }
@@ -113,5 +127,4 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
     const contentArea = this.contentArea.first;
     return contentArea == null ? 0 : contentArea.nativeElement.offsetWidth;
   }
-
 }

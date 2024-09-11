@@ -9,7 +9,7 @@ import { Menu } from 'app/ui/shared/menu';
 import { ResultType } from 'app/ui/shared/result-type';
 import { Observable } from 'rxjs';
 
-type UserAdsSearchParams = UserAdsQueryFilters & { user: string; };
+type UserAdsSearchParams = UserAdsQueryFilters & { user: string };
 
 /**
  * Lists the advertisements of a given user
@@ -17,21 +17,18 @@ type UserAdsSearchParams = UserAdsQueryFilters & { user: string; };
 @Component({
   selector: 'user-ads',
   templateUrl: 'user-ads.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserAdsComponent
   extends BaseSearchPageComponent<UserAdsDataForSearch, UserAdsQueryFilters, AdResult>
-  implements OnInit {
-
+  implements OnInit
+{
   private kind: AdKind;
   private param: string;
   shortName: string;
   self: boolean;
 
-  constructor(
-    injector: Injector,
-    private marketplaceService: MarketplaceService,
-  ) {
+  constructor(injector: Injector, private marketplaceService: MarketplaceService) {
     super(injector);
   }
 
@@ -48,7 +45,11 @@ export class UserAdsComponent
     this.param = this.route.snapshot.paramMap.get('user') || this.ApiHelper.SELF;
     this.kind = this.route.snapshot.paramMap.get('kind') as AdKind;
     this.allowedResultTypes = [ResultType.TILES, ResultType.LIST];
-    this.addSub(this.marketplaceService.getUserAdsDataForSearch({ user: this.param, kind: this.kind }).subscribe(data => this.data = data));
+    this.addSub(
+      this.marketplaceService
+        .getUserAdsDataForSearch({ user: this.param, kind: this.kind })
+        .subscribe(data => (this.data = data))
+    );
   }
 
   onDataInitialized(data: UserAdsDataForSearch) {
@@ -56,8 +57,12 @@ export class UserAdsComponent
     this.self = this.authHelper.isSelfOrOwner(data.user);
     if (data.createNew) {
       this.headingActions = [
-        new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () =>
-          this.router.navigate(['/marketplace', this.param, this.kind, 'ad', 'new']), true),
+        new HeadingAction(
+          SvgIcon.PlusCircle,
+          this.i18n.general.addNew,
+          () => this.router.navigate(['/marketplace', this.param, this.kind, 'ad', 'new']),
+          true
+        )
       ];
     }
   }
@@ -84,7 +89,6 @@ export class UserAdsComponent
     } else {
       return mobile ? this.i18n.ad.mobileTitle.viewWebshop : this.i18n.ad.title.viewWebshop;
     }
-
   }
 
   doSearch(filters: UserAdsSearchParams): Observable<HttpResponse<AdResult[]>> {
@@ -110,8 +114,10 @@ export class UserAdsComponent
     const permissions = auth.permissions || {};
     const marketplace = permissions.marketplace || {};
     // Check authorization is active and is the owner or a manager with permission
-    return this.data.requiresAuthorization && this.self
-      || this.isManager && (this.simple ? marketplace.userSimple.viewPending : marketplace.userWebshop.viewPending);
+    return (
+      (this.data.requiresAuthorization && this.self) ||
+      (this.isManager && (this.simple ? marketplace.userSimple.viewPending : marketplace.userWebshop.viewPending))
+    );
   }
 
   get canViewDraft(): boolean {
@@ -119,8 +125,10 @@ export class UserAdsComponent
   }
 
   get isManager() {
-    return !this.self &&
-      (this.dataForFrontendHolder.role === RoleEnum.BROKER || this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR);
+    return (
+      !this.self &&
+      (this.dataForFrontendHolder.role === RoleEnum.BROKER ||
+        this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR)
+    );
   }
-
 }

@@ -1,8 +1,13 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  PaymentFeedbackDataForSearch, PaymentFeedbackQueryFilters, PaymentFeedbackResult, ReferenceDirectionEnum,
-  ReferenceLevelEnum, ReferencePeriodStatistics, ReferenceStatistics
+  PaymentFeedbackDataForSearch,
+  PaymentFeedbackQueryFilters,
+  PaymentFeedbackResult,
+  ReferenceDirectionEnum,
+  ReferenceLevelEnum,
+  ReferencePeriodStatistics,
+  ReferenceStatistics
 } from 'app/api/models';
 import { PaymentFeedbacksService } from 'app/api/services/payment-feedbacks.service';
 import { ISO_DATE } from 'app/core/format.service';
@@ -23,12 +28,12 @@ type SearchPaymentFeedbackParams = PaymentFeedbackQueryFilters & {
 @Component({
   selector: 'search-feedbacks',
   templateUrl: 'search-feedbacks.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchFeedbackComponent
   extends BaseSearchPageComponent<PaymentFeedbackDataForSearch, PaymentFeedbackQueryFilters, PaymentFeedbackResult>
-  implements OnInit {
-
+  implements OnInit
+{
   ReferenceDirectionEnum = ReferenceDirectionEnum;
 
   param: string;
@@ -56,7 +61,9 @@ export class SearchFeedbackComponent
     super.ngOnInit();
     this.param = this.route.snapshot.paramMap.get('user') || this.ApiHelper.SELF;
     this.isOwner = this.authHelper.isSelf(this.param);
-    this.addSub(this.feedbacksService.getPaymentFeedbacksDataForSearch({ user: this.param }).subscribe(data => this.data = data));
+    this.addSub(
+      this.feedbacksService.getPaymentFeedbacksDataForSearch({ user: this.param }).subscribe(data => (this.data = data))
+    );
   }
 
   onDataInitialized(data: PaymentFeedbackDataForSearch) {
@@ -64,14 +71,22 @@ export class SearchFeedbackComponent
 
     if (this.isOwner && this.dataForFrontendHolder.auth.permissions.paymentFeedbacks.give) {
       this.headingActions = [
-        new HeadingAction(SvgIcon.Clock, this.i18n.feedback.viewAwaitingFeedback,
+        new HeadingAction(
+          SvgIcon.Clock,
+          this.i18n.feedback.viewAwaitingFeedback,
           () => {
             this.router.navigate(['/users', 'feedbacks', 'search-awaiting']);
-          }, true),
-        new HeadingAction(SvgIcon.Gear, this.i18n.feedback.settings,
+          },
+          true
+        ),
+        new HeadingAction(
+          SvgIcon.Gear,
+          this.i18n.feedback.settings,
           () => {
             this.router.navigate(['/users', 'feedbacks', 'settings']);
-          }, true)
+          },
+          true
+        )
       ];
     }
     this.levels = [
@@ -86,8 +101,11 @@ export class SearchFeedbackComponent
   }
 
   searchStatistics() {
-    this.addSub(this.feedbacksService.getPaymentFeedbackStatistics({ user: this.param, direction: this.form.controls.direction.value })
-      .subscribe(stats => this.stats = stats));
+    this.addSub(
+      this.feedbacksService
+        .getPaymentFeedbackStatistics({ user: this.param, direction: this.form.controls.direction.value })
+        .subscribe(stats => (this.stats = stats))
+    );
   }
 
   protected toSearchParams(value: any): SearchPaymentFeedbackParams {
@@ -102,7 +120,9 @@ export class SearchFeedbackComponent
   filter(level?: ReferenceLevelEnum, allTime?: boolean) {
     this.form.patchValue({
       levels: level ? [level] : null,
-      period: allTime ? null : [this.dataForFrontendHolder.now().clone().subtract(30, 'day').startOf('day').format(ISO_DATE), null]
+      period: allTime
+        ? null
+        : [this.dataForFrontendHolder.now().clone().subtract(30, 'day').startOf('day').format(ISO_DATE), null]
     });
   }
 
@@ -130,11 +150,13 @@ export class SearchFeedbackComponent
     this.confirmation.confirm({
       message: this.i18n.general.removeItemConfirm,
       callback: () => {
-        this.addSub(this.feedbacksService.removePaymentFeedback({ key: row.id }).subscribe(() => {
-          this.notification.snackBar(this.i18n.general.removeItemDone);
-          this.reload();
-        }));
-      },
+        this.addSub(
+          this.feedbacksService.removePaymentFeedback({ key: row.id }).subscribe(() => {
+            this.notification.snackBar(this.i18n.general.removeItemDone);
+            this.reload();
+          })
+        );
+      }
     });
   }
 
@@ -151,14 +173,11 @@ export class SearchFeedbackComponent
     const onlyGiven = singleDirection && this.data.directions?.includes(ReferenceDirectionEnum.GIVEN);
     const onlyReceived = singleDirection && this.data.directions?.includes(ReferenceDirectionEnum.RECEIVED);
     if (onlyGiven) {
-      return mobile ? this.i18n.feedback.mobileTitle.searchGiven :
-        this.i18n.feedback.title.searchGiven;
+      return mobile ? this.i18n.feedback.mobileTitle.searchGiven : this.i18n.feedback.title.searchGiven;
     } else if (onlyReceived) {
-      return mobile ? this.i18n.feedback.mobileTitle.searchReceived :
-        this.i18n.feedback.title.searchReceived;
+      return mobile ? this.i18n.feedback.mobileTitle.searchReceived : this.i18n.feedback.title.searchReceived;
     } else {
-      return mobile ? this.i18n.feedback.mobileTitle.search :
-        this.i18n.feedback.title.search;
+      return mobile ? this.i18n.feedback.mobileTitle.search : this.i18n.feedback.title.search;
     }
   }
 
@@ -169,5 +188,4 @@ export class SearchFeedbackComponent
   get directionsFilter(): boolean {
     return this.data.directions?.length === 2;
   }
-
 }

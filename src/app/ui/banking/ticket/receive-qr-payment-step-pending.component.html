@@ -1,23 +1,19 @@
 <div class="d-flex justify-content-center align-items-center">
-  <img [src]="qrCodeUrl | trust:'url'" class="mb-3">
+  <img [src]="qrCodeUrl | trust : 'url'" class="mb-3" />
 </div>
 
-<label-value [label]="i18n.transaction.amount"
-  [value]="format.formatAsCurrency(ticket.currency, ticket.amount)">
+<label-value [label]="i18n.transaction.amount" [value]="format.formatAsCurrency(ticket.currency, ticket.amount)">
 </label-value>
 <label-value [label]="i18n.general.status">
   <div class="d-flex flex-row">
-    <div class="flex-grow-1">{{
-      i18n.transaction.receiveQrPaymentPendingConfirmation }}</div>
-    <spinner bootstrap size="1.5rem">
-    </spinner>
+    <div class="flex-grow-1">{{ i18n.transaction.receiveQrPaymentPendingConfirmation }}</div>
+    <spinner bootstrap size="1.5rem"> </spinner>
   </div>
 </label-value>
 
 <label-value *ngIf="!supportsShare" [label]="i18n.transaction.ticketShareUrl">
   <div class="w-100">{{ ticket.approveUrl }}</div>
-  <button *extraCell class="btn btn-icon" type="button" (click)="copyUrl()"
-    [tooltip]="i18n.general.copyToClipboard">
+  <button *extraCell class="btn btn-icon" type="button" (click)="copyUrl()" [tooltip]="i18n.general.copyToClipboard">
     <icon [icon]="SvgIcon.Clipboard"></icon>
   </button>
 </label-value>

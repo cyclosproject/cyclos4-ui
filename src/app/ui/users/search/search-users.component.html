@@ -1,170 +1,207 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data then content"></ng-container>
+  <ng-container *ngIf="data; then content"></ng-container>
 </page-layout>
 
 <ng-template #content>
-  <page-content mode="filters" [heading]="heading"
+  <page-content
+    mode="filters"
+    [heading]="heading"
     [mobileHeading]="mobileHeading"
     [headingActions]="headingActions$ | async">
-    <form [formGroup]="form"
-      class="filters-form filters-form-separator border-bottom">
+    <form [formGroup]="form" class="filters-form filters-form-separator border-bottom">
       <div class="row">
         <div class="col-12 col-md-6" *ngIf="!self && broker">
           <label-value [label]="i18n.general.user">
             <user-link [user]="broker"></user-link>
           </label-value>
         </div>
-        <div class="col-md-6"
-          *ngIf="(layout.gtsm$ | async) && !self && broker">
-        </div>
+        <div class="col-md-6" *ngIf="(layout.gtsm$ | async) && !self && broker"></div>
         <div *ngIf="data.allowKeywords" class="col-12 col-md-6">
-          <input-field formControlName="keywords"
-            [label]="i18n.general.keywords"></input-field>
+          <input-field formControlName="keywords" [label]="i18n.general.keywords"></input-field>
         </div>
         <ng-container *ngIf="layout.gtxxs$ | async">
           <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field hierarchyProperty="groupSet"
-              formControlName="groups" [label]="i18n.user.groupFilter">
-              <field-option *ngFor="let group of data.groups"
+            <multi-selection-field
+              hierarchyProperty="groupSet"
+              formControlName="groups"
+              [label]="i18n.user.groupFilter">
+              <field-option
+                *ngFor="let group of data.groups"
                 [value]="ApiHelper.internalNameOrId(group)"
-                [internalName]="group.internalName" [id]="group.id"
-                [text]="group.name" [parent]="group.groupSet">
+                [internalName]="group.internalName"
+                [id]="group.id"
+                [text]="group.name"
+                [parent]="group.groupSet">
               </field-option>
             </multi-selection-field>
           </div>
           <div class="col-12 col-md-6" *ngFor="let f of fieldsInBasicSearch">
-            <basic-profile-field-filter *ngIf="!(f.id)" [field]="f"
+            <basic-profile-field-filter
+              *ngIf="!f.id"
+              [field]="f"
               [formControl]="form.get('profileFields').get(f.field)">
             </basic-profile-field-filter>
-            <custom-field-filter *ngIf="f.id" [field]="f"
-              [formControl]="form.get('profileFields').get(f.internalName)">
+            <custom-field-filter *ngIf="f.id" [field]="f" [formControl]="form.get('profileFields').get(f.internalName)">
             </custom-field-filter>
           </div>
           <ng-container *ngIf="moreFilters$ | async">
-            <div class="col-12 col-md-6"
-              *ngIf="data.searchByDistanceData && !pendingSearch">
-              <distance-selection-field [data]="data.searchByDistanceData"
+            <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData && !pendingSearch">
+              <distance-selection-field
+                [data]="data.searchByDistanceData"
                 formControlName="distanceFilter"
                 [label]="i18n.general.distanceFilter">
               </distance-selection-field>
             </div>
-            <div *ngIf="byManager && data.products?.length > 1"
-              class="col-12 col-md-6">
-              <multi-selection-field formControlName="products"
+            <div *ngIf="byManager && data.products?.length > 1" class="col-12 col-md-6">
+              <multi-selection-field
+                formControlName="products"
                 [emptyLabel]="i18n.general.notApplied"
                 [label]="i18n.user.assignedProducts">
-                <field-option *ngFor="let prod of data.products"
+                <field-option
+                  *ngFor="let prod of data.products"
                   [value]="ApiHelper.internalNameOrId(prod)"
-                  [internalName]="prod.internalName" [id]="prod.id"
+                  [internalName]="prod.internalName"
+                  [id]="prod.id"
                   [text]="prod.name">
                 </field-option>
               </multi-selection-field>
             </div>
-            <div *ngIf="byManager && data.agreements?.length > 1"
-              class="col-12 col-md-6">
-              <multi-selection-field formControlName="acceptedAgreements"
+            <div *ngIf="byManager && data.agreements?.length > 1" class="col-12 col-md-6">
+              <multi-selection-field
+                formControlName="acceptedAgreements"
                 [emptyLabel]="i18n.general.notApplied"
                 [label]="i18n.user.acceptedAgreements">
-                <field-option *ngFor="let agr of data.agreements"
+                <field-option
+                  *ngFor="let agr of data.agreements"
                   [value]="ApiHelper.internalNameOrId(agr)"
-                  [internalName]="agr.internalName" [id]="agr.id"
+                  [internalName]="agr.internalName"
+                  [id]="agr.id"
                   [text]="agr.name">
                 </field-option>
               </multi-selection-field>
             </div>
-            <div *ngIf="byManager && data.agreements?.length > 1"
-              class="col-12 col-md-6">
-              <multi-selection-field formControlName="notAcceptedAgreements"
+            <div *ngIf="byManager && data.agreements?.length > 1" class="col-12 col-md-6">
+              <multi-selection-field
+                formControlName="notAcceptedAgreements"
                 [emptyLabel]="i18n.general.notApplied"
                 [label]="i18n.user.notAcceptedAgreements">
-                <field-option *ngFor="let agr of data.agreements"
+                <field-option
+                  *ngFor="let agr of data.agreements"
                   [value]="ApiHelper.internalNameOrId(agr)"
-                  [internalName]="agr.internalName" [id]="agr.id"
+                  [internalName]="agr.internalName"
+                  [id]="agr.id"
                   [text]="agr.name">
                 </field-option>
               </multi-selection-field>
             </div>
             <!-- Statuses -->
             <div *ngIf="byManager && !pendingSearch" class="col-12 col-md-6">
-              <multi-selection-field formControlName="statuses"
-                [label]="i18n.general.status" [fieldOptions]="statusOptions"
+              <multi-selection-field
+                formControlName="statuses"
+                [label]="i18n.general.status"
+                [fieldOptions]="statusOptions"
                 [emptyLabel]="i18n.user.statusEmptyLabel">
               </multi-selection-field>
             </div>
             <!-- Invited by -->
             <div *ngIf="byManager" class="col-12 col-md-6">
-              <user-field formControlName="invitedBy"
-                [label]="i18n.user.invitedBy" [allowSelf]="true" [filters]="{
+              <user-field
+                formControlName="invitedBy"
+                [label]="i18n.user.invitedBy"
+                [allowSelf]="true"
+                [filters]="{
                   includeGlobal: true
                 }">
               </user-field>
             </div>
             <!-- Invited by me -->
-            <div
-              *ngIf="!byManager && dataForFrontendHolder.auth?.permissions?.invite?.send"
-              class="col-12 col-md-6">
-              <boolean-field formControlName="invitedByMe"
-                [label]="i18n.user.invitedByMe">
-              </boolean-field>
+            <div *ngIf="!byManager && dataForFrontendHolder.auth?.permissions?.invite?.send" class="col-12 col-md-6">
+              <boolean-field formControlName="invitedByMe" [label]="i18n.user.invitedByMe"> </boolean-field>
             </div>
             <!-- Creation date -->
             <div *ngIf="byManager" class="row no-gutters col-12">
               <div class="col-12 col-md-6">
-                <date-field formControlName="beginCreationPeriod"
-                  [label]="i18n.user.creationBegin" minDate="past100"
-                  maxDate="todayEnd" fieldSize="full" class>
+                <date-field
+                  formControlName="beginCreationPeriod"
+                  [label]="i18n.user.creationBegin"
+                  minDate="past100"
+                  maxDate="todayEnd"
+                  fieldSize="full"
+                  class>
                 </date-field>
               </div>
               <div class="col-12 col-md-6">
-                <date-field formControlName="endCreationPeriod"
-                  [label]="i18n.user.creationEnd" minDate="past100"
-                  maxDate="todayEnd" fieldSize="full">
+                <date-field
+                  formControlName="endCreationPeriod"
+                  [label]="i18n.user.creationEnd"
+                  minDate="past100"
+                  maxDate="todayEnd"
+                  fieldSize="full">
                 </date-field>
               </div>
             </div>
             <!-- Activation date -->
             <div *ngIf="byManager" class="row no-gutters col-12">
               <div class="col-12 col-md-6">
-                <date-field formControlName="beginActivationPeriod"
+                <date-field
+                  formControlName="beginActivationPeriod"
                   [label]="i18n.user.beginUserActivationDate"
-                  minDate="past100" maxDate="todayEnd" fieldSize="full" class>
+                  minDate="past100"
+                  maxDate="todayEnd"
+                  fieldSize="full"
+                  class>
                 </date-field>
               </div>
               <div class="col-12 col-md-6">
-                <date-field formControlName="endActivationPeriod"
-                  [label]="i18n.user.endUserActivationDate" minDate="past100"
-                  maxDate="todayEnd" fieldSize="full">
+                <date-field
+                  formControlName="endActivationPeriod"
+                  [label]="i18n.user.endUserActivationDate"
+                  minDate="past100"
+                  maxDate="todayEnd"
+                  fieldSize="full">
                 </date-field>
               </div>
             </div>
             <!-- Last login date -->
             <div *ngIf="byManager" class="row no-gutters col-12">
               <div class="col-12 col-md-6">
-                <date-field formControlName="beginLastLoginPeriod"
-                  [label]="i18n.user.beginLastLoginDate" minDate="past100"
-                  maxDate="todayEnd" fieldSize="full" class>
+                <date-field
+                  formControlName="beginLastLoginPeriod"
+                  [label]="i18n.user.beginLastLoginDate"
+                  minDate="past100"
+                  maxDate="todayEnd"
+                  fieldSize="full"
+                  class>
                 </date-field>
               </div>
               <div class="col-12 col-md-6">
-                <date-field formControlName="endLastLoginPeriod"
-                  [label]="i18n.user.endLastLoginDate" minDate="past100"
-                  maxDate="todayEnd" fieldSize="full">
+                <date-field
+                  formControlName="endLastLoginPeriod"
+                  [label]="i18n.user.endLastLoginDate"
+                  minDate="past100"
+                  maxDate="todayEnd"
+                  fieldSize="full">
                 </date-field>
               </div>
             </div>
             <div *ngIf="byManager" class="col-12 col-md-6">
-              <user-field formControlName="brokers"
+              <user-field
+                formControlName="brokers"
                 [label]="i18n.general.usersOfBroker"
-                [filters]="userSearchFilters()" [allowContacts]="false">
+                [filters]="userSearchFilters()"
+                [allowContacts]="false">
               </user-field>
             </div>
 
-            <div class="col-12 col-md-6"
-              *ngFor="let f of fieldsInAdvancedSearch">
-              <basic-profile-field-filter *ngIf="!(f.id)" [field]="f"
+            <div class="col-12 col-md-6" *ngFor="let f of fieldsInAdvancedSearch">
+              <basic-profile-field-filter
+                *ngIf="!f.id"
+                [field]="f"
                 [formControl]="form.get('profileFields').get(f.field)">
               </basic-profile-field-filter>
-              <custom-field-filter *ngIf="f.id" [field]="f"
+              <custom-field-filter
+                *ngIf="f.id"
+                [field]="f"
                 [formControl]="form.get('profileFields').get(f.internalName)">
               </custom-field-filter>
             </div>
@@ -172,31 +209,30 @@
         </ng-container>
       </div>
     </form>
-    <div *ngIf="(allowedResultTypes$ | async).length > 1"
-      class="row filters-row">
+    <div *ngIf="(allowedResultTypes$ | async).length > 1" class="row filters-row">
       <div class="col-12 col-xs-7 col-md-9">
-        <result-type-field [allowedResultTypes]="allowedResultTypes$ | async"
-          [formControl]="resultTypeControl">
+        <result-type-field [allowedResultTypes]="allowedResultTypes$ | async" [formControl]="resultTypeControl">
         </result-type-field>
       </div>
-      <div class="col-12 col-xs-5 col-md-3"
-        *ngIf="(layout.gtxxs$ | async) && (resultType$ | async) !== 'map'">
-        <single-selection-field [formControl]="form.get('orderBy')"
+      <div class="col-12 col-xs-5 col-md-3" *ngIf="(layout.gtxxs$ | async) && (resultType$ | async) !== 'map'">
+        <single-selection-field
+          [formControl]="form.get('orderBy')"
           [display]="i18n.general.orderBy"
           [emptyOption]="i18n.general.orderByRelevance">
-          <field-option value="alphabeticallyAsc"
-            [text]="i18n.user.orderBy.alphabeticallyAsc"></field-option>
-          <field-option value="alphabeticallyDesc"
-            [text]="i18n.user.orderBy.alphabeticallyDesc">
-          </field-option>
+          <field-option value="alphabeticallyAsc" [text]="i18n.user.orderBy.alphabeticallyAsc"></field-option>
+          <field-option value="alphabeticallyDesc" [text]="i18n.user.orderBy.alphabeticallyDesc"> </field-option>
         </single-selection-field>
       </div>
     </div>
   </page-content>
 
-  <users-results [results]="results$ | async" [rendering$]="rendering$"
-    [data]="data$ | async" [resultType]="resultType$ | async"
+  <users-results
+    [results]="results$ | async"
+    [rendering$]="rendering$"
+    [data]="data$ | async"
+    [resultType]="resultType$ | async"
     [referencePoint]="((form.valueChanges | async) || form.value).distanceFilter"
-    (update)="update($event)" [removeAction]="removeAction">
+    (update)="update($event)"
+    [removeAction]="removeAction">
   </users-results>
 </ng-template>

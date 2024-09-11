@@ -1,27 +1,28 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content mode="viewForm" [heading]="i18n.message.title.details"
+    <page-content
+      mode="viewForm"
+      [heading]="i18n.message.title.details"
       [mobileHeading]="i18n.message.mobileTitle.details"
       [headingActions]="headingActions$ | async">
       <label-value [label]="i18n.general.date">
         {{ data.date | dateTime }}
       </label-value>
-      <label-value *ngIf="data.category" [label]="i18n.general.category"
-        [value]="data.category.name">
-      </label-value>
+      <label-value *ngIf="data.category" [label]="i18n.general.category" [value]="data.category.name"> </label-value>
       <ng-container *ngIf="data.kind === MessageKind.OUTGOING">
-        <label-value *ngIf="data.destination === MessageDestinationEnum.USER"
-          [label]="i18n.message.sentTo">
-          <user-link *ngFor="let user of data.toUsers; let last = last"
-            [ngClass]="{'mb-2': !last}" [user]="user">
+        <label-value *ngIf="data.destination === MessageDestinationEnum.USER" [label]="i18n.message.sentTo">
+          <user-link *ngFor="let user of data.toUsers; let last = last" [ngClass]="{ 'mb-2': !last }" [user]="user">
           </user-link>
         </label-value>
         <label-value
           *ngIf="data.destination === MessageDestinationEnum.BROKERED"
-          [label]="i18n.message.sentTo" [value]="i18n.message.sendToBrokered">
+          [label]="i18n.message.sentTo"
+          [value]="i18n.message.sendToBrokered">
         </label-value>
-        <label-value *ngIf="data.destination === MessageDestinationEnum.GROUP"
-          [label]="i18n.message.sentTo" [value]="groups.join(', ')">
+        <label-value
+          *ngIf="data.destination === MessageDestinationEnum.GROUP"
+          [label]="i18n.message.sentTo"
+          [value]="groups.join(', ')">
         </label-value>
         <label-value
           *ngIf="data.destination === MessageDestinationEnum.SYSTEM"
@@ -30,26 +31,25 @@
         </label-value>
         <label-value
           *ngIf="dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR"
-          [label]="i18n.message.sentBy" [value]="data.sentBy.display">
+          [label]="i18n.message.sentBy"
+          [value]="data.sentBy.display">
         </label-value>
       </ng-container>
       <ng-container *ngIf="data.kind === MessageKind.INCOMING">
-        <label-value *ngIf="data.fromOwnerKind === MessageOwnerEnum.SYSTEM"
+        <label-value
+          *ngIf="data.fromOwnerKind === MessageOwnerEnum.SYSTEM"
           [label]="i18n.message.from"
           [value]="dataForFrontendHolder.dataForUi.applicationUsername">
         </label-value>
-        <label-value *ngIf="data.fromOwnerKind === MessageOwnerEnum.USER"
-          [label]="i18n.message.from">
-          <user-link [user]="data.fromOwner">
-          </user-link>
+        <label-value *ngIf="data.fromOwnerKind === MessageOwnerEnum.USER" [label]="i18n.message.from">
+          <user-link [user]="data.fromOwner"> </user-link>
         </label-value>
       </ng-container>
-      <hr>
+      <hr />
       <h3 *ngIf="data.subject">{{ data.subject }}</h3>
-      <rich-text-container autoHeight [value]="data.body">
-      </rich-text-container>
+      <rich-text-container autoHeight [value]="data.body"> </rich-text-container>
       <ng-container *ngIf="(data.replies || []).length > 1">
-        <hr>
+        <hr />
         <h3>{{ i18n.message.replies }}</h3>
         <table class="table table-hover">
           <thead *ngIf="layout.gtxs$ | async">
@@ -58,15 +58,15 @@
             <th>{{ i18n.general.date }}</th>
           </thead>
           <tbody>
-            <tr *ngFor="let message of data.replies" [ngClass]="{
+            <tr
+              *ngFor="let message of data.replies"
+              [ngClass]="{
                 'cursor-pointer': path(message),
                 'font-weight-bold': isCurrent(message)
               }"
               (click)="path(message) ? router.navigate(path(message)) : null">
               <td>
-                <icon
-                  [icon]="message.kind === MessageKind.INCOMING ? SvgIcon.ArrowLeft : SvgIcon.ArrowRight">
-                </icon>
+                <icon [icon]="message.kind === MessageKind.INCOMING ? SvgIcon.ArrowLeft : SvgIcon.ArrowRight"> </icon>
               </td>
               <td>
                 {{ message.subject }}

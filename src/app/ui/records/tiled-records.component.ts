@@ -1,33 +1,32 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { CustomFieldDetailed, RecordDataForSearch, RecordLayoutEnum, RecordQueryFilters, RecordResult } from 'app/api/models';
+import {
+  CustomFieldDetailed,
+  RecordDataForSearch,
+  RecordLayoutEnum,
+  RecordQueryFilters,
+  RecordResult
+} from 'app/api/models';
 import { RecordsService } from 'app/api/services/records.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-type RecordSearchParams = RecordQueryFilters & { owner: string, type: string };
+type RecordSearchParams = RecordQueryFilters & { owner: string; type: string };
 
 @Component({
   selector: 'tiled-records',
   templateUrl: 'tiled-records.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-
-export class TiledRecordsComponent
-  extends BasePageComponent<RecordDataForSearch>
-  implements OnInit {
-
+export class TiledRecordsComponent extends BasePageComponent<RecordDataForSearch> implements OnInit {
   type: string;
   param: string;
   fieldsInList: Array<CustomFieldDetailed>;
   results$ = new BehaviorSubject<RecordResult[]>(null);
 
-  constructor(
-    injector: Injector,
-    private recordsService: RecordsService
-  ) {
+  constructor(injector: Injector, private recordsService: RecordsService) {
     super(injector);
   }
 
@@ -37,27 +36,36 @@ export class TiledRecordsComponent
     this.param = this.route.snapshot.params.owner;
     this.type = this.route.snapshot.params.type;
 
-    this.addSub(this.recordsService.getRecordDataForOwnerSearch({ owner: this.param, type: this.type }).subscribe(data => {
-      if (data.type.layout !== RecordLayoutEnum.TILED) {
-        throw new Error(`Invalid record layout: ${data.type.layout}`);
-      }
+    this.addSub(
+      this.recordsService.getRecordDataForOwnerSearch({ owner: this.param, type: this.type }).subscribe(data => {
+        if (data.type.layout !== RecordLayoutEnum.TILED) {
+          throw new Error(`Invalid record layout: ${data.type.layout}`);
+        }
 
-      this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
-      this.data = data;
-    }));
-
+        this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized(data: RecordDataForSearch) {
     const headingActions: HeadingAction[] = [];
     if (data.create) {
-      headingActions.push(new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () =>
-        this.router.navigate(['/records', this.param, this.type, 'new']), true));
+      headingActions.push(
+        new HeadingAction(
+          SvgIcon.PlusCircle,
+          this.i18n.general.addNew,
+          () => this.router.navigate(['/records', this.param, this.type, 'new']),
+          true
+        )
+      );
     }
     this.headingActions = headingActions;
-    this.addSub(this.doSearch(this.toSearchParams()).subscribe(result => {
-      this.results$.next(result.body);
-    }));
+    this.addSub(
+      this.doSearch(this.toSearchParams()).subscribe(result => {
+        this.results$.next(result.body);
+      })
+    );
   }
 
   editPath(record: RecordResult) {
@@ -71,23 +79,24 @@ export class TiledRecordsComponent
   remove(record: RecordResult) {
     this.confirmation.confirm({
       message: this.i18n.general.removeItemConfirm,
-      callback: () => this.doRemove(record),
+      callback: () => this.doRemove(record)
     });
   }
 
   private doRemove(record: RecordResult) {
-    this.addSub(this.recordsService.deleteRecord({ id: record.id })
-      .subscribe(() => {
+    this.addSub(
+      this.recordsService.deleteRecord({ id: record.id }).subscribe(() => {
         this.notification.snackBar(this.i18n.general.removeItemDone);
         this.reload();
-      }));
+      })
+    );
   }
   protected toSearchParams(): RecordSearchParams {
     return {
       // "Unlimited page size" using Java Max Integer Value, otherwise a DataConversionException is thrown by Cyclos
       pageSize: 2147483647,
       owner: this.param,
-      type: this.type,
+      type: this.type
     };
   }
 
@@ -102,5 +111,4 @@ export class TiledRecordsComponent
   resolveMenu(data: RecordDataForSearch) {
     return this.menu.menuForRecordType(data.user, data.type);
   }
-
 }

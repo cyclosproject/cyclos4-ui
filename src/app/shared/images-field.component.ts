@@ -1,6 +1,16 @@
 import {
-  ChangeDetectorRef, Component, ElementRef, EventEmitter, Host, Injector,
-  Input, OnInit, Optional, Output, SkipSelf, ViewChild
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Host,
+  Injector,
+  Input,
+  OnInit,
+  Optional,
+  Output,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomField, Image, TempImageTargetEnum } from 'app/api/models';
@@ -23,12 +33,9 @@ import { take } from 'rxjs/operators';
 @Component({
   selector: 'images-field',
   templateUrl: 'images-field.component.html',
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: ImagesFieldComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: ImagesFieldComponent, multi: true }]
 })
 export class ImagesFieldComponent extends BaseFormFieldComponent<string | string[]> implements OnInit {
-
   blurIfClick = blurIfClick;
 
   /**
@@ -86,7 +93,8 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
     private changeDetector: ChangeDetectorRef,
     private modal: BsModalService,
     private camera: CameraService,
-    private storedFileCacheService: StoredFileCacheService) {
+    private storedFileCacheService: StoredFileCacheService
+  ) {
     super(injector, controlContainer);
   }
 
@@ -115,10 +123,13 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
   }
 
   protected getDisabledValue(): string {
-    return this.imageIds.map(id => {
-      const file = this.images.find(f => f.id === id);
-      return file == null ? null : file.name;
-    }).filter(n => n != null).join(', ');
+    return this.imageIds
+      .map(id => {
+        const file = this.images.find(f => f.id === id);
+        return file == null ? null : file.name;
+      })
+      .filter(n => n != null)
+      .join(', ');
   }
 
   onImagesUploaded(images: Image[]) {
@@ -140,33 +151,35 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
     const ref = this.modal.show(ManageImagesComponent, {
       class: 'modal-form',
       initialState: {
-        images: this.images,
-      },
+        images: this.images
+      }
     });
     const component = ref.content as ManageImagesComponent;
-    this.addSub(component.result.pipe(take(1)).subscribe(result => {
-      let value = this.imageIds;
-      if (result.order != null) {
-        // The order has changed
-        value = result.order;
-      }
-      if (!empty(result.removedImages)) {
-        // Remove each temp image in the list
-        this.uploadedImages
-          .filter(i => result.removedImages.includes(i.id))
-          .forEach(i => this.addSub(this.imagesService.deleteImage({ id: i.id }).subscribe()));
+    this.addSub(
+      component.result.pipe(take(1)).subscribe(result => {
+        let value = this.imageIds;
+        if (result.order != null) {
+          // The order has changed
+          value = result.order;
+        }
+        if (!empty(result.removedImages)) {
+          // Remove each temp image in the list
+          this.uploadedImages
+            .filter(i => result.removedImages.includes(i.id))
+            .forEach(i => this.addSub(this.imagesService.deleteImage({ id: i.id }).subscribe()));
 
-        // Update the arrays
-        this.uploadedImages = this.uploadedImages.filter(i => !result.removedImages.includes(i.id));
-        result.removedImages.forEach(id => this.storedFileCacheService.delete(id));
-      }
-      this.images = value.map(id => this.images.find(i => i.id === id));
-      this.value = value;
-      ref.hide();
+          // Update the arrays
+          this.uploadedImages = this.uploadedImages.filter(i => !result.removedImages.includes(i.id));
+          result.removedImages.forEach(id => this.storedFileCacheService.delete(id));
+        }
+        this.images = value.map(id => this.images.find(i => i.id === id));
+        this.value = value;
+        ref.hide();
 
-      // Manually mark the control as touched, as there's no native inputs
-      this.notifyTouched();
-    }));
+        // Manually mark the control as touched, as there's no native inputs
+        this.notifyTouched();
+      })
+    );
   }
 
   removeAllImages() {

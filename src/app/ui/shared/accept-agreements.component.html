@@ -7,11 +7,9 @@
     <ng-container *ngFor="let agreement of agreements; let i = index">
       <div class="d-flex mb-2">
         <div>
-          <boolean-field [formControl]="agreementsControl.at(i)">
-          </boolean-field>
+          <boolean-field [formControl]="agreementsControl.at(i)"> </boolean-field>
         </div>
-        <agreement-link class="ml-2 flex-grow-1" [agreement]="agreement">
-        </agreement-link>
+        <agreement-link class="ml-2 flex-grow-1" [agreement]="agreement"> </agreement-link>
       </div>
     </ng-container>
   </div>

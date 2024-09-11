@@ -1,5 +1,10 @@
-<input #inputField class="d-none" type="file" accept="image/png,image/jpeg,image/gif"
-  (change)="filesSelected(inputField.files)" [multiple]="max > 1">
+<input
+  #inputField
+  class="d-none"
+  type="file"
+  accept="image/png,image/jpeg,image/gif"
+  (change)="filesSelected(inputField.files)"
+  [multiple]="max > 1" />
 <div [ngClass]="containerClass" *ngIf="(files | async)?.length > 0">
   <ng-container *ngFor="let file of files.value">
     <progressbar class="mt-1" [max]="file.totalSize" [value]="file.progress$ | async">

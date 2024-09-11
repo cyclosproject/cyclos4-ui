@@ -1,16 +1,16 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content mode="viewForm" [heading]="i18n.ad.title.shoppingCart"
+    <page-content
+      mode="viewForm"
+      [heading]="i18n.ad.title.shoppingCart"
       [mobileHeading]="i18n.ad.mobileTitle.shoppingCart"
       [headingActions]="headingActions$ | async">
       <ng-container>
         {{ data.length > 0 ? i18n.ad.chooseSeller : i18n.ad.cartEmpty }}
       </ng-container>
     </page-content>
-    <results-layout *ngIf="data.length > 0" [results]="data"
-      [toLink]="toLink">
-      <mobile-result *mobileResult="let cart"
-        [avatarImage]="cart.seller.image" [avatarIcon]="SvgIcon.Person">
+    <results-layout *ngIf="data.length > 0" [results]="data" [toLink]="toLink">
+      <mobile-result *mobileResult="let cart" [avatarImage]="cart.seller.image" [avatarIcon]="SvgIcon.Person">
         <div>
           <div class="cell-main">
             {{ cart.seller.display }}
@@ -19,8 +19,7 @@
             {{ cart.currency.name }}
           </div>
           <div class="cell-text">
-            {{ cart.items.length + ' ' + (cart.items.length > 1 ?
-            i18n.ad.items : i18n.ad.item) }}
+            {{ cart.items.length + ' ' + (cart.items.length > 1 ? i18n.ad.items : i18n.ad.item) }}
           </div>
         </div>
       </mobile-result>
@@ -34,12 +33,13 @@
         <tbody>
           <ng-container *ngFor="let cart of data">
             <tr (click)="router.navigate(path(cart))">
-              <td class="avatar" [ngClass]="{
+              <td
+                class="avatar"
+                [ngClass]="{
                   'pb-0': layout.xxs$ | async,
                   'border-0': layout.xxs$ | async
                 }">
-                <avatar [image]="cart.seller.image"
-                  [tooltip]="cart.seller.display"></avatar>
+                <avatar [image]="cart.seller.image" [tooltip]="cart.seller.display"></avatar>
               </td>
               <td>
                 <a [routerLink]="path(cart)">

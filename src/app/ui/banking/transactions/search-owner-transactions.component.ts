@@ -3,8 +3,14 @@ import {
   Currency,
   CustomFieldDetailed,
   ExternalPaymentStatusEnum,
-  PaymentRequestStatusEnum, TicketStatusEnum, TransactionAuthorizationStatusEnum, TransactionDataForSearch,
-  TransactionKind, TransactionQueryFilters, TransactionResult, TransferFilter
+  PaymentRequestStatusEnum,
+  TicketStatusEnum,
+  TransactionAuthorizationStatusEnum,
+  TransactionDataForSearch,
+  TransactionKind,
+  TransactionQueryFilters,
+  TransactionResult,
+  TransferFilter
 } from 'app/api/models';
 import { TransactionsService } from 'app/api/services/transactions.service';
 import { SvgIcon } from 'app/core/svg-icon';
@@ -27,12 +33,12 @@ export type TransactionSearchParams = TransactionQueryFilters & {
 @Component({
   selector: 'search-owner-transactions',
   templateUrl: 'search-owner-transactions.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchOwnerTransactionsComponent
   extends BaseSearchPageComponent<TransactionDataForSearch, TransactionSearchParams, TransactionResult>
-  implements OnInit {
-
+  implements OnInit
+{
   kind: 'authorized' | 'payment-request' | 'external-payment' | 'ticket';
   param: string;
   self: boolean;
@@ -49,7 +55,8 @@ export class SearchOwnerTransactionsComponent
   constructor(
     injector: Injector,
     private transactionsService: TransactionsService,
-    public bankingHelper: BankingHelperService) {
+    public bankingHelper: BankingHelperService
+  ) {
     super(injector);
   }
 
@@ -81,18 +88,36 @@ export class SearchOwnerTransactionsComponent
     }
 
     // Get the transactions search data
-    this.stateManager.cache('data', this.transactionsService.getTransactionsDataForSearch({
-      owner: this.param,
-      fields: ['user', 'userPermissions', 'accountTypes', 'visibleKinds', 'transferFilters', 'fieldsInBasicSearch', 'fieldsInList',
-        'customFields', 'archivingDate', ...(this.usePreselectedPeriods ? ['preselectedPeriods'] : []), 'query'],
-    })).subscribe(data => this.data = data);
+    this.stateManager
+      .cache(
+        'data',
+        this.transactionsService.getTransactionsDataForSearch({
+          owner: this.param,
+          fields: [
+            'user',
+            'userPermissions',
+            'accountTypes',
+            'visibleKinds',
+            'transferFilters',
+            'fieldsInBasicSearch',
+            'fieldsInList',
+            'customFields',
+            'archivingDate',
+            ...(this.usePreselectedPeriods ? ['preselectedPeriods'] : []),
+            'query'
+          ]
+        })
+      )
+      .subscribe(data => (this.data = data));
 
     // Whenever the account type changes, also update the transfer filters
-    this.addSub(this.form.get('accountType').valueChanges.subscribe(at => {
-      this.form.patchValue({ transferFilter: null }, { emitEvent: false });
-      const filters = this.data.transferFilters.filter(tf => tf.accountType.id === at);
-      this.transferFilters$.next(filters);
-    }));
+    this.addSub(
+      this.form.get('accountType').valueChanges.subscribe(at => {
+        this.form.patchValue({ transferFilter: null }, { emitEvent: false });
+        const filters = this.data.transferFilters.filter(tf => tf.accountType.id === at);
+        this.transferFilters$.next(filters);
+      })
+    );
   }
 
   prepareForm(data: TransactionDataForSearch) {
@@ -100,7 +125,10 @@ export class SearchOwnerTransactionsComponent
 
     this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInBasicSearch.includes(cf.internalName));
     this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
-    this.form.setControl('customFields', this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields));
+    this.form.setControl(
+      'customFields',
+      this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields)
+    );
   }
 
   onDataInitialized(data: TransactionDataForSearch) {
@@ -116,7 +144,7 @@ export class SearchOwnerTransactionsComponent
     const transactionNumberPatterns = Array.from(this.currencies.values())
       .map(c => c.transactionNumberPattern)
       .filter(p => p)
-      .reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], []);
+      .reduce((unique, item) => (unique.includes(item) ? unique : [...unique, item]), []);
     this.hasTransactionNumber = transactionNumberPatterns.length > 0;
     this.transactionNumberPattern = transactionNumberPatterns.length === 1 ? transactionNumberPatterns[0] : null;
     const headingActions: HeadingAction[] = [this.moreFiltersAction];
@@ -127,46 +155,91 @@ export class SearchOwnerTransactionsComponent
       if (this.param === ApiHelper.SYSTEM) {
         // System payment requests
         if (bankingPermissions?.paymentRequests?.sendToUser) {
-          headingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowLeft, this.i18n.transaction.sendPaymentRequestAsSelfToUser,
-            () => this.sendPaymentRequest(ApiHelper.SYSTEM), true));
+          headingActions.push(
+            new HeadingAction(
+              SvgIcon.Wallet2ArrowLeft,
+              this.i18n.transaction.sendPaymentRequestAsSelfToUser,
+              () => this.sendPaymentRequest(ApiHelper.SYSTEM),
+              true
+            )
+          );
         }
       } else if (this.self) {
         // Own payment requests
         if (bankingPermissions?.paymentRequests?.sendToUser) {
-          headingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowLeft, this.i18n.transaction.sendPaymentRequestAsSelfToUser,
-            () => this.sendPaymentRequest(ApiHelper.SELF), true));
+          headingActions.push(
+            new HeadingAction(
+              SvgIcon.Wallet2ArrowLeft,
+              this.i18n.transaction.sendPaymentRequestAsSelfToUser,
+              () => this.sendPaymentRequest(ApiHelper.SELF),
+              true
+            )
+          );
         }
         if (bankingPermissions?.paymentRequests?.sendToSystem) {
-          headingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowLeft, this.i18n.transaction.sendPaymentRequestAsSelfToSystem,
-            () => this.sendPaymentRequest(ApiHelper.SELF, ApiHelper.SYSTEM), true));
+          headingActions.push(
+            new HeadingAction(
+              SvgIcon.Wallet2ArrowLeft,
+              this.i18n.transaction.sendPaymentRequestAsSelfToSystem,
+              () => this.sendPaymentRequest(ApiHelper.SELF, ApiHelper.SYSTEM),
+              true
+            )
+          );
         }
       } else {
         // A manager viewing the payment requests of a user
         if (userPermissions?.paymentRequests?.sendFromSystem) {
-          headingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowLeft, this.i18n.transaction.sendPaymentRequestFromSystemToUser,
-            () => this.sendPaymentRequest(ApiHelper.SYSTEM, this.param), true));
+          headingActions.push(
+            new HeadingAction(
+              SvgIcon.Wallet2ArrowLeft,
+              this.i18n.transaction.sendPaymentRequestFromSystemToUser,
+              () => this.sendPaymentRequest(ApiHelper.SYSTEM, this.param),
+              true
+            )
+          );
         }
         if (userPermissions?.paymentRequests?.sendAsUserToUser) {
-          headingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowLeft, this.i18n.transaction.sendPaymentRequestAsUserToUser,
-            () => this.sendPaymentRequest(this.param), true));
+          headingActions.push(
+            new HeadingAction(
+              SvgIcon.Wallet2ArrowLeft,
+              this.i18n.transaction.sendPaymentRequestAsUserToUser,
+              () => this.sendPaymentRequest(this.param),
+              true
+            )
+          );
         }
         if (userPermissions?.paymentRequests?.sendAsUserToSystem) {
-          headingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowLeft, this.i18n.transaction.sendPaymentRequestAsUserToSystem,
-            () => this.sendPaymentRequest(this.param, ApiHelper.SYSTEM), true));
+          headingActions.push(
+            new HeadingAction(
+              SvgIcon.Wallet2ArrowLeft,
+              this.i18n.transaction.sendPaymentRequestAsUserToSystem,
+              () => this.sendPaymentRequest(this.param, ApiHelper.SYSTEM),
+              true
+            )
+          );
         }
       }
     } else if (this.isExternalPayment()) {
       // There's only a possible action for payment requests, either as self, system or user: pay an external user
       if (bankingPermissions?.externalPayments?.perform || userPermissions?.externalPayments?.performAsSelf) {
-        headingActions.push(new HeadingAction(SvgIcon.Wallet2ArrowUpRight, this.i18n.transaction.payExternalUser,
-          () => this.payExternalUser(), true));
+        headingActions.push(
+          new HeadingAction(
+            SvgIcon.Wallet2ArrowUpRight,
+            this.i18n.transaction.payExternalUser,
+            () => this.payExternalUser(),
+            true
+          )
+        );
       }
     }
-    headingActions.push(...this.exportHelper.headingActions(data.exportFormats,
-      f => this.transactionsService.exportTransactions$Response({
-        format: f.internalName,
-        ...this.toSearchParams(this.form.value)
-      })));
+    headingActions.push(
+      ...this.exportHelper.headingActions(data.exportFormats, f =>
+        this.transactionsService.exportTransactions$Response({
+          format: f.internalName,
+          ...this.toSearchParams(this.form.value)
+        })
+      )
+    );
     this.headingActions = headingActions;
   }
 
@@ -199,8 +272,18 @@ export class SearchOwnerTransactionsComponent
   }
 
   getFormControlNames() {
-    return ['status', 'accountType', 'transferFilter', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd', 'direction',
-      'transactionNumber', 'customFields'];
+    return [
+      'status',
+      'accountType',
+      'transferFilter',
+      'user',
+      'preselectedPeriod',
+      'periodBegin',
+      'periodEnd',
+      'direction',
+      'transactionNumber',
+      'customFields'
+    ];
   }
 
   getInitialFormValue(data: TransactionDataForSearch) {

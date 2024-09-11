@@ -1,59 +1,73 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data then content"></ng-container>
+  <ng-container *ngIf="data; then content"></ng-container>
 </page-layout>
 
 <ng-template #content>
-  <page-content mode="filters" [heading]="data?.type.pluralName"
+  <page-content
+    mode="filters"
+    [heading]="data?.type.pluralName"
     [mobileHeading]="data?.type.pluralName"
     [headingActions]="headingActions$ | async">
     <div [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row no-gutters">
         <div class="col-12 col-md-6">
-          <user-field formControlName="user" [label]="i18n.general.user">
-          </user-field>
+          <user-field formControlName="user" [label]="i18n.general.user"> </user-field>
         </div>
         <!-- Force a new line to keep date range in same row -->
         <div class="w-100"></div>
         <div class="col-12 col-md-6">
-          <date-field formControlName="activationBeginDate"
-            [label]="i18n.token.activationBeginDate" minDate="past100"
-            maxDate="today" fieldSize="full">
+          <date-field
+            formControlName="activationBeginDate"
+            [label]="i18n.token.activationBeginDate"
+            minDate="past100"
+            maxDate="today"
+            fieldSize="full">
           </date-field>
         </div>
         <div class="col-12 col-md-6">
-          <date-field formControlName="activationEndDate"
-            [label]="i18n.token.activationEndDate" minDate="past100"
+          <date-field
+            formControlName="activationEndDate"
+            [label]="i18n.token.activationEndDate"
+            minDate="past100"
             fieldSize="full">
           </date-field>
         </div>
         <!-- Force a new line to keep date range in same row -->
         <div class="w-100"></div>
         <div class="col-12 col-md-6">
-          <date-field formControlName="expiryBeginDate"
-            [label]="i18n.token.expiryBeginDate" minDate="past100"
+          <date-field
+            formControlName="expiryBeginDate"
+            [label]="i18n.token.expiryBeginDate"
+            minDate="past100"
             fieldSize="full">
           </date-field>
         </div>
         <div class="col-12 col-md-6">
-          <date-field formControlName="expiryEndDate"
-            [label]="i18n.token.expiryEndDate" minDate="past100"
+          <date-field
+            formControlName="expiryEndDate"
+            [label]="i18n.token.expiryEndDate"
+            minDate="past100"
             fieldSize="full">
           </date-field>
         </div>
       </div>
       <div class="col-12 col-md-6">
-        <multi-selection-field formControlName="statuses"
-          [emptyLabel]="i18n.general.notApplied" [label]="i18n.general.status"
+        <multi-selection-field
+          formControlName="statuses"
+          [emptyLabel]="i18n.general.notApplied"
+          [label]="i18n.general.status"
           [fieldOptions]="statusOptions">
         </multi-selection-field>
       </div>
       <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
-        <multi-selection-field hierarchyProperty="groupSet"
-          formControlName="groups" [label]="i18n.user.groupFilter">
-          <field-option *ngFor="let group of data.groups"
+        <multi-selection-field hierarchyProperty="groupSet" formControlName="groups" [label]="i18n.user.groupFilter">
+          <field-option
+            *ngFor="let group of data.groups"
             [value]="ApiHelper.internalNameOrId(group)"
-            [internalName]="group.internalName" [id]="group.id"
-            [text]="group.name" [parent]="group.groupSet">
+            [internalName]="group.internalName"
+            [id]="group.id"
+            [text]="group.name"
+            [parent]="group.groupSet">
           </field-option>
         </multi-selection-field>
       </div>
@@ -67,16 +81,13 @@
           <label-value [label]="i18n.general.user" labelPosition="above">
             {{ row.user ? row.user.display : i18n.token.unassigned }}
           </label-value>
-          <label-value [label]="isNfc() ? i18n.token.label : i18n.token.value"
-            labelPosition="above">
+          <label-value [label]="isNfc() ? i18n.token.label : i18n.token.value" labelPosition="above">
             {{ row.value }}
           </label-value>
-          <label-value [label]="i18n.token.creationDate"
-            labelPosition="above">
+          <label-value [label]="i18n.token.creationDate" labelPosition="above">
             {{ row.creationDate | date }}
           </label-value>
-          <label-value [label]="i18n.token.activationDate"
-            labelPosition="above">
+          <label-value [label]="i18n.token.activationDate" labelPosition="above">
             {{ row.activationDate | date }}
           </label-value>
           <label-value [label]="i18n.token.expiryDate" labelPosition="above">
@@ -87,7 +98,9 @@
           </label-value>
         </div>
         <div class="ml-auto text-right d-flex flex-column">
-          <button type="button" [tooltip]="i18n.general.view"
+          <button
+            type="button"
+            [tooltip]="i18n.general.view"
             class="btn btn-icon"
             (click)="router.navigate(view(row)); $event.stopPropagation(); $event.preventDefault()">
             <icon [icon]="SvgIcon.Search"></icon>
@@ -106,7 +119,8 @@
         <th>{{ i18n.general.status }}</th>
       </thead>
       <tbody>
-        <tr *ngFor="let row of (results$ | async)?.results"
+        <tr
+          *ngFor="let row of (results$ | async)?.results"
           (click)="router.navigate(view(row)); $event.stopPropagation(); $event.preventDefault()">
           <td>{{ row.user ? row.user.display : i18n.token.unassigned }}</td>
           <td>{{ row.value }}</td>

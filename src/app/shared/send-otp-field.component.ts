@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Host,
+  Injector,
+  Input,
+  OnInit,
+  Optional,
+  SkipSelf,
+  ViewChild
+} from '@angular/core';
 import { ControlContainer, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DataForSendingOtp, SendMediumEnum, SendOtp } from 'app/api/models';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
@@ -13,14 +23,9 @@ import { RadioGroupFieldComponent } from 'app/shared/radio-group-field.component
   selector: 'send-otp-field',
   templateUrl: 'send-otp-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: SendOtpFieldComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: SendOtpFieldComponent, multi: true }]
 })
-export class SendOtpFieldComponent
-  extends BaseFormFieldComponent<SendOtp>
-  implements OnInit {
-
+export class SendOtpFieldComponent extends BaseFormFieldComponent<SendOtp> implements OnInit {
   @Input() data: DataForSendingOtp;
 
   @ViewChild('radio') radio: RadioGroupFieldComponent;
@@ -29,9 +34,7 @@ export class SendOtpFieldComponent
 
   fieldOptions: FieldOption[];
 
-  constructor(
-    injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
+  constructor(injector: Injector, @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
     super(injector, controlContainer);
   }
 
@@ -60,9 +63,11 @@ export class SendOtpFieldComponent
         });
       });
     }
-    this.addSub(this.radioControl.valueChanges.subscribe(value => {
-      this.formControl.setValue(this.fromStringValue(value));
-    }));
+    this.addSub(
+      this.radioControl.valueChanges.subscribe(value => {
+        this.formControl.setValue(this.fromStringValue(value));
+      })
+    );
     this.radioControl.setValue(initialValue);
   }
 

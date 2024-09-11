@@ -1,20 +1,20 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { UserProductAssignmentData, ProductAssignmentActionEnum } from 'app/api/models';
+import { ProductAssignmentActionEnum, UserProductAssignmentData } from 'app/api/models';
 import { ProductAssignmentService } from 'app/api/services/product-assignment.service';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 
 @Component({
   selector: 'view-product-assignment-history',
   templateUrl: 'view-product-assignment-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewProductAssignmentHistoryComponent extends BaseViewPageComponent<UserProductAssignmentData> implements OnInit {
-
+export class ViewProductAssignmentHistoryComponent
+  extends BaseViewPageComponent<UserProductAssignmentData>
+  implements OnInit
+{
   ProductAssignmentActionEnum = ProductAssignmentActionEnum;
 
-  constructor(
-    injector: Injector,
-    private productAssignmentSerivce: ProductAssignmentService) {
+  constructor(injector: Injector, private productAssignmentSerivce: ProductAssignmentService) {
     super(injector);
   }
 
@@ -23,8 +23,11 @@ export class ViewProductAssignmentHistoryComponent extends BaseViewPageComponent
   ngOnInit() {
     super.ngOnInit();
     this.user = this.route.snapshot.params.user;
-    this.addSub(this.productAssignmentSerivce.getUserProductsData({ user: this.user, fields: ['user', 'history'] })
-      .subscribe(data => this.data = data));
+    this.addSub(
+      this.productAssignmentSerivce
+        .getUserProductsData({ user: this.user, fields: ['user', 'history'] })
+        .subscribe(data => (this.data = data))
+    );
   }
 
   get onClick() {

@@ -1,18 +1,17 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [heading]="i18n.ad.title.answerQuestion"
-      [mobileHeading]="i18n.ad.mobileTitle.answerQuestion">
-      <div *ngIf="data.advertisement.image && (layout.ltsm$ | async)"
-        class="d-flex justify-content-center mt-2 mb-4">
-        <avatar-lightbox [roundBorders]="false" [zoom]="false" size="120"
+    <page-content [heading]="i18n.ad.title.answerQuestion" [mobileHeading]="i18n.ad.mobileTitle.answerQuestion">
+      <div *ngIf="data.advertisement.image && (layout.ltsm$ | async)" class="d-flex justify-content-center mt-2 mb-4">
+        <avatar-lightbox
+          [roundBorders]="false"
+          [zoom]="false"
+          size="120"
           [image]="data.advertisement.image"></avatar-lightbox>
       </div>
 
       <div class="d-flex flex-row-reverse">
-        <div *ngIf="data.advertisement.image && (layout.gtxs$ | async)"
-          class="image ml-4">
-          <avatar-lightbox [roundBorders]="false" [zoom]="false" size="120"
-            [image]="data.advertisement.image">
+        <div *ngIf="data.advertisement.image && (layout.gtxs$ | async)" class="image ml-4">
+          <avatar-lightbox [roundBorders]="false" [zoom]="false" size="120" [image]="data.advertisement.image">
           </avatar-lightbox>
         </div>
         <div class="d-flex flex-grow-1 flex-column">
@@ -28,19 +27,19 @@
           <label-value [label]="i18n.ad.question">
             {{ data.question }}
           </label-value>
-          <label-value [ngClass]="{'pt-1': !data.answer}"
-            [label]="i18n.ad.answer" [required]="!data.answer"
+          <label-value
+            [ngClass]="{ 'pt-1': !data.answer }"
+            [label]="i18n.ad.answer"
+            [required]="!data.answer"
             [forId]="'answer'">
-            <textarea-field *ngIf="!data.answer" required="true"
-              [formControl]="answer" [id]="'answer'">
+            <textarea-field *ngIf="!data.answer" required="true" [formControl]="answer" [id]="'answer'">
             </textarea-field>
-            <ng-container *ngIf="data.answer"> {{data.answer}} </ng-container>
+            <ng-container *ngIf="data.answer"> {{ data.answer }} </ng-container>
           </label-value>
         </div>
       </div>
       <actions *ngIf="!data.answer">
-        <action-button [disabled]="requesting$ | async" (action)="submit()"
-          [label]="i18n.general.submit">
+        <action-button [disabled]="requesting$ | async" (action)="submit()" [label]="i18n.general.submit">
         </action-button>
       </actions>
     </page-content>

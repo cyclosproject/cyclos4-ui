@@ -1,31 +1,34 @@
-<label-value *ngIf="label; else widget" [formField]="self"
-  [informationText]="informationText">
+<label-value *ngIf="label; else widget" [formField]="self" [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 <ng-template #widget>
-  <ng-container
-    *ngFor="let category of categories | async; let firstCat = first">
-    <div class="w-100 d-flex " [ngClass]="{
-      'flex-wrap': !asColumn,
-      'align-items-center': !asColumn,
-      'flex-column': asColumn,
-      'align-items-left': asColumn,
-      'mt-3': !firstCat
-    }">
-      <div *ngIf="category.name" class="mr-3 font-weight-bold"
-        style="line-height: 1rem">{{ category.name }}
-      </div>
-      <div #check
+  <ng-container *ngFor="let category of categories | async; let firstCat = first">
+    <div
+      class="w-100 d-flex"
+      [ngClass]="{
+        'flex-wrap': !asColumn,
+        'align-items-center': !asColumn,
+        'flex-column': asColumn,
+        'align-items-left': asColumn,
+        'mt-3': !firstCat
+      }">
+      <div *ngIf="category.name" class="mr-3 font-weight-bold" style="line-height: 1rem">{{ category.name }}</div>
+      <div
+        #check
         *ngFor="let option of category.options | async; let firstOpt = first"
         class="custom-control custom-radio d-inline-flex mr-3 align-items-center"
         (click)="value = option.value; $event.preventDefault(); $event.stopPropagation()"
         (keydown.space)="$event.preventDefault(); $event.stopPropagation()"
-        [ngClass]="{'mt-1': !firstOpt && asColumn, 'custom-control-disabled': option.disabled}">
-        <input type="radio" [name]="name" class="custom-control-input"
-          [id]="id + '_' + option.value" [value]="option.value"
+        [ngClass]="{ 'mt-1': !firstOpt && asColumn, 'custom-control-disabled': option.disabled }">
+        <input
+          type="radio"
+          [name]="name"
+          class="custom-control-input"
+          [id]="id + '_' + option.value"
+          [value]="option.value"
           [disabled]="option.disabled"
           (keyup.enter)="value = option.value; $event.preventDefault(); $event.stopPropagation()"
-          [checked]="isSelected(option)">
+          [checked]="isSelected(option)" />
         <label class="custom-control-label" [for]="id + '_' + option.value">
           {{ option.text }}
         </label>

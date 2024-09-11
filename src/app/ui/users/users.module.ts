@@ -155,10 +155,7 @@ import { UsersRoutingModule } from 'app/ui/users/users-routing.module';
 
     QuickAccessSettingsComponent
   ],
-  imports: [
-    UsersRoutingModule,
-    UiSharedModule
-  ],
+  imports: [UsersRoutingModule, UiSharedModule],
   exports: [],
   entryComponents: [
     VerifyPhoneComponent,
@@ -167,5 +164,4 @@ import { UsersRoutingModule } from 'app/ui/users/users-routing.module';
     ConfirmResumeWizardComponent
   ]
 })
-export class UsersModule {
-}
+export class UsersModule {}

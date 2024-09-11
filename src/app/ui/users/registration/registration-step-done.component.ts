@@ -10,21 +10,16 @@ import { UserHelperService } from 'app/ui/core/user-helper.service';
 @Component({
   selector: 'registration-step-done',
   templateUrl: 'registration-step-done.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegistrationStepDoneComponent
-  extends BaseComponent implements OnInit {
-
+export class RegistrationStepDoneComponent extends BaseComponent implements OnInit {
   @Input() result: UserRegistrationResult;
 
   messageHtml: string;
   principalsHtml: string;
   passwordsMessage: string;
 
-  constructor(
-    injector: Injector,
-    public login: LoginService,
-    private userHelper: UserHelperService) {
+  constructor(injector: Injector, public login: LoginService, private userHelper: UserHelperService) {
     super(injector);
   }
 

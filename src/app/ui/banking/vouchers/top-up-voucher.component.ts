@@ -1,6 +1,16 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { CreateDeviceConfirmation, DeviceConfirmationTypeEnum, TopUpVoucher, VoucherDataForTopUp, VoucherGenerationAmountEnum, VoucherInitialDataForTransaction, VoucherPinOnActivationEnum, VoucherTopUpPreview, VoucherTransactionResult } from 'app/api/models';
+import {
+  CreateDeviceConfirmation,
+  DeviceConfirmationTypeEnum,
+  TopUpVoucher,
+  VoucherDataForTopUp,
+  VoucherGenerationAmountEnum,
+  VoucherInitialDataForTransaction,
+  VoucherPinOnActivationEnum,
+  VoucherTopUpPreview,
+  VoucherTransactionResult
+} from 'app/api/models';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { BaseVoucherTransactionComponent } from 'app/ui/banking/vouchers/base-voucher-transaction.component';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -19,10 +29,9 @@ export const PIN_REQUIRED_UNLESS_NOTIFICATION: ValidatorFn = control => {
 @Component({
   selector: 'top-up-voucher',
   templateUrl: './top-up-voucher.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TopUpVoucherComponent extends BaseVoucherTransactionComponent<VoucherDataForTopUp, VoucherTopUpPreview> {
-
   VoucherGenerationAmountEnum = VoucherGenerationAmountEnum;
 
   confirmationPassword = new FormControl('', Validators.required);
@@ -40,7 +49,7 @@ export class TopUpVoucherComponent extends BaseVoucherTransactionComponent<Vouch
     return this.vouchersService.getVoucherInitialDataForTopUp({ user });
   }
 
-  protected getVoucherTransactionData(params: { user: string; token: string; }): Observable<VoucherDataForTopUp> {
+  protected getVoucherTransactionData(params: { user: string; token: string }): Observable<VoucherDataForTopUp> {
     return this.vouchersService.getVoucherDataForTopUp(params);
   }
 
@@ -62,13 +71,14 @@ export class TopUpVoucherComponent extends BaseVoucherTransactionComponent<Vouch
     this.pinIsSent = data.pinOnActivation === VoucherPinOnActivationEnum.SEND;
   }
 
-  protected previewTransaction(params: { user: string; token: string; body: any; }): Observable<VoucherTopUpPreview> {
+  protected previewTransaction(params: { user: string; token: string; body: any }): Observable<VoucherTopUpPreview> {
     return this.vouchersService.previewVoucherTopUp(params);
   }
 
-  protected performTransaction(preview: VoucherTopUpPreview,
-    params: { user: string; token: string; body?: any; } & { confirmationPassword: string; }): Observable<VoucherTransactionResult> {
-
+  protected performTransaction(
+    preview: VoucherTopUpPreview,
+    params: { user: string; token: string; body?: any } & { confirmationPassword: string }
+  ): Observable<VoucherTransactionResult> {
     params.confirmationPassword = this.confirmationPassword.value;
     if (preview) {
       params.body = preview.topUp;
@@ -77,7 +87,10 @@ export class TopUpVoucherComponent extends BaseVoucherTransactionComponent<Vouch
   }
 
   protected validatePerformFromForm(data: VoucherDataForTopUp, form: FormGroup): boolean {
-    return !!validateBeforeSubmit(form) && (!data.confirmationPasswordInput || !!validateBeforeSubmit(this.confirmationPassword));
+    return (
+      !!validateBeforeSubmit(form) &&
+      (!data.confirmationPasswordInput || !!validateBeforeSubmit(this.confirmationPassword))
+    );
   }
 
   protected validatePerformFromPreview(preview: VoucherTopUpPreview): boolean {
@@ -91,5 +104,4 @@ export class TopUpVoucherComponent extends BaseVoucherTransactionComponent<Vouch
       amount: this.preview?.amount ?? this.dataForTransaction?.amount ?? this.form.value.amount
     });
   }
-
 }

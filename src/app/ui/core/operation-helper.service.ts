@@ -7,10 +7,9 @@ import { SvgIcon } from 'app/core/svg-icon';
  * Helper for registering known operations and running them
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class OperationHelperService {
-
   private registry = new Map<string, Operation>();
 
   constructor(dataForFrontendHolder: DataForFrontendHolder) {

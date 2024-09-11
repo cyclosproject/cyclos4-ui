@@ -6,12 +6,10 @@ import { CaptchaInput, CaptchaProviderEnum } from 'app/api/models';
  * Helper service for using captcha
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CaptchaHelperService {
-  constructor(private formBuilder: FormBuilder) {
-
-  }
+  constructor(private formBuilder: FormBuilder) {}
   /**
    * Returns whether the given captcha provider uses the challenge field
    */
@@ -30,12 +28,11 @@ export class CaptchaHelperService {
       return null;
     }
     const form = this.formBuilder.group({
-      response: ['', Validators.required],
+      response: ['', Validators.required]
     });
     if (this.captchaUsesChallenge(captchaInput)) {
       form.addControl('challenge', new FormControl('', Validators.required));
     }
     return form;
   }
-
 }

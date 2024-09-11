@@ -1,12 +1,18 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { ChangeVoucherPin, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, VoucherActionEnum, VoucherCreationTypeEnum, VoucherView } from 'app/api/models';
+import {
+  ChangeVoucherPin,
+  CreateDeviceConfirmation,
+  DeviceConfirmationTypeEnum,
+  VoucherActionEnum,
+  VoucherCreationTypeEnum,
+  VoucherView
+} from 'app/api/models';
 import { VouchersService } from 'app/api/services/vouchers.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
-
 
 /** Validator function that ensures password and confirmation match */
 const PINS_MATCH_VAL: ValidatorFn = control => {
@@ -16,7 +22,7 @@ const PINS_MATCH_VAL: ValidatorFn = control => {
     const origVal = parent.get('newPin') == null ? '' : parent.get('newPin').value;
     if (origVal !== currVal) {
       return {
-        passwordsMatch: true,
+        passwordsMatch: true
       };
     }
   }
@@ -29,10 +35,9 @@ const PINS_MATCH_VAL: ValidatorFn = control => {
 @Component({
   selector: 'voucher-change-pin-dialog',
   templateUrl: 'voucher-change-pin-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VoucherChangePinDialogComponent extends BaseComponent implements OnInit {
-
   VoucherCreationTypeEnum = VoucherCreationTypeEnum;
 
   @Input() voucher: VoucherView;
@@ -41,20 +46,21 @@ export class VoucherChangePinDialogComponent extends BaseComponent implements On
   showSubmit$ = new BehaviorSubject(true);
   form: FormGroup;
 
-  constructor(
-    injector: Injector,
-    public modalRef: BsModalRef,
-    private vouchersService: VouchersService) {
+  constructor(injector: Injector, public modalRef: BsModalRef, private vouchersService: VouchersService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.form = this.formBuilder.group({
-      newPin: [null, [Validators.required,
-      Validators.minLength(this.voucher.pinInput?.minLength ?? 6),
-      Validators.maxLength(this.voucher.pinInput?.maxLength ?? 6)
-      ]],
+      newPin: [
+        null,
+        [
+          Validators.required,
+          Validators.minLength(this.voucher.pinInput?.minLength ?? 6),
+          Validators.maxLength(this.voucher.pinInput?.maxLength ?? 6)
+        ]
+      ],
       newPinConfirmation: [null, [Validators.required, PINS_MATCH_VAL]]
     });
     if (this.voucher.requireOldPinForChange) {
@@ -76,14 +82,18 @@ export class VoucherChangePinDialogComponent extends BaseComponent implements On
     const params: ChangeVoucherPin = { ...value };
     delete params['confirmationPassword'];
 
-    this.addSub(this.vouchersService.changeVoucherPin({
-      key: this.voucher.id,
-      confirmationPassword: value.confirmationPassword,
-      body: params,
-    }).subscribe(() => {
-      this.done.emit();
-      this.modalRef.hide();
-    }));
+    this.addSub(
+      this.vouchersService
+        .changeVoucherPin({
+          key: this.voucher.id,
+          confirmationPassword: value.confirmationPassword,
+          body: params
+        })
+        .subscribe(() => {
+          this.done.emit();
+          this.modalRef.hide();
+        })
+    );
   }
 
   get createDeviceConfirmation(): () => CreateDeviceConfirmation {

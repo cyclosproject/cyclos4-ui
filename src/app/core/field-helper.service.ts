@@ -1,9 +1,14 @@
 import { Inject, Injectable } from '@angular/core';
 import { AsyncValidatorFn, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  BasicProfileFieldInput, CustomField, CustomFieldBinaryValues,
-  CustomFieldDetailed, CustomFieldSizeEnum, CustomFieldTypeEnum,
-  CustomFieldValue, LinkedEntityTypeEnum
+  BasicProfileFieldInput,
+  CustomField,
+  CustomFieldBinaryValues,
+  CustomFieldDetailed,
+  CustomFieldSizeEnum,
+  CustomFieldTypeEnum,
+  CustomFieldValue,
+  LinkedEntityTypeEnum
 } from 'app/api/models';
 import { FormatService } from 'app/core/format.service';
 import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
@@ -15,15 +20,14 @@ import { empty } from 'app/shared/helper';
  * Helper service for custom fields
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class FieldHelperService {
-
   constructor(
     private formBuilder: FormBuilder,
     private format: FormatService,
-    @Inject(I18nInjectionToken) private i18n: I18n) {
-  }
+    @Inject(I18nInjectionToken) private i18n: I18n
+  ) {}
 
   /**
    * Returns the actual displayed field size.
@@ -39,7 +43,7 @@ export class FieldHelperService {
     }
   }
 
-  hasValue(customFieldInternalName: string, valuesMap: { [key: string]: string; }): boolean {
+  hasValue(customFieldInternalName: string, valuesMap: { [key: string]: string }): boolean {
     const value = valuesMap ? valuesMap[customFieldInternalName] : null;
     return value != null && (value.length === undefined || value.length > 0);
   }
@@ -52,19 +56,17 @@ export class FieldHelperService {
       case CustomFieldTypeEnum.BOOLEAN:
         if (fieldValue.booleanValue != null) {
           return {
-            value: fieldValue.booleanValue
-              ? this.i18n.general.yes
-              : this.i18n.general.no,
+            value: fieldValue.booleanValue ? this.i18n.general.yes : this.i18n.general.no
           };
         }
         break;
       case CustomFieldTypeEnum.DATE:
         return {
-          value: this.format.formatAsDate(fieldValue.dateValue),
+          value: this.format.formatAsDate(fieldValue.dateValue)
         };
       case CustomFieldTypeEnum.DECIMAL:
         return {
-          value: this.format.formatAsNumber(fieldValue.decimalValue, fieldValue.field.decimalDigits),
+          value: this.format.formatAsNumber(fieldValue.decimalValue, fieldValue.field.decimalDigits)
         };
       case CustomFieldTypeEnum.DYNAMIC_SELECTION:
       case CustomFieldTypeEnum.DYNAMIC_MULTI_SELECTION:
@@ -73,15 +75,15 @@ export class FieldHelperService {
         };
       case CustomFieldTypeEnum.FILE:
         return {
-          value: fieldValue.fileValues,
+          value: fieldValue.fileValues
         };
       case CustomFieldTypeEnum.IMAGE:
         return {
-          value: fieldValue.imageValues,
+          value: fieldValue.imageValues
         };
       case CustomFieldTypeEnum.INTEGER:
         return {
-          value: this.format.formatAsNumber(fieldValue.integerValue, 0),
+          value: this.format.formatAsNumber(fieldValue.integerValue, 0)
         };
       case CustomFieldTypeEnum.LINKED_ENTITY:
         let entity = null;
@@ -110,18 +112,20 @@ export class FieldHelperService {
             break;
         }
         if (entity != null) {
-          const link = path == null || entity.id == null ? null :
-            '/' + path.map(part => part === ':id' ? entity.id : part).join('/');
+          const link =
+            path == null || entity.id == null
+              ? null
+              : '/' + path.map(part => (part === ':id' ? entity.id : part)).join('/');
           return {
             value: entity.display || entity.name || entity.transactionNumber || entity.id,
-            link,
+            link
           };
         }
         break;
       case CustomFieldTypeEnum.SINGLE_SELECTION:
       case CustomFieldTypeEnum.MULTI_SELECTION:
         return {
-          value: fieldValue.enumeratedValues || [],
+          value: fieldValue.enumeratedValues || []
         };
       case CustomFieldTypeEnum.RICH_TEXT:
         let rich = fieldValue.stringValue;
@@ -133,16 +137,16 @@ export class FieldHelperService {
           }
         }
         return {
-          value: rich,
+          value: rich
         };
       case CustomFieldTypeEnum.URL:
         return {
           value: fieldValue.stringValue,
-          link: fieldValue.stringValue,
+          link: fieldValue.stringValue
         };
       default:
         return {
-          value: fieldValue.stringValue,
+          value: fieldValue.stringValue
         };
     }
     return null;
@@ -195,14 +199,17 @@ export class FieldHelperService {
    * @returns The FormGroup
    */
   customFieldsForSearchFormGroup(customFields: CustomFieldDetailed[], defaultValues?: string[]): FormGroup {
-    const defaultValuesMap: { [key: string]: string; } = {};
+    const defaultValuesMap: { [key: string]: string } = {};
     if (defaultValues) {
       defaultValues.forEach(f => {
         const keyValue = f.split(':');
         defaultValuesMap[keyValue[0]] = keyValue[1];
       });
     }
-    const customControls = this.customValuesFormControlMap(customFields, { currentValues: defaultValuesMap, useDefaults: false });
+    const customControls = this.customValuesFormControlMap(customFields, {
+      currentValues: defaultValuesMap,
+      useDefaults: false
+    });
     const group = this.formBuilder.group({});
     for (const [name, control] of customControls) {
       group.addControl(name, control);
@@ -216,7 +223,11 @@ export class FieldHelperService {
    * @param customFields The custom profile fields
    * @returns The FormGroup
    */
-  profileFieldsForSearchFormGroup(basicFields: BasicProfileFieldInput[], customFields: CustomFieldDetailed[], currentValues?: string[]): FormGroup {
+  profileFieldsForSearchFormGroup(
+    basicFields: BasicProfileFieldInput[],
+    customFields: CustomFieldDetailed[],
+    currentValues?: string[]
+  ): FormGroup {
     const group = this.customFieldsForSearchFormGroup(customFields, currentValues);
     // Append the basic profile fields
     for (const bf of basicFields) {
@@ -238,13 +249,16 @@ export class FieldHelperService {
    * - `asyncValProvider`: If provided will be called for each custom field to provide an additional, asynchronous validation
    * @returns The FormGroup
    */
-  customValuesFormGroup(customFields: CustomFieldDetailed[], options?: {
-    currentValues?: any,
-    useDefaults?: boolean,
-    requiredProvider?: (field: CustomFieldDetailed) => boolean,
-    disabledProvider?: (field: CustomFieldDetailed) => boolean,
-    asyncValProvider?: (field: CustomFieldDetailed) => AsyncValidatorFn;
-  }): FormGroup {
+  customValuesFormGroup(
+    customFields: CustomFieldDetailed[],
+    options?: {
+      currentValues?: any;
+      useDefaults?: boolean;
+      requiredProvider?: (field: CustomFieldDetailed) => boolean;
+      disabledProvider?: (field: CustomFieldDetailed) => boolean;
+      asyncValProvider?: (field: CustomFieldDetailed) => AsyncValidatorFn;
+    }
+  ): FormGroup {
     const controls = this.customValuesFormControlMap(customFields, options);
     const group = this.formBuilder.group({});
     for (const [name, control] of controls) {
@@ -264,19 +278,24 @@ export class FieldHelperService {
    * - `asyncValProvider`: If provided will be called for each custom field to provide an additional, asynchronous validation
    * @returns The Map
    */
-  customValuesFormControlMap(customFields: CustomFieldDetailed[], options?: {
-    currentValues?: any,
-    useDefaults?: boolean,
-    requiredProvider?: (field: CustomFieldDetailed) => boolean,
-    disabledProvider?: (field: CustomFieldDetailed) => boolean,
-    asyncValProvider?: (field: CustomFieldDetailed) => AsyncValidatorFn,
-  }): Map<string, FormControl> {
+  customValuesFormControlMap(
+    customFields: CustomFieldDetailed[],
+    options?: {
+      currentValues?: any;
+      useDefaults?: boolean;
+      requiredProvider?: (field: CustomFieldDetailed) => boolean;
+      disabledProvider?: (field: CustomFieldDetailed) => boolean;
+      asyncValProvider?: (field: CustomFieldDetailed) => AsyncValidatorFn;
+    }
+  ): Map<string, FormControl> {
     options = options || {};
     const currentValues = options.currentValues || {};
     const useDefaults = options.useDefaults !== false;
     const disabledProvider = options.disabledProvider || (() => false);
     const asyncValProvider = options.asyncValProvider;
-    const requiredProvider = options.requiredProvider ? options.requiredProvider : ((cf: CustomFieldDetailed) => cf.required);
+    const requiredProvider = options.requiredProvider
+      ? options.requiredProvider
+      : (cf: CustomFieldDetailed) => cf.required;
     const customValuesControlsMap = new Map();
     if (customFields) {
       for (const cf of customFields) {
@@ -284,14 +303,17 @@ export class FieldHelperService {
         if (value == null && useDefaults) {
           value = cf.defaultValue;
         }
-        customValuesControlsMap.set(cf.internalName, this.formBuilder.control(
-          {
-            value,
-            disabled: disabledProvider(cf),
-          },
-          requiredProvider(cf) ? Validators.required : null,
-          asyncValProvider ? asyncValProvider(cf) : null,
-        ));
+        customValuesControlsMap.set(
+          cf.internalName,
+          this.formBuilder.control(
+            {
+              value,
+              disabled: disabledProvider(cf)
+            },
+            requiredProvider(cf) ? Validators.required : null,
+            asyncValProvider ? asyncValProvider(cf) : null
+          )
+        );
       }
     }
 
@@ -317,7 +339,10 @@ export class FieldHelperService {
       case CustomFieldTypeEnum.DATE:
         return (field.dateValues || []).map(v => ({ value: v, text: this.format.formatAsDate(v) }));
       case CustomFieldTypeEnum.DECIMAL:
-        return (field.decimalValues || []).map(v => ({ value: v, text: this.format.formatAsNumber(v, field.decimalDigits) }));
+        return (field.decimalValues || []).map(v => ({
+          value: v,
+          text: this.format.formatAsNumber(v, field.decimalDigits)
+        }));
       case CustomFieldTypeEnum.INTEGER:
         return (field.integerValues || []).map(v => ({ value: String(v), text: this.format.formatAsNumber(v, 0) }));
       case CustomFieldTypeEnum.DYNAMIC_SELECTION:
@@ -326,8 +351,11 @@ export class FieldHelperService {
       case CustomFieldTypeEnum.SINGLE_SELECTION:
       case CustomFieldTypeEnum.MULTI_SELECTION:
         return (field.possibleValues || []).map(v => ({
-          value: ApiHelper.internalNameOrId(v), id: v.id, internalName: v.internalName,
-          text: v.value, category: v.category == null ? null : v.category.name,
+          value: ApiHelper.internalNameOrId(v),
+          id: v.id,
+          internalName: v.internalName,
+          text: v.value,
+          category: v.category == null ? null : v.category.name
         }));
       case CustomFieldTypeEnum.LINKED_ENTITY:
         switch (field.linkedEntityType) {
@@ -336,9 +364,17 @@ export class FieldHelperService {
           case LinkedEntityTypeEnum.RECORD:
             return (field.recordValues || []).map(v => ({ value: v.id, text: v.display }));
           case LinkedEntityTypeEnum.TRANSACTION:
-            return (field.transactionValues || []).map(v => ({ value: v.id, internalName: v.transactionNumber, text: v.display }));
+            return (field.transactionValues || []).map(v => ({
+              value: v.id,
+              internalName: v.transactionNumber,
+              text: v.display
+            }));
           case LinkedEntityTypeEnum.TRANSFER:
-            return (field.transferValues || []).map(v => ({ value: v.id, internalName: v.transactionNumber, text: v.display }));
+            return (field.transferValues || []).map(v => ({
+              value: v.id,
+              internalName: v.transactionNumber,
+              text: v.display
+            }));
           case LinkedEntityTypeEnum.USER:
             return (field.userValues || []).map(v => ({ value: v.id, text: v.display }));
         }
@@ -350,7 +386,7 @@ export class FieldHelperService {
    * Returns a suitable representation for using custom field values in searches
    * @param customValues The custom values map
    */
-  toCustomValuesFilter(customValues: { [key: string]: string; }): string[] {
+  toCustomValuesFilter(customValues: { [key: string]: string }): string[] {
     const result: string[] = [];
     for (const key of Object.keys(customValues || {})) {
       const value = customValues[key];
@@ -365,7 +401,7 @@ export class FieldHelperService {
    * Returns a suitable representation for using user profile field values in searches
    * @param values The profile field values map
    */
-  toProfileFieldsFilter(values: { [key: string]: string; }): string[] {
+  toProfileFieldsFilter(values: { [key: string]: string }): string[] {
     // TODO we should correctly handle custom fields which are ranges.
     return this.toCustomValuesFilter(values);
   }
@@ -409,7 +445,9 @@ export class FieldHelperService {
         case CustomFieldTypeEnum.SINGLE_SELECTION:
         case CustomFieldTypeEnum.MULTI_SELECTION:
           const pvs = value.split(/\|/g);
-          fieldValue.enumeratedValues = (cf.possibleValues || []).filter(pv => pvs.includes(pv.id) || pvs.includes(pv.internalName));
+          fieldValue.enumeratedValues = (cf.possibleValues || []).filter(
+            pv => pvs.includes(pv.id) || pvs.includes(pv.internalName)
+          );
           break;
         case CustomFieldTypeEnum.LINKED_ENTITY:
           const entityParts = value.split(/\|/g);

@@ -23,11 +23,9 @@ import { SideMenuComponent } from 'app/ui/shared/side-menu.component';
     HeadingActionButtonComponent,
     HeadingSubActionsComponent,
     IconWithCounterComponent,
-    ActionsToolbarComponent,
+    ActionsToolbarComponent
   ],
-  imports: [
-    SharedModule,
-  ],
+  imports: [SharedModule],
   exports: [
     SharedModule,
 
@@ -39,8 +37,7 @@ import { SideMenuComponent } from 'app/ui/shared/side-menu.component';
     HeadingActionButtonComponent,
     HeadingSubActionsComponent,
     IconWithCounterComponent,
-    ActionsToolbarComponent,
+    ActionsToolbarComponent
   ]
 })
-export class UiLayoutModule {
-}
+export class UiLayoutModule {}

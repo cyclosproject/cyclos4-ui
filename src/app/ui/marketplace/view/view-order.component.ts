@@ -1,20 +1,27 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
-  CreateDeviceConfirmation, CustomFieldControlEnum, CustomFieldDetailed,
-  CustomFieldTypeEnum, DeviceConfirmationTypeEnum, OrderDataForAcceptByBuyer,
-  OrderItem, OrderStatusEnum, OrderView, SetDeliveryMethod,
+  CreateDeviceConfirmation,
+  CustomFieldControlEnum,
+  CustomFieldDetailed,
+  CustomFieldTypeEnum,
+  DeviceConfirmationTypeEnum,
+  OrderDataForAcceptByBuyer,
+  OrderItem,
+  OrderStatusEnum,
+  OrderView,
+  SetDeliveryMethod
 } from 'app/api/models';
 import { OrdersService } from 'app/api/services/orders.service';
+import { SvgIcon } from 'app/core/svg-icon';
+import { HeadingAction } from 'app/shared/action';
+import { empty } from 'app/shared/helper';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { SetDeliveryMethodComponent } from 'app/ui/marketplace/delivery-methods/set-delivery-method.component';
-import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
-import { empty } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Displays an order with it's possible actions
@@ -22,10 +29,9 @@ import { SvgIcon } from 'app/core/svg-icon';
 @Component({
   selector: 'view-order',
   templateUrl: 'view-order.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewOrderComponent extends BaseViewPageComponent<OrderView> implements OnInit {
-
   OrderStatusEnum = OrderStatusEnum;
 
   id: string;
@@ -38,7 +44,8 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
     private modal: BsModalService,
     private marketplaceHelper: MarketplaceHelperService,
     private addressHelper: AddressHelperService,
-    private orderService: OrdersService) {
+    private orderService: OrdersService
+  ) {
     super(injector);
   }
 
@@ -46,39 +53,47 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
     super.ngOnInit();
 
     this.id = this.route.snapshot.paramMap.get('id');
-    this.addSub(this.orderService.viewOrder({ order: this.id, fields: ['-history'] })
-      .subscribe(order => this.data = order));
+    this.addSub(
+      this.orderService.viewOrder({ order: this.id, fields: ['-history'] }).subscribe(order => (this.data = order))
+    );
   }
 
   onDataInitialized(data: OrderView) {
-
     this.seller = this.authHelper.isSelfOrOwner(data.seller);
     this.buyer = !this.seller && this.authHelper.isSelfOrOwner(data.buyer);
     this.form = this.formBuilder.group({ remarks: null });
     const headingActions: HeadingAction[] = [];
 
     if (data.canAccept || data.canSetDeliveryInformation) {
-      headingActions.push(new HeadingAction(SvgIcon.HandThumbsUp,
-        data.canSetDeliveryInformation ?
-          this.i18n.ad.setDeliveryMethod : this.i18n.ad.accept, () =>
-        this.accept()));
+      headingActions.push(
+        new HeadingAction(
+          SvgIcon.HandThumbsUp,
+          data.canSetDeliveryInformation ? this.i18n.ad.setDeliveryMethod : this.i18n.ad.accept,
+          () => this.accept()
+        )
+      );
     }
 
     if (data.canReject) {
-      headingActions.push(new HeadingAction(SvgIcon.HandThumbsDown,
-        this.i18n.ad.reject, () =>
-        this.reject()));
+      headingActions.push(new HeadingAction(SvgIcon.HandThumbsDown, this.i18n.ad.reject, () => this.reject()));
     }
 
     if (data.history) {
-      headingActions.push(new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
-        this.router.navigate(['/marketplace', 'order', this.id, 'history'])));
+      headingActions.push(
+        new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
+          this.router.navigate(['/marketplace', 'order', this.id, 'history'])
+        )
+      );
     }
 
-    this.exportHelper.headingActions(data.exportFormats, f => this.orderService.exportOrder$Response({
-      format: f.internalName,
-      order: data.id
-    })).forEach(a => headingActions.push(a));
+    this.exportHelper
+      .headingActions(data.exportFormats, f =>
+        this.orderService.exportOrder$Response({
+          format: f.internalName,
+          order: data.id
+        })
+      )
+      .forEach(a => headingActions.push(a));
 
     this.headingActions = headingActions;
   }
@@ -114,7 +129,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
   private orderDeviceConfirmation(type: DeviceConfirmationTypeEnum): () => CreateDeviceConfirmation {
     return () => ({
       type,
-      order: this.id,
+      order: this.id
     });
   }
 
@@ -134,16 +149,16 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
         possibleValues: data.paymentTypes.map(type => {
           return {
             id: type.id,
-            value: type.name,
+            value: type.name
           };
         }),
-        required: true,
+        required: true
       });
     }
     fields.push({
       internalName: 'remarks',
       name: this.i18n.ad.remarks,
-      type: CustomFieldTypeEnum.TEXT,
+      type: CustomFieldTypeEnum.TEXT
     });
     return fields;
   }
@@ -153,8 +168,8 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
    * allows to enter transfer type, remarks and confirmation
    */
   protected acceptByBuyer() {
-    this.addSub(this.orderService.getOrderDataForAcceptByBuyer({ order: this.id }).subscribe(
-      data => {
+    this.addSub(
+      this.orderService.getOrderDataForAcceptByBuyer({ order: this.id }).subscribe(data => {
         this.confirmation.confirm({
           title: this.i18n.ad.acceptOrder,
           labelPosition: 'above',
@@ -162,22 +177,26 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
           passwordInput: data.confirmationPasswordInput,
           createDeviceConfirmation: this.orderDeviceConfirmation(DeviceConfirmationTypeEnum.ACCEPT_ORDER),
           callback: res => {
-            this.addSub(this.orderService.acceptOrderByBuyer({
-              order: this.id,
-              confirmationPassword: res.confirmationPassword,
-              body: {
-                remarks: res.customValues.remarks,
-                paymentType: res.customValues.paymentType ||
-                  (!empty(data.paymentTypes) ? data.paymentTypes[0].id : null),
-              },
-            }).subscribe(() => {
-              this.notification.snackBar(this.i18n.ad.orderAccepted);
-              this.reload();
-            }));
-          },
+            this.addSub(
+              this.orderService
+                .acceptOrderByBuyer({
+                  order: this.id,
+                  confirmationPassword: res.confirmationPassword,
+                  body: {
+                    remarks: res.customValues.remarks,
+                    paymentType:
+                      res.customValues.paymentType || (!empty(data.paymentTypes) ? data.paymentTypes[0].id : null)
+                  }
+                })
+                .subscribe(() => {
+                  this.notification.snackBar(this.i18n.ad.orderAccepted);
+                  this.reload();
+                })
+            );
+          }
         });
-      },
-    ));
+      })
+    );
   }
 
   /**
@@ -185,13 +204,17 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
    * allows to enter remarks
    */
   protected acceptBySeller() {
-    this.addSub(this.orderService.acceptOrderBySeller({
-      order: this.id,
-      body: this.form.value,
-    }).subscribe(() => {
-      this.notification.snackBar(this.i18n.ad.orderAccepted);
-      this.reload();
-    }));
+    this.addSub(
+      this.orderService
+        .acceptOrderBySeller({
+          order: this.id,
+          body: this.form.value
+        })
+        .subscribe(() => {
+          this.notification.snackBar(this.i18n.ad.orderAccepted);
+          this.reload();
+        })
+    );
   }
 
   /**
@@ -201,25 +224,30 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
   protected setDeliveryMethod() {
     const dm = this.data.deliveryMethod || {};
     const ref = this.modal.show(SetDeliveryMethodComponent, {
-      class: 'modal-form', initialState: {
+      class: 'modal-form',
+      initialState: {
         name: dm.name,
         chargeAmount: dm.price == null ? null : parseFloat(dm.price),
         minTime: dm.minTime,
         maxTime: dm.maxTime,
         deliveryType: dm.deliveryType,
-        currency: this.data.currency,
-      },
+        currency: this.data.currency
+      }
     });
     const component = ref.content as SetDeliveryMethodComponent;
-    this.addSub(component.done.subscribe((deliveryMethod: SetDeliveryMethod) => {
-      this.orderService.setDeliveryMethod({
-        order: this.id,
-        body: deliveryMethod,
-      }).subscribe(() => {
-        this.notification.snackBar(this.i18n.ad.orderAccepted);
-        this.reload();
-      });
-    }));
+    this.addSub(
+      component.done.subscribe((deliveryMethod: SetDeliveryMethod) => {
+        this.orderService
+          .setDeliveryMethod({
+            order: this.id,
+            body: deliveryMethod
+          })
+          .subscribe(() => {
+            this.notification.snackBar(this.i18n.ad.orderAccepted);
+            this.reload();
+          });
+      })
+    );
   }
 
   /**
@@ -248,16 +276,20 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
       labelPosition: 'above',
       customFields: this.orderFields(),
       callback: res => {
-        this.addSub(this.orderService.rejectOrder({
-          order: this.id,
-          body: {
-            remarks: res.customValues.remarks,
-          },
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.ad.orderRejected);
-          this.reload();
-        }));
-      },
+        this.addSub(
+          this.orderService
+            .rejectOrder({
+              order: this.id,
+              body: {
+                remarks: res.customValues.remarks
+              }
+            })
+            .subscribe(() => {
+              this.notification.snackBar(this.i18n.ad.orderRejected);
+              this.reload();
+            })
+        );
+      }
     });
   }
 
@@ -273,7 +305,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
    */
   get subtotal(): number {
     let result = 0;
-    this.data.items.forEach(item => result += +item.totalPrice);
+    this.data.items.forEach(item => (result += +item.totalPrice));
     return result;
   }
 
@@ -290,5 +322,4 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
   get canSetRemarks(): boolean {
     return this.data.status === OrderStatusEnum.PENDING_SELLER && this.seller && this.data.canAccept;
   }
-
 }

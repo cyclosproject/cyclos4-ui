@@ -1,39 +1,39 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content mode="filters" [heading]="i18n.connectedUser.title"
-      [mobileHeading]="i18n.connectedUser.mobileTitle">
+    <page-content mode="filters" [heading]="i18n.connectedUser.title" [mobileHeading]="i18n.connectedUser.mobileTitle">
       <div [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row">
           <div *ngIf="data.channels?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field formControlName="channels"
-              [label]="i18n.connectedUser.channel">
-              <field-option *ngFor="let channel of data.channels"
-                [value]="channel.id" [internalName]="channel.internalName"
-                [id]="channel.id" [text]="channel.name">
+            <multi-selection-field formControlName="channels" [label]="i18n.connectedUser.channel">
+              <field-option
+                *ngFor="let channel of data.channels"
+                [value]="channel.id"
+                [internalName]="channel.internalName"
+                [id]="channel.id"
+                [text]="channel.name">
               </field-option>
             </multi-selection-field>
           </div>
           <div *ngIf="data.roles?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field formControlName="roles"
-              [label]="i18n.connectedUser.showConnected">
-              <field-option *ngFor="let role of data.roles" [value]="role"
-                [text]="showConnectedLabel(role)">
+            <multi-selection-field formControlName="roles" [label]="i18n.connectedUser.showConnected">
+              <field-option *ngFor="let role of data.roles" [value]="role" [text]="showConnectedLabel(role)">
               </field-option>
             </multi-selection-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field formControlName="user" [label]="i18n.general.user">
-            </user-field>
+            <user-field formControlName="user" [label]="i18n.general.user"> </user-field>
           </div>
         </div>
       </div>
     </page-content>
 
-    <results-layout resultType="list" [results]="results$ | async"
-      (update)="update($event)" [onClick]="onClick" [rendering$]="rendering$">
-
-      <mobile-result *mobileResult="let row" [avatarImage]="row.user?.image"
-        [avatarIcon]="SvgIcon.Person">
+    <results-layout
+      resultType="list"
+      [results]="results$ | async"
+      (update)="update($event)"
+      [onClick]="onClick"
+      [rendering$]="rendering$">
+      <mobile-result *mobileResult="let row" [avatarImage]="row.user?.image" [avatarIcon]="SvgIcon.Person">
         <div class="d-flex">
           <div>
             <div class="cell-main">
@@ -47,7 +47,9 @@
             </div>
           </div>
           <div class="ml-auto">
-            <button *ngIf="canDisconnect(row)" type="button"
+            <button
+              *ngIf="canDisconnect(row)"
+              type="button"
               class="btn btn-icon"
               (click)="disconnect(row); $event.stopPropagation(); $event.preventDefault()">
               <icon [icon]="SvgIcon.Logout2"></icon>
@@ -68,19 +70,22 @@
         <tbody>
           <ng-container *ngFor="let row of (results$ | async)?.results">
             <tr>
-              <td class="avatar" [ngClass]="{
-              'pb-0': layout.xxs$ | async,
-              'border-0': layout.xxs$ | async
-            }">
-                <avatar [image]="row.user?.image"
-                  [tooltip]="row.user?.display"></avatar>
+              <td
+                class="avatar"
+                [ngClass]="{
+                  'pb-0': layout.xxs$ | async,
+                  'border-0': layout.xxs$ | async
+                }">
+                <avatar [image]="row.user?.image" [tooltip]="row.user?.display"></avatar>
               </td>
               <td>{{ row.user.display }}</td>
               <td>{{ row.channel.name }}</td>
               <td>{{ row.creationDate | dateTime }}</td>
               <td>{{ row.remoteAddress }}</td>
               <td class="actions">
-                <button *ngIf="canDisconnect(row)" type="button"
+                <button
+                  *ngIf="canDisconnect(row)"
+                  type="button"
                   [tooltip]="i18n.connectedUser.disconnect"
                   class="btn btn-icon"
                   (click)="disconnect(row); $event.stopPropagation()">

@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { VoucherInitialDataForTransaction } from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
@@ -15,10 +25,9 @@ import { first } from 'rxjs/operators';
 @Component({
   selector: 'voucher-transaction-step-token',
   templateUrl: './voucher-transaction-step-token.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VoucherTransactionStepTokenComponent extends BaseComponent implements OnInit {
-
   @Input() token: FormControl;
   @Input() data: VoucherInitialDataForTransaction;
   @Output() scan = new EventEmitter();
@@ -27,11 +36,7 @@ export class VoucherTransactionStepTokenComponent extends BaseComponent implemen
 
   @ViewChild('inputField') inputField: ElementRef<InputFieldComponent>;
 
-  constructor(
-    injector: Injector,
-    private authHelper: AuthHelperService,
-    private modal: BsModalService
-  ) {
+  constructor(injector: Injector, private authHelper: AuthHelperService, private modal: BsModalService) {
     super(injector);
   }
 
@@ -42,7 +47,7 @@ export class VoucherTransactionStepTokenComponent extends BaseComponent implemen
 
   showScanQrCode() {
     const ref = this.modal.show(ScanQrCodeComponent, {
-      class: 'modal-form',
+      class: 'modal-form'
     });
     const component = ref.content as ScanQrCodeComponent;
     component.select.pipe(first()).subscribe(value => {

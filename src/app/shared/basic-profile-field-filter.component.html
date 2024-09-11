@@ -1,13 +1,29 @@
-<input-field #input *ngIf="!isImage()" [id]="id" [label]="label" [name]="name"
-  [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-  [placeholder]="field.example || ''" [mask]="field.mask"
-  [required]="required" [formControl]="formControl" [focused]="focused">
+<input-field
+  #input
+  *ngIf="!isImage()"
+  [id]="id"
+  [label]="label"
+  [name]="name"
+  [labelPosition]="labelPosition"
+  [fieldSize]="fieldSize"
+  [placeholder]="field.example || ''"
+  [mask]="field.mask"
+  [required]="required"
+  [formControl]="formControl"
+  [focused]="focused">
 </input-field>
 
 <!-- image -->
-<single-selection-field #image *ngIf="isImage()" [id]="id" [label]="label"
-  [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-  [required]="required" [formControl]="formControl"
+<single-selection-field
+  #image
+  *ngIf="isImage()"
+  [id]="id"
+  [label]="label"
+  [name]="name"
+  [labelPosition]="labelPosition"
+  [fieldSize]="fieldSize"
+  [required]="required"
+  [formControl]="formControl"
   [emptyOption]="i18n.general.notApplied">
   <field-option [value]="true" [text]="i18n.general.yes"></field-option>
   <field-option [value]="false" [text]="i18n.general.no"></field-option>

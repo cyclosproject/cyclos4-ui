@@ -18,8 +18,7 @@ export abstract class VoucherBaseComponent implements OnInit {
   protected changeDetector: ChangeDetectorRef;
   protected stateManager: StateManager;
 
-  constructor(
-    injector: Injector) {
+  constructor(injector: Injector) {
     this.i18n = injector.get(I18nInjectionToken);
     this.state = injector.get(VoucherState);
     this.layout = injector.get(LayoutService);
@@ -38,6 +37,5 @@ export abstract class VoucherBaseComponent implements OnInit {
     this.state.title = title;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

@@ -12,13 +12,12 @@ import { BasePageComponent } from 'app/ui/shared/base-page.component';
   providedIn: 'root'
 })
 export class UiErrorHandlerService {
-
   constructor(
     private errorHandler: ErrorHandlerService,
     private layout: UiLayoutService,
     private notification: NotificationService,
-    private login: LoginService) {
-  }
+    private login: LoginService
+  ) {}
 
   initialize(): void {
     this.errorHandler.validationErrorHandler = e => this.handleValidationError(e);
@@ -33,19 +32,24 @@ export class UiErrorHandlerService {
 
     // Show in a notification the general errors
     if (!empty(generalErrors)) {
-      const sub = this.notification.error(this.errorHandler.validationErrorMessage(generalErrors)).onClosed.subscribe(() => {
-        focusFirstInvalid();
-        sub.unsubscribe();
-      });
+      const sub = this.notification
+        .error(this.errorHandler.validationErrorMessage(generalErrors))
+        .onClosed.subscribe(() => {
+          focusFirstInvalid();
+          sub.unsubscribe();
+        });
     } else {
       focusFirstInvalid();
     }
   }
 
-
   private collectInputErrors(
-    page: BasePageComponent<any>, generalErrors: string[],
-    error: InputError, nestedProperty?: string, nestedIndex?: number) {
+    page: BasePageComponent<any>,
+    generalErrors: string[],
+    error: InputError,
+    nestedProperty?: string,
+    nestedIndex?: number
+  ) {
     if (error == null || error.code == null) {
       return;
     }
@@ -58,15 +62,13 @@ export class UiErrorHandlerService {
       // Property errors
       for (const key of error.properties || []) {
         const errors = error.propertyErrors[key];
-        this.applyInputErrors(generalErrors, errors, page,
-          { property: key, nestedProperty, nestedIndex });
+        this.applyInputErrors(generalErrors, errors, page, { property: key, nestedProperty, nestedIndex });
       }
 
       // Custom field errors
       for (const key of error.customFields || []) {
         const errors = error.customFieldErrors[key];
-        this.applyInputErrors(generalErrors, errors, page,
-          { customField: key, nestedProperty, nestedIndex });
+        this.applyInputErrors(generalErrors, errors, page, { customField: key, nestedProperty, nestedIndex });
       }
     } else if (error.code === InputErrorCode.AGGREGATED) {
       // Aggregated errors
@@ -88,20 +90,24 @@ export class UiErrorHandlerService {
     }
   }
 
-  private applyInputErrors(generalErrors: string[], errors: string[], page: BasePageComponent<any>, locator: FormControlLocator) {
+  private applyInputErrors(
+    generalErrors: string[],
+    errors: string[],
+    page: BasePageComponent<any>,
+    locator: FormControlLocator
+  ) {
     if (!empty(errors)) {
       const control = page ? page.locateControl(locator) : null;
       if (control) {
         // A formControl is found - set its error
         control.setErrors({
-          message: errors[0],
+          message: errors[0]
         });
       } else {
         // No form control -> show as general errors
         generalErrors.push.apply(generalErrors, errors);
       }
     }
-
   }
 
   public getAllErrors(error: InputError): string[] {
@@ -121,5 +127,4 @@ export class UiErrorHandlerService {
       return [this.errorHandler.inputErrorMessage(error)];
     }
   }
-
 }

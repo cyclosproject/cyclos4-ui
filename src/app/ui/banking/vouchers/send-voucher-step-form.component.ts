@@ -7,17 +7,14 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'send-voucher-step-form',
   templateUrl: 'send-voucher-step-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SendVoucherStepFormComponent extends BaseComponent {
-
   @Input() data: VoucherDataForBuy;
   @Input() form: FormGroup;
   fixedAmount: string;
 
-  constructor(
-    injector: Injector,
-    public authHelper: AuthHelperService) {
+  constructor(injector: Injector, public authHelper: AuthHelperService) {
     super(injector);
   }
 

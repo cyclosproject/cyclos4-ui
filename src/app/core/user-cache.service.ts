@@ -2,27 +2,26 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from 'app/api/models';
 import { UsersService } from 'app/api/services/users.service';
+import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { ErrorStatus } from 'app/core/error-status';
 import { Observable, of } from 'rxjs';
-import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 
 /**
  * Contains a cache for `User` models by id / principal
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class UserCacheService {
-
   private cache = new Map<string, User>();
   private invalidKeys = new Set<string>();
 
   constructor(
     private usersService: UsersService,
     private errorHandler: ErrorHandlerService,
-    dataForFrontendHolder: DataForFrontendHolder) {
-
+    dataForFrontendHolder: DataForFrontendHolder
+  ) {
     dataForFrontendHolder.subscribe(dataForFrontend => {
       const auth = ((dataForFrontend || {}).dataForUi || {}).auth;
       const user = (auth || {}).user;
@@ -61,26 +60,30 @@ export class UserCacheService {
     } else {
       return new Observable(observer => {
         this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
-          this.usersService.locateUser({
-            user: key, fields: [
-              'id', 'display', 'image'
-            ],
-          }).subscribe(user => {
-            this.cache.set(key, user);
-            if (user.id !== key) {
-              this.cache.set(user.id, user);
-            }
-            observer.next(user);
-            observer.complete();
-          }, (err: HttpErrorResponse) => {
-            if (err.status === ErrorStatus.NOT_FOUND) {
-              this.invalidKeys.add(key);
-              observer.next(null);
-              observer.complete();
-            } else {
-              defaultHandling(err);
-            }
-          });
+          this.usersService
+            .locateUser({
+              user: key,
+              fields: ['id', 'display', 'image']
+            })
+            .subscribe(
+              user => {
+                this.cache.set(key, user);
+                if (user.id !== key) {
+                  this.cache.set(user.id, user);
+                }
+                observer.next(user);
+                observer.complete();
+              },
+              (err: HttpErrorResponse) => {
+                if (err.status === ErrorStatus.NOT_FOUND) {
+                  this.invalidKeys.add(key);
+                  observer.next(null);
+                  observer.complete();
+                } else {
+                  defaultHandling(err);
+                }
+              }
+            );
         });
       });
     }

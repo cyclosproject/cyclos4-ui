@@ -10,7 +10,7 @@ import { LoginService } from 'app/ui/core/login.service';
 @Component({
   selector: 'registration-step-group',
   templateUrl: 'registration-step-group.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegistrationStepGroupComponent extends BaseComponent implements OnInit {
   @Input() groupSets: Group[];
@@ -18,9 +18,7 @@ export class RegistrationStepGroupComponent extends BaseComponent implements OnI
   @Input() control: FormControl;
   singleLine: boolean;
 
-  constructor(
-    injector: Injector,
-    public login: LoginService) {
+  constructor(injector: Injector, public login: LoginService) {
     super(injector);
   }
 

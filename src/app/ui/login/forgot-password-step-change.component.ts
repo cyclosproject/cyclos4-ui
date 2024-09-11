@@ -9,16 +9,13 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'forgot-password-step-change',
   templateUrl: 'forgot-password-step-change.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ForgotPasswordStepChangeComponent
-  extends BaseComponent {
-
+export class ForgotPasswordStepChangeComponent extends BaseComponent {
   @Input() data: DataForChangeForgottenPassword;
   @Input() form: FormGroup;
 
   constructor(injector: Injector) {
     super(injector);
   }
-
 }

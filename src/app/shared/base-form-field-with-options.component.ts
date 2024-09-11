@@ -18,14 +18,15 @@ export const FIELD_OPTIONS_SORTER = (a: FieldOption, b: FieldOption) => {
 /**
  * Injection token used to provide the parent component to options.
  */
-export const FORM_FIELD_WITH_OPTIONS =
-  new InjectionToken<BaseFormFieldWithOptionsComponent<any>>('FORM_FIELD_WITH_OPTIONS');
+export const FORM_FIELD_WITH_OPTIONS = new InjectionToken<BaseFormFieldWithOptionsComponent<any>>(
+  'FORM_FIELD_WITH_OPTIONS'
+);
 
 /**
  * Represents a category with options that can be added / removed
  */
 export class CategoryWithOptions {
-  constructor(public name: string) { }
+  constructor(public name: string) {}
   options = new BehaviorSubject<FieldOption[]>([]);
   private optionsByValue = new Map<string, FieldOption>();
 
@@ -62,12 +63,9 @@ export class CategoryWithOptions {
  */
 @Directive()
 export abstract class BaseFormFieldWithOptionsComponent<T> extends BaseFormFieldComponent<T> {
-
   categories = new BehaviorSubject<CategoryWithOptions[]>([]);
 
-  constructor(
-    injector: Injector,
-    protected controlContainer: ControlContainer) {
+  constructor(injector: Injector, protected controlContainer: ControlContainer) {
     super(injector, controlContainer);
   }
 
@@ -112,8 +110,10 @@ export abstract class BaseFormFieldWithOptionsComponent<T> extends BaseFormField
     const result: FieldOption[] = [];
     for (const category of this.categories.value) {
       for (const option of category.options.value) {
-        if ((parentOption && option.parent && fieldOptionMatches(parentOption, option.parent))
-          || !parentOption && !option.parent) {
+        if (
+          (parentOption && option.parent && fieldOptionMatches(parentOption, option.parent)) ||
+          (!parentOption && !option.parent)
+        ) {
           result.push(option);
         }
       }
@@ -198,9 +198,8 @@ export abstract class BaseFormFieldWithOptionsComponent<T> extends BaseFormField
   }
 
   protected getDisabledValue(): string {
-    return this.selectedOptions.map(option =>
-      option.category ? `${option.category} - ${option.text}` : option.text)
+    return this.selectedOptions
+      .map(option => (option.category ? `${option.category} - ${option.text}` : option.text))
       .join(', ');
   }
-
 }

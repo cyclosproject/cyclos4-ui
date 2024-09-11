@@ -1,22 +1,29 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AdAddressResultEnum, AdCategoryWithChildren, AdInitialSearchTypeEnum, AdQueryFilters,
-  AdResult, Currency, CustomFieldDetailed, MarketplacePermissions, RoleEnum,
+  AdAddressResultEnum,
+  AdCategoryWithChildren,
+  AdInitialSearchTypeEnum,
+  AdQueryFilters,
+  AdResult,
+  Currency,
+  CustomFieldDetailed,
+  MarketplacePermissions,
+  RoleEnum
 } from 'app/api/models';
 import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
 import { MarketplaceService } from 'app/api/services/marketplace.service';
-import { LoginService } from 'app/ui/core/login.service';
+import { SvgIcon } from 'app/core/svg-icon';
+import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
+import { PagedResults } from 'app/shared/paged-results';
+import { LoginService } from 'app/ui/core/login.service';
+import { MapsService } from 'app/ui/core/maps.service';
+import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { MaxDistance } from 'app/ui/shared/max-distance';
 import { Menu } from 'app/ui/shared/menu';
 import { ResultType } from 'app/ui/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
-import { MapsService } from 'app/ui/core/maps.service';
-import { PagedResults } from 'app/shared/paged-results';
-import { HeadingAction } from 'app/shared/action';
-import { SvgIcon } from 'app/core/svg-icon';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 /**
@@ -25,12 +32,12 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 @Component({
   selector: 'search-ads',
   templateUrl: 'search-ads.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchAdsComponent
   extends BaseSearchPageComponent<AdDataForSearch, AdQueryFilters, AdResult>
-  implements OnInit {
-
+  implements OnInit
+{
   brokered: boolean;
   categoryTrail$ = new BehaviorSubject<AdCategoryWithChildren[]>([]);
   currency$ = new BehaviorSubject<Currency>(null);
@@ -52,8 +59,23 @@ export class SearchAdsComponent
   }
 
   protected getFormControlNames() {
-    return ['keywords', 'statuses', 'groups', 'category', 'customValues', 'distanceFilter', 'orderBy', 'kind', 'hasImages',
-      'minAmount', 'maxAmount', 'currency', 'beginDate', 'endDate', 'favoriteFor'];
+    return [
+      'keywords',
+      'statuses',
+      'groups',
+      'category',
+      'customValues',
+      'distanceFilter',
+      'orderBy',
+      'kind',
+      'hasImages',
+      'minAmount',
+      'maxAmount',
+      'currency',
+      'beginDate',
+      'endDate',
+      'favoriteFor'
+    ];
   }
 
   getInitialFormValue(data: AdDataForSearch) {
@@ -73,14 +95,20 @@ export class SearchAdsComponent
       types.push(ResultType.MAP);
     }
     this.allowedResultTypes = types;
-    this.stateManager.cache('data',
-      this.marketplaceService.getAdDataForSearch({ brokered: this.brokered })).subscribe(data => this.data = data);
+    this.stateManager
+      .cache('data', this.marketplaceService.getAdDataForSearch({ brokered: this.brokered }))
+      .subscribe(data => (this.data = data));
   }
 
   prepareForm(data: AdDataForSearch) {
-    this.form.setControl('customValues', this.fieldHelper.customFieldsForSearchFormGroup(data.customFields, data.query.customFields));
-    this.form.setControl('profileFields',
-      this.fieldHelper.profileFieldsForSearchFormGroup(data.basicProfileFields, data.customProfileFields));
+    this.form.setControl(
+      'customValues',
+      this.fieldHelper.customFieldsForSearchFormGroup(data.customFields, data.query.customFields)
+    );
+    this.form.setControl(
+      'profileFields',
+      this.fieldHelper.profileFieldsForSearchFormGroup(data.basicProfileFields, data.customProfileFields)
+    );
   }
 
   onDataInitialized(data: AdDataForSearch) {
@@ -92,8 +120,16 @@ export class SearchAdsComponent
 
     this.headingActions = [this.moreFiltersAction];
 
-    this.adsAction = new HeadingAction(SvgIcon.Handbag, this.i18n.ad.listAds, () => this.resultType = this.getResultType(data.resultType));
-    this.categoriesAction = new HeadingAction(SvgIcon.Book, this.i18n.ad.showCategories, () => this.resultType = ResultType.CATEGORIES);
+    this.adsAction = new HeadingAction(
+      SvgIcon.Handbag,
+      this.i18n.ad.listAds,
+      () => (this.resultType = this.getResultType(data.resultType))
+    );
+    this.categoriesAction = new HeadingAction(
+      SvgIcon.Book,
+      this.i18n.ad.showCategories,
+      () => (this.resultType = ResultType.CATEGORIES)
+    );
 
     this.addSub(this.form.get('currency').valueChanges.subscribe(id => this.updateCurrency(id, data)));
     // Preselect the currency if there is a single one
@@ -114,9 +150,10 @@ export class SearchAdsComponent
     this.categoryTrail$.next(this.stateManager.get('categoryTrail'));
     super.onDataInitialized(data);
 
-    this.addSub(this.form.valueChanges
-      .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
-      .subscribe(() => this.resultType = this.getResultType(data.resultType))
+    this.addSub(
+      this.form.valueChanges
+        .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
+        .subscribe(() => (this.resultType = this.getResultType(data.resultType)))
     );
   }
 
@@ -176,7 +213,7 @@ export class SearchAdsComponent
 
   get root(): AdCategoryWithChildren {
     const root: AdCategoryWithChildren = {
-      name: this.i18n.ad.rootCategory,
+      name: this.i18n.ad.rootCategory
     };
     return root;
   }
@@ -264,5 +301,4 @@ export class SearchAdsComponent
   set currency(currency: Currency) {
     this.currency$.next(currency);
   }
-
 }

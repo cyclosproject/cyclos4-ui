@@ -5,12 +5,10 @@ import { Account } from 'app/api/models';
  * Pipe used to format an account, displaying the number (if any) and type
  */
 @Pipe({
-  name: 'account',
+  name: 'account'
 })
 export class AccountPipe implements PipeTransform {
-
-  constructor() {
-  }
+  constructor() {}
 
   public transform(account: Account): string {
     if (account.number) {

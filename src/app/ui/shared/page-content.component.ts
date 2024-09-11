@@ -1,6 +1,13 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, HostBinding, Inject,
-  Input, OnChanges, OnInit, SimpleChanges
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostBinding,
+  Inject,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges
 } from '@angular/core';
 import { LayoutService } from 'app/core/layout.service';
 import { SvgIcon } from 'app/core/svg-icon';
@@ -18,10 +25,9 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'page-content',
   templateUrl: 'page-content.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PageContentComponent implements OnInit, OnChanges {
-
   SvgIcon = SvgIcon;
 
   @Input() heading: string;
@@ -61,8 +67,8 @@ export class PageContentComponent implements OnInit, OnChanges {
     public uiLayout: UiLayoutService,
     public breadcrumb: BreadcrumbService,
     @Inject(I18nInjectionToken) public i18n: I18n,
-    public element: ElementRef,
-  ) { }
+    public element: ElementRef
+  ) {}
 
   get groupActions(): boolean {
     const singleAction = (this.headingActions || []).length === 1 ? this.headingActions[0] : null;
@@ -78,7 +84,7 @@ export class PageContentComponent implements OnInit, OnChanges {
       this.maybeUpdateTitle();
     }
     if (changes.headingActions) {
-      this.uiLayout.headingActions = (this.headingActions || []);
+      this.uiLayout.headingActions = this.headingActions || [];
     }
   }
 
@@ -92,5 +98,4 @@ export class PageContentComponent implements OnInit, OnChanges {
       this.uiLayout.title = heading;
     }
   }
-
 }

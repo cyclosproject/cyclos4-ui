@@ -8,10 +8,9 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'buy-vouchers-step-form',
   templateUrl: 'buy-vouchers-step-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BuyVouchersStepFormComponent extends BaseComponent implements OnInit {
-
   @Input() data: VoucherDataForBuy;
   @Input() form: FormGroup;
 
@@ -19,9 +18,7 @@ export class BuyVouchersStepFormComponent extends BaseComponent implements OnIni
 
   fixedAmount: string;
 
-  constructor(
-    injector: Injector,
-    public authHelper: AuthHelperService) {
+  constructor(injector: Injector, public authHelper: AuthHelperService) {
     super(injector);
   }
 
@@ -38,8 +35,9 @@ export class BuyVouchersStepFormComponent extends BaseComponent implements OnIni
 
   private updateCountLabel(value: any) {
     const count = value?.count;
-    this.countLabel$.next(!count || count === 1 || count === '1'
-      ? this.i18n.transaction.amount : this.i18n.voucher.amountPerVoucher);
+    this.countLabel$.next(
+      !count || count === 1 || count === '1' ? this.i18n.transaction.amount : this.i18n.voucher.amountPerVoucher
+    );
   }
 
   get currency(): Currency {

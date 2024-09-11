@@ -1,34 +1,39 @@
 <div class="content" [formGroup]="form">
-  <label-value class="voucher-token" kind="fieldView"
-    [label]="i18n.voucher.token" [value]="state.token"></label-value>
+  <label-value class="voucher-token" kind="fieldView" [label]="i18n.voucher.token" [value]="state.token"></label-value>
 
-  <label-value kind="field" [label]="i18n.voucher.info.changePin.oldPin"
-    required>
-    <password-input disableAutocomplete placeholder=" "
-      [passwordInput]="state.pinInput" formControlName="oldPin" required
+  <label-value kind="field" [label]="i18n.voucher.info.changePin.oldPin" required>
+    <password-input
+      disableAutocomplete
+      placeholder=" "
+      [passwordInput]="state.pinInput"
+      formControlName="oldPin"
+      required
       focused>
     </password-input>
   </label-value>
 
-  <label-value kind="field" [label]="i18n.voucher.info.changePin.newPin"
-    required>
-    <password-input disableAutocomplete placeholder=" "
-      [passwordInput]="state.pinInput" formControlName="newPin" required>
+  <label-value kind="field" [label]="i18n.voucher.info.changePin.newPin" required>
+    <password-input
+      disableAutocomplete
+      placeholder=" "
+      [passwordInput]="state.pinInput"
+      formControlName="newPin"
+      required>
     </password-input>
   </label-value>
 
-  <label-value kind="field"
-    [label]="i18n.voucher.info.changePin.newPinConfirmation" required>
-    <password-input disableAutocomplete placeholder=" "
-      [passwordInput]="state.pinInput" formControlName="newPinConfirmation"
+  <label-value kind="field" [label]="i18n.voucher.info.changePin.newPinConfirmation" required>
+    <password-input
+      disableAutocomplete
+      placeholder=" "
+      [passwordInput]="state.pinInput"
+      formControlName="newPinConfirmation"
       required>
     </password-input>
   </label-value>
 </div>
 
 <div class="actions actions-primary">
-  <action-button (action)="confirm()" [label]="i18n.general.confirm">
-  </action-button>
-  <action-button (action)="cancel()" outline [label]="i18n.general.cancel">
-  </action-button>
+  <action-button (action)="confirm()" [label]="i18n.general.confirm"> </action-button>
+  <action-button (action)="cancel()" outline [label]="i18n.general.cancel"> </action-button>
 </div>

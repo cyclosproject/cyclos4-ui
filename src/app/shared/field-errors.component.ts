@@ -11,13 +11,12 @@ import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
  */
 @Component({
   selector: 'field-errors',
-  templateUrl: 'field-errors.component.html',
+  templateUrl: 'field-errors.component.html'
 })
 export class FieldErrorsComponent {
   @Input() control: FormControl;
 
-  constructor(@Inject(I18nInjectionToken) private i18n: I18n) {
-  }
+  constructor(@Inject(I18nInjectionToken) private i18n: I18n) {}
 
   get message(): string {
     const errors = this.control.errors;

@@ -5,8 +5,7 @@
     <input-field [formControl]="control"></input-field>
   </div>
   <div class="resend-code">
-    <a *ngIf="allowNewCode | async; else timerMessage" href="#"
-      (click)="sendNewCode($event)">
+    <a *ngIf="allowNewCode | async; else timerMessage" href="#" (click)="sendNewCode($event)">
       {{ i18n.wizard.verification.new.request }}
     </a>
     <ng-template #timerMessage>

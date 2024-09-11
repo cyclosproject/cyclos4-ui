@@ -1,6 +1,8 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [mode]="'empty'" [heading]="i18n.document.title.list"
+    <page-content
+      [mode]="'empty'"
+      [heading]="i18n.document.title.list"
       [mobileHeading]="i18n.document.mobileTitle.list"
       [headingActions]="headingActions$ | async">
     </page-content>
@@ -12,19 +14,24 @@
             <label-value [label]="i18n.general.name" labelPosition="above">
               {{ row.name }}
             </label-value>
-            <label-value [label]="i18n.general.description"
-              labelPosition="above">
+            <label-value [label]="i18n.general.description" labelPosition="above">
               {{ row.description }}
             </label-value>
           </div>
           <div class="ml-auto text-right d-flex flex-column">
-            <button *ngIf="isStatic(row.kind)" type="button"
-              [tooltip]="i18n.general.download" class="btn btn-icon"
+            <button
+              *ngIf="isStatic(row.kind)"
+              type="button"
+              [tooltip]="i18n.general.download"
+              class="btn btn-icon"
               (click)="download(row); $event.stopPropagation(); $event.preventDefault()">
               <icon [icon]="SvgIcon.Download"></icon>
             </button>
-            <button *ngIf="!isStatic(row.kind)" type="button"
-              [tooltip]="i18n.document.process" class="btn btn-icon"
+            <button
+              *ngIf="!isStatic(row.kind)"
+              type="button"
+              [tooltip]="i18n.document.process"
+              class="btn btn-icon"
               (click)="router.navigate(path(row)); $event.stopPropagation(); $event.preventDefault()">
               <icon [icon]="SvgIcon.FileEarmarkText"></icon>
             </button>
@@ -39,18 +46,25 @@
           <th class="actions"></th>
         </thead>
         <tbody>
-          <tr *ngFor="let row of data"
-            (click)="isStatic(row.kind) ? download(row) : router.navigate(path(row)); $event.stopPropagation() ">
+          <tr
+            *ngFor="let row of data"
+            (click)="isStatic(row.kind) ? download(row) : router.navigate(path(row)); $event.stopPropagation()">
             <td width="20%">{{ row.name }}</td>
             <td>{{ row.description }}</td>
             <td class="actions actions-multiple">
-              <button *ngIf="isStatic(row.kind)" type="button"
-                [tooltip]="i18n.general.download" class="btn btn-icon"
+              <button
+                *ngIf="isStatic(row.kind)"
+                type="button"
+                [tooltip]="i18n.general.download"
+                class="btn btn-icon"
                 (click)="download(row); $event.stopPropagation()">
                 <icon [icon]="SvgIcon.Download"></icon>
               </button>
-              <button *ngIf="!isStatic(row.kind)" type="button"
-                [tooltip]="i18n.document.process" class="btn btn-icon"
+              <button
+                *ngIf="!isStatic(row.kind)"
+                type="button"
+                [tooltip]="i18n.document.process"
+                class="btn btn-icon"
                 (click)="router.navigate(path(row)); $event.stopPropagation()">
                 <icon [icon]="SvgIcon.FileEarmarkText"></icon>
               </button>

@@ -27,7 +27,6 @@ export type UpdateTitleFrom = 'menu' | 'content';
  */
 @Directive()
 export abstract class BasePageComponent<D> extends BaseComponent implements OnInit, OnDestroy {
-
   confirmation: ConfirmationService;
   uiLayout: UiLayoutService;
   cache: CacheService;
@@ -99,8 +98,7 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
    * Callback invoked the first time the data is initialized
    * @param _data The data instance
    */
-  protected onDataInitialized(_data: D) {
-  }
+  protected onDataInitialized(_data: D) {}
 
   /**
    * Must be implemented to resolve the active menu item for the current page
@@ -143,12 +141,14 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
    * - ArrowLeft / ArrowRight to focus the previous / next field
    */
   emulateKeyboardScroll(): Subscription {
-    const sub1 = this.addShortcut([...ArrowsVertical, PageUp, PageDown, Home, End],
-      e => handleKeyboardScroll(this.layout, e));
+    const sub1 = this.addShortcut([...ArrowsVertical, PageUp, PageDown, Home, End], e =>
+      handleKeyboardScroll(this.layout, e)
+    );
 
     // And also switch between links using the horizontal arrows
     const sub2 = this.addShortcut(ArrowsHorizontal, e =>
-      handleKeyboardFocus(this.layout, this.element, e, { horizontalOffset: 1, verticalOffset: 0 }));
+      handleKeyboardFocus(this.layout, this.element, e, { horizontalOffset: 1, verticalOffset: 0 })
+    );
 
     return new Subscription(() => {
       sub1.unsubscribe();

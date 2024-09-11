@@ -1,38 +1,28 @@
-<div *ngIf="image && (layout.ltsm$ | async)"
-  class="image d-flex justify-content-center mt-2 mb-4">
-  <avatar-lightbox size="160" imageSize="200" [image]="image">
-  </avatar-lightbox>
+<div *ngIf="image && (layout.ltsm$ | async)" class="image d-flex justify-content-center mt-2 mb-4">
+  <avatar-lightbox size="160" imageSize="200" [image]="image"> </avatar-lightbox>
 </div>
 
 <div class="d-flex flex-row-reverse">
   <div *ngIf="image && (layout.gtxs$ | async)" class="image ml-4 mb-3">
-    <avatar-lightbox [size]="image ? 200 : 128" iconSize="128px"
-      [image]="image"></avatar-lightbox>
+    <avatar-lightbox [size]="image ? 200 : 128" iconSize="128px" [image]="image"></avatar-lightbox>
   </div>
   <div class="flex-grow-1 mb-ls">
-    <label-value [label]="i18n.user.group" *ngIf="group" [value]="group.name">
-    </label-value>
-    <label-value [label]="data.nameLabel || i18n.user.name"
-      *ngIf="!empty(name)" [value]="name">
-    </label-value>
-    <label-value [label]="i18n.user.username" *ngIf="!empty(username)"
-      [value]="username"></label-value>
-    <label-value [label]="i18n.user.email" *ngIf="!empty(email)"
-      [value]="email"></label-value>
-    <label-value *ngFor="let cf of customFields" [label]="cf.name"
-      valueFormat="component">
-      <format-field-value [fields]="customFields"
-        [fieldName]="cf.internalName" [object]="user" [images]="customImages"
+    <label-value [label]="i18n.user.group" *ngIf="group" [value]="group.name"> </label-value>
+    <label-value [label]="data.nameLabel || i18n.user.name" *ngIf="!empty(name)" [value]="name"> </label-value>
+    <label-value [label]="i18n.user.username" *ngIf="!empty(username)" [value]="username"></label-value>
+    <label-value [label]="i18n.user.email" *ngIf="!empty(email)" [value]="email"></label-value>
+    <label-value *ngFor="let cf of customFields" [label]="cf.name" valueFormat="component">
+      <format-field-value
+        [fields]="customFields"
+        [fieldName]="cf.internalName"
+        [object]="user"
+        [images]="customImages"
         [files]="customFiles"></format-field-value>
     </label-value>
-    <label-value [label]="i18n.phone.mobile" *ngIf="!empty(mobile)"
-      [value]="mobile"></label-value>
-    <label-value [label]="i18n.user.phoneAddLandLine" *ngIf="!empty(landLine)"
-      [value]="landLine"></label-value>
-    <label-value [label]="i18n.address.address" *ngIf="address"
-      valueFormat="component">
-      <address-details-with-custom-fields [address]="address">
-      </address-details-with-custom-fields>
+    <label-value [label]="i18n.phone.mobile" *ngIf="!empty(mobile)" [value]="mobile"></label-value>
+    <label-value [label]="i18n.user.phoneAddLandLine" *ngIf="!empty(landLine)" [value]="landLine"></label-value>
+    <label-value [label]="i18n.address.address" *ngIf="address" valueFormat="component">
+      <address-details-with-custom-fields [address]="address"> </address-details-with-custom-fields>
     </label-value>
   </div>
 </div>
@@ -42,26 +32,34 @@
     <h2>{{ pt.name }}</h2>
     <ng-container [formGroup]="passwordForm(i)">
       <div *ngIf="pt.description" class="mb-2">{{ pt.description }}</div>
-      <boolean-field *ngIf="login.user" formControlName="defined"
+      <boolean-field
+        *ngIf="login.user"
+        formControlName="defined"
         [label]="i18n.user.registration.passwordAssign"></boolean-field>
       <ng-container *ngIf="passwordForm(i).get('defined').value">
-        <input-field required formControlName="value" type="password"
-          autocomplete="new-password" [label]="pt.name"
+        <input-field
+          required
+          formControlName="value"
+          type="password"
+          autocomplete="new-password"
+          [label]="pt.name"
           [maxLength]="pt.maxLength">
         </input-field>
         <label-value *ngIf="layout.gtxs$ | async" label=" ">
-          <password-hints [passwordType]="pt"
-            [control]="passwordForm(i).controls.value">
-          </password-hints>
+          <password-hints [passwordType]="pt" [control]="passwordForm(i).controls.value"> </password-hints>
         </label-value>
-        <password-hints *ngIf="layout.ltsm$ | async" [passwordType]="pt"
-          [control]="passwordForm(i).controls.value">
+        <password-hints *ngIf="layout.ltsm$ | async" [passwordType]="pt" [control]="passwordForm(i).controls.value">
         </password-hints>
-        <input-field required formControlName="confirmationValue"
-          type="password" autocomplete="new-password"
+        <input-field
+          required
+          formControlName="confirmationValue"
+          type="password"
+          autocomplete="new-password"
           [label]="i18n.user.passwordConfirmation(pt.name)">
         </input-field>
-        <boolean-field *ngIf="pt.canForceChange" formControlName="forceChange"
+        <boolean-field
+          *ngIf="pt.canForceChange"
+          formControlName="forceChange"
           [label]="i18n.user.registration.passwordForceChange">
         </boolean-field>
       </ng-container>
@@ -75,17 +73,18 @@
       <div class="mb-2">
         {{ i18n.user.securityQuestionMessage }}
       </div>
-      <single-selection-field formControlName="securityQuestion"
+      <single-selection-field
+        formControlName="securityQuestion"
         [label]="i18n.securityQuestion.question"
         [required]="data.requireSecurityQuestion"
         [emptyOption]="i18n.user.securityQuestionEmpty">
-        <field-option *ngFor="let q of data.securityQuestions"
-          [value]="q.internalName" [text]="q.name">
-        </field-option>
+        <field-option *ngFor="let q of data.securityQuestions" [value]="q.internalName" [text]="q.name"> </field-option>
       </single-selection-field>
-      <input-field #securityAnswer
+      <input-field
+        #securityAnswer
         *ngIf="!empty(form.get('securityQuestion').valueChanges | async)"
-        formControlName="securityAnswer" required
+        formControlName="securityAnswer"
+        required
         [label]="i18n.securityQuestion.answer">
       </input-field>
     </ng-container>
@@ -97,16 +96,13 @@
 
       <div *ngIf="data.agreements?.length > 0">
         <div class="mb-3">{{ i18n.pendingAgreements.preface }}</div>
-        <accept-agreements [agreements]="data.agreements"
-          formControlName="acceptAgreements"></accept-agreements>
+        <accept-agreements [agreements]="data.agreements" formControlName="acceptAgreements"></accept-agreements>
       </div>
 
-      <div *ngIf="data.captchaInput"
-        [ngClass]="{'mt-3': data.agreements?.length > 0}">
+      <div *ngIf="data.captchaInput" [ngClass]="{ 'mt-3': data.agreements?.length > 0 }">
         <div class="mb-3">{{ i18n.user.captcha }}</div>
         <div class="mb-3">
-          <captcha [captchaInput]="data.captchaInput"
-            [form]="form.get('captcha')"></captcha>
+          <captcha [captchaInput]="data.captchaInput" [form]="form.get('captcha')"></captcha>
         </div>
       </div>
     </ng-container>

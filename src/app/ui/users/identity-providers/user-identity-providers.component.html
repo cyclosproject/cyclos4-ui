@@ -1,31 +1,34 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data then content"></ng-container>
+  <ng-container *ngIf="data; then content"></ng-container>
 </page-layout>
 
 <ng-template #content>
   <page-content [heading]="title" [mobileHeading]="mobileTitle">
     <ng-container *ngIf="data.user && !self">
       <user-info [user]="data.user"></user-info>
-      <hr>
+      <hr />
     </ng-container>
     <ng-container *ngIf="data.identityProviders.length > 0; else noResults">
-      <ng-container
-        *ngFor="let uip of data.identityProviders; let first = first;">
-        <hr *ngIf="!first" class="mt-4">
+      <ng-container *ngFor="let uip of data.identityProviders; let first = first">
+        <hr *ngIf="!first" class="mt-4" />
         <div class="row no-gutters">
           <div class="col-4 col-xs-3 col-md-2">
-            <avatar *ngIf="layout.gtxxs$ | async" class="ml-2 mr-5 management"
-              [size]="64" iconSize="64px" [image]="uip.identityProvider.image"
+            <avatar
+              *ngIf="layout.gtxxs$ | async"
+              class="ml-2 mr-5 management"
+              [size]="64"
+              iconSize="64px"
+              [image]="uip.identityProvider.image"
               [icon]="SvgIcon.PersonBadge">
             </avatar>
           </div>
           <div class="col-8 col-xs-9 col-md-7">
-            <h2 class="border-0 mb-3" [ngClass]="{'mt-0': first}">
-              {{ uip.identityProvider.name }}</h2>
+            <h2 class="border-0 mb-3" [ngClass]="{ 'mt-0': first }">
+              {{ uip.identityProvider.name }}
+            </h2>
             <div class="mt-2">
               <div *ngIf="uip.linkDate">
-                {{ i18n.identityProvider.connectedOn(uip.linkDate | dateTime)
-                }}
+                {{ i18n.identityProvider.connectedOn(uip.linkDate | dateTime) }}
               </div>
               <div *ngIf="uip.status !== 'linked'">
                 {{ i18n.identityProvider.disconnected }}
@@ -39,9 +42,11 @@
             </div>
           </div>
           <div class="col-12 col-md-3 mt-3 mt-md-0">
-            <action-button class="d-block ml-auto"
+            <action-button
+              class="d-block ml-auto"
               *ngFor="let action of actions(uip); let last = last"
-              [ngClass]="{'mb-3': !last}" (action)="action.onClick()"
+              [ngClass]="{ 'mb-3': !last }"
+              (action)="action.onClick()"
               [label]="action.label">
             </action-button>
           </div>

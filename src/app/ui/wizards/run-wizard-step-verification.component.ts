@@ -15,12 +15,9 @@ const TimeoutSeconds = 30;
 @Component({
   selector: 'run-wizard-step-verification',
   templateUrl: 'run-wizard-step-verification.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RunWizardStepVerificationComponent
-  extends BaseComponent
-  implements OnInit {
-
+export class RunWizardStepVerificationComponent extends BaseComponent implements OnInit {
   @Input() data: WizardExecutionData;
   @Input() control: FormControl;
 
@@ -33,10 +30,7 @@ export class RunWizardStepVerificationComponent
   allowNewCode = new BehaviorSubject(false);
   timerControl: any;
 
-  constructor(
-    injector: Injector,
-    private wizardsService: WizardsService,
-    public runWizard: RunWizardComponent) {
+  constructor(injector: Injector, private wizardsService: WizardsService, public runWizard: RunWizardComponent) {
     super(injector);
   }
 
@@ -73,12 +67,16 @@ export class RunWizardStepVerificationComponent
   sendNewCode(event: MouseEvent) {
     event.preventDefault();
 
-    this.addSub(this.wizardsService.sendWizardVerificationCode({
-      key: this.data.key,
-      body: { medium: this.sendMedium }
-    }).subscribe(() => {
-      this.codeResent();
-      this.notification.snackBar(this.i18n.general.sentCodeTo(this.to));
-    }));
+    this.addSub(
+      this.wizardsService
+        .sendWizardVerificationCode({
+          key: this.data.key,
+          body: { medium: this.sendMedium }
+        })
+        .subscribe(() => {
+          this.codeResent();
+          this.notification.snackBar(this.i18n.general.sentCodeTo(this.to));
+        })
+    );
   }
 }

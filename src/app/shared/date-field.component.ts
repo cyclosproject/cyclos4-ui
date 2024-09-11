@@ -1,18 +1,30 @@
 import {
   AfterViewChecked,
-  ChangeDetectionStrategy, Component, ElementRef, Host, Injector,
-  Input, OnInit, Optional, SkipSelf, ViewChild,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Host,
+  Injector,
+  Input,
+  OnInit,
+  Optional,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
 import {
-  AbstractControl, ControlContainer,
-  NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator,
+  AbstractControl,
+  ControlContainer,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator
 } from '@angular/forms';
 import { CustomFieldSizeEnum } from 'app/api/models';
 import { ISO_DATE } from 'app/core/format.service';
+import { LayoutService } from 'app/core/layout.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { DateConstraint, dateConstraintAsMoment } from 'app/shared/date-constraint';
 import { empty } from 'app/shared/helper';
-import { LayoutService } from 'app/core/layout.service';
 import moment, { Moment } from 'moment-mini-ts';
 
 /**
@@ -24,12 +36,10 @@ import moment, { Moment } from 'moment-mini-ts';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: DateFieldComponent, multi: true },
-    { provide: NG_VALIDATORS, useExisting: DateFieldComponent, multi: true },
-  ],
+    { provide: NG_VALIDATORS, useExisting: DateFieldComponent, multi: true }
+  ]
 })
-export class DateFieldComponent
-  extends BaseFormFieldComponent<string> implements Validator, OnInit, AfterViewChecked {
-
+export class DateFieldComponent extends BaseFormFieldComponent<string> implements Validator, OnInit, AfterViewChecked {
   @Input() minDate: DateConstraint = 'any';
   @Input() maxDate: DateConstraint = 'any';
 
@@ -43,7 +53,8 @@ export class DateFieldComponent
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public layout: LayoutService) {
+    public layout: LayoutService
+  ) {
     super(injector, controlContainer);
   }
 
@@ -140,18 +151,17 @@ export class DateFieldComponent
         var min = this.min ? new Date(this.min.format('YYYY-MM-DD')) : null;
         if (min && date < min) {
           errors.minDate = {
-            min: this.format.formatAsDate(this.min),
+            min: this.format.formatAsDate(this.min)
           };
         }
         var max = this.max ? new Date(this.max.format('YYYY-MM-DD')) : null;
         if (max && date > max) {
           errors.maxDate = {
-            max: this.format.formatAsDate(this.max),
+            max: this.format.formatAsDate(this.max)
           };
         }
       }
     }
     return Object.keys(errors).length === 0 ? null : errors;
   }
-
 }

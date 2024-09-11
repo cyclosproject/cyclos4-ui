@@ -12,9 +12,7 @@ export type Theme = 'light' | 'dark';
 export const Themes: Theme[] = ['light', 'dark'];
 const ThemeKey = 'theme';
 
-const ColorVariables = [
-  'primary', 'theme-color', 'body-color', 'border-color', 'text-muted',
-];
+const ColorVariables = ['primary', 'theme-color', 'body-color', 'border-color', 'text-muted'];
 
 /*
  * Attention! If modified, adjust the `$grid-breakpoints` variable in `_definitions.scss` as well.
@@ -46,7 +44,7 @@ const BREAKPOINTS = {
   'gt-xs': `(min-width: ${sm}px)`,
   'gt-sm': `(min-width: ${md}px)`,
   'gt-md': `(min-width: ${lg}px)`,
-  'gt-lg': `(min-width: ${xl}px)`,
+  'gt-lg': `(min-width: ${xl}px)`
 };
 
 /**
@@ -59,7 +57,7 @@ export const ALL_BREAKPOINTS = Object.keys(BREAKPOINTS) as Breakpoint[];
  * Shared definitions for the application layout
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class LayoutService {
   _colors = new Map<string, string>();
@@ -85,8 +83,8 @@ export class LayoutService {
   constructor(
     private observer: BreakpointObserver,
     private shortcut: ShortcutService,
-    dataForFrontendHolder: DataForFrontendHolder) {
-
+    dataForFrontendHolder: DataForFrontendHolder
+  ) {
     // Initialize the theme from the local storage
     const theme = (localStorage.getItem(ThemeKey) || 'light') as Theme;
     this.setTheme(theme, false);
@@ -101,7 +99,7 @@ export class LayoutService {
       const query = BREAKPOINTS[breakpoint];
       const breakpointObserver = observer.observe(query).pipe(
         map(res => res.matches),
-        distinctUntilChanged(),
+        distinctUntilChanged()
       );
       this.breakpointObservers.set(breakpoint, breakpointObserver);
       if (observer.isMatched(query)) {
@@ -111,9 +109,7 @@ export class LayoutService {
 
     // Initialize the active breakpoints behavior subject
     this._activeBreakpoints = new BehaviorSubject(initialBreakpoints);
-    this.breakpointChanges$ = this._activeBreakpoints.asObservable().pipe(
-      distinctUntilChanged(),
-    );
+    this.breakpointChanges$ = this._activeBreakpoints.asObservable().pipe(distinctUntilChanged());
     this._activeBreakpoints.subscribe(activeBreakpoints => this.updateBodyStyles(activeBreakpoints));
     this.updateBodyStyles(initialBreakpoints);
 
@@ -337,7 +333,6 @@ export class LayoutService {
     return modal.length === 0 ? null : modal[0];
   }
 
-
   /**
    * Shows the backdrop, which is an absolutely positioned DIV that occupies the full screen.
    * @param closeHandler Function to be called when the backdrop is clicked or when the escape key is pressed
@@ -363,7 +358,7 @@ export class LayoutService {
       document.body.classList.add('backdrop-visible');
     }
     // Show the backdrop
-    setTimeout(() => this.backdrop.style.opacity = '1', 1);
+    setTimeout(() => (this.backdrop.style.opacity = '1'), 1);
   }
 
   /**

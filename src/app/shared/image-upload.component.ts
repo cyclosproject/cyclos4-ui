@@ -1,7 +1,15 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef,
-  EventEmitter, Injector, Input, OnDestroy, Output, ViewChild
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Injector,
+  Input,
+  OnDestroy,
+  Output,
+  ViewChild
 } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { CustomField, Image, ImageKind, TempImageTargetEnum, UserImageKind } from 'app/api/models';
@@ -23,12 +31,7 @@ export class ImageToUpload {
   uploadDone = false;
   image: Image;
 
-  constructor(
-    public name: string,
-    public width: number,
-    public height: number,
-    public content: Blob) {
-  }
+  constructor(public name: string, public width: number, public height: number, public content: Blob) {}
 
   get totalSize(): number {
     return this.content.size;
@@ -49,10 +52,9 @@ export class ImageToUpload {
 @Component({
   selector: 'image-upload',
   templateUrl: 'image-upload.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageUploadComponent extends BaseComponent implements OnDestroy {
-
   uploading$ = new BehaviorSubject(false);
 
   @Input() containerClass = '';
@@ -125,12 +127,14 @@ export class ImageUploadComponent extends BaseComponent implements OnDestroy {
     const maxWidth = (dataForUi || {}).maxImageWidth || 2000;
     const maxHeight = (dataForUi || {}).maxImageHeight || 2000;
 
-    resizeImage(original, maxWidth, maxHeight).pipe(
-      first(),
-      switchMap((result: ResizeResult) => {
-        const toUpload = new ImageToUpload(original.name, result.width, result.height, result.content);
-        return this.doUpload(toUpload);
-      }))
+    resizeImage(original, maxWidth, maxHeight)
+      .pipe(
+        first(),
+        switchMap((result: ResizeResult) => {
+          const toUpload = new ImageToUpload(original.name, result.width, result.height, result.content);
+          return this.doUpload(toUpload);
+        })
+      )
       .subscribe(image => {
         this.uploadDone.emit([image]);
       });
@@ -216,7 +220,7 @@ export class ImageUploadComponent extends BaseComponent implements OnDestroy {
           }
           url = `${this.owner}/images`;
           params = {
-            kind: UserImageKind.CUSTOM,
+            kind: UserImageKind.CUSTOM
           };
           break;
         case ImageKind.SYSTEM_CUSTOM:
@@ -233,7 +237,7 @@ export class ImageUploadComponent extends BaseComponent implements OnDestroy {
             guestKey: this.authHelper.guestKey,
             user: this.user,
             customField: this.customField == null ? null : this.customField.id,
-            customFieldKind: this.customField == null ? null : this.customField.kind,
+            customFieldKind: this.customField == null ? null : this.customField.kind
           };
       }
 
@@ -242,38 +246,48 @@ export class ImageUploadComponent extends BaseComponent implements OnDestroy {
 
       url = this.nextRequestState.appendAuth(url);
       url = urlJoin(this.apiConfiguration.rootUrl, url);
-      file.subscription = this.http.post(url, data, {
-        observe: 'events',
-        reportProgress: true,
-        responseType: 'text',
-        params,
-      }).subscribe(event => {
-        if (event.type === HttpEventType.UploadProgress) {
-          file.progress = event.loaded;
-        } else if (event.type === HttpEventType.Response) {
-          // Once the upload is complete, we have to fetch the image model
-          file.subscription.unsubscribe();
-          file.uploadDone = true;
-          this.addSub(this.imagesService.viewImage({ id: event.body }).pipe(first()).subscribe(image => {
-            file.image = image;
-            this.storedFileCacheService.write(image);
-            observer.next(file.image);
+      file.subscription = this.http
+        .post(url, data, {
+          observe: 'events',
+          reportProgress: true,
+          responseType: 'text',
+          params
+        })
+        .subscribe(
+          event => {
+            if (event.type === HttpEventType.UploadProgress) {
+              file.progress = event.loaded;
+            } else if (event.type === HttpEventType.Response) {
+              // Once the upload is complete, we have to fetch the image model
+              file.subscription.unsubscribe();
+              file.uploadDone = true;
+              this.addSub(
+                this.imagesService
+                  .viewImage({ id: event.body })
+                  .pipe(first())
+                  .subscribe(image => {
+                    file.image = image;
+                    this.storedFileCacheService.write(image);
+                    observer.next(file.image);
+                    observer.complete();
+                    this.changeDetector.detectChanges();
+                  })
+              );
+            }
+          },
+          err => {
+            (this.files.value || []).forEach(f => {
+              if (f.subscription) {
+                f.subscription.unsubscribe();
+              }
+            });
+            this.files.next([]);
+            this.uploading$.next(false);
+            observer.error(err);
             observer.complete();
             this.changeDetector.detectChanges();
-          }));
-        }
-      }, err => {
-        (this.files.value || []).forEach(f => {
-          if (f.subscription) {
-            f.subscription.unsubscribe();
           }
-        });
-        this.files.next([]);
-        this.uploading$.next(false);
-        observer.error(err);
-        observer.complete();
-        this.changeDetector.detectChanges();
-      });
+        );
     });
   }
 }

@@ -10,13 +10,10 @@ import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 @Component({
   selector: 'view-user-status-history',
   templateUrl: 'view-user-status-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewUserStatusHistoryComponent extends BaseViewPageComponent<UserStatusData> implements OnInit {
-  constructor(
-    injector: Injector,
-    private userStatusService: UserStatusService,
-    public userHelper: UserHelperService) {
+  constructor(injector: Injector, private userStatusService: UserStatusService, public userHelper: UserHelperService) {
     super(injector);
   }
 
@@ -25,9 +22,11 @@ export class ViewUserStatusHistoryComponent extends BaseViewPageComponent<UserSt
   ngOnInit() {
     super.ngOnInit();
     this.param = this.route.snapshot.params.user;
-    this.addSub(this.userStatusService.getUserStatus({ user: this.param, fields: ['user', 'history'] }).subscribe(status => {
-      this.data = status;
-    }));
+    this.addSub(
+      this.userStatusService.getUserStatus({ user: this.param, fields: ['user', 'history'] }).subscribe(status => {
+        this.data = status;
+      })
+    );
   }
 
   get operator() {

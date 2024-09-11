@@ -1,6 +1,14 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { GeneralImportedFileContextEnum, ImportedFileDataForSearch, ImportedFileKind, ImportedFileQueryFilters, ImportedFileResult, ImportedFileStatusEnum, UserImportedFileContextEnum } from 'app/api/models';
+import {
+  GeneralImportedFileContextEnum,
+  ImportedFileDataForSearch,
+  ImportedFileKind,
+  ImportedFileQueryFilters,
+  ImportedFileResult,
+  ImportedFileStatusEnum,
+  UserImportedFileContextEnum
+} from 'app/api/models';
 import { ImportsService } from 'app/api/services/imports.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { Action, HeadingAction } from 'app/shared/action';
@@ -17,12 +25,12 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'search-imported-files',
   templateUrl: 'search-imported-files.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchImportedFilesComponent
   extends BaseSearchPageComponent<ImportedFileDataForSearch, ImportedFileQueryFilters, ImportedFileResult>
-  implements OnInit {
-
+  implements OnInit
+{
   statuses = Object.values(ImportedFileStatusEnum);
 
   owner: string;
@@ -34,18 +42,12 @@ export class SearchImportedFilesComponent
   title: string;
   mobileTitle: string;
 
-  constructor(
-    injector: Injector,
-    private importsService: ImportsService,
-    public importsHelper: ImportsHelperService
-  ) {
+  constructor(injector: Injector, private importsService: ImportsService, public importsHelper: ImportsHelperService) {
     super(injector);
   }
 
   getFormControlNames() {
-    return [
-      'kinds', 'statuses', 'beginCreationPeriod', 'endCreationPeriod'
-    ];
+    return ['kinds', 'statuses', 'beginCreationPeriod', 'endCreationPeriod'];
   }
 
   ngOnInit() {
@@ -68,7 +70,7 @@ export class SearchImportedFilesComponent
         context: this.userContext
       });
     }
-    this.stateManager.cache('data', request).subscribe(data => this.data = data);
+    this.stateManager.cache('data', request).subscribe(data => (this.data = data));
   }
 
   protected onDataInitialized(data: ImportedFileDataForSearch): void {
@@ -101,10 +103,16 @@ export class SearchImportedFilesComponent
           return () => null;
         }
       };
-      const action = new HeadingAction(SvgIcon.ArrowUpCircle, this.i18n.imports.importNew, actionFn(data.manageKinds.length === 1 ? data.manageKinds[0] : null), true);
+      const action = new HeadingAction(
+        SvgIcon.ArrowUpCircle,
+        this.i18n.imports.importNew,
+        actionFn(data.manageKinds.length === 1 ? data.manageKinds[0] : null),
+        true
+      );
       if (data.manageKinds.length > 1) {
-        action.subActions = data.manageKinds.map(kind => new Action(
-          this.importsHelper.kindLabel(kind), actionFn(kind)));
+        action.subActions = data.manageKinds.map(
+          kind => new Action(this.importsHelper.kindLabel(kind), actionFn(kind))
+        );
       }
       this.headingActions = [action];
     }
@@ -146,14 +154,16 @@ export class SearchImportedFilesComponent
   remove(file: ImportedFileResult) {
     this.confirmation.confirm({
       message: this.i18n.general.removeConfirm(file.fileName),
-      callback: () => this.doRemove(file),
+      callback: () => this.doRemove(file)
     });
   }
 
   private doRemove(file: ImportedFileResult) {
-    this.addSub(this.importsService.deleteImportedFile({ id: file.id }).subscribe(() => {
-      this.notification.snackBar(this.i18n.general.removeItemDone);
-      this.update();
-    }));
+    this.addSub(
+      this.importsService.deleteImportedFile({ id: file.id }).subscribe(() => {
+        this.notification.snackBar(this.i18n.general.removeItemDone);
+        this.update();
+      })
+    );
   }
 }

@@ -19,10 +19,9 @@ const MAX_CHILDREN = 5;
 @Component({
   selector: 'ads-results',
   templateUrl: 'ads-results.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdsResultsComponent extends BaseComponent {
-
   @HostBinding('class') clazz = 'flex-grow-1 d-flex';
 
   @Input() defaultResultType: ResultType;
@@ -43,10 +42,7 @@ export class AdsResultsComponent extends BaseComponent {
   @Output() update = new EventEmitter<PageData>();
   @Output() categorySelected = new EventEmitter<AdCategoryWithChildren>();
 
-  constructor(
-    injector: Injector,
-    private modal: BsModalService,
-  ) {
+  constructor(injector: Injector, private modal: BsModalService) {
     super(injector);
   }
 
@@ -137,17 +133,18 @@ export class AdsResultsComponent extends BaseComponent {
         category: cat,
         image: cat.svgIcon ? null : cat.image,
         icon: cat.svgIcon,
-        color: cat.svgIconColor,
-      },
+        color: cat.svgIconColor
+      }
     });
     const comp = ref.content as ShowSubCategoriesComponent;
-    this.addSub(comp.select.subscribe(sub => {
-      this.selectCategory(sub);
-    }));
+    this.addSub(
+      comp.select.subscribe(sub => {
+        this.selectCategory(sub);
+      })
+    );
   }
 
   get toLink() {
     return (ad: AdResult) => this.path(ad);
   }
-
 }

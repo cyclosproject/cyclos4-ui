@@ -6,10 +6,9 @@ import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
  * Contains a cache for `StoredFile` models by id
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class StoredFileCacheService {
-
   private cache = new Map<string, StoredFile>();
 
   constructor(dataForFrontendHolder: DataForFrontendHolder) {

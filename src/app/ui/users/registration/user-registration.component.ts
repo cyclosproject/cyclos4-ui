@@ -1,9 +1,21 @@
 import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  AddressNew, AvailabilityEnum, Group, GroupForRegistration, GroupKind,
-  IdentityProvider, IdentityProviderCallbackStatusEnum, Image, PhoneNew, RoleEnum,
-  StoredFile, UserDataForNew, UserNew, UserRegistrationResult, Wizard
+  AddressNew,
+  AvailabilityEnum,
+  Group,
+  GroupForRegistration,
+  GroupKind,
+  IdentityProvider,
+  IdentityProviderCallbackStatusEnum,
+  Image,
+  PhoneNew,
+  RoleEnum,
+  StoredFile,
+  UserDataForNew,
+  UserNew,
+  UserRegistrationResult,
+  Wizard
 } from 'app/api/models';
 import { ImagesService } from 'app/api/services/images.service';
 import { UsersService } from 'app/api/services/users.service';
@@ -11,8 +23,15 @@ import { CaptchaHelperService } from 'app/core/captcha-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { ApiHelper } from 'app/shared/api-helper';
 import {
-  blank, copyProperties, empty, focusFirstField, focusFirstInvalid,
-  mergeValidity, scrollTop, setRootSpinnerVisible, validateBeforeSubmit
+  blank,
+  copyProperties,
+  empty,
+  focusFirstField,
+  focusFirstInvalid,
+  mergeValidity,
+  scrollTop,
+  setRootSpinnerVisible,
+  validateBeforeSubmit
 } from 'app/shared/helper';
 import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
@@ -32,12 +51,9 @@ export const WizardStorageKey = 'publicRegistrationExecution';
 @Component({
   selector: 'user-registration',
   templateUrl: 'user-registration.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserRegistrationComponent
-  extends BasePageComponent<UserDataForNew>
-  implements OnInit, OnDestroy {
-
+export class UserRegistrationComponent extends BasePageComponent<UserDataForNew> implements OnInit, OnDestroy {
   groupSets: Group[];
   groups: GroupForRegistration[];
   steps: RegistrationStep[] = ['group', 'idp', 'fields', 'confirm', 'done'];
@@ -79,7 +95,8 @@ export class UserRegistrationComponent
     private captchaHelper: CaptchaHelperService,
     private imagesService: ImagesService,
     private nextRequestState: NextRequestState,
-    private modal: BsModalService) {
+    private modal: BsModalService
+  ) {
     super(injector);
   }
 
@@ -110,14 +127,16 @@ export class UserRegistrationComponent
             ignoreBackdropClick: true
           });
           const component = ref.content as ConfirmResumeWizardComponent;
-          this.addSub(component.select.subscribe(answer => {
-            if (answer) {
-              this.router.navigate(['/wizards', 'run', previousKey]);
-            } else {
-              localStorage.removeItem(WizardStorageKey);
-              this.goToWizard(wizard);
-            }
-          }));
+          this.addSub(
+            component.select.subscribe(answer => {
+              if (answer) {
+                this.router.navigate(['/wizards', 'run', previousKey]);
+              } else {
+                localStorage.removeItem(WizardStorageKey);
+                this.goToWizard(wizard);
+              }
+            })
+          );
         } else {
           this.goToWizard(wizard);
         }
@@ -128,17 +147,23 @@ export class UserRegistrationComponent
       this.initializeGroups(dataForUi.publicRegistrationGroups);
     } else {
       // When admin / broker, fetch the possible registration groups from data, as they are more complete
-      this.addSub(this.usersService.getUserDataForSearch({
-        broker: role === RoleEnum.BROKER ? ApiHelper.SELF : null,
-        fields: ['groupsForRegistration'],
-      }).subscribe(data => {
-        this.groupSets = data.groupsForRegistration.filter(g => g.kind === GroupKind.GROUP_SET);
-        const hasRootGroups = data.groupsForRegistration.find(g => g.kind !== GroupKind.GROUP_SET && g.groupSet == null);
-        if (hasRootGroups) {
-          this.groupSets.unshift(null);
-        }
-        this.initializeGroups(data.groupsForRegistration.filter(g => g.kind !== GroupKind.GROUP_SET));
-      }));
+      this.addSub(
+        this.usersService
+          .getUserDataForSearch({
+            broker: role === RoleEnum.BROKER ? ApiHelper.SELF : null,
+            fields: ['groupsForRegistration']
+          })
+          .subscribe(data => {
+            this.groupSets = data.groupsForRegistration.filter(g => g.kind === GroupKind.GROUP_SET);
+            const hasRootGroups = data.groupsForRegistration.find(
+              g => g.kind !== GroupKind.GROUP_SET && g.groupSet == null
+            );
+            if (hasRootGroups) {
+              this.groupSets.unshift(null);
+            }
+            this.initializeGroups(data.groupsForRegistration.filter(g => g.kind !== GroupKind.GROUP_SET));
+          })
+      );
     }
   }
 
@@ -179,79 +204,92 @@ export class UserRegistrationComponent
   }
 
   showIdentityProviders() {
-    this.addSub(this.usersService.getUserDataForNew({
-      group: this.group.value,
-      inviteToken: localStorage.getItem('inviteToken') || Cookies.get('inviteToken'),
-      externalPaymentToken: this.route.snapshot.params.externalPaymentToken,
-      fields: ['-agreements.content']
-    }).subscribe(data => {
-      this.data = data;
-      if (empty(data.identityProviders)) {
-        this.showFields();
-      } else {
-        this.step = 'idp';
-      }
-    }));
+    this.addSub(
+      this.usersService
+        .getUserDataForNew({
+          group: this.group.value,
+          inviteToken: localStorage.getItem('inviteToken') || Cookies.get('inviteToken'),
+          externalPaymentToken: this.route.snapshot.params.externalPaymentToken,
+          fields: ['-agreements.content']
+        })
+        .subscribe(data => {
+          this.data = data;
+          if (empty(data.identityProviders)) {
+            this.showFields();
+          } else {
+            this.step = 'idp';
+          }
+        })
+    );
   }
 
   continueWithProvider(idp: IdentityProvider) {
     if (idp) {
-      this.authHelper.identityProviderPopup(idp, 'register', this.group.value, null, this.login.getUserAgentId()).pipe(first()).subscribe(callback => {
-        switch (callback.status) {
-          case IdentityProviderCallbackStatusEnum.REGISTRATION_DONE:
-            // Already registered and logged-in
-            this.nextRequestState.replaceSession(callback.sessionToken).pipe(first()).subscribe(() => {
-              setRootSpinnerVisible(true);
-              this.dataForFrontendHolder.initialize().pipe(first()).subscribe(data => {
-                setRootSpinnerVisible(false);
-                // Redirect to the home URL
-                if (!ApiHelper.isRestrictedAccess(data)) {
-                  this.router.navigateByUrl('');
+      this.authHelper
+        .identityProviderPopup(idp, 'register', this.group.value, null, this.login.getUserAgentId())
+        .pipe(first())
+        .subscribe(callback => {
+          switch (callback.status) {
+            case IdentityProviderCallbackStatusEnum.REGISTRATION_DONE:
+              // Already registered and logged-in
+              this.nextRequestState
+                .replaceSession(callback.sessionToken)
+                .pipe(first())
+                .subscribe(() => {
+                  setRootSpinnerVisible(true);
+                  this.dataForFrontendHolder
+                    .initialize()
+                    .pipe(first())
+                    .subscribe(data => {
+                      setRootSpinnerVisible(false);
+                      // Redirect to the home URL
+                      if (!ApiHelper.isRestrictedAccess(data)) {
+                        this.router.navigateByUrl('');
+                      }
+                    });
+                });
+              break;
+            case IdentityProviderCallbackStatusEnum.REGISTRATION_DATA:
+              // Data for the registration form
+              this.identityProviderRequestId = callback.requestId;
+              // No captcha is needed when using an identity provider
+              this.data.captchaInput = null;
+              // Fill in the user fields
+              const user = this.data.user;
+              if (callback.name) {
+                user.name = callback.name;
+              }
+              if (callback.username) {
+                user.username = callback.username;
+              }
+              if (callback.email) {
+                user.email = callback.email;
+              }
+              if (callback.mobilePhone) {
+                user.mobilePhones = [{ number: callback.mobilePhone }];
+              }
+              if (callback.landLinePhone) {
+                user.landLinePhones = [{ number: callback.landLinePhone, extension: callback.landLineExtension }];
+              }
+              if (callback.customValues) {
+                if (!user.customValues) {
+                  user.customValues = {};
                 }
-              });
-            });
-            break;
-          case IdentityProviderCallbackStatusEnum.REGISTRATION_DATA:
-            // Data for the registration form
-            this.identityProviderRequestId = callback.requestId;
-            // No captcha is needed when using an identity provider
-            this.data.captchaInput = null;
-            // Fill in the user fields
-            const user = this.data.user;
-            if (callback.name) {
-              user.name = callback.name;
-            }
-            if (callback.username) {
-              user.username = callback.username;
-            }
-            if (callback.email) {
-              user.email = callback.email;
-            }
-            if (callback.mobilePhone) {
-              user.mobilePhones = [{ number: callback.mobilePhone }];
-            }
-            if (callback.landLinePhone) {
-              user.landLinePhones = [{ number: callback.landLinePhone, extension: callback.landLineExtension }];
-            }
-            if (callback.customValues) {
-              if (!user.customValues) {
-                user.customValues = {};
+                for (const key of Object.keys(callback.customValues)) {
+                  user.customValues[key] = callback.customValues[key];
+                }
               }
-              for (const key of Object.keys(callback.customValues)) {
-                user.customValues[key] = callback.customValues[key];
+              if (callback.image) {
+                user.images = [callback.image.id];
+                this.image = callback.image;
               }
-            }
-            if (callback.image) {
-              user.images = [callback.image.id];
-              this.image = callback.image;
-            }
-            this.showFields();
-            break;
-          default:
-            this.notification.error(callback.errorMessage || this.i18n.error.general);
-            break;
-        }
-      });
+              this.showFields();
+              break;
+            default:
+              this.notification.error(callback.errorMessage || this.i18n.error.general);
+              break;
+          }
+        });
     } else {
       this.showFields();
     }
@@ -286,21 +324,25 @@ export class UserRegistrationComponent
 
     this.form = this.formBuilder.group({
       group: this.group.value,
-      hiddenFields: [user.hiddenFields || []],
+      hiddenFields: [user.hiddenFields || []]
     });
 
     const imageAvailability = data.imageConfiguration.availability;
     if (imageAvailability !== AvailabilityEnum.DISABLED) {
-      this.imageControl = new FormControl(null, imageAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null);
+      this.imageControl = new FormControl(
+        null,
+        imageAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null
+      );
     }
 
     // The profile fields and phones are handled by the helper
-    [this.mobileForm, this.landLineForm] = this.userHelper.setupRegistrationForm(
-      this.form, data, !this.login.user);
+    [this.mobileForm, this.landLineForm] = this.userHelper.setupRegistrationForm(this.form, data, !this.login.user);
 
     // Address
     let addressSubs: Subscription[];
-    [this.addressForm, this.defineAddress, addressSubs] = this.userHelper.registrationAddressForm(data.addressConfiguration);
+    [this.addressForm, this.defineAddress, addressSubs] = this.userHelper.registrationAddressForm(
+      data.addressConfiguration
+    );
     addressSubs.forEach(s => this.addSub(s));
 
     this.data = data;
@@ -312,7 +354,7 @@ export class UserRegistrationComponent
   showConfirm() {
     // Build a full form, so it can all be validated once
     const fullForm = new FormGroup({
-      user: this.form,
+      user: this.form
     });
     if (this.data.imageConfiguration.availability === AvailabilityEnum.REQUIRED) {
       fullForm.setControl('image', this.imageControl);
@@ -328,22 +370,23 @@ export class UserRegistrationComponent
     }
     this.asyncValidatorsEnabled = true;
     const nonValid = validateBeforeSubmit(fullForm, true) as FormControl[];
-    this.addSub(mergeValidity(nonValid).subscribe(isValid => {
-      this.asyncValidatorsEnabled = false;
-      if (isValid) {
-        this.doShowConfirm();
-      } else {
-        focusFirstInvalid();
-      }
-    }));
+    this.addSub(
+      mergeValidity(nonValid).subscribe(isValid => {
+        this.asyncValidatorsEnabled = false;
+        if (isValid) {
+          this.doShowConfirm();
+        } else {
+          focusFirstInvalid();
+        }
+      })
+    );
   }
 
   private doShowConfirm() {
     const data = this.data;
 
     // Setup the confirmation form
-    this.confirmForm = this.formBuilder.group({
-    });
+    this.confirmForm = this.formBuilder.group({});
 
     // Passwords
     const passwordControls = this.userHelper.passwordRegistrationForms(data);
@@ -352,7 +395,10 @@ export class UserRegistrationComponent
     // Security question
     if (!empty(data.securityQuestions)) {
       this.confirmForm.setControl('securityQuestion', this.formBuilder.control(''));
-      this.confirmForm.setControl('securityAnswer', this.formBuilder.control('', this.userHelper.securityAnswerValidation));
+      this.confirmForm.setControl(
+        'securityAnswer',
+        this.formBuilder.control('', this.userHelper.securityAnswerValidation)
+      );
     }
 
     // Agreements
@@ -372,29 +418,32 @@ export class UserRegistrationComponent
 
   register() {
     const nonValid = validateBeforeSubmit(this.confirmForm, true) as FormControl[];
-    this.addSub(mergeValidity(nonValid).subscribe(isValid => {
-      if (isValid) {
-        // Perform the registration
-        this.addSub(this.usersService.createUser({ body: this.userNew })
-          .subscribe(result => {
-            this.result = result;
-            this.image = null;
-            localStorage.removeItem('inviteToken');
-            Cookies.remove('inviteToken', { path: '/' });
-            this.step = 'done';
-          }));
-      } else {
-        focusFirstInvalid();
-      }
-    }));
+    this.addSub(
+      mergeValidity(nonValid).subscribe(isValid => {
+        if (isValid) {
+          // Perform the registration
+          this.addSub(
+            this.usersService.createUser({ body: this.userNew }).subscribe(result => {
+              this.result = result;
+              this.image = null;
+              localStorage.removeItem('inviteToken');
+              Cookies.remove('inviteToken', { path: '/' });
+              this.step = 'done';
+            })
+          );
+        } else {
+          focusFirstInvalid();
+        }
+      })
+    );
   }
 
   get userNew(): UserNew {
     const user: UserNew = this.form.value;
     user.identityProviderRequestId = this.identityProviderRequestId;
-    const mobile: PhoneNew = (this.mobileForm || {} as FormGroup).value;
-    const landLine: PhoneNew = (this.landLineForm || {} as FormGroup).value;
-    const address: AddressNew = (this.addressForm || {} as FormGroup).value;
+    const mobile: PhoneNew = (this.mobileForm || ({} as FormGroup)).value;
+    const landLine: PhoneNew = (this.landLineForm || ({} as FormGroup)).value;
+    const address: AddressNew = (this.addressForm || ({} as FormGroup)).value;
     if (this.image) {
       user.images = [this.image.id];
     }

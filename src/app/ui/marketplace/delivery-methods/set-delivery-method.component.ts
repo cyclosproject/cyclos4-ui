@@ -10,10 +10,9 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'set-delivery-method',
   templateUrl: 'set-delivery-method.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SetDeliveryMethodComponent extends BaseComponent implements OnInit {
-
   @Input() name: string;
   @Input() chargeAmount: number;
   @Input() minTime: TimeInterval;
@@ -24,10 +23,7 @@ export class SetDeliveryMethodComponent extends BaseComponent implements OnInit 
 
   form: FormGroup;
 
-  constructor(
-    injector: Injector,
-    public modalRef: BsModalRef,
-  ) {
+  constructor(injector: Injector, public modalRef: BsModalRef) {
     super(injector);
   }
 
@@ -38,7 +34,7 @@ export class SetDeliveryMethodComponent extends BaseComponent implements OnInit 
       minTime: this.minTime,
       maxTime: [this.maxTime, Validators.required],
       deliveryType: [this.deliveryType, Validators.required],
-      remarks: '',
+      remarks: ''
     });
   }
 
@@ -46,5 +42,4 @@ export class SetDeliveryMethodComponent extends BaseComponent implements OnInit 
     this.done.emit(this.form.value);
     this.modalRef.hide();
   }
-
 }

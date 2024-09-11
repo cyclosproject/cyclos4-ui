@@ -12,21 +12,18 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'account-visibility-settings',
   templateUrl: 'account-visibility-settings.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccountVisibilitySettingsComponent
   extends BasePageComponent<DataForUserAccountVisibility>
-  implements OnInit {
-
+  implements OnInit
+{
   userParam: string;
   isSelf: boolean;
 
   accounts: FormControl;
 
-  constructor(
-    injector: Injector,
-    private accountVisibilityService: AccountVisibilityService
-  ) {
+  constructor(injector: Injector, private accountVisibilityService: AccountVisibilityService) {
     super(injector);
   }
 
@@ -38,8 +35,9 @@ export class AccountVisibilitySettingsComponent
     this.userParam = params.user;
 
     // Get the account history data
-    this.accountVisibilityService.getUserAccountVisibilityData({ user: this.userParam })
-      .subscribe(data => this.data = data);
+    this.accountVisibilityService
+      .getUserAccountVisibilityData({ user: this.userParam })
+      .subscribe(data => (this.data = data));
   }
 
   onDataInitialized(data: DataForUserAccountVisibility) {
@@ -53,23 +51,29 @@ export class AccountVisibilitySettingsComponent
   }
 
   save() {
-    this.addSub(this.accountVisibilityService.saveUserAccountVisibility({
-      user: this.userParam,
-      body: {
-        accounts: this.accounts.value
-      }
-    }).subscribe(() => {
-      if (this.isSelf) {
-        // Fetch again the permissions and reload the menu
-        this.addSub(this.dataForFrontendHolder.reload().subscribe(() => {
-          this.menu.setActiveMenu(Menu.ACCOUNT_VISIBILTIY);
-          this.notification.snackBar(this.i18n.account.visibilitySettings.saved);
-        }));
-      } else {
-        this.notification.snackBar(this.i18n.account.visibilitySettings.saved);
-        this.reload();
-      }
-    }));
+    this.addSub(
+      this.accountVisibilityService
+        .saveUserAccountVisibility({
+          user: this.userParam,
+          body: {
+            accounts: this.accounts.value
+          }
+        })
+        .subscribe(() => {
+          if (this.isSelf) {
+            // Fetch again the permissions and reload the menu
+            this.addSub(
+              this.dataForFrontendHolder.reload().subscribe(() => {
+                this.menu.setActiveMenu(Menu.ACCOUNT_VISIBILTIY);
+                this.notification.snackBar(this.i18n.account.visibilitySettings.saved);
+              })
+            );
+          } else {
+            this.notification.snackBar(this.i18n.account.visibilitySettings.saved);
+            this.reload();
+          }
+        })
+    );
   }
 
   resolveMenu(data: DataForUserAccountVisibility): Menu | ActiveMenu | Observable<Menu | ActiveMenu> {

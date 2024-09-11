@@ -1,10 +1,10 @@
 import { Directive, ElementRef, Injector, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
+import { LayoutService } from 'app/core/layout.service';
+import { Escape } from 'app/core/shortcut.service';
 import { BaseFormFieldWithOptionsComponent } from 'app/shared/base-form-field-with-options.component';
 import { FieldOption, fieldOptionMatches } from 'app/shared/field-option';
 import { empty, truthyAttr } from 'app/shared/helper';
-import { LayoutService } from 'app/core/layout.service';
-import { Escape } from 'app/core/shortcut.service';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
@@ -12,7 +12,10 @@ import { BehaviorSubject, Subscription } from 'rxjs';
  * Base class for single / multi selection fields
  */
 @Directive()
-export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOptionsComponent<T> implements OnInit, OnDestroy {
+export abstract class BaseSelectionFieldComponent<T>
+  extends BaseFormFieldWithOptionsComponent<T>
+  implements OnInit, OnDestroy
+{
   /** When set, the displayed text */
   @Input() display: string;
 
@@ -53,10 +56,7 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
     this.focusOption(option);
   }
 
-  constructor(
-    injector: Injector,
-    controlContainer: ControlContainer,
-  ) {
+  constructor(injector: Injector, controlContainer: ControlContainer) {
     super(injector, controlContainer);
     this.layout = injector.get(LayoutService);
   }
@@ -99,7 +99,7 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
 
     const toggle = this.toggleRef.nativeElement as HTMLElement;
     const rect = toggle.getBoundingClientRect();
-    const docHeight = (window.innerHeight || document.documentElement.clientHeight);
+    const docHeight = window.innerHeight || document.documentElement.clientHeight;
     this.dropdown.dropup = rect.bottom > docHeight - 100;
 
     // To manipulate the menu, we need to give time to ngx-bootstrap to append it to the body

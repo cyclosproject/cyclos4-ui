@@ -1,4 +1,4 @@
-<div class="card mx-auto shadow-sm" *ngIf="(entries$ | async) as entries">
+<div class="card mx-auto shadow-sm" *ngIf="entries$ | async as entries">
   <div *ngIf="entries.title" class="side-menu-header">
     <div class="side-menu-icon">
       <icon [icon]="entries.icon"></icon>
@@ -9,10 +9,13 @@
   </div>
 
   <nav class="navbar d-flex flex-column align-items-stretch">
-    <a *ngFor="let entry of entries.entries" #anchor class="nav-item"
+    <a
+      *ngFor="let entry of entries.entries"
+      #anchor
+      class="nav-item"
       [routerLink]="entry.url"
-      [ngClass]="{active: (menu.activeMenu$ | async)?.matches(entry)}"
-      (click)="navigate(entry, $event); blurIfClick(anchor, $event);">
+      [ngClass]="{ active: (menu.activeMenu$ | async)?.matches(entry) }"
+      (click)="navigate(entry, $event); blurIfClick(anchor, $event)">
       <icon [icon]="entry.icon"></icon>
       <div class="nav-item-text">{{ entry.label }}</div>
     </a>

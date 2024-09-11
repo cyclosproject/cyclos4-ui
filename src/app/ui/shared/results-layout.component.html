@@ -4,38 +4,40 @@
 
 <content-monitor
   *ngIf="categoryTemplate && categories?.length > 0 && resultType === 'categories'"
-  (ready)="notifyReady()" [ngClass]="{'d-none': rendering$ | async}">
+  (ready)="notifyReady()"
+  [ngClass]="{ 'd-none': rendering$ | async }">
   <page-content mode="transparent" last>
     <div class="row category-results">
-      <div class="category-result col-12 col-xs-6 col-sm-4"
-        *ngFor="let cat of categories" [ngClass]="{
-        'col-md-3': (uiLayout.leftAreaVisible$ | async) === false,
-        'col-xl-3': uiLayout.leftAreaVisible$ | async,
-        'col-xl-2': (uiLayout.leftAreaVisible$ | async) === false
-      }">
-        <ng-container
-          *ngTemplateOutlet="categoryTemplate; context: {$implicit: cat}">
-        </ng-container>
+      <div
+        class="category-result col-12 col-xs-6 col-sm-4"
+        *ngFor="let cat of categories"
+        [ngClass]="{
+          'col-md-3': (uiLayout.leftAreaVisible$ | async) === false,
+          'col-xl-3': uiLayout.leftAreaVisible$ | async,
+          'col-xl-2': (uiLayout.leftAreaVisible$ | async) === false
+        }">
+        <ng-container *ngTemplateOutlet="categoryTemplate; context: { $implicit: cat }"> </ng-container>
       </div>
     </div>
   </page-content>
 </content-monitor>
 
 <ng-container *ngIf="rows?.length > 0; else noResults">
-  <content-monitor *ngIf="tableTemplate && resultType === 'list'"
-    (ready)="notifyReady()" [ngClass]="{'d-none': rendering$ | async}">
-    <page-content #listContent
-      [mode]="(layout.ltsm$ | async) ? 'tight' : 'table'" last>
+  <content-monitor
+    *ngIf="tableTemplate && resultType === 'list'"
+    (ready)="notifyReady()"
+    [ngClass]="{ 'd-none': rendering$ | async }">
+    <page-content #listContent [mode]="(layout.ltsm$ | async) ? 'tight' : 'table'" last>
       <ng-container *ngIf="layout.ltsm$ | async; else largeTable">
         <div class="mobile-results">
-          <maybe-link *ngFor="let row of rows; let last = last"
+          <maybe-link
+            *ngFor="let row of rows; let last = last"
             class="mobile-result"
-            [ngClass]="{'border-bottom-0': embedded && last}"
-            [link]="linkUrl(row)" (click)="handleClick(row, $event)"
+            [ngClass]="{ 'border-bottom-0': embedded && last }"
+            [link]="linkUrl(row)"
+            (click)="handleClick(row, $event)"
             (keydown.enter)="handleClick(row, $event)">
-            <ng-container
-              *ngTemplateOutlet="mobileResultTemplate; context: {$implicit: row}">
-            </ng-container>
+            <ng-container *ngTemplateOutlet="mobileResultTemplate; context: { $implicit: row }"> </ng-container>
           </maybe-link>
         </div>
       </ng-container>
@@ -43,52 +45,49 @@
         <ng-container *ngTemplateOutlet="tableTemplate"></ng-container>
       </ng-template>
       <div class="paginator-container" *ngIf="showPaginator()">
-        <paginator [scrollAnchor]="listContent.element" [results]="results"
-          (update)="update.emit($event)">
-        </paginator>
+        <paginator [scrollAnchor]="listContent.element" [results]="results" (update)="update.emit($event)"> </paginator>
       </div>
     </page-content>
   </content-monitor>
 
-  <content-monitor *ngIf="tileTemplate && resultType === 'tiles'"
-    (ready)="notifyReady()" [ngClass]="{'d-none': rendering$ | async}">
+  <content-monitor
+    *ngIf="tileTemplate && resultType === 'tiles'"
+    (ready)="notifyReady()"
+    [ngClass]="{ 'd-none': rendering$ | async }">
     <page-content #tilesContent mode="transparent" [last]="!showPaginator()">
       <div class="row tiled-results">
-        <div class="col-12 col-xs-6 col-sm-4" *ngFor="let row of rows"
+        <div
+          class="col-12 col-xs-6 col-sm-4"
+          *ngFor="let row of rows"
           [ngClass]="{
-          'col-md-3': (uiLayout.leftAreaVisible$ | async) === false,
-          'col-xl-3': uiLayout.leftAreaVisible$ | async,
-          'col-xl-2': (uiLayout.leftAreaVisible$ | async) === false
-        }">
-          <maybe-link class="tiled-result" [link]="linkUrl(row)"
+            'col-md-3': (uiLayout.leftAreaVisible$ | async) === false,
+            'col-xl-3': uiLayout.leftAreaVisible$ | async,
+            'col-xl-2': (uiLayout.leftAreaVisible$ | async) === false
+          }">
+          <maybe-link
+            class="tiled-result"
+            [link]="linkUrl(row)"
             (click)="handleClick(row, $event)"
             (keydown.enter)="handleClick(row, $event)">
-            <ng-container
-              *ngTemplateOutlet="tileTemplate; context: {$implicit: row}">
-            </ng-container>
+            <ng-container *ngTemplateOutlet="tileTemplate; context: { $implicit: row }"> </ng-container>
           </maybe-link>
         </div>
       </div>
     </page-content>
     <page-content last *ngIf="showPaginator()">
-      <paginator [scrollAnchor]="tilesContent.element" [results]="results"
-        (update)="update.emit($event)">
-      </paginator>
+      <paginator [scrollAnchor]="tilesContent.element" [results]="results" (update)="update.emit($event)"> </paginator>
     </page-content>
   </content-monitor>
 
   <content-monitor *ngIf="resultType === 'map'" (ready)="notifyReady()">
-    <page-content mode="fullHeightTight"
-      [ngClass]="{'d-none': rendering$ | async}" last>
-      <div #mapContainer class="map-container">
-      </div>
+    <page-content mode="fullHeightTight" [ngClass]="{ 'd-none': rendering$ | async }" last>
+      <div #mapContainer class="map-container"></div>
     </page-content>
   </content-monitor>
 </ng-container>
 
 <ng-template #noResults>
-  <content-monitor *ngIf="results && resultType !== 'categories'"
-    (ready)="notifyReady()">
+  <content-monitor *ngIf="results && resultType !== 'categories'" (ready)="notifyReady()">
     <page-content last>
       {{ i18n.general.results.none }}
       {{ notifyReady() }}
@@ -97,11 +96,11 @@
 </ng-template>
 
 <ng-template #infoWindowContent let-row let-address="address">
-  <maybe-link class="undecorated map-info-window" [link]="linkUrl(row)"
+  <maybe-link
+    class="undecorated map-info-window"
+    [link]="linkUrl(row)"
     (click)="handleClick(row, $event)"
     (keydown.enter)="handleClick(row, $event)">
-    <ng-container
-      *ngTemplateOutlet="infoWindowTemplate; context: {$implicit: row, address: address}">
-    </ng-container>
+    <ng-container *ngTemplateOutlet="infoWindowTemplate; context: { $implicit: row, address: address }"> </ng-container>
   </maybe-link>
 </ng-template>

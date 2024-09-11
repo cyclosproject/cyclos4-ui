@@ -3,22 +3,24 @@
   <div *ngIf="data" class="align-items-center d-flex h-100 w-100">
     <div [formGroup]="form" class="no-gutters w-100">
       <div>
-        <single-selection-field formControlName="maxDistance"
-          [fieldOptions]="maxDistanceOptions">
+        <single-selection-field formControlName="maxDistance" [fieldOptions]="maxDistanceOptions">
         </single-selection-field>
       </div>
-      <div
-        class="pl-1 mt-2 mb-2 d-flex align-items-center justify-content-center no-wrap">
-        {{ data.distanceUnit === DistanceUnitEnum.KILOMETER
-        ?
-        i18n.general.geolocation.kilometersFrom :
-        i18n.general.geolocation.milesFrom }}
+      <div class="pl-1 mt-2 mb-2 d-flex align-items-center justify-content-center no-wrap">
+        {{
+          data.distanceUnit === DistanceUnitEnum.KILOMETER
+            ? i18n.general.geolocation.kilometersFrom
+            : i18n.general.geolocation.milesFrom
+        }}
       </div>
       <div>
-        <single-selection-field #address formControlName="addressId"
+        <single-selection-field
+          #address
+          formControlName="addressId"
           [dropdownOnRight]="layout.ltmd$ | async"
           [emptyOption]="i18n.general.geolocation.current">
-          <field-option *ngFor="let address of data.addresses || []"
+          <field-option
+            *ngFor="let address of data.addresses || []"
             [value]="address.id"
             [text]="data.addresses.length === 1 ? i18n.general.geolocation.myAddress : address.name">
           </field-option>
@@ -29,13 +31,8 @@
 </ng-container>
 
 <actions class="w-100" forceColumn>
-  <action-button [disabled]="requesting$ | async" (action)="submit(false)"
-    [label]="i18n.general.submit">
+  <action-button [disabled]="requesting$ | async" (action)="submit(false)" [label]="i18n.general.submit">
   </action-button>
-  <action-button (action)="submit(true)"
-    [label]="i18n.field.distanceSelection.clear">
-  </action-button>
-  <action-button outline (action)="modalRef.hide()"
-    [label]="i18n.general.cancel">
-  </action-button>
+  <action-button (action)="submit(true)" [label]="i18n.field.distanceSelection.clear"> </action-button>
+  <action-button outline (action)="modalRef.hide()" [label]="i18n.general.cancel"> </action-button>
 </actions>

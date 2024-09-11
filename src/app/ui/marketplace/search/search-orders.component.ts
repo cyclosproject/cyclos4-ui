@@ -1,27 +1,33 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  CustomFieldControlEnum, CustomFieldDetailed, CustomFieldTypeEnum,
-  LinkedEntityTypeEnum, OrderDataForSearch, OrderResult, OrderStatusEnum, QueryFilters,
+  CustomFieldControlEnum,
+  CustomFieldDetailed,
+  CustomFieldTypeEnum,
+  LinkedEntityTypeEnum,
+  OrderDataForSearch,
+  OrderResult,
+  OrderStatusEnum,
+  QueryFilters
 } from 'app/api/models';
 import { UserOrderResult } from 'app/api/models/user-order-result';
 import { OrdersService } from 'app/api/services/orders.service';
-import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
-import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
+import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
+import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { SvgIcon } from 'app/core/svg-icon';
 
 type SearchUserOrdersParams = QueryFilters & {
-  user: string,
-  creationPeriod: string[],
-  number: string,
-  productNumber: string,
-  relatedUser: string,
-  sales: boolean,
-  statuses: OrderStatusEnum[],
+  user: string;
+  creationPeriod: string[];
+  number: string;
+  productNumber: string;
+  relatedUser: string;
+  sales: boolean;
+  statuses: OrderStatusEnum[];
 };
 
 /**
@@ -30,12 +36,12 @@ type SearchUserOrdersParams = QueryFilters & {
 @Component({
   selector: 'search-orders',
   templateUrl: 'search-orders.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchOrdersComponent
   extends BaseSearchPageComponent<OrderDataForSearch, SearchUserOrdersParams, UserOrderResult>
-  implements OnInit {
-
+  implements OnInit
+{
   param: string;
   sales: boolean;
   isOwner: boolean;
@@ -45,7 +51,7 @@ export class SearchOrdersComponent
   constructor(
     injector: Injector,
     private marketplaceHelper: MarketplaceHelperService,
-    private orderService: OrdersService,
+    private orderService: OrdersService
   ) {
     super(injector);
   }
@@ -59,7 +65,11 @@ export class SearchOrdersComponent
     this.sales = this.route.snapshot.url[1].path === 'sales';
     this.param = this.route.snapshot.paramMap.get('user') || this.ApiHelper.SELF;
     this.isOwner = this.authHelper.isSelf(this.param);
-    this.addSub(this.orderService.getOrderDataForSearch({ user: this.param, sales: this.sales }).subscribe(data => this.data = data));
+    this.addSub(
+      this.orderService
+        .getOrderDataForSearch({ user: this.param, sales: this.sales })
+        .subscribe(data => (this.data = data))
+    );
   }
 
   protected toSearchParams(value: any): SearchUserOrdersParams {
@@ -74,7 +84,7 @@ export class SearchOrdersComponent
   onDataInitialized(data: OrderDataForSearch) {
     super.onDataInitialized(data);
     this.headingActions = this.initActions(data);
-    this.addSub(this.layout.ltsm$.subscribe(() => this.headingActions = this.initActions(data)));
+    this.addSub(this.layout.ltsm$.subscribe(() => (this.headingActions = this.initActions(data))));
   }
 
   protected initActions(data: OrderDataForSearch) {
@@ -96,19 +106,23 @@ export class SearchOrdersComponent
       customFields: this.newOrderFields(),
       callback: res => {
         // Validate the user can create a new sale
-        this.addSub(this.orderService.getOrderDataForNew({
-          buyer: res.customValues.buyer,
-          user: this.param,
-          currency: res.customValues.currency,
-        }).subscribe(() => {
-          this.router.navigate(['/marketplace', this.param, 'sale', 'new'], {
-            queryParams: {
+        this.addSub(
+          this.orderService
+            .getOrderDataForNew({
               buyer: res.customValues.buyer,
-              currency: res.customValues.currency,
-            },
-          });
-        }));
-      },
+              user: this.param,
+              currency: res.customValues.currency
+            })
+            .subscribe(() => {
+              this.router.navigate(['/marketplace', this.param, 'sale', 'new'], {
+                queryParams: {
+                  buyer: res.customValues.buyer,
+                  currency: res.customValues.currency
+                }
+              });
+            })
+        );
+      }
     });
   }
 
@@ -121,8 +135,8 @@ export class SearchOrdersComponent
         control: CustomFieldControlEnum.ENTITY_SELECTION,
         linkedEntityType: LinkedEntityTypeEnum.USER,
         hasValuesList: false,
-        required: true,
-      },
+        required: true
+      }
     ];
     if (!empty(this.data.currencies) && this.data.currencies.length > 1) {
       fields.push({
@@ -135,10 +149,10 @@ export class SearchOrdersComponent
         possibleValues: this.data.currencies.map(c => {
           return {
             id: c.id,
-            value: c.name,
+            value: c.name
           };
         }),
-        required: true,
+        required: true
       });
     }
     return fields;
@@ -183,5 +197,4 @@ export class SearchOrdersComponent
     }
     return this.menu.searchUsersMenu(data.user);
   }
-
 }

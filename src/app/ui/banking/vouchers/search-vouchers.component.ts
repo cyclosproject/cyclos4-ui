@@ -1,17 +1,20 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { CustomFieldDetailed, GeneralVouchersDataForSearch } from 'app/api/models';
 import { HeadingAction } from 'app/shared/action';
-import { BaseSearchVouchersComponent, VoucherSearchParams } from 'app/ui/banking/vouchers/base-search-vouchers.component';
+import {
+  BaseSearchVouchersComponent,
+  VoucherSearchParams
+} from 'app/ui/banking/vouchers/base-search-vouchers.component';
 import { Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'search-vouchers',
   templateUrl: './search-vouchers.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchVouchersComponent
   extends BaseSearchVouchersComponent<GeneralVouchersDataForSearch, VoucherSearchParams>
-  implements OnInit {
-
+  implements OnInit
+{
   constructor(injector: Injector) {
     super(injector);
   }
@@ -20,7 +23,9 @@ export class SearchVouchersComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.vouchersService.getGeneralVouchersDataForSearch({}).subscribe(dataForSearch => this.data = dataForSearch));
+    this.addSub(
+      this.vouchersService.getGeneralVouchersDataForSearch({}).subscribe(dataForSearch => (this.data = dataForSearch))
+    );
   }
 
   prepareForm(data: GeneralVouchersDataForSearch) {
@@ -32,8 +37,10 @@ export class SearchVouchersComponent
       }
     });
 
-    this.form.setControl('customFields',
-      this.fieldHelper.customFieldsForSearchFormGroup(this.customFieldsInSearch, data.query.customFields));
+    this.form.setControl(
+      'customFields',
+      this.fieldHelper.customFieldsForSearchFormGroup(this.customFieldsInSearch, data.query.customFields)
+    );
   }
 
   protected onDataInitialized(data: GeneralVouchersDataForSearch) {
@@ -41,18 +48,21 @@ export class SearchVouchersComponent
 
     const headingActions: HeadingAction[] = [this.moreFiltersAction];
     if (data.canGenerate) {
-      headingActions.push(new HeadingAction(this.SvgIcon.Ticket, this.i18n.voucher.generate.generate, () => this.generate()));
+      headingActions.push(
+        new HeadingAction(this.SvgIcon.Ticket, this.i18n.voucher.generate.generate, () => this.generate())
+      );
     }
     headingActions.push(...this.exportActions(data));
     this.headingActions = headingActions;
   }
 
   private exportActions(data: GeneralVouchersDataForSearch): HeadingAction[] {
-    return this.exportHelper.headingActions(data.exportFormats,
-      f => this.vouchersService.exportVouchers$Response({
+    return this.exportHelper.headingActions(data.exportFormats, f =>
+      this.vouchersService.exportVouchers$Response({
         format: f.internalName,
         ...this.toSearchParams(this.form.value)
-      }));
+      })
+    );
   }
 
   private generate() {
@@ -60,9 +70,29 @@ export class SearchVouchersComponent
   }
 
   protected getFormControlNames(): string[] {
-    return ['types', 'creationBegin', 'creationEnd', 'statuses', 'token', 'creationType', 'printed', 'customFields',
-      'amountMin', 'amountMax', 'expirationBegin', 'expirationEnd', 'transactionDateBegin', 'transactionDateEnd', 'buyer',
-      'transactionUser', 'buyerGroups', 'transactionUserGroups', 'email', 'mobilePhone', 'orderBy'];
+    return [
+      'types',
+      'creationBegin',
+      'creationEnd',
+      'statuses',
+      'token',
+      'creationType',
+      'printed',
+      'customFields',
+      'amountMin',
+      'amountMax',
+      'expirationBegin',
+      'expirationEnd',
+      'transactionDateBegin',
+      'transactionDateEnd',
+      'buyer',
+      'transactionUser',
+      'buyerGroups',
+      'transactionUserGroups',
+      'email',
+      'mobilePhone',
+      'orderBy'
+    ];
   }
 
   protected toSearchParams(value: any): VoucherSearchParams {

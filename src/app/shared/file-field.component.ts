@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, Host, Injector, Input, Optional, SkipSelf } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { LayoutService } from 'app/core/layout.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty } from 'app/shared/helper';
-import { LayoutService } from 'app/core/layout.service';
 
 /**
  * Component used to select one or more native browser files
@@ -10,12 +10,9 @@ import { LayoutService } from 'app/core/layout.service';
 @Component({
   selector: 'file-field',
   templateUrl: 'file-field.component.html',
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: FileFieldComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: FileFieldComponent, multi: true }]
 })
 export class FileFieldComponent extends BaseFormFieldComponent<File | File[]> {
-
   /**
    * The maximum of files that can be uploaded
    */
@@ -38,7 +35,8 @@ export class FileFieldComponent extends BaseFormFieldComponent<File | File[]> {
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     public layout: LayoutService,
-    private changeDetector: ChangeDetectorRef) {
+    private changeDetector: ChangeDetectorRef
+  ) {
     super(injector, controlContainer);
   }
 
@@ -70,8 +68,7 @@ export class FileFieldComponent extends BaseFormFieldComponent<File | File[]> {
   filesSelected(fileList: FileList) {
     this.fileList = fileList;
     const files = this.files;
-    this.value = this.maxFiles === 1 ? files.length === 0 ? null : files[0] : files;
+    this.value = this.maxFiles === 1 ? (files.length === 0 ? null : files[0]) : files;
     this.changeDetector.detectChanges();
   }
-
 }

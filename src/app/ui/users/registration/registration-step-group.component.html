@@ -3,13 +3,18 @@
   <ng-container *ngFor="let groupSet of groupSets">
     <div>
       <div *ngIf="groupSet" class="mt-3 mb-2" font-weight-bold>
-        {{ groupSet.name }}</div>
-      <div *ngFor="let group of groupsForSet(groupSet)"
+        {{ groupSet.name }}
+      </div>
+      <div
+        *ngFor="let group of groupsForSet(groupSet)"
         class="custom-control custom-radio mb-1"
-        [ngClass]="{'ml-3': groupSet}">
-        <input type="radio" [formControl]="control"
-          class="custom-control-input" [id]="'group_' + group.id"
-          [value]="group.id">
+        [ngClass]="{ 'ml-3': groupSet }">
+        <input
+          type="radio"
+          [formControl]="control"
+          class="custom-control-input"
+          [id]="'group_' + group.id"
+          [value]="group.id" />
         <label class="custom-control-label" [for]="'group_' + group.id">
           <div class="ml-1">
             {{ group.name }}
@@ -21,18 +26,19 @@
 </ng-container>
 <ng-template #asGuest>
   <div class="mb-3">{{ i18n.user.registration.groupPublic }}</div>
-  <radio-group-field *ngIf="singleLine; else multiLine"
-    [formControl]="control">
-    <field-option *ngFor="let group of groups" [value]="group.id"
-      [text]="group.name"></field-option>
+  <radio-group-field *ngIf="singleLine; else multiLine" [formControl]="control">
+    <field-option *ngFor="let group of groups" [value]="group.id" [text]="group.name"></field-option>
   </radio-group-field>
   <ng-template #multiLine>
     <div class="row mb-2" *ngFor="let group of groups">
       <div class="col-12 col-6 col-sm-8">
         <div class="custom-control custom-radio">
-          <input type="radio" [formControl]="control"
-            class="custom-control-input" [id]="'group_' + group.id"
-            [value]="group.id">
+          <input
+            type="radio"
+            [formControl]="control"
+            class="custom-control-input"
+            [id]="'group_' + group.id"
+            [value]="group.id" />
           <label class="custom-control-label" [for]="'group_' + group.id">
             <div class="ml-1">
               {{ group.name }}

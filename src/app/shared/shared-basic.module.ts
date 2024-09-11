@@ -49,7 +49,7 @@ export function initTooltipConfig(): TooltipConfig {
     ExtraCellDirective,
     ActionButtonComponent,
 
-    TrustPipe,
+    TrustPipe
   ],
   imports: [
     CommonModule,
@@ -60,7 +60,7 @@ export function initTooltipConfig(): TooltipConfig {
     ButtonsModule.forRoot(),
     TooltipModule.forRoot(),
 
-    LayoutModule,
+    LayoutModule
   ],
   exports: [
     CommonModule,
@@ -88,14 +88,9 @@ export function initTooltipConfig(): TooltipConfig {
 
     FocusedDirective,
 
-    TrustPipe,
+    TrustPipe
   ],
-  providers: [
-    { provide: TooltipConfig, useFactory: initTooltipConfig },
-  ],
-  entryComponents: [
-    NotificationComponent,
-  ],
+  providers: [{ provide: TooltipConfig, useFactory: initTooltipConfig }],
+  entryComponents: [NotificationComponent]
 })
-export class SharedBasicModule {
-}
+export class SharedBasicModule {}

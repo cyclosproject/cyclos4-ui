@@ -1,6 +1,14 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, Component, ElementRef,
-  EventEmitter, Injector, Input, OnInit, Output, ViewChild,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from 'app/shared/base.component';
@@ -15,11 +23,9 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'image-properties-dialog',
   templateUrl: 'image-properties-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ImagePropertiesDialogComponent
-  extends BaseComponent implements OnInit, AfterViewInit {
-
+export class ImagePropertiesDialogComponent extends BaseComponent implements OnInit, AfterViewInit {
   form: FormGroup;
   constrain = new FormControl(true);
   ratio: number;
@@ -28,10 +34,7 @@ export class ImagePropertiesDialogComponent
   @Output() select = new EventEmitter<ImageProperties>();
   @ViewChild('preview') preview: ElementRef<HTMLImageElement>;
 
-  constructor(
-    injector: Injector,
-    public modalRef: BsModalRef,
-  ) {
+  constructor(injector: Injector, public modalRef: BsModalRef) {
     super(injector);
   }
 
@@ -45,34 +48,38 @@ export class ImagePropertiesDialogComponent
       marginTop: null,
       marginBottom: null,
       marginLeft: null,
-      marginRight: null,
+      marginRight: null
     });
-    this.addSub(this.form.controls.width.valueChanges.subscribe(w => {
-      if (this.updatingDimensions) {
-        return;
-      }
-      this.updatingDimensions = true;
-      if (this.constrain.value && this.ratio) {
-        const width = parseInt(w, 10);
-        if (w) {
-          this.form.patchValue({ height: String(Math.round(width / this.ratio)) });
+    this.addSub(
+      this.form.controls.width.valueChanges.subscribe(w => {
+        if (this.updatingDimensions) {
+          return;
         }
-      }
-      this.updatingDimensions = false;
-    }));
-    this.addSub(this.form.controls.height.valueChanges.subscribe(h => {
-      if (this.updatingDimensions) {
-        return;
-      }
-      this.updatingDimensions = true;
-      if (this.constrain.value && this.ratio) {
-        const height = parseInt(h, 10);
-        if (h) {
-          this.form.patchValue({ width: String(Math.round(height * this.ratio)) });
+        this.updatingDimensions = true;
+        if (this.constrain.value && this.ratio) {
+          const width = parseInt(w, 10);
+          if (w) {
+            this.form.patchValue({ height: String(Math.round(width / this.ratio)) });
+          }
         }
-      }
-      this.updatingDimensions = false;
-    }));
+        this.updatingDimensions = false;
+      })
+    );
+    this.addSub(
+      this.form.controls.height.valueChanges.subscribe(h => {
+        if (this.updatingDimensions) {
+          return;
+        }
+        this.updatingDimensions = true;
+        if (this.constrain.value && this.ratio) {
+          const height = parseInt(h, 10);
+          if (h) {
+            this.form.patchValue({ width: String(Math.round(height * this.ratio)) });
+          }
+        }
+        this.updatingDimensions = false;
+      })
+    );
 
     this.ratio = this.img.naturalWidth / this.img.naturalHeight;
   }

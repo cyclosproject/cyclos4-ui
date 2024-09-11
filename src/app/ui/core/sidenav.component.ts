@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Injector, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostBinding,
+  Injector,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { LayoutService } from 'app/core/layout.service';
 import { ActionsLeft, ActionsRight, ArrowsVertical } from 'app/core/shortcut.service';
@@ -17,10 +25,9 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
   // tslint:disable-next-line:component-selector
   selector: 'sidenav',
   templateUrl: 'sidenav.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidenavComponent extends AbstractComponent implements OnInit {
-
   @HostBinding('class.has-top-bar') hasTopBar = true;
   @HostBinding('class.is-sidenav') isSidenav = true;
 
@@ -32,7 +39,8 @@ export class SidenavComponent extends AbstractComponent implements OnInit {
     public menu: MenuService,
     public login: LoginService,
     public dataForFrontend: DataForFrontendHolder,
-    public layout: LayoutService) {
+    public layout: LayoutService
+  ) {
     super(injector);
   }
 
@@ -100,11 +108,14 @@ export class SidenavComponent extends AbstractComponent implements OnInit {
           active.blur();
         }
       }, 5);
-      this.openSubs.push(this.shortcut.subscribe(ArrowsVertical, e =>
-        handleKeyboardFocus(this.layout, this.element, e)));
-      this.openSubs.push(this.shortcut.subscribe(ActionsRight, () => {
-        this.loginOrLogout();
-      }));
+      this.openSubs.push(
+        this.shortcut.subscribe(ArrowsVertical, e => handleKeyboardFocus(this.layout, this.element, e))
+      );
+      this.openSubs.push(
+        this.shortcut.subscribe(ActionsRight, () => {
+          this.loginOrLogout();
+        })
+      );
     }
   }
 

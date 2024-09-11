@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnInit } from '@angular/core';
 import { truthyAttr } from 'app/shared/helper';
 
-export type ActionKind
+export type ActionKind =
   /** Primary actions like submit. Default kind */
-  = 'primary'
+  | 'primary'
 
   /** Actions "inside" a page which are not primary, like actions over images editing the profile or the button to add new addresses */
   | 'secondary';
@@ -12,10 +12,9 @@ export type ActionKind
   // tslint:disable-next-line:component-selector
   selector: 'actions',
   templateUrl: 'actions.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ActionsComponent implements OnInit {
-
   @Input() kind: ActionKind = 'primary';
 
   private _forceRow: boolean | string;
@@ -50,8 +49,7 @@ export class ActionsComponent implements OnInit {
     this._minimal = truthyAttr(minimal);
   }
 
-  constructor(private element: ElementRef) {
-  }
+  constructor(private element: ElementRef) {}
 
   ngOnInit() {
     const el = this.element.nativeElement as HTMLElement;

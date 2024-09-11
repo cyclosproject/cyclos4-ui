@@ -1,12 +1,17 @@
 import {
-  ChangeDetectionStrategy, Component, ComponentFactoryResolver,
-  ComponentRef, OnInit, ViewChild, ViewContainerRef,
+  ChangeDetectionStrategy,
+  Component,
+  ComponentFactoryResolver,
+  ComponentRef,
+  OnInit,
+  ViewChild,
+  ViewContainerRef
 } from '@angular/core';
 import { Notification } from 'app/api/models';
+import { LayoutService } from 'app/core/layout.service';
 import { NotificationService } from 'app/core/notification.service';
 import { PushNotificationProvider } from 'app/core/push-notification-provider';
 import { PushNotificationComponent } from 'app/ui/core/push-notification.component';
-import { LayoutService } from 'app/core/layout.service';
 import { first } from 'rxjs/operators';
 
 /**
@@ -15,10 +20,9 @@ import { first } from 'rxjs/operators';
 @Component({
   selector: 'push-notifications',
   templateUrl: 'push-notifications.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PushNotificationsComponent implements OnInit, PushNotificationProvider {
-
   @ViewChild('template', { read: ViewContainerRef, static: true }) template: ViewContainerRef;
 
   last: PushNotificationComponent;
@@ -26,9 +30,8 @@ export class PushNotificationsComponent implements OnInit, PushNotificationProvi
   constructor(
     private notification: NotificationService,
     private componentFactoryResolver: ComponentFactoryResolver,
-    private layout: LayoutService,
-  ) {
-  }
+    private layout: LayoutService
+  ) {}
 
   ngOnInit() {
     this.notification.pushNotificationProvider = this;
@@ -50,5 +53,4 @@ export class PushNotificationsComponent implements OnInit, PushNotificationProvi
     });
     this.last = pushNotification;
   }
-
 }

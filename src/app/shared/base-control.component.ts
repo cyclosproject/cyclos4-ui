@@ -8,10 +8,7 @@ import { Observable } from 'rxjs';
  * Base class for custom form controls
  */
 @Directive()
-export abstract class BaseControlComponent<T>
-  extends AbstractComponent
-  implements OnInit, ControlValueAccessor {
-
+export abstract class BaseControlComponent<T> extends AbstractComponent implements OnInit, ControlValueAccessor {
   @Input() disabled: boolean;
   @Input() formControl: FormControl;
   @Input() formControlName: string;
@@ -19,13 +16,11 @@ export abstract class BaseControlComponent<T>
 
   private _value: T;
 
-  protected changeCallback = (_: any) => { };
-  protected touchedCallback = () => { };
-  protected validatorChange = () => { };
+  protected changeCallback = (_: any) => {};
+  protected touchedCallback = () => {};
+  protected validatorChange = () => {};
 
-  constructor(
-    injector: Injector,
-    protected controlContainer: ControlContainer) {
+  constructor(injector: Injector, protected controlContainer: ControlContainer) {
     super(injector);
   }
 
@@ -57,9 +52,11 @@ export abstract class BaseControlComponent<T>
   set value(value: T) {
     const preprocessed = this.preprocessValue(value);
     if (preprocessed instanceof Observable) {
-      this.addSub(preprocessed.subscribe(val => {
-        this.setValue(val, this._value !== val);
-      }));
+      this.addSub(
+        preprocessed.subscribe(val => {
+          this.setValue(val, this._value !== val);
+        })
+      );
     } else {
       this.setValue(preprocessed, this._value !== preprocessed && !isEqual(this._value, preprocessed));
     }
@@ -86,9 +83,11 @@ export abstract class BaseControlComponent<T>
     };
     const preprocessed = this.preprocessValue(obj);
     if (preprocessed instanceof Observable) {
-      this.addSub(preprocessed.subscribe(value => {
-        doInitialize(value);
-      }));
+      this.addSub(
+        preprocessed.subscribe(value => {
+          doInitialize(value);
+        })
+      );
     } else {
       doInitialize(preprocessed);
     }
@@ -103,8 +102,7 @@ export abstract class BaseControlComponent<T>
     return value;
   }
 
-  protected onValueInitialized(_value: T) {
-  }
+  protected onValueInitialized(_value: T) {}
 
   registerOnChange(fn: any): void {
     this.changeCallback = fn;
@@ -130,7 +128,5 @@ export abstract class BaseControlComponent<T>
     this.changeCallback(value);
   }
 
-  protected onDisabledChange(_isDisabled: boolean): void {
-  }
-
+  protected onDisabledChange(_isDisabled: boolean): void {}
 }

@@ -13,16 +13,14 @@ import { validateBeforeSubmit } from 'app/shared/helper';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConsentFormComponent implements OnInit {
-
   form: FormGroup;
   hasAdditionalData: boolean;
 
   constructor(
     @Inject(I18nInjectionToken) public i18n: I18n,
     private formBuilder: FormBuilder,
-    public state: ConsentState,
-  ) {
-  }
+    public state: ConsentState
+  ) {}
 
   ngOnInit() {
     const data = this.state.data;
@@ -30,11 +28,12 @@ export class ConsentFormComponent implements OnInit {
       user: [data.loginHint || '', Validators.required],
       password: ['', Validators.required]
     });
-    this.hasAdditionalData = !!data.client.image
-      || !!data.client.description
-      || !!data.client.website
-      || !!data.client.privacyPolicyUrl
-      || !!data.client.termsOfServiceUrl;
+    this.hasAdditionalData =
+      !!data.client.image ||
+      !!data.client.description ||
+      !!data.client.website ||
+      !!data.client.privacyPolicyUrl ||
+      !!data.client.termsOfServiceUrl;
   }
 
   get data() {

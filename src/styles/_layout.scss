@@ -38,6 +38,13 @@ body.lt-md .root .main-container {
     height: 22px;
   }
 
+  icon { 
+    svg {
+      width: 93%;
+      height: 93%;
+    }
+  }
+
   nav {
     transition: background-color ease-in-out 0.3s, color ease-in-out 0.4s;
   }
@@ -745,6 +752,13 @@ menu-bar {
     padding: 0 !important;
     margin: 0 auto;
     flex-grow: 1;
+  }
+
+  icon { 
+    svg {
+      width: 93%;
+      height: 93%;
+    }
   }
 
   menus {

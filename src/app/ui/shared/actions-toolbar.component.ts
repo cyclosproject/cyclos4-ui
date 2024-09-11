@@ -10,16 +10,14 @@ import { blurIfClick } from 'app/shared/helper';
 @Component({
   selector: 'actions-toolbar',
   templateUrl: 'actions-toolbar.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ActionsToolbarComponent extends BaseComponent {
   blurIfClick = blurIfClick;
 
   @Input() headingActions: HeadingAction[];
 
-  constructor(
-    injector: Injector
-  ) {
+  constructor(injector: Injector) {
     super(injector);
   }
 

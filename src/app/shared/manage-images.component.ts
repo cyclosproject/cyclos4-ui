@@ -1,15 +1,21 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Injector,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 import { Image } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { isEqual } from 'lodash-es';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 export class ManageImagesResult {
-  constructor(
-    public order: string[],
-    public removedImages: string[],
-  ) { }
+  constructor(public order: string[], public removedImages: string[]) {}
 }
 
 /**
@@ -18,10 +24,9 @@ export class ManageImagesResult {
 @Component({
   selector: 'manage-images',
   templateUrl: 'manage-images.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ManageImagesComponent extends BaseComponent implements OnInit {
-
   @Input() images: Image[] = [];
   @Input() manageAfterConfirm = false;
   @Input() requireAtLeastOne = false;
@@ -30,10 +35,7 @@ export class ManageImagesComponent extends BaseComponent implements OnInit {
   removedIds: string[];
   originalOrder: string[];
 
-  constructor(
-    injector: Injector,
-    public modalRef: BsModalRef,
-    private changeDetector: ChangeDetectorRef) {
+  constructor(injector: Injector, public modalRef: BsModalRef, private changeDetector: ChangeDetectorRef) {
     super(injector);
   }
 

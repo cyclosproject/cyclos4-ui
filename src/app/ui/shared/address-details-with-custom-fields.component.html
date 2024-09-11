@@ -1,8 +1,5 @@
-<address-details [address]="address" [elementClass]="elementClass">
-</address-details>
-<div *ngFor="let fieldValue of contactInfo?.customValues"
-  [ngClass]="elementClass">
+<address-details [address]="address" [elementClass]="elementClass"> </address-details>
+<div *ngFor="let fieldValue of contactInfo?.customValues" [ngClass]="elementClass">
   <span class="inline-label">{{ fieldValue.field.name }}</span>
-  <format-field-value inline [fieldValue]="fieldValue">
-  </format-field-value>
+  <format-field-value inline [fieldValue]="fieldValue"> </format-field-value>
 </div>

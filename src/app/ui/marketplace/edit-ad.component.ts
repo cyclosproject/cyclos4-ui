@@ -1,6 +1,17 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { AdBasicData, AdDataForEdit, AdDataForNew, AdEdit, AdKind, AdManage, AdStatusEnum, Currency, DeliveryMethod, Image } from 'app/api/models';
+import {
+  AdBasicData,
+  AdDataForEdit,
+  AdDataForNew,
+  AdEdit,
+  AdKind,
+  AdManage,
+  AdStatusEnum,
+  Currency,
+  DeliveryMethod,
+  Image
+} from 'app/api/models';
 import { ImagesService } from 'app/api/services/images.service';
 import { MarketplaceService } from 'app/api/services/marketplace.service';
 import { CameraService } from 'app/core/camera.service';
@@ -24,12 +35,9 @@ export type StockType = 'available' | 'notAvailable' | 'quantity';
 @Component({
   selector: 'edit-ad',
   templateUrl: 'edit-ad.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditAdComponent
-  extends BasePageComponent<AdDataForNew | AdDataForEdit>
-  implements OnInit {
-
+export class EditAdComponent extends BasePageComponent<AdDataForNew | AdDataForEdit> implements OnInit {
   id: string;
   basedOnId: string;
   owner: string;
@@ -57,7 +65,8 @@ export class EditAdComponent
     private changeDetector: ChangeDetectorRef,
     private marketplaceHelper: MarketplaceHelperService,
     private marketplaceService: MarketplaceService,
-    private camera: CameraService) {
+    private camera: CameraService
+  ) {
     super(injector);
   }
 
@@ -70,54 +79,58 @@ export class EditAdComponent
     this.create = this.id == null;
     const request: Observable<AdDataForNew | AdDataForEdit> = this.create
       ? this.marketplaceService.getAdDataForNew({
-        basedOnId: this.basedOnId,
-        user: this.route.snapshot.params.user,
-        kind: this.kind,
-      })
+          basedOnId: this.basedOnId,
+          user: this.route.snapshot.params.user,
+          kind: this.kind
+        })
       : this.marketplaceService.getAdDataForEdit({ ad: this.id });
-    this.addSub(request.subscribe(data => {
-      if (!this.create && data.maxImages > 0) {
-        this.addSub(this.imagesService.listAdImages({ ad: this.id }).subscribe(currentImages => {
-          this.images = currentImages;
-          this.mainImage = this.images.length > 0 ? this.ApiHelper.internalNameOrId(this.images[0]) : null;
+    this.addSub(
+      request.subscribe(data => {
+        if (!this.create && data.maxImages > 0) {
+          this.addSub(
+            this.imagesService.listAdImages({ ad: this.id }).subscribe(currentImages => {
+              this.images = currentImages;
+              this.mainImage = this.images.length > 0 ? this.ApiHelper.internalNameOrId(this.images[0]) : null;
+              this.data = data;
+            })
+          );
+        } else {
           this.data = data;
-        }));
-      } else {
-        this.data = data;
-      }
-    }));
+        }
+      })
+    );
   }
 
   onDataInitialized(data: AdDataForNew | AdDataForEdit) {
-
     this.kind = data.kind;
     this.webshop = this.kind === AdKind.WEBSHOP;
 
     this.self = this.authHelper.isSelfOrOwner(data.user);
 
-    this.owner = this.self
-      ? this.ApiHelper.SELF
-      : data.user.id;
+    this.owner = this.self ? this.ApiHelper.SELF : data.user.id;
 
     this.marketplaceHelper.populateCategories(this.categories, data.categories, 0);
 
     const adManage = data.advertisement;
     const adEdit = adManage as AdEdit;
-    const categories = adManage.categories && data.maxCategoriesPerAd === 1 ?
-      adManage.categories[0] :
-      adManage.categories;
-    const settings = (data.webshopSettings || {});
+    const categories =
+      adManage.categories && data.maxCategoriesPerAd === 1 ? adManage.categories[0] : adManage.categories;
+    const settings = data.webshopSettings || {};
     this.requiredProductNumber = this.webshop && !settings.productNumberGenerated;
 
     this.mask = !settings.productNumberGenerated ? settings.productNumberMask : '';
     const hasCurrencies = !empty(data.currencies);
-    const firstOrCurrentCurrency = !hasCurrencies ? null :
-      data.currencies?.find(c => this.ApiHelper.internalNameOrId(c) === adManage.currency) || data.currencies[0];
+    const firstOrCurrentCurrency = !hasCurrencies
+      ? null
+      : data.currencies?.find(c => this.ApiHelper.internalNameOrId(c) === adManage.currency) || data.currencies[0];
 
     this.form = this.formBuilder.group({
       name: [adManage.name, Validators.required],
       categories: [categories, Validators.required],
-      currency: [firstOrCurrentCurrency ? this.ApiHelper.internalNameOrId(firstOrCurrentCurrency) : null, hasCurrencies ? Validators.required : null],
+      currency: [
+        firstOrCurrentCurrency ? this.ApiHelper.internalNameOrId(firstOrCurrentCurrency) : null,
+        hasCurrencies ? Validators.required : null
+      ],
       price: [adManage.price, this.webshop && hasCurrencies ? Validators.required : null],
       publicationBeginDate: [adManage.publicationPeriod.begin, Validators.required],
       publicationEndDate: [adManage.publicationPeriod.end, Validators.required],
@@ -136,17 +149,22 @@ export class EditAdComponent
       version: adEdit.version,
       stockType: this.webshop ? this.resolveStockType(adManage) : null,
       id: this.id,
-      kind: this.kind,
+      kind: this.kind
     });
     this.form.addControl('addresses', this.formBuilder.control(adManage.addresses));
     this.form.addControl('deliveryMethods', this.formBuilder.control(adManage.deliveryMethods));
-    this.form.addControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
-      currentValues: adManage.customValues,
-    }));
-    this.addSub(this.form.get('currency').valueChanges.subscribe(id => {
-      this.updateCurrency(id, data);
-      this.updateDeliveryMethods(data);
-    }));
+    this.form.addControl(
+      'customValues',
+      this.fieldHelper.customValuesFormGroup(data.customFields, {
+        currentValues: adManage.customValues
+      })
+    );
+    this.addSub(
+      this.form.get('currency').valueChanges.subscribe(id => {
+        this.updateCurrency(id, data);
+        this.updateDeliveryMethods(data);
+      })
+    );
     // Preselect the first currency when creating a new ad
     // or use the single returned currency when editing if it's the same of the ad
     this.currency = firstOrCurrentCurrency;
@@ -196,7 +214,7 @@ export class EditAdComponent
    */
   protected updateDeliveryMethods(data: AdBasicData) {
     this.deliveryMethods$.next(
-      data.deliveryMethods.filter(dm => dm.chargeCurrency == null || dm.chargeCurrency.id === (this.currency || {}).id),
+      data.deliveryMethods.filter(dm => dm.chargeCurrency == null || dm.chargeCurrency.id === (this.currency || {}).id)
     );
   }
 
@@ -220,7 +238,14 @@ export class EditAdComponent
   }
 
   showNotAvailableCurrenciesError(): boolean {
-    return (this.data as AdDataForEdit).status === AdStatusEnum.DISABLED && (!this.data.currencies || this.data.currencies.length === 0);
+    return (
+      (this.data as AdDataForEdit).status === AdStatusEnum.DISABLED &&
+      (!this.data.currencies || this.data.currencies.length === 0)
+    );
+  }
+
+  showCurrencyNotAvailableWarning(): boolean {
+    return (this.data as AdDataForEdit).currencyNotAvailable;
   }
 
   showDisabledAdWarning(): boolean {
@@ -240,7 +265,6 @@ export class EditAdComponent
    * a new ad based on the current one
    */
   doSave(insertNew: boolean, submitForAuthorization: boolean) {
-
     if (!validateBeforeSubmit(this.form)) {
       return;
     }
@@ -251,9 +275,9 @@ export class EditAdComponent
     delete value.publicationBeginDate;
     delete value.publicationEndDate;
 
-    value.promotionalPeriod = value.setPromotionalPeriod ?
-      this.ApiHelper.datePeriod(value.promotionalBeginDate, value.promotionalEndDate) :
-      null;
+    value.promotionalPeriod = value.setPromotionalPeriod
+      ? this.ApiHelper.datePeriod(value.promotionalBeginDate, value.promotionalEndDate)
+      : null;
     delete value.setPromotionalPeriod;
     delete value.promotionalBeginDate;
     delete value.promotionalEndDate;
@@ -274,7 +298,7 @@ export class EditAdComponent
       if (insertNew) {
         this.router.navigate(['/marketplace', this.owner, this.data.kind, 'ad', 'new'], {
           replaceUrl: true,
-          queryParams: { basedOnId: id || this.id },
+          queryParams: { basedOnId: id || this.id }
         });
       } else if (this.basedOnId) {
         this.router.navigate(['/marketplace', 'edit', id], { replaceUrl: true });
@@ -283,32 +307,37 @@ export class EditAdComponent
       }
     };
 
-    if(this.data.canRequestAuthorization) {
+    if (this.data.canRequestAuthorization) {
       value.submitForAuthorization = submitForAuthorization;
     }
 
     if (this.create) {
-
       value.images = this.uploadedImages.map(i => i.id);
 
-      this.addSub(this.marketplaceService.createAd({
-        user: this.owner,
-        body: value,
-      }).subscribe(onFinish));
-
+      this.addSub(
+        this.marketplaceService
+          .createAd({
+            user: this.owner,
+            body: value
+          })
+          .subscribe(onFinish)
+      );
     } else {
       const updateAdReq = this.marketplaceService.updateAd({
         ad: this.id,
-        body: value,
+        body: value
       });
 
       // If the main image has changed reload the ad version
       if (this.mainImageChanged()) {
-        this.addSub(this.marketplaceService.getAdDataForEdit({ ad: this.id, fields: ['advertisement.version'] })
-          .subscribe(data => {
-            value.version = data.advertisement.version;
-            this.addSub(updateAdReq.subscribe(onFinish));
-          }));
+        this.addSub(
+          this.marketplaceService
+            .getAdDataForEdit({ ad: this.id, fields: ['advertisement.version'] })
+            .subscribe(data => {
+              value.version = data.advertisement.version;
+              this.addSub(updateAdReq.subscribe(onFinish));
+            })
+        );
       } else {
         this.addSub(updateAdReq.subscribe(onFinish));
       }
@@ -321,8 +350,7 @@ export class EditAdComponent
   protected mainImageChanged(): boolean {
     const currentImage = this.images.length > 0 ? this.ApiHelper.internalNameOrId(this.images[0]) : null;
     // Check any change in the main image, either added and removed, or changed
-    return this.mainImage == null && currentImage == null && this.hasRemovedImages ||
-      this.mainImage !== currentImage;
+    return (this.mainImage == null && currentImage == null && this.hasRemovedImages) || this.mainImage !== currentImage;
   }
 
   /**
@@ -333,8 +361,8 @@ export class EditAdComponent
       class: 'modal-form',
       initialState: {
         images: this.images,
-        manageAfterConfirm: this.create,
-      },
+        manageAfterConfirm: this.create
+      }
     });
     const component = ref.content as ManageImagesComponent;
     component.result.pipe(first()).subscribe(result => {
@@ -358,7 +386,7 @@ export class EditAdComponent
    * Updates images
    */
   onUploadDone(images: Image[]) {
-    this.images = ([...this.images, ...images]);
+    this.images = [...this.images, ...images];
     this.uploadedImages = [...(this.uploadedImages || []), ...images];
     this.changeDetector.detectChanges();
   }

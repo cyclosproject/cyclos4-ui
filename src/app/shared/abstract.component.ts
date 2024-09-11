@@ -13,7 +13,6 @@ import { Subscription } from 'rxjs';
  */
 @Directive()
 export abstract class AbstractComponent implements OnInit, OnDestroy {
-
   // Exports for templates
   ApiHelper = ApiHelper;
   SvgIcon = SvgIcon;
@@ -57,7 +56,11 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
    * @param handler The action handler
    * @param stop By default, the event will be stopped if matched the shortcut. Can be set to false to allow the default action.
    */
-  addShortcut(shortcut: string | Shortcut | (string | Shortcut)[], handler: (event: KeyboardEvent) => any, stop = true): Subscription {
+  addShortcut(
+    shortcut: string | Shortcut | (string | Shortcut)[],
+    handler: (event: KeyboardEvent) => any,
+    stop = true
+  ): Subscription {
     const sub = this.shortcut.subscribe(shortcut, handler, stop);
     this.shortcutSubs.push(sub);
     return new Subscription(() => {
@@ -69,8 +72,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.unsubscribe(false);
@@ -92,5 +94,4 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
     this.shortcutSubs.forEach(sub => sub.unsubscribe());
     this.shortcutSubs = [];
   }
-
 }

@@ -1,8 +1,18 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import {
-  AccountWithCurrency, AvailabilityEnum, Currency, CustomFieldDetailed, DataForTransaction, PaymentRequestSchedulingEnum,
-  PaymentSchedulingEnum, SendPaymentRequest, TimeFieldEnum, TimeInterval, TransactionTypeData, TransferType
+  AccountWithCurrency,
+  AvailabilityEnum,
+  Currency,
+  CustomFieldDetailed,
+  DataForTransaction,
+  PaymentRequestSchedulingEnum,
+  PaymentSchedulingEnum,
+  SendPaymentRequest,
+  TimeFieldEnum,
+  TimeInterval,
+  TransactionTypeData,
+  TransferType
 } from 'app/api/models';
 import { PaymentRequestsService } from 'app/api/services/payment-requests.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -26,7 +36,7 @@ const OCCURRENCES_COUNT_VAL: ValidatorFn = control => {
       if (isNaN(value)) {
         // The occurrences count is required
         return {
-          required: true,
+          required: true
         };
       } else {
         // Needs at least 2 occurrences
@@ -43,10 +53,9 @@ const OCCURRENCES_COUNT_VAL: ValidatorFn = control => {
 @Component({
   selector: 'request-payment',
   templateUrl: 'request-payment.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RequestPaymentComponent extends BasePageComponent<DataForTransaction> implements OnInit {
-
   fromParam: string;
   toParam: string;
   fromSelf: boolean;
@@ -86,7 +95,8 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
     injector: Injector,
     private bankingHelper: BankingHelperService,
     private paymentRequestsService: PaymentRequestsService,
-    private changeDetector: ChangeDetectorRef) {
+    private changeDetector: ChangeDetectorRef
+  ) {
     super(injector);
   }
 
@@ -120,21 +130,27 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
     this.form = this.buildForm();
 
     // Get the payment data
-    this.addSub(this.paymentRequestsService.dataForSendPaymentRequest({
-      owner: this.fromParam,
-      to: this.toParam,
-    }).subscribe(data => this.data = data));
+    this.addSub(
+      this.paymentRequestsService
+        .dataForSendPaymentRequest({
+          owner: this.fromParam,
+          to: this.toParam
+        })
+        .subscribe(data => (this.data = data))
+    );
 
     // When the account changes, update the currency
     this.addSub(this.form.get('account').valueChanges.subscribe(type => this.updateCurrency(this.data, type)));
 
     // When the payment type data changes, update the form validation and fields
-    this.addSub(this.paymentTypeData$.subscribe(typeData => {
-      if (this.lastPaymentTypeData == null || !isEqual(this.lastPaymentTypeData, typeData)) {
-        this.adjustForm(typeData);
-      }
-      this.lastPaymentTypeData = typeData;
-    }));
+    this.addSub(
+      this.paymentTypeData$.subscribe(typeData => {
+        if (this.lastPaymentTypeData == null || !isEqual(this.lastPaymentTypeData, typeData)) {
+          this.adjustForm(typeData);
+        }
+        this.lastPaymentTypeData = typeData;
+      })
+    );
 
     // Adjust the conditional validators (for example, for scheduling)
     this.addSub(this.form.valueChanges.subscribe(value => this.adjustFormValidators(value)));
@@ -230,7 +246,7 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
 
   perform() {
     // Before proceeding, copy the value of all valid custom fields
-    const customValueControls: { [key: string]: AbstractControl; } = {};
+    const customValueControls: { [key: string]: AbstractControl } = {};
     const typeData = this.paymentTypeData;
     if (typeData && typeData.customFields) {
       for (const cf of typeData.customFields) {
@@ -245,15 +261,18 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
       title: this.i18n.general.confirm,
       message: this.i18n.transaction.confirmPaymentRequest,
       callback: () =>
-        this.paymentRequestsService.sendPaymentRequest({
-          owner: this.fromParam,
-          body: this.confirmDataRequest(),
-        }).pipe(first()).subscribe(performed => {
-          this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(performed)],
-            { state: { url: this.router.url } });
-        })
+        this.paymentRequestsService
+          .sendPaymentRequest({
+            owner: this.fromParam,
+            body: this.confirmDataRequest()
+          })
+          .pipe(first())
+          .subscribe(performed => {
+            this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(performed)], {
+              state: { url: this.router.url }
+            });
+          })
     });
-
   }
 
   private confirmDataRequest(): SendPaymentRequest {
@@ -308,5 +327,4 @@ export class RequestPaymentComponent extends BasePageComponent<DataForTransactio
       return this.menu.userMenu(data.fromUser, Menu.PAYMENT_REQUESTS);
     }
   }
-
 }

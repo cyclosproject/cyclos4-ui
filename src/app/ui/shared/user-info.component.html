@@ -1,6 +1,5 @@
-<ng-container *ngIf="operator else regularUser">
-  <label-value *ngIf="authHelper.isSelf(user.user)"
-    [label]="i18n.user.operatorOwner" [kind]="kind">
+<ng-container *ngIf="operator; else regularUser">
+  <label-value *ngIf="authHelper.isSelf(user.user)" [label]="i18n.user.operatorOwner" [kind]="kind">
     <user-link [user]="user.user"></user-link>
   </label-value>
   <label-value [label]="i18n.general.operator" [kind]="kind">
@@ -8,8 +7,7 @@
   </label-value>
 </ng-container>
 <ng-template #regularUser>
-  <label-value *ngIf="layout.gtxs$ | async; else mobile"
-    [label]="i18n.general.user" [kind]="kind">
+  <label-value *ngIf="layout.gtxs$ | async; else mobile" [label]="i18n.general.user" [kind]="kind">
     <user-link [user]="user"></user-link>
   </label-value>
 </ng-template>

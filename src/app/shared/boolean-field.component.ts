@@ -1,10 +1,20 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Host, Injector,
-  Input, Optional, Output, SkipSelf, ViewChild, HostBinding,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Host,
+  HostBinding,
+  Injector,
+  Input,
+  Optional,
+  Output,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { LayoutService } from 'app/core/layout.service';
+import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { truthyAttr } from 'app/shared/helper';
 
 /**
@@ -14,13 +24,9 @@ import { truthyAttr } from 'app/shared/helper';
   selector: 'boolean-field',
   templateUrl: 'boolean-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: BooleanFieldComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: BooleanFieldComponent, multi: true }]
 })
-export class BooleanFieldComponent
-  extends BaseFormFieldComponent<boolean | string> {
-
+export class BooleanFieldComponent extends BaseFormFieldComponent<boolean | string> {
   /** Whether the value type is boolean or string */
   @Input() type: 'boolean' | 'string' = 'boolean';
 
@@ -41,7 +47,8 @@ export class BooleanFieldComponent
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public layout: LayoutService) {
+    public layout: LayoutService
+  ) {
     super(injector, controlContainer);
     this.labelPosition = 'sideForced';
   }

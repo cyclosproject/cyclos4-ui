@@ -1,15 +1,22 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { CustomFieldTypeEnum, ImageSizeEnum, PhysicalTokenTypeEnum, RoleEnum, TokenStatusEnum, TokenView } from 'app/api/models';
+import {
+  CustomFieldTypeEnum,
+  ImageSizeEnum,
+  PhysicalTokenTypeEnum,
+  RoleEnum,
+  TokenStatusEnum,
+  TokenView
+} from 'app/api/models';
 import { TokensService } from 'app/api/services/tokens.service';
-import { UserHelperService } from 'app/ui/core/user-helper.service';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
+import { TokenHelperService } from 'app/ui/core/token-helper.service';
+import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { AssignTokenComponent } from 'app/ui/users/tokens/assign-token.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
-import { SvgIcon } from 'app/core/svg-icon';
-import { TokenHelperService } from 'app/ui/core/token-helper.service';
 
 /**
  * Displays a token details
@@ -17,10 +24,9 @@ import { TokenHelperService } from 'app/ui/core/token-helper.service';
 @Component({
   selector: 'view-token',
   templateUrl: 'view-token.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewTokenComponent extends BaseViewPageComponent<TokenView> implements OnInit {
-
   id: string;
   qrCodeUrl$ = new BehaviorSubject<string>(null);
 
@@ -29,14 +35,15 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
     private userHelper: UserHelperService,
     private modal: BsModalService,
     private tokenHelper: TokenHelperService,
-    private tokenService: TokensService) {
+    private tokenService: TokensService
+  ) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.id = this.route.snapshot.paramMap.get('id');
-    this.addSub(this.tokenService.viewToken({ id: this.id }).subscribe(data => this.data = data));
+    this.addSub(this.tokenService.viewToken({ id: this.id }).subscribe(data => (this.data = data)));
   }
 
   isQrCode(token: TokenView): boolean {
@@ -50,79 +57,105 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
     const headingActions: HeadingAction[] = [];
     // Assign
     if (token.assign) {
-      headingActions.push(new HeadingAction(SvgIcon.PersonPlus, this.i18n.token.action.assign, () => {
-        if (token.status === TokenStatusEnum.UNASSIGNED) {
-          this.modal.show(AssignTokenComponent, {
-            class: 'modal-form',
-            initialState: { token: this.id, updateAction: () => this.reload() },
-          });
-        }
-      }));
+      headingActions.push(
+        new HeadingAction(SvgIcon.PersonPlus, this.i18n.token.action.assign, () => {
+          if (token.status === TokenStatusEnum.UNASSIGNED) {
+            this.modal.show(AssignTokenComponent, {
+              class: 'modal-form',
+              initialState: { token: this.id, updateAction: () => this.reload() }
+            });
+          }
+        })
+      );
     }
     // Set activation deadline
     if (token.setActivationDeadline) {
-      headingActions.push(new HeadingAction(SvgIcon.CalendarEvent, this.i18n.token.action.changeDeadline, () => {
-        this.confirmation.confirm({
-          title: this.i18n.token.action.changeDeadline,
-          customFields: [{
-            internalName: 'deadline',
-            name: this.i18n.token.activationDeadline,
-            type: CustomFieldTypeEnum.DATE,
-            required: true
-          }],
-          callback: params =>
-            this.tokenService.setTokenActivationDeadline({ id: this.id, date: params.customValues.deadline })
-              .subscribe(() => this.notifyDoneAndReload(this.i18n.token.action.done.deadlineChanged))
-        });
-      }));
+      headingActions.push(
+        new HeadingAction(SvgIcon.CalendarEvent, this.i18n.token.action.changeDeadline, () => {
+          this.confirmation.confirm({
+            title: this.i18n.token.action.changeDeadline,
+            customFields: [
+              {
+                internalName: 'deadline',
+                name: this.i18n.token.activationDeadline,
+                type: CustomFieldTypeEnum.DATE,
+                required: true
+              }
+            ],
+            callback: params =>
+              this.tokenService
+                .setTokenActivationDeadline({ id: this.id, date: params.customValues.deadline })
+                .subscribe(() => this.notifyDoneAndReload(this.i18n.token.action.done.deadlineChanged))
+          });
+        })
+      );
     }
     // Set expiry date
     if (token.setExpiryDate) {
-      headingActions.push(new HeadingAction(SvgIcon.CalendarEvent, this.i18n.token.action.changeExpiry, () => {
-        this.confirmation.confirm({
-          title: this.i18n.token.action.changeExpiry,
-          customFields: [{
-            internalName: 'expiry',
-            name: this.i18n.token.expiryDate,
-            type: CustomFieldTypeEnum.DATE,
-            required: true
-          }],
-          callback: params =>
-            this.tokenService.setTokenExpiryDate({ id: this.id, date: params.customValues.expiry })
-              .subscribe(() => this.notifyDoneAndReload(this.i18n.token.action.done.expiryChanged))
-        });
-      }));
+      headingActions.push(
+        new HeadingAction(SvgIcon.CalendarEvent, this.i18n.token.action.changeExpiry, () => {
+          this.confirmation.confirm({
+            title: this.i18n.token.action.changeExpiry,
+            customFields: [
+              {
+                internalName: 'expiry',
+                name: this.i18n.token.expiryDate,
+                type: CustomFieldTypeEnum.DATE,
+                required: true
+              }
+            ],
+            callback: params =>
+              this.tokenService
+                .setTokenExpiryDate({ id: this.id, date: params.customValues.expiry })
+                .subscribe(() => this.notifyDoneAndReload(this.i18n.token.action.done.expiryChanged))
+          });
+        })
+      );
     }
     // Block
     if (token.block) {
-      headingActions.push(new HeadingAction(SvgIcon.Lock, this.i18n.token.action.block, () => {
-        this.tokenService.blockToken({ id: this.id }).subscribe(() => this.notifyDoneAndReload(this.i18n.token.action.done.blocked));
-      }));
+      headingActions.push(
+        new HeadingAction(SvgIcon.Lock, this.i18n.token.action.block, () => {
+          this.tokenService
+            .blockToken({ id: this.id })
+            .subscribe(() => this.notifyDoneAndReload(this.i18n.token.action.done.blocked));
+        })
+      );
     }
     // Unblock
     if (token.unblock) {
-      headingActions.push(new HeadingAction(SvgIcon.Unlock, this.i18n.token.action.unblock, () => {
-        this.tokenService.unblockToken({ id: this.id }).subscribe(() => this.notifyDoneAndReload(this.i18n.token.action.done.unblocked));
-      }));
+      headingActions.push(
+        new HeadingAction(SvgIcon.Unlock, this.i18n.token.action.unblock, () => {
+          this.tokenService
+            .unblockToken({ id: this.id })
+            .subscribe(() => this.notifyDoneAndReload(this.i18n.token.action.done.unblocked));
+        })
+      );
     }
     // Activate
     if (token.activate) {
-      headingActions.push(new HeadingAction(this.tokenHelper.icon(token.type), this.i18n.token.action.activate, () => {
-        this.tokenService.activatePendingToken({ id: this.id })
-          .subscribe(() => this.notifyDoneAndReload(this.i18n.token.action.done.activated));
-      }));
+      headingActions.push(
+        new HeadingAction(this.tokenHelper.icon(token.type), this.i18n.token.action.activate, () => {
+          this.tokenService
+            .activatePendingToken({ id: this.id })
+            .subscribe(() => this.notifyDoneAndReload(this.i18n.token.action.done.activated));
+        })
+      );
     }
     // Cancel
     if (token.cancel) {
-      headingActions.push(new HeadingAction(SvgIcon.XCircle, this.i18n.token.action.cancel, () => {
-        this.confirmation.confirm({
-          title: this.i18n.token.action.cancel,
-          message: this.i18n.token.action.message.cancel,
-          callback: () =>
-            this.tokenService.cancelToken({ id: this.id })
-              .subscribe(() => this.notifyDoneAndReload(this.i18n.token.action.done.canceled))
-        });
-      }));
+      headingActions.push(
+        new HeadingAction(SvgIcon.XCircle, this.i18n.token.action.cancel, () => {
+          this.confirmation.confirm({
+            title: this.i18n.token.action.cancel,
+            message: this.i18n.token.action.message.cancel,
+            callback: () =>
+              this.tokenService
+                .cancelToken({ id: this.id })
+                .subscribe(() => this.notifyDoneAndReload(this.i18n.token.action.done.canceled))
+          });
+        })
+      );
     }
     this.headingActions = headingActions;
   }
@@ -132,8 +165,11 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
     this.reload();
   }
   getTokenQrCodeUrl() {
-    this.addSub(this.tokenService.getTokenQrCode({ id: this.id, size: ImageSizeEnum.MEDIUM })
-      .subscribe(qrCode => this.qrCodeUrl$.next(URL.createObjectURL(qrCode))));
+    this.addSub(
+      this.tokenService
+        .getTokenQrCode({ id: this.id, size: ImageSizeEnum.MEDIUM })
+        .subscribe(qrCode => this.qrCodeUrl$.next(URL.createObjectURL(qrCode)))
+    );
   }
 
   statusDisplay(status: TokenStatusEnum) {
@@ -141,11 +177,16 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
   }
 
   showUser(): boolean {
-    return !(this.authHelper.isSelf(this.data.user) || (this.data.user?.user && this.authHelper.isSelf(this.data.user.user)));
+    return !(
+      this.authHelper.isSelf(this.data.user) ||
+      (this.data.user?.user && this.authHelper.isSelf(this.data.user.user))
+    );
   }
 
   valueLabel(): string {
-    return this.data.type.physicalType === PhysicalTokenTypeEnum.NFC_TAG ? this.i18n.token.label : this.i18n.token.value;
+    return this.data.type.physicalType === PhysicalTokenTypeEnum.NFC_TAG
+      ? this.i18n.token.label
+      : this.i18n.token.value;
   }
 
   showDeadLine(): boolean {
@@ -153,7 +194,12 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
   }
 
   showExpiryDate(): boolean {
-    return [TokenStatusEnum.ACTIVE, TokenStatusEnum.BLOCKED, TokenStatusEnum.CANCELED, TokenStatusEnum.EXPIRED].includes(this.data.status);
+    return [
+      TokenStatusEnum.ACTIVE,
+      TokenStatusEnum.BLOCKED,
+      TokenStatusEnum.CANCELED,
+      TokenStatusEnum.EXPIRED
+    ].includes(this.data.status);
   }
 
   resolveMenu(view: TokenView) {

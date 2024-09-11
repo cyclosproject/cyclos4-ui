@@ -6,10 +6,9 @@ import { AfterContentInit, ChangeDetectionStrategy, Component, EventEmitter, Hos
 @Component({
   selector: 'content-monitor',
   templateUrl: 'content-monitor.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContentMonitorComponent implements AfterContentInit {
-
   @HostBinding('style.display') styleDisplay = 'flex';
   @HostBinding('style.flexDirection') styleDirection = 'column';
   @HostBinding('style.width') styleWidth = '100%';

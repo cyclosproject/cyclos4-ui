@@ -1,11 +1,34 @@
 import {
-  ChangeDetectionStrategy, Component, EventEmitter, Host, Injector, Input,
-  OnInit, Optional, Output, SkipSelf, ViewChild
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Host,
+  Injector,
+  Input,
+  OnInit,
+  Optional,
+  Output,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
-import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import {
-  CustomFieldBinaryValues, CustomFieldControlEnum, CustomFieldDetailed,
-  CustomFieldTypeEnum, Image, LinkedEntityTypeEnum, StoredFile, UserQueryFilters, UserStatusEnum
+  AbstractControl,
+  ControlContainer,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator
+} from '@angular/forms';
+import {
+  CustomFieldBinaryValues,
+  CustomFieldControlEnum,
+  CustomFieldDetailed,
+  CustomFieldTypeEnum,
+  Image,
+  LinkedEntityTypeEnum,
+  StoredFile,
+  UserQueryFilters,
+  UserStatusEnum
 } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -42,11 +65,10 @@ const ENUMERATED = [CustomFieldTypeEnum.SINGLE_SELECTION, CustomFieldTypeEnum.MU
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: CustomFieldInputComponent, multi: true },
-    { provide: NG_VALIDATORS, useExisting: CustomFieldInputComponent, multi: true },
-  ],
+    { provide: NG_VALIDATORS, useExisting: CustomFieldInputComponent, multi: true }
+  ]
 })
 export class CustomFieldInputComponent extends BaseFormFieldComponent<string> implements Validator, OnInit {
-
   private _field: CustomFieldDetailed;
   @Input() get field(): CustomFieldDetailed {
     return this._field;
@@ -122,7 +144,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private fieldHelper: FieldHelperService,
-    private modal: BsModalService,
+    private modal: BsModalService
   ) {
     super(injector, controlContainer);
   }
@@ -148,7 +170,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
     // When disabled, set a value suitable for the format-field-value component
     if (this.formControl.disabled) {
       this.disabledValueObject = {
-        customValues: {},
+        customValues: {}
       };
       this.disabledValueObject.customValues[this.field.internalName] = this.formControl.value;
     }
@@ -156,7 +178,11 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
 
   get hasValuesList(): boolean {
     // Don't handle enumerated as with values list because they are already rendered correctly, and have categories
-    return this.field.hasValuesList && !ENUMERATED.includes(this.type) && this.type !== CustomFieldTypeEnum.DYNAMIC_MULTI_SELECTION;
+    return (
+      this.field.hasValuesList &&
+      !ENUMERATED.includes(this.type) &&
+      this.type !== CustomFieldTypeEnum.DYNAMIC_MULTI_SELECTION
+    );
   }
 
   get valueAsArray(): string[] {
@@ -174,7 +200,6 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
   userSearchFilters(): UserQueryFilters {
     return { statuses: [UserStatusEnum.ACTIVE, UserStatusEnum.BLOCKED, UserStatusEnum.DISABLED] };
   }
-
 
   // Validator methods
   validate(c: AbstractControl): ValidationErrors {
@@ -215,7 +240,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
       this.radioGroupField,
       this.imagesField,
       this.filesField,
-      this.userField,
+      this.userField
     ].find(c => c != null);
   }
 
@@ -227,5 +252,4 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
     // Never used, because we alway set disabledFormat to component
     return null;
   }
-
 }

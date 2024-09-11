@@ -2,34 +2,38 @@
   <label-value [label]="i18n.voucher.originAccount" kind="fieldView">
     {{ data.account.type.name }}
   </label-value>
-  <label-value *ngIf="data.minimumTimeToRedeem" kind="fieldView"
-    [label]="i18n.voucher.buy.minTimeToRedeem">
-    {{ i18n.voucher.buy.minTimeToRedeemAfterBuy(
-    format.formatTimeInterval(data.minimumTimeToRedeem)) }}
+  <label-value *ngIf="data.minimumTimeToRedeem" kind="fieldView" [label]="i18n.voucher.buy.minTimeToRedeem">
+    {{ i18n.voucher.buy.minTimeToRedeemAfterBuy(format.formatTimeInterval(data.minimumTimeToRedeem)) }}
   </label-value>
-  <label-value *ngIf="data.expirationDate" kind="fieldView"
-    [label]="i18n.general.expirationDate">
+  <label-value *ngIf="data.expirationDate" kind="fieldView" [label]="i18n.general.expirationDate">
     {{ data.expirationDate | date }}
   </label-value>
-  <label-value *ngIf="data.redeemOnWeekDays" kind="fieldView"
-    [label]="i18n.voucher.redeem.onDays">
-    {{ format.formatWeekDays(data.redeemOnWeekDays) ||
-    i18n.voucher.redeem.onDaysAny }}
+  <label-value *ngIf="data.redeemOnWeekDays" kind="fieldView" [label]="i18n.voucher.redeem.onDays">
+    {{ format.formatWeekDays(data.redeemOnWeekDays) || i18n.voucher.redeem.onDaysAny }}
   </label-value>
-  <label-value *ngIf="data.account.status.availableBalance"
-    [label]="i18n.account.availableBalance" kind="fieldView">
-    {{ data.account.status.availableBalance | currency:currency }}
+  <label-value *ngIf="data.account.status.availableBalance" [label]="i18n.account.availableBalance" kind="fieldView">
+    {{ data.account.status.availableBalance | currency : currency }}
   </label-value>
-  <input-field type="number" formControlName="count" required
-    fieldSize="small" [label]="i18n.voucher.numberOfVouchers">
+  <input-field type="number" formControlName="count" required fieldSize="small" [label]="i18n.voucher.numberOfVouchers">
   </input-field>
-  <decimal-field *ngIf="showAmount" formControlName="amount" required
-    [label]="i18n.voucher.amountPerVoucher" [prefix]="currency.prefix"
-    [suffix]="currency.suffix" [scale]="currency.decimalDigits">
+  <decimal-field
+    *ngIf="showAmount"
+    formControlName="amount"
+    required
+    [label]="i18n.voucher.amountPerVoucher"
+    [prefix]="currency.prefix"
+    [suffix]="currency.suffix"
+    [scale]="currency.decimalDigits">
   </decimal-field>
-  <user-field #user *ngIf="showUser" formControlName='user'
-    [label]="i18n.general.user" [allowContacts]="false"></user-field>
-  <custom-field-input *ngFor="let cf of data.voucherCustomFields" [field]="cf"
+  <user-field
+    #user
+    *ngIf="showUser"
+    formControlName="user"
+    [label]="i18n.general.user"
+    [allowContacts]="false"></user-field>
+  <custom-field-input
+    *ngFor="let cf of data.voucherCustomFields"
+    [field]="cf"
     [formControl]="form.controls.voucherCustomValues.get(cf.internalName)">
   </custom-field-input>
 </ng-container>

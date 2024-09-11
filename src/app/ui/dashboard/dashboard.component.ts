@@ -1,8 +1,15 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AdKind,
-  DataForFrontendHome, DataForUserPasswords, FrontendContentLayoutEnum,
-  FrontendDashboardAccount, PasswordStatusAndActions, PasswordStatusEnum, QuickAccessTypeEnum, RoleEnum, UserMenuEnum
+  DataForFrontendHome,
+  DataForUserPasswords,
+  FrontendContentLayoutEnum,
+  FrontendDashboardAccount,
+  PasswordStatusAndActions,
+  PasswordStatusEnum,
+  QuickAccessTypeEnum,
+  RoleEnum,
+  UserMenuEnum
 } from 'app/api/models';
 import { FrontendService } from 'app/api/services/frontend.service';
 import { IconLoadingService } from 'app/core/icon-loading.service';
@@ -20,8 +27,10 @@ import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 export const PasswordStatusNeedingAttention = [
-  PasswordStatusEnum.EXPIRED, PasswordStatusEnum.RESET,
-  PasswordStatusEnum.PENDING, PasswordStatusEnum.NEVER_CREATED,
+  PasswordStatusEnum.EXPIRED,
+  PasswordStatusEnum.RESET,
+  PasswordStatusEnum.PENDING,
+  PasswordStatusEnum.NEVER_CREATED
 ];
 
 /**
@@ -31,10 +40,9 @@ export const PasswordStatusNeedingAttention = [
   // tslint:disable-next-line:component-selector
   selector: 'dashboard',
   templateUrl: 'dashboard.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent extends BasePageComponent<DataForFrontendHome> implements OnInit {
-
   FrontendContentLayoutEnum = FrontendContentLayoutEnum;
 
   passwords: DataForUserPasswords;
@@ -49,7 +57,8 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
     private frontendService: FrontendService,
     private quickAccessHelper: QuickAccessHelperService,
     private iconLoadingService: IconLoadingService,
-    private runOperationHelper: RunOperationHelperService) {
+    private runOperationHelper: RunOperationHelperService
+  ) {
     super(injector);
   }
 
@@ -62,21 +71,26 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
     }
 
     // Fetch the home page
-    this.addSub(this.frontendService.dataForFrontendHome({
-      screenSize: this.layout.screenSize
-    }).pipe(
-      //Before setting the data, fetch possibly missing icons for the quick access
-      switchMap(data => {
-        const icons = data.quickAccess?.map(qa => this.quickAccessHelper.iconAndLabel(qa).icon).filter(i => !!i);
-        if (icons.length === 0) {
-          return of(data);
-        } else {
-          return this.iconLoadingService.load(icons, false).pipe(switchMap(() => of(data)));
-        }
-      })
-    ).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.frontendService
+        .dataForFrontendHome({
+          screenSize: this.layout.screenSize
+        })
+        .pipe(
+          //Before setting the data, fetch possibly missing icons for the quick access
+          switchMap(data => {
+            const icons = data.quickAccess?.map(qa => this.quickAccessHelper.iconAndLabel(qa).icon).filter(i => !!i);
+            if (icons.length === 0) {
+              return of(data);
+            } else {
+              return this.iconLoadingService.load(icons, false).pipe(switchMap(() => of(data)));
+            }
+          })
+        )
+        .subscribe(data => {
+          this.data = data;
+        })
+    );
   }
 
   onDataInitialized(data: DataForFrontendHome) {
@@ -118,14 +132,13 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
     this.menu.navigate({
       menu: new ActiveMenu(Menu.PASSWORDS),
       event,
-      clear: false,
+      clear: false
     });
   }
 
   resolveMenu() {
     return Menu.DASHBOARD;
   }
-
 
   initDashboardActions(data: DataForFrontendHome) {
     this.actions = [];
@@ -135,22 +148,29 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
 
     if (this.layout.gtsm && dataForFrontend.canManageQuickAccess) {
       this.headingActions = [
-        new HeadingAction(SvgIcon.Gear, this.i18n.dashboard.customizeQuickAccess,
-          event => this.menu.navigate({
-            menu: new ActiveMenu(Menu.QUICK_ACCESS_SETTINGS),
-            clear: false,
-            event
-          }), true)
+        new HeadingAction(
+          SvgIcon.Gear,
+          this.i18n.dashboard.customizeQuickAccess,
+          event =>
+            this.menu.navigate({
+              menu: new ActiveMenu(Menu.QUICK_ACCESS_SETTINGS),
+              clear: false,
+              event
+            }),
+          true
+        )
       ];
     }
 
     const isAdmin = this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR;
     const owner = isAdmin ? ApiHelper.SYSTEM : ApiHelper.SELF;
-    const vouchersMenu = new ActiveMenu(isAdmin
-      ? Menu.SEARCH_VOUCHERS
-      : this.dataForFrontendHolder.dataForFrontend.voucherBuyingMenu == UserMenuEnum.MARKETPLACE
+    const vouchersMenu = new ActiveMenu(
+      isAdmin
+        ? Menu.SEARCH_VOUCHERS
+        : this.dataForFrontendHolder.dataForFrontend.voucherBuyingMenu == UserMenuEnum.MARKETPLACE
         ? Menu.SEARCH_MY_VOUCHERS_MARKETPLACE
-        : Menu.SEARCH_MY_VOUCHERS_BANKING);
+        : Menu.SEARCH_MY_VOUCHERS_BANKING
+    );
     const voucherTransactionsMenu = new ActiveMenu(Menu.VOUCHER_TRANSACTIONS);
     const paymentRequestsMenu = new ActiveMenu(Menu.PAYMENT_REQUESTS);
     const externalPaymentsMenu = new ActiveMenu(Menu.EXTERNAL_PAYMENTS);
@@ -160,8 +180,7 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
     const usersMenu = new ActiveMenu(Menu.SEARCH_USERS);
 
     for (const quickAccess of data.quickAccess) {
-      const addAction = (
-        activeMenu: ActiveMenu, onClick?: () => void, customLabel?: string, url?: string): void => {
+      const addAction = (activeMenu: ActiveMenu, onClick?: () => void, customLabel?: string, url?: string): void => {
         const entry = this.menu.menuEntry(activeMenu);
         if (entry) {
           const iconAndLabel = this.quickAccessHelper.iconAndLabel(quickAccess);
@@ -178,8 +197,10 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
       switch (quickAccess.type) {
         case QuickAccessTypeEnum.ACCOUNT:
           // Skip the quick access icon for accounts already visible in the dashboard
-          const allAccounts = (permissions.banking.accounts || []);
-          const accounts = allAccounts.filter(p => this.layout.ltmd || p.visible && !p.viewStatus).map(p => p.account);
+          const allAccounts = permissions.banking.accounts || [];
+          const accounts = allAccounts
+            .filter(p => this.layout.ltmd || (p.visible && !p.viewStatus))
+            .map(p => p.account);
           if (accounts.length >= ApiHelper.MIN_ACCOUNTS_FOR_SUMMARY) {
             addAction(new ActiveMenu(Menu.ACCOUNTS_SUMMARY));
           } else {
@@ -194,7 +215,7 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
           addAction(new ActiveMenu(isAdmin ? Menu.ADMIN_TRANSFERS_OVERVIEW : Menu.BROKER_TRANSFERS_OVERVIEW));
           break;
         case QuickAccessTypeEnum.BALANCES_OVERVIEW:
-          addAction(new ActiveMenu(isAdmin ? Menu.ADMIN_USER_BALANCES_OVERVIEW:Menu.BROKER_USER_BALANCES_OVERVIEW));
+          addAction(new ActiveMenu(isAdmin ? Menu.ADMIN_USER_BALANCES_OVERVIEW : Menu.BROKER_USER_BALANCES_OVERVIEW));
           break;
         case QuickAccessTypeEnum.PAY_USER:
           addAction(new ActiveMenu(Menu.PAYMENT_TO_USER));
@@ -239,8 +260,9 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
           addAction(vouchersMenu, null, null, `/banking/${ApiHelper.SELF}/vouchers/send`);
           break;
         case QuickAccessTypeEnum.VOUCHER_TRANSACTIONS:
-          const voucherTransactionsLabel = this.dataForFrontendHolder.dataForFrontend.topUpEnabled ?
-            this.i18n.dashboard.action.voucherTransactions : this.i18n.dashboard.action.voucherTransactionsRedeems;
+          const voucherTransactionsLabel = this.dataForFrontendHolder.dataForFrontend.topUpEnabled
+            ? this.i18n.dashboard.action.voucherTransactions
+            : this.i18n.dashboard.action.voucherTransactionsRedeems;
           addAction(new ActiveMenu(Menu.VOUCHER_TRANSACTIONS), null, voucherTransactionsLabel);
           break;
         case QuickAccessTypeEnum.REDEEM_VOUCHER:
@@ -304,7 +326,9 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
           break;
         case QuickAccessTypeEnum.PASSWORDS:
           const passwordsLabel =
-            permissions.passwords.passwords.length === 1 ? this.i18n.dashboard.action.password : this.i18n.dashboard.action.passwords;
+            permissions.passwords.passwords.length === 1
+              ? this.i18n.dashboard.action.password
+              : this.i18n.dashboard.action.passwords;
           addAction(new ActiveMenu(Menu.PASSWORDS), null, passwordsLabel);
           break;
         case QuickAccessTypeEnum.DOCUMENTS:
@@ -329,7 +353,7 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
           addAction(new ActiveMenu(Menu.FEEDBACKS));
           break;
         case QuickAccessTypeEnum.SWITCH_THEME:
-          addAction(new ActiveMenu(Menu.SETTINGS), () => this.layout.darkTheme = !this.layout.darkTheme);
+          addAction(new ActiveMenu(Menu.SETTINGS), () => (this.layout.darkTheme = !this.layout.darkTheme));
           break;
         case QuickAccessTypeEnum.SWITCH_FRONTEND:
           if (!environment.standalone) {
@@ -372,7 +396,7 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
           }
           break;
         case QuickAccessTypeEnum.HELP:
-          if(dataForFrontend.hasHelp){
+          if (dataForFrontend.hasHelp) {
             const helpMenu = this.menu.helpMenu;
             addAction(new ActiveMenu(helpMenu));
           }
@@ -380,5 +404,4 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
       }
     }
   }
-
 }

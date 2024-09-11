@@ -1,15 +1,22 @@
 import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  Address, AddressConfiguration, AdResult, DeliveryMethod,
-  DeliveryMethodTypeEnum, OrderDataForEdit, OrderDataForNew, OrderDeliveryMethod, OrderItem
+  Address,
+  AddressConfiguration,
+  AdResult,
+  DeliveryMethod,
+  DeliveryMethodTypeEnum,
+  OrderDataForEdit,
+  OrderDataForNew,
+  OrderDeliveryMethod,
+  OrderItem
 } from 'app/api/models';
 import { OrdersService } from 'app/api/services/orders.service';
+import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { SearchProductsComponent } from 'app/ui/marketplace/search/search-products.component';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
-import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/ui/shared/menu';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
@@ -20,12 +27,12 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 @Component({
   selector: 'sale-form',
   templateUrl: 'sale-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SaleFormComponent
   extends BasePageComponent<OrderDataForNew | OrderDataForEdit>
-  implements OnInit, OnDestroy {
-
+  implements OnInit, OnDestroy
+{
   id: string;
   user: string;
   create: boolean;
@@ -51,7 +58,8 @@ export class SaleFormComponent
     private orderService: OrdersService,
     private marketplaceHelper: MarketplaceHelperService,
     private addressHelper: AddressHelperService,
-    private modal: BsModalService) {
+    private modal: BsModalService
+  ) {
     super(injector);
   }
 
@@ -66,24 +74,25 @@ export class SaleFormComponent
 
     const request: Observable<OrderDataForNew | OrderDataForEdit> = this.create
       ? this.orderService.getOrderDataForNew({
-        buyer,
-        user: this.user,
-        currency,
-      })
+          buyer,
+          user: this.user,
+          currency
+        })
       : this.orderService.getOrderDataForEdit({
-        order: this.id,
-      });
+          order: this.id
+        });
 
-    this.addSub(request.subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      request.subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized(data: OrderDataForNew | OrderDataForEdit) {
-
     // Remarks
     this.form = this.formBuilder.group({
-      remarks: data.order.remarks,
+      remarks: data.order.remarks
     });
 
     // Delivery methods
@@ -100,9 +109,7 @@ export class SaleFormComponent
       maxTime: [null, Validators.required],
       deliveryType: [DeliveryMethodTypeEnum.DELIVER, Validators.required]
     });
-    this.addSub(this.deliveryForm.valueChanges.subscribe(value =>
-      this.deliveryMethod = value
-    ));
+    this.addSub(this.deliveryForm.valueChanges.subscribe(value => (this.deliveryMethod = value)));
 
     this.deliveryField = this.formBuilder.control({});
     this.form.addControl('deliveryMethod', this.deliveryField);
@@ -131,7 +138,7 @@ export class SaleFormComponent
         price: orderItem.price,
         totalPrice: +orderItem.price * +orderItem.quantity,
         quantity: orderItem.quantity,
-        product,
+        product
       });
     });
     this.products = orderItems;
@@ -157,14 +164,17 @@ export class SaleFormComponent
    */
   addProducts() {
     const ref = this.modal.show(SearchProductsComponent, {
-      class: 'modal-form modal-form-medium', initialState: {
-        currency: this.currency,
-      },
+      class: 'modal-form modal-form-medium',
+      initialState: {
+        currency: this.currency
+      }
     });
     const component = ref.content as SearchProductsComponent;
-    this.addSub(component.select.subscribe((ad: AdResult) => {
-      this.addProduct(ad);
-    }));
+    this.addSub(
+      component.select.subscribe((ad: AdResult) => {
+        this.addProduct(ad);
+      })
+    );
   }
 
   /**
@@ -183,7 +193,7 @@ export class SaleFormComponent
         price: ad.price,
         totalPrice: ad.price,
         quantity: '1',
-        product: ad,
+        product: ad
       };
       result.push(product);
     }
@@ -209,7 +219,8 @@ export class SaleFormComponent
       address.poBox,
       address.region,
       address.street,
-      address.zip].join('');
+      address.zip
+    ].join('');
   }
 
   protected updateDeliveryAddress(data: OrderDataForNew | OrderDataForEdit, init = false) {
@@ -221,7 +232,11 @@ export class SaleFormComponent
     let address = null;
     if (pickup) {
       // When setup a custom pickup method preselect first seller address
-      address = deliveryMethod ? deliveryMethod.address : data.sellerAddresses.length > 0 ? data.sellerAddresses[0] : null;
+      address = deliveryMethod
+        ? deliveryMethod.address
+        : data.sellerAddresses.length > 0
+        ? data.sellerAddresses[0]
+        : null;
     } else if (init && data.order.deliveryAddress) {
       address = data.order.deliveryAddress;
     }
@@ -256,13 +271,17 @@ export class SaleFormComponent
       });
     } else {
       deliveryMethod = data.deliveryMethods.find(a => name === a.name);
-      this.deliveryForm.patchValue(this.deliveryMethod ? {
-        name: deliveryMethod.name,
-        price: deliveryMethod.chargeAmount || null,
-        minTime: deliveryMethod.minDeliveryTime,
-        maxTime: deliveryMethod.maxDeliveryTime,
-        deliveryType: deliveryMethod.deliveryType || DeliveryMethodTypeEnum.DELIVER
-      } : null);
+      this.deliveryForm.patchValue(
+        this.deliveryMethod
+          ? {
+              name: deliveryMethod.name,
+              price: deliveryMethod.chargeAmount || null,
+              minTime: deliveryMethod.minDeliveryTime,
+              maxTime: deliveryMethod.maxDeliveryTime,
+              deliveryType: deliveryMethod.deliveryType || DeliveryMethodTypeEnum.DELIVER
+            }
+          : null
+      );
     }
     this.deliveryMethod$.next(deliveryMethod);
   }
@@ -311,8 +330,7 @@ export class SaleFormComponent
   }
 
   get currency() {
-    return this.create ? (this.data as OrderDataForNew).currencies[0] :
-      (this.data as OrderDataForEdit).currency;
+    return this.create ? (this.data as OrderDataForNew).currencies[0] : (this.data as OrderDataForEdit).currency;
   }
 
   /**
@@ -320,12 +338,18 @@ export class SaleFormComponent
    */
   subscribeToDeliveryAndAddressFieldsChange(subscribe: boolean, data?: OrderDataForNew | OrderDataForEdit) {
     if (subscribe) {
-      this.deliveryFieldChangeSubscription = this.deliveryField.valueChanges.subscribe(a => this.updateDelivery(a, data));
-      this.deliveryTypeChangeSubscription =
-        this.deliveryForm.controls.deliveryType.valueChanges.subscribe(() => this.updateDeliveryAddress(data));
+      this.deliveryFieldChangeSubscription = this.deliveryField.valueChanges.subscribe(a =>
+        this.updateDelivery(a, data)
+      );
+      this.deliveryTypeChangeSubscription = this.deliveryForm.controls.deliveryType.valueChanges.subscribe(() =>
+        this.updateDeliveryAddress(data)
+      );
       this.addressFieldChangeSubscription = this.addressField.valueChanges.subscribe(a => this.updateAddress(a));
-    } else if (!this.deliveryFieldChangeSubscription.closed && !this.deliveryTypeChangeSubscription.closed
-      && !this.addressFieldChangeSubscription.closed) {
+    } else if (
+      !this.deliveryFieldChangeSubscription.closed &&
+      !this.deliveryTypeChangeSubscription.closed &&
+      !this.addressFieldChangeSubscription.closed
+    ) {
       this.deliveryFieldChangeSubscription.unsubscribe();
       this.deliveryTypeChangeSubscription.unsubscribe();
       this.addressFieldChangeSubscription.unsubscribe();
@@ -354,7 +378,7 @@ export class SaleFormComponent
       order.items.push({
         price: item.price,
         product: item.product.id,
-        quantity: item.quantity,
+        quantity: item.quantity
       });
     });
     order.deliveryMethod = this.deliveryForm.value;
@@ -368,9 +392,11 @@ export class SaleFormComponent
     };
 
     const request = () => {
-      this.addSub(this.create ?
-        this.orderService.createOrder({ user: this.user, body: order }).subscribe(onFinish) :
-        this.orderService.updateOrder({ order: this.id, body: order }).subscribe(onFinish));
+      this.addSub(
+        this.create
+          ? this.orderService.createOrder({ user: this.user, body: order }).subscribe(onFinish)
+          : this.orderService.updateOrder({ order: this.id, body: order }).subscribe(onFinish)
+      );
     };
     if (!asDraft) {
       this.confirmation.confirm({

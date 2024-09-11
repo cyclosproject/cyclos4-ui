@@ -11,10 +11,9 @@ import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 @Component({
   selector: 'view-record',
   templateUrl: 'view-record.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewRecordComponent extends BaseViewPageComponent<RecordView> implements OnInit {
-
   title: string;
   columnLayout: boolean;
   valuesWithoutSection: Array<RecordCustomFieldValue>;
@@ -24,7 +23,7 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
     injector: Injector,
     private recordsService: RecordsService,
     private recordsHelper: RecordHelperService,
-    private runOperationHelper: RunOperationHelperService,
+    private runOperationHelper: RunOperationHelperService
   ) {
     super(injector);
   }
@@ -32,9 +31,11 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
   ngOnInit() {
     super.ngOnInit();
     const id = this.route.snapshot.paramMap.get('id');
-    this.addSub(this.recordsService.viewRecord({ id }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.recordsService.viewRecord({ id }).subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized(record: RecordView) {
@@ -45,16 +46,25 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
     this.valuesWithoutSection = customValues.filter(value => value.field.section == null) || [];
     (record.type.sections || []).forEach(s => {
       const filter = customValues.filter(
-        value => value.field.section != null && value.field.section.id === s.id && (record.canEdit || this.fieldHelper.getValue(value)));
+        value =>
+          value.field.section != null &&
+          value.field.section.id === s.id &&
+          (record.canEdit || this.fieldHelper.getValue(value))
+      );
       if (filter.length > 0) {
         this.valuesWithSection.set(s, filter);
       }
     });
     if (record.canEdit) {
       this.headingActions.push(
-        new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => {
-          this.router.navigate(['/records', 'edit', record.id]);
-        }, true),
+        new HeadingAction(
+          SvgIcon.Pencil,
+          this.i18n.general.edit,
+          () => {
+            this.router.navigate(['/records', 'edit', record.id]);
+          },
+          true
+        )
       );
     }
     for (const operation of record.operations || []) {
@@ -71,8 +81,7 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
   }
 
   get hasPreviousFields() {
-    return this.data.createdBy ||
-      this.data.lastModifiedBy;
+    return this.data.createdBy || this.data.lastModifiedBy;
   }
 
   isOwner(): boolean {
@@ -82,5 +91,4 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
   resolveMenu(data: RecordView) {
     return this.menu.menuForRecordType(data.user, data.type);
   }
-
 }

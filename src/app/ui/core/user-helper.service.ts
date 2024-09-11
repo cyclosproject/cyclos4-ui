@@ -1,9 +1,30 @@
 import { Inject, Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
-  AddressConfigurationForUserProfile, AvailabilityEnum, BasicUserDataForNew, OperatorDataForNew,
-  OperatorGroupAccountAccessEnum, ProfileFieldActions, TokenStatusEnum, User,
-  UserBasicData, UserDataForNew, UserNew, UserRegistrationResult, UserRegistrationStatusEnum, UserStatusEnum, WizardStepField
+  AbstractControl,
+  AsyncValidatorFn,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
+import {
+  AddressConfigurationForUserProfile,
+  AvailabilityEnum,
+  BasicUserDataForNew,
+  OperatorDataForNew,
+  OperatorGroupAccountAccessEnum,
+  ProfileFieldActions,
+  TokenStatusEnum,
+  User,
+  UserBasicData,
+  UserDataForNew,
+  UserNew,
+  UserRegistrationResult,
+  UserRegistrationStatusEnum,
+  UserStatusEnum,
+  WizardStepField
 } from 'app/api/models';
 import { UsersService } from 'app/api/services/users.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
@@ -24,7 +45,7 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
     const origVal = parent.get('value') == null ? '' : parent.get('value').value;
     if (origVal !== currVal) {
       return {
-        passwordsMatch: true,
+        passwordsMatch: true
       };
     }
   }
@@ -39,7 +60,7 @@ const SEGURITY_ANSWER_VAL: ValidatorFn = control => {
     const answer = control.value;
     if (question != null && question !== '' && (answer == null || answer === '')) {
       return {
-        required: true,
+        required: true
       };
     }
   }
@@ -50,18 +71,17 @@ const SEGURITY_ANSWER_VAL: ValidatorFn = control => {
  * Helper for user-related data
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class UserHelperService {
-
   constructor(
     private fieldHelper: FieldHelperService,
     @Inject(I18nInjectionToken) private i18n: I18n,
     private formBuilder: FormBuilder,
     private addressHelper: AddressHelperService,
     private login: LoginService,
-    private usersService: UsersService) {
-  }
+    private usersService: UsersService
+  ) {}
 
   /**
    * Indicates whether the given user reference is an operator
@@ -76,26 +96,35 @@ export class UserHelperService {
    * @returns An array with both mobile and land-line forms
    */
   setupRegistrationForm(
-    form: FormGroup, data: UserDataForNew | OperatorDataForNew,
-    validateServerSide: boolean): [FormGroup, FormGroup] {
-
+    form: FormGroup,
+    data: UserDataForNew | OperatorDataForNew,
+    validateServerSide: boolean
+  ): [FormGroup, FormGroup] {
     const group = form.controls.group.value;
     const user = data['operator'] || data.user;
 
     // Full name
     const nameActions = data.profileFieldActions.name;
     if (nameActions && nameActions.edit) {
-      form.setControl('name',
-        this.formBuilder.control(user.name, Validators.required,
-          validateServerSide ? this.serverSideValidator(group, 'name') : null),
+      form.setControl(
+        'name',
+        this.formBuilder.control(
+          user.name,
+          Validators.required,
+          validateServerSide ? this.serverSideValidator(group, 'name') : null
+        )
       );
     }
     // Login name
     const usernameActions = data.profileFieldActions.username;
     if (usernameActions && usernameActions.edit && !data.generatedUsername) {
-      form.setControl('username',
-        this.formBuilder.control(user.username, Validators.required,
-          validateServerSide ? this.serverSideValidator(group, 'username') : null),
+      form.setControl(
+        'username',
+        this.formBuilder.control(
+          user.username,
+          Validators.required,
+          validateServerSide ? this.serverSideValidator(group, 'username') : null
+        )
       );
     }
     // E-mail
@@ -106,9 +135,9 @@ export class UserHelperService {
         val.push(Validators.required);
       }
       val.push(Validators.email);
-      form.setControl('email',
-        this.formBuilder.control(user.email, val,
-          validateServerSide ? this.serverSideValidator(group, 'email') : null),
+      form.setControl(
+        'email',
+        this.formBuilder.control(user.email, val, validateServerSide ? this.serverSideValidator(group, 'email') : null)
       );
       if (data.allowSetSendActivationEmail) {
         form.setControl('skipActivationEmail', this.formBuilder.control(user.skipActivationEmail));
@@ -116,11 +145,13 @@ export class UserHelperService {
     }
 
     // Custom fields
-    form.setControl('customValues',
+    form.setControl(
+      'customValues',
       this.fieldHelper.customValuesFormGroup(data.customFields, {
         currentValues: user.customValues,
-        asyncValProvider: validateServerSide ? cf => this.serverSideValidator(group, cf.internalName) : null,
-      }));
+        asyncValProvider: validateServerSide ? cf => this.serverSideValidator(group, cf.internalName) : null
+      })
+    );
 
     // Phones
     const phoneConfiguration = data.phoneConfiguration;
@@ -134,7 +165,7 @@ export class UserHelperService {
       mobileForm = this.formBuilder.group({
         name: phone.name,
         number: [phone.number, val, validateServerSide ? this.serverSideValidator(group, 'mobilePhone') : null],
-        hidden: phone.hidden,
+        hidden: phone.hidden
       });
     }
 
@@ -147,7 +178,7 @@ export class UserHelperService {
       landLineForm = this.formBuilder.group({
         name: phone.name,
         number: [phone.number, val, validateServerSide ? this.serverSideValidator(group, 'landLinePhone') : null],
-        hidden: phone.hidden,
+        hidden: phone.hidden
       });
       if (phoneConfiguration.extensionEnabled) {
         landLineForm.setControl('extension', this.formBuilder.control(phone.extension));
@@ -180,12 +211,14 @@ export class UserHelperService {
       return timer(ApiHelper.DEBOUNCE_TIME).pipe(
         switchMap(() => {
           return this.usersService.validateUserRegistrationField({
-            group, field, value: val,
+            group,
+            field,
+            value: val
           });
         }),
         map(msg => {
           return msg ? { message: msg } : null;
-        }),
+        })
       );
     };
   }
@@ -195,7 +228,10 @@ export class UserHelperService {
    * according to the given configuration. When the configuration disables addresses, both are null.
    * Also returns an array of subscriptions, which should be unsubscribed when the calling component is disposed.
    */
-  registrationAddressForm(configuration: AddressConfigurationForUserProfile, wizardStepAddressField?: WizardStepField): [FormGroup, FormControl, Subscription[]] {
+  registrationAddressForm(
+    configuration: AddressConfigurationForUserProfile,
+    wizardStepAddressField?: WizardStepField
+  ): [FormGroup, FormControl, Subscription[]] {
     const addressAvailability = configuration.availability;
     let addressForm: FormGroup = null;
     let defineControl: FormControl = null;
@@ -209,12 +245,14 @@ export class UserHelperService {
       if (!wizardStepAddressField || !wizardStepAddressField.readOnly) {
         for (const field of configuration.enabledFields) {
           let previous = address[field] || null;
-          subscriptions.push(addressForm.get(field).valueChanges.subscribe(newVal => {
-            if (previous !== newVal) {
-              addressForm.get('location').patchValue({ latitude: null, longitude: null });
-            }
-            previous = newVal;
-          }));
+          subscriptions.push(
+            addressForm.get(field).valueChanges.subscribe(newVal => {
+              if (previous !== newVal) {
+                addressForm.get('location').patchValue({ latitude: null, longitude: null });
+              }
+              previous = newVal;
+            })
+          );
         }
       } else {
         addressForm.clearValidators();
@@ -236,13 +274,14 @@ export class UserHelperService {
         defined: isDefined,
         forceChange: false,
         value: ['', isDefined ? Validators.required : null],
-        confirmationValue: ['', isDefined
-          ? Validators.compose([Validators.required, PASSWORDS_MATCH_VAL]) : null],
+        confirmationValue: ['', isDefined ? Validators.compose([Validators.required, PASSWORDS_MATCH_VAL]) : null]
       });
       group.controls.defined.valueChanges.subscribe(defined => {
         if (defined) {
           group.controls.value.setValidators(Validators.required);
-          group.controls.confirmationValue.setValidators(Validators.compose([Validators.required, PASSWORDS_MATCH_VAL]));
+          group.controls.confirmationValue.setValidators(
+            Validators.compose([Validators.required, PASSWORDS_MATCH_VAL])
+          );
         } else {
           group.controls.value.setErrors(null);
           group.controls.value.setValidators(null);
@@ -376,7 +415,7 @@ export class UserHelperService {
       return this.i18n.user.registration.principalSingle({
         principal: principal.type.name,
         value: principal.value,
-        channels: principal.channels.map(c => c.name).join(', '),
+        channels: principal.channels.map(c => c.name).join(', ')
       });
     }
     const buf: string[] = [];
@@ -384,11 +423,13 @@ export class UserHelperService {
     buf.push('<ul>');
     for (const principal of principals) {
       buf.push('<li>');
-      buf.push(this.i18n.user.registration.principalMultipleItem({
-        principal: principal.type.name,
-        value: principal.value,
-        channels: principal.channels.map(c => c.name).join(', '),
-      }));
+      buf.push(
+        this.i18n.user.registration.principalMultipleItem({
+          principal: principal.type.name,
+          value: principal.value,
+          channels: principal.channels.map(c => c.name).join(', ')
+        })
+      );
       buf.push('</li>');
     }
     buf.push('</ul>');
@@ -406,8 +447,7 @@ export class UserHelperService {
       const password = passwords[0];
       return this.i18n.user.registration.generatedPasswordsSingle(password.name);
     } else {
-      return this.i18n.user.registration.generatedPasswordsMultiple(
-        passwords.map(p => p.name).join(', '));
+      return this.i18n.user.registration.generatedPasswordsMultiple(passwords.map(p => p.name).join(', '));
     }
   }
 
@@ -422,5 +462,4 @@ export class UserHelperService {
     b = b.substring(b.length - length);
     return a === b;
   }
-
 }

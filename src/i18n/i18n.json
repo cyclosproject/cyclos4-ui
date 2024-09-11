@@ -2039,6 +2039,7 @@
     "listAds": "Show advertisements",
     "showFavorites": "Favorites only",
     "warningDisabledAd": "This advertisement has the disabled status and cannot be viewed by other users. In order to activate the advertisement please choose a price and currency and save the ad again",
+    "warningCurrencyNotAvailable": "The advertisement currency is currently unavailable, please select other currency or otherwise contact the administration.",
     "title": {
       "search": "Search advertisements",
       "myAdvertisements": "My advertisements",

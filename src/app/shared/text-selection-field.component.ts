@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Host,
+  Injector,
+  Input,
+  OnInit,
+  Optional,
+  SkipSelf,
+  ViewChild
+} from '@angular/core';
 import { ControlContainer, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { InputFieldComponent } from 'app/shared/input-field.component';
@@ -10,22 +20,16 @@ import { InputFieldComponent } from 'app/shared/input-field.component';
   selector: 'text-selection-field',
   templateUrl: 'text-selection-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: TextSelectionFieldComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: TextSelectionFieldComponent, multi: true }]
 })
-export class TextSelectionFieldComponent
-  extends BaseFormFieldComponent<string[]> implements OnInit {
-
+export class TextSelectionFieldComponent extends BaseFormFieldComponent<string[]> implements OnInit {
   @Input('maxItems') maxItems: number;
 
   @ViewChild('inputField') inputField: InputFieldComponent;
 
   inputFieldControl = new FormControl(null);
 
-  constructor(
-    injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
+  constructor(injector: Injector, @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
     super(injector, controlContainer);
   }
 
@@ -62,5 +66,4 @@ export class TextSelectionFieldComponent
       this.value = this.value.filter(s => s !== str);
     }
   }
-
 }

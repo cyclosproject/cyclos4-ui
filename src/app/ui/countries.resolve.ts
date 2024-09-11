@@ -8,14 +8,12 @@ import { Observable } from 'rxjs';
  * Loads the possible groups for registration
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CountriesResolve extends SingletonResolve<Country[]> {
   countries: { [code: string]: string };
 
-  constructor(
-    private addressesService: AddressesService,
-  ) {
+  constructor(private addressesService: AddressesService) {
     super();
   }
 
@@ -25,7 +23,7 @@ export class CountriesResolve extends SingletonResolve<Country[]> {
 
   protected onFetched(data: Country[]) {
     this.countries = {};
-    data.forEach(c => this.countries[c.code] = c.name);
+    data.forEach(c => (this.countries[c.code] = c.name));
   }
 
   /**

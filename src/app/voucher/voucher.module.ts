@@ -23,6 +23,7 @@ import { NumbersOnlyDirective } from 'app/shared/numbers-only.directive';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { RichTextContainerComponent } from 'app/shared/rich-text-container.component';
 import { ScanQrCodeComponent } from 'app/shared/scan-qrcode.component';
+import { UserLinkComponent } from 'app/shared/user-link.component';
 import { PaginatorComponent } from 'app/ui/shared/paginator.component';
 import { VoucherActivateGiftComponent } from 'app/voucher/voucher-activate-gift.component';
 import { VoucherChangePinComponent } from 'app/voucher/voucher-change-pin.component';
@@ -42,7 +43,6 @@ import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { NgxGalleryModule } from 'ngx-gallery-9';
-import { UserLinkComponent } from 'app/shared/user-link.component';
 
 @NgModule({
   declarations: [
@@ -89,13 +89,9 @@ import { UserLinkComponent } from 'app/shared/user-link.component';
     RecaptchaFormsModule,
     BsDropdownModule.forRoot(),
     PaginationModule.forRoot(),
-    NgxGalleryModule,
+    NgxGalleryModule
   ],
-  providers: [
-    VoucherState,
-    CaptchaHelperService,
-    VoucherGuard
-  ],
-  bootstrap: [VoucherComponent],
+  providers: [VoucherState, CaptchaHelperService, VoucherGuard],
+  bootstrap: [VoucherComponent]
 })
-export class VoucherModule { }
+export class VoucherModule {}

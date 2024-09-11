@@ -8,10 +8,9 @@ import { getRootSpinnerSvg, truthyAttr } from 'app/shared/helper';
   // tslint:disable-next-line:component-selector
   selector: 'spinner',
   templateUrl: 'spinner.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpinnerComponent implements OnInit {
-
   @HostBinding('class.spinner') classSpinner = true;
 
   @Input() size: string;
@@ -24,7 +23,7 @@ export class SpinnerComponent implements OnInit {
     this._bootstrap = truthyAttr(show);
   }
 
-  constructor(private element: ElementRef<HTMLElement>) { }
+  constructor(private element: ElementRef<HTMLElement>) {}
 
   ngOnInit() {
     if (!this.bootstrap) {

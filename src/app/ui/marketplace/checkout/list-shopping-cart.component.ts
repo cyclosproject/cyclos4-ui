@@ -11,30 +11,28 @@ import { Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'list-shopping-cart',
   templateUrl: 'list-shopping-cart.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListShoppingCartComponent
-  extends BasePageComponent<ShoppingCartResult[]> implements OnInit {
-
-  constructor(
-    injector: Injector,
-    private shoppingCartService: ShoppingCartsService) {
+export class ListShoppingCartComponent extends BasePageComponent<ShoppingCartResult[]> implements OnInit {
+  constructor(injector: Injector, private shoppingCartService: ShoppingCartsService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
 
-    this.addSub(this.shoppingCartService.getShoppingCarts({}).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.shoppingCartService.getShoppingCarts({}).subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized(data: ShoppingCartResult[]) {
     if (data.length === 1) {
       // Go to details when there is a single cart
       this.router.navigate(this.path(data[0]), {
-        replaceUrl: true,
+        replaceUrl: true
       });
     }
   }

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 import { Agreement } from 'app/api/models';
-import { AgreementsContentDialogComponent } from 'app/ui/shared/agreement-content-dialog.component';
 import { truthyAttr } from 'app/shared/helper';
+import { AgreementsContentDialogComponent } from 'app/ui/shared/agreement-content-dialog.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
 /**
@@ -14,7 +14,6 @@ import { BsModalService } from 'ngx-bootstrap/modal';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AgreementLinkComponent {
-
   @HostBinding('class.inline-flex') classInlineFlex = true;
 
   @Input() agreement: Agreement;
@@ -28,8 +27,7 @@ export class AgreementLinkComponent {
     this._ignoreRequired = truthyAttr(flag);
   }
 
-  constructor(private modal: BsModalService) {
-  }
+  constructor(private modal: BsModalService) {}
 
   showAgreement(event: MouseEvent) {
     this.modal.show(AgreementsContentDialogComponent, {
@@ -38,7 +36,7 @@ export class AgreementLinkComponent {
       initialState: {
         agreement: this.agreement,
         version: this.version
-      },
+      }
     });
     event.stopPropagation();
     event.preventDefault();

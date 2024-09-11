@@ -16,7 +16,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
  */
 export interface ConfirmCallbackParams {
   confirmationPassword?: string;
-  customValues?: { [key: string]: string; };
+  customValues?: { [key: string]: string };
 }
 
 /**
@@ -26,10 +26,9 @@ export interface ConfirmCallbackParams {
   // tslint:disable-next-line:component-selector
   selector: 'confirmation',
   templateUrl: 'confirmation.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConfirmationComponent implements OnInit, OnDestroy {
-
   @Input() title: string;
   @Input() message: string;
   @Input() cancelLabel: string;
@@ -55,7 +54,7 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
     private fieldHelper: FieldHelperService,
     public authHelper: AuthHelperService,
     private shortcut: ShortcutService,
-    nextRequestState: NextRequestState,
+    nextRequestState: NextRequestState
   ) {
     this.requesting$ = nextRequestState.requesting$;
   }

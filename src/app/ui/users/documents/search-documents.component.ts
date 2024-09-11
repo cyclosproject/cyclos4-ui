@@ -1,13 +1,19 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { DocumentDataForSearch, DocumentKind, DocumentQueryFilters, DocumentResult, EntityReference } from 'app/api/models';
+import {
+  DocumentDataForSearch,
+  DocumentKind,
+  DocumentQueryFilters,
+  DocumentResult,
+  EntityReference
+} from 'app/api/models';
 import { Document } from 'app/api/models/document';
 import { DocumentsService } from 'app/api/services/documents.service';
-import { HeadingAction } from 'app/shared/action';
-import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
-import { downloadResponse } from 'app/shared/helper';
-import { Observable } from 'rxjs';
 import { SvgIcon } from 'app/core/svg-icon';
+import { HeadingAction } from 'app/shared/action';
+import { downloadResponse } from 'app/shared/helper';
+import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
+import { Observable } from 'rxjs';
 
 /**
  * Search the documents of the given user as admin or broker
@@ -15,32 +21,38 @@ import { SvgIcon } from 'app/core/svg-icon';
 @Component({
   selector: 'search-documents',
   templateUrl: 'search-documents.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchDocumentsComponent
   extends BaseSearchPageComponent<DocumentDataForSearch, DocumentQueryFilters, DocumentResult>
-  implements OnInit {
-
+  implements OnInit
+{
   user: string;
 
-  constructor(
-    injector: Injector,
-    private documentsService: DocumentsService) {
+  constructor(injector: Injector, private documentsService: DocumentsService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.user = this.route.snapshot.params.user;
-    this.addSub(this.documentsService.getDocumentsDataForSearch({ user: this.user }).subscribe(data => this.data = data));
+    this.addSub(
+      this.documentsService.getDocumentsDataForSearch({ user: this.user }).subscribe(data => (this.data = data))
+    );
   }
 
   onDataInitialized(data: DocumentDataForSearch) {
     super.onDataInitialized(data);
-    if(data.canManageIndividual){
-      this.headingActions = [new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.add,
-        () => this.router.navigate(['/users', this.user, 'documents', 'new']), true)];
-      }
+    if (data.canManageIndividual) {
+      this.headingActions = [
+        new HeadingAction(
+          SvgIcon.PlusCircle,
+          this.i18n.general.add,
+          () => this.router.navigate(['/users', this.user, 'documents', 'new']),
+          true
+        )
+      ];
+    }
   }
 
   protected doSearch(value: DocumentQueryFilters): Observable<HttpResponse<DocumentResult[]>> {
@@ -50,15 +62,17 @@ export class SearchDocumentsComponent
   remove(doc: DocumentResult) {
     this.confirmation.confirm({
       message: this.i18n.general.removeItemConfirm,
-      callback: () => this.doRemove(doc),
+      callback: () => this.doRemove(doc)
     });
   }
 
   private doRemove(doc: DocumentResult) {
-    this.addSub(this.documentsService.deleteDocument({ id: doc.id }).subscribe(() => {
-      this.notification.snackBar(this.i18n.general.removeItemDone);
-      this.update();
-    }));
+    this.addSub(
+      this.documentsService.deleteDocument({ id: doc.id }).subscribe(() => {
+        this.notification.snackBar(this.i18n.general.removeItemDone);
+        this.update();
+      })
+    );
   }
 
   protected toSearchParams(params: any): DocumentQueryFilters {

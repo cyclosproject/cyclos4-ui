@@ -5,12 +5,10 @@ import { DomSanitizer, SafeHtml, SafeResourceUrl, SafeScript, SafeStyle, SafeUrl
  * Pipe used to trust code (for example, HTML) to be rendered 'as-is'
  */
 @Pipe({
-  name: 'trust',
+  name: 'trust'
 })
 export class TrustPipe implements PipeTransform {
-
-  constructor(private sanitizer: DomSanitizer) {
-  }
+  constructor(private sanitizer: DomSanitizer) {}
 
   public transform(value: string, type?: string): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
     switch (type) {

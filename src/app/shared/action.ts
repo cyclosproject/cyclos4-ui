@@ -7,22 +7,14 @@ import { SvgIcon } from 'app/core/svg-icon';
 export class Action {
   public id: string;
 
-  constructor(
-    public label: string,
-    public onClick: (param?: any) => void,
-  ) {
-  }
+  constructor(public label: string, public onClick: (param?: any) => void) {}
 }
 
 /**
  * An action with a custom icon
  */
 export class ActionWithIcon extends Action {
-  constructor(
-    public icon: SvgIcon | string,
-    label: string,
-    onClick: (param?: any) => void,
-  ) {
+  constructor(public icon: SvgIcon | string, label: string, onClick: (param?: any) => void) {
     super(label, onClick);
   }
 }
@@ -38,12 +30,7 @@ export class HeadingAction extends ActionWithIcon {
   breakpoint: Breakpoint;
   subActions: Action[];
 
-  constructor(
-    icon: SvgIcon | string,
-    label: string,
-    onClick: (param?: any) => void,
-    public maybeRoot = false,
-  ) {
+  constructor(icon: SvgIcon | string, label: string, onClick: (param?: any) => void, public maybeRoot = false) {
     super(icon, label, onClick);
   }
 

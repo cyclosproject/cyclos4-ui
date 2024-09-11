@@ -1,27 +1,27 @@
-<ng-container
-  *ngIf="(initialized$ | async) && (i18n.initialized$ | async); else loading">
-  <ng-container
-    *ngIf="dataForFrontendHolder.dataForFrontend?.dataForUi?.auth?.unauthorizedAddress !== true">
+<ng-container *ngIf="(initialized$ | async) && (i18n.initialized$ | async); else loading">
+  <ng-container *ngIf="dataForFrontendHolder.dataForFrontend?.dataForUi?.auth?.unauthorizedAddress !== true">
     <snack-bar #snackBar></snack-bar>
     <sidenav #sidenav></sidenav>
     <push-notifications #pushNotifications></push-notifications>
     <div class="root-container">
-      <top-bar [user]="login.user$ | async"
+      <top-bar
+        [user]="login.user$ | async"
         [breakpoints]="layout.breakpointChanges$ | async"
         [activeMenu]="menu.activeMenu$ | async"
         (toggleSidenav)="sidenav.toggle()"></top-bar>
-      <menu-bar *ngIf="menuBar" [ngClass]="{'d-none': layout.ltlg$ | async}"
+      <menu-bar
+        *ngIf="menuBar"
+        [ngClass]="{ 'd-none': layout.ltlg$ | async }"
         [activeMenu]="menu.activeMenu$ | async"></menu-bar>
-      <div #mainContainer
-        class="main-container container-md d-flex flex-column flex-grow-1">
-        <router-outlet *ngIf="(loggingOut$ | async) === false">
-        </router-outlet>
+      <div #mainContainer class="main-container container-md d-flex flex-column flex-grow-1">
+        <router-outlet *ngIf="(loggingOut$ | async) === false"> </router-outlet>
       </div>
     </div>
     <ng-container *ngIf="(uiLayout.fullWidth$ | async) === false">
-      <div *ngIf="dataForFrontendHolder.dataForFrontend?.footer as footer"
-        class="footer" [innerHTML]="footer | trust">
-      </div>
+      <div
+        *ngIf="dataForFrontendHolder.dataForFrontend?.footer as footer"
+        class="footer"
+        [innerHTML]="footer | trust"></div>
     </ng-container>
   </ng-container>
 </ng-container>

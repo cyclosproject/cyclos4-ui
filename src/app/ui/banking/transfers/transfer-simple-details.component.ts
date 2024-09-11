@@ -8,14 +8,12 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'transfer-simple-details',
   templateUrl: 'transfer-simple-details.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TransferSimpleDetailsComponent extends BaseComponent implements OnInit {
-
   @Input() transfer: TransferView;
 
-  constructor(
-    injector: Injector) {
+  constructor(injector: Injector) {
     super(injector);
   }
 }

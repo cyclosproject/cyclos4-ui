@@ -1,9 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
-  AccountKind, CreateDeviceConfirmation, DeviceConfirmationTypeEnum,
+  AccountKind,
+  CreateDeviceConfirmation,
+  DeviceConfirmationTypeEnum,
   ExternalPaymentPreview,
-  PerformPayment, TransferFeePreview, User
+  PerformPayment,
+  TransferFeePreview,
+  User
 } from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { Enter } from 'app/core/shortcut.service';
@@ -17,10 +21,9 @@ import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 @Component({
   selector: 'external-payment-step-confirm',
   templateUrl: 'external-payment-step-confirm.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExternalPaymentStepConfirmComponent extends BaseComponent implements OnInit {
-
   fromUser: User;
   fromSelf: boolean;
   fromSystem: boolean;
@@ -36,10 +39,7 @@ export class ExternalPaymentStepConfirmComponent extends BaseComponent implement
 
   createDeviceConfirmation: () => CreateDeviceConfirmation | PerformPayment;
 
-  constructor(
-    injector: Injector,
-    public bankingHelper: BankingHelperService,
-    private authHelper: AuthHelperService) {
+  constructor(injector: Injector, public bankingHelper: BankingHelperService, private authHelper: AuthHelperService) {
     super(injector);
   }
 
@@ -67,5 +67,4 @@ export class ExternalPaymentStepConfirmComponent extends BaseComponent implement
       this.addShortcut(Enter, () => this.confirmed.emit());
     }
   }
-
 }

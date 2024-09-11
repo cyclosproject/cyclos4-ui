@@ -1,8 +1,7 @@
 <ng-container *ngIf="data$ | async; else spinner">
   <page-layout [hideMenu]="data.layout === FrontendContentLayoutEnum.FULL">
     <page-content [heading]="i18n.menu.help" [mode]="cardMode">
-      <div class="custom-content-container"
-        [innerHTML]="data.content | trust"></div>
+      <div class="custom-content-container" [innerHTML]="data.content | trust"></div>
     </page-content>
   </page-layout>
 </ng-container>

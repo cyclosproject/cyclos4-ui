@@ -1,11 +1,19 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef,
-  EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import { Address } from 'app/api/models';
+import { htmlCollectionToArray } from 'app/shared/helper';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { MapsService } from 'app/ui/core/maps.service';
-import { htmlCollectionToArray } from 'app/shared/helper';
 
 /**
  * Shows a static image for an address location
@@ -13,10 +21,9 @@ import { htmlCollectionToArray } from 'app/shared/helper';
 @Component({
   selector: 'static-map',
   templateUrl: 'static-map.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StaticMapComponent implements OnInit, OnChanges {
-
   @Input() address: Address;
   @Input() width: number | 'auto' = 'auto';
   @Input() height: number | 'auto' = 260;
@@ -32,11 +39,7 @@ export class StaticMapComponent implements OnInit, OnChanges {
   anchorHeight: string;
   private imageLoadedNotified = false;
 
-  constructor(
-    private maps: MapsService,
-    private el: ElementRef,
-    private addressHelper: AddressHelperService) {
-  }
+  constructor(private maps: MapsService, private el: ElementRef, private addressHelper: AddressHelperService) {}
 
   ngOnInit() {
     this.title = this.address.addressLine1 || this.addressHelper.addressStreet(this.address);

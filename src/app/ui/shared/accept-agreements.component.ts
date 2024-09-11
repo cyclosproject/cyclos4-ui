@@ -1,7 +1,13 @@
 import { ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit, Optional, SkipSelf } from '@angular/core';
 import {
-  AbstractControl, ControlContainer, FormArray, FormBuilder,
-  NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
+  AbstractControl,
+  ControlContainer,
+  FormArray,
+  FormBuilder,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator
 } from '@angular/forms';
 import { Agreement } from 'app/api/models';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
@@ -15,20 +21,18 @@ import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: AcceptAgreementsComponent, multi: true },
-    { provide: NG_VALIDATORS, useExisting: AcceptAgreementsComponent, multi: true },
-  ],
+    { provide: NG_VALIDATORS, useExisting: AcceptAgreementsComponent, multi: true }
+  ]
 })
-export class AcceptAgreementsComponent
-  extends BaseFormFieldComponent<string[]>
-  implements Validator, OnInit {
-
+export class AcceptAgreementsComponent extends BaseFormFieldComponent<string[]> implements Validator, OnInit {
   @Input() agreements: Agreement[];
   agreementsControl: FormArray;
 
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder
+  ) {
     super(injector, controlContainer);
   }
 
@@ -40,10 +44,12 @@ export class AcceptAgreementsComponent
     const initialValue = agreements.map(a => initialIds.includes(a.id));
     this.agreementsControl = this.formBuilder.array(initialValue);
 
-    this.addSub(this.agreementsControl.valueChanges.subscribe((flags: boolean[]) => {
-      const accepted = agreements.filter((_, i) => flags[i]);
-      this.setValue(accepted.map(a => a.id));
-    }));
+    this.addSub(
+      this.agreementsControl.valueChanges.subscribe((flags: boolean[]) => {
+        const accepted = agreements.filter((_, i) => flags[i]);
+        this.setValue(accepted.map(a => a.id));
+      })
+    );
   }
 
   get acceptedAgreements(): Agreement[] {
@@ -56,7 +62,10 @@ export class AcceptAgreementsComponent
   }
 
   protected getDisabledValue(): string {
-    return this.acceptedAgreements.map(a => a.name).sort().join(', ');
+    return this.acceptedAgreements
+      .map(a => a.name)
+      .sort()
+      .join(', ');
   }
 
   /**
@@ -76,5 +85,4 @@ export class AcceptAgreementsComponent
     }
     return null;
   }
-
 }

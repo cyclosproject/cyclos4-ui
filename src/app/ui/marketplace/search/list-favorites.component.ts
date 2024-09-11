@@ -10,17 +10,16 @@ import { Observable } from 'rxjs';
  * List of advertisement favorites
  */
 
-type UserAdsSearchParams = UserAdsQueryFilters & { user: string; };
+type UserAdsSearchParams = UserAdsQueryFilters & { user: string };
 @Component({
   selector: 'list-favorites',
   templateUrl: 'list-favorites.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class ListFavoritesComponent
   extends BaseSearchPageComponent<UserFavoriteAdsListData, UserAdsQueryFilters, AdResult>
-  implements OnInit {
-
+  implements OnInit
+{
   getFormControlNames(): string[] {
     return [];
   }
@@ -38,18 +37,16 @@ export class ListFavoritesComponent
   self: boolean;
   param: string;
 
-  constructor(
-    injector: Injector,
-    private marketplaceService: MarketplaceService) {
+  constructor(injector: Injector, private marketplaceService: MarketplaceService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.param = this.route.snapshot.params.user || this.ApiHelper.SELF;
-    this.addSub(this.marketplaceService.getUserFavoriteAdsListData({ user: this.param }).subscribe(data =>
-      this.data = data
-    ));
+    this.addSub(
+      this.marketplaceService.getUserFavoriteAdsListData({ user: this.param }).subscribe(data => (this.data = data))
+    );
   }
 
   onDataInitialized(data: UserFavoriteAdsListData) {
@@ -68,15 +65,17 @@ export class ListFavoritesComponent
   remove(ad: Ad) {
     this.confirmation.confirm({
       message: this.i18n.general.removeItemConfirm,
-      callback: () => this.doRemove(ad),
+      callback: () => this.doRemove(ad)
     });
   }
 
   private doRemove(ad: Ad) {
-    this.addSub(this.marketplaceService.unmarkAsFavorite({ ad: ad.id }).subscribe(() => {
-      this.notification.snackBar(this.i18n.general.removeItemDone);
-      this.reload();
-    }));
+    this.addSub(
+      this.marketplaceService.unmarkAsFavorite({ ad: ad.id }).subscribe(() => {
+        this.notification.snackBar(this.i18n.general.removeItemDone);
+        this.reload();
+      })
+    );
   }
 
   resolveMenu(data: UserFavoriteAdsListData) {
@@ -93,9 +92,9 @@ export class ListFavoritesComponent
   }
 
   /**
- * Returns the number of decimals for the given ad's price
- * @param ad The advertisement
- */
+   * Returns the number of decimals for the given ad's price
+   * @param ad The advertisement
+   */
   decimals(ad: AdResult): number {
     return (this.lookupCurrency(ad) || {}).decimalDigits || 0;
   }

@@ -1,6 +1,7 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [mode]="self ? 'empty' : 'normal'"
+    <page-content
+      [mode]="self ? 'empty' : 'normal'"
       [heading]="i18n.operatorGroup.title.list"
       [mobileHeading]="i18n.operatorGroup.mobileTitle.list"
       [headingActions]="headingActions$ | async">
@@ -11,8 +12,7 @@
       <mobile-result *mobileResult="let row">
         <div class="cell-main">{{ row.name }}</div>
       </mobile-result>
-      <table *resultTable
-        class="table table-hover table-no-header cursor-pointer">
+      <table *resultTable class="table table-hover table-no-header cursor-pointer">
         <tbody>
           <ng-container *ngFor="let row of data.operatorGroups">
             <tr (click)="router.navigate(path(row))">
@@ -22,7 +22,8 @@
                 </a>
               </td>
               <td class="actions">
-                <button type="button"
+                <button
+                  type="button"
                   [tooltip]="i18n.general.removeTooltip(row.name)"
                   class="btn btn-icon"
                   (click)="remove(row); $event.stopPropagation()">

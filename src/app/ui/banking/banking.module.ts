@@ -68,10 +68,7 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
  * Banking module
  */
 @NgModule({
-  imports: [
-    BankingRoutingModule,
-    UiSharedModule
-  ],
+  imports: [BankingRoutingModule, UiSharedModule],
   exports: [],
   declarations: [
     AccountHistoryComponent,
@@ -147,5 +144,4 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
     EditRecurringPaymentComponent
   ]
 })
-export class BankingModule {
-}
+export class BankingModule {}

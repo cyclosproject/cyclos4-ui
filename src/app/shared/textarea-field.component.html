@@ -1,13 +1,21 @@
-<label-value *ngIf="label; else widget" [formField]="self"
-  [informationText]="informationText">
+<label-value *ngIf="label; else widget" [formField]="self" [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
 <ng-template #widget>
-  <textarea #textarea [id]="id" rows="3" [formControl]="formControl"
-    [name]="name" [attr.autocomplete]="autocomplete"
-    [placeholder]="placeholder" class="form-control" [ngClass]="{
+  <textarea
+    #textarea
+    [id]="id"
+    rows="3"
+    [formControl]="formControl"
+    [name]="name"
+    [attr.autocomplete]="autocomplete"
+    [placeholder]="placeholder"
+    class="form-control"
+    [ngClass]="{
       'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
-    }">{{ value }}</textarea>
+    }"
+    >{{ value }}</textarea
+  >
   <field-errors [control]="formControl"></field-errors>
 </ng-template>

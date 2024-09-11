@@ -9,22 +9,17 @@ import { first } from 'rxjs/operators';
  */
 export interface ConfirmCallbackParams {
   confirmationPassword?: string;
-  customValues?: { [key: string]: string; };
+  customValues?: { [key: string]: string };
 }
 
 /**
  * Service used to capture the device camera
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CameraService {
-
-  constructor(
-    private modal: BsModalService,
-    private notification: NotificationService
-  ) {
-  }
+  constructor(private modal: BsModalService, private notification: NotificationService) {}
 
   /**
    * Opens a dialog to capture an image from the device camera
@@ -39,5 +34,4 @@ export class CameraService {
     const component = ref.content as CaptureCameraComponent;
     component.select.pipe(first()).subscribe(callback);
   }
-
 }

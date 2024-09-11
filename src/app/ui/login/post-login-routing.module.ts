@@ -12,7 +12,7 @@ const postLoginRouters: Routes = [
     children: [
       {
         path: 'forgot-password',
-        component: ForgotPasswordComponent,
+        component: ForgotPasswordComponent
       },
       {
         path: 'login-confirmation',
@@ -22,27 +22,22 @@ const postLoginRouters: Routes = [
       {
         path: 'pending-agreements',
         canActivate: [LoggedUserGuard],
-        component: AcceptPendingAgreementsComponent,
+        component: AcceptPendingAgreementsComponent
       },
       {
         path: 'expired-password',
         canActivate: [LoggedUserGuard],
-        component: ChangeExpiredPasswordComponent,
-      },
-    ],
-  },
+        component: ChangeExpiredPasswordComponent
+      }
+    ]
+  }
 ];
 
 /**
  * * Routes for the post-login module
  */
 @NgModule({
-  imports: [
-    RouterModule.forChild(postLoginRouters),
-  ],
-  exports: [
-    RouterModule,
-  ],
+  imports: [RouterModule.forChild(postLoginRouters)],
+  exports: [RouterModule]
 })
-export class PostLoginRoutingModule {
-}
+export class PostLoginRoutingModule {}

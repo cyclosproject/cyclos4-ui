@@ -1,7 +1,16 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef, Component,
-  Host, Injector, Input, OnDestroy, OnInit, Optional, QueryList, SkipSelf, ViewChildren
+  ChangeDetectorRef,
+  Component,
+  Host,
+  Injector,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  QueryList,
+  SkipSelf,
+  ViewChildren
 } from '@angular/core';
 import { ControlContainer, FormArray, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
@@ -16,13 +25,9 @@ import { Subscription } from 'rxjs';
   selector: 'input-list-field',
   templateUrl: 'input-list-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: InputListFieldComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: InputListFieldComponent, multi: true }]
 })
-export class InputListFieldComponent
-  extends BaseFormFieldComponent<string[]> implements OnInit, OnDestroy {
-
+export class InputListFieldComponent extends BaseFormFieldComponent<string[]> implements OnInit, OnDestroy {
   @Input() maxItems: number;
 
   @ViewChildren(InputFieldComponent) inputs: QueryList<InputFieldComponent>;
@@ -33,7 +38,8 @@ export class InputListFieldComponent
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private changeDetector: ChangeDetectorRef) {
+    private changeDetector: ChangeDetectorRef
+  ) {
     super(injector, controlContainer);
   }
 
@@ -86,13 +92,12 @@ export class InputListFieldComponent
 
   private setupArraySubs() {
     this.arraySubs.forEach(s => s.unsubscribe());
-    this.arraySubs = this.array.controls.map(
-      (c, i) => c.valueChanges.subscribe(
-        current => {
-          const arrayValue = this.array.value;
-          arrayValue[i] = current;
-          this.value = arrayValue.filter((a: any) => !empty(a));
-        }));
+    this.arraySubs = this.array.controls.map((c, i) =>
+      c.valueChanges.subscribe(current => {
+        const arrayValue = this.array.value;
+        arrayValue[i] = current;
+        this.value = arrayValue.filter((a: any) => !empty(a));
+      })
+    );
   }
-
 }

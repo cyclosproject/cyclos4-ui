@@ -1,9 +1,24 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
-  AccountWithStatus, Currency, CustomFieldDetailed, DataForTransaction,
-  NotFoundError, TransactionTypeData, TransferType, User
+  AccountWithStatus,
+  Currency,
+  CustomFieldDetailed,
+  DataForTransaction,
+  NotFoundError,
+  TransactionTypeData,
+  TransferType,
+  User
 } from 'app/api/models';
 import { PaymentsService } from 'app/api/services/payments.service';
 import { PosService } from 'app/api/services/pos.service';
@@ -26,10 +41,9 @@ const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, Error
 @Component({
   selector: 'payment-step-form',
   templateUrl: 'payment-step-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaymentStepFormComponent extends BaseComponent implements OnInit {
-
   setFocus = focus;
 
   @Input() data: DataForTransaction;
@@ -71,7 +85,8 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     public bankingHelper: BankingHelperService,
     private paymentsService: PaymentsService,
     private posService: PosService,
-    private authHelper: AuthHelperService) {
+    private authHelper: AuthHelperService
+  ) {
     super(injector);
   }
 
@@ -106,10 +121,12 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     // Initialize with the first account
     this.account$.next(this.data.accounts[0]);
     // And monitor changes on account
-    this.addSub(this.form.controls.account.valueChanges.subscribe(v => {
-      const account = this.data.accounts.find(a => a.type.id === v);
-      this.account$.next(account);
-    }));
+    this.addSub(
+      this.form.controls.account.valueChanges.subscribe(v => {
+        const account = this.data.accounts.find(a => a.type.id === v);
+        this.account$.next(account);
+      })
+    );
 
     this.createSubscriptions();
   }
@@ -117,18 +134,24 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
   public createSubscriptions() {
     if (!this.fixedDestination) {
       // Whenever the subject changes, fetch the payment types, if needed
-      this.subjectChangeSubscription = this.form.get('subject').valueChanges
-        .pipe(debounceTime(ApiHelper.DEBOUNCE_TIME), distinctUntilChanged((l1, l2) => ApiHelper.locatorEquals(l1, l2)))
+      this.subjectChangeSubscription = this.form
+        .get('subject')
+        .valueChanges.pipe(
+          debounceTime(ApiHelper.DEBOUNCE_TIME),
+          distinctUntilChanged((l1, l2) => ApiHelper.locatorEquals(l1, l2))
+        )
         .subscribe(() => this.fetchPaymentTypes());
     }
 
     // Whenever the account changes, filter out the available types
-    this.accountChangeSubscription = this.form.get('account').valueChanges
-      .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
+    this.accountChangeSubscription = this.form
+      .get('account')
+      .valueChanges.pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
       .subscribe(() => this.adjustPaymentTypes());
     // Whenever the payment type changes, fetch the payment type data for it
-    this.typeChangeSubscription = this.form.get('type').valueChanges
-      .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
+    this.typeChangeSubscription = this.form
+      .get('type')
+      .valueChanges.pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
       .subscribe(type => this.fetchPaymentTypeData(type));
   }
 
@@ -159,41 +182,44 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
       if (this.pos) {
         request = this.posService.dataForReceivePayment({
           from: subject,
-          fields: ['fromUser', 'paymentTypes', 'paymentTypeData'],
+          fields: ['fromUser', 'paymentTypes', 'paymentTypeData']
         });
       } else {
         request = this.paymentsService.dataForPerformPayment({
           owner: this.fromParam,
           to: subject,
-          fields: ['toUser', 'paymentTypes', 'paymentTypeData'],
+          fields: ['toUser', 'paymentTypes', 'paymentTypeData']
         });
       }
-      request.pipe(first()).subscribe(data => {
-        // Update payment types
-        this.data.paymentTypes = data.paymentTypes;
-        this.setFetchedPaymentTypes(data);
-      }, (err: HttpErrorResponse) => {
-        if (this.allowPrincipal && this.userField && err.status === ErrorStatus.NOT_FOUND) {
-          // The typed value for the user may be a principal
-          let error = err.error;
-          if (typeof error === 'string') {
-            try {
-              error = JSON.parse(error);
-            } catch (e) {
-              error = {};
+      request.pipe(first()).subscribe(
+        data => {
+          // Update payment types
+          this.data.paymentTypes = data.paymentTypes;
+          this.setFetchedPaymentTypes(data);
+        },
+        (err: HttpErrorResponse) => {
+          if (this.allowPrincipal && this.userField && err.status === ErrorStatus.NOT_FOUND) {
+            // The typed value for the user may be a principal
+            let error = err.error;
+            if (typeof error === 'string') {
+              try {
+                error = JSON.parse(error);
+              } catch (e) {
+                error = {};
+              }
+            }
+            const entityType = (error as NotFoundError).entityType;
+            if (!blank(entityType) && entityType.endsWith('User')) {
+              // The user couldn't be located. Perform the search in the user field
+              this.userField.search();
+              return;
             }
           }
-          const entityType = (error as NotFoundError).entityType;
-          if (!blank(entityType) && entityType.endsWith('User')) {
-            // The user couldn't be located. Perform the search in the user field
-            this.userField.search();
-            return;
+          if (!IGNORED_STATUSES.includes(err.status)) {
+            defaultHandling(err);
           }
         }
-        if (!IGNORED_STATUSES.includes(err.status)) {
-          defaultHandling(err);
-        }
-      });
+      );
     });
   }
 
@@ -268,24 +294,27 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
         request = this.posService.dataForReceivePayment({
           from: value.subject,
           type,
-          fields: ['paymentTypeData'],
+          fields: ['paymentTypeData']
         });
       } else {
         request = this.paymentsService.dataForPerformPayment({
           owner: this.fromParam,
           to: value.subject,
           type,
-          fields: ['paymentTypeData'],
+          fields: ['paymentTypeData']
         });
       }
-      request.pipe(first()).subscribe(data => {
-        const typeData = data.paymentTypeData;
-        this.setPaymentTypeData(typeData);
-      }, (err: HttpErrorResponse) => {
-        if (!IGNORED_STATUSES.includes(err.status)) {
-          defaultHandling(err);
+      request.pipe(first()).subscribe(
+        data => {
+          const typeData = data.paymentTypeData;
+          this.setPaymentTypeData(typeData);
+        },
+        (err: HttpErrorResponse) => {
+          if (!IGNORED_STATUSES.includes(err.status)) {
+            defaultHandling(err);
+          }
         }
-      });
+      );
     });
   }
 
@@ -324,5 +353,4 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     const accounts = this.data.accounts || [];
     return accounts.length === 1 ? accounts[0] : null;
   }
-
 }

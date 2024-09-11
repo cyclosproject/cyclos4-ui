@@ -15,7 +15,7 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'reschedule-payment-request-dialog',
   templateUrl: 'reschedule-payment-request-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReschedulePaymentRequestDialogComponent extends BaseComponent implements OnInit {
   PaymentRequestScheduledTo = PaymentRequestScheduledTo;
@@ -43,15 +43,18 @@ export class ReschedulePaymentRequestDialogComponent extends BaseComponent imple
 
     this.rescheduleTo = new FormControl(PaymentRequestScheduledTo.EXPIRY);
     this.form = this.formBuilder.group({ processDate: null, comments: null });
-    this.addSub(this.rescheduleTo.valueChanges.subscribe(rescheduleTo => {
-      if (rescheduleTo === PaymentRequestScheduledTo.DATE) {
-        this.form.controls.processDate.setValidators(Validators.required);
-      } else {
-        this.form.controls.processDate.clearValidators();
-      }
-      const processDate: string = rescheduleTo === PaymentRequestScheduledTo.EXPIRY ? this.transaction.expirationDate : null;
-      this.form.patchValue({ processDate });
-    }));
+    this.addSub(
+      this.rescheduleTo.valueChanges.subscribe(rescheduleTo => {
+        if (rescheduleTo === PaymentRequestScheduledTo.DATE) {
+          this.form.controls.processDate.setValidators(Validators.required);
+        } else {
+          this.form.controls.processDate.clearValidators();
+        }
+        const processDate: string =
+          rescheduleTo === PaymentRequestScheduledTo.EXPIRY ? this.transaction.expirationDate : null;
+        this.form.patchValue({ processDate });
+      })
+    );
     if (this.transaction.confirmationPasswordInput) {
       this.form.setControl('confirmationPassword', this.formBuilder.control(null, Validators.required));
     }
@@ -69,14 +72,18 @@ export class ReschedulePaymentRequestDialogComponent extends BaseComponent imple
     const body: AcceptOrReschedulePaymentRequest = value;
     confirmationPassword = value.confirmationPassword;
     delete value.confirmationPassword;
-    this.addSub(this.paymentRequestsService.reschedulePaymentRequest({
-      key: this.transaction.id,
-      body,
-      confirmationPassword
-    }).subscribe(() => {
-      this.done.emit();
-      this.hide();
-    }));
+    this.addSub(
+      this.paymentRequestsService
+        .reschedulePaymentRequest({
+          key: this.transaction.id,
+          body,
+          confirmationPassword
+        })
+        .subscribe(() => {
+          this.done.emit();
+          this.hide();
+        })
+    );
   }
 
   hide() {

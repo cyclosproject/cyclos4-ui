@@ -17,10 +17,9 @@ import { BehaviorSubject, Subscription } from 'rxjs';
  * Shared definitions for the application layout
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class UiLayoutService {
-
   currentPage$ = new BehaviorSubject<BasePageComponent<any>>(null);
   get currentPage(): BasePageComponent<any> {
     return this.currentPage$.value;
@@ -77,8 +76,8 @@ export class UiLayoutService {
   constructor(
     private titleRef: Title,
     private layout: LayoutService,
-    private dataForFrontendHolder: DataForFrontendHolder) {
-
+    private dataForFrontendHolder: DataForFrontendHolder
+  ) {
     this.currentPageLayout$.subscribe(pageLayout => {
       if (this.leftAreaVisibleSub) {
         this.leftAreaVisibleSub.unsubscribe();
@@ -86,13 +85,12 @@ export class UiLayoutService {
       }
       if (pageLayout) {
         this.leftAreaVisible = pageLayout.leftAreaVisible$.value;
-        this.leftAreaVisibleSub = pageLayout.leftAreaVisible$.subscribe(visible => this.leftAreaVisible = visible);
+        this.leftAreaVisibleSub = pageLayout.leftAreaVisible$.subscribe(visible => (this.leftAreaVisible = visible));
       } else {
         this.leftAreaVisible = false;
       }
     });
   }
-
 
   get title(): string {
     return this.title$.value;

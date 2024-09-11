@@ -1,6 +1,7 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [heading]="i18n.ad.title.deliveryMethods"
+    <page-content
+      [heading]="i18n.ad.title.deliveryMethods"
       [mobileHeading]="i18n.ad.mobileTitle.deliveryMethods"
       [headingActions]="headingActions$ | async"
       [mode]="!self ? 'normal' : 'empty'">
@@ -12,28 +13,24 @@
         <div class="d-flex">
           <div>
             <div class="cell-main">{{ row.name }}</div>
-            <div class="cell-text">
-              {{ i18n.ad.chargeType }}:
-              {{ resolveChargeTypeLabel(row.chargeType) }}</div>
-            <div class="cell-text">
-              {{ i18n.ad.deliveryType }}:
-              {{ resolveDeliveryTypeLabel(row.deliveryType) }}</div>
-            <div class="cell-text">
-              {{ i18n.ad.price }}:
-              {{ row.chargeAmount | currency: row.chargeCurrency }}</div>
+            <div class="cell-text">{{ i18n.ad.chargeType }}: {{ resolveChargeTypeLabel(row.chargeType) }}</div>
+            <div class="cell-text">{{ i18n.ad.deliveryType }}: {{ resolveDeliveryTypeLabel(row.deliveryType) }}</div>
+            <div class="cell-text">{{ i18n.ad.price }}: {{ row.chargeAmount | currency : row.chargeCurrency }}</div>
             <div *ngIf="row.minDeliveryTime" class="cell-text">
-              {{ i18n.ad.minDeliveryTime }}:
-              {{ format.formatTimeInterval(row.minDeliveryTime) }}</div>
+              {{ i18n.ad.minDeliveryTime }}: {{ format.formatTimeInterval(row.minDeliveryTime) }}
+            </div>
             <div class="cell-text">
-              {{ i18n.ad.maxDeliveryTime }}:
-              {{ format.formatTimeInterval(row.maxDeliveryTime) }}</div>
+              {{ i18n.ad.maxDeliveryTime }}: {{ format.formatTimeInterval(row.maxDeliveryTime) }}
+            </div>
             <div class="cell-text">
-              {{ i18n.general.enabled }}:
-              {{ row.enabled ? i18n.general.yes : i18n.general.no }}</div>
+              {{ i18n.general.enabled }}: {{ row.enabled ? i18n.general.yes : i18n.general.no }}
+            </div>
           </div>
         </div>
         <div *ngIf="data.canEdit" class="ml-auto text-right">
-          <button type="button" [tooltip]="i18n.general.remove"
+          <button
+            type="button"
+            [tooltip]="i18n.general.remove"
             class="btn btn-icon"
             (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
             <icon [icon]="SvgIcon.Trash"></icon>
@@ -64,7 +61,7 @@
                 {{ resolveDeliveryTypeLabel(row.deliveryType) }}
               </td>
               <td class="text-right">
-                {{ row.chargeAmount | currency: row.chargeCurrency }}
+                {{ row.chargeAmount | currency : row.chargeCurrency }}
               </td>
               <td>
                 {{ format.formatTimeInterval(row.minDeliveryTime) }}
@@ -76,7 +73,9 @@
                 {{ row.enabled ? i18n.general.yes : i18n.general.no }}
               </td>
               <td *ngIf="data.canEdit" class="actions">
-                <button type="button" [tooltip]="i18n.general.remove"
+                <button
+                  type="button"
+                  [tooltip]="i18n.general.remove"
                   class="btn btn-icon"
                   (click)="remove(row); $event.stopPropagation()">
                   <icon [icon]="SvgIcon.Trash"></icon>

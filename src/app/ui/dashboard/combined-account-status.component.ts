@@ -9,15 +9,12 @@ import { BaseDashboardComponent } from 'app/ui/dashboard/base-dashboard.componen
 @Component({
   selector: 'combined-account-status',
   templateUrl: 'combined-account-status.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CombinedAccountStatusComponent extends BaseDashboardComponent {
-
   @Input() accounts: FrontendDashboardAccount[];
 
-  constructor(
-    injector: Injector,
-    public menu: MenuService) {
+  constructor(injector: Injector, public menu: MenuService) {
     super(injector);
   }
 

@@ -2,8 +2,12 @@ import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   ReferenceDirectionEnum,
-  ReferenceLevelEnum, ReferencePeriodStatistics, ReferenceStatistics, UserReferenceDataForSearch,
-  UserReferenceQueryFilters, UserReferenceResult
+  ReferenceLevelEnum,
+  ReferencePeriodStatistics,
+  ReferenceStatistics,
+  UserReferenceDataForSearch,
+  UserReferenceQueryFilters,
+  UserReferenceResult
 } from 'app/api/models';
 import { ReferencesService } from 'app/api/services/references.service';
 import { ISO_DATE } from 'app/core/format.service';
@@ -24,12 +28,12 @@ type SearchReferencesParams = UserReferenceQueryFilters & {
 @Component({
   selector: 'search-references',
   templateUrl: 'search-references.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchReferencesComponent
   extends BaseSearchPageComponent<UserReferenceDataForSearch, UserReferenceQueryFilters, UserReferenceResult>
-  implements OnInit {
-
+  implements OnInit
+{
   ReferenceDirectionEnum = ReferenceDirectionEnum;
   ReferenceLevelEnum = ReferenceLevelEnum;
 
@@ -58,7 +62,9 @@ export class SearchReferencesComponent
     super.ngOnInit();
     this.param = this.route.snapshot.paramMap.get('user') || this.ApiHelper.SELF;
     this.isOwner = this.authHelper.isSelf(this.param);
-    this.addSub(this.referencesService.getUserReferencesDataForSearch({ user: this.param }).subscribe(data => this.data = data));
+    this.addSub(
+      this.referencesService.getUserReferencesDataForSearch({ user: this.param }).subscribe(data => (this.data = data))
+    );
   }
 
   onDataInitialized(data: UserReferenceDataForSearch) {
@@ -66,14 +72,19 @@ export class SearchReferencesComponent
 
     if (data.set && !this.isOwner) {
       this.headingActions = [
-        new HeadingAction(SvgIcon.Star, this.i18n.reference.set,
+        new HeadingAction(
+          SvgIcon.Star,
+          this.i18n.reference.set,
           () => {
             if (data.current) {
               this.router.navigate(['/users', 'references', 'edit', data.current.id]);
             } else {
               this.router.navigate(['/users', 'references', 'set', 'self', this.param]);
             }
-          }, true)];
+          },
+          true
+        )
+      ];
     }
     this.levels = [
       { level: ReferenceLevelEnum.VERY_GOOD, text: this.i18n.reference.level.veryGood },
@@ -87,8 +98,11 @@ export class SearchReferencesComponent
   }
 
   searchStatistics() {
-    this.addSub(this.referencesService.getUserReferenceStatistics({ user: this.param, direction: this.form.controls.direction.value })
-      .subscribe(stats => this.stats = stats));
+    this.addSub(
+      this.referencesService
+        .getUserReferenceStatistics({ user: this.param, direction: this.form.controls.direction.value })
+        .subscribe(stats => (this.stats = stats))
+    );
   }
 
   protected toSearchParams(value: any): SearchReferencesParams {
@@ -103,7 +117,9 @@ export class SearchReferencesComponent
   filter(level?: ReferenceLevelEnum, allTime?: boolean) {
     this.form.patchValue({
       levels: level ? [level] : null,
-      period: allTime ? null : [this.dataForFrontendHolder.now().clone().subtract(30, 'day').startOf('day').format(ISO_DATE), null]
+      period: allTime
+        ? null
+        : [this.dataForFrontendHolder.now().clone().subtract(30, 'day').startOf('day').format(ISO_DATE), null]
     });
   }
 
@@ -131,11 +147,13 @@ export class SearchReferencesComponent
     this.confirmation.confirm({
       message: this.i18n.general.removeItemConfirm,
       callback: () => {
-        this.addSub(this.referencesService.deleteReference({ id: row.id }).subscribe(() => {
-          this.notification.snackBar(this.i18n.general.removeItemDone);
-          this.reload();
-        }));
-      },
+        this.addSub(
+          this.referencesService.deleteReference({ id: row.id }).subscribe(() => {
+            this.notification.snackBar(this.i18n.general.removeItemDone);
+            this.reload();
+          })
+        );
+      }
     });
   }
 
@@ -152,14 +170,11 @@ export class SearchReferencesComponent
     const onlyGiven = singleDirection && this.data.directions?.includes(ReferenceDirectionEnum.GIVEN);
     const onlyReceived = singleDirection && this.data.directions?.includes(ReferenceDirectionEnum.RECEIVED);
     if (onlyGiven) {
-      return mobile ? this.i18n.reference.mobileTitle.searchGiven :
-        this.i18n.reference.title.searchGiven;
+      return mobile ? this.i18n.reference.mobileTitle.searchGiven : this.i18n.reference.title.searchGiven;
     } else if (onlyReceived) {
-      return mobile ? this.i18n.reference.mobileTitle.searchReceived :
-        this.i18n.reference.title.searchReceived;
+      return mobile ? this.i18n.reference.mobileTitle.searchReceived : this.i18n.reference.title.searchReceived;
     } else {
-      return mobile ? this.i18n.reference.mobileTitle.search :
-        this.i18n.reference.title.search;
+      return mobile ? this.i18n.reference.mobileTitle.search : this.i18n.reference.title.search;
     }
   }
 
@@ -170,5 +185,4 @@ export class SearchReferencesComponent
   get directionsFilter(): boolean {
     return this.data.directions?.length === 2;
   }
-
 }

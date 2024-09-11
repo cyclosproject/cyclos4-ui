@@ -7,10 +7,9 @@ import { SvgIcon } from 'app/core/svg-icon';
 @Component({
   selector: 'icon-with-counter',
   templateUrl: 'icon-with-counter.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IconWithCounterComponent {
-
   @Input() icon: SvgIcon | string;
   private _count: string | number = 0;
   @Input() get count(): string | number {

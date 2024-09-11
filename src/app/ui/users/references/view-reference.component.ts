@@ -13,13 +13,14 @@ import { ReferenceHelperService } from 'app/ui/users/references/reference-helper
 @Component({
   selector: 'view-reference',
   templateUrl: 'view-reference.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewReferenceComponent extends BaseViewPageComponent<ReferenceView> implements OnInit {
   constructor(
     injector: Injector,
     private referencesService: ReferencesService,
-    public referenceHelper: ReferenceHelperService) {
+    public referenceHelper: ReferenceHelperService
+  ) {
     super(injector);
   }
 
@@ -29,21 +30,22 @@ export class ViewReferenceComponent extends BaseViewPageComponent<ReferenceView>
   ngOnInit() {
     super.ngOnInit();
     this.id = this.route.snapshot.params.id;
-    this.addSub(this.referencesService.viewReference({ id: this.id }).subscribe(data =>
-      this.data = data));
+    this.addSub(this.referencesService.viewReference({ id: this.id }).subscribe(data => (this.data = data)));
   }
 
   onDataInitialized(data: ReferenceView) {
-
-    this.self = this.authHelper.isSelfOrOwner(data.from) ||
-      this.authHelper.isSelfOrOwner(data.to);
+    this.self = this.authHelper.isSelfOrOwner(data.from) || this.authHelper.isSelfOrOwner(data.to);
 
     const actions = [];
     if (data.canEdit) {
       actions.push(
-        new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () =>
-          this.router.navigate(['/users', 'references', 'edit', this.id]), true,
-        ));
+        new HeadingAction(
+          SvgIcon.Pencil,
+          this.i18n.general.edit,
+          () => this.router.navigate(['/users', 'references', 'edit', this.id]),
+          true
+        )
+      );
     }
     this.headingActions = actions;
   }
@@ -51,5 +53,4 @@ export class ViewReferenceComponent extends BaseViewPageComponent<ReferenceView>
   resolveMenu() {
     return this.self ? Menu.REFERENCES : this.menu.searchUsersMenu();
   }
-
 }

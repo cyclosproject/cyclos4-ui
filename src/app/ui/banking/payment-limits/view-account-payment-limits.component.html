@@ -1,13 +1,12 @@
 <page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
-
   <!-- View details -->
-  <page-content *ngSwitchCase="'details'"
+  <page-content
+    *ngSwitchCase="'details'"
     [heading]="i18n.account.paymentLimits.title.view"
     [mobileHeading]="i18n.account.paymentLimits.mobileTitle.view"
     [headingActions]="headingActions$ | async">
     <ng-container *ngIf="data">
-      <label-value [label]="i18n.general.user" kind="fieldView"
-        labelPosition="side">
+      <label-value [label]="i18n.general.user" kind="fieldView" labelPosition="side">
         <user-link [user]="data.user"></user-link>
       </label-value>
       <label-value [label]="i18n.account.account">
@@ -58,7 +57,8 @@
 
   <!-- View history -->
   <ng-container *ngSwitchCase="'history'">
-    <page-content [mode]="'empty'"
+    <page-content
+      [mode]="'empty'"
       [heading]="i18n.account.paymentLimits.title.history"
       [mobileHeading]="i18n.account.paymentLimits.mobileTitle.history"
       [headingActions]="headingActions$ | async">
@@ -66,60 +66,60 @@
     </page-content>
 
     <results-layout [results]="data.history">
-
       <mobile-result *mobileResult="let row">
         <div class="d-flex">
           <div class="w-100">
-            <label-value [label]="i18n.general.date"
-              labelPosition="sideForced">
+            <label-value [label]="i18n.general.date" labelPosition="sideForced">
               {{ row.date | date }}
             </label-value>
 
-            <label-value [label]="i18n.general.performedBy"
-              labelPosition="sideForced">
+            <label-value [label]="i18n.general.performedBy" labelPosition="sideForced">
               {{ row.by.display }}
             </label-value>
 
-            <label-value [label]="i18n.account.paymentLimits.paymentLimit"
-              labelPosition="sideForced">
-              {{ row.customAmountLimit ?
-              (row.amountLimit | currency:data.account.currency) :
-              i18n.account.limits.productDefault }}
+            <label-value [label]="i18n.account.paymentLimits.paymentLimit" labelPosition="sideForced">
+              {{
+                row.customAmountLimit
+                  ? (row.amountLimit | currency : data.account.currency)
+                  : i18n.account.limits.productDefault
+              }}
             </label-value>
 
-            <label-value [label]="i18n.account.paymentLimits.dailyLimit"
-              labelPosition="sideForced">
-              {{ row.customAmountPerDayLimit ?
-              (row.amountPerDayLimit | currency:data.account.currency) :
-              i18n.account.limits.productDefault }}
+            <label-value [label]="i18n.account.paymentLimits.dailyLimit" labelPosition="sideForced">
+              {{
+                row.customAmountPerDayLimit
+                  ? (row.amountPerDayLimit | currency : data.account.currency)
+                  : i18n.account.limits.productDefault
+              }}
             </label-value>
 
-            <label-value [label]="i18n.account.paymentLimits.weeklyLimit"
-              labelPosition="sideForced">
-              {{ row.customAmountPerWeekLimit ?
-              (row.amountPerWeekLimit | currency:data.account.currency) :
-              i18n.account.limits.productDefault }}
+            <label-value [label]="i18n.account.paymentLimits.weeklyLimit" labelPosition="sideForced">
+              {{
+                row.customAmountPerWeekLimit
+                  ? (row.amountPerWeekLimit | currency : data.account.currency)
+                  : i18n.account.limits.productDefault
+              }}
             </label-value>
 
-            <label-value [label]="i18n.account.paymentLimits.monthlyLimit"
-              labelPosition="sideForced">
-              {{ row.customAmountPerMonthLimit ?
-              (row.amountPerMonthLimit | currency:data.account.currency) :
-              i18n.account.limits.productDefault }}
+            <label-value [label]="i18n.account.paymentLimits.monthlyLimit" labelPosition="sideForced">
+              {{
+                row.customAmountPerMonthLimit
+                  ? (row.amountPerMonthLimit | currency : data.account.currency)
+                  : i18n.account.limits.productDefault
+              }}
             </label-value>
 
-            <label-value [label]="i18n.account.paymentLimits.yearlyLimit"
-              labelPosition="sideForced">
-              {{ row.customAmountPerYearLimit ?
-              (row.amountPerYearLimit | currency:data.account.currency) :
-              i18n.account.limits.productDefault }}
+            <label-value [label]="i18n.account.paymentLimits.yearlyLimit" labelPosition="sideForced">
+              {{
+                row.customAmountPerYearLimit
+                  ? (row.amountPerYearLimit | currency : data.account.currency)
+                  : i18n.account.limits.productDefault
+              }}
             </label-value>
 
-            <label-value *ngIf="row.comment" [label]="i18n.general.comments"
-              labelPosition="sideForced">
+            <label-value *ngIf="row.comment" [label]="i18n.general.comments" labelPosition="sideForced">
               {{ row.comment }}
             </label-value>
-
           </div>
         </div>
       </mobile-result>
@@ -140,29 +140,39 @@
             <td>{{ row.date | date }}</td>
             <td>{{ row.by.display }}</td>
             <td>
-              {{ row.customAmountLimit ?
-              (row.amountLimit | currency:data.account.currency) :
-              i18n.account.limits.productDefault }}
+              {{
+                row.customAmountLimit
+                  ? (row.amountLimit | currency : data.account.currency)
+                  : i18n.account.limits.productDefault
+              }}
             </td>
             <td>
-              {{ row.customAmountPerDayLimit ?
-              (row.amountPerDayLimit | currency:data.account.currency) :
-              i18n.account.limits.productDefault }}
+              {{
+                row.customAmountPerDayLimit
+                  ? (row.amountPerDayLimit | currency : data.account.currency)
+                  : i18n.account.limits.productDefault
+              }}
             </td>
             <td>
-              {{ row.customAmountPerWeekLimit ?
-              (row.amountPerWeekLimit | currency:data.account.currency) :
-              i18n.account.limits.productDefault }}
+              {{
+                row.customAmountPerWeekLimit
+                  ? (row.amountPerWeekLimit | currency : data.account.currency)
+                  : i18n.account.limits.productDefault
+              }}
             </td>
             <td>
-              {{ row.customAmountPerMonthLimit ?
-              (row.amountPerMonthLimit | currency:data.account.currency) :
-              i18n.account.limits.productDefault }}
+              {{
+                row.customAmountPerMonthLimit
+                  ? (row.amountPerMonthLimit | currency : data.account.currency)
+                  : i18n.account.limits.productDefault
+              }}
             </td>
             <td>
-              {{ row.customAmountPerYearLimit ?
-              (row.amountPerYearLimit | currency:data.account.currency) :
-              i18n.account.limits.productDefault }}
+              {{
+                row.customAmountPerYearLimit
+                  ? (row.amountPerYearLimit | currency : data.account.currency)
+                  : i18n.account.limits.productDefault
+              }}
             </td>
             <td>{{ row.comment }}</td>
           </tr>

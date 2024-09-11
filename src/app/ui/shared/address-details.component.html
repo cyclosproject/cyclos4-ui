@@ -27,8 +27,7 @@
   <span class="inline-label">{{ i18n.address.region }}</span>
   {{ address.region }}
 </div>
-<div [ngClass]="elementClass"
-  *ngIf="address.country && countriesResolve.data | async">
+<div [ngClass]="elementClass" *ngIf="address.country && countriesResolve.data | async">
   <span class="inline-label">{{ i18n.address.country }}</span>
   {{ country }}
 </div>

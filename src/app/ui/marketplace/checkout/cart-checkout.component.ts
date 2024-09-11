@@ -1,6 +1,13 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Address, DeliveryMethod, DeliveryMethodTypeEnum, DeviceConfirmationTypeEnum, ShoppingCartCheckout, ShoppingCartDataForCheckout } from 'app/api/models';
+import {
+  Address,
+  DeliveryMethod,
+  DeliveryMethodTypeEnum,
+  DeviceConfirmationTypeEnum,
+  ShoppingCartCheckout,
+  ShoppingCartDataForCheckout
+} from 'app/api/models';
 import { ShoppingCartsService } from 'app/api/services/shopping-carts.service';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
@@ -18,15 +25,13 @@ export type CheckoutStep = 'delivery' | 'address' | 'payment' | 'confirm';
 @Component({
   selector: 'cart-checkout',
   templateUrl: 'cart-checkout.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataForCheckout>
-  implements OnInit {
-
+export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataForCheckout> implements OnInit {
   step$ = new BehaviorSubject<CheckoutStep>(null);
   deliveryMethod$ = new BehaviorSubject<DeliveryMethod>(null);
   address$ = new BehaviorSubject<Address>(null);
-  showSubmit$ = new BehaviorSubject(true);;
+  showSubmit$ = new BehaviorSubject(true);
 
   form: FormGroup;
   addressForm: FormGroup;
@@ -36,14 +41,15 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
     injector: Injector,
     private shoppingCartService: ShoppingCartsService,
     private addressHelper: AddressHelperService,
-    private marketplaceHelper: MarketplaceHelperService) {
+    private marketplaceHelper: MarketplaceHelperService
+  ) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
     const id = this.route.snapshot.params.id;
-    this.addSub(this.shoppingCartService.getShoppingCartDataForCheckout({ id }).subscribe(data => this.data = data));
+    this.addSub(this.shoppingCartService.getShoppingCartDataForCheckout({ id }).subscribe(data => (this.data = data)));
   }
 
   onDataInitialized(data: ShoppingCartDataForCheckout) {
@@ -66,7 +72,7 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
     // Addresses
     const customAddress: Address = {
       id: 'customAddress',
-      name: this.i18n.ad.customAddress,
+      name: this.i18n.ad.customAddress
     };
     data.addresses.push(customAddress);
     const addressField = this.formBuilder.control(data.addresses);
@@ -158,18 +164,24 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
 
     const checkout: ShoppingCartCheckout = cloneDeep(this.form.value);
     delete checkout['address'];
-    checkout.deliveryAddress = this.deliveryMethod !== null && this.deliveryMethod.deliveryType === DeliveryMethodTypeEnum.PICKUP ?
-      this.deliveryMethod.address : this.addressForm.value;
+    checkout.deliveryAddress =
+      this.deliveryMethod !== null && this.deliveryMethod.deliveryType === DeliveryMethodTypeEnum.PICKUP
+        ? this.deliveryMethod.address
+        : this.addressForm.value;
 
-    this.addSub(this.shoppingCartService.checkoutShoppingCart({
-      id: this.data.cart.id,
-      body: checkout,
-      confirmationPassword: this.confirmationPassword.value,
-    }).subscribe(items => {
-      this.marketplaceHelper.cartItems = items;
-      this.notification.snackBar(this.i18n.ad.orderWaitingForSellersApproval);
-      this.menu.navigate({ menu: new ActiveMenu(Menu.PURCHASES), replaceUrl: true });
-    }));
+    this.addSub(
+      this.shoppingCartService
+        .checkoutShoppingCart({
+          id: this.data.cart.id,
+          body: checkout,
+          confirmationPassword: this.confirmationPassword.value
+        })
+        .subscribe(items => {
+          this.marketplaceHelper.cartItems = items;
+          this.notification.snackBar(this.i18n.ad.orderWaitingForSellersApproval);
+          this.menu.navigate({ menu: new ActiveMenu(Menu.PURCHASES), replaceUrl: true });
+        })
+    );
   }
 
   get step(): CheckoutStep {
@@ -212,7 +224,7 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
         type: DeviceConfirmationTypeEnum.SHOPPING_CART_CHECKOUT,
         seller: this.ApiHelper.accountOwner(this.data.cart.seller),
         amount: this.totalPrice,
-        paymentType: this.form.value.paymentType,
+        paymentType: this.form.value.paymentType
       };
     };
   }

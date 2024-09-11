@@ -1,14 +1,19 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  Currency, DataForBalanceLimitsSearch, DataForPaymentLimitsSearch, GeneralAccountPaymentLimitsResult, QueryFilters, RoleEnum,
-  UserQueryFilters,
-  AccountType
+  AccountType,
+  Currency,
+  DataForBalanceLimitsSearch,
+  DataForPaymentLimitsSearch,
+  GeneralAccountPaymentLimitsResult,
+  QueryFilters,
+  RoleEnum,
+  UserQueryFilters
 } from 'app/api/models';
 import { PaymentLimitsService } from 'app/api/services/payment-limits.service';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { FieldOption } from 'app/shared/field-option';
+import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -39,12 +44,16 @@ type PaymentLimitsSearchParams = QueryFilters & {
 @Component({
   selector: 'search-payment-limits-overview',
   templateUrl: 'search-payment-limits-overview.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchPaymentLimitsOverviewComponent
-  extends BaseSearchPageComponent<DataForPaymentLimitsSearch, PaymentLimitsSearchParams, GeneralAccountPaymentLimitsResult>
-  implements OnInit {
-
+  extends BaseSearchPageComponent<
+    DataForPaymentLimitsSearch,
+    PaymentLimitsSearchParams,
+    GeneralAccountPaymentLimitsResult
+  >
+  implements OnInit
+{
   isCustomPaymentLimit$ = new BehaviorSubject<boolean>(false);
   isCustomDailyLimit$ = new BehaviorSubject<boolean>(false);
   isCustomWeeklyLimit$ = new BehaviorSubject<boolean>(false);
@@ -53,23 +62,39 @@ export class SearchPaymentLimitsOverviewComponent
   currencies: Currency[] = [];
   singleCurrency: Currency;
 
-  constructor(
-    injector: Injector,
-    private paymentLimitsService: PaymentLimitsService,
-  ) {
+  constructor(injector: Injector, private paymentLimitsService: PaymentLimitsService) {
     super(injector);
   }
 
   protected getFormControlNames() {
-    return ['accountType', 'broker', 'by', 'currency', 'customAmountLimit', 'paymentLimitFrom', 'paymentLimitTo',
-      'dailyLimitFrom', 'dailyLimitTo', 'customAmountPerDayLimit', 'customAmountPerWeekLimit', 'weeklyLimitFrom', 'weeklyLimitTo',
-      'customAmountPerMonthLimit', 'monthlyLimitFrom', 'monthlyLimitTo', 'yearlyLimitFrom', 'yearlyLimitTo', 'customAmountPerYearLimit',
-      'groups', 'user'];
+    return [
+      'accountType',
+      'broker',
+      'by',
+      'currency',
+      'customAmountLimit',
+      'paymentLimitFrom',
+      'paymentLimitTo',
+      'dailyLimitFrom',
+      'dailyLimitTo',
+      'customAmountPerDayLimit',
+      'customAmountPerWeekLimit',
+      'weeklyLimitFrom',
+      'weeklyLimitTo',
+      'customAmountPerMonthLimit',
+      'monthlyLimitFrom',
+      'monthlyLimitTo',
+      'yearlyLimitFrom',
+      'yearlyLimitTo',
+      'customAmountPerYearLimit',
+      'groups',
+      'user'
+    ];
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.paymentLimitsService.getAccountPaymentLimitsData().subscribe(data => this.data = data));
+    this.addSub(this.paymentLimitsService.getAccountPaymentLimitsData().subscribe(data => (this.data = data)));
   }
 
   onDataInitialized(data: DataForBalanceLimitsSearch) {
@@ -77,16 +102,28 @@ export class SearchPaymentLimitsOverviewComponent
     // Initialize the currencies
     (data.accountTypes || []).forEach(at => this.currencies.push(at.currency));
     this.singleCurrency = this.currencies.length === 1 ? this.currencies[0] : null;
-    this.form.get('customAmountLimit').valueChanges.subscribe(value => this.isCustomPaymentLimit$.next(value === 'yes'));
-    this.form.get('customAmountPerDayLimit').valueChanges.subscribe(value => this.isCustomDailyLimit$.next(value === 'yes'));
-    this.form.get('customAmountPerWeekLimit').valueChanges.subscribe(value => this.isCustomWeeklyLimit$.next(value === 'yes'));
-    this.form.get('customAmountPerMonthLimit').valueChanges.subscribe(value => this.isCustomMonthlyLimit$.next(value === 'yes'));
-    this.form.get('customAmountPerYearLimit').valueChanges.subscribe(value => this.isCustomYearlyLimit$.next(value === 'yes'));
+    this.form
+      .get('customAmountLimit')
+      .valueChanges.subscribe(value => this.isCustomPaymentLimit$.next(value === 'yes'));
+    this.form
+      .get('customAmountPerDayLimit')
+      .valueChanges.subscribe(value => this.isCustomDailyLimit$.next(value === 'yes'));
+    this.form
+      .get('customAmountPerWeekLimit')
+      .valueChanges.subscribe(value => this.isCustomWeeklyLimit$.next(value === 'yes'));
+    this.form
+      .get('customAmountPerMonthLimit')
+      .valueChanges.subscribe(value => this.isCustomMonthlyLimit$.next(value === 'yes'));
+    this.form
+      .get('customAmountPerYearLimit')
+      .valueChanges.subscribe(value => this.isCustomYearlyLimit$.next(value === 'yes'));
     this.addSub(this.form.controls.currency.valueChanges.subscribe(currencyId => this.updateAccountTypes(currencyId)));
     this.headingActions = [this.moreFiltersAction];
   }
 
-  protected doSearch(value: PaymentLimitsSearchParams): Observable<HttpResponse<Array<GeneralAccountPaymentLimitsResult>>> {
+  protected doSearch(
+    value: PaymentLimitsSearchParams
+  ): Observable<HttpResponse<Array<GeneralAccountPaymentLimitsResult>>> {
     return this.paymentLimitsService.searchAccountPaymentLimits$Response(value);
   }
 
@@ -151,7 +188,11 @@ export class SearchPaymentLimitsOverviewComponent
 
   updateAccountTypes(currencyId: string) {
     const selectedAccount = this.form.controls.accountType.value;
-    if (currencyId && selectedAccount && this.data.accountTypes.find(at => at.id === selectedAccount).currency.id !== currencyId) {
+    if (
+      currencyId &&
+      selectedAccount &&
+      this.data.accountTypes.find(at => at.id === selectedAccount).currency.id !== currencyId
+    ) {
       this.form.controls.accountType.setValue(null);
     }
   }

@@ -1,16 +1,20 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Currency, VoucherDataForGenerate, VoucherGenerationAmountEnum, VoucherGenerationStatusEnum } from 'app/api/models';
+import {
+  Currency,
+  VoucherDataForGenerate,
+  VoucherGenerationAmountEnum,
+  VoucherGenerationStatusEnum
+} from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { UserFieldComponent } from 'app/shared/user-field.component';
 
 @Component({
   selector: 'generate-vouchers-step-form',
   templateUrl: 'generate-vouchers-step-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GenerateVouchersStepFormComponent extends BaseComponent implements OnInit {
-
   @Input() data: VoucherDataForGenerate;
   @Input() form: FormGroup;
   @ViewChild(UserFieldComponent) userField: UserFieldComponent;

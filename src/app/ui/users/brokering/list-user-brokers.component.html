@@ -1,31 +1,33 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [heading]="i18n.brokers.title.list"
+    <page-content
+      [heading]="i18n.brokers.title.list"
       [mobileHeading]="i18n.brokers.mobileTitle.list"
       [headingActions]="headingActions$ | async"
       [mode]="self ? 'empty' : 'normal'">
       <user-info *ngIf="!self" [user]="data.user"></user-info>
     </page-content>
     <results-layout [results]="data.brokers" [toLink]="toLink">
-      <mobile-result *mobileResult="let row" [avatarImage]="row.broker?.image"
-        [avatarIcon]="SvgIcon.Person">
+      <mobile-result *mobileResult="let row" [avatarImage]="row.broker?.image" [avatarIcon]="SvgIcon.Person">
         <div class="d-flex">
           <div>
             <div class="cell-main">
               {{ row.broker.display }}
             </div>
             <div class="cell-text">
-              <icon class="d-inline-block" *ngIf="row.main"
-                [icon]="SvgIcon.Check2">
-              </icon>
-              <a class="decorated" *ngIf="canSetMain(row)"
-                (click)="setMain(row); $event.stopPropagation(); $event.preventDefault()">{{
-                i18n.brokers.setMain }}
+              <icon class="d-inline-block" *ngIf="row.main" [icon]="SvgIcon.Check2"> </icon>
+              <a
+                class="decorated"
+                *ngIf="canSetMain(row)"
+                (click)="setMain(row); $event.stopPropagation(); $event.preventDefault()"
+                >{{ i18n.brokers.setMain }}
               </a>
             </div>
           </div>
           <div class="ml-auto" *ngIf="canRemove(row)">
-            <button class="btn btn-icon" type="button"
+            <button
+              class="btn btn-icon"
+              type="button"
               (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
               <icon [icon]="SvgIcon.Trash"></icon>
             </button>
@@ -36,20 +38,19 @@
         <thead>
           <th class="avatar"></th>
           <th>{{ i18n.general.user }}</th>
-          <th width="20%" class="text-center">{{ i18n.brokers.mainBroker }}
-          </th>
+          <th width="20%" class="text-center">{{ i18n.brokers.mainBroker }}</th>
           <th *ngIf="hasActions" class="actions"></th>
         </thead>
         <tbody>
           <ng-container *ngFor="let row of data.brokers">
-            <tr (click)="path(row) ? router.navigate(path(row)) : null"
-              [ngClass]="{'cursor-default': !path(row)}">
-              <td class="avatar" [ngClass]="{
+            <tr (click)="path(row) ? router.navigate(path(row)) : null" [ngClass]="{ 'cursor-default': !path(row) }">
+              <td
+                class="avatar"
+                [ngClass]="{
                   'pb-0': layout.xxs$ | async,
                   'border-0': layout.xxs$ | async
                 }">
-                <avatar [image]="row.broker?.image" [icon]="SvgIcon.Person">
-                </avatar>
+                <avatar [image]="row.broker?.image" [icon]="SvgIcon.Person"> </avatar>
               </td>
               <td>
                 <maybe-link [link]="path(row)">
@@ -57,16 +58,18 @@
                 </maybe-link>
               </td>
               <td class="text-center">
-                <icon class="d-inline-block" *ngIf="row.main"
-                  [icon]="SvgIcon.Check2">
-                </icon>
-                <a class="decorated" *ngIf="canSetMain(row)"
-                  (click)="setMain(row); $event.stopPropagation(); $event.preventDefault()">{{
-                  i18n.brokers.setMain }}
+                <icon class="d-inline-block" *ngIf="row.main" [icon]="SvgIcon.Check2"> </icon>
+                <a
+                  class="decorated"
+                  *ngIf="canSetMain(row)"
+                  (click)="setMain(row); $event.stopPropagation(); $event.preventDefault()"
+                  >{{ i18n.brokers.setMain }}
                 </a>
               </td>
               <td class="actions actions-multiple" *ngIf="canRemove(row)">
-                <button type="button" [tooltip]="i18n.general.remove"
+                <button
+                  type="button"
+                  [tooltip]="i18n.general.remove"
                   class="btn btn-icon"
                   (click)="remove(row); $event.stopPropagation()">
                   <icon [icon]="SvgIcon.Trash"></icon>

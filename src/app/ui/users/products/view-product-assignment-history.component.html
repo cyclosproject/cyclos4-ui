@@ -1,10 +1,9 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data then content"></ng-container>
+  <ng-container *ngIf="data; then content"></ng-container>
 </page-layout>
 
 <ng-template #content>
-  <page-content [heading]="i18n.product.title.history"
-    [mobileHeading]="i18n.product.mobileTitle.history">
+  <page-content [heading]="i18n.product.title.history" [mobileHeading]="i18n.product.mobileTitle.history">
     <label-value [label]="i18n.general.user">
       <user-link [user]="data.user"></user-link>
     </label-value>

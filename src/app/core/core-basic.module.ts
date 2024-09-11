@@ -23,19 +23,15 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
   useExisting: forwardRef(() => ApiInterceptor),
-  multi: true,
+  multi: true
 };
 
 /**
  * Module that declares basic components used only by the core app module
  */
 @NgModule({
-  imports: [
-    SharedBasicModule,
-  ],
-  exports: [
-    SharedBasicModule,
-  ],
+  imports: [SharedBasicModule],
+  exports: [SharedBasicModule],
   providers: [
     ApiConfiguration,
     NextRequestState,
@@ -55,16 +51,13 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     CacheService,
     ScriptLoaderService,
     API_INTERCEPTOR_PROVIDER,
-    BsModalService,
+    BsModalService
   ]
 })
 export class CoreBasicModule {
-  constructor(
-    @Optional() @SkipSelf() parentModule: CoreBasicModule,
-  ) {
+  constructor(@Optional() @SkipSelf() parentModule: CoreBasicModule) {
     if (parentModule) {
-      throw new Error('CoreBasicModule is already loaded. '
-        + 'It should only be imported in AppModule');
+      throw new Error('CoreBasicModule is already loaded. ' + 'It should only be imported in AppModule');
     }
   }
 }

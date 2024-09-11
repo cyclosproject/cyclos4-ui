@@ -12,19 +12,17 @@ import { BehaviorSubject } from 'rxjs';
  * Helper service for marketplace functions
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class MarketplaceHelperService {
-
   cartItems$ = new BehaviorSubject<number>(0);
 
   constructor(
     @Inject(I18nInjectionToken) private i18n: I18n,
     protected authHelper: AuthHelperService,
     protected dataForFrontendHolder: DataForFrontendHolder,
-    protected format: FormatService,
+    protected format: FormatService
   ) {
-
     // Subscribe for cart items count on UI initialization
     dataForFrontendHolder.subscribe(dataForFrontend => {
       const dataForUi = (dataForFrontend || {}).dataForUi || {};
@@ -120,5 +118,4 @@ export class MarketplaceHelperService {
       }
     }
   }
-
 }

@@ -8,7 +8,11 @@ import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-const ProgressStatuses = [ImportedFileStatusEnum.READING_CSV, ImportedFileStatusEnum.READING_ZIP, ImportedFileStatusEnum.IMPORTING];
+const ProgressStatuses = [
+  ImportedFileStatusEnum.READING_CSV,
+  ImportedFileStatusEnum.READING_ZIP,
+  ImportedFileStatusEnum.IMPORTING
+];
 const ValidationStatuses = [ImportedFileStatusEnum.READY, ImportedFileStatusEnum.READING_CSV];
 const ImportStatuses = [ImportedFileStatusEnum.IMPORTING, ImportedFileStatusEnum.IMPORTED];
 
@@ -18,10 +22,9 @@ const ImportStatuses = [ImportedFileStatusEnum.IMPORTING, ImportedFileStatusEnum
 @Component({
   selector: 'view-imported-file',
   templateUrl: 'view-imported-file.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewImportedFileComponent extends BaseViewPageComponent<ImportedFileView> implements OnInit {
-
   ImportedFileStatusEnum = ImportedFileStatusEnum;
 
   title: string;
@@ -37,10 +40,7 @@ export class ViewImportedFileComponent extends BaseViewPageComponent<ImportedFil
   progress$ = new BehaviorSubject<ImportedFileProgress>(null);
   progressValue$: Observable<number>;
 
-  constructor(
-    injector: Injector,
-    private importsService: ImportsService,
-    public importsHelper: ImportsHelperService) {
+  constructor(injector: Injector, private importsService: ImportsService, public importsHelper: ImportsHelperService) {
     super(injector);
   }
 
@@ -51,8 +51,7 @@ export class ViewImportedFileComponent extends BaseViewPageComponent<ImportedFil
   ngOnInit() {
     super.ngOnInit();
     this.id = this.route.snapshot.paramMap.get('id');
-    this.addSub(this.importsService.viewImportedFile({ id: this.id })
-      .subscribe(file => this.data = file));
+    this.addSub(this.importsService.viewImportedFile({ id: this.id }).subscribe(file => (this.data = file)));
   }
 
   onDataInitialized(file: ImportedFileView) {
@@ -94,16 +93,20 @@ export class ViewImportedFileComponent extends BaseViewPageComponent<ImportedFil
     }
 
     const progress = file.progress || {};
-    this.showValidation = ValidationStatuses.includes(file.status)
-      || ImportStatuses.includes(file.status)
-      || !!progress.linesReady || !!progress.linesValidationError || !!progress.linesSkipped;
-    this.showImport = ImportStatuses.includes(file.status)
-      || !!progress.linesImported || !!progress.linesImportError;
+    this.showValidation =
+      ValidationStatuses.includes(file.status) ||
+      ImportStatuses.includes(file.status) ||
+      !!progress.linesReady ||
+      !!progress.linesValidationError ||
+      !!progress.linesSkipped;
+    this.showImport = ImportStatuses.includes(file.status) || !!progress.linesImported || !!progress.linesImportError;
 
     const headingActions: HeadingAction[] = [];
     headingActions.push(new HeadingAction(SvgIcon.List, this.i18n.imports.lines, () => this.searchLines(), true));
     if (file.canProcess) {
-      headingActions.push(new HeadingAction(SvgIcon.CheckCircle, this.i18n.imports.process.label, () => this.process(), true));
+      headingActions.push(
+        new HeadingAction(SvgIcon.CheckCircle, this.i18n.imports.process.label, () => this.process(), true)
+      );
     }
     if (file.canAbort) {
       headingActions.push(new HeadingAction(SvgIcon.XCircle, this.i18n.imports.abort.label, () => this.abort()));
@@ -137,13 +140,17 @@ export class ViewImportedFileComponent extends BaseViewPageComponent<ImportedFil
       title: this.i18n.imports.process.label,
       message: this.i18n.imports.process.confirmation(this.file.progress?.linesReady),
       callback: () => {
-        this.addSub(this.importsService.processImportedFile({
-          id: this.id
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.imports.process.done);
-          this.reload();
-        }));
-      },
+        this.addSub(
+          this.importsService
+            .processImportedFile({
+              id: this.id
+            })
+            .subscribe(() => {
+              this.notification.snackBar(this.i18n.imports.process.done);
+              this.reload();
+            })
+        );
+      }
     });
   }
 
@@ -155,13 +162,17 @@ export class ViewImportedFileComponent extends BaseViewPageComponent<ImportedFil
       title: this.i18n.imports.abort.label,
       message: this.i18n.imports.abort.confirmation,
       callback: () => {
-        this.addSub(this.importsService.abortImportedFile({
-          id: this.id
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.imports.abort.done);
-          this.reload();
-        }));
-      },
+        this.addSub(
+          this.importsService
+            .abortImportedFile({
+              id: this.id
+            })
+            .subscribe(() => {
+              this.notification.snackBar(this.i18n.imports.abort.done);
+              this.reload();
+            })
+        );
+      }
     });
   }
 
@@ -179,25 +190,29 @@ export class ViewImportedFileComponent extends BaseViewPageComponent<ImportedFil
     this.confirmation.confirm({
       message: this.i18n.general.removeConfirm(this.file.fileName),
       callback: () => {
-        this.addSub(this.importsService.deleteImportedFile({ id: this.id }).subscribe(() => {
-          this.notification.snackBar(this.i18n.general.removeDone(this.file.fileName));
-          history.back();
-        }));
-      },
+        this.addSub(
+          this.importsService.deleteImportedFile({ id: this.id }).subscribe(() => {
+            this.notification.snackBar(this.i18n.general.removeDone(this.file.fileName));
+            history.back();
+          })
+        );
+      }
     });
   }
 
   private updateProgress() {
-    this.addSub(this.importsService.viewImportedFile({ id: this.id, fields: ['status', 'progress'] }).subscribe(data => {
-      if (data.status !== this.file.status) {
-        // When the status has changed, reload the page completely
-        clearInterval(this.progressTimer);
-        this.reload();
-      } else {
-        // Update the progress
-        this.progress$.next(data.progress);
-      }
-    }));
+    this.addSub(
+      this.importsService.viewImportedFile({ id: this.id, fields: ['status', 'progress'] }).subscribe(data => {
+        if (data.status !== this.file.status) {
+          // When the status has changed, reload the page completely
+          clearInterval(this.progressTimer);
+          this.reload();
+        } else {
+          // Update the progress
+          this.progress$.next(data.progress);
+        }
+      })
+    );
   }
 
   resolveMenu() {

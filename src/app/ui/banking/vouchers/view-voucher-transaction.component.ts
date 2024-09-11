@@ -8,33 +8,31 @@ import { Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'view-voucher-transaction',
   templateUrl: './view-voucher-transaction.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewVoucherTransactionComponent extends BaseViewPageComponent<VoucherTransactionView> implements OnInit {
-
   title: string;
   mobileTitle: string;
   self: boolean;
 
-  constructor(
-    injector: Injector,
-    private voucherService: VouchersService,
-    public bankingHelper: BankingHelperService
-  ) { super(injector); }
+  constructor(injector: Injector, private voucherService: VouchersService, public bankingHelper: BankingHelperService) {
+    super(injector);
+  }
 
   ngOnInit() {
     super.ngOnInit();
     const id = this.route.snapshot.paramMap.get('id');
-    this.addSub(this.voucherService.viewVoucherTransaction({ id }).subscribe(vtx => this.data = vtx));
+    this.addSub(this.voucherService.viewVoucherTransaction({ id }).subscribe(vtx => (this.data = vtx)));
   }
 
   onDataInitialized(view: VoucherTransactionView) {
     this.self = this.authHelper.isSelfOrOwner(view.user);
-    this.headingActions = this.exportHelper.headingActions(view.exportFormats,
-      f => this.voucherService.exportVoucherTransaction$Response({
+    this.headingActions = this.exportHelper.headingActions(view.exportFormats, f =>
+      this.voucherService.exportVoucherTransaction$Response({
         format: f.internalName,
         id: view.id
-      }));
+      })
+    );
     switch (view.kind) {
       case VoucherTransactionKind.REDEEM:
         this.title = this.i18n.voucher.title.redeemDetails;
@@ -71,7 +69,9 @@ export class ViewVoucherTransactionComponent extends BaseViewPageComponent<Vouch
   }
 
   resolveLastTransactionNotificationMessage(): string {
-    return this.transaction.kind === VoucherTransactionKind.REDEEM ? this.i18n.voucher.redeem.done : this.i18n.voucher.topUp.done;
+    return this.transaction.kind === VoucherTransactionKind.REDEEM
+      ? this.i18n.voucher.redeem.done
+      : this.i18n.voucher.topUp.done;
   }
 
   comesFromANewTransaction(): boolean {

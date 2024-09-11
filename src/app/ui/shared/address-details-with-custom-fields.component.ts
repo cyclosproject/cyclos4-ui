@@ -8,7 +8,7 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'address-details-with-custom-fields',
   templateUrl: 'address-details-with-custom-fields.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddressDetailsWithCustomFieldsComponent extends BaseComponent implements OnInit {
   constructor(injector: Injector) {
@@ -27,5 +27,4 @@ export class AddressDetailsWithCustomFieldsComponent extends BaseComponent imple
       this.contactInfo = view.contactInfo;
     }
   }
-
 }

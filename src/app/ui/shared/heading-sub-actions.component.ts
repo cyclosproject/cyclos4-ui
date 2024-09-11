@@ -9,15 +9,12 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'heading-sub-actions',
   templateUrl: 'heading-sub-actions.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeadingSubActionsComponent extends BaseComponent {
-
   @Input() action: HeadingAction;
 
-  constructor(
-    injector: Injector,
-    public modalRef: BsModalRef) {
+  constructor(injector: Injector, public modalRef: BsModalRef) {
     super(injector);
   }
 }

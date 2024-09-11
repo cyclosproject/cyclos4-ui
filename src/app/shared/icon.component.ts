@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input } from '@angular/core';
 import { IconLoadingService } from 'app/core/icon-loading.service';
-import { empty } from 'app/shared/helper';
 import { SvgIcon } from 'app/core/svg-icon';
+import { empty } from 'app/shared/helper';
 
 /**
  * Shows an SVG icon
@@ -10,7 +10,7 @@ import { SvgIcon } from 'app/core/svg-icon';
   // tslint:disable-next-line:component-selector
   selector: 'icon',
   templateUrl: 'icon.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IconComponent {
   @Input() set icon(icon: SvgIcon | string) {
@@ -38,8 +38,5 @@ export class IconComponent {
     return this.elementRef.nativeElement as HTMLElement;
   }
 
-  constructor(
-    private elementRef: ElementRef,
-    private iconLoader: IconLoadingService) {
-  }
+  constructor(private elementRef: ElementRef, private iconLoader: IconLoadingService) {}
 }

@@ -1,11 +1,29 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { CreateDeviceConfirmation, DeviceConfirmationTypeEnum, OtpResult, SendMediumEnum, SendOtp, TotpSecretData, TotpStatusEnum } from 'app/api/models';
+import {
+  CreateDeviceConfirmation,
+  DeviceConfirmationTypeEnum,
+  OtpResult,
+  SendMediumEnum,
+  SendOtp,
+  TotpSecretData,
+  TotpStatusEnum
+} from 'app/api/models';
 import { TotpService } from 'app/api/services/totp.service';
-import { BaseComponent } from 'app/shared/base.component';
-import { BehaviorSubject } from 'rxjs';
-import QRCode from 'qrcode';
 import { ConfirmationService } from 'app/core/confirmation.service';
+import { BaseComponent } from 'app/shared/base.component';
+import QRCode from 'qrcode';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Manages the TOTP secret of a user
@@ -13,12 +31,9 @@ import { ConfirmationService } from 'app/core/confirmation.service';
 @Component({
   selector: 'manage-totp-secret',
   templateUrl: 'manage-totp-secret.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ManageTotpSecretComponent
-  extends BaseComponent
-  implements OnInit {
-
+export class ManageTotpSecretComponent extends BaseComponent implements OnInit {
   TotpStatusEnum = TotpStatusEnum;
 
   @Input() data: TotpSecretData;
@@ -36,15 +51,15 @@ export class ManageTotpSecretComponent
 
   createDeviceConfirmation: () => CreateDeviceConfirmation;
 
-  constructor(injector: Injector,
-    private confirmation: ConfirmationService,
-    private totpService: TotpService) {
+  constructor(injector: Injector, private confirmation: ConfirmationService, private totpService: TotpService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.createDeviceConfirmation = this.createDeviceConfirmation = () => ({ type: DeviceConfirmationTypeEnum.REMOVE_TOTP_SECRET });
+    this.createDeviceConfirmation = this.createDeviceConfirmation = () => ({
+      type: DeviceConfirmationTypeEnum.REMOVE_TOTP_SECRET
+    });
     if (this.data.secretUrl) {
       this.initializeQrCode(this.data.secretUrl);
     }
@@ -55,27 +70,38 @@ export class ManageTotpSecretComponent
       message: this.i18n.password.totp.removeConfirmation,
       passwordInput: this.data.confirmationPasswordInput,
       createDeviceConfirmation: this.createDeviceConfirmation,
-      callback: cb => this.addSub(this.totpService.deleteUserTotpSecret({
-        user: this.data.user?.id,
-        confirmationPassword: cb.confirmationPassword
-      }).subscribe(() => {
-        this.notification.snackBar(this.i18n.password.totp.removeDone);
-        this.totpModified.emit();
-      }))
+      callback: cb =>
+        this.addSub(
+          this.totpService
+            .deleteUserTotpSecret({
+              user: this.data.user?.id,
+              confirmationPassword: cb.confirmationPassword
+            })
+            .subscribe(() => {
+              this.notification.snackBar(this.i18n.password.totp.removeDone);
+              this.totpModified.emit();
+            })
+        )
     });
   }
 
   sendVerificationCode() {
     const sendOtp = this.sendOtpControl.value as SendOtp;
     if (sendOtp?.medium) {
-      this.addSub(this.totpService.sendTotpSecretActivationCode({
-        body: sendOtp
-      }).subscribe(otpResult => {
-        this.otpResult$.next(otpResult);
-        this.notification.snackBar(otpResult.sendMedium === SendMediumEnum.SMS
-          ? this.i18n.password.otp.sentToPhone(otpResult.sentTo)
-          : this.i18n.password.otp.sentToEmail(otpResult.sentTo));
-      }));
+      this.addSub(
+        this.totpService
+          .sendTotpSecretActivationCode({
+            body: sendOtp
+          })
+          .subscribe(otpResult => {
+            this.otpResult$.next(otpResult);
+            this.notification.snackBar(
+              otpResult.sendMedium === SendMediumEnum.SMS
+                ? this.i18n.password.otp.sentToPhone(otpResult.sentTo)
+                : this.i18n.password.otp.sentToEmail(otpResult.sentTo)
+            );
+          })
+      );
     }
   }
 
@@ -86,12 +112,16 @@ export class ManageTotpSecretComponent
   verifyCode() {
     const otp = this.otpControl.value as string;
     if (otp?.length) {
-      this.addSub(this.totpService.verifyTotpSecretActivationCode({
-        body: otp
-      }).subscribe(url => {
-        this.initializeQrCode(url);
-        this.notification.snackBar(this.i18n.password.totp.scanQr);
-      }));
+      this.addSub(
+        this.totpService
+          .verifyTotpSecretActivationCode({
+            body: otp
+          })
+          .subscribe(url => {
+            this.initializeQrCode(url);
+            this.notification.snackBar(this.i18n.password.totp.scanQr);
+          })
+      );
     }
   }
 
@@ -107,12 +137,16 @@ export class ManageTotpSecretComponent
   activate() {
     const totp = this.totpControl.value as string;
     if (totp?.length) {
-      this.addSub(this.totpService.activateTotpSecret({
-        body: totp
-      }).subscribe(() => {
-        this.notification.snackBar(this.i18n.password.totp.activated);
-        this.totpModified.emit(null);
-      }));
+      this.addSub(
+        this.totpService
+          .activateTotpSecret({
+            body: totp
+          })
+          .subscribe(() => {
+            this.notification.snackBar(this.i18n.password.totp.activated);
+            this.totpModified.emit(null);
+          })
+      );
     }
   }
 

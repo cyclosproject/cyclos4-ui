@@ -1,7 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
-  CreateDeviceConfirmation, DeviceConfirmationTypeEnum, PaymentPreview, PerformPayment, TransferFeePreview, User
+  CreateDeviceConfirmation,
+  DeviceConfirmationTypeEnum,
+  PaymentPreview,
+  PerformPayment,
+  TransferFeePreview,
+  User
 } from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { Enter } from 'app/core/shortcut.service';
@@ -16,10 +21,9 @@ import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 @Component({
   selector: 'payment-step-confirm',
   templateUrl: 'payment-step-confirm.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaymentStepConfirmComponent extends BaseComponent implements OnInit {
-
   fromUser: User;
   fromSelf: boolean;
   toUser: User;
@@ -37,10 +41,7 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
 
   createDeviceConfirmation: () => CreateDeviceConfirmation | PerformPayment;
 
-  constructor(
-    injector: Injector,
-    public bankingHelper: BankingHelperService,
-    private authHelper: AuthHelperService) {
+  constructor(injector: Injector, public bankingHelper: BankingHelperService, private authHelper: AuthHelperService) {
     super(injector);
   }
 
@@ -69,7 +70,7 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
         from: ApiHelper.accountOwner(this.preview.fromAccount),
         to: ApiHelper.accountOwner(this.preview.toAccount),
         paymentType: this.preview.paymentType.id,
-        amount: this.preview.payment.amount,
+        amount: this.preview.payment.amount
       };
     };
     // When there's no confirmation password, the Enter key will confirm
@@ -77,5 +78,4 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
       this.addShortcut(Enter, () => this.confirmed.emit());
     }
   }
-
 }

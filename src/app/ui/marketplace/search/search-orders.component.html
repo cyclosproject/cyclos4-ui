@@ -1,98 +1,85 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content class="no-padding"
+    <page-content
+      class="no-padding"
       [mode]="(moreFilters$ | async) || (this.layout.ltsm$ | async) === false ? 'filters' : 'emptyFilters'"
       [heading]="sales ? i18n.ad.title.sales : i18n.ad.title.purchases"
       [mobileHeading]="sales ? i18n.ad.mobileTitle.sales : i18n.ad.mobileTitle.purchases"
       [headingActions]="headingActions$ | async">
       <div
         *ngIf="(moreFilters$ | async) || (this.layout.ltsm$ | async) === false"
-        [formGroup]="form" class="filters-form filters-form-separator">
+        [formGroup]="form"
+        class="filters-form filters-form-separator">
         <div class="row">
-          <ng-container
-            *ngIf="data.user && !authHelper.isSelfOrOwner(data.user)">
+          <ng-container *ngIf="data.user && !authHelper.isSelfOrOwner(data.user)">
             <div class="col-12 col-md-6">
               <label-value [label]="i18n.general.user" kind="fieldView">
                 <user-link [user]="data.user"></user-link>
               </label-value>
             </div>
-            <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
-            </div>
+            <div *ngIf="layout.gtsm$" class="col-12 col-md-6"></div>
           </ng-container>
           <div class="col-12 col-md-6">
-            <single-selection-field formControlName="statuses"
-              [label]="i18n.general.status" [emptyOption]="true">
-              <field-option *ngIf="sales && isOwner" value="draft"
-                [text]="i18n.ad.orderStatus.draft">
+            <single-selection-field formControlName="statuses" [label]="i18n.general.status" [emptyOption]="true">
+              <field-option *ngIf="sales && isOwner" value="draft" [text]="i18n.ad.orderStatus.draft"> </field-option>
+              <field-option
+                value="pendingBuyer"
+                [text]="!sales && isOwner ? i18n.ad.requiringMyConfirmation : i18n.ad.waitingForBuyersApproval">
               </field-option>
-              <field-option value="pendingBuyer" [text]="!sales && isOwner ?
-                i18n.ad.requiringMyConfirmation :
-                i18n.ad.waitingForBuyersApproval">
+              <field-option
+                value="pendingSeller"
+                [text]="sales && isOwner ? i18n.ad.requiringMyConfirmation : i18n.ad.waitingForSellersApproval">
               </field-option>
-              <field-option value="pendingSeller" [text]="sales && isOwner ?
-                i18n.ad.requiringMyConfirmation :
-                i18n.ad.waitingForSellersApproval">
-              </field-option>
-              <field-option value="completed"
-                [text]="i18n.ad.orderStatus.completed">
-              </field-option>
-              <field-option value="rejectedByBuyer"
-                [text]="i18n.ad.orderStatus.rejectedByBuyer">
-              </field-option>
-              <field-option value="rejectedBySeller"
-                [text]="i18n.ad.orderStatus.rejectedBySeller">
-              </field-option>
-              <field-option value="paymentPending"
-                [text]="i18n.ad.orderStatus.paymentPending">
-              </field-option>
-              <field-option value="paymentDenied"
-                [text]="i18n.ad.orderStatus.paymentDenied">
-              </field-option>
-              <field-option value="paymentCanceled"
-                [text]="i18n.ad.orderStatus.paymentCanceled">
-              </field-option>
-              <field-option value="paymentExpired"
-                [text]="i18n.ad.orderStatus.paymentExpired">
-              </field-option>
-              <field-option value="disposed"
-                [text]="i18n.ad.orderStatus.disposed">
-              </field-option>
+              <field-option value="completed" [text]="i18n.ad.orderStatus.completed"> </field-option>
+              <field-option value="rejectedByBuyer" [text]="i18n.ad.orderStatus.rejectedByBuyer"> </field-option>
+              <field-option value="rejectedBySeller" [text]="i18n.ad.orderStatus.rejectedBySeller"> </field-option>
+              <field-option value="paymentPending" [text]="i18n.ad.orderStatus.paymentPending"> </field-option>
+              <field-option value="paymentDenied" [text]="i18n.ad.orderStatus.paymentDenied"> </field-option>
+              <field-option value="paymentCanceled" [text]="i18n.ad.orderStatus.paymentCanceled"> </field-option>
+              <field-option value="paymentExpired" [text]="i18n.ad.orderStatus.paymentExpired"> </field-option>
+              <field-option value="disposed" [text]="i18n.ad.orderStatus.disposed"> </field-option>
             </single-selection-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field formControlName="relatedUser"
-              [label]="sales ? i18n.ad.buyer : i18n.ad.seller">
-            </user-field>
+            <user-field formControlName="relatedUser" [label]="sales ? i18n.ad.buyer : i18n.ad.seller"> </user-field>
           </div>
           <div class="row no-gutters col-12">
             <div class="col-12 col-md-6">
-              <date-field formControlName="periodBegin"
-                [label]="i18n.general.beginDate" minDate="past100"
-                maxDate="todayEnd" fieldSize="full" class>
+              <date-field
+                formControlName="periodBegin"
+                [label]="i18n.general.beginDate"
+                minDate="past100"
+                maxDate="todayEnd"
+                fieldSize="full"
+                class>
               </date-field>
             </div>
             <div class="col-12 col-md-6">
-              <date-field formControlName="periodEnd"
-                [label]="i18n.general.endDate" minDate="past100"
-                maxDate="todayEnd" fieldSize="full">
+              <date-field
+                formControlName="periodEnd"
+                [label]="i18n.general.endDate"
+                minDate="past100"
+                maxDate="todayEnd"
+                fieldSize="full">
               </date-field>
             </div>
           </div>
           <div class="col-12 col-md-6">
-            <input-field formControlName="number" [label]="i18n.ad.order"
-              fieldSize="full"></input-field>
+            <input-field formControlName="number" [label]="i18n.ad.order" fieldSize="full"></input-field>
           </div>
           <div class="col-12 col-md-6">
-            <input-field formControlName="productNumber"
-              [label]="i18n.ad.productNumber" fieldSize="full"></input-field>
+            <input-field formControlName="productNumber" [label]="i18n.ad.productNumber" fieldSize="full"></input-field>
           </div>
         </div>
       </div>
     </page-content>
 
-    <results-layout resultType="list" [results]="results$ | async"
-      (update)="update($event)" [rendering$]="rendering$" [toLink]="toLink">
-
+    <results-layout
+      resultType="list"
+      [results]="results$ | async"
+      (update)="update($event)"
+      [rendering$]="rendering$"
+      [toLink]="toLink">
       <mobile-result *mobileResult="let row">
         <div class="d-flex">
           <div>
@@ -107,7 +94,7 @@
             </div>
           </div>
           <div class="ml-auto">
-            {{ row.totalPrice |currency: row.currency }}
+            {{ row.totalPrice | currency : row.currency }}
           </div>
         </div>
       </mobile-result>
@@ -127,8 +114,9 @@
               <td>{{ resolveStatusLabel(row) }}</td>
               <td>{{ row.creationDate | date }}</td>
               <td>{{ row.relatedUser.display }}</td>
-              <td class=" text-right">
-                {{ row.totalPrice |currency: row.currency }}</td>
+              <td class="text-right">
+                {{ row.totalPrice | currency : row.currency }}
+              </td>
             </tr>
           </ng-container>
         </tbody>

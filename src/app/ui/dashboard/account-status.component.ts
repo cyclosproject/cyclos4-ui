@@ -14,10 +14,9 @@ import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'account-status',
   templateUrl: 'account-status.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccountStatusComponent extends BaseDashboardComponent implements OnInit {
-
   @Input() account: FrontendDashboardAccount;
 
   title: string;
@@ -35,10 +34,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
     return this.account.balance;
   }
 
-  constructor(
-    injector: Injector,
-    private bankingHelper: BankingHelperService,
-    private menu: MenuService) {
+  constructor(injector: Injector, private bankingHelper: BankingHelperService, private menu: MenuService) {
     super(injector);
   }
 
@@ -66,13 +62,17 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
 
     // The heading actions
     this.headingActions = [
-      new HeadingAction(SvgIcon.Search, this.i18n.general.view,
-        event => this.menu.navigate({
-          entry: this.menu.accountEntry(this.type),
-          clear: false,
-          event,
-        }),
-        true),
+      new HeadingAction(
+        SvgIcon.Search,
+        this.i18n.general.view,
+        event =>
+          this.menu.navigate({
+            entry: this.menu.accountEntry(this.type),
+            clear: false,
+            event
+          }),
+        true
+      )
     ];
   }
 
@@ -86,7 +86,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
       url: `/banking/transfer/${this.account.account.id}/${tx}`,
       menu: new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType: this.type }),
       clear: false,
-      event,
+      event
     });
   }
 }

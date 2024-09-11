@@ -1,31 +1,42 @@
 <h1 *ngIf="title">{{ title }}</h1>
 <ng-container [formGroup]="form">
-  <div *ngIf="message && canConfirm" class="mb-1"
-    [ngClass]="{'mt-3': title != null}" [innerHTML]="message | trust"></div>
+  <div
+    *ngIf="message && canConfirm"
+    class="mb-1"
+    [ngClass]="{ 'mt-3': title != null }"
+    [innerHTML]="message | trust"></div>
 
-  <custom-field-input *ngFor="let cf of customFields; let first = first"
-    [field]="cf" [focused]="first" [labelPosition]="labelPosition"
+  <custom-field-input
+    *ngFor="let cf of customFields; let first = first"
+    [field]="cf"
+    [focused]="first"
+    [labelPosition]="labelPosition"
     [formControl]="form.get('customValues').get(cf.internalName)">
   </custom-field-input>
 
-  <confirmation-password *ngIf="passwordInput"
-    formControlName="confirmationPassword" [focused]="!hasFields"
+  <confirmation-password
+    *ngIf="passwordInput"
+    formControlName="confirmationPassword"
+    [focused]="!hasFields"
     [createDeviceConfirmation]="createDeviceConfirmation"
     (showSubmit)="showSubmit$.next($event)"
-    (createDeviceConfirmationError)="hide()" (confirmed)="confirm($event)"
-    [passwordInput]="passwordInput" [ngClass]="{
+    (createDeviceConfirmationError)="hide()"
+    (confirmed)="confirm($event)"
+    [passwordInput]="passwordInput"
+    [ngClass]="{
       'mt-3': hasFields || message == null,
       'mt-4': !hasFields && message != null
     }">
   </confirmation-password>
 
   <actions forceRow>
-    <action-button *ngIf="showSubmit$ | async; else blank"
-      [disabled]="!canConfirm || (requesting$ | async)" (action)="confirm()"
+    <action-button
+      *ngIf="showSubmit$ | async; else blank"
+      [disabled]="!canConfirm || (requesting$ | async)"
+      (action)="confirm()"
       [label]="confirmLabel">
     </action-button>
     <ng-template #blank>&nbsp;</ng-template>
-    <action-button outline (action)="hide()" [label]="cancelLabel">
-    </action-button>
+    <action-button outline (action)="hide()" [label]="cancelLabel"> </action-button>
   </actions>
 </ng-container>

@@ -1,13 +1,8 @@
 <h1>{{ title }}</h1>
 
-<textarea-field #field focused [formControl]="control" required>
-</textarea-field>
+<textarea-field #field focused [formControl]="control" required> </textarea-field>
 
 <actions forceRow>
-  <action-button (action)="submit()" [disabled]="requesting$ | async"
-    [label]="i18n.general.submit">
-  </action-button>
-  <action-button outline (action)="modalRef.hide()"
-    [label]="i18n.general.cancel">
-  </action-button>
+  <action-button (action)="submit()" [disabled]="requesting$ | async" [label]="i18n.general.submit"> </action-button>
+  <action-button outline (action)="modalRef.hide()" [label]="i18n.general.cancel"> </action-button>
 </actions>

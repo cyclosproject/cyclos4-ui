@@ -14,82 +14,77 @@ const operationRoutes: Routes = [
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          runScope: OperationRunScope.Standalone,
-        },
+          runScope: OperationRunScope.Standalone
+        }
       },
       {
         path: 'self/:operation',
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          runScope: OperationRunScope.User,
-        },
+          runScope: OperationRunScope.User
+        }
       },
       {
         path: 'action/:operation',
         component: RunOperationComponent,
         data: {
           action: true,
-          runScope: OperationRunScope.Standalone,
-        },
+          runScope: OperationRunScope.Standalone
+        }
       },
       {
         path: 'user/:user/:operation',
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          runScope: OperationRunScope.User,
-        },
+          runScope: OperationRunScope.User
+        }
       },
       {
         path: 'marketplace/:ad/:operation',
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          runScope: OperationRunScope.Ad,
-        },
+          runScope: OperationRunScope.Ad
+        }
       },
       {
         path: 'record/:record/:operation',
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          runScope: OperationRunScope.Record,
-        },
+          runScope: OperationRunScope.Record
+        }
       },
       {
         path: 'transfer/:transfer/:operation',
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          runScope: OperationRunScope.Transfer,
-        },
+          runScope: OperationRunScope.Transfer
+        }
       },
       {
         path: 'menu/:menu/:operation',
         component: RunOperationComponent,
         data: {
-          runScope: OperationRunScope.Menu,
-        },
+          runScope: OperationRunScope.Menu
+        }
       },
       {
         path: 'callback/:id/:token',
-        component: OperationCallbackComponent,
-      },
-    ],
-  },
+        component: OperationCallbackComponent
+      }
+    ]
+  }
 ];
 
 /**
  * * Routes for the wizards module
  */
 @NgModule({
-  imports: [
-    RouterModule.forChild(operationRoutes),
-  ],
-  exports: [
-    RouterModule,
-  ],
+  imports: [RouterModule.forChild(operationRoutes)],
+  exports: [RouterModule]
 })
-export class OperationsRoutingModule {
-}
+export class OperationsRoutingModule {}

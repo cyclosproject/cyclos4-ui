@@ -1,6 +1,18 @@
-import { ChangeDetectionStrategy, Component, Host, HostBinding, Injector, Input, Optional, SkipSelf } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Host,
+  HostBinding,
+  Injector,
+  Input,
+  Optional,
+  SkipSelf
+} from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BaseFormFieldWithOptionsComponent, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
+import {
+  BaseFormFieldWithOptionsComponent,
+  FORM_FIELD_WITH_OPTIONS
+} from 'app/shared/base-form-field-with-options.component';
 import { FieldOption } from 'app/shared/field-option';
 import { getValueAsArray, preprocessValueWithSeparator, truthyAttr } from 'app/shared/helper';
 
@@ -13,11 +25,10 @@ import { getValueAsArray, preprocessValueWithSeparator, truthyAttr } from 'app/s
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: CheckboxGroupFieldComponent, multi: true },
-    { provide: FORM_FIELD_WITH_OPTIONS, useExisting: CheckboxGroupFieldComponent },
-  ],
+    { provide: FORM_FIELD_WITH_OPTIONS, useExisting: CheckboxGroupFieldComponent }
+  ]
 })
 export class CheckboxGroupFieldComponent extends BaseFormFieldWithOptionsComponent<string | string[]> {
-
   @HostBinding('class.d-block') classBlock = true;
   @HostBinding('class.w-100') classW100 = true;
 
@@ -40,10 +51,7 @@ export class CheckboxGroupFieldComponent extends BaseFormFieldWithOptionsCompone
    */
   @Input() masterValue: string = null;
 
-  constructor(
-    injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-  ) {
+  constructor(injector: Injector, @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
     super(injector, controlContainer);
   }
 
@@ -59,7 +67,7 @@ export class CheckboxGroupFieldComponent extends BaseFormFieldWithOptionsCompone
       if (value === this.masterValue) {
         //unselecting master value then unselect and disable all dependant options
         selected = [];
-        this.allOptions.filter(option => option.value !== this.masterValue).forEach(option => option.disabled = true);
+        this.allOptions.filter(option => option.value !== this.masterValue).forEach(option => (option.disabled = true));
       } else {
         selected.splice(index, 1);
       }
@@ -67,7 +75,7 @@ export class CheckboxGroupFieldComponent extends BaseFormFieldWithOptionsCompone
       selected.push(value);
       if (value === this.masterValue) {
         //selecting master value then enable all dependant options
-        this.allOptions.forEach(option => option.disabled = false);
+        this.allOptions.forEach(option => (option.disabled = false));
       }
     }
     this.setValue(this.separator == null ? selected : selected.join(this.separator));
@@ -94,5 +102,4 @@ export class CheckboxGroupFieldComponent extends BaseFormFieldWithOptionsCompone
   protected getFocusableControl() {
     return null;
   }
-
 }

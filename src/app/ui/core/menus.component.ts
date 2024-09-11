@@ -27,10 +27,9 @@ export function menuAnchorId(entry: BaseMenuEntry) {
   // tslint:disable-next-line:component-selector
   selector: 'menus',
   templateUrl: 'menus.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenusComponent extends AbstractComponent implements OnInit {
-
   /** Export to template */
   menuAnchorId = menuAnchorId;
 
@@ -49,7 +48,8 @@ export class MenusComponent extends AbstractComponent implements OnInit {
     injector: Injector,
     private menu: MenuService,
     public layout: LayoutService,
-    public breadcrumb: BreadcrumbService) {
+    public breadcrumb: BreadcrumbService
+  ) {
     super(injector);
   }
 
@@ -97,7 +97,7 @@ export class MenusComponent extends AbstractComponent implements OnInit {
     }
     this.menu.navigate({
       entry,
-      event,
+      event
     });
   }
 }

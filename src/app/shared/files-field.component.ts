@@ -1,6 +1,16 @@
 import {
-  ChangeDetectorRef, Component, ElementRef, EventEmitter, Host,
-  Injector, Input, OnInit, Optional, Output, SkipSelf, ViewChild
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Host,
+  Injector,
+  Input,
+  OnInit,
+  Optional,
+  Output,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomField, StoredFile } from 'app/api/models';
@@ -22,12 +32,9 @@ import { take } from 'rxjs/operators';
 @Component({
   selector: 'files-field',
   templateUrl: 'files-field.component.html',
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: FilesFieldComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: FilesFieldComponent, multi: true }]
 })
 export class FilesFieldComponent extends BaseFormFieldComponent<string | string[]> implements OnInit {
-
   /**
    * The maximum of files that can be uploaded
    */
@@ -100,10 +107,13 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
   }
 
   protected getDisabledValue(): string {
-    return this.fileIds.map(id => {
-      const file = this.files.find(f => f.id === id);
-      return file == null ? null : file.name;
-    }).filter(n => n != null).join(', ');
+    return this.fileIds
+      .map(id => {
+        const file = this.files.find(f => f.id === id);
+        return file == null ? null : file.name;
+      })
+      .filter(n => n != null)
+      .join(', ');
   }
 
   onFilesUploaded(files: StoredFile[]) {
@@ -124,35 +134,37 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
     const ref = this.modal.show(ManageFilesComponent, {
       class: 'modal-form',
       initialState: {
-        files: this.files,
-      },
+        files: this.files
+      }
     });
     const component = ref.content as ManageFilesComponent;
-    this.addSub(component.result.pipe(take(1)).subscribe(result => {
-      let value = this.fileIds;
-      if (!empty(result.order)) {
-        // The order has changed
-        value = result.order;
-      }
-      if (!empty(result.removedFiles)) {
-        // Remove each temp file in the list
-        this.uploadedFiles
-          .filter(i => result.removedFiles.includes(i.id))
-          .forEach(i => this.addSub(this.filesService.deleteRawFile({ id: i.id }).subscribe()));
+    this.addSub(
+      component.result.pipe(take(1)).subscribe(result => {
+        let value = this.fileIds;
+        if (!empty(result.order)) {
+          // The order has changed
+          value = result.order;
+        }
+        if (!empty(result.removedFiles)) {
+          // Remove each temp file in the list
+          this.uploadedFiles
+            .filter(i => result.removedFiles.includes(i.id))
+            .forEach(i => this.addSub(this.filesService.deleteRawFile({ id: i.id }).subscribe()));
 
-        // Update the arrays
-        this.files = this.files.filter(i => !result.removedFiles.includes(i.id));
-        this.uploadedFiles = this.uploadedFiles.filter(i => !result.removedFiles.includes(i.id));
-        value = value.filter(id => !result.removedFiles.includes(id));
-        result.removedFiles.forEach(id => this.storedFileCacheService.delete(id));
-      }
-      this.files = value.map(id => this.files.find(i => i.id === id));
-      this.value = value;
-      ref.hide();
+          // Update the arrays
+          this.files = this.files.filter(i => !result.removedFiles.includes(i.id));
+          this.uploadedFiles = this.uploadedFiles.filter(i => !result.removedFiles.includes(i.id));
+          value = value.filter(id => !result.removedFiles.includes(id));
+          result.removedFiles.forEach(id => this.storedFileCacheService.delete(id));
+        }
+        this.files = value.map(id => this.files.find(i => i.id === id));
+        this.value = value;
+        ref.hide();
 
-      // Manually mark the control as touched, as there's no native inputs
-      this.notifyTouched();
-    }));
+        // Manually mark the control as touched, as there's no native inputs
+        this.notifyTouched();
+      })
+    );
   }
 
   removeAllFiles() {
@@ -176,7 +188,6 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
       .forEach(sf => this.files.push(sf));
   }
 
-
   notifyTouched() {
     super.notifyTouched();
     this.changeDetector.detectChanges();
@@ -191,9 +202,11 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
   }
 
   downloadFile(event: MouseEvent, file: StoredFile) {
-    this.addSub(this.filesService.getRawFileContent({ id: file.id }).subscribe(blob => {
-      download(blob, file.name, file.contentType);
-    }));
+    this.addSub(
+      this.filesService.getRawFileContent({ id: file.id }).subscribe(blob => {
+        download(blob, file.name, file.contentType);
+      })
+    );
     event.stopPropagation();
     event.preventDefault();
   }

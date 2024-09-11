@@ -7,16 +7,14 @@ import { Address, Image } from 'app/api/models';
 @Component({
   selector: 'map-result',
   templateUrl: 'map-result.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapResultComponent implements AfterViewInit, AfterViewChecked {
-
   @Input() image: Image;
   @Input() address: Address;
   classAdded = false;
 
-  constructor(private element: ElementRef) {
-  }
+  constructor(private element: ElementRef) {}
 
   ngAfterViewInit() {
     this.maybeAssignParentClass();

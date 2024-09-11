@@ -1,8 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  CustomFieldTypeEnum, ShoppingCartItemAvailabilityEnum, ShoppingCartItemDetailed,
-  ShoppingCartItemQuantityAdjustmentEnum, ShoppingCartView
+  CustomFieldTypeEnum,
+  ShoppingCartItemAvailabilityEnum,
+  ShoppingCartItemDetailed,
+  ShoppingCartItemQuantityAdjustmentEnum,
+  ShoppingCartView
 } from 'app/api/models';
 import { ShoppingCartsService } from 'app/api/services/shopping-carts.service';
 import { ErrorStatus } from 'app/core/error-status';
@@ -19,12 +22,9 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'view-cart',
   templateUrl: 'view-cart.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewCartComponent
-  extends BasePageComponent<ShoppingCartView>
-  implements OnInit {
-
+export class ViewCartComponent extends BasePageComponent<ShoppingCartView> implements OnInit {
   private static details = false;
 
   id: string;
@@ -35,7 +35,7 @@ export class ViewCartComponent
   constructor(
     injector: Injector,
     private shoppingCartService: ShoppingCartsService,
-    private marketplaceHelper: MarketplaceHelperService,
+    private marketplaceHelper: MarketplaceHelperService
   ) {
     super(injector);
   }
@@ -46,30 +46,31 @@ export class ViewCartComponent
     this.id = this.route.snapshot.params.id;
 
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
-      const req = ViewCartComponent.details ?
-        this.shoppingCartService.getShoppingCartDetails({ id: this.id }) :
-        this.shoppingCartService.adjustAndGetShoppingCartDetails({ id: this.id });
+      const req = ViewCartComponent.details
+        ? this.shoppingCartService.getShoppingCartDetails({ id: this.id })
+        : this.shoppingCartService.adjustAndGetShoppingCartDetails({ id: this.id });
 
       ViewCartComponent.details = false;
 
-      this.addSub(req
-        .subscribe(data => {
-          this.data = data;
-        }, (err: HttpErrorResponse) => {
-          if (err.status === ErrorStatus.NOT_FOUND ||
-            err.status === ErrorStatus.FORBIDDEN) {
-            this.emptyCart$.next(true);
-          } else {
-            defaultHandling(err);
+      this.addSub(
+        req.subscribe(
+          data => {
+            this.data = data;
+          },
+          (err: HttpErrorResponse) => {
+            if (err.status === ErrorStatus.NOT_FOUND || err.status === ErrorStatus.FORBIDDEN) {
+              this.emptyCart$.next(true);
+            } else {
+              defaultHandling(err);
+            }
           }
-        }));
+        )
+      );
     });
   }
 
   onDataInitialized(data: ShoppingCartView) {
-    this.headingActions = [
-      new HeadingAction(SvgIcon.Bag2, this.i18n.ad.checkout, () => this.checkout(), true),
-    ];
+    this.headingActions = [new HeadingAction(SvgIcon.Bag2, this.i18n.ad.checkout, () => this.checkout(), true)];
 
     this.checkMessages(data);
   }
@@ -139,33 +140,37 @@ export class ViewCartComponent
    * Removes the item from the cart and reloads the page
    */
   remove(item: ShoppingCartItemDetailed) {
-    this.addSub(this.shoppingCartService.removeItemFromShoppingCart({ ad: item.product.id })
-      .subscribe(items => {
+    this.addSub(
+      this.shoppingCartService.removeItemFromShoppingCart({ ad: item.product.id }).subscribe(items => {
         this.notification.snackBar(this.i18n.general.removeItemDone);
         this.reload();
         this.marketplaceHelper.cartItems = items;
-      }));
+      })
+    );
   }
 
   /**
    * Changes the item quantity and reloads the page
    */
   changeQuantity(item: [string, ShoppingCartItemDetailed, boolean]) {
-
     const req: any = (quantity: string) => {
       if (+quantity === 0) {
         // Avoid deleting cart items by mistake,
         // user should remove items with the remove button
         return;
       }
-      this.addSub(this.shoppingCartService.modifyItemQuantityOnShoppingCart({
-        ad: item[1].product.id,
-        quantity: +quantity,
-      }).subscribe(items => {
-        ViewCartComponent.details = true;
-        this.reload();
-        this.marketplaceHelper.cartItems = items;
-      }));
+      this.addSub(
+        this.shoppingCartService
+          .modifyItemQuantityOnShoppingCart({
+            ad: item[1].product.id,
+            quantity: +quantity
+          })
+          .subscribe(items => {
+            ViewCartComponent.details = true;
+            this.reload();
+            this.marketplaceHelper.cartItems = items;
+          })
+      );
     };
 
     if (item[2]) {
@@ -176,13 +181,15 @@ export class ViewCartComponent
       this.confirmation.confirm({
         title: this.i18n.ad.changeQuantity,
         labelPosition: 'above',
-        customFields: [{
-          internalName: 'quantity',
-          name: this.i18n.ad.quantity,
-          type: item[1].product.allowDecimalQuantity ? CustomFieldTypeEnum.DECIMAL : CustomFieldTypeEnum.INTEGER,
-          defaultValue: this.marketplaceHelper.getFormattedQuantity(item[1]),
-        }],
-        callback: res => req(+res.customValues.quantity),
+        customFields: [
+          {
+            internalName: 'quantity',
+            name: this.i18n.ad.quantity,
+            type: item[1].product.allowDecimalQuantity ? CustomFieldTypeEnum.DECIMAL : CustomFieldTypeEnum.INTEGER,
+            defaultValue: this.marketplaceHelper.getFormattedQuantity(item[1])
+          }
+        ],
+        callback: res => req(+res.customValues.quantity)
       });
     }
   }

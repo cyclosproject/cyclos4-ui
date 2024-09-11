@@ -1,10 +1,15 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { AccountPaymentLimitsData, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, SetAccountPaymentLimits } from 'app/api/models';
+import {
+  AccountPaymentLimitsData,
+  CreateDeviceConfirmation,
+  DeviceConfirmationTypeEnum,
+  SetAccountPaymentLimits
+} from 'app/api/models';
 import { PaymentLimitsService } from 'app/api/services/payment-limits.service';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { FieldOption } from 'app/shared/field-option';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { cloneDeep } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
 
@@ -14,12 +19,9 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'edit-account-payment-limits',
   templateUrl: 'edit-account-payment-limits.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditAccountPaymentLimitsComponent
-  extends BasePageComponent<AccountPaymentLimitsData>
-  implements OnInit {
-
+export class EditAccountPaymentLimitsComponent extends BasePageComponent<AccountPaymentLimitsData> implements OnInit {
   form: FormGroup;
   user: string;
   accountType: string;
@@ -29,9 +31,7 @@ export class EditAccountPaymentLimitsComponent
   isDefaultMonthlyLimit$ = new BehaviorSubject<boolean>(null);
   isDefaultYearlyLimit$ = new BehaviorSubject<boolean>(null);
 
-  constructor(
-    injector: Injector,
-    private paymentLimitsService: PaymentLimitsService) {
+  constructor(injector: Injector, private paymentLimitsService: PaymentLimitsService) {
     super(injector);
   }
 
@@ -39,8 +39,11 @@ export class EditAccountPaymentLimitsComponent
     super.ngOnInit();
     this.user = this.route.snapshot.params.user;
     this.accountType = this.route.snapshot.params.accountType;
-    this.addSub(this.paymentLimitsService.getAccountPaymentLimits({ user: this.user, accountType: this.accountType })
-      .subscribe(data => this.data = data));
+    this.addSub(
+      this.paymentLimitsService
+        .getAccountPaymentLimits({ user: this.user, accountType: this.accountType })
+        .subscribe(data => (this.data = data))
+    );
   }
 
   get modeOptions(): FieldOption[] {
@@ -71,17 +74,27 @@ export class EditAccountPaymentLimitsComponent
       amountPerMonthLimit: data.amountPerMonthLimit,
       yearlyLimitMode: yearlyMode,
       amountPerYearLimit: data.amountPerYearLimit,
-      comment: null,
+      comment: null
     });
-    this.formControl('paymentLimitMode').valueChanges.subscribe(value => this.isDefaultPaymentLimit$.next(value === 'default'));
+    this.formControl('paymentLimitMode').valueChanges.subscribe(value =>
+      this.isDefaultPaymentLimit$.next(value === 'default')
+    );
     this.isDefaultPaymentLimit$.next(paymentMode === 'default');
-    this.formControl('dailyLimitMode').valueChanges.subscribe(value => this.isDefaultDailyLimit$.next(value === 'default'));
+    this.formControl('dailyLimitMode').valueChanges.subscribe(value =>
+      this.isDefaultDailyLimit$.next(value === 'default')
+    );
     this.isDefaultDailyLimit$.next(dailyMode === 'default');
-    this.formControl('weeklyLimitMode').valueChanges.subscribe(value => this.isDefaultWeeklyLimit$.next(value === 'default'));
+    this.formControl('weeklyLimitMode').valueChanges.subscribe(value =>
+      this.isDefaultWeeklyLimit$.next(value === 'default')
+    );
     this.isDefaultWeeklyLimit$.next(weeklyMode === 'default');
-    this.formControl('monthlyLimitMode').valueChanges.subscribe(value => this.isDefaultMonthlyLimit$.next(value === 'default'));
+    this.formControl('monthlyLimitMode').valueChanges.subscribe(value =>
+      this.isDefaultMonthlyLimit$.next(value === 'default')
+    );
     this.isDefaultMonthlyLimit$.next(monthlyMode === 'default');
-    this.formControl('yearlyLimitMode').valueChanges.subscribe(value => this.isDefaultYearlyLimit$.next(value === 'default'));
+    this.formControl('yearlyLimitMode').valueChanges.subscribe(value =>
+      this.isDefaultYearlyLimit$.next(value === 'default')
+    );
     this.isDefaultYearlyLimit$.next(yearlyMode === 'default');
   }
 
@@ -133,19 +146,25 @@ export class EditAccountPaymentLimitsComponent
   }
 
   doSave(value: SetAccountPaymentLimits, confirmationPassword?: string) {
-    this.addSub(this.paymentLimitsService.setAccountPaymentLimits({
-      user: this.user, accountType: this.accountType, confirmationPassword, body: value
-    }).subscribe(() => {
-      this.notification.snackBar(this.i18n.account.paymentLimits.saved);
-      this.reload();
-    })
+    this.addSub(
+      this.paymentLimitsService
+        .setAccountPaymentLimits({
+          user: this.user,
+          accountType: this.accountType,
+          confirmationPassword,
+          body: value
+        })
+        .subscribe(() => {
+          this.notification.snackBar(this.i18n.account.paymentLimits.saved);
+          this.reload();
+        })
     );
   }
 
   paymentLimitsDeviceConfirmation(): () => CreateDeviceConfirmation {
     return () => ({
       type: DeviceConfirmationTypeEnum.CHANGE_ACCOUNT_LIMITS,
-      account: this.data.account.id,
+      account: this.data.account.id
     });
   }
 

@@ -15,10 +15,7 @@ import { truthyAttr } from 'app/shared/helper';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserLinkComponent extends BaseComponent implements OnInit {
-
-  constructor(
-    injector: Injector,
-    private authHelper: AuthHelperService) {
+  constructor(injector: Injector, private authHelper: AuthHelperService) {
     super(injector);
   }
 
@@ -70,8 +67,10 @@ export class UserLinkComponent extends BaseComponent implements OnInit {
   }
 
   canViewProfile(): boolean {
-    return this.authHelper.isSelfOrOwner(this.user) || (((this.dataForFrontendHolder.auth || {}).permissions || {}).users || {}).viewProfile
-      && (this.operator || !!this.user.id);
+    return (
+      this.authHelper.isSelfOrOwner(this.user) ||
+      ((((this.dataForFrontendHolder.auth || {}).permissions || {}).users || {}).viewProfile &&
+        (this.operator || !!this.user.id))
+    );
   }
-
 }

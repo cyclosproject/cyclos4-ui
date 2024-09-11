@@ -1,6 +1,15 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, Host, Injector,
-  Input, OnDestroy, OnInit, Optional, SkipSelf, ViewChild
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Host,
+  Injector,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PrincipalType, User, UserQueryFilters } from 'app/api/models';
@@ -26,14 +35,9 @@ const PageSize = 10;
   selector: 'user-field',
   templateUrl: 'user-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: UserFieldComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: UserFieldComponent, multi: true }]
 })
-export class UserFieldComponent
-  extends BaseAutocompleteFieldComponent<string, User>
-  implements OnInit, OnDestroy {
-
+export class UserFieldComponent extends BaseAutocompleteFieldComponent<string, User> implements OnInit, OnDestroy {
   @Input() get user(): User {
     return this.selection;
   }
@@ -62,7 +66,8 @@ export class UserFieldComponent
     private usersService: UsersService,
     private nextRequestState: NextRequestState,
     private modal: BsModalService,
-    private errorHandler: ErrorHandlerService) {
+    private errorHandler: ErrorHandlerService
+  ) {
     super(injector, controlContainer);
   }
 
@@ -109,8 +114,13 @@ export class UserFieldComponent
     }
     if (text) {
       return this.errorHandler.requestWithCustomErrorHandler(() =>
-        this.addSub(this.usersService.locateUser({ user: text }).subscribe(user => this.select(user),
-          () => this.select(null))));
+        this.addSub(
+          this.usersService.locateUser({ user: text }).subscribe(
+            user => this.select(user),
+            () => this.select(null)
+          )
+        )
+      );
     }
   }
 
@@ -166,17 +176,17 @@ export class UserFieldComponent
     const ref = this.modal.show(PickContactComponent, {
       class: 'modal-form',
       initialState: {
-        usersToExclude: (this.filters || {}).usersToExclude || [],
-      },
+        usersToExclude: (this.filters || {}).usersToExclude || []
+      }
     });
     const component = ref.content as PickContactComponent;
-    component.select.pipe(first()).subscribe(u => this.user = u);
+    component.select.pipe(first()).subscribe(u => (this.user = u));
     this.modal.onHide.pipe(first()).subscribe(() => focus(this.inputField, true));
   }
 
   showScanQrCode() {
     const ref = this.modal.show(ScanQrCodeComponent, {
-      class: 'modal-form',
+      class: 'modal-form'
     });
     const component = ref.content as ScanQrCodeComponent;
     component.select.pipe(first()).subscribe(value => this.setAsPrincipal(value));
@@ -213,5 +223,4 @@ export class UserFieldComponent
       this.user = null;
     }
   }
-
 }

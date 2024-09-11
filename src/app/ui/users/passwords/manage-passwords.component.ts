@@ -1,9 +1,14 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import {
-  CreateDeviceConfirmation, CredentialTypeEnum, DataForUserPasswords, DeviceConfirmationTypeEnum,
+  CreateDeviceConfirmation,
+  CredentialTypeEnum,
+  DataForUserPasswords,
+  DeviceConfirmationTypeEnum,
   PasswordInput,
-  PasswordStatusAndActions, PasswordStatusEnum, SendMediumEnum
+  PasswordStatusAndActions,
+  PasswordStatusEnum,
+  SendMediumEnum
 } from 'app/api/models';
 import { PasswordsService } from 'app/api/services/passwords.service';
 import { TotpService } from 'app/api/services/totp.service';
@@ -23,12 +28,9 @@ import { first } from 'rxjs/operators';
 @Component({
   selector: 'manage-passwords',
   templateUrl: 'manage-passwords.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ManagePasswordsComponent
-  extends BasePageComponent<DataForUserPasswords>
-  implements OnInit {
-
+export class ManagePasswordsComponent extends BasePageComponent<DataForUserPasswords> implements OnInit {
   param: string;
   self: boolean;
 
@@ -50,7 +52,8 @@ export class ManagePasswordsComponent
     private passwordsService: PasswordsService,
     private totpService: TotpService,
     private nextRequestState: NextRequestState,
-    private loginState: LoginState) {
+    private loginState: LoginState
+  ) {
     super(injector);
   }
 
@@ -63,18 +66,21 @@ export class ManagePasswordsComponent
     if (this.self && !auth.permissions?.passwords?.manage && auth.totpEnabled) {
       // Special case: the user has no permission to manage passwords, but does have TOTP
       this.showPasswords = false;
-      this.addSub(this.totpService.viewUserTotpSecret({ user: this.param }).subscribe(totp => {
-        this.data = {
-          user: totp.user,
-          passwords: [],
-          totpSecret: totp
-        };
-      }));
+      this.addSub(
+        this.totpService.viewUserTotpSecret({ user: this.param }).subscribe(totp => {
+          this.data = {
+            user: totp.user,
+            passwords: [],
+            totpSecret: totp
+          };
+        })
+      );
     } else {
-      this.addSub(this.passwordsService.getUserPasswordsListData({ user: this.param })
-        .subscribe(data => {
+      this.addSub(
+        this.passwordsService.getUserPasswordsListData({ user: this.param }).subscribe(data => {
           this.data = data;
-        }));
+        })
+      );
     }
   }
 
@@ -82,7 +88,9 @@ export class ManagePasswordsComponent
     this.loginConfirmation = this.dataForFrontendHolder.auth?.loginConfirmation;
     if (this.loginConfirmation) {
       const passwordType = this.loginConfirmation.passwordType;
-      const allowed = (this.loginConfirmation.allowedCredentials || []).filter(ct => [CredentialTypeEnum.PASSWORD, CredentialTypeEnum.TOTP].includes(ct));
+      const allowed = (this.loginConfirmation.allowedCredentials || []).filter(ct =>
+        [CredentialTypeEnum.PASSWORD, CredentialTypeEnum.TOTP].includes(ct)
+      );
       data.passwords = data.passwords.filter(p => passwordType && p.type.id === passwordType.id);
       this.showPasswords = data.passwords.length > 0;
 
@@ -93,7 +101,9 @@ export class ManagePasswordsComponent
       if (allowed.length === 1) {
         switch (allowed[0]) {
           case CredentialTypeEnum.PASSWORD:
-            this.loginConfirmationMessage = this.i18n.login.error.confirmation.notActive.password(this.loginConfirmation.passwordType?.name);
+            this.loginConfirmationMessage = this.i18n.login.error.confirmation.notActive.password(
+              this.loginConfirmation.passwordType?.name
+            );
             break;
           case CredentialTypeEnum.TOTP:
             this.loginConfirmationMessage = this.i18n.login.error.confirmation.notActive.totp;
@@ -101,7 +111,7 @@ export class ManagePasswordsComponent
         }
       } else if (allowed.length > 1) {
         const names = allowed.map(ct => this.authHelper.credentialTypeLabel(this.loginConfirmation, ct));
-        this.loginConfirmationMessage = this.i18n.login.error.confirmation.notActive.multiple(names.join(", "));
+        this.loginConfirmationMessage = this.i18n.login.error.confirmation.notActive.multiple(names.join(', '));
       }
     }
 
@@ -125,13 +135,19 @@ export class ManagePasswordsComponent
     if (data.dataForSetSecurityAnswer) {
       this.securityAnswer = this.formBuilder.group({
         securityQuestion: [null, Validators.required],
-        securityAnswer: [null, Validators.required],
+        securityAnswer: [null, Validators.required]
       });
     }
     this.headingActions = [];
     if (data.passwords.find(p => p.history?.length > 0)) {
-      this.headingActions.push(new HeadingAction(this.SvgIcon.Clock, this.i18n.general.viewHistory, () =>
-        this.router.navigate(['/users', this.param, 'passwords', 'history']), true));
+      this.headingActions.push(
+        new HeadingAction(
+          this.SvgIcon.Clock,
+          this.i18n.general.viewHistory,
+          () => this.router.navigate(['/users', this.param, 'passwords', 'history']),
+          true
+        )
+      );
     }
 
     if (data.totpSecret) {
@@ -149,56 +165,76 @@ export class ManagePasswordsComponent
     actions = [];
     const permissions = password.permissions || {};
     if (permissions.change) {
-      actions.push(new Action(this.i18n.password.action.change, () => {
-        this.change(password);
-      }));
+      actions.push(
+        new Action(this.i18n.password.action.change, () => {
+          this.change(password);
+        })
+      );
     }
     if (permissions.changeGenerated) {
-      actions.push(new Action(this.i18n.password.action.change, () => {
-        this.changeGenerated(password);
-      }));
+      actions.push(
+        new Action(this.i18n.password.action.change, () => {
+          this.changeGenerated(password);
+        })
+      );
     }
     if (permissions.allowGeneration) {
-      actions.push(new Action(this.i18n.password.action.allowGeneration, () => {
-        this.allowGeneration(password);
-      }));
+      actions.push(
+        new Action(this.i18n.password.action.allowGeneration, () => {
+          this.allowGeneration(password);
+        })
+      );
     }
     if (permissions.resetAndSend) {
       if (this.data.sendMediums.includes(SendMediumEnum.EMAIL)) {
-        actions.push(new Action(this.i18n.password.action.resetAndSendEmail, () => {
-          this.resetAndSend(password, SendMediumEnum.EMAIL);
-        }));
+        actions.push(
+          new Action(this.i18n.password.action.resetAndSendEmail, () => {
+            this.resetAndSend(password, SendMediumEnum.EMAIL);
+          })
+        );
       }
       if (this.data.sendMediums.includes(SendMediumEnum.SMS)) {
-        actions.push(new Action(this.i18n.password.action.resetAndSendSms, () => {
-          this.resetAndSend(password, SendMediumEnum.SMS);
-        }));
+        actions.push(
+          new Action(this.i18n.password.action.resetAndSendSms, () => {
+            this.resetAndSend(password, SendMediumEnum.SMS);
+          })
+        );
       }
     }
     if (permissions.resetGenerated) {
-      actions.push(new Action(this.i18n.password.action.resetGenerated, () => {
-        this.resetGenerated(password);
-      }));
+      actions.push(
+        new Action(this.i18n.password.action.resetGenerated, () => {
+          this.resetGenerated(password);
+        })
+      );
     }
     if (permissions.unblock) {
-      actions.push(new Action(this.i18n.password.action.unblock, () => {
-        this.unblock(password);
-      }));
+      actions.push(
+        new Action(this.i18n.password.action.unblock, () => {
+          this.unblock(password);
+        })
+      );
     }
     if (permissions.generate) {
-      actions.push(new Action(this.i18n.password.action.activate, () => {
-        this.generate(password);
-      }));
+      actions.push(
+        new Action(this.i18n.password.action.activate, () => {
+          this.generate(password);
+        })
+      );
     }
     if (permissions.enable) {
-      actions.push(new Action(this.i18n.password.action.enable, () => {
-        this.enable(password);
-      }));
+      actions.push(
+        new Action(this.i18n.password.action.enable, () => {
+          this.enable(password);
+        })
+      );
     }
     if (permissions.disable) {
-      actions.push(new Action(this.i18n.password.action.disable, () => {
-        this.disable(password);
-      }));
+      actions.push(
+        new Action(this.i18n.password.action.disable, () => {
+          this.disable(password);
+        })
+      );
     }
     this.cachedActions.set(password.type.id, actions);
     return actions;
@@ -208,10 +244,12 @@ export class ManagePasswordsComponent
     if (!validateBeforeSubmit(this.securityAnswer)) {
       return;
     }
-    this.addSub(this.passwordsService.setSecurityAnswer({ body: this.securityAnswer.value }).subscribe(() => {
-      this.notification.snackBar(this.i18n.securityQuestion.set);
-      this.reload();
-    }));
+    this.addSub(
+      this.passwordsService.setSecurityAnswer({ body: this.securityAnswer.value }).subscribe(() => {
+        this.notification.snackBar(this.i18n.securityQuestion.set);
+        this.reload();
+      })
+    );
   }
 
   status(password: PasswordStatusAndActions) {
@@ -242,39 +280,45 @@ export class ManagePasswordsComponent
         param: this.param,
         type: password.type,
         user: this.data.user,
-        requireOld: password.requireOldPasswordForChange,
-      },
+        requireOld: password.requireOldPasswordForChange
+      }
     });
     const component = ref.content as ChangePasswordDialogComponent;
-    this.addSub(component.done.subscribe(() => {
-      this.notification.snackBar(this.i18n.password.action.changeDone(password.type.name));
-      this.reload();
-    }));
+    this.addSub(
+      component.done.subscribe(() => {
+        this.notification.snackBar(this.i18n.password.action.changeDone(password.type.name));
+        this.reload();
+      })
+    );
   }
 
   private generate(password: PasswordStatusAndActions) {
     this.confirmation.confirm({
       title: this.i18n.password.action.activate,
       message: this.i18n.password.action.activateConfirm(password.type.name),
-      callback: () => this.doGenerate(password),
+      callback: () => this.doGenerate(password)
     });
   }
 
   private doGenerate(password: PasswordStatusAndActions) {
-    this.addSub(this.passwordsService.generatePassword({ type: password.type.id }).subscribe(newValue => {
-      this.nextRequestState.leaveNotification = true;
-      this.notification.info(this.i18n.password.action.changeGeneratedDone({
-        type: password.type.name,
-        value: newValue,
-      }));
-      this.reload();
-    }));
+    this.addSub(
+      this.passwordsService.generatePassword({ type: password.type.id }).subscribe(newValue => {
+        this.nextRequestState.leaveNotification = true;
+        this.notification.info(
+          this.i18n.password.action.changeGeneratedDone({
+            type: password.type.name,
+            value: newValue
+          })
+        );
+        this.reload();
+      })
+    );
   }
 
   private createDeviceConfirmation(password: PasswordStatusAndActions): () => CreateDeviceConfirmation {
     return () => ({
       type: DeviceConfirmationTypeEnum.GENERATE_PASSWORD,
-      passwordType: password.type.id,
+      passwordType: password.type.id
     });
   }
 
@@ -284,61 +328,72 @@ export class ManagePasswordsComponent
       message: this.i18n.password.action.changeGeneratedConfirm(password.type.name),
       createDeviceConfirmation: this.createDeviceConfirmation(password),
       passwordInput: this.data.confirmationPasswordInput,
-      callback: res => this.doChangeGenerated(password, res.confirmationPassword),
+      callback: res => this.doChangeGenerated(password, res.confirmationPassword)
     });
   }
 
   private doChangeGenerated(password: PasswordStatusAndActions, confirmationPassword: string) {
-    this.addSub(this.passwordsService.changeGenerated({
-      type: password.type.id,
-      confirmationPassword,
-    }).subscribe(newValue => {
-      this.nextRequestState.leaveNotification = true;
-      this.notification.info(
-        this.i18n.password.action.changeGeneratedDone({
-          type: password.type.name,
-          value: newValue,
-        }));
-      this.reload();
-    }));
+    this.addSub(
+      this.passwordsService
+        .changeGenerated({
+          type: password.type.id,
+          confirmationPassword
+        })
+        .subscribe(newValue => {
+          this.nextRequestState.leaveNotification = true;
+          this.notification.info(
+            this.i18n.password.action.changeGeneratedDone({
+              type: password.type.name,
+              value: newValue
+            })
+          );
+          this.reload();
+        })
+    );
   }
 
   private allowGeneration(password: PasswordStatusAndActions) {
     this.confirmation.confirm({
       title: this.i18n.password.action.allowGeneration,
       message: this.i18n.password.action.allowGenerationConfirm(password.type.name),
-      callback: () => this.doAllowGeneration(password),
+      callback: () => this.doAllowGeneration(password)
     });
   }
 
   private doAllowGeneration(password: PasswordStatusAndActions) {
-    this.addSub(this.passwordsService.allowGeneration({
-      type: password.type.id,
-      user: this.param,
-    }).subscribe(() => {
-      this.notification.snackBar(
-        this.i18n.password.action.allowGenerationDone(password.type.name));
-      this.reload();
-    }));
+    this.addSub(
+      this.passwordsService
+        .allowGeneration({
+          type: password.type.id,
+          user: this.param
+        })
+        .subscribe(() => {
+          this.notification.snackBar(this.i18n.password.action.allowGenerationDone(password.type.name));
+          this.reload();
+        })
+    );
   }
 
   private resetGenerated(password: PasswordStatusAndActions) {
     this.confirmation.confirm({
       title: this.i18n.password.action.resetGenerated,
       message: this.i18n.password.action.resetGeneratedConfirm(password.type.name),
-      callback: () => this.doResetGenerated(password),
+      callback: () => this.doResetGenerated(password)
     });
   }
 
   private doResetGenerated(password: PasswordStatusAndActions) {
-    this.addSub(this.passwordsService.resetGeneratedPassword({
-      type: password.type.id,
-      user: this.param,
-    }).subscribe(() => {
-      this.notification.snackBar(
-        this.i18n.password.action.resetGeneratedDone(password.type.name));
-      this.reload();
-    }));
+    this.addSub(
+      this.passwordsService
+        .resetGeneratedPassword({
+          type: password.type.id,
+          user: this.param
+        })
+        .subscribe(() => {
+          this.notification.snackBar(this.i18n.password.action.resetGeneratedDone(password.type.name));
+          this.reload();
+        })
+    );
   }
 
   private resetAndSend(password: PasswordStatusAndActions, medium: SendMediumEnum) {
@@ -357,82 +412,96 @@ export class ManagePasswordsComponent
     this.confirmation.confirm({
       title,
       message,
-      callback: () => this.doResetAndSend(password, medium),
+      callback: () => this.doResetAndSend(password, medium)
     });
   }
 
   private doResetAndSend(password: PasswordStatusAndActions, medium: SendMediumEnum) {
-    this.addSub(this.passwordsService.resetAndSendPassword({
-      type: password.type.id,
-      sendMediums: [medium],
-      user: this.param,
-    }).subscribe(() => {
-      switch (medium) {
-        case SendMediumEnum.EMAIL:
-          this.notification.snackBar(
-            this.i18n.password.action.resetAndSendEmailDone(password.type.name));
-          break;
-        case SendMediumEnum.SMS:
-          this.notification.snackBar(
-            this.i18n.password.action.resetAndSendSmsDone(password.type.name));
-          break;
-      }
-      this.reload();
-    }));
+    this.addSub(
+      this.passwordsService
+        .resetAndSendPassword({
+          type: password.type.id,
+          sendMediums: [medium],
+          user: this.param
+        })
+        .subscribe(() => {
+          switch (medium) {
+            case SendMediumEnum.EMAIL:
+              this.notification.snackBar(this.i18n.password.action.resetAndSendEmailDone(password.type.name));
+              break;
+            case SendMediumEnum.SMS:
+              this.notification.snackBar(this.i18n.password.action.resetAndSendSmsDone(password.type.name));
+              break;
+          }
+          this.reload();
+        })
+    );
   }
 
   private unblock(password: PasswordStatusAndActions) {
     this.confirmation.confirm({
       title: this.i18n.password.action.unblock,
       message: this.i18n.password.action.unblockConfirm(password.type.name),
-      callback: () => this.doUnblock(password),
+      callback: () => this.doUnblock(password)
     });
   }
 
   private doUnblock(password: PasswordStatusAndActions) {
-    this.addSub(this.passwordsService.unblockPassword({
-      user: this.param,
-      type: password.type.id,
-    }).subscribe(() => {
-      this.notification.snackBar(this.i18n.password.action.unblockDone(password.type.name));
-      this.reload();
-    }));
+    this.addSub(
+      this.passwordsService
+        .unblockPassword({
+          user: this.param,
+          type: password.type.id
+        })
+        .subscribe(() => {
+          this.notification.snackBar(this.i18n.password.action.unblockDone(password.type.name));
+          this.reload();
+        })
+    );
   }
 
   private enable(password: PasswordStatusAndActions) {
     this.confirmation.confirm({
       title: this.i18n.password.action.enable,
       message: this.i18n.password.action.enableConfirm(password.type.name),
-      callback: () => this.doEnable(password),
+      callback: () => this.doEnable(password)
     });
   }
 
   private doEnable(password: PasswordStatusAndActions) {
-    this.addSub(this.passwordsService.enablePassword({
-      user: this.param,
-      type: password.type.id,
-    }).subscribe(() => {
-      this.notification.snackBar(this.i18n.password.action.enableDone(password.type.name));
-      this.reload();
-    }));
+    this.addSub(
+      this.passwordsService
+        .enablePassword({
+          user: this.param,
+          type: password.type.id
+        })
+        .subscribe(() => {
+          this.notification.snackBar(this.i18n.password.action.enableDone(password.type.name));
+          this.reload();
+        })
+    );
   }
 
   private disable(password: PasswordStatusAndActions) {
     this.confirmation.confirm({
       title: this.i18n.password.action.disable,
       message: this.i18n.password.action.disableConfirm(password.type.name),
-      callback: () => this.doDisable(password),
+      callback: () => this.doDisable(password)
     });
   }
 
   private doDisable(password: PasswordStatusAndActions) {
-    this.addSub(this.passwordsService.disablePassword({
-      user: this.param,
-      type: password.type.id,
-    }).subscribe(() => {
-      this.notification.snackBar(this.i18n.password.action.disableDone(password.type.name));
-      this.reload();
-    }));
+    this.addSub(
+      this.passwordsService
+        .disablePassword({
+          user: this.param,
+          type: password.type.id
+        })
+        .subscribe(() => {
+          this.notification.snackBar(this.i18n.password.action.disableDone(password.type.name));
+          this.reload();
+        })
+    );
   }
 
   resolveMenu(data: DataForUserPasswords) {
@@ -441,7 +510,10 @@ export class ManagePasswordsComponent
 
   reload() {
     if (this.loginConfirmation) {
-      this.dataForFrontendHolder.reload().pipe(first()).subscribe(() => this.router.navigateByUrl(this.loginState.redirectUrl || ''));
+      this.dataForFrontendHolder
+        .reload()
+        .pipe(first())
+        .subscribe(() => this.router.navigateByUrl(this.loginState.redirectUrl || ''));
     } else {
       super.reload();
     }

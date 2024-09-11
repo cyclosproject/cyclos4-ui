@@ -1,4 +1,11 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponseBase } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpResponseBase
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ForbiddenError, ForbiddenErrorCode } from 'app/api/models';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
@@ -12,17 +19,16 @@ import { tap } from 'rxjs/operators';
  * Intercepts requests to set the correct headers and handle errors
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ApiInterceptor implements HttpInterceptor {
-
-  hideConfirmationHandler = () => { };
+  hideConfirmationHandler = () => {};
 
   constructor(
     private nextRequestState: NextRequestState,
     private notification: NotificationService,
-    private errorHandler: ErrorHandlerService) {
-  }
+    private errorHandler: ErrorHandlerService
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (!req.url.includes('/api/') && !req.url.startsWith('api/')) {
@@ -68,8 +74,8 @@ export class ApiInterceptor implements HttpInterceptor {
           if (this.isConfirmationRequest(req)) {
             this.hideConfirmationHandler();
           }
-        },
-      ),
+        }
+      )
     );
   }
 

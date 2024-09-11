@@ -10,7 +10,7 @@ import { BehaviorSubject } from 'rxjs';
   // tslint:disable-next-line:component-selector
   selector: 'hidden-text',
   templateUrl: 'hidden-text.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HiddenTextComponent extends AbstractComponent implements OnInit {
   @HostBinding('class.mw-100') classMaxWidth = true;
@@ -35,8 +35,6 @@ export class HiddenTextComponent extends AbstractComponent implements OnInit {
 
   private updateDisplay() {
     const hidden = this.hidden$.value;
-    this.display$.next(hidden
-      ? repeat('•', (this.text || '123456').length)
-      : this.text);
+    this.display$.next(hidden ? repeat('•', (this.text || '123456').length) : this.text);
   }
 }

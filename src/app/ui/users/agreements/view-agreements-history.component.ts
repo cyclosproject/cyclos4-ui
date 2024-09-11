@@ -13,14 +13,15 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'view-agreements-history',
   templateUrl: 'view-agreements-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewAgreementsHistoryComponent extends BaseViewPageComponent<UserAgreementsData> implements OnInit {
   constructor(
     injector: Injector,
     private agreementsService: AgreementsService,
     private userHelper: UserHelperService,
-    private modal: BsModalService) {
+    private modal: BsModalService
+  ) {
     super(injector);
   }
 
@@ -32,12 +33,16 @@ export class ViewAgreementsHistoryComponent extends BaseViewPageComponent<UserAg
   ngOnInit() {
     super.ngOnInit();
     this.param = this.route.snapshot.params.user;
-    this.addSub(this.agreementsService.getUserAgreements({
-      user: this.param,
-      fields: ['user', 'history']
-    }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.agreementsService
+        .getUserAgreements({
+          user: this.param,
+          fields: ['user', 'history']
+        })
+        .subscribe(data => {
+          this.data = data;
+        })
+    );
   }
 
   onDataInitialized(data: UserAgreementsData) {
@@ -65,7 +70,7 @@ export class ViewAgreementsHistoryComponent extends BaseViewPageComponent<UserAg
           initialState: {
             agreement: log.agreement,
             version: log.acceptedVersion
-          },
+          }
         });
       }
     };

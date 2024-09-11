@@ -1,14 +1,22 @@
-<button #button type="button"
+<button
+  #button
+  type="button"
   class="btn d-flex justify-content-center align-items-center w-100 h-100"
-  [ngClass]="{ 'link-with-icon': icon,
-  'btn-flat': actionKind === 'flat',
-  'btn-primary': actionKind !== 'flat' && !outline,
-  'btn-outline-primary': actionKind !== 'flat' && outline,
-  'btn-action-primary': actionKind === 'primary' }"
-  (click)="onClick($event); $event.stopPropagation()" [disabled]="disabled">
-  <span *ngIf="disabled && (showSpinner$ | async)"
-    class="spinner-border spinner-border-sm" role="status"
-    [ngClass]="{ 'mr-2' : icon || label }" aria-hidden="true"></span>
+  [ngClass]="{
+    'link-with-icon': icon,
+    'btn-flat': actionKind === 'flat',
+    'btn-primary': actionKind !== 'flat' && !outline,
+    'btn-outline-primary': actionKind !== 'flat' && outline,
+    'btn-action-primary': actionKind === 'primary'
+  }"
+  (click)="onClick($event); $event.stopPropagation()"
+  [disabled]="disabled">
+  <span
+    *ngIf="disabled && (showSpinner$ | async)"
+    class="spinner-border spinner-border-sm"
+    role="status"
+    [ngClass]="{ 'mr-2': icon || label }"
+    aria-hidden="true"></span>
   <icon *ngIf="icon" [icon]="icon"></icon>
   <span *ngIf="label">{{ label }}</span>
 </button>

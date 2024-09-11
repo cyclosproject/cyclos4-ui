@@ -1,9 +1,26 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
-  AccountWithStatus, Currency, CustomFieldDetailed, DataForTransaction,
-  NotFoundError, TimeFieldEnum, TimeInterval, TransactionTypeData, TransferType, User
+  AccountWithStatus,
+  Currency,
+  CustomFieldDetailed,
+  DataForTransaction,
+  NotFoundError,
+  TimeFieldEnum,
+  TimeInterval,
+  TransactionTypeData,
+  TransferType,
+  User
 } from 'app/api/models';
 import { PaymentRequestsService } from 'app/api/services/payment-requests.service';
 import { AuthHelperService } from 'app/core/auth-helper.service';
@@ -25,10 +42,9 @@ const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, Error
 @Component({
   selector: 'request-payment-form',
   templateUrl: 'request-payment-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RequestPaymentFormComponent extends BaseComponent implements OnInit {
-
   setFocus = focus;
 
   @Input() data: DataForTransaction;
@@ -43,7 +59,7 @@ export class RequestPaymentFormComponent extends BaseComponent implements OnInit
   @ViewChild('amount', { static: true }) amountField: DecimalFieldComponent;
 
   accountBalanceLabel$ = new BehaviorSubject<string>(null);
-  firstOccurrenceAfterIntervalLabel$ = new BehaviorSubject<string>("");
+  firstOccurrenceAfterIntervalLabel$ = new BehaviorSubject<string>('');
   fixedDestination = false;
   fromParam: string;
   fromUser: User;
@@ -60,7 +76,8 @@ export class RequestPaymentFormComponent extends BaseComponent implements OnInit
     injector: Injector,
     public bankingHelper: BankingHelperService,
     private paymentRequestsService: PaymentRequestsService,
-    private authHelper: AuthHelperService) {
+    private authHelper: AuthHelperService
+  ) {
     super(injector);
   }
 
@@ -82,34 +99,42 @@ export class RequestPaymentFormComponent extends BaseComponent implements OnInit
       this.setFetchedPaymentTypes(this.data);
     } else {
       // Whenever the subject changes, fetch the payment types, if needed
-      this.addSub(this.form.get('subject').valueChanges
-        .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
-        .subscribe(() => this.fetchPaymentTypes()),
+      this.addSub(
+        this.form
+          .get('subject')
+          .valueChanges.pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
+          .subscribe(() => this.fetchPaymentTypes())
       );
     }
 
     // Whenever the account changes, filter out the available types
-    this.addSub(this.form.get('account').valueChanges
-      .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
-      .subscribe(() => this.adjustPaymentTypes()),
+    this.addSub(
+      this.form
+        .get('account')
+        .valueChanges.pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
+        .subscribe(() => this.adjustPaymentTypes())
     );
     // Whenever the payment type changes, fetch the payment type data for it
-    this.addSub(this.form.get('type').valueChanges
-      .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
-      .subscribe(type => this.fetchPaymentTypeData(type)));
+    this.addSub(
+      this.form
+        .get('type')
+        .valueChanges.pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
+        .subscribe(type => this.fetchPaymentTypeData(type))
+    );
 
     this.addSub(this.layout.xxs$.subscribe(() => this.updateAccountBalanceLabel()));
 
     // When the occurrenceInterval changes, update the firstOccurrence after interval label
-    this.addSub(this.form.get('occurrenceInterval').valueChanges.subscribe(
-      interval => {
+    this.addSub(
+      this.form.get('occurrenceInterval').valueChanges.subscribe(interval => {
         this.firstOccurrenceAfterIntervalLabel$.next(this.firstOccurrenceAfterIntervalLabel(interval));
         // TODO: review if there is a better way to update the label of the field option "first occurrence after interval label"
         // Without forcing setting the same value the label view doesn't reflect the new value unless you manually change the selected
         // option
         const firstOccurrenceControl = this.form.get('firstOccurrenceIsImmediate');
         firstOccurrenceControl.setValue(firstOccurrenceControl.value);
-      }));
+      })
+    );
     this.updateAccountBalanceLabel();
   }
 
@@ -135,34 +160,41 @@ export class RequestPaymentFormComponent extends BaseComponent implements OnInit
 
     // Fetch the payment types to that user
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
-      this.addSub(this.paymentRequestsService.dataForSendPaymentRequest({
-        owner: this.fromParam,
-        to: subject,
-        fields: ['toUser', 'paymentTypes', 'paymentTypeData'],
-      }).subscribe(data => {
-        this.setFetchedPaymentTypes(data);
-      }, (err: HttpErrorResponse) => {
-        if (this.allowPrincipal && this.userField && err.status === ErrorStatus.NOT_FOUND) {
-          // The typed value for the user may be a principal
-          let error = err.error;
-          if (typeof error === 'string') {
-            try {
-              error = JSON.parse(error);
-            } catch (e) {
-              error = {};
+      this.addSub(
+        this.paymentRequestsService
+          .dataForSendPaymentRequest({
+            owner: this.fromParam,
+            to: subject,
+            fields: ['toUser', 'paymentTypes', 'paymentTypeData']
+          })
+          .subscribe(
+            data => {
+              this.setFetchedPaymentTypes(data);
+            },
+            (err: HttpErrorResponse) => {
+              if (this.allowPrincipal && this.userField && err.status === ErrorStatus.NOT_FOUND) {
+                // The typed value for the user may be a principal
+                let error = err.error;
+                if (typeof error === 'string') {
+                  try {
+                    error = JSON.parse(error);
+                  } catch (e) {
+                    error = {};
+                  }
+                }
+                const entityType = (error as NotFoundError).entityType;
+                if (!blank(entityType) && entityType.endsWith('User')) {
+                  // The user couldn't be located. Perform the search in the user field
+                  this.userField.search();
+                  return;
+                }
+              }
+              if (!IGNORED_STATUSES.includes(err.status)) {
+                defaultHandling(err);
+              }
             }
-          }
-          const entityType = (error as NotFoundError).entityType;
-          if (!blank(entityType) && entityType.endsWith('User')) {
-            // The user couldn't be located. Perform the search in the user field
-            this.userField.search();
-            return;
-          }
-        }
-        if (!IGNORED_STATUSES.includes(err.status)) {
-          defaultHandling(err);
-        }
-      }));
+          )
+      );
     });
   }
 
@@ -232,24 +264,34 @@ export class RequestPaymentFormComponent extends BaseComponent implements OnInit
 
     // Finally, fetch the data
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
-      this.addSub(this.paymentRequestsService.dataForSendPaymentRequest({
-        owner: this.fromParam,
-        to: value.subject,
-        type,
-        fields: ['paymentTypeData'],
-      }).subscribe(data => {
-        const typeData = data.paymentTypeData;
-        this.setPaymentTypeData(typeData);
-      }, (err: HttpErrorResponse) => {
-        if (!IGNORED_STATUSES.includes(err.status)) {
-          defaultHandling(err);
-        }
-      }));
+      this.addSub(
+        this.paymentRequestsService
+          .dataForSendPaymentRequest({
+            owner: this.fromParam,
+            to: value.subject,
+            type,
+            fields: ['paymentTypeData']
+          })
+          .subscribe(
+            data => {
+              const typeData = data.paymentTypeData;
+              this.setPaymentTypeData(typeData);
+            },
+            (err: HttpErrorResponse) => {
+              if (!IGNORED_STATUSES.includes(err.status)) {
+                defaultHandling(err);
+              }
+            }
+          )
+      );
     });
   }
 
   firstOccurrenceAfterIntervalLabel(interval?: TimeInterval) {
-    interval = interval ?? this.form.get('occurrenceInterval')?.value ?? { amount: 1, field: TimeFieldEnum.MONTHS } as TimeInterval;
+    interval =
+      interval ??
+      this.form.get('occurrenceInterval')?.value ??
+      ({ amount: 1, field: TimeFieldEnum.MONTHS } as TimeInterval);
     return this.i18n.transaction.firstOccurrenceAfterInterval(this.format.formatTimeInterval(interval));
   }
 
@@ -288,5 +330,4 @@ export class RequestPaymentFormComponent extends BaseComponent implements OnInit
     const accounts = this.data.accounts || [];
     return accounts.length === 1 ? accounts[0] : null;
   }
-
 }

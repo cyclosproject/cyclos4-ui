@@ -1,16 +1,24 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content mode="filters"
+    <page-content
+      mode="filters"
       [heading]="i18n.feedback.title.searchAwaiting"
       [mobileHeading]="i18n.feedback.mobileTitle.searchAwaiting"
       [headingActions]="headingActions$ | async">
     </page-content>
-    <results-layout resultType="list" [results]="results$ | async"
-      (update)="update($event)" [rendering$]="rendering$" [toLink]="toLink">
-
-      <mobile-result *mobileResult="let row" [title]="row.relatedUser.display"
-        [avatarImage]="row.relatedUser.image" [avatarIcon]="SvgIcon.Person"
-        [date]="row.date" [amount]="row.amount"
+    <results-layout
+      resultType="list"
+      [results]="results$ | async"
+      (update)="update($event)"
+      [rendering$]="rendering$"
+      [toLink]="toLink">
+      <mobile-result
+        *mobileResult="let row"
+        [title]="row.relatedUser.display"
+        [avatarImage]="row.relatedUser.image"
+        [avatarIcon]="SvgIcon.Person"
+        [date]="row.date"
+        [amount]="row.amount"
         [currency]="findCurrency(row.currency)">
       </mobile-result>
 
@@ -23,17 +31,15 @@
           <th>{{ i18n.transaction.amount }}</th>
         </thead>
         <tbody>
-          <ng-container *ngFor=" let row of (results$ | async)?.results">
+          <ng-container *ngFor="let row of (results$ | async)?.results">
             <tr (click)="router.navigate(path(row))">
               <td class="avatar">
-                <avatar [image]="row.related?.user?.image"
-                  [icon]="SvgIcon.PersonCircle">
-                </avatar>
+                <avatar [image]="row.related?.user?.image" [icon]="SvgIcon.PersonCircle"> </avatar>
               </td>
               <td>{{ row.date | dateTime }}</td>
               <td>{{ row.related?.user?.display }}</td>
               <td>{{ row.description }}</td>
-              <td>{{ row.amount | currency: findCurrency(row.currency) }}</td>
+              <td>{{ row.amount | currency : findCurrency(row.currency) }}</td>
             </tr>
           </ng-container>
         </tbody>

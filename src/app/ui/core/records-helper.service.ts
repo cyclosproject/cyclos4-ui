@@ -1,28 +1,21 @@
 import { Injectable } from '@angular/core';
-import {
-  RecordCustomField, RecordLayoutEnum, RecordPermissions,
-  RecordType, RecordTypeDetailed
-} from 'app/api/models';
+import { RecordCustomField, RecordLayoutEnum, RecordPermissions, RecordType, RecordTypeDetailed } from 'app/api/models';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { LayoutService } from 'app/core/layout.service';
-import { ApiHelper } from 'app/shared/api-helper';
 import { SvgIcon } from 'app/core/svg-icon';
+import { ApiHelper } from 'app/shared/api-helper';
 
 /**
  * Helper service for records functions
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class RecordHelperService {
-
   /** Represents the path to general record search */
   static GENERAL_SEARCH = 'general';
 
-  constructor(
-    private dataForFrontendHolder: DataForFrontendHolder,
-    private layout: LayoutService
-  ) { }
+  constructor(private dataForFrontendHolder: DataForFrontendHolder, private layout: LayoutService) {}
 
   /**
    * Returns the record types within the according permissions for the logged user or system based on the given flag
@@ -94,5 +87,4 @@ export class RecordHelperService {
     const colspan = field != null && field.colspan != null ? ' colspan-' + field.colspan : '';
     return this.isColumnLayout(type) ? 'pr-3 columns-' + type.fieldColumns + colspan : '';
   }
-
 }

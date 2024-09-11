@@ -18,11 +18,8 @@ import { WizardsRoutingModule } from './wizard-routing.module';
     RunWizardStepIdPComponent,
     RunWizardStepFieldComponent,
     RunWizardStepVerificationComponent,
-    WizardCallbackComponent,
+    WizardCallbackComponent
   ],
-  imports: [
-    WizardsRoutingModule,
-    UiSharedModule
-  ]
+  imports: [WizardsRoutingModule, UiSharedModule]
 })
-export class WizardsModule { }
+export class WizardsModule {}

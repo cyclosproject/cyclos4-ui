@@ -2,22 +2,20 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Operation, Wizard } from 'app/api/models';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
+import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
-import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Helper for custom wizards
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class WizardHelperService {
   private registry = new Map<string, Wizard>();
 
-  constructor(
-    private router: Router,
-    dataForFrontendHolder: DataForFrontendHolder) {
+  constructor(private router: Router, dataForFrontendHolder: DataForFrontendHolder) {
     dataForFrontendHolder.subscribe(dataForFrontend => {
       // Store all custom operations in the registry
       const dataForUi = (dataForFrontend || {}).dataForUi;

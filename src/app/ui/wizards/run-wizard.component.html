@@ -1,78 +1,103 @@
 <page-layout [ready]="data$ | async" size="large">
-  <ng-container *ngIf="data?.step; then step">
-  </ng-container>
-  <ng-container *ngIf="data?.resultType; then result">
-  </ng-container>
+  <ng-container *ngIf="data?.step; then step"> </ng-container>
+  <ng-container *ngIf="data?.resultType; then result"> </ng-container>
 </page-layout>
 
 <ng-template #step>
-  <page-content [heading]="data.step.title" [mobileHeading]="data.step.title"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last
+  <page-content
+    [heading]="data.step.title"
+    [mobileHeading]="data.step.title"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'"
+    last
     [hideBack]="showBack">
     <ng-container *ngIf="(updating$ | async) === false">
       <alert type="info" *ngIf="informationText" class="mb-3">
         <div [innerHTML]="informationText | trust"></div>
       </alert>
       <div class="flex-grow-1">
-        <run-wizard-step-group *ngIf="data.step.kind === WizardStepKind.GROUP"
-          [groups]="data.step.groups" [control]="group">
+        <run-wizard-step-group
+          *ngIf="data.step.kind === WizardStepKind.GROUP"
+          [groups]="data.step.groups"
+          [control]="group">
         </run-wizard-step-group>
         <run-wizard-step-idp
           *ngIf="data.step.kind === WizardStepKind.IDENTITY_PROVIDER"
           [identityProviders]="data.step.identityProviders"
           (continue)="continueWithProvider($event)">
         </run-wizard-step-idp>
-        <ng-container *ngIf="data.step.kind === WizardStepKind.FORM_FIELDS
-        && data.action !== WizardActionEnum.ALREADY_EXECUTED">
-          <run-wizard-step-field *ngFor="let field of data.step.fields"
-            [field]="field" [data]="data" [user]="user"
+        <ng-container
+          *ngIf="data.step.kind === WizardStepKind.FORM_FIELDS && data.action !== WizardActionEnum.ALREADY_EXECUTED">
+          <run-wizard-step-field
+            *ngFor="let field of data.step.fields"
+            [field]="field"
+            [data]="data"
+            [user]="user"
             [emailValidation]="emailValidation"
-            [smsValidation]="smsValidation" [mobilePhone]="mobilePhone"
-            [landLinePhone]="landLinePhone" [defineAddress]="defineAddress"
-            [address]="address" [defineContactInfo]="defineContactInfo"
-            [contactInfo]="contactInfo" [customValues]="customValues"
+            [smsValidation]="smsValidation"
+            [mobilePhone]="mobilePhone"
+            [landLinePhone]="landLinePhone"
+            [defineAddress]="defineAddress"
+            [address]="address"
+            [defineContactInfo]="defineContactInfo"
+            [contactInfo]="contactInfo"
+            [customValues]="customValues"
             [submitAction]="resolveSubmitAction()">
           </run-wizard-step-field>
         </ng-container>
-        <run-wizard-step-verification *ngIf="[WizardStepKind.EMAIL_VERIFICATION, WizardStepKind.PHONE_VERIFICATION]
-            .includes(data.step.kind)" [data]="data"
+        <run-wizard-step-verification
+          *ngIf="[WizardStepKind.EMAIL_VERIFICATION, WizardStepKind.PHONE_VERIFICATION].includes(data.step.kind)"
+          [data]="data"
           [control]="verificationCode">
         </run-wizard-step-verification>
 
-        <div *ngIf="transitions?.length > 0"
-          class="d-flex flex-column mt-3 mt-md-4">
-          <action-button *ngFor="let t of transitions" type="button"
-            actionKind="primary" class="centered-button"
-            (action)="transition(t)" [disabled]="requesting$ | async"
+        <div *ngIf="transitions?.length > 0" class="d-flex flex-column mt-3 mt-md-4">
+          <action-button
+            *ngFor="let t of transitions"
+            type="button"
+            actionKind="primary"
+            class="centered-button"
+            (action)="transition(t)"
+            [disabled]="requesting$ | async"
             [label]="t.label">
           </action-button>
         </div>
       </div>
       <actions [ngSwitch]="data.action" forceRow>
-        <action-button *ngSwitchCase="WizardActionEnum.FINISH"
-          (action)="resolveSubmitAction()()" [disabled]="requesting$ | async"
+        <action-button
+          *ngSwitchCase="WizardActionEnum.FINISH"
+          (action)="resolveSubmitAction()()"
+          [disabled]="requesting$ | async"
           [label]="i18n.general.finish">
         </action-button>
-        <action-button *ngSwitchCase="WizardActionEnum.EXTERNAL_REDIRECT"
-          [disabled]="requesting$ | async" (action)="externalRedirect()"
+        <action-button
+          *ngSwitchCase="WizardActionEnum.EXTERNAL_REDIRECT"
+          [disabled]="requesting$ | async"
+          (action)="externalRedirect()"
           [label]="i18n.general.next">
         </action-button>
         <ng-container *ngSwitchDefault>
-          <action-button *ngIf="singleTransition"
+          <action-button
+            *ngIf="singleTransition"
             (action)="transition(singleTransition)"
-            [disabled]="requesting$ | async" [label]="singleTransition.label">
+            [disabled]="requesting$ | async"
+            [label]="singleTransition.label">
           </action-button>
           <span *ngIf="!singleTransition"></span>
         </ng-container>
-        <div *ngIf="data.stepCount != null"
-          class="d-flex align-items-center justify-content-center py-2">
-          {{ i18n.wizard.currentStep({
-          current: data.stepNumber,
-          total: data.stepCount
-          }) }}
+        <div *ngIf="data.stepCount != null" class="d-flex align-items-center justify-content-center py-2">
+          {{
+            i18n.wizard.currentStep({
+              current: data.stepNumber,
+              total: data.stepCount
+            })
+          }}
         </div>
-        <action-button *ngIf="showBack; else noBack" (action)="back()" outline
-          [disabled]="requesting$ | async" [label]="i18n.general.back">
+        <action-button
+          *ngIf="showBack; else noBack"
+          (action)="back()"
+          outline
+          [disabled]="requesting$ | async"
+          [label]="i18n.general.back">
         </action-button>
         <ng-template #noBack>
           <div></div>
@@ -83,22 +108,21 @@
 </ng-template>
 
 <ng-template #result>
-  <page-content [heading]="resultTitle" [mobileHeading]="mobileResultTitle"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last
-    [ngSwitch]="data.resultType" hideBack>
-
+  <page-content
+    [heading]="resultTitle"
+    [mobileHeading]="mobileResultTitle"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'"
+    last
+    [ngSwitch]="data.resultType"
+    hideBack>
     <ng-container *ngSwitchCase="WizardResultTypeEnum.REGISTRATION">
       <p [innerHTML]="registrationMessage | trust"></p>
-      <p *ngIf="registrationPrincipals"
-        [innerHTML]="registrationPrincipals | trust"></p>
+      <p *ngIf="registrationPrincipals" [innerHTML]="registrationPrincipals | trust"></p>
       <p *ngIf="registrationPasswords">{{ registrationPasswords }}</p>
     </ng-container>
 
-    <div *ngSwitchCase="WizardResultTypeEnum.PLAIN_TEXT" class="break-nl">{{
-      resultMessage }}</div>
+    <div *ngSwitchCase="WizardResultTypeEnum.PLAIN_TEXT" class="break-nl">{{ resultMessage }}</div>
 
-    <rich-text-container *ngSwitchCase="WizardResultTypeEnum.RICH_TEXT"
-      [value]="resultMessage">
-    </rich-text-container>
+    <rich-text-container *ngSwitchCase="WizardResultTypeEnum.RICH_TEXT" [value]="resultMessage"> </rich-text-container>
   </page-content>
 </ng-template>

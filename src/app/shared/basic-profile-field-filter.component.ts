@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, Host, Injector, Input, Optional, SkipSelf, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Host,
+  Injector,
+  Input,
+  Optional,
+  SkipSelf,
+  ViewChild
+} from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BasicProfileFieldEnum, BasicProfileFieldInput } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
@@ -14,9 +23,7 @@ import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field
   selector: 'basic-profile-field-filter',
   templateUrl: 'basic-profile-field-filter.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: BasicProfileFieldFilterComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: BasicProfileFieldFilterComponent, multi: true }]
 })
 export class BasicProfileFieldFilterComponent extends BaseFormFieldComponent<string> {
   private _field: BasicProfileFieldInput;

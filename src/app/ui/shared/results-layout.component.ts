@@ -2,24 +2,37 @@
 /// <reference types="@types/markerclustererplus" />
 
 import {
-  AfterViewInit, ChangeDetectionStrategy, Component, ContentChild,
-  ElementRef, EventEmitter, Injector, Input, OnChanges, Output, QueryList, SimpleChanges, TemplateRef, ViewChild, ViewChildren,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ContentChild,
+  ElementRef,
+  EventEmitter,
+  Injector,
+  Input,
+  OnChanges,
+  Output,
+  QueryList,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+  ViewChildren
 } from '@angular/core';
 import { Address } from 'app/api/models';
-import { MapsService } from 'app/ui/core/maps.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
+import { PagedResults } from 'app/shared/paged-results';
+import { MapsService } from 'app/ui/core/maps.service';
+import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 import { MaxDistance } from 'app/ui/shared/max-distance';
 import { MobileResultDirective } from 'app/ui/shared/mobile-result.directive';
 import { PageData } from 'app/ui/shared/page-data';
-import { PagedResults } from 'app/shared/paged-results';
 import { ResultCategoryDirective } from 'app/ui/shared/result-category.directive';
 import { ResultInfoWindowDirective } from 'app/ui/shared/result-info-window.directive';
 import { ResultTableDirective } from 'app/ui/shared/result-table.directive';
 import { ResultTileDirective } from 'app/ui/shared/result-tile.directive';
 import { ResultType } from 'app/ui/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
-import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 
 /**
  * Template for rendering results of distinct `ResultType`s
@@ -27,10 +40,9 @@ import { UiLayoutService } from 'app/ui/core/ui-layout.service';
 @Component({
   selector: 'results-layout',
   templateUrl: 'results-layout.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ResultsLayoutComponent<C, R> extends BaseComponent implements AfterViewInit, OnChanges {
-
   @Input() resultType: ResultType = ResultType.LIST;
   @Input() categories: C[];
   @Input() results: PagedResults<R> | R[];
@@ -56,14 +68,10 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
 
   @Input() onClick: (row: R) => void;
   @Input() toLink: (row: R) => string | string[];
-  @Input() toAddress: (row: R) => Address = (x) => x;
+  @Input() toAddress: (row: R) => Address = x => x;
   @Input() toMarkerTitle: (row: R) => string = (x: any) => x.display || x.name;
 
-  constructor(
-    injector: Injector,
-    public uiLayout: UiLayoutService,
-    public maps: MapsService,
-  ) {
+  constructor(injector: Injector, public uiLayout: UiLayoutService, public maps: MapsService) {
     super(injector);
   }
 
@@ -77,14 +85,16 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
   }
 
   ngAfterViewInit() {
-    this.addSub(this.mapContainerList.changes.subscribe(() => {
-      const containerRef = this.mapContainerList.first;
-      const container = containerRef == null ? null : containerRef.nativeElement;
-      if (container != null && container !== this.lastMapContainer) {
-        this.updateMap();
-      }
-      this.lastMapContainer = container;
-    }));
+    this.addSub(
+      this.mapContainerList.changes.subscribe(() => {
+        const containerRef = this.mapContainerList.first;
+        const container = containerRef == null ? null : containerRef.nativeElement;
+        if (container != null && container !== this.lastMapContainer) {
+          this.updateMap();
+        }
+        this.lastMapContainer = container;
+      })
+    );
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -143,7 +153,13 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
   }
 
   private updateMap() {
-    if (empty(this.rows) || this.resultType !== ResultType.MAP || !this.mapContainerList || !this.maps.enabled || !this.toAddress) {
+    if (
+      empty(this.rows) ||
+      this.resultType !== ResultType.MAP ||
+      !this.mapContainerList ||
+      !this.maps.enabled ||
+      !this.toAddress
+    ) {
       return;
     }
     const container = this.mapContainerList.first;
@@ -195,7 +211,7 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
       this.markerClusterer = new MarkerClusterer(this.map, [], {
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
         minimumClusterSize: 5,
-        maxZoom: 16,
+        maxZoom: 16
       });
     }
 
@@ -206,8 +222,7 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
     const byLocation = new Map<string, google.maps.Marker[]>();
     const markerKey = (marker: google.maps.Marker) => {
       const pos = marker.getPosition();
-      return this.format.formatAsNumber(pos.lat(), 5)
-        + '|' + this.format.formatAsNumber(pos.lng(), 5);
+      return this.format.formatAsNumber(pos.lat(), 5) + '|' + this.format.formatAsNumber(pos.lng(), 5);
     };
     const mainMarker = this.dataForFrontendHolder.dataForFrontend.mapMarkerUrl;
     const altMarker = this.dataForFrontendHolder.dataForFrontend.altMapMarkerUrl;
@@ -219,7 +234,7 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
         const marker = new google.maps.Marker({
           title,
           icon: mainMarker,
-          position: new google.maps.LatLng(location.latitude, location.longitude),
+          position: new google.maps.LatLng(location.latitude, location.longitude)
         });
         marker['row'] = r;
         marker['address'] = address;
@@ -237,7 +252,8 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
           const allRoots = [];
           for (const m of onLocation) {
             const view = this.infoWindowContent.createEmbeddedView({
-              $implicit: m['row'], address: m['address']
+              $implicit: m['row'],
+              address: m['address']
             });
             view.detectChanges();
             const roots = view.rootNodes || [];
@@ -264,7 +280,7 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
       this.referenceMarker = new google.maps.Marker({
         position: new google.maps.LatLng(this.referencePoint.latitude, this.referencePoint.longitude),
         title: this.referencePoint.name,
-        icon: altMarker,
+        icon: altMarker
       });
       if (this.referencePoint.name) {
         this.referenceMarker.addListener('click', () => {

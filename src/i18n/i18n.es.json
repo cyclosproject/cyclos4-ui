@@ -811,6 +811,7 @@
     "transferKinds": "Tipo de transferencia",
     "transferkind": {
       "accountFee": "Cargo de cuenta",
+      "balanceDisposal": "Cierre del saldo",
       "chargeback": "Devolución",
       "import": "Importar",
       "initialCredit": "Crédito inicial",
@@ -2038,6 +2039,7 @@
     "listAds": "Mostrar anuncios",
     "showFavorites": "Solo favoritos",
     "warningDisabledAd": "Este anuncio se encuentra deshabilitado y no podrá ser visto por otros usuarios.<br>Para activar el anuncio, seleccione un precio, moneda, y guarde el anuncio nuevamente",
+    "warningCurrencyNotAvailable": "La moneda del anuncio no se encuentra disponible actualmente. Por favor seleccione otra moneda o contacte a la administración. ",
     "title": {
       "search": "Búsqueda de anuncios",
       "myAdvertisements": "Mis anuncios",

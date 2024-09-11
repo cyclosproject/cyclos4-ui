@@ -10,15 +10,14 @@ import { cloneDeep } from 'lodash-es';
  * Helper service for handling address fields
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AddressHelperService {
-
   constructor(
     private formBuilder: FormBuilder,
     private fieldsHelper: FieldHelperService,
-    @Inject(I18nInjectionToken) private i18n: I18n) {
-  }
+    @Inject(I18nInjectionToken) private i18n: I18n
+  ) {}
 
   /**
    * Builds a `FormGroup` containing controls for all enabled fields, plus id, version and name
@@ -32,8 +31,8 @@ export class AddressHelperService {
       name: nameNotRequired ? null : [null, Validators.required],
       location: this.formBuilder.group({
         latitude: null,
-        longitude: null,
-      }),
+        longitude: null
+      })
     });
     for (const field of config.enabledFields) {
       const val = config.requiredFields.includes(field) ? Validators.required : null;
@@ -45,7 +44,7 @@ export class AddressHelperService {
         email: null,
         mobilePhone: null,
         landLinePhone: null,
-        landLineExtension: null,
+        landLineExtension: null
       });
       if (!empty(forProfile.contactInfoFields)) {
         contactInfo.addControl('customValues', this.fieldsHelper.customValuesFormGroup(forProfile.contactInfoFields));

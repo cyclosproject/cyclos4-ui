@@ -1,16 +1,16 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="data"
+  <page-content
+    *ngIf="data"
     [heading]="i18n.transaction.title.authorizationHistory"
     [mobileHeading]="i18n.transaction.mobileTitle.authorizationHistory">
     <ng-container *ngIf="transaction.transactionNumber">
       <label-value [label]="i18n.transaction.number">
         {{ transaction.transactionNumber }}
       </label-value>
-      <hr>
+      <hr />
     </ng-container>
-    <ng-container
-      *ngFor="let auth of transaction.authorizations; let first = first">
-      <hr *ngIf="!first">
+    <ng-container *ngFor="let auth of transaction.authorizations; let first = first">
+      <hr *ngIf="!first" />
       <label-value [label]="i18n.general.action">
         {{ actionLabel(auth) }}
       </label-value>
@@ -18,12 +18,10 @@
         <user-link [user]="auth.by"></user-link>
       </label-value>
       <label-value [label]="i18n.general.date">
-        {{ auth.date | dateTime}}
+        {{ auth.date | dateTime }}
       </label-value>
-      <label-value *ngIf="auth.comments" [label]="i18n.general.comments"
-        [value]="auth.comments" valueFormat="break">
+      <label-value *ngIf="auth.comments" [label]="i18n.general.comments" [value]="auth.comments" valueFormat="break">
       </label-value>
     </ng-container>
   </page-content>
-
 </page-layout>

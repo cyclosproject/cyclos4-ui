@@ -1,18 +1,25 @@
-<label-value *ngIf="label; else widget" [formField]="self"
-  [informationText]="informationText">
+<label-value *ngIf="label; else widget" [formField]="self" [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
 <ng-template #widget>
   <div class="d-flex mw-100 w-100">
-    <user-field #userField [formControl]="userFieldControl"
-      [allowSearch]="allowSearch" [allowContacts]="allowContacts"
-      [allowPrincipal]="allowPrincipal" [principalTypes]="principalTypes"
+    <user-field
+      #userField
+      [formControl]="userFieldControl"
+      [allowSearch]="allowSearch"
+      [allowContacts]="allowContacts"
+      [allowPrincipal]="allowPrincipal"
+      [principalTypes]="principalTypes"
       (selected)="add($event)"></user-field>
   </div>
   <div *ngIf="users.length > 0" class="d-flex mw-100 w-100 flex-wrap">
-    <chip *ngFor="let user of users" class="mt-2 mr-2" [image]="user.image"
-      [icon]="SvgIcon.Person" (close)="remove(user)">
+    <chip
+      *ngFor="let user of users"
+      class="mt-2 mr-2"
+      [image]="user.image"
+      [icon]="SvgIcon.Person"
+      (close)="remove(user)">
       {{ user.display }}
     </chip>
   </div>

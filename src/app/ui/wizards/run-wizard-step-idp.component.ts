@@ -8,12 +8,9 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'run-wizard-step-idp',
   templateUrl: 'run-wizard-step-idp.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RunWizardStepIdPComponent
-  extends BaseComponent
-  implements OnInit {
-
+export class RunWizardStepIdPComponent extends BaseComponent implements OnInit {
   @Input() identityProviders: IdentityProvider[];
   @Output() continue = new EventEmitter<IdentityProvider>();
 

@@ -9,11 +9,9 @@ import { copyToClipboard, shareSupported } from 'app/shared/helper';
 @Component({
   selector: 'receive-qr-payment-step-pending',
   templateUrl: 'receive-qr-payment-step-pending.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ReceiveQrPaymentStepPendingComponent
-  extends BaseComponent {
-
+export class ReceiveQrPaymentStepPendingComponent extends BaseComponent {
   @Input() ticket: TransactionView;
   @Input() qrCodeUrl: string;
 

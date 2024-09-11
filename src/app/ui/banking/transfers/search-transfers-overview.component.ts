@@ -1,13 +1,23 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AccountType, Currency, CustomFieldDetailed, PreselectedPeriod, RoleEnum,
-  TransferDataForSearch, TransferFilter, TransferKind, TransferQueryFilters, TransferResult, TransOrderByEnum, UserQueryFilters
+  AccountType,
+  Currency,
+  CustomFieldDetailed,
+  PreselectedPeriod,
+  RoleEnum,
+  TransferDataForSearch,
+  TransferFilter,
+  TransferKind,
+  TransferQueryFilters,
+  TransferResult,
+  TransOrderByEnum,
+  UserQueryFilters
 } from 'app/api/models';
 import { TransfersService } from 'app/api/services/transfers.service';
-import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { FieldOption } from 'app/shared/field-option';
+import { BankingHelperService } from 'app/ui/core/banking-helper.service';
+import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 
@@ -21,12 +31,12 @@ type TransferSearchParams = TransferQueryFilters & {
 @Component({
   selector: 'search-transfers-overview',
   templateUrl: 'search-transfers-overview.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchTransfersOverviewComponent
   extends BaseSearchPageComponent<TransferDataForSearch, TransferSearchParams, TransferResult>
-  implements OnInit {
-
+  implements OnInit
+{
   filters$ = new BehaviorSubject<TransferFilter[]>([]);
   currencies: Currency[];
   singleCurrency: Currency;
@@ -39,7 +49,7 @@ export class SearchTransfersOverviewComponent
   constructor(
     injector: Injector,
     private transfersService: TransfersService,
-    public bankingHelper: BankingHelperService,
+    public bankingHelper: BankingHelperService
   ) {
     super(injector);
   }
@@ -50,8 +60,24 @@ export class SearchTransfersOverviewComponent
 
   getFormControlNames() {
     return [
-      'preselectedPeriod', 'periodBegin', 'periodEnd', 'groups', 'currency', 'channels', 'fromAccountTypes', 'toAccountTypes',
-      'transferFilters', 'kinds', 'chargedBack', 'minAmount', 'maxAmount', 'transactionNumber', 'user', 'by', 'orderBy', 'brokers',
+      'preselectedPeriod',
+      'periodBegin',
+      'periodEnd',
+      'groups',
+      'currency',
+      'channels',
+      'fromAccountTypes',
+      'toAccountTypes',
+      'transferFilters',
+      'kinds',
+      'chargedBack',
+      'minAmount',
+      'maxAmount',
+      'transactionNumber',
+      'user',
+      'by',
+      'orderBy',
+      'brokers',
       'customFields'
     ];
   }
@@ -65,43 +91,60 @@ export class SearchTransfersOverviewComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.stateManager.cache('data', this.transfersService.getTransferDataForSearch()).subscribe(data => this.data = data);
+    this.stateManager
+      .cache('data', this.transfersService.getTransferDataForSearch())
+      .subscribe(data => (this.data = data));
   }
 
   prepareForm(data: TransferDataForSearch) {
     this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInBasicSearch.includes(cf.internalName));
     this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
-    this.form.setControl('customFields', this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields));
+    this.form.setControl(
+      'customFields',
+      this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields)
+    );
   }
 
   onDataInitialized(data: TransferDataForSearch) {
     super.onDataInitialized(data);
-    this.currencies = [...new Set((data.accountTypes || []).map(at => at.currency))].sort((c1, c2) => c1.name.localeCompare(c2.name));
+    this.currencies = [...new Set((data.accountTypes || []).map(at => at.currency))].sort((c1, c2) =>
+      c1.name.localeCompare(c2.name)
+    );
     this.singleCurrency = (this.currencies || []).length === 1 ? this.currencies[0] : null;
     this.singleAccount = (data.accountTypes || []).length === 1 ? data.accountTypes[0] : null;
     const transactionNumberPatterns = this.currencies
       .map(c => c.transactionNumberPattern)
       .filter(p => p)
-      .reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], []);
+      .reduce((unique, item) => (unique.includes(item) ? unique : [...unique, item]), []);
     this.hasTransactionNumber = transactionNumberPatterns.length > 0;
     this.transactionNumberPattern = transactionNumberPatterns.length === 1 ? transactionNumberPatterns[0] : null;
     this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
-    this.addSub(this.form.controls.fromAccountTypes.valueChanges.subscribe(accountTypeId => this.updateTransferFilters(accountTypeId)));
+    this.addSub(
+      this.form.controls.fromAccountTypes.valueChanges.subscribe(accountTypeId =>
+        this.updateTransferFilters(accountTypeId)
+      )
+    );
     this.addSub(this.form.controls.currency.valueChanges.subscribe(currencyId => this.updateAccountTypes(currencyId)));
 
     this.headingActions = [this.moreFiltersAction];
-    this.exportHelper.headingActions(data.exportFormats,
-      f => this.transfersService.exportTransfers$Response({
-        format: f.internalName,
-        ...this.toSearchParams(this.form.value)
-      })).forEach(a => this.headingActions.push(a));
+    this.exportHelper
+      .headingActions(data.exportFormats, f =>
+        this.transfersService.exportTransfers$Response({
+          format: f.internalName,
+          ...this.toSearchParams(this.form.value)
+        })
+      )
+      .forEach(a => this.headingActions.push(a));
   }
 
   updateTransferFilters(accountTypeId: string) {
     const selectedFilters = this.form.controls.transferFilters.value as string[];
     if (accountTypeId && selectedFilters) {
       this.form.controls.transferFilters.setValue(
-        selectedFilters.filter(filterId => this.data.transferFilters.find(tf => tf.id === filterId).accountType.id === accountTypeId));
+        selectedFilters.filter(
+          filterId => this.data.transferFilters.find(tf => tf.id === filterId).accountType.id === accountTypeId
+        )
+      );
     }
   }
 
@@ -110,7 +153,9 @@ export class SearchTransfersOverviewComponent
     const selectedTo = this.form.controls.toAccountTypes.value;
     if (currencyId && selectedFrom) {
       const fromCurrency = (this.data.accountTypes.find(at => at.id === selectedFrom) as AccountType).currency;
-      this.form.controls.fromAccountTypes.setValue(!fromCurrency || fromCurrency.id === currencyId ? selectedFrom : null);
+      this.form.controls.fromAccountTypes.setValue(
+        !fromCurrency || fromCurrency.id === currencyId ? selectedFrom : null
+      );
     }
     if (currencyId && selectedTo) {
       const toCurrency = (this.data.accountTypes.find(at => at.id === selectedTo) as AccountType).currency;
@@ -139,7 +184,7 @@ export class SearchTransfersOverviewComponent
 
   transferFilters(): TransferFilter[] {
     const fromAccount = this.form.controls.fromAccountTypes.value;
-    const filters = (this.data.transferFilters || []);
+    const filters = this.data.transferFilters || [];
     if (fromAccount) {
       return filters.filter(f => f.accountType.id === fromAccount);
     }
@@ -196,7 +241,7 @@ export class SearchTransfersOverviewComponent
     const statuses = Object.values(TransferKind) as TransferKind[];
     return statuses.map(kind => ({
       value: kind,
-      text: this.apiI18n.transferKind(kind),
+      text: this.apiI18n.transferKind(kind)
     }));
   }
 
@@ -222,7 +267,7 @@ export class SearchTransfersOverviewComponent
 
   resolveMenu() {
     return this.dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR
-      ? Menu.ADMIN_TRANSFERS_OVERVIEW : Menu.BROKER_TRANSFERS_OVERVIEW;
+      ? Menu.ADMIN_TRANSFERS_OVERVIEW
+      : Menu.BROKER_TRANSFERS_OVERVIEW;
   }
-
 }

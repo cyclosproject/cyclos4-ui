@@ -19,9 +19,7 @@ export class NotificationRef {
   private _sub: Subscription;
   private _onClosed = new Subject<void>();
 
-  constructor(
-    private _ref: BsModalRef,
-    onClosed: Observable<NotificationComponent>) {
+  constructor(private _ref: BsModalRef, onClosed: Observable<NotificationComponent>) {
     this._sub = onClosed.subscribe(other => {
       if (this.notification === other) {
         this._onClosed.next(null);
@@ -48,10 +46,9 @@ export class NotificationRef {
  * Service used to manage notifications being displayed for users
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class NotificationService {
-
   /** The currently open notification */
   private currentNotification: NotificationRef;
 
@@ -74,7 +71,7 @@ export class NotificationService {
     nextRequestState: NextRequestState,
     pushNotifications: PushNotificationsService,
     notificationsService: NotificationsService,
-    dataForFrontendHolder: DataForFrontendHolder,
+    dataForFrontendHolder: DataForFrontendHolder
   ) {
     this.modal.onHidden.subscribe(() => {
       if (this.currentNotification) {
@@ -88,9 +85,12 @@ export class NotificationService {
       const auth = (dataForUi || {}).auth || {};
       if (auth.user && ((auth.permissions || {}).notifications || {}).enable) {
         nextRequestState.ignoreNextError = true;
-        notificationsService.notificationsStatus().pipe(first()).subscribe(status => {
-          this.notificationsStatus$.next(status);
-        });
+        notificationsService
+          .notificationsStatus()
+          .pipe(first())
+          .subscribe(status => {
+            this.notificationsStatus$.next(status);
+          });
         this.notificationsStatus$.next(null);
       } else {
         this.notificationsStatus$.next(null);
@@ -153,8 +153,8 @@ export class NotificationService {
       initialState: {
         type,
         message,
-        allowClose,
-      },
+        allowClose
+      }
     });
     if (!backdrop) {
       this.modal.removeBackdrop();

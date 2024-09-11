@@ -3,8 +3,7 @@
 <div class="mb-3">{{ i18n.field.file.manageMessage }}</div>
 
 <div cdkDropList (cdkDropListDropped)="drop($event)">
-  <div *ngFor="let file of files" cdkDrag
-    class="d-flex justify-items-center mb-2 cursor-move">
+  <div *ngFor="let file of files" cdkDrag class="d-flex justify-items-center mb-2 cursor-move">
     <div class="flex-grow-1 d-flex align-items-center text-truncate">
       {{ file.name }}
     </div>
@@ -17,9 +16,6 @@
 </div>
 
 <actions>
-  <action-button (action)="ok()" [label]="i18n.general.confirm">
-  </action-button>
-  <action-button outline (action)="modalRef.hide()"
-    [label]="i18n.general.cancel">
-  </action-button>
+  <action-button (action)="ok()" [label]="i18n.general.confirm"> </action-button>
+  <action-button outline (action)="modalRef.hide()" [label]="i18n.general.cancel"> </action-button>
 </actions>

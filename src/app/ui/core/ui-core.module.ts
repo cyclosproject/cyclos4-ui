@@ -35,7 +35,6 @@ import { LoginComponent } from 'app/ui/login/login.component';
 import { RedirectToLocationComponent } from 'app/ui/redirect-to-location-component';
 import { UiLayoutModule } from 'app/ui/shared/ui-layout.module';
 
-
 /**
  * Module that declares components used only by the core app module
  */
@@ -52,12 +51,9 @@ import { UiLayoutModule } from 'app/ui/shared/ui-layout.module';
     MenusComponent,
     SidenavComponent,
     PushNotificationComponent,
-    PushNotificationsComponent,
+    PushNotificationsComponent
   ],
-  imports: [
-    CoreBasicModule,
-    UiLayoutModule,
-  ],
+  imports: [CoreBasicModule, UiLayoutModule],
   exports: [
     CoreBasicModule,
     UiLayoutModule,
@@ -67,7 +63,7 @@ import { UiLayoutModule } from 'app/ui/shared/ui-layout.module';
     MenusComponent,
     SidenavComponent,
     PushNotificationComponent,
-    PushNotificationsComponent,
+    PushNotificationsComponent
   ],
   providers: [
     PushNotificationsService,
@@ -91,17 +87,12 @@ import { UiLayoutModule } from 'app/ui/shared/ui-layout.module';
     QuickAccessHelperService,
     ImportsHelperService
   ],
-  entryComponents: [
-    PushNotificationComponent
-  ]
+  entryComponents: [PushNotificationComponent]
 })
 export class UiCoreModule {
-  constructor(
-    @Optional() @SkipSelf() parentModule: SharedModule,
-  ) {
+  constructor(@Optional() @SkipSelf() parentModule: SharedModule) {
     if (parentModule) {
-      throw new Error('UiCoreModule is already loaded. '
-        + 'It should only be imported in AppModule');
+      throw new Error('UiCoreModule is already loaded. ' + 'It should only be imported in AppModule');
     }
   }
 }

@@ -1,17 +1,27 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [heading]="i18n.product.title.list"
+    <page-content
+      [heading]="i18n.product.title.list"
       [mobileHeading]="i18n.product.mobileTitle.list"
       [headingActions]="headingActions$ | async">
       <user-info [user]="data.user"></user-info>
       <ng-container
-        *ngTemplateOutlet="products; context: {$implicit: data.userProducts, title: i18n.product.assigned.individual }">
+        *ngTemplateOutlet="
+          products;
+          context: { $implicit: data.userProducts, title: i18n.product.assigned.individual }
+        ">
       </ng-container>
       <ng-container
-        *ngTemplateOutlet="products; context: {$implicit: data.groupProducts, title: i18n.product.assigned.group, readOnly: true}">
+        *ngTemplateOutlet="
+          products;
+          context: { $implicit: data.groupProducts, title: i18n.product.assigned.group, readOnly: true }
+        ">
       </ng-container>
       <ng-container
-        *ngTemplateOutlet="products; context: {$implicit: data.groupSetProducts, title: i18n.product.assigned.groupSet, readOnly: true}">
+        *ngTemplateOutlet="
+          products;
+          context: { $implicit: data.groupSetProducts, title: i18n.product.assigned.groupSet, readOnly: true }
+        ">
       </ng-container>
     </page-content>
   </ng-container>
@@ -24,7 +34,9 @@
       <div *ngFor="let prod of products" class="d-flex mb-2">
         <div class="cell-main">{{ prod.name }}</div>
         <div *ngIf="!readOnly && canRemove(prod)" class="ml-auto text-right">
-          <button type="button" [tooltip]="i18n.general.remove"
+          <button
+            type="button"
+            [tooltip]="i18n.general.remove"
             class="btn btn-icon"
             (click)="remove(prod); $event.stopPropagation(); $event.preventDefault()">
             <icon [icon]="SvgIcon.Trash"></icon>
@@ -37,25 +49,27 @@
         <thead>
           <th width="40%" class="no-border">{{ i18n.general.name }}</th>
           <th width="25%" class="no-border">{{ i18n.general.type }}</th>
-          <th width="25%" class="no-border">{{ i18n.product.userAccount }}
-          </th>
+          <th width="25%" class="no-border">{{ i18n.product.userAccount }}</th>
           <th width="10%" class="no-border"></th>
         </thead>
         <tbody>
           <ng-container *ngFor="let prod of products; let last = last">
             <tr>
-              <td [ngClass]="{'no-border': last}">
+              <td [ngClass]="{ 'no-border': last }">
                 {{ prod.name }}
               </td>
-              <td [ngClass]="{'no-border': last}">
+              <td [ngClass]="{ 'no-border': last }">
                 {{ resolveKindLabel(prod.kind) }}
               </td>
-              <td [ngClass]="{'no-border': last}">
+              <td [ngClass]="{ 'no-border': last }">
                 {{ prod.userAccount?.name }}
               </td>
-              <td [ngClass]="{'no-border': last}" class="actions">
-                <button *ngIf="!readOnly && canRemove(prod)" type="button"
-                  [tooltip]="i18n.general.remove" class="btn btn-icon"
+              <td [ngClass]="{ 'no-border': last }" class="actions">
+                <button
+                  *ngIf="!readOnly && canRemove(prod)"
+                  type="button"
+                  [tooltip]="i18n.general.remove"
+                  class="btn btn-icon"
                   (click)="remove(prod); $event.stopPropagation()">
                   <icon [icon]="SvgIcon.Trash"></icon>
                 </button>

@@ -1,76 +1,135 @@
 <ng-container *ngIf="hasValuesList; else specificTemplate">
-  <multi-selection-field #multiSelectionField [id]="id" [label]="label"
-    [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-    [required]="required" [formControl]="formControl"
-    [separator]="ApiHelper.VALUE_SEPARATOR" [fieldOptions]="fieldOptions"
+  <multi-selection-field
+    #multiSelectionField
+    [id]="id"
+    [label]="label"
+    [name]="name"
+    [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize"
+    [required]="required"
+    [formControl]="formControl"
+    [separator]="ApiHelper.VALUE_SEPARATOR"
+    [fieldOptions]="fieldOptions"
     [emptyLabel]="i18n.general.notApplied">
   </multi-selection-field>
 </ng-container>
 
 <ng-template #specificTemplate>
   <!-- string, URL, text -->
-  <input-field #inputField *ngIf="input" [id]="id" [label]="label"
-    [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-    [required]="required" [formControl]="formControl"
+  <input-field
+    #inputField
+    *ngIf="input"
+    [id]="id"
+    [label]="label"
+    [name]="name"
+    [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize"
+    [required]="required"
+    [formControl]="formControl"
     [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'"
     [mask]="field.pattern"></input-field>
 
   <!-- boolean -->
-  <single-selection-field #singleSelectionField *ngIf="type == 'boolean'"
-    [id]="id" [label]="label" [name]="name" [labelPosition]="labelPosition"
-    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
+  <single-selection-field
+    #singleSelectionField
+    *ngIf="type == 'boolean'"
+    [id]="id"
+    [label]="label"
+    [name]="name"
+    [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize"
+    [required]="required"
+    [formControl]="formControl"
     [emptyOption]="i18n.general.notApplied">
     <field-option [value]="true" [text]="i18n.general.yes"></field-option>
     <field-option [value]="false" [text]="i18n.general.no"></field-option>
   </single-selection-field>
 
   <!-- multi selection -->
-  <multi-selection-field #multiSelectionField *ngIf="enumerated" [id]="id"
-    [label]="label" [name]="name" [labelPosition]="labelPosition"
-    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
-    [separator]="ApiHelper.VALUE_SEPARATOR" [fieldOptions]="fieldOptions">
+  <multi-selection-field
+    #multiSelectionField
+    *ngIf="enumerated"
+    [id]="id"
+    [label]="label"
+    [name]="name"
+    [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize"
+    [required]="required"
+    [formControl]="formControl"
+    [separator]="ApiHelper.VALUE_SEPARATOR"
+    [fieldOptions]="fieldOptions">
   </multi-selection-field>
 
   <!-- linked entity: user (other linked entities are also handled as input -->
-  <user-field #userField *ngIf="user" [id]="id" [label]="label" [name]="name"
-    [labelPosition]="labelPosition" [fieldSize]="fieldSize" [allowSelf]="true"
-    [required]="required" [formControl]="formControl"
+  <user-field
+    #userField
+    *ngIf="user"
+    [id]="id"
+    [label]="label"
+    [name]="name"
+    [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize"
+    [allowSelf]="true"
+    [required]="required"
+    [formControl]="formControl"
     [filters]="userSearchFilters()">
   </user-field>
 
   <!-- Integer, decimal and date are ranges -->
-  <label-value *ngIf="range" [label]="label" [labelPosition]="labelPosition"
-    [fieldSize]="fieldSize" [required]="required" kind="field">
+  <label-value
+    *ngIf="range"
+    [label]="label"
+    [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize"
+    [required]="required"
+    kind="field">
     <div class="range" [ngSwitch]="type">
       <ng-container *ngSwitchCase="'integer'">
-        <input-field #integerMin [id]="id + '_min'"
-          [name]="name ? name + '_min' : null" [formControl]="range.at(0)"
+        <input-field
+          #integerMin
+          [id]="id + '_min'"
+          [name]="name ? name + '_min' : null"
+          [formControl]="range.at(0)"
           [type]="'number'"></input-field>
-        <input-field #integerMax [id]="id + '_max'"
-          [name]="name ? name + '_max' : null" [formControl]="range.at(1)"
+        <input-field
+          #integerMax
+          [id]="id + '_max'"
+          [name]="name ? name + '_max' : null"
+          [formControl]="range.at(1)"
           [type]="'number'"></input-field>
       </ng-container>
       <ng-container *ngSwitchCase="'decimal'">
-        <decimal-field #decimalMin [id]="id + '_min'"
-          [scale]="field.decimalDigits" [name]="name ? name + '_min' : null"
+        <decimal-field
+          #decimalMin
+          [id]="id + '_min'"
+          [scale]="field.decimalDigits"
+          [name]="name ? name + '_min' : null"
           [formControl]="range.at(0)">
         </decimal-field>
-        <decimal-field #decimalMax [id]="id + '_max'"
-          [scale]="field.decimalDigits" [name]="name ? name + '_max' : null"
+        <decimal-field
+          #decimalMax
+          [id]="id + '_max'"
+          [scale]="field.decimalDigits"
+          [name]="name ? name + '_max' : null"
           [formControl]="range.at(1)">
         </decimal-field>
       </ng-container>
       <ng-container *ngSwitchCase="'date'">
-        <date-field #dateMin [id]="id + '_min'"
-          [tooltip]="(layout.ltmd$ | async) ? null : range.at(0).valueChanges | async | date"
-          [name]="name ? name + '_min' : null" [formControl]="range.at(0)">
+        <date-field
+          #dateMin
+          [id]="id + '_min'"
+          [tooltip]="(layout.ltmd$ | async) ? null : (range.at(0).valueChanges | async | date)"
+          [name]="name ? name + '_min' : null"
+          [formControl]="range.at(0)">
         </date-field>
-        <date-field #dateMax [id]="id + '_max'"
-          [tooltip]="(layout.ltmd$ | async) ? null : range.at(1).valueChanges | async | date"
-          [name]="name ? name + '_max' : null" [formControl]="range.at(1)">
+        <date-field
+          #dateMax
+          [id]="id + '_max'"
+          [tooltip]="(layout.ltmd$ | async) ? null : (range.at(1).valueChanges | async | date)"
+          [name]="name ? name + '_max' : null"
+          [formControl]="range.at(1)">
         </date-field>
       </ng-container>
     </div>
   </label-value>
-
 </ng-template>

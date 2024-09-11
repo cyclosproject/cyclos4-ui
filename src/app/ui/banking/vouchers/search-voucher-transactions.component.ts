@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  UserVouchersDataForSearch, UserVoucherTransactionsDataForSearch, UserVoucherTransactionsQueryFilters, VoucherTransactionKind,
+  UserVouchersDataForSearch,
+  UserVoucherTransactionsDataForSearch,
+  UserVoucherTransactionsQueryFilters,
+  VoucherTransactionKind,
   VoucherTransactionResult
 } from 'app/api/models';
 import { VouchersService } from 'app/api/services/vouchers.service';
@@ -16,27 +19,33 @@ type UserVoucherTransactionsSearchParams = UserVoucherTransactionsQueryFilters &
 @Component({
   selector: 'search-voucher-transactions',
   templateUrl: './search-voucher-transactions.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchVoucherTransactionsComponent
-  extends BaseSearchPageComponent<UserVoucherTransactionsDataForSearch, UserVoucherTransactionsSearchParams, VoucherTransactionResult>
-  implements OnInit {
-
+  extends BaseSearchPageComponent<
+    UserVoucherTransactionsDataForSearch,
+    UserVoucherTransactionsSearchParams,
+    VoucherTransactionResult
+  >
+  implements OnInit
+{
   VoucherTransactionKind = VoucherTransactionKind;
 
   param: string;
   self: boolean;
 
-  constructor(
-    injector: Injector,
-    private vouchersService: VouchersService) {
+  constructor(injector: Injector, private vouchersService: VouchersService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.param = this.route.snapshot.paramMap.get('user');
-    this.addSub(this.vouchersService.getUserVoucherTransactionsDataForSearch({ user: this.param }).subscribe(data => this.data = data));
+    this.addSub(
+      this.vouchersService
+        .getUserVoucherTransactionsDataForSearch({ user: this.param })
+        .subscribe(data => (this.data = data))
+    );
   }
 
   protected getFormControlNames(): string[] {
@@ -48,10 +57,14 @@ export class SearchVoucherTransactionsComponent
     this.self = this.authHelper.isSelf(data.user);
     const headingActions: HeadingAction[] = [];
     if (data.canRedeem) {
-      headingActions.push(new HeadingAction(SvgIcon.TicketArrowDown, this.i18n.voucher.redeem.redeem, () => this.redeem(), true));
+      headingActions.push(
+        new HeadingAction(SvgIcon.TicketArrowDown, this.i18n.voucher.redeem.redeem, () => this.redeem(), true)
+      );
     }
     if (data.canTopUp) {
-      headingActions.push(new HeadingAction(SvgIcon.TicketArrowUp, this.i18n.voucher.topUp.topUp, () => this.topUp(), true));
+      headingActions.push(
+        new HeadingAction(SvgIcon.TicketArrowUp, this.i18n.voucher.topUp.topUp, () => this.topUp(), true)
+      );
     }
     this.headingActions = headingActions;
   }
@@ -71,11 +84,7 @@ export class SearchVoucherTransactionsComponent
   }
 
   get kindsOptions() {
-    const values = [
-      VoucherTransactionKind.REDEEM,
-      VoucherTransactionKind.TOP_UP,
-      VoucherTransactionKind.CHARGEBACK
-    ];
+    const values = [VoucherTransactionKind.REDEEM, VoucherTransactionKind.TOP_UP, VoucherTransactionKind.CHARGEBACK];
     return values.map(kind => ({ value: kind, text: this.apiI18n.voucherTransactionKind(kind) }));
   }
 
@@ -84,7 +93,9 @@ export class SearchVoucherTransactionsComponent
   }
 
   resolveVoucherTransactionsMobileTitle(): string {
-    return this.data.topUpEnabled ? this.i18n.voucher.mobileTitle.transactions : this.i18n.voucher.mobileTitle.transactionsRedeems;
+    return this.data.topUpEnabled
+      ? this.i18n.voucher.mobileTitle.transactions
+      : this.i18n.voucher.mobileTitle.transactionsRedeems;
   }
 
   private redeem() {
@@ -106,5 +117,4 @@ export class SearchVoucherTransactionsComponent
   resolveMenu(data: UserVouchersDataForSearch) {
     return this.menu.userMenu(data.user, Menu.VOUCHER_TRANSACTIONS);
   }
-
 }

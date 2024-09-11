@@ -1,23 +1,24 @@
-<label-value *ngIf="label; else widget" [formField]="self"
-  [fieldSize]="fieldSize" [informationText]="informationText">
+<label-value *ngIf="label; else widget" [formField]="self" [fieldSize]="fieldSize" [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
 <ng-template #widget>
   <div [formGroup]="form" class="d-flex w-100">
-    <input #inputField [id]="id" type="number" numbersOnly autocomplete="off"
-      formControlName="amount" class="form-control text-right" [ngClass]="{
-      'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
-    }">
+    <input
+      #inputField
+      [id]="id"
+      type="number"
+      numbersOnly
+      autocomplete="off"
+      formControlName="amount"
+      class="form-control text-right"
+      [ngClass]="{
+        'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
+      }" />
     <single-selection-field formControlName="field" class="pl-1">
-      <field-option value="days" [text]="i18n.general.timeField.plural.days">
-      </field-option>
-      <field-option value="weeks"
-        [text]="i18n.general.timeField.plural.weeks">
-      </field-option>
-      <field-option value="months"
-        [text]="i18n.general.timeField.plural.months">
-      </field-option>
+      <field-option value="days" [text]="i18n.general.timeField.plural.days"> </field-option>
+      <field-option value="weeks" [text]="i18n.general.timeField.plural.weeks"> </field-option>
+      <field-option value="months" [text]="i18n.general.timeField.plural.months"> </field-option>
     </single-selection-field>
   </div>
   <field-errors [control]="formControl"></field-errors>

@@ -1,15 +1,22 @@
 import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { AvailabilityEnum, DataForTransaction, ImageSizeEnum, TransactionTypeData, TransactionView, TransferType } from 'app/api/models';
+import {
+  AvailabilityEnum,
+  DataForTransaction,
+  ImageSizeEnum,
+  TransactionTypeData,
+  TransactionView,
+  TransferType
+} from 'app/api/models';
 import { TicketsService } from 'app/api/services/tickets.service';
-import { BankingHelperService } from 'app/ui/core/banking-helper.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
+import { ApiHelper } from 'app/shared/api-helper';
 import { empty, shareSupported, validateBeforeSubmit } from 'app/shared/helper';
+import { BankingHelperService } from 'app/ui/core/banking-helper.service';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { ApiHelper } from 'app/shared/api-helper';
 
 export type Step = 'form' | 'pending';
 
@@ -19,12 +26,9 @@ export type Step = 'form' | 'pending';
 @Component({
   selector: 'receive-qr-payment',
   templateUrl: 'receive-qr-payment.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ReceiveQrPaymentComponent
-  extends BasePageComponent<DataForTransaction>
-  implements OnInit, OnDestroy {
-
+export class ReceiveQrPaymentComponent extends BasePageComponent<DataForTransaction> implements OnInit, OnDestroy {
   step$ = new BehaviorSubject<Step>(null);
   form: FormGroup;
   ticket$ = new BehaviorSubject<TransactionView>(null);
@@ -41,13 +45,14 @@ export class ReceiveQrPaymentComponent
     injector: Injector,
     private ticketsService: TicketsService,
     private pushNotifications: PushNotificationsService,
-    private bankingHelper: BankingHelperService) {
+    private bankingHelper: BankingHelperService
+  ) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.ticketsService.dataForNewTicket({ user: ApiHelper.SELF }).subscribe(data => this.data = data));
+    this.addSub(this.ticketsService.dataForNewTicket({ user: ApiHelper.SELF }).subscribe(data => (this.data = data)));
     this.addSub(this.step$.subscribe(step => this.onStepChanged(step)));
   }
 
@@ -71,8 +76,14 @@ export class ReceiveQrPaymentComponent
       });
 
       this.paymentTypeDataCache.set(data.paymentTypes[0].id, data.paymentTypeData);
-      this.addSub(this.form.controls.type.valueChanges.pipe(distinctUntilChanged()).subscribe(id => this.onPaymentTypeChange(id)));
-      this.addSub(this.form.controls.account.valueChanges.pipe(distinctUntilChanged()).subscribe(id => this.onAccountChange(id, data)));
+      this.addSub(
+        this.form.controls.type.valueChanges.pipe(distinctUntilChanged()).subscribe(id => this.onPaymentTypeChange(id))
+      );
+      this.addSub(
+        this.form.controls.account.valueChanges
+          .pipe(distinctUntilChanged())
+          .subscribe(id => this.onAccountChange(id, data))
+      );
       this.form.patchValue({ account: data.accounts[0].id });
       this.step$.next('form');
     }
@@ -89,7 +100,7 @@ export class ReceiveQrPaymentComponent
   }
 
   onPaymentTypeChange(id: string) {
-    const type = ((this.paymentTypes$.value) || []).find(t => t.id === id);
+    const type = (this.paymentTypes$.value || []).find(t => t.id === id);
     if (!type) {
       this.notification.error(this.i18n.transaction.noTypes);
       return;
@@ -100,7 +111,9 @@ export class ReceiveQrPaymentComponent
         this.paymentType$.next(type);
         this.paymentTypeData$.next(d);
         this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(d.customFields));
-        this.form.controls.type.setValidators(d.descriptionAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null);
+        this.form.controls.type.setValidators(
+          d.descriptionAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null
+        );
         if (d?.fixedAmount) {
           this.form.patchValue({ amount: d.fixedAmount });
         }
@@ -110,12 +123,16 @@ export class ReceiveQrPaymentComponent
     if (cached) {
       set(cached);
     } else {
-      this.addSub(this.ticketsService.dataForNewTicket({
-        user: ApiHelper.SELF,
-        type: id
-      }).subscribe(data => {
-        set(data.paymentTypeData);
-      }));
+      this.addSub(
+        this.ticketsService
+          .dataForNewTicket({
+            user: ApiHelper.SELF,
+            type: id
+          })
+          .subscribe(data => {
+            set(data.paymentTypeData);
+          })
+      );
     }
   }
 
@@ -123,22 +140,29 @@ export class ReceiveQrPaymentComponent
     if (!validateBeforeSubmit(this.form)) {
       return;
     }
-    this.addSub(this.ticketsService.newTicket({
-      user: ApiHelper.SELF,
-      body: this.form.value
-    }).subscribe(ticket => {
-      this.ticket$.next(ticket);
+    this.addSub(
+      this.ticketsService
+        .newTicket({
+          user: ApiHelper.SELF,
+          body: this.form.value
+        })
+        .subscribe(ticket => {
+          this.ticket$.next(ticket);
 
-      this.addSub(this.ticketsService.getTicketQrCode({
-        ticket:
-          ticket.ticketNumber,
-        size: ImageSizeEnum.MEDIUM
-      }).subscribe(qrCode => {
-        this.qrCodeUrl$.next(URL.createObjectURL(qrCode));
-      }));
+          this.addSub(
+            this.ticketsService
+              .getTicketQrCode({
+                ticket: ticket.ticketNumber,
+                size: ImageSizeEnum.MEDIUM
+              })
+              .subscribe(qrCode => {
+                this.qrCodeUrl$.next(URL.createObjectURL(qrCode));
+              })
+          );
 
-      this.step$.next('pending');
-    }));
+          this.step$.next('pending');
+        })
+    );
   }
 
   private onStepChanged(step: Step) {
@@ -146,8 +170,10 @@ export class ReceiveQrPaymentComponent
       this.pushSub = this.pushNotifications.ticket$.subscribe(ticket => {
         const current = this.ticket$.value;
         if (current && current.id === ticket.id) {
-          this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(ticket.transaction)],
-            { state: { url: this.router.url } });
+          this.router.navigate(
+            ['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(ticket.transaction)],
+            { state: { url: this.router.url } }
+          );
         }
       });
     } else {
@@ -182,7 +208,6 @@ export class ReceiveQrPaymentComponent
         })
       });
     } else {
-
     }
   }
 

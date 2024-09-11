@@ -1,6 +1,12 @@
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { CaptchaInput, ChangeVoucherNotificationSettings, PasswordInput, VoucherCreationTypeEnum, VoucherInfo } from 'app/api/models';
+import {
+  CaptchaInput,
+  ChangeVoucherNotificationSettings,
+  PasswordInput,
+  VoucherCreationTypeEnum,
+  VoucherInfo
+} from 'app/api/models';
 import { DataForVoucherInfo } from 'app/api/models/data-for-voucher-info';
 import { VoucherInfoService } from 'app/api/services/voucher-info.service';
 import { SvgIcon } from 'app/core/svg-icon';
@@ -32,8 +38,8 @@ export class VoucherState {
   constructor(
     @Inject(I18nInjectionToken) private i18n: I18n,
     private voucherInfoService: VoucherInfoService,
-    private router: Router) {
-  }
+    private router: Router
+  ) {}
 
   get title() {
     return this.title$.value;
@@ -60,8 +66,7 @@ export class VoucherState {
       return of(data);
     } else {
       // We're on development. Fetch the data.
-      return this.voucherInfoService.getVoucherInfoData().pipe(
-        tap(d => this.data$.next(d)));
+      return this.voucherInfoService.getVoucherInfoData().pipe(tap(d => this.data$.next(d)));
     }
   }
 
@@ -118,25 +123,24 @@ export class VoucherState {
       return EMPTY;
     }
     this.processing$.next(true);
-    this.voucherInfoService.getVoucherInfo({ token })
-      .subscribe(
-        v => {
-          this.voucher = v;
-          this.processing$.next(false);
-          if (v.pinInput) {
-            // The pinInput is returned in 2 cases: A regular voucher that needs PIN or a gift voucher activation
-            if (v.blockedGiftBy) {
-              this.router.navigate(['activate-gift']);
-            } else {
-              this.router.navigate(['pin']);
-            }
+    this.voucherInfoService.getVoucherInfo({ token }).subscribe(
+      v => {
+        this.voucher = v;
+        this.processing$.next(false);
+        if (v.pinInput) {
+          // The pinInput is returned in 2 cases: A regular voucher that needs PIN or a gift voucher activation
+          if (v.blockedGiftBy) {
+            this.router.navigate(['activate-gift']);
           } else {
-            this.router.navigate(['details']);
+            this.router.navigate(['pin']);
           }
-        },
-        _e => this.processing$.next(false));
+        } else {
+          this.router.navigate(['details']);
+        }
+      },
+      _e => this.processing$.next(false)
+    );
   }
-
 
   /**
    * Fetch the current voucher with a PIN
@@ -146,15 +150,15 @@ export class VoucherState {
       return EMPTY;
     }
     this.processing$.next(true);
-    this.voucherInfoService.getVoucherInfo({ token: this.voucher.token, pin })
-      .subscribe(
-        v => {
-          this.voucher = v;
-          this._pin = pin;
-          this.processing$.next(false);
-          this.router.navigate(['details']);
-        },
-        _e => this.processing$.next(false));
+    this.voucherInfoService.getVoucherInfo({ token: this.voucher.token, pin }).subscribe(
+      v => {
+        this.voucher = v;
+        this._pin = pin;
+        this.processing$.next(false);
+        this.router.navigate(['details']);
+      },
+      _e => this.processing$.next(false)
+    );
   }
 
   updatePin(newPin: string) {
@@ -187,28 +191,30 @@ export class VoucherState {
     this.headingActions = [];
 
     if (this.canChangePin()) {
-      this.headingActions.push(new HeadingAction(SvgIcon.Key, this.i18n.voucher.info.changePin.action, () => this.changePin()));
+      this.headingActions.push(
+        new HeadingAction(SvgIcon.Key, this.i18n.voucher.info.changePin.action, () => this.changePin())
+      );
     }
     if (this.canChangeNotificationSettings()) {
-      this.headingActions.push(new HeadingAction(SvgIcon.Gear, this.i18n.voucher.notificationSettings.label,
-        () => this.notificationSettings()));
+      this.headingActions.push(
+        new HeadingAction(SvgIcon.Gear, this.i18n.voucher.notificationSettings.label, () => this.notificationSettings())
+      );
     }
 
     this.voucherHasActions = this.headingActions.length > 0;
   }
   canChangePin() {
     return this.voucher?.canChangePin;
-
   }
   canChangeNotificationSettings() {
     return this.voucher?.canChangeNotificationSettings;
   }
 
   private changePin() {
-    this.router.navigate(["change-pin"]);
+    this.router.navigate(['change-pin']);
   }
 
   private notificationSettings(): void {
-    this.router.navigate(["notification-settings"]);
+    this.router.navigate(['notification-settings']);
   }
 }

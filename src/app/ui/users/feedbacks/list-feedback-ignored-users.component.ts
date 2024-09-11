@@ -14,30 +14,26 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'list-feedback-ignored-users',
   templateUrl: 'list-feedback-ignored-users.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListFeedbackIgnoredUsersComponent
-  extends BasePageComponent<User[]>
-  implements OnInit {
-
-  constructor(
-    injector: Injector,
-    private modal: BsModalService,
-    private feedbackService: PaymentFeedbacksService) {
+export class ListFeedbackIgnoredUsersComponent extends BasePageComponent<User[]> implements OnInit {
+  constructor(injector: Injector, private modal: BsModalService, private feedbackService: PaymentFeedbacksService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
 
-    this.addSub(this.feedbackService.listPaymentFeedbackIgnoredUsers({ user: this.ApiHelper.SELF }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.feedbackService.listPaymentFeedbackIgnoredUsers({ user: this.ApiHelper.SELF }).subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized() {
     this.headingActions = [
-      new HeadingAction(SvgIcon.PlusCircle, this.i18n.feedback.addUserToIgnoreList, () => this.add(), true),
+      new HeadingAction(SvgIcon.PlusCircle, this.i18n.feedback.addUserToIgnoreList, () => this.add(), true)
     ];
   }
 
@@ -48,12 +44,15 @@ export class ListFeedbackIgnoredUsersComponent
     this.confirmation.confirm({
       message: this.i18n.general.removeConfirm(user.display),
       callback: () => {
-        this.addSub(this.feedbackService.removePaymentFeedbackIgnoredUser({ ignored: user.id, user: this.ApiHelper.SELF })
-          .subscribe(() => {
-            this.notification.snackBar(this.i18n.feedback.removeUser(user.display));
-            this.reload();
-          }));
-      },
+        this.addSub(
+          this.feedbackService
+            .removePaymentFeedbackIgnoredUser({ ignored: user.id, user: this.ApiHelper.SELF })
+            .subscribe(() => {
+              this.notification.snackBar(this.i18n.feedback.removeUser(user.display));
+              this.reload();
+            })
+        );
+      }
     });
   }
 
@@ -70,15 +69,21 @@ export class ListFeedbackIgnoredUsersComponent
       }
     });
     const component = ref.content as PickUserDialogComponent;
-    this.addSub(component.done.subscribe(user => {
-      this.addSub(this.feedbackService.addPaymentFeedbackIgnoredUser({
-        user: this.ApiHelper.SELF,
-        body: user.id,
-      }).subscribe(() => {
-        this.notification.snackBar(this.i18n.feedback.addIgnoredUserDone(user.display));
-        this.reload();
-      }));
-    }));
+    this.addSub(
+      component.done.subscribe(user => {
+        this.addSub(
+          this.feedbackService
+            .addPaymentFeedbackIgnoredUser({
+              user: this.ApiHelper.SELF,
+              body: user.id
+            })
+            .subscribe(() => {
+              this.notification.snackBar(this.i18n.feedback.addIgnoredUserDone(user.display));
+              this.reload();
+            })
+        );
+      })
+    );
   }
 
   resolveMenu() {

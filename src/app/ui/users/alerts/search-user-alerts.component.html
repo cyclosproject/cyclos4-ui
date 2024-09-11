@@ -1,77 +1,78 @@
 <page-layout [ready]="data$ | async">
-  <page-content mode="filters" [heading]="i18n.userAlert.title"
-    [mobileHeading]="i18n.userAlert.mobileTitle">
+  <page-content mode="filters" [heading]="i18n.userAlert.title" [mobileHeading]="i18n.userAlert.mobileTitle">
     <div [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row">
         <div class="col-12 col-md-6">
-          <date-field formControlName="beginDate"
-            [label]="i18n.general.beginDate" minDate="past5" maxDate="today"
+          <date-field
+            formControlName="beginDate"
+            [label]="i18n.general.beginDate"
+            minDate="past5"
+            maxDate="today"
             fieldSize="full">
           </date-field>
         </div>
         <div class="col-12 col-md-6">
-          <date-field formControlName="endDate" [label]="i18n.general.endDate"
-            minDate="past5" maxDate="today" fieldSize="full">
+          <date-field
+            formControlName="endDate"
+            [label]="i18n.general.endDate"
+            minDate="past5"
+            maxDate="today"
+            fieldSize="full">
           </date-field>
         </div>
         <div class="col-12 col-md-6">
-          <single-selection-field formControlName="types"
+          <single-selection-field
+            formControlName="types"
             [label]="i18n.userAlert.type.title"
             [emptyOption]="i18n.general.notApplied">
-            <field-option value="custom" [text]="i18n.userAlert.type.custom">
-            </field-option>
-            <field-option value="givenVeryBadRefs"
-              [text]="i18n.userAlert.type.givenVeryBadRefs">
-            </field-option>
-            <field-option value="insufficientBalanceForInitialCredit"
+            <field-option value="custom" [text]="i18n.userAlert.type.custom"> </field-option>
+            <field-option value="givenVeryBadRefs" [text]="i18n.userAlert.type.givenVeryBadRefs"> </field-option>
+            <field-option
+              value="insufficientBalanceForInitialCredit"
               [text]="i18n.userAlert.type.insufficientBalanceForInitialCredit">
             </field-option>
-            <field-option value="maxDeviceActivationAttemptsReached"
+            <field-option
+              value="maxDeviceActivationAttemptsReached"
               [text]="i18n.userAlert.type.maxDeviceActivationAttemptsReached">
             </field-option>
-            <field-option value="maxDeviceConfirmationCheckAttemptsReached"
+            <field-option
+              value="maxDeviceConfirmationCheckAttemptsReached"
               [text]="i18n.userAlert.type.maxDeviceConfirmationCheckAttemptsReached">
             </field-option>
-            <field-option value="maxTokenActivationAttemptsReached"
+            <field-option
+              value="maxTokenActivationAttemptsReached"
               [text]="i18n.userAlert.type.maxTokenActivationAttemptsReached">
             </field-option>
-            <field-option value="maxUserLocalizationAttemptsReached"
+            <field-option
+              value="maxUserLocalizationAttemptsReached"
               [text]="i18n.userAlert.type.maxUserLocalizationAttemptsReached">
             </field-option>
-            <field-option value="maxVoucherRedeemAttemptsReached"
+            <field-option
+              value="maxVoucherRedeemAttemptsReached"
               [text]="i18n.userAlert.type.maxVoucherRedeemAttemptsReached">
             </field-option>
-            <field-option value="moveUserAutomaticallyFailed"
-              [text]="i18n.userAlert.type.moveUserAutomaticallyFailed">
+            <field-option value="moveUserAutomaticallyFailed" [text]="i18n.userAlert.type.moveUserAutomaticallyFailed">
             </field-option>
-            <field-option value="passwordDisabledByTries"
-              [text]="i18n.userAlert.type.passwordDisabledByTries">
+            <field-option value="passwordDisabledByTries" [text]="i18n.userAlert.type.passwordDisabledByTries">
             </field-option>
-            <field-option value="passwordTemporarilyBlocked"
-              [text]="i18n.userAlert.type.passwordTemporarilyBlocked">
+            <field-option value="passwordTemporarilyBlocked" [text]="i18n.userAlert.type.passwordTemporarilyBlocked">
             </field-option>
-            <field-option value="receivedVeryBadRefs"
-              [text]="i18n.userAlert.type.receivedVeryBadRefs">
-            </field-option>
-            <field-option value="scheduledPaymentFailed"
-              [text]="i18n.userAlert.type.receivedVeryBadRefs">
+            <field-option value="receivedVeryBadRefs" [text]="i18n.userAlert.type.receivedVeryBadRefs"> </field-option>
+            <field-option value="scheduledPaymentFailed" [text]="i18n.userAlert.type.receivedVeryBadRefs">
             </field-option>
           </single-selection-field>
         </div>
         <div class="col-12 col-md-6">
-          <user-field formControlName="user" [label]="i18n.general.user">
-          </user-field>
+          <user-field formControlName="user" [label]="i18n.general.user"> </user-field>
         </div>
       </div>
     </div>
   </page-content>
-  <results-layout resultType="list" [results]="results$ | async"
-    (update)="update($event)" [rendering$]="rendering$">
-
-    <mobile-result *mobileResult="let row" [avatarImage]="row.user?.image"
-      [avatarIcon]="SvgIcon.Person">
+  <results-layout resultType="list" [results]="results$ | async" (update)="update($event)" [rendering$]="rendering$">
+    <mobile-result *mobileResult="let row" [avatarImage]="row.user?.image" [avatarIcon]="SvgIcon.Person">
       <div class="cell-main" [tooltip]="row.user.display">
-        {{ row.user.display }}</div>
+        {{ row.user.display }}
+      </div>
       <div class="cell-cell-date">
         {{ row.date | dateTime }}
       </div>
@@ -88,12 +89,13 @@
       <tbody>
         <ng-container *ngFor="let row of (results$ | async)?.results">
           <tr (click)="router.navigate(path(row))">
-            <td class="avatar" [ngClass]="{
-              'pb-0': layout.xxs$ | async,
-              'border-0': layout.xxs$ | async
-            }">
-              <avatar [image]="row.user?.image" [tooltip]="row.user?.display">
-              </avatar>
+            <td
+              class="avatar"
+              [ngClass]="{
+                'pb-0': layout.xxs$ | async,
+                'border-0': layout.xxs$ | async
+              }">
+              <avatar [image]="row.user?.image" [tooltip]="row.user?.display"> </avatar>
             </td>
             <td>{{ row.user.display }}</td>
             <td>{{ row.text }}</td>

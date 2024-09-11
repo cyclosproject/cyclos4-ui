@@ -14,16 +14,20 @@ export abstract class SingletonResolve<T> implements Resolve<T> {
   get data(): BehaviorSubject<T> {
     if (!this._requested) {
       this._requested = true;
-      this.fetch().pipe(first())
-        .subscribe(data => {
-          // On success, store the data and mark as done
-          this._done = true;
-          this._data.next(data);
-          this.onFetched(data);
-        }, () => {
-          // On error, clear the requested flag, so it could eventually retry
-          this._requested = false;
-        });
+      this.fetch()
+        .pipe(first())
+        .subscribe(
+          data => {
+            // On success, store the data and mark as done
+            this._done = true;
+            this._data.next(data);
+            this.onFetched(data);
+          },
+          () => {
+            // On error, clear the requested flag, so it could eventually retry
+            this._requested = false;
+          }
+        );
     }
     return this._data;
   }

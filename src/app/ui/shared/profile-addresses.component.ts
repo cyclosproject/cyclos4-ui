@@ -1,6 +1,15 @@
 /// <reference types="@types/google-maps" />
 
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Injector, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Injector,
+  Input,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { AddressView } from 'app/api/models';
 import { Breakpoint } from 'app/core/layout.service';
 import { BaseComponent } from 'app/shared/base.component';
@@ -15,7 +24,7 @@ import { CountriesResolve } from 'app/ui/countries.resolve';
 @Component({
   selector: 'profile-addresses',
   templateUrl: 'profile-addresses.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileAddressesComponent extends BaseComponent implements OnInit, AfterViewInit {
   constructor(
@@ -23,7 +32,7 @@ export class ProfileAddressesComponent extends BaseComponent implements OnInit, 
     private uiLayout: UiLayoutService,
     public addressHelper: AddressHelperService,
     public maps: MapsService,
-    public countriesResolve: CountriesResolve,
+    public countriesResolve: CountriesResolve
   ) {
     super(injector);
   }
@@ -70,14 +79,14 @@ export class ProfileAddressesComponent extends BaseComponent implements OnInit, 
       streetViewControl: false,
       minZoom: 2,
       maxZoom: 17,
-      styles: this.uiLayout.googleMapStyles,
+      styles: this.uiLayout.googleMapStyles
     });
     const bounds = new google.maps.LatLngBounds();
     this.locatedAddresses.map(a => {
       const marker = new google.maps.Marker({
         title: a.name,
         icon: this.dataForFrontendHolder.dataForFrontend.mapMarkerUrl,
-        position: new google.maps.LatLng(a.location.latitude, a.location.longitude),
+        position: new google.maps.LatLng(a.location.latitude, a.location.longitude)
       });
       bounds.extend(marker.getPosition());
       marker.addListener('click', () => {
@@ -85,7 +94,7 @@ export class ProfileAddressesComponent extends BaseComponent implements OnInit, 
         let infoWindow = marker['infoWindow'] as google.maps.InfoWindow;
         if (!infoWindow) {
           infoWindow = new google.maps.InfoWindow({
-            content: marker.getTitle(),
+            content: marker.getTitle()
           });
           this.allInfoWindows.push(infoWindow);
         }

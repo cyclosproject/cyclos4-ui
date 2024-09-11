@@ -1,17 +1,17 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content mode="empty" [heading]="i18n.feedback.title.ignoredUsers"
+    <page-content
+      mode="empty"
+      [heading]="i18n.feedback.title.ignoredUsers"
       [mobileHeading]="i18n.feedback.mobileTitle.ignoredUsers"
       [headingActions]="headingActions$ | async">
     </page-content>
 
     <results-layout [results]="data">
-      <mobile-result *mobileResult="let row" [avatarImage]="row.image"
-        [avatarIcon]="SvgIcon.Person">
+      <mobile-result *mobileResult="let row" [avatarImage]="row.image" [avatarIcon]="SvgIcon.Person">
         <div class="cell-main">{{ row.display }}</div>
       </mobile-result>
-      <table *resultTable
-        class="table table-hover table-no-header cursor-pointer">
+      <table *resultTable class="table table-hover table-no-header cursor-pointer">
         <thead>
           <th class="avatar"></th>
           <th>{{ i18n.feedback.paymentFeedbackDisabledFor }}</th>
@@ -21,14 +21,14 @@
           <ng-container *ngFor="let row of data">
             <tr>
               <td class="avatar">
-                <avatar [image]="row.image" [icon]="SvgIcon.PersonCircle">
-                </avatar>
+                <avatar [image]="row.image" [icon]="SvgIcon.PersonCircle"> </avatar>
               </td>
               <td>
                 {{ row.display }}
               </td>
               <td class="actions">
-                <button type="button"
+                <button
+                  type="button"
                   [tooltip]="i18n.general.removeTooltip(row.display)"
                   class="btn btn-icon"
                   (click)="remove(row); $event.stopPropagation()">

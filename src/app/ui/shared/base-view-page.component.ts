@@ -6,7 +6,6 @@ import { BasePageComponent } from 'app/ui/shared/base-page.component';
  */
 @Directive()
 export abstract class BaseViewPageComponent<D> extends BasePageComponent<D> implements OnInit {
-
   constructor(injector: Injector) {
     super(injector);
   }

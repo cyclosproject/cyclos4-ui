@@ -99,6 +99,7 @@
     "sendCode": "Stuur code",
     "sentCodeTo": "De verificatiecode is verzonden naar {to}",
     "reloadPage": "Pagina herladen",
+    "maxItemsReached": "Kan geen ander element toevoegen. Het maximum is bereikt",
     "sessionExpired": {
       "title": "Sessie verlopen",
       "message": "U bent uitgelogd.<br>U kunt dezelfde pagina blijven bekijken of nu opnieuw inloggen.",
@@ -554,6 +555,7 @@
     "action": {
       "account": "Rekening",
       "accounts": "Rekeningen",
+      "help": "Help",
       "transfersOverview": "Betalingsoverzicht",
       "balancesOverview": "Saldi overzicht",
       "externalPayments": "Externe betalingen",
@@ -809,6 +811,7 @@
     "transferKinds": "Betalingswijze",
     "transferkind": {
       "accountFee": "Rekeningsheffing",
+      "balanceDisposal": "Saldo verwijderen",
       "chargeback": "Terugboeking",
       "import": "Importeren",
       "initialCredit": "Initieel krediet",
@@ -1205,6 +1208,7 @@
       "generate": "Genereer waardebonnen",
       "done": "De waardebon(nen) zijn gegenereerd."
     },
+    "generalSearchTransactionDate": "Transactie datum",
     "sendPinToClient": "PIN-code verzenden naar client",
     "pinSent": "De pincode voor de waardebon is verzonden naar {mediums}",
     "configuration": "Configuratie",
@@ -1939,6 +1943,8 @@
     "orderSavedAsDraft": "De bestelling is opgeslagen als concept",
     "orderSubmittedToBuyer": "De bestelling is verzonden naar de koper",
     "publicationPeriod": "Publicatie periode",
+    "publicationDate": "Publicatie datum",
+    "expirationDate": "Verval datum",
     "productNumberMask": "Masker",
     "promotionalPeriod": "Actieperiode",
     "promotionalPrice": "Actieprijs",
@@ -1959,6 +1965,8 @@
     "rejected": "De advertentie is afgewezen",
     "showAddressOnMap": "Toon adres op de kaart",
     "saveAndInsertNew": "Opslaan en nieuwe aanmaken",
+    "saveAsDraft": "Opslaan als concept",
+    "saveAsDraftAndInsertNew": "Opslaan als concept en nieuwe invoegen",
     "saveDraft": "Concept opslaan",
     "setAsDraft": "Instellen als concept om te bewerken",
     "setPromotionalPeriod": "Promotie periode instellen",

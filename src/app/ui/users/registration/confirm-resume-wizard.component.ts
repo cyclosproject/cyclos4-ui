@@ -10,16 +10,12 @@ export const Timeout = 60_000;
 @Component({
   selector: 'confirm-resume-wizard',
   templateUrl: 'confirm-resume-wizard.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConfirmResumeWizardComponent extends BaseComponent {
-
   @Output() select = new EventEmitter<boolean>();
 
-  constructor(
-    injector: Injector,
-    public modalRef: BsModalRef
-  ) {
+  constructor(injector: Injector, public modalRef: BsModalRef) {
     super(injector);
   }
 

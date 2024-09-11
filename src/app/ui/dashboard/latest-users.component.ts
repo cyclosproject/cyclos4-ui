@@ -12,17 +12,14 @@ import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'latest-users',
   templateUrl: 'latest-users.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LatestUsersComponent extends BaseDashboardComponent implements OnInit {
-
   @HostBinding('class.dashboard-icon-result') classIconResult = true;
 
   @Input() users: UserResult[];
 
-  constructor(
-    injector: Injector,
-    private menu: MenuService) {
+  constructor(injector: Injector, private menu: MenuService) {
     super(injector);
   }
 
@@ -31,13 +28,17 @@ export class LatestUsersComponent extends BaseDashboardComponent implements OnIn
 
     // The heading actions
     this.headingActions = [
-      new HeadingAction(SvgIcon.Search, this.i18n.general.view,
-        event => this.menu.navigate({
-          menu: new ActiveMenu(Menu.SEARCH_USERS),
-          clear: false,
-          event,
-        }),
-        true),
+      new HeadingAction(
+        SvgIcon.Search,
+        this.i18n.general.view,
+        event =>
+          this.menu.navigate({
+            menu: new ActiveMenu(Menu.SEARCH_USERS),
+            clear: false,
+            event
+          }),
+        true
+      )
     ];
   }
 
@@ -50,7 +51,7 @@ export class LatestUsersComponent extends BaseDashboardComponent implements OnIn
       url: this.path(user),
       menu: new ActiveMenu(Menu.SEARCH_USERS),
       clear: false,
-      event,
+      event
     });
   }
 }

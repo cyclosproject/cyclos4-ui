@@ -9,10 +9,9 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'balances-summary',
   templateUrl: 'balances-summary.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BalancesSummaryComponent extends BaseComponent implements OnInit {
-
   @Input() summary$: BehaviorSubject<UsersWithBalanceSummary>;
   @Input() currency: Currency;
 
@@ -33,5 +32,4 @@ export class BalancesSummaryComponent extends BaseComponent implements OnInit {
   totalSum(totalSum: string | number): string {
     return this.i18n.account.userBalances.total + ': ' + totalSum;
   }
-
 }

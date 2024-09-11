@@ -1,11 +1,12 @@
-<div class="page-layout" [ngClass]="{
-      'has-left-area': leftAreaVisible$ | async,
-      'justify-content-center': (leftAreaVisible$ | async) === false
-    }">
+<div
+  class="page-layout"
+  [ngClass]="{
+    'has-left-area': leftAreaVisible$ | async,
+    'justify-content-center': (leftAreaVisible$ | async) === false
+  }">
   <div *ngIf="leftAreaVisible$ | async" class="side-area">
     <ng-container *ngIf="(loggingOut$ | async) === false">
-      <side-menu *ngIf="(login.user$ | async) && (menu.activeMenu$ | async)">
-      </side-menu>
+      <side-menu *ngIf="(login.user$ | async) && (menu.activeMenu$ | async)"> </side-menu>
       <banner
         *ngFor="let banner of uiLayout.banners$ | async; let first = first"
         [banner]="banner"
@@ -14,12 +15,15 @@
     </ng-container>
   </div>
 
-  <div #contentArea class="content-area d-flex flex-column" [ngClass]="{
+  <div
+    #contentArea
+    class="content-area d-flex flex-column"
+    [ngClass]="{
       'content-area-small': size === 'small',
       'content-area-medium': (leftAreaVisible$ | async) ? false : size === 'medium',
       'content-area-large': (leftAreaVisible$ | async) ? false : size === 'large'
     }">
-    <ng-content *ngIf="ready else loading"></ng-content>
+    <ng-content *ngIf="ready; else loading"></ng-content>
   </div>
 </div>
 

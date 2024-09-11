@@ -1,10 +1,13 @@
-<input #inputField class="d-none" type="file"
-  (change)="filesSelected(inputField.files)" [accept]="accept"
-  [multiple]="max > 1">
+<input
+  #inputField
+  class="d-none"
+  type="file"
+  (change)="filesSelected(inputField.files)"
+  [accept]="accept"
+  [multiple]="max > 1" />
 <div [ngClass]="containerClass" *ngIf="files?.length > 0">
   <ng-container *ngFor="let file of files">
-    <progressbar class="mt-1" [max]="file.totalSize"
-      [value]="file.progress$ | async">
+    <progressbar class="mt-1" [max]="file.totalSize" [value]="file.progress$ | async">
       {{ file.name }}
     </progressbar>
   </ng-container>

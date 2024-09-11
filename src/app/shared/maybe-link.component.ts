@@ -7,7 +7,7 @@ import { empty } from 'app/shared/helper';
 @Component({
   selector: 'maybe-link',
   templateUrl: 'maybe-link.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MaybeLinkComponent {
   @HostBinding('tabindex') @Input() tabindex = -1;

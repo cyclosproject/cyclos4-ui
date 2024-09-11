@@ -10,19 +10,14 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'link-properties-dialog',
   templateUrl: 'link-properties-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LinkPropertiesDialogComponent
-  extends BaseComponent implements OnInit {
-
+export class LinkPropertiesDialogComponent extends BaseComponent implements OnInit {
   form: FormGroup;
   @Input() link: HTMLAnchorElement;
   @Output() select = new EventEmitter<LinkProperties>();
 
-  constructor(
-    injector: Injector,
-    public modalRef: BsModalRef,
-  ) {
+  constructor(injector: Injector, public modalRef: BsModalRef) {
     super(injector);
   }
 
@@ -30,7 +25,7 @@ export class LinkPropertiesDialogComponent
     super.ngOnInit();
     this.form = this.formBuilder.group({
       text: [this.link ? this.link.innerText : null, this.link ? Validators.required : null],
-      href: [this.link ? this.link.href : null, Validators.required],
+      href: [this.link ? this.link.href : null, Validators.required]
     });
   }
 

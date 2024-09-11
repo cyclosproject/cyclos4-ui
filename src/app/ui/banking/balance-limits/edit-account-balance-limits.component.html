@@ -1,34 +1,38 @@
 <page-layout [ready]="data$ | async">
-  <page-content [heading]="i18n.account.balanceLimits.title.edit"
+  <page-content
+    [heading]="i18n.account.balanceLimits.title.edit"
     [mobileHeading]="i18n.account.balanceLimits.mobileTitle.edit"
     [headingActions]="headingActions$ | async">
     <ng-container *ngIf="data" [formGroup]="form">
-      <label-value [label]="i18n.general.user" kind="fieldView"
-        labelPosition="side">
+      <label-value [label]="i18n.general.user" kind="fieldView" labelPosition="side">
         <user-link [user]="data.user"></user-link>
       </label-value>
       <label-value [label]="i18n.account.account">
         {{ data.account.type.name }}
       </label-value>
       <h2 class="mb-2">{{ i18n.account.balanceLimits.negativeLimit }}</h2>
-      <single-selection-field labelPosition="side"
-        formControlName="creditLimitMode" [label]="i18n.account.limits.mode"
+      <single-selection-field
+        labelPosition="side"
+        formControlName="creditLimitMode"
+        [label]="i18n.account.limits.mode"
         [fieldOptions]="negativeModeOptions">
       </single-selection-field>
-      <decimal-field [hidden]="isDefaultCreditLimit$ | async"
+      <decimal-field
+        [hidden]="isDefaultCreditLimit$ | async"
         formControlName="creditLimit"
-        [required]="!(isDefaultCreditLimit$ | async)" negative
+        [required]="!(isDefaultCreditLimit$ | async)"
+        negative
         [label]="i18n.account.balanceLimits.negativeLimit"
         [scale]="data.account.currency.decimalDigits"
         [prefix]="data.account.currency.prefix"
         [suffix]="data.account.currency.suffix">
       </decimal-field>
-      <label-value [hidden]="!(isDefaultCreditLimit$ | async)"
-        [label]="i18n.account.balanceLimits.negativeLimit">
-        {{ (data.defaultCreditLimit ? data.defaultCreditLimit : 0) | currency:data.account.currency}}
+      <label-value [hidden]="!(isDefaultCreditLimit$ | async)" [label]="i18n.account.balanceLimits.negativeLimit">
+        {{ (data.defaultCreditLimit ? data.defaultCreditLimit : 0) | currency : data.account.currency }}
       </label-value>
       <h2 class="mb-2">{{ i18n.account.balanceLimits.positiveLimit }}</h2>
-      <single-selection-field labelPosition="side"
+      <single-selection-field
+        labelPosition="side"
         formControlName="upperCreditLimitMode"
         [label]="i18n.account.limits.mode"
         [fieldOptions]="positiveModeOptions">
@@ -42,18 +46,18 @@
         [prefix]="data.account.currency.prefix"
         [suffix]="data.account.currency.suffix">
       </decimal-field>
-      <label-value [hidden]="!(isDefaultUpperCreditLimit$ | async)"
-        [label]="i18n.account.balanceLimits.positiveLimit">
-        {{ data.defaultUpperCreditLimit ? (data.defaultUpperCreditLimit | currency:data.account.currency) : i18n.account.limits.unlimited }}
+      <label-value [hidden]="!(isDefaultUpperCreditLimit$ | async)" [label]="i18n.account.balanceLimits.positiveLimit">
+        {{
+          data.defaultUpperCreditLimit
+            ? (data.defaultUpperCreditLimit | currency : data.account.currency)
+            : i18n.account.limits.unlimited
+        }}
       </label-value>
-      <hr>
-      <textarea-field class="mt-4" formControlName="comment"
-        [label]="i18n.general.comments"></textarea-field>
+      <hr />
+      <textarea-field class="mt-4" formControlName="comment" [label]="i18n.general.comments"></textarea-field>
     </ng-container>
     <actions>
-      <action-button (action)="save()" [disabled]="requesting$ | async"
-        [label]="i18n.general.save">
-      </action-button>
+      <action-button (action)="save()" [disabled]="requesting$ | async" [label]="i18n.general.save"> </action-button>
     </actions>
   </page-content>
 </page-layout>

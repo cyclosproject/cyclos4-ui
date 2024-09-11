@@ -1,6 +1,9 @@
 <nav class="navbar">
   <div class="navbar-container">
-    <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
+    <a
+      href="#"
+      class="icon"
+      [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
       (click)="toggle(); $event.preventDefault()"
       [attr.aria-label]="i18n.general.close">
       <icon [icon]="SvgIcon.XCircle"></icon>
@@ -8,39 +11,48 @@
     <div class="navbar-brand flex-grow-1">
       <div class="top-title">{{ i18n.voucher.info.title }}</div>
     </div>
-    <a [routerLink]="" *ngIf="state.voucher$ | async" class="icon"
-      [attr.tabindex]="(opened$ | async) ? '0' : '-1'" (click)="exit($event)"
+    <a
+      [routerLink]=""
+      *ngIf="state.voucher$ | async"
+      class="icon"
+      [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
+      (click)="exit($event)"
       [attr.aria-label]="i18n.voucher.info.exit">
-      <icon [icon]="SvgIcon.Logout2">
-      </icon>
+      <icon [icon]="SvgIcon.Logout2"> </icon>
     </a>
   </div>
 </nav>
 <div id="sidenav-menu" #sidenavMenu class="sidenav-menu d-flex flex-column">
   <div class="menu-standalone">
-    <a routerLink="/details" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
-      (click)="close()" class="menu-item d-flex align-items-center">
+    <a
+      routerLink="/details"
+      [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
+      (click)="close()"
+      class="menu-item d-flex align-items-center">
       <icon [icon]="SvgIcon.HouseDoor2"></icon>
-      <span class="menu-text">{{i18n.voucher.info.home}}</span>
+      <span class="menu-text">{{ i18n.voucher.info.home }}</span>
     </a>
   </div>
 
   <div class="menu-standalone" *ngIf="state.canChangePin()">
-    <a routerLink="/change-pin"
-      [attr.tabindex]="(opened$ | async) ? '0' : '-1'" (click)="close()"
+    <a
+      routerLink="/change-pin"
+      [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
+      (click)="close()"
       class="menu-item d-flex align-items-center">
       <icon [icon]="SvgIcon.Key"></icon>
-      <span class="menu-text">{{i18n.voucher.info.changePin.action}}</span>
+      <span class="menu-text">{{ i18n.voucher.info.changePin.action }}</span>
     </a>
   </div>
 
   <div class="menu-standalone" *ngIf="state.canChangeNotificationSettings()">
-    <a routerLink="/notification-settings"
-      [attr.tabindex]="(opened$ | async) ? '0' : '-1'" (click)="close()"
+    <a
+      routerLink="/notification-settings"
+      [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
+      (click)="close()"
       class="menu-item d-flex align-items-center">
       <icon [icon]="SvgIcon.Gear"></icon>
-      <span
-        class="menu-text">{{i18n.voucher.notificationSettings.label}}</span>
+      <span class="menu-text">{{ i18n.voucher.notificationSettings.label }}</span>
     </a>
   </div>
 </div>

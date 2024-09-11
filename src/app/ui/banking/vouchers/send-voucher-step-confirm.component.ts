@@ -1,7 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
-  CreateDeviceConfirmation, CustomField, CustomFieldDetailed, CustomFieldTypeEnum, DeviceConfirmationTypeEnum, SendVoucher, VoucherSendingPreview
+  CreateDeviceConfirmation,
+  CustomField,
+  CustomFieldDetailed,
+  CustomFieldTypeEnum,
+  DeviceConfirmationTypeEnum,
+  SendVoucher,
+  VoucherSendingPreview
 } from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
@@ -11,10 +17,9 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'send-voucher-step-confirm',
   templateUrl: 'send-voucher-step-confirm.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SendVoucherStepConfirmComponent extends BaseComponent implements OnInit {
-
   @Input() preview: VoucherSendingPreview;
   @Input() paymentCustomFields: CustomFieldDetailed[];
   @Input() voucherCustomFields: CustomFieldDetailed[];
@@ -27,10 +32,7 @@ export class SendVoucherStepConfirmComponent extends BaseComponent implements On
   form: FormGroup;
   createDeviceConfirmation: () => CreateDeviceConfirmation;
 
-  constructor(
-    injector: Injector,
-    public authHelper: AuthHelperService,
-    public fieldHelper: FieldHelperService) {
+  constructor(injector: Injector, public authHelper: AuthHelperService, public fieldHelper: FieldHelperService) {
     super(injector);
   }
 
@@ -45,7 +47,7 @@ export class SendVoucherStepConfirmComponent extends BaseComponent implements On
       type: DeviceConfirmationTypeEnum.SEND_VOUCHER,
       amount: this.sendVoucher.amount,
       voucherType: this.sendVoucher.type,
-      email: this.sendVoucher.email,
+      email: this.sendVoucher.email
     });
     // When there's no confirmation password, the Enter key will confirm
     if (!this.preview.confirmationPasswordInput) {

@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { Address, AddressContactInfo, AddressView } from 'app/api/models';
+import { BaseComponent } from 'app/shared/base.component';
 import { AddressHelperService } from 'app/ui/core/address-helper.service';
 import { CountriesResolve } from 'app/ui/countries.resolve';
-import { BaseComponent } from 'app/shared/base.component';
 
 /**
  * Component used to show the details of an address
@@ -10,13 +10,13 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'address-details',
   templateUrl: 'address-details.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddressDetailsComponent extends BaseComponent implements OnInit {
   constructor(
     injector: Injector,
     public addressHelper: AddressHelperService,
-    public countriesResolve: CountriesResolve,
+    public countriesResolve: CountriesResolve
   ) {
     super(injector);
   }

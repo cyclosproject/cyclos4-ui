@@ -8,13 +8,7 @@ import { UiSharedModule } from 'app/ui/shared/ui-shared.module';
  * Module for running custom operations
  */
 @NgModule({
-  declarations: [
-    RunOperationComponent,
-    OperationCallbackComponent,
-  ],
-  imports: [
-    OperationsRoutingModule,
-    UiSharedModule
-  ]
+  declarations: [RunOperationComponent, OperationCallbackComponent],
+  imports: [OperationsRoutingModule, UiSharedModule]
 })
-export class OperationsModule { }
+export class OperationsModule {}

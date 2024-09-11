@@ -1,5 +1,23 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Injector, Input, OnInit, Output } from '@angular/core';
-import { Address, BaseUserDataForSearch, ContactListDataForSearch, ContactResult, User, UserDataForMap, UserDataForSearch, UserResult } from 'app/api/models';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  HostBinding,
+  Injector,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
+import {
+  Address,
+  BaseUserDataForSearch,
+  ContactListDataForSearch,
+  ContactResult,
+  User,
+  UserDataForMap,
+  UserDataForSearch,
+  UserResult
+} from 'app/api/models';
 import { OperatorResult } from 'app/api/models/operator-result';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
@@ -19,10 +37,9 @@ export const MAX_TILE_FIELDS = 2;
 @Component({
   selector: 'users-results',
   templateUrl: 'users-results.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsersResultsComponent extends BaseComponent implements OnInit {
-
   @HostBinding('class') clazz = 'flex-grow-1 d-flex';
 
   @Input() resultType: ResultType;
@@ -54,10 +71,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
   showTableHeader: boolean;
   canViewProfile: boolean;
 
-  constructor(
-    injector: Injector,
-    private authHelper: AuthHelperService,
-    private fieldHelper: FieldHelperService) {
+  constructor(injector: Injector, private authHelper: AuthHelperService, private fieldHelper: FieldHelperService) {
     super(injector);
   }
 
@@ -65,7 +79,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
     const auth = this.dataForFrontendHolder.auth || {};
     const permissions = auth.permissions || {};
-    const users = (permissions.users || {});
+    const users = permissions.users || {};
     this.canViewProfile = users.viewProfile === true || this.resultKind === 'operator';
   }
 
@@ -197,8 +211,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
     const user = this.user(row);
     const customValues = this.customValues(row);
     const allValues = { ...user, ...customValues };
-    const fields = (this.fieldsInTile || [])
-      .filter(f => this.fieldHelper.hasValue(f, allValues));
+    const fields = (this.fieldsInTile || []).filter(f => this.fieldHelper.hasValue(f, allValues));
     return fields;
   }
 

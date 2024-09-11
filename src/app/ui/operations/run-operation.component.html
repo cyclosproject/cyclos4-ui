@@ -4,15 +4,20 @@
       {{ i18n.operation.alreadyExecuted }}
     </alert>
   </ng-container>
-  <ng-container *ngIf="data && !alreadyExecuted then content"></ng-container>
+  <ng-container *ngIf="data && !alreadyExecuted; then content"></ng-container>
 </page-layout>
 
 <ng-template #content>
   <ng-container *ngIf="isSearch; else regular">
     <!-- When a result page, render a filters section -->
     <page-content
-      [mode]="!(runDirectly$ | async) || primaryActions?.length || hasSearchFields || data.informationText ? 'filters' : 'emptyFilters'"
-      [heading]="data.name" [mobileHeading]="data.label"
+      [mode]="
+        !(runDirectly$ | async) || primaryActions?.length || hasSearchFields || data.informationText
+          ? 'filters'
+          : 'emptyFilters'
+      "
+      [heading]="data.name"
+      [mobileHeading]="data.label"
       [headingActions]="headingActions$ | async">
       <alert type="info" *ngIf="data.informationText" class="mt-3">
         <div [innerHTML]="data.informationText | trust"></div>
@@ -20,49 +25,56 @@
       <div [formGroup]="form" class="filters-form filters-form-separator">
         <ng-container *ngTemplateOutlet="theForm"></ng-container>
       </div>
-      <actions kind="secondary"
-        *ngIf="!(runDirectly$ | async) || primaryActions?.length"
-        class="mb-3 mt-0">
-        <action-button *ngIf="!(runDirectly$ | async)"
-          [disabled]="requesting$ | async" (action)="run()"
+      <actions kind="secondary" *ngIf="!(runDirectly$ | async) || primaryActions?.length" class="mb-3 mt-0">
+        <action-button
+          *ngIf="!(runDirectly$ | async)"
+          [disabled]="requesting$ | async"
+          (action)="run()"
           [label]="data.customSubmitLabel || i18n.general.submit">
         </action-button>
-        <action-button *ngFor="let action of primaryActions"
+        <action-button
+          *ngFor="let action of primaryActions"
           [label]="action.action.label"
           (action)="runPrimaryAction(action)"></action-button>
       </actions>
     </page-content>
 
     <!-- And, if already executed, show results table -->
-    <results-layout *ngIf="pageResults$ | async" resultType="list"
-      [results]="pageResults" (update)="updatePage($event)"
+    <results-layout
+      *ngIf="pageResults$ | async"
+      resultType="list"
+      [results]="pageResults"
+      (update)="updatePage($event)"
       [onClick]="onClick">
-
       <mobile-result *mobileResult="let row">
-        <label-value *ngFor="let col of (result$ | async)?.columns"
-          labelPosition="sideForced" valueFormat="html" [label]="col.header"
+        <label-value
+          *ngFor="let col of (result$ | async)?.columns"
+          labelPosition="sideForced"
+          valueFormat="html"
+          [label]="col.header"
           [value]="row[col.property]">
         </label-value>
       </mobile-result>
 
-      <table *resultTable class="table table-hover"
-        [ngClass]="{'cursor-pointer': data.rowAction}">
+      <table *resultTable class="table table-hover" [ngClass]="{ 'cursor-pointer': data.rowAction }">
         <thead>
-          <th *ngFor="let col of (result$ | async)?.columns" [ngStyle]="{
-                  textAlign: col.align,
-                  width: col.width
-                }">
+          <th
+            *ngFor="let col of (result$ | async)?.columns"
+            [ngStyle]="{
+              textAlign: col.align,
+              width: col.width
+            }">
             {{ col.header }}
           </th>
         </thead>
         <tbody>
-          <tr *ngFor="let row of (result$ | async)?.rows"
-            (click)="rowClick(row)">
-            <td *ngFor="let col of (result$ | async)?.columns" [ngStyle]="{
-                    textAlign: col.align
-                  }"
-              [innerHTML]="formatCell(row[col.property], col) | trust">
-            </td>
+          <tr *ngFor="let row of (result$ | async)?.rows" (click)="rowClick(row)">
+            <td
+              *ngFor="let col of (result$ | async)?.columns"
+              [ngStyle]="{
+                textAlign: col.align
+              }"
+              [innerHTML]="formatCell(row[col.property], col) | trust"></td>
           </tr>
         </tbody>
       </table>
@@ -73,28 +85,30 @@
 <ng-template #regular>
   <page-content
     *ngIf="data && !(runDirectly$ | async) && (result$ | async) === null"
-    [heading]="data.name" [mobileHeading]="data.label"
-    [headingActions]="headingActions$ | async" last>
+    [heading]="data.name"
+    [mobileHeading]="data.label"
+    [headingActions]="headingActions$ | async"
+    last>
     <alert type="info" *ngIf="data.informationText">
       <div [innerHTML]="data.informationText | trust"></div>
     </alert>
-    <div [ngClass]="{'mt-3': data.informationText}">
+    <div [ngClass]="{ 'mt-3': data.informationText }">
       <ng-container *ngTemplateOutlet="theForm"></ng-container>
     </div>
     <div *ngIf="data.submitWithQrCodeScan" class="operation-qr-code-scan">
-      <button type="button" class="btn btn-icon operation-qr-code-scan-button"
-        (click)="run()">
+      <button type="button" class="btn btn-icon operation-qr-code-scan-button" (click)="run()">
         <icon [icon]="SvgIcon.QrCodeScan"></icon>
       </button>
-      <div class="operation-qr-code-scan-label"
-        *ngIf="data.customSubmitLabel">{{ data.customSubmitLabel }}</div>
+      <div class="operation-qr-code-scan-label" *ngIf="data.customSubmitLabel">{{ data.customSubmitLabel }}</div>
     </div>
-    <actions
-      *ngIf="!data.submitWithQrCodeScan && (redirecting$ | async) === false">
-      <action-button [disabled]="requesting$ | async" (action)="run()"
+    <actions *ngIf="!data.submitWithQrCodeScan && (redirecting$ | async) === false">
+      <action-button
+        [disabled]="requesting$ | async"
+        (action)="run()"
         [label]="data.customSubmitLabel || i18n.general.submit">
       </action-button>
-      <action-button *ngFor="let action of primaryActions"
+      <action-button
+        *ngFor="let action of primaryActions"
         [label]="action.action.label"
         (action)="runPrimaryAction(action)"></action-button>
     </actions>
@@ -103,28 +117,30 @@
     </div>
   </page-content>
 
-  <page-content *ngIf="isContent && (result$ | async)"
+  <page-content
+    *ngIf="isContent && (result$ | async)"
     [heading]="result.title || data.name"
-    [headingActions]="headingActions$ | async" last>
-
+    [headingActions]="headingActions$ | async"
+    last>
     <!-- Show the context of the operation if running directly. Otherwise, this data was already presented. -->
-    <ng-container *ngIf="(runDirectly$ | async)">
+    <ng-container *ngIf="runDirectly$ | async">
       <ng-container *ngTemplateOutlet="operationContext"></ng-container>
     </ng-container>
 
-    <div *ngIf="result.resultType === 'richText' && result.content"
-      [innerHTML]="result.content | trust"></div>
-    <div *ngIf="result.resultType === 'plainText' && result.content"
-      class="break-nl">
-      {{ result.content }}</div>
+    <div *ngIf="result.resultType === 'richText' && result.content" [innerHTML]="result.content | trust"></div>
+    <div *ngIf="result.resultType === 'plainText' && result.content" class="break-nl">
+      {{ result.content }}
+    </div>
     <actions [reverseRow]="primaryActions.length == 0">
       <ng-container *ngFor="let a of primaryActions">
-        <action-button [disabled]="requesting$ | async"
-          (action)="runPrimaryAction(a)" [label]="a.action.label">
+        <action-button [disabled]="requesting$ | async" (action)="runPrimaryAction(a)" [label]="a.action.label">
         </action-button>
       </ng-container>
-      <action-button *ngIf="this.showCloseButton" outline
-        [disabled]="requesting$ | async" (action)="reload()"
+      <action-button
+        *ngIf="this.showCloseButton"
+        outline
+        [disabled]="requesting$ | async"
+        (action)="reload()"
         [label]="i18n.general.close">
       </action-button>
     </actions>
@@ -138,22 +154,23 @@
 
     <!-- For fields -->
     <ng-container *ngFor="let cf of formFields; let first = first">
-      <custom-field-input [field]="cf" [formControlName]="cf.internalName"
-        [focused]="!isSearch && first" [submitAction]="runAction"
+      <custom-field-input
+        [field]="cf"
+        [formControlName]="cf.internalName"
+        [focused]="!isSearch && first"
+        [submitAction]="runAction"
         [labelPosition]="isSearch ? 'left' : 'auto'">
       </custom-field-input>
     </ng-container>
 
     <!-- File upload -->
-    <file-field *ngIf="data.hasFileUpload" [label]="i18n.operation.fileUpload"
-      [formControl]="fileControl">
+    <file-field *ngIf="data.hasFileUpload" [label]="i18n.operation.fileUpload" [formControl]="fileControl">
     </file-field>
   </ng-container>
 </ng-template>
 
 <ng-template #operationContext>
-  <label-value *ngIf="data.user && data.user.id !== login.user.id"
-    [label]="i18n.general.user" kind="field">
+  <label-value *ngIf="data.user && data.user.id !== login.user.id" [label]="i18n.general.user" kind="field">
     <chip [image]="data.user.image" [closeable]="false">
       {{ data.user.display }}
     </chip>
@@ -163,14 +180,11 @@
       {{ data.ad.name }}
     </chip>
   </label-value>
-  <label-value *ngIf="data.transfer" [label]="i18n.operation.transfer"
-    kind="fieldView">
+  <label-value *ngIf="data.transfer" [label]="i18n.operation.transfer" kind="fieldView">
     {{ data.transfer.display }}
   </label-value>
-  <label-value *ngIf="data.record && data.recordType"
-    [label]="data.recordType.name" kind="fieldView">
+  <label-value *ngIf="data.record && data.recordType" [label]="data.recordType.name" kind="fieldView">
     {{ data.record.display }}
   </label-value>
-  <hr
-    *ngIf="data.user && data.user.id !== login.user.id || data.ad || data.transfer || data.record">
+  <hr *ngIf="(data.user && data.user.id !== login.user.id) || data.ad || data.transfer || data.record" />
 </ng-template>

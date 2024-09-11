@@ -1,10 +1,15 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { AccountBalanceLimitsData, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, SetAccountBalanceLimits } from 'app/api/models';
+import {
+  AccountBalanceLimitsData,
+  CreateDeviceConfirmation,
+  DeviceConfirmationTypeEnum,
+  SetAccountBalanceLimits
+} from 'app/api/models';
 import { BalanceLimitsService } from 'app/api/services/balance-limits.service';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { FieldOption } from 'app/shared/field-option';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { cloneDeep } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
 
@@ -14,12 +19,9 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'edit-account-balance-limits',
   templateUrl: 'edit-account-balance-limits.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditAccountBalanceLimitsComponent
-  extends BasePageComponent<AccountBalanceLimitsData>
-  implements OnInit {
-
+export class EditAccountBalanceLimitsComponent extends BasePageComponent<AccountBalanceLimitsData> implements OnInit {
   form: FormGroup;
   user: string;
   accountType: string;
@@ -27,9 +29,7 @@ export class EditAccountBalanceLimitsComponent
   isDefaultUpperCreditLimit$ = new BehaviorSubject<boolean>(null);
   isUnlimitedUpperCreditLimit$ = new BehaviorSubject<boolean>(null);
 
-  constructor(
-    injector: Injector,
-    private balanceLimitsService: BalanceLimitsService) {
+  constructor(injector: Injector, private balanceLimitsService: BalanceLimitsService) {
     super(injector);
   }
 
@@ -37,8 +37,11 @@ export class EditAccountBalanceLimitsComponent
     super.ngOnInit();
     this.user = this.route.snapshot.params.user;
     this.accountType = this.route.snapshot.params.accountType;
-    this.addSub(this.balanceLimitsService.getAccountBalanceLimits({ user: this.user, accountType: this.accountType })
-      .subscribe(data => this.data = data));
+    this.addSub(
+      this.balanceLimitsService
+        .getAccountBalanceLimits({ user: this.user, accountType: this.accountType })
+        .subscribe(data => (this.data = data))
+    );
   }
 
   get positiveModeOptions(): FieldOption[] {
@@ -57,13 +60,17 @@ export class EditAccountBalanceLimitsComponent
   onDataInitialized(data: AccountBalanceLimitsData) {
     super.onDataInitialized(data);
     const negativeMode = data.customCreditLimit ? 'personalized' : 'default';
-    const positiveMode = data.customUpperCreditLimit ? (data.upperCreditLimit ? 'personalized' : 'unlimited') : 'default';
+    const positiveMode = data.customUpperCreditLimit
+      ? data.upperCreditLimit
+        ? 'personalized'
+        : 'unlimited'
+      : 'default';
     this.form = this.formBuilder.group({
       creditLimitMode: negativeMode,
       creditLimit: data.creditLimit,
       upperCreditLimitMode: positiveMode,
       upperCreditLimit: data.upperCreditLimit,
-      comment: null,
+      comment: null
     });
     this.formControl('creditLimitMode').valueChanges.subscribe(value => this.onCreditLimitModeChange(value));
     this.formControl('upperCreditLimitMode').valueChanges.subscribe(value => this.onUpperCreditLimitModeChange(value));
@@ -113,19 +120,25 @@ export class EditAccountBalanceLimitsComponent
   }
 
   doSave(value: SetAccountBalanceLimits, confirmationPassword?: string) {
-    this.addSub(this.balanceLimitsService.setAccountBalanceLimits({
-      user: this.user, accountType: this.accountType, confirmationPassword, body: value
-    }).subscribe(() => {
-      this.notification.snackBar(this.i18n.account.balanceLimits.saved);
-      this.reload();
-    })
+    this.addSub(
+      this.balanceLimitsService
+        .setAccountBalanceLimits({
+          user: this.user,
+          accountType: this.accountType,
+          confirmationPassword,
+          body: value
+        })
+        .subscribe(() => {
+          this.notification.snackBar(this.i18n.account.balanceLimits.saved);
+          this.reload();
+        })
     );
   }
 
   balanceLimitsDeviceConfirmation(): () => CreateDeviceConfirmation {
     return () => ({
       type: DeviceConfirmationTypeEnum.CHANGE_ACCOUNT_LIMITS,
-      account: this.data.account.id,
+      account: this.data.account.id
     });
   }
 

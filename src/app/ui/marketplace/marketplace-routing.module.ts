@@ -12,8 +12,8 @@ import { EditAdInterestComponent } from 'app/ui/marketplace/interests/edit-ad-in
 import { ListAdInterestsComponent } from 'app/ui/marketplace/interests/list-ad-interests.component';
 import { ViewAdInterestComponent } from 'app/ui/marketplace/interests/view-ad-interest.component';
 import { SaleFormComponent } from 'app/ui/marketplace/sale-form.component';
-import { SearchAdsComponent } from 'app/ui/marketplace/search/search-ads.component';
 import { ListFavoritesComponent } from 'app/ui/marketplace/search/list-favorites.component';
+import { SearchAdsComponent } from 'app/ui/marketplace/search/search-ads.component';
 import { SearchOrdersComponent } from 'app/ui/marketplace/search/search-orders.component';
 import { SearchUnansweredQuestionsComponent } from 'app/ui/marketplace/search/search-unanswered-questions.component';
 import { UserAdsComponent } from 'app/ui/marketplace/search/user-ads.component';
@@ -29,7 +29,7 @@ const marketplaceRoutes: Routes = [
     children: [
       {
         path: 'search',
-        component: SearchAdsComponent,
+        component: SearchAdsComponent
       },
       {
         path: 'broker-search',
@@ -38,122 +38,117 @@ const marketplaceRoutes: Routes = [
       },
       {
         path: ':user/:kind/list',
-        component: UserAdsComponent,
+        component: UserAdsComponent
       },
       {
         path: ':user/purchases',
-        component: SearchOrdersComponent,
+        component: SearchOrdersComponent
       },
       {
         path: ':user/sales',
-        component: SearchOrdersComponent,
+        component: SearchOrdersComponent
       },
       {
         path: 'sale/:id',
-        component: SaleFormComponent,
+        component: SaleFormComponent
       },
       {
         path: ':user/sale/new',
-        component: SaleFormComponent,
+        component: SaleFormComponent
       },
       {
         path: ':user/:kind/ad/new',
-        component: EditAdComponent,
+        component: EditAdComponent
       },
       {
         path: 'view/:id',
-        component: ViewAdComponent,
+        component: ViewAdComponent
       },
       {
         path: 'edit/:id',
-        component: EditAdComponent,
+        component: EditAdComponent
       },
       {
         path: 'order/:id',
-        component: ViewOrderComponent,
+        component: ViewOrderComponent
       },
       {
         path: 'order/:id/history',
-        component: ViewOrderHistoryComponent,
+        component: ViewOrderHistoryComponent
       },
       {
         path: 'shopping-cart',
-        component: ListShoppingCartComponent,
+        component: ListShoppingCartComponent
       },
       {
         path: 'cart/:id',
-        component: ViewCartComponent,
+        component: ViewCartComponent
       },
       {
         path: 'checkout/:id',
-        component: CartCheckoutComponent,
+        component: CartCheckoutComponent
       },
       {
         path: ':user/delivery-methods',
-        component: ListDeliveryMethodsComponent,
+        component: ListDeliveryMethodsComponent
       },
       {
         path: ':user/ad-interests',
-        component: ListAdInterestsComponent,
+        component: ListAdInterestsComponent
       },
       {
         path: ':user/list-favorites',
-        component: ListFavoritesComponent,
+        component: ListFavoritesComponent
       },
       {
         path: 'delivery-methods/view/:id',
-        component: ViewDeliveryMethodComponent,
+        component: ViewDeliveryMethodComponent
       },
       {
         path: 'ad-interests/view/:id',
-        component: ViewAdInterestComponent,
+        component: ViewAdInterestComponent
       },
       {
         path: 'delivery-methods/edit/:id',
-        component: EditDeliveryMethodComponent,
+        component: EditDeliveryMethodComponent
       },
       {
         path: ':user/delivery-methods/new',
-        component: EditDeliveryMethodComponent,
+        component: EditDeliveryMethodComponent
       },
       {
         path: ':user/ad-interests/new',
-        component: EditAdInterestComponent,
+        component: EditAdInterestComponent
       },
       {
         path: 'ad-interests/edit/:id',
-        component: EditAdInterestComponent,
+        component: EditAdInterestComponent
       },
       {
         path: ':user/webshop-settings/view',
-        component: ViewWebshopSettingsComponent,
+        component: ViewWebshopSettingsComponent
       },
       {
         path: ':user/webshop-settings/edit',
-        component: EditWebshopSettingsComponent,
+        component: EditWebshopSettingsComponent
       },
       {
         path: 'unanswered-questions',
-        component: SearchUnansweredQuestionsComponent,
+        component: SearchUnansweredQuestionsComponent
       },
       {
         path: 'unanswered-questions/view/:id',
-        component: AnswerFormComponent,
-      },
-    ],
-  },
+        component: AnswerFormComponent
+      }
+    ]
+  }
 ];
 
 /**
  * * Routes for the marketplace module
  */
 @NgModule({
-  imports: [
-    RouterModule.forChild(marketplaceRoutes),
-  ],
-  exports: [
-    RouterModule,
-  ],
+  imports: [RouterModule.forChild(marketplaceRoutes)],
+  exports: [RouterModule]
 })
-export class MarketplaceRoutingModule {
-}
+export class MarketplaceRoutingModule {}

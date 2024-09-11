@@ -1,9 +1,26 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  AddressNew, AvailabilityEnum, BasicProfileFieldEnum, ContactInfoConfigurationForUserProfile, CreateDeviceConfirmation,
-  DeviceConfirmationTypeEnum, IdentityProvider, IdentityProviderCallbackStatusEnum, PhoneKind, PhoneNew, StoredFile, UserNew, WizardActionEnum,
-  WizardExecutionData, WizardKind, WizardResultTypeEnum, WizardStepField, WizardStepFieldKind, WizardStepKind, WizardStepTransition
+  AddressNew,
+  AvailabilityEnum,
+  BasicProfileFieldEnum,
+  ContactInfoConfigurationForUserProfile,
+  CreateDeviceConfirmation,
+  DeviceConfirmationTypeEnum,
+  IdentityProvider,
+  IdentityProviderCallbackStatusEnum,
+  PhoneKind,
+  PhoneNew,
+  StoredFile,
+  UserNew,
+  WizardActionEnum,
+  WizardExecutionData,
+  WizardKind,
+  WizardResultTypeEnum,
+  WizardStepField,
+  WizardStepFieldKind,
+  WizardStepKind,
+  WizardStepTransition
 } from 'app/api/models';
 import { WizardsService } from 'app/api/services/wizards.service';
 import { CaptchaHelperService } from 'app/core/captcha-helper.service';
@@ -24,12 +41,9 @@ import { first } from 'rxjs/operators';
 @Component({
   selector: 'run-wizard',
   templateUrl: 'run-wizard.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RunWizardComponent
-  extends BasePageComponent<WizardExecutionData>
-  implements OnInit {
-
+export class RunWizardComponent extends BasePageComponent<WizardExecutionData> implements OnInit {
   WizardStepKind = WizardStepKind;
   WizardResultTypeEnum = WizardResultTypeEnum;
   WizardActionEnum = WizardActionEnum;
@@ -71,7 +85,8 @@ export class RunWizardComponent
     private captchaHelper: CaptchaHelperService,
     private nextRequestState: NextRequestState,
     private wizardsService: WizardsService,
-    private storedFileCacheService: StoredFileCacheService) {
+    private storedFileCacheService: StoredFileCacheService
+  ) {
     super(injector);
   }
 
@@ -92,7 +107,7 @@ export class RunWizardComponent
         this.stateManager.deleteGlobal(cacheKey);
         this.data = existing;
       } else {
-        this.addSub(this.wizardsService.getCurrentWizardExecution({ key }).subscribe(data => this.data = data));
+        this.addSub(this.wizardsService.getCurrentWizardExecution({ key }).subscribe(data => (this.data = data)));
       }
     } else {
       // Start a new execution
@@ -108,10 +123,12 @@ export class RunWizardComponent
           externalPaymentToken: this.route.snapshot.params.externalPaymentToken
         });
       }
-      this.addSub(request.subscribe(data => {
-        this.stateManager.setGlobal(`wizard-execution-${data.key}`, data);
-        this.data = data;
-      }));
+      this.addSub(
+        request.subscribe(data => {
+          this.stateManager.setGlobal(`wizard-execution-${data.key}`, data);
+          this.data = data;
+        })
+      );
     }
   }
 
@@ -170,7 +187,7 @@ export class RunWizardComponent
           this.resultMessage = (data.result || '').split('\n').join('<br>');
           break;
         case WizardResultTypeEnum.RICH_TEXT:
-          this.resultMessage = (data.result || '');
+          this.resultMessage = data.result || '';
           break;
       }
     }
@@ -196,7 +213,10 @@ export class RunWizardComponent
       const step = data.step;
       switch (step.kind) {
         case WizardStepKind.GROUP:
-          this.group = this.formBuilder.control(data.params.group || data.step.groups[0].internalName || data.step.groups[0].id, Validators.required);
+          this.group = this.formBuilder.control(
+            data.params.group || data.step.groups[0].internalName || data.step.groups[0].id,
+            Validators.required
+          );
           break;
         case WizardStepKind.FORM_FIELDS:
           // Wizard custom fields
@@ -232,23 +252,27 @@ export class RunWizardComponent
 
             this.user = this.formBuilder.group({
               group: user.group,
-              hiddenFields: [user.hiddenFields || []],
+              hiddenFields: [user.hiddenFields || []]
             });
             // The profile fields and phones are handled by the helper
             [this.mobilePhone, this.landLinePhone] = this.userHelper.setupRegistrationForm(this.user, dataForNew, true);
 
-            if (data.step.fields?.find(f => f.basicProfileField === BasicProfileFieldEnum.EMAIL && f.requireVerification)) {
+            if (
+              data.step.fields?.find(f => f.basicProfileField === BasicProfileFieldEnum.EMAIL && f.requireVerification)
+            ) {
               this.emailValidation = new FormControl(null);
               if (dataForNew.emailRequired) {
                 this.emailValidation.addValidators(Validators.required);
               } else {
-                this.addSub(this.user.controls.email?.valueChanges.subscribe(() => {
-                  if (this.user.controls.email.value) {
-                    this.emailValidation.addValidators(Validators.required);
-                  } else {
-                    this.emailValidation.removeValidators(Validators.required);
-                  }
-                }));
+                this.addSub(
+                  this.user.controls.email?.valueChanges.subscribe(() => {
+                    if (this.user.controls.email.value) {
+                      this.emailValidation.addValidators(Validators.required);
+                    } else {
+                      this.emailValidation.removeValidators(Validators.required);
+                    }
+                  })
+                );
               }
             }
             if (data.step.fields?.find(f => f.phoneKind === PhoneKind.MOBILE && f.requireVerification)) {
@@ -256,13 +280,15 @@ export class RunWizardComponent
               if (dataForNew.phoneConfiguration.mobileAvailability === AvailabilityEnum.REQUIRED) {
                 this.smsValidation.addValidators(Validators.required);
               } else {
-                this.addSub(this.mobilePhone.controls.number?.valueChanges.subscribe(() => {
-                  if (this.mobilePhone.controls.number.value) {
-                    this.smsValidation.addValidators(Validators.required);
-                  } else {
-                    this.smsValidation.removeValidators(Validators.required);
-                  }
-                }));
+                this.addSub(
+                  this.mobilePhone.controls.number?.valueChanges.subscribe(() => {
+                    if (this.mobilePhone.controls.number.value) {
+                      this.smsValidation.addValidators(Validators.required);
+                    } else {
+                      this.smsValidation.removeValidators(Validators.required);
+                    }
+                  })
+                );
               }
             }
 
@@ -287,8 +313,13 @@ export class RunWizardComponent
 
             const imageAvailability = dataForNew.imageConfiguration.availability;
             if (imageAvailability !== AvailabilityEnum.DISABLED) {
-              this.user.addControl('images', new FormControl(user.images,
-                imageAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null));
+              this.user.addControl(
+                'images',
+                new FormControl(
+                  user.images,
+                  imageAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null
+                )
+              );
             }
 
             // Contact info
@@ -296,13 +327,15 @@ export class RunWizardComponent
             if (contactInfoField) {
               this.contactInfo = this.buildContactInfoForm(dataForNew.contactInfoConfiguration, contactInfoField);
               this.defineContactInfo = this.formBuilder.control(!empty(user.contactInfos));
-              this.addSub(this.defineContactInfo.valueChanges.subscribe(() => {
-                if (this.defineContactInfo.value && !contactInfoField.readOnly) {
-                  this.contactInfo.get('name').addValidators(Validators.required);
-                } else {
-                  this.contactInfo.get('name').removeValidators(Validators.required);
-                }
-              }));
+              this.addSub(
+                this.defineContactInfo.valueChanges.subscribe(() => {
+                  if (this.defineContactInfo.value && !contactInfoField.readOnly) {
+                    this.contactInfo.get('name').addValidators(Validators.required);
+                  } else {
+                    this.contactInfo.get('name').removeValidators(Validators.required);
+                  }
+                })
+              );
               if (contactInfoField.readOnly) {
                 this.contactInfo.disable();
                 this.defineContactInfo.disable();
@@ -311,7 +344,10 @@ export class RunWizardComponent
             // Address
             const addressField = step.fields.find(f => f.basicProfileField === BasicProfileFieldEnum.ADDRESS);
             let addressSubs: Subscription[];
-            [this.address, this.defineAddress, addressSubs] = this.userHelper.registrationAddressForm(dataForNew.addressConfiguration, addressField);
+            [this.address, this.defineAddress, addressSubs] = this.userHelper.registrationAddressForm(
+              dataForNew.addressConfiguration,
+              addressField
+            );
             if (this.defineAddress && !empty(user.addresses)) {
               this.defineAddress.setValue(true);
             }
@@ -328,8 +364,10 @@ export class RunWizardComponent
             // Security question
             if (!empty(dataForNew.securityQuestions)) {
               this.user.setControl('securityQuestion', this.formBuilder.control(user.securityQuestion));
-              this.user.setControl('securityAnswer', this.formBuilder.control(user.securityAnswer,
-                this.userHelper.securityAnswerValidation));
+              this.user.setControl(
+                'securityAnswer',
+                this.formBuilder.control(user.securityAnswer, this.userHelper.securityAnswerValidation)
+              );
             }
 
             // Agreements
@@ -351,7 +389,10 @@ export class RunWizardComponent
     }
   }
 
-  private buildContactInfoForm(contactInfoData: ContactInfoConfigurationForUserProfile, contactInfoField: WizardStepField): FormGroup {
+  private buildContactInfoForm(
+    contactInfoData: ContactInfoConfigurationForUserProfile,
+    contactInfoField: WizardStepField
+  ): FormGroup {
     const form = this.formBuilder.group({
       id: null,
       version: null,
@@ -377,8 +418,7 @@ export class RunWizardComponent
       case WizardKind.SYSTEM:
         return new ActiveMenu(this.menu.menuForWizard(wizard), { wizard });
       case WizardKind.USER:
-        return this.menu.userMenu(data.user,
-          new ActiveMenu(this.menu.menuForWizard(wizard), { wizard }));
+        return this.menu.userMenu(data.user, new ActiveMenu(this.menu.menuForWizard(wizard), { wizard }));
       case WizardKind.MENU:
         const menu = this.ApiHelper.internalNameOrId(data.menuItem);
         return this.menu.contentPageEntry(menu)?.activeMenu;
@@ -386,54 +426,63 @@ export class RunWizardComponent
   }
 
   back() {
-    this.addSub(this.wizardsService.backWizardExecution({ key: this.key }).subscribe(data => this.data = data));
+    this.addSub(this.wizardsService.backWizardExecution({ key: this.key }).subscribe(data => (this.data = data)));
   }
 
   transition(transition: WizardStepTransition, confirmationPassword?: string) {
     const params = this.data.params;
     params.confirmationPassword = confirmationPassword;
     this.validateAndSubmit(() => {
-      this.addSub(this.wizardsService.transitionWizardExecution({
-        key: this.key,
-        transition: transition ? transition.id : null,
-        body: params
-      }
-      ).subscribe(data => {
-        this.confirmation.hide();
-        if (this.data.wizard.kind === WizardKind.REGISTRATION) {
-          if (transition) {
-            localStorage.setItem(WizardStorageKey, this.data.key);
-          } else {
-            localStorage.removeItem(WizardStorageKey);
-          }
-        }
-        this.data = data;
-      }));
+      this.addSub(
+        this.wizardsService
+          .transitionWizardExecution({
+            key: this.key,
+            transition: transition ? transition.id : null,
+            body: params
+          })
+          .subscribe(data => {
+            this.confirmation.hide();
+            if (this.data.wizard.kind === WizardKind.REGISTRATION) {
+              if (transition) {
+                localStorage.setItem(WizardStorageKey, this.data.key);
+              } else {
+                localStorage.removeItem(WizardStorageKey);
+              }
+            }
+            this.data = data;
+          })
+      );
     });
   }
 
   externalRedirect() {
     this.validateAndSubmit(() =>
-      this.addSub(this.wizardsService.redirectWizardExecution({
-        key: this.key,
-        body: this.data.params
-      }).subscribe(url => {
-        // Indicate that we will redirect
-        this.nextRequestState.willExternalRedirect();
-        window.location.assign(url);
-      })));
+      this.addSub(
+        this.wizardsService
+          .redirectWizardExecution({
+            key: this.key,
+            body: this.data.params
+          })
+          .subscribe(url => {
+            // Indicate that we will redirect
+            this.nextRequestState.willExternalRedirect();
+            window.location.assign(url);
+          })
+      )
+    );
   }
 
   resolveSubmitAction(): Function {
     switch (this.data.action) {
       case WizardActionEnum.FINISH:
         if (this.data.confirmationPasswordInput) {
-          return () => this.confirmation.confirm({
-            title: this.data.wizard.name,
-            createDeviceConfirmation: this.createDeviceConfirmation,
-            passwordInput: this.data.confirmationPasswordInput,
-            callback: conf => this.transition(null, conf.confirmationPassword),
-          });
+          return () =>
+            this.confirmation.confirm({
+              title: this.data.wizard.name,
+              createDeviceConfirmation: this.createDeviceConfirmation,
+              passwordInput: this.data.confirmationPasswordInput,
+              callback: conf => this.transition(null, conf.confirmationPassword)
+            });
         } else {
           return () => this.transition(null);
         }
@@ -496,45 +545,49 @@ export class RunWizardComponent
         }
 
         const nonValid = validateBeforeSubmit(fullForm, true) as FormControl[];
-        this.addSub(mergeValidity(nonValid).subscribe(isValid => {
-          if (isValid) {
-            params.customValues = this.customValues ? this.customValues.value : null;
-            if (this.data.wizard.kind === WizardKind.REGISTRATION) {
-              const user = (this.user ? { ...this.user.value } : {}) as UserNew;
-              if (this.mobilePhone) {
-                const mobile = (this.mobilePhone.value || {}) as PhoneNew;
-                if (mobile.number) {
-                  user.mobilePhones = [mobile];
+        this.addSub(
+          mergeValidity(nonValid).subscribe(isValid => {
+            if (isValid) {
+              params.customValues = this.customValues ? this.customValues.value : null;
+              if (this.data.wizard.kind === WizardKind.REGISTRATION) {
+                const user = (this.user ? { ...this.user.value } : {}) as UserNew;
+                if (this.mobilePhone) {
+                  const mobile = (this.mobilePhone.value || {}) as PhoneNew;
+                  if (mobile.number) {
+                    user.mobilePhones = [mobile];
+                  }
+                }
+                if (this.landLinePhone) {
+                  const landLine = (this.landLinePhone.value || {}) as PhoneNew;
+                  if (landLine.number) {
+                    user.landLinePhones = [landLine];
+                  }
+                }
+                if (this.contactInfo?.value && this.defineContactInfo?.value) {
+                  user.contactInfos = [this.contactInfo.value];
+                }
+                if (this.address) {
+                  const address = (
+                    this.defineAddress && this.defineAddress.value ? this.address.value : null
+                  ) as AddressNew;
+                  if (address) {
+                    user.addresses = [address];
+                  }
+                }
+                params.user = user;
+                if (this.emailValidation && !this.emailAlreadyVerified) {
+                  params.emailVerification = this.emailValidation.value;
+                }
+                if (this.smsValidation && !this.smsAlreadyVerified) {
+                  params.smsVerification = this.smsValidation.value;
                 }
               }
-              if (this.landLinePhone) {
-                const landLine = (this.landLinePhone.value || {}) as PhoneNew;
-                if (landLine.number) {
-                  user.landLinePhones = [landLine];
-                }
-              }
-              if (this.contactInfo?.value && this.defineContactInfo?.value) {
-                user.contactInfos = [this.contactInfo.value];
-              }
-              if (this.address) {
-                const address = (this.defineAddress && this.defineAddress.value ? this.address.value : null) as AddressNew;
-                if (address) {
-                  user.addresses = [address];
-                }
-              }
-              params.user = user;
-              if (this.emailValidation && !this.emailAlreadyVerified) {
-                params.emailVerification = this.emailValidation.value;
-              }
-              if (this.smsValidation && !this.smsAlreadyVerified) {
-                params.smsVerification = this.smsValidation.value;
-              }
+              proceed();
+            } else {
+              focusFirstInvalid();
             }
-            proceed();
-          } else {
-            focusFirstInvalid();
-          }
-        }));
+          })
+        );
         break;
       case WizardStepKind.EMAIL_VERIFICATION:
         if (validateBeforeSubmit(this.verificationCode)) {
@@ -576,16 +629,19 @@ export class RunWizardComponent
   }
 
   continueWithProvider(idp: IdentityProvider) {
-    this.authHelper.identityProviderPopup(idp, 'wizard', null, this.key).pipe(first()).subscribe(callback => {
-      switch (callback.status) {
-        case IdentityProviderCallbackStatusEnum.WIZARD:
-          this.data = callback.wizardExecutionData;
-          break;
-        default:
-          this.notification.error(callback.errorMessage || this.i18n.error.general);
-          break;
-      }
-    });
+    this.authHelper
+      .identityProviderPopup(idp, 'wizard', null, this.key)
+      .pipe(first())
+      .subscribe(callback => {
+        switch (callback.status) {
+          case IdentityProviderCallbackStatusEnum.WIZARD:
+            this.data = callback.wizardExecutionData;
+            break;
+          default:
+            this.notification.error(callback.errorMessage || this.i18n.error.general);
+            break;
+        }
+      });
   }
 
   get resultTitle() {

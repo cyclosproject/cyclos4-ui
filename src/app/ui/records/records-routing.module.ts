@@ -10,37 +10,32 @@ const recordRoutes: Routes = [
   {
     path: ':owner/:type/list',
     component: SearchRecordsComponent,
-    canActivate: [LoggedUserGuard],
+    canActivate: [LoggedUserGuard]
   },
   {
     path: ':owner/:type/tiled',
     component: TiledRecordsComponent,
-    canActivate: [LoggedUserGuard],
+    canActivate: [LoggedUserGuard]
   },
   {
     path: 'view/:id',
     component: ViewRecordComponent,
-    canActivate: [LoggedUserGuard],
+    canActivate: [LoggedUserGuard]
   },
   {
     path: ':owner/:type/new',
     component: RecordFormComponent,
-    canActivate: [LoggedUserGuard],
+    canActivate: [LoggedUserGuard]
   },
   {
     path: 'edit/:id',
     component: RecordFormComponent,
-    canActivate: [LoggedUserGuard],
-  },
+    canActivate: [LoggedUserGuard]
+  }
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(recordRoutes),
-  ],
-  exports: [
-    RouterModule,
-  ],
+  imports: [RouterModule.forChild(recordRoutes)],
+  exports: [RouterModule]
 })
-export class RecordsRoutingModule {
-}
+export class RecordsRoutingModule {}

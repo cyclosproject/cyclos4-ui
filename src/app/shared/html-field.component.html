@@ -1,5 +1,4 @@
-<label-value *ngIf="label; else widget" [formField]="self"
-  [informationText]="informationText">
+<label-value *ngIf="label; else widget" [formField]="self" [informationText]="informationText">
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
@@ -8,37 +7,56 @@
     <div class="toolbar">
       <div class="toolbar-group" *ngFor="let group of actions">
         <ng-container *ngFor="let action of group">
-          <select *ngIf="action.widget === 'select'" [id]="action.fieldId"
-            class="form-control custom-select" [tooltip]="action.tooltip"
+          <select
+            *ngIf="action.widget === 'select'"
+            [id]="action.fieldId"
+            class="form-control custom-select"
+            [tooltip]="action.tooltip"
             (change)="run(action)">
-            <option *ngFor="let value of values(action)"
-              [value]="value.value">
-              {{ value.label }}</option>
+            <option *ngFor="let value of values(action)" [value]="value.value">
+              {{ value.label }}
+            </option>
           </select>
-          <button type="button" *ngIf="action.widget === 'button'"
-            [id]="action.fieldId" class="btn btn-icon" (click)="run(action)"
+          <button
+            type="button"
+            *ngIf="action.widget === 'button'"
+            [id]="action.fieldId"
+            class="btn btn-icon"
+            (click)="run(action)"
             [tooltip]="action.tooltip">
             <icon [icon]="action.icon"></icon>
           </button>
         </ng-container>
       </div>
       <div class="toolbar-group flex-grow-1 d-flex justify-content-end">
-        <button type="button" [id]="id + '_toggleSource'" class="btn btn-icon"
-          [ngClass]="{'active': source$ | async}" (click)="toggleSource()"
+        <button
+          type="button"
+          [id]="id + '_toggleSource'"
+          class="btn btn-icon"
+          [ngClass]="{ active: source$ | async }"
+          (click)="toggleSource()"
           [tooltip]="i18n.field.html.source">
           <icon [icon]="SvgIcon.Code"></icon>
         </button>
       </div>
     </div>
-    <div [ngClass]="{'d-none': source$ | async}" class="editor" #editor
-      [attr.contenteditable]="!disabled" [id]="id + '_editor'"
-      (click)="updateToolbarState()" (keydown)="updateToolbarState()"
-      (input)="formControl.setValue(editor.innerHTML)">
-    </div>
-    <textarea [id]="id + '_source'" class="form-control source" [ngClass]="{
+    <div
+      [ngClass]="{ 'd-none': source$ | async }"
+      class="editor"
+      #editor
+      [attr.contenteditable]="!disabled"
+      [id]="id + '_editor'"
+      (click)="updateToolbarState()"
+      (keydown)="updateToolbarState()"
+      (input)="formControl.setValue(editor.innerHTML)"></div>
+    <textarea
+      [id]="id + '_source'"
+      class="form-control source"
+      [ngClass]="{
         'd-none': (source$ | async) === false,
         'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
-      }" [formControl]="formControl">
+      }"
+      [formControl]="formControl">
     </textarea>
     <field-errors [control]="formControl"></field-errors>
   </div>

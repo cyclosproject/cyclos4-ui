@@ -35,13 +35,9 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     TimePipe,
     NumberPipe,
     CurrencyPipe,
-    BooleanPipe,
+    BooleanPipe
   ],
-  imports: [
-    SharedBasicModule,
-    HammerModule,
-    BsDropdownModule.forRoot(),
-  ],
+  imports: [SharedBasicModule, HammerModule, BsDropdownModule.forRoot()],
   exports: [
     NumbersOnlyDirective,
     MaskDirective,
@@ -60,8 +56,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     TimePipe,
     NumberPipe,
     CurrencyPipe,
-    BooleanPipe,
+    BooleanPipe
   ]
 })
-export class SharedModule {
-}
+export class SharedModule {}

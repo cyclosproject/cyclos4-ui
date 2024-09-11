@@ -1,12 +1,18 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  Currency, DataForBalanceLimitsSearch, GeneralAccountBalanceLimitsResult, QueryFilters, RoleEnum, UserQueryFilters, AccountType
+  AccountType,
+  Currency,
+  DataForBalanceLimitsSearch,
+  GeneralAccountBalanceLimitsResult,
+  QueryFilters,
+  RoleEnum,
+  UserQueryFilters
 } from 'app/api/models';
 import { BalanceLimitsService } from 'app/api/services/balance-limits.service';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { FieldOption } from 'app/shared/field-option';
+import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -31,32 +37,45 @@ type BalanceLimitsSearchParams = QueryFilters & {
 @Component({
   selector: 'search-balance-limits-overview',
   templateUrl: 'search-balance-limits-overview.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchBalanceLimitsOverviewComponent
-  extends BaseSearchPageComponent<DataForBalanceLimitsSearch, BalanceLimitsSearchParams, GeneralAccountBalanceLimitsResult>
-  implements OnInit {
-
+  extends BaseSearchPageComponent<
+    DataForBalanceLimitsSearch,
+    BalanceLimitsSearchParams,
+    GeneralAccountBalanceLimitsResult
+  >
+  implements OnInit
+{
   isCustomLimit$ = new BehaviorSubject<boolean>(false);
   isCustomUpperLimit$ = new BehaviorSubject<boolean>(false);
   currencies: Currency[] = [];
   singleCurrency: Currency;
 
-  constructor(
-    injector: Injector,
-    private balanceLimitsService: BalanceLimitsService,
-  ) {
+  constructor(injector: Injector, private balanceLimitsService: BalanceLimitsService) {
     super(injector);
   }
 
   protected getFormControlNames() {
-    return ['accountType', 'broker', 'by', 'currency', 'customLimit', 'limitFrom', 'limitTo', 'customUpperLimit',
-      'upperLimitFrom', 'upperLimitTo', 'groups', 'user'];
+    return [
+      'accountType',
+      'broker',
+      'by',
+      'currency',
+      'customLimit',
+      'limitFrom',
+      'limitTo',
+      'customUpperLimit',
+      'upperLimitFrom',
+      'upperLimitTo',
+      'groups',
+      'user'
+    ];
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.balanceLimitsService.getAccountBalanceLimitsData().subscribe(data => this.data = data));
+    this.addSub(this.balanceLimitsService.getAccountBalanceLimitsData().subscribe(data => (this.data = data)));
   }
 
   onDataInitialized(data: DataForBalanceLimitsSearch) {
@@ -70,7 +89,9 @@ export class SearchBalanceLimitsOverviewComponent
     this.headingActions = [this.moreFiltersAction];
   }
 
-  protected doSearch(value: BalanceLimitsSearchParams): Observable<HttpResponse<Array<GeneralAccountBalanceLimitsResult>>> {
+  protected doSearch(
+    value: BalanceLimitsSearchParams
+  ): Observable<HttpResponse<Array<GeneralAccountBalanceLimitsResult>>> {
     return this.balanceLimitsService.searchAccountBalanceLimits$Response(value);
   }
 
@@ -112,7 +133,11 @@ export class SearchBalanceLimitsOverviewComponent
 
   updateAccountTypes(currencyId: string) {
     const selectedAccount = this.form.controls.accountType.value;
-    if (currencyId && selectedAccount && this.data.accountTypes.find(at => at.id === selectedAccount).currency.id !== currencyId) {
+    if (
+      currencyId &&
+      selectedAccount &&
+      this.data.accountTypes.find(at => at.id === selectedAccount).currency.id !== currencyId
+    ) {
       this.form.controls.accountType.setValue(null);
     }
   }
@@ -155,7 +180,6 @@ export class SearchBalanceLimitsOverviewComponent
     const c = this.findCurrency(true);
     return c ? c.suffix : null;
   }
-
 
   showMoreFiltersLabel() {
     return this.i18n.general.moreFilters;

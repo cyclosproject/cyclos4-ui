@@ -9,17 +9,15 @@ import { blank, isSameOrigin } from 'app/shared/helper';
   // tslint:disable-next-line: component-selector
   selector: 'banner',
   templateUrl: 'banner.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BannerComponent implements OnInit {
-
   @Input() banner: FrontendBanner;
   @HostBinding('class.mt-0') @Input() firstInLayout: boolean;
 
   content: string;
 
-  constructor(private elementRef: ElementRef) {
-  }
+  constructor(private elementRef: ElementRef) {}
 
   ngOnInit() {
     const element: HTMLElement = this.elementRef.nativeElement;

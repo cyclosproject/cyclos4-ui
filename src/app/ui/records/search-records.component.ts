@@ -1,33 +1,43 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  BaseRecordDataForSearch, BasicProfileFieldInput, CustomFieldDetailed, DeviceConfirmationTypeEnum, GeneralRecordsDataForSearch,
-  GeneralRecordsQueryFilters, Group, RecordDataForSearch, RecordLayoutEnum,
-  RecordQueryFilters, RecordResult, RecordWithOwnerResult, UserStatusEnum
+  BaseRecordDataForSearch,
+  BasicProfileFieldInput,
+  CustomFieldDetailed,
+  DeviceConfirmationTypeEnum,
+  GeneralRecordsDataForSearch,
+  GeneralRecordsQueryFilters,
+  Group,
+  RecordDataForSearch,
+  RecordLayoutEnum,
+  RecordQueryFilters,
+  RecordResult,
+  RecordWithOwnerResult,
+  UserStatusEnum
 } from 'app/api/models';
 import { RecordsService } from 'app/api/services/records.service';
-import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { RecordHelperService } from 'app/ui/core/records-helper.service';
+import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { Observable } from 'rxjs';
 
 type RecordSearchParams = RecordQueryFilters & {
-  owner: string,
-  type: string,
+  owner: string;
+  type: string;
 };
 
 @Component({
   selector: 'search-records',
   templateUrl: 'search-records.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchRecordsComponent
   extends BaseSearchPageComponent<GeneralRecordsDataForSearch | RecordDataForSearch, RecordSearchParams, RecordResult>
-  implements OnInit {
-
+  implements OnInit
+{
   type: string;
   param: string;
   fieldsInSearch: CustomFieldDetailed[];
@@ -37,11 +47,7 @@ export class SearchRecordsComponent
   basicProfileFields: BasicProfileFieldInput[];
   customProfileFields: CustomFieldDetailed[];
 
-  constructor(
-    injector: Injector,
-    private recordsService: RecordsService,
-    public userHelper: UserHelperService
-  ) {
+  constructor(injector: Injector, private recordsService: RecordsService, public userHelper: UserHelperService) {
     super(injector);
   }
 
@@ -54,22 +60,31 @@ export class SearchRecordsComponent
     // Get search data
     if (this.generalSearch) {
       this.addSub(
-        this.recordsService.getRecordDataForGeneralSearch({ type: this.type }).subscribe(data => this.data = data));
+        this.recordsService.getRecordDataForGeneralSearch({ type: this.type }).subscribe(data => (this.data = data))
+      );
     } else {
       this.addSub(
-        this.recordsService.getRecordDataForOwnerSearch({ owner: this.param, type: this.type }).subscribe(data => this.data = data));
+        this.recordsService
+          .getRecordDataForOwnerSearch({ owner: this.param, type: this.type })
+          .subscribe(data => (this.data = data))
+      );
     }
   }
 
   prepareForm(data: GeneralRecordsDataForSearch | RecordDataForSearch) {
     this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
-    this.form.setControl('customValues', this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields));
+    this.form.setControl(
+      'customValues',
+      this.fieldHelper.customFieldsForSearchFormGroup(this.fieldsInSearch, data.query.customFields)
+    );
     if (this.generalSearch) {
       const general = data as GeneralRecordsDataForSearch;
       this.basicProfileFields = general.basicProfileFields;
       this.customProfileFields = general.customProfileFields;
-      this.form.setControl('profileFields',
-        this.fieldHelper.profileFieldsForSearchFormGroup(this.basicProfileFields, this.customProfileFields));
+      this.form.setControl(
+        'profileFields',
+        this.fieldHelper.profileFieldsForSearchFormGroup(this.basicProfileFields, this.customProfileFields)
+      );
     }
   }
 
@@ -87,21 +102,26 @@ export class SearchRecordsComponent
     }
     const headingActions: HeadingAction[] = [];
     if (!this.generalSearch && data.create) {
-      headingActions.push(new HeadingAction(SvgIcon.PlusCircle, this.i18n.general.addNew, () =>
-        this.router.navigate(['/records', this.param, this.type, 'new']), true));
+      headingActions.push(
+        new HeadingAction(
+          SvgIcon.PlusCircle,
+          this.i18n.general.addNew,
+          () => this.router.navigate(['/records', this.param, this.type, 'new']),
+          true
+        )
+      );
     }
-    const exportActions = this.exportHelper.headingActions(data.exportFormats,
-      f => {
-        const params = {
-          format: f.internalName,
-          ...this.toSearchParams(this.form.value)
-        };
-        if (this.generalSearch) {
-          return this.recordsService.exportGeneralRecords$Response(params);
-        } else {
-          return this.recordsService.exportOwnerRecords$Response(params);
-        }
-      });
+    const exportActions = this.exportHelper.headingActions(data.exportFormats, f => {
+      const params = {
+        format: f.internalName,
+        ...this.toSearchParams(this.form.value)
+      };
+      if (this.generalSearch) {
+        return this.recordsService.exportGeneralRecords$Response(params);
+      } else {
+        return this.recordsService.exportOwnerRecords$Response(params);
+      }
+    });
     this.headingActions = [...headingActions, ...exportActions];
   }
 
@@ -114,28 +134,34 @@ export class SearchRecordsComponent
   }
 
   protected doSearch(value: RecordSearchParams): Observable<HttpResponse<RecordResult[]>> {
-    return this.generalSearch ? this.recordsService.searchGeneralRecords$Response(value)
+    return this.generalSearch
+      ? this.recordsService.searchGeneralRecords$Response(value)
       : this.recordsService.searchOwnerRecords$Response(value);
   }
 
   remove(record: RecordResult) {
-    this.addSub(this.recordsService.getPasswordInputForRemoveRecord({ id: record.id }).subscribe(passwordInput =>
-      this.confirmation.confirm({
-        message: this.i18n.general.removeItemConfirm,
-        passwordInput,
-        createDeviceConfirmation: () => ({
-          type: DeviceConfirmationTypeEnum.MANAGE_RECORD,
-          recordType: this.data.type.id
-        }),
-        callback: params => this.doRemove(record, params.confirmationPassword),
-      })));
+    this.addSub(
+      this.recordsService.getPasswordInputForRemoveRecord({ id: record.id }).subscribe(passwordInput =>
+        this.confirmation.confirm({
+          message: this.i18n.general.removeItemConfirm,
+          passwordInput,
+          createDeviceConfirmation: () => ({
+            type: DeviceConfirmationTypeEnum.MANAGE_RECORD,
+            recordType: this.data.type.id
+          }),
+          callback: params => this.doRemove(record, params.confirmationPassword)
+        })
+      )
+    );
   }
 
   private doRemove(record: RecordResult, confirmationPassword: string) {
-    this.addSub(this.recordsService.deleteRecord({ id: record.id, confirmationPassword }).subscribe(() => {
-      this.notification.snackBar(this.i18n.general.removeItemDone);
-      this.update();
-    }));
+    this.addSub(
+      this.recordsService.deleteRecord({ id: record.id, confirmationPassword }).subscribe(() => {
+        this.notification.snackBar(this.i18n.general.removeItemDone);
+        this.update();
+      })
+    );
   }
 
   /**
@@ -182,7 +208,18 @@ export class SearchRecordsComponent
   }
 
   protected getFormControlNames(): string[] {
-    return ['keywords', 'customValues', 'createdBy', 'beginDate', 'endDate', 'broker', 'groups', 'user', 'profileFields', 'userStatuses'];
+    return [
+      'keywords',
+      'customValues',
+      'createdBy',
+      'beginDate',
+      'endDate',
+      'broker',
+      'groups',
+      'user',
+      'profileFields',
+      'userStatuses'
+    ];
   }
 
   resolveMenu(data: BaseRecordDataForSearch) {

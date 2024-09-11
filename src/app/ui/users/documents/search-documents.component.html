@@ -1,6 +1,8 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content mode="filters" [heading]="i18n.document.title.search"
+    <page-content
+      mode="filters"
+      [heading]="i18n.document.title.search"
       [mobileHeading]="i18n.document.mobileTitle.search"
       [headingActions]="headingActions$ | async">
       <div [formGroup]="form" class="filters-form filters-form-separator">
@@ -11,48 +13,56 @@
                 <user-link [user]="data.user"></user-link>
               </label-value>
             </div>
-            <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
-            </div>
+            <div *ngIf="layout.gtsm$" class="col-12 col-md-6"></div>
           </ng-container>
           <div class="col-12 col-md-6">
-            <input-field formControlName="keywords"
-              [label]="i18n.general.keywords" fieldSize="full"></input-field>
+            <input-field formControlName="keywords" [label]="i18n.general.keywords" fieldSize="full"></input-field>
           </div>
         </div>
       </div>
     </page-content>
 
-    <results-layout resultType="list" [results]="results$ | async"
-      [rendering$]="rendering$">
+    <results-layout resultType="list" [results]="results$ | async" [rendering$]="rendering$" (update)="update($event)">
       <mobile-result *mobileResult="let row">
         <div class="d-flex">
           <div>
             <label-value [label]="i18n.general.name" labelPosition="above">
               {{ row.name }}
             </label-value>
-            <label-value [label]="i18n.general.description"
-              labelPosition="above">
+            <label-value [label]="i18n.general.description" labelPosition="above">
               {{ row.description }}
             </label-value>
           </div>
           <div class="ml-auto text-right d-flex flex-column">
-            <button *ngIf="isStatic(row.kind)" type="button"
-              [tooltip]="i18n.general.view" class="btn btn-icon"
+            <button
+              *ngIf="isStatic(row.kind)"
+              type="button"
+              [tooltip]="i18n.general.view"
+              class="btn btn-icon"
               (click)="navigateToView(row); $event.stopPropagation(); $event.preventDefault()">
               <icon [icon]="SvgIcon.Pencil"></icon>
             </button>
-            <button *ngIf="isStatic(row.kind)" type="button"
-              [tooltip]="i18n.general.download" class="btn btn-icon mt-2"
+            <button
+              *ngIf="isStatic(row.kind)"
+              type="button"
+              [tooltip]="i18n.general.download"
+              class="btn btn-icon mt-2"
               (click)="download(row); $event.stopPropagation()">
               <icon [icon]="SvgIcon.Download"></icon>
             </button>
-            <button *ngIf="!isStatic(row.kind)" type="button"
-              [tooltip]="i18n.document.process" class="btn btn-icon"
+            <button
+              *ngIf="!isStatic(row.kind)"
+              type="button"
+              [tooltip]="i18n.document.process"
+              class="btn btn-icon"
               (click)="router.navigate(process(row)); $event.stopPropagation(); $event.preventDefault()">
               <icon [icon]="SvgIcon.FileEarmarkText"></icon>
             </button>
-            <button *ngIf="isUserKind(row)" type="button"
-              [tooltip]="i18n.general.remove" class="btn btn-icon mt-2"
+            <button
+              *ngIf="isUserKind(row)"
+              type="button"
+              [tooltip]="i18n.general.remove"
+              class="btn btn-icon mt-2"
               (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
               <icon [icon]="SvgIcon.Trash"></icon>
             </button>
@@ -67,23 +77,36 @@
           <th class="actions"></th>
         </thead>
         <tbody>
-          <tr *ngFor="let row of (results$ | async)?.results"
-            (click)="isStatic(row.kind) ? navigateToView(row) : router.navigate(process(row)); $event.stopPropagation(); $event.preventDefault()">
+          <tr
+            *ngFor="let row of (results$ | async)?.results"
+            (click)="
+              isStatic(row.kind) ? navigateToView(row) : router.navigate(process(row));
+              $event.stopPropagation();
+              $event.preventDefault()
+            ">
             <td width="20%">{{ row.name }}</td>
             <td>{{ row.description }}</td>
             <td class="actions actions-multiple">
-              <button *ngIf="isStatic(row.kind)" type="button"
-                [tooltip]="i18n.general.download" class="btn btn-icon"
+              <button
+                *ngIf="isStatic(row.kind)"
+                type="button"
+                [tooltip]="i18n.general.download"
+                class="btn btn-icon"
                 (click)="download(row); $event.stopPropagation()">
                 <icon [icon]="SvgIcon.Download"></icon>
               </button>
-              <button *ngIf="!isStatic(row.kind)" type="button"
-                [tooltip]="i18n.document.process" class="btn btn-icon"
+              <button
+                *ngIf="!isStatic(row.kind)"
+                type="button"
+                [tooltip]="i18n.document.process"
+                class="btn btn-icon"
                 (click)="router.navigate(process(row)); $event.stopPropagation(); $event.preventDefault()">
                 <icon [icon]="SvgIcon.FileEarmarkText"></icon>
               </button>
-              <button *ngIf="data.canManageIndividual && isUserKind(row)"
-                type="button" [tooltip]="i18n.general.remove"
+              <button
+                *ngIf="data.canManageIndividual && isUserKind(row)"
+                type="button"
+                [tooltip]="i18n.general.remove"
                 class="btn btn-icon ml-2"
                 (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
                 <icon [icon]="SvgIcon.Trash"></icon>

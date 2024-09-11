@@ -7,8 +7,8 @@ import { Menu } from 'app/ui/shared/menu';
 import { Observable } from 'rxjs';
 
 type AdQuestionQueryFilters = QueryFilters & {
-  user: string,
-  adKind?: AdKind,
+  user: string;
+  adKind?: AdKind;
 };
 
 /**
@@ -17,19 +17,16 @@ type AdQuestionQueryFilters = QueryFilters & {
 @Component({
   selector: 'search-unanswered-questions',
   templateUrl: 'search-unanswered-questions.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchUnansweredQuestionsComponent
   extends BaseSearchPageComponent<any, AdQuestionQueryFilters, AdQuestionResult>
-  implements OnInit {
-
+  implements OnInit
+{
   simpleQuestions: boolean;
   webshopQuestions: boolean;
 
-  constructor(
-    injector: Injector,
-    private adQuestionService: AdQuestionsService,
-  ) {
+  constructor(injector: Injector, private adQuestionService: AdQuestionsService) {
     super(injector);
   }
 
@@ -75,12 +72,13 @@ export class SearchUnansweredQuestionsComponent
     this.confirmation.confirm({
       message: this.i18n.general.removeItemConfirm,
       callback: () => {
-        this.addSub(this.adQuestionService.deleteAdQuestion({ id: question.id })
-          .subscribe(() => {
+        this.addSub(
+          this.adQuestionService.deleteAdQuestion({ id: question.id }).subscribe(() => {
             this.notification.snackBar(this.i18n.general.removeItemDone);
             this.reload();
-          }));
-      },
+          })
+        );
+      }
     });
   }
 

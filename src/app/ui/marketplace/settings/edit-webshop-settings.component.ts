@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormGroup, Validators } from '@angular/forms';
 import { WebshopSettingsView } from 'app/api/models';
 import { WebshopSettingsService } from 'app/api/services/webshop-settings.service';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { cloneDeep } from 'lodash-es';
 
@@ -13,28 +13,25 @@ import { cloneDeep } from 'lodash-es';
 @Component({
   selector: 'edit-webshop-settings',
   templateUrl: 'edit-webshop-settings.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditWebshopSettingsComponent
-  extends BasePageComponent<WebshopSettingsView>
-  implements OnInit {
-
+export class EditWebshopSettingsComponent extends BasePageComponent<WebshopSettingsView> implements OnInit {
   user: string;
   self: boolean;
   form: FormGroup;
 
-  constructor(
-    injector: Injector,
-    private webshopSettingsService: WebshopSettingsService) {
+  constructor(injector: Injector, private webshopSettingsService: WebshopSettingsService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.user = this.route.snapshot.params.user;
-    this.addSub(this.webshopSettingsService.viewWebshopSettings({ user: this.user }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.webshopSettingsService.viewWebshopSettings({ user: this.user }).subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized(data: WebshopSettingsView) {
@@ -47,7 +44,7 @@ export class EditWebshopSettingsComponent
       orderGenerationType: data.customOrderNumberFormat ? 'manual' : 'generated',
       orderNumberInnerLength: data.orderNumberInnerLength,
       orderNumberPrefix: data.orderNumberPrefix,
-      orderNumberSuffix: data.orderNumberSuffix,
+      orderNumberSuffix: data.orderNumberSuffix
     });
     this.addSub(this.form.controls.productGenerationType.valueChanges.subscribe(() => this.updateMaskControl()));
     this.addSub(this.form.controls.orderGenerationType.valueChanges.subscribe(() => this.updateOrderControls()));
@@ -75,7 +72,8 @@ export class EditWebshopSettingsComponent
     const controls = [
       this.form.controls.orderNumberInnerLength,
       this.form.controls.orderNumberPrefix,
-      this.form.controls.orderNumberSuffix];
+      this.form.controls.orderNumberSuffix
+    ];
     if (this.form.controls.orderGenerationType.value === 'generated') {
       controls.forEach(c => c.clearValidators());
     } else {
@@ -99,13 +97,14 @@ export class EditWebshopSettingsComponent
     value.customOrderNumberFormat = this.form.controls.orderGenerationType.value === 'manual';
     delete value.orderGenerationType;
 
-    this.addSub(this.webshopSettingsService.updateWebshopSettings({ user: this.user, body: value }).subscribe(() => {
-      this.notification.snackBar(this.i18n.ad.webshopSettingsSaved);
-    }));
+    this.addSub(
+      this.webshopSettingsService.updateWebshopSettings({ user: this.user, body: value }).subscribe(() => {
+        this.notification.snackBar(this.i18n.ad.webshopSettingsSaved);
+      })
+    );
   }
 
   resolveMenu(data: WebshopSettingsView) {
     return this.menu.userMenu(data.user, Menu.WEBSHOP_SETTINGS);
   }
-
 }

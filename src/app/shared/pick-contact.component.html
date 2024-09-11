@@ -11,18 +11,14 @@
     </div>
   </div>
   <actions kind="secondary" forceRow>
-    <action-button *ngIf="results$.value.hasNext" (action)="update(1)" outline
-      [label]="i18n.general.next">
+    <action-button *ngIf="results$.value.hasNext" (action)="update(1)" outline [label]="i18n.general.next">
     </action-button>
     <span *ngIf="!results$.value.hasNext"></span>
-    <action-button *ngIf="currentPage > 0" (action)="update(-1)" outline
-      [label]="i18n.general.previous">
+    <action-button *ngIf="currentPage > 0" (action)="update(-1)" outline [label]="i18n.general.previous">
     </action-button>
   </actions>
 </ng-template>
 
 <actions>
-  <action-button class="d-block w-100" (action)="modalRef.hide()"
-    [label]="i18n.general.cancel">
-  </action-button>
+  <action-button class="d-block w-100" (action)="modalRef.hide()" [label]="i18n.general.cancel"> </action-button>
 </actions>

@@ -5,8 +5,8 @@ import { DocumentsService } from 'app/api/services/documents.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 
@@ -18,12 +18,9 @@ export type ProcessDynamicDocStep = 'form' | 'preview';
 @Component({
   selector: 'process-dynamic-document',
   templateUrl: 'process-dynamic-document.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProcessDynamicDocumentComponent
-  extends BasePageComponent<DataForDynamicDocument>
-  implements OnInit {
-
+export class ProcessDynamicDocumentComponent extends BasePageComponent<DataForDynamicDocument> implements OnInit {
   step$ = new BehaviorSubject<ProcessDynamicDocStep>(null);
 
   form: FormGroup;
@@ -45,7 +42,8 @@ export class ProcessDynamicDocumentComponent
   constructor(
     injector: Injector,
     private fieldsHelper: FieldHelperService,
-    private documentsService: DocumentsService) {
+    private documentsService: DocumentsService
+  ) {
     super(injector);
   }
 
@@ -54,9 +52,11 @@ export class ProcessDynamicDocumentComponent
     const route = this.route.snapshot;
     this.documentId = route.params.id;
 
-    this.addSub(this.documentsService.getDataForDynamicDocument({ id: this.documentId, user: ApiHelper.SELF }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.documentsService.getDataForDynamicDocument({ id: this.documentId, user: ApiHelper.SELF }).subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized(data: DataForDynamicDocument) {
@@ -73,18 +73,23 @@ export class ProcessDynamicDocumentComponent
     if (!validateBeforeSubmit(this.form)) {
       return;
     }
-    this.addSub(this.documentsService.processDynamicDocument({
-      id: this.documentId, user: ApiHelper.SELF,
-      body: { formFields: this.form.value }
-    }).subscribe(data => {
-      this.result$.next(data);
-      // Heading actions
-      const headingActions: HeadingAction[] = [];
-      headingActions.push(this.exportHelper.printAction());
-      headingActions[0].maybeRoot = true;
-      this.headingActions = headingActions;
-      this.step = 'preview';
-    }));
+    this.addSub(
+      this.documentsService
+        .processDynamicDocument({
+          id: this.documentId,
+          user: ApiHelper.SELF,
+          body: { formFields: this.form.value }
+        })
+        .subscribe(data => {
+          this.result$.next(data);
+          // Heading actions
+          const headingActions: HeadingAction[] = [];
+          headingActions.push(this.exportHelper.printAction());
+          headingActions[0].maybeRoot = true;
+          this.headingActions = headingActions;
+          this.step = 'preview';
+        })
+    );
   }
 
   formControl(internalName: string): AbstractControl {

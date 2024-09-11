@@ -1,7 +1,13 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import {
-  InternalNamedEntity, NotificationSettingsDataForEdit, NotificationTypeEnum, NotificationTypeMediums, RoleEnum, SystemAlertTypeEnum, UserAlertTypeEnum
+  InternalNamedEntity,
+  NotificationSettingsDataForEdit,
+  NotificationTypeEnum,
+  NotificationTypeMediums,
+  RoleEnum,
+  SystemAlertTypeEnum,
+  UserAlertTypeEnum
 } from 'app/api/models';
 import { NotificationSettingsService } from 'app/api/services/notification-settings.service';
 import { FieldOption } from 'app/shared/field-option';
@@ -13,12 +19,12 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'notification-settings-form',
   templateUrl: 'notification-settings-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotificationSettingsFormComponent
   extends BasePageComponent<NotificationSettingsDataForEdit>
-  implements OnInit {
-
+  implements OnInit
+{
   user: string;
   adminSettings: boolean;
   singleAccount: boolean;
@@ -27,9 +33,7 @@ export class NotificationSettingsFormComponent
   typeControlsMap = new Map<NotificationTypeEnum, FormControl>();
   typeFieldOptionsMap = new Map<NotificationTypeEnum, FieldOption[]>();
 
-  constructor(
-    injector: Injector,
-    private notificationSettingsService: NotificationSettingsService) {
+  constructor(injector: Injector, private notificationSettingsService: NotificationSettingsService) {
     super(injector);
   }
 
@@ -38,19 +42,25 @@ export class NotificationSettingsFormComponent
 
     this.user = this.route.snapshot.params.user;
 
-    this.addSub(this.notificationSettingsService.getNotificationSettingsDataForEdit({ user: this.user })
-      .subscribe(data => this.data = data));
+    this.addSub(
+      this.notificationSettingsService
+        .getNotificationSettingsDataForEdit({ user: this.user })
+        .subscribe(data => (this.data = data))
+    );
   }
 
   onDataInitialized(data: NotificationSettingsDataForEdit) {
     this.adminSettings = data.role === RoleEnum.ADMINISTRATOR;
     this.form = this.formBuilder.group({
-      version: data.settings.version,
+      version: data.settings.version
     });
 
     if (!data.smsAllowed) {
-      data.settings.notifications = data.settings.notifications.filter(setting =>
-        setting.type !== NotificationTypeEnum.SMS_PERFORMED_PAYMENT && setting.type !== NotificationTypeEnum.MAX_SMS_PER_MONTH_REACHED);
+      data.settings.notifications = data.settings.notifications.filter(
+        setting =>
+          setting.type !== NotificationTypeEnum.SMS_PERFORMED_PAYMENT &&
+          setting.type !== NotificationTypeEnum.MAX_SMS_PER_MONTH_REACHED
+      );
     }
 
     if (this.adminSettings) {
@@ -64,7 +74,10 @@ export class NotificationSettingsFormComponent
       this.notificationSections.set('', data.settings.notifications);
 
       // Message categories
-      this.form.addControl('forwardMessageCategories', this.formBuilder.control(data.settings.forwardMessageCategories));
+      this.form.addControl(
+        'forwardMessageCategories',
+        this.formBuilder.control(data.settings.forwardMessageCategories)
+      );
     }
 
     // Forward to email
@@ -96,9 +109,11 @@ export class NotificationSettingsFormComponent
         app: value.app === undefined ? null : value.app
       });
       // Enable/disable email, sms and app controls based on internal field
-      this.addSub(typeForm.controls.internal.valueChanges.subscribe(() => {
-        this.updateControls(typeForm);
-      }));
+      this.addSub(
+        typeForm.controls.internal.valueChanges.subscribe(() => {
+          this.updateControls(typeForm);
+        })
+      );
       this.updateControls(typeForm);
       notificationValues.push(typeForm);
       types.push(value.type);
@@ -132,14 +147,17 @@ export class NotificationSettingsFormComponent
       this.singleAccount = data.userAccounts.length === 1;
       const accountControls: FormGroup = this.formBuilder.group({});
       for (const at of data.userAccounts) {
-        const accountValue = (data.settings.userAccounts[this.ApiHelper.internalNameOrId(at)] || {});
+        const accountValue = data.settings.userAccounts[this.ApiHelper.internalNameOrId(at)] || {};
         const notificationAmount = accountValue.paymentAmount || {};
-        accountControls.setControl(at.id, this.formBuilder.group({
-          paymentAmount: this.formBuilder.group({
-            min: notificationAmount.min,
-            max: notificationAmount.max,
-          }),
-        }));
+        accountControls.setControl(
+          at.id,
+          this.formBuilder.group({
+            paymentAmount: this.formBuilder.group({
+              min: notificationAmount.min,
+              max: notificationAmount.max
+            })
+          })
+        );
       }
       this.form.setControl('userAccounts', accountControls);
     }
@@ -162,26 +180,29 @@ export class NotificationSettingsFormComponent
 
   save() {
     const value = this.form.value;
-    const request: Observable<string | void> = this.notificationSettingsService.saveNotificationSettings({ user: this.user, body: value });
-    this.addSub(request.subscribe(() => {
-      this.reload();
-      this.notification.snackBar(this.i18n.notificationSettings.saved);
-    }));
+    const request: Observable<string | void> = this.notificationSettingsService.saveNotificationSettings({
+      user: this.user,
+      body: value
+    });
+    this.addSub(
+      request.subscribe(() => {
+        this.reload();
+        this.notification.snackBar(this.i18n.notificationSettings.saved);
+      })
+    );
   }
 
   /**
    * Returns if there are any settings to edit (notifications / message categories)
    */
   protected hasSettings(data: NotificationSettingsDataForEdit) {
-    return !empty(data.settings.notifications) &&
-      (this.adminSettings ? !empty(data.messageCategories) : true);
+    return !empty(data.settings.notifications) && (this.adminSettings ? !empty(data.messageCategories) : true);
   }
 
   /**
    * Resolves a section name (e.g Personal/Accounts/Marketplace/etc) for a given type
    */
   protected resolveSection(type: NotificationTypeEnum) {
-
     switch (type) {
       case NotificationTypeEnum.ALL_NON_SMS_PERFORMED_PAYMENTS:
       case NotificationTypeEnum.AUTHORIZED_PAYMENT_CANCELED:
@@ -304,8 +325,7 @@ export class NotificationSettingsFormComponent
   }
 
   resolveMenu() {
-    return this.adminSettings || this.user === this.ApiHelper.SELF ?
-      Menu.NOTIFICATIONS : this.menu.searchUsersMenu();
+    return this.adminSettings || this.user === this.ApiHelper.SELF ? Menu.NOTIFICATIONS : this.menu.searchUsersMenu();
   }
 
   /**
@@ -618,12 +638,12 @@ export class NotificationSettingsFormComponent
         id: st.id,
         internalName: st.internalName,
         value: this.ApiHelper.internalNameOrId(st),
-        text: st.name,
+        text: st.name
       }));
     } else if (alerts) {
       options = (alerts as []).map(st => ({
         value: st,
-        text: this.resolveAlertLabel(st),
+        text: this.resolveAlertLabel(st)
       }));
     }
     return [options, values, property];

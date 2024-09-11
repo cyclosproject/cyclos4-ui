@@ -18,10 +18,9 @@ export interface DataPoint {
 @Component({
   selector: 'balance-history-graph',
   templateUrl: 'balance-history-graph.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BalanceHistoryGraphComponent extends BaseComponent implements AfterViewInit {
-
   @Input() account: FrontendDashboardAccount;
 
   initialized$ = new BehaviorSubject(false);
@@ -47,13 +46,17 @@ export class BalanceHistoryGraphComponent extends BaseComponent implements After
 
   ngAfterViewInit() {
     const element = this.element;
-    this.addSub(interval(50).pipe(takeWhile(() => !this.initialized$.value)).subscribe(() => {
-      const rect = element.getBoundingClientRect();
-      if (rect.width > 0) {
-        this.init(rect);
-        this.initialized$.next(true);
-      }
-    }));
+    this.addSub(
+      interval(50)
+        .pipe(takeWhile(() => !this.initialized$.value))
+        .subscribe(() => {
+          const rect = element.getBoundingClientRect();
+          if (rect.width > 0) {
+            this.init(rect);
+            this.initialized$.next(true);
+          }
+        })
+    );
   }
 
   private init(bb: DOMRect): void {
@@ -64,7 +67,7 @@ export class BalanceHistoryGraphComponent extends BaseComponent implements After
     this.yMax = this.height - 40;
 
     const currency = this.account.account.currency;
-    const balances = (this.account?.balanceHistory || []);
+    const balances = this.account?.balanceHistory || [];
     if (balances.length <= 1) {
       // Won't show a graph with a single data point
       return;
@@ -90,7 +93,7 @@ export class BalanceHistoryGraphComponent extends BaseComponent implements After
       if (v > maxValue || v < minValue) {
         console.error(`Bad range! Expected from ${minValue} to ${maxValue}, got ${v}`);
       }
-      const rescaled = ((v - minValue) * yRange / valueRange);
+      const rescaled = ((v - minValue) * yRange) / valueRange;
       return this.yMax - rescaled;
     };
 
@@ -114,7 +117,7 @@ export class BalanceHistoryGraphComponent extends BaseComponent implements After
     });
 
     // Calculate the minimum x spot based on the largest label
-    const maxLength = Math.max(...(this.yLabels.map(l => l.length)));
+    const maxLength = Math.max(...this.yLabels.map(l => l.length));
     this.xMin = 20 + 7 * maxLength;
 
     const xDiv = (this.xMax - this.xMin) / (balances.length - 1);
@@ -135,7 +138,7 @@ export class BalanceHistoryGraphComponent extends BaseComponent implements After
     });
 
     this.linePoints = '';
-    this.data.forEach(p => this.linePoints += ` ${p.x},${p.y}`);
+    this.data.forEach(p => (this.linePoints += ` ${p.x},${p.y}`));
     this.linePoints = this.linePoints.trim();
   }
 }

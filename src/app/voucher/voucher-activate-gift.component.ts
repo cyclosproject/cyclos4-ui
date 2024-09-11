@@ -14,13 +14,11 @@ import { BehaviorSubject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VoucherActivateGiftComponent extends VoucherBasePageComponent implements OnInit {
-
   focus = focus;
   form: FormGroup;
   enableNotifications$ = new BehaviorSubject(true);
 
-  constructor(
-    injector: Injector, private formBuilder: FormBuilder) {
+  constructor(injector: Injector, private formBuilder: FormBuilder) {
     super(injector);
   }
 
@@ -51,7 +49,8 @@ export class VoucherActivateGiftComponent extends VoucherBasePageComponent imple
     });
     notification.get('enableNotifications').valueChanges.subscribe(v => this.enableNotifications$.next(v));
     this.form = new FormGroup({
-      pin, notification
+      pin,
+      notification
     });
 
     // Add shortcuts
@@ -68,7 +67,6 @@ export class VoucherActivateGiftComponent extends VoucherBasePageComponent imple
     if (!validateBeforeSubmit(this.form)) {
       return;
     } else {
-
       const activateGift = this.form.value as ActivateGiftVoucher;
       activateGift.pin.checkPinConfirmation = true;
 
@@ -77,6 +75,5 @@ export class VoucherActivateGiftComponent extends VoucherBasePageComponent imple
         this.router.navigate(['details']);
       });
     }
-
   }
 }

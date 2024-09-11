@@ -12,17 +12,14 @@ import { ActiveMenu, Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'latest-ads',
   templateUrl: 'latest-ads.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LatestAdsComponent extends BaseDashboardComponent implements OnInit {
-
   @HostBinding('class.dashboard-icon-result') classIconResult = true;
 
   @Input() ads: AdResult[];
 
-  constructor(
-    injector: Injector,
-    private menu: MenuService) {
+  constructor(injector: Injector, private menu: MenuService) {
     super(injector);
   }
 
@@ -31,14 +28,18 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
 
     // The heading actions
     this.headingActions = [
-      new HeadingAction(SvgIcon.Search, this.i18n.general.view,
-        event => this.menu.navigate({
-          menu: new ActiveMenu(Menu.SEARCH_ADS),
-          url: '/marketplace/search?latest=true',
-          clear: false,
-          event,
-        }),
-        true),
+      new HeadingAction(
+        SvgIcon.Search,
+        this.i18n.general.view,
+        event =>
+          this.menu.navigate({
+            menu: new ActiveMenu(Menu.SEARCH_ADS),
+            url: '/marketplace/search?latest=true',
+            clear: false,
+            event
+          }),
+        true
+      )
     ];
   }
 
@@ -51,7 +52,7 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
       url: this.path(ad),
       menu: new ActiveMenu(Menu.SEARCH_ADS),
       clear: false,
-      event,
+      event
     });
   }
 }

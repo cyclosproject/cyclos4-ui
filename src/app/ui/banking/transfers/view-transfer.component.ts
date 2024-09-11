@@ -14,17 +14,17 @@ import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 @Component({
   selector: 'view-transfer',
   templateUrl: 'view-transfer.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewTransferComponent extends BaseViewPageComponent<TransferView> implements OnInit {
-
   private accountId: string;
 
   constructor(
     injector: Injector,
     private bankingHelper: BankingHelperService,
     private transfersService: TransfersService,
-    private runOperationHelper: RunOperationHelperService) {
+    private runOperationHelper: RunOperationHelperService
+  ) {
     super(injector);
   }
 
@@ -36,28 +36,40 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
     super.ngOnInit();
     const route = this.route.snapshot;
     this.accountId = route.params.account;
-    this.addSub(this.transfersService.viewTransfer({ key: route.params.key })
-      .subscribe(transfer => {
+    this.addSub(
+      this.transfersService.viewTransfer({ key: route.params.key }).subscribe(transfer => {
         this.headingActions = this.initActions(transfer);
         this.data = transfer;
-      }));
+      })
+    );
   }
 
   private initActions(transfer: TransferView): HeadingAction[] {
-    const actions: HeadingAction[] = this.exportHelper.headingActions(transfer.exportFormats,
-      f => this.transfersService.exportTransfer$Response({
+    const actions: HeadingAction[] = this.exportHelper.headingActions(transfer.exportFormats, f =>
+      this.transfersService.exportTransfer$Response({
         format: f.internalName,
         key: transfer.id
-      }));
+      })
+    );
     const transaction = transfer.transaction || {};
     if (!empty(transaction.authorizations)) {
-      actions.push(new HeadingAction(SvgIcon.CheckCircle, this.i18n.transaction.viewAuthorizations, () => {
-        this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(transaction), 'authorization-history']);
-      }));
+      actions.push(
+        new HeadingAction(SvgIcon.CheckCircle, this.i18n.transaction.viewAuthorizations, () => {
+          this.router.navigate([
+            '/banking',
+            'transaction',
+            this.bankingHelper.transactionNumberOrId(transaction),
+            'authorization-history'
+          ]);
+        })
+      );
     }
     if (transfer.canChargeback) {
-      actions.push(new HeadingAction(SvgIcon.ArrowCounterclockwise, this.i18n.transaction.chargebackTransfer,
-        () => this.chargeback()));
+      actions.push(
+        new HeadingAction(SvgIcon.ArrowCounterclockwise, this.i18n.transaction.chargebackTransfer, () =>
+          this.chargeback()
+        )
+      );
     }
     for (const operation of transfer.operations || []) {
       actions.push(this.runOperationHelper.headingAction(operation, transfer.id));
@@ -68,7 +80,7 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
   private chargebackDeviceConfirmation(): () => CreateDeviceConfirmation {
     return () => ({
       type: DeviceConfirmationTypeEnum.CHARGEBACK,
-      transfer: this.transfer.id,
+      transfer: this.transfer.id
     });
   }
 
@@ -79,14 +91,18 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
       createDeviceConfirmation: this.chargebackDeviceConfirmation(),
       passwordInput: this.transfer.confirmationPasswordInput,
       callback: res => {
-        this.addSub(this.transfersService.chargebackTransfer({
-          key: this.transfer.id,
-          confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.transaction.chargebackTransferDone);
-          this.reload();
-        }));
-      },
+        this.addSub(
+          this.transfersService
+            .chargebackTransfer({
+              key: this.transfer.id,
+              confirmationPassword: res.confirmationPassword
+            })
+            .subscribe(() => {
+              this.notification.snackBar(this.i18n.transaction.chargebackTransferDone);
+              this.reload();
+            })
+        );
+      }
     });
   }
 

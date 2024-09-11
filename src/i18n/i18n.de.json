@@ -1231,7 +1231,7 @@
     },
     "cancel": {
       "cancelAndRefund": "Abbrechen & Erstattung",
-      "cancelAndChargeback": "Abbrechen & Rückbuchung",
+      "cancelAndChargeback": "Abbrechen & rückbuchen",
       "done": "Dieser Gutschein wurde storniert.",
       "packConfirmation": "Es gibt andere Gutscheine, die zum selben Paket gehören, die ebenfalls storniert werden. Sind Sie sicher, dass Sie fortfahren möchten?",
       "refundConfirmation": "Möchten Sie diesen Gutschein wirklich stornieren und erstatten?",

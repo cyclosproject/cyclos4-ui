@@ -16,10 +16,7 @@ const ALPHA = DIGITS + LETTERS;
  * Represents a field in the mask
  */
 export class MaskField {
-  constructor(
-    public allowed: string,
-    public literal: boolean = false,
-    private tx: (c: string) => string = null) { }
+  constructor(public allowed: string, public literal: boolean = false, private tx: (c: string) => string = null) {}
 
   transform(c: string): string {
     if (this.literal) {

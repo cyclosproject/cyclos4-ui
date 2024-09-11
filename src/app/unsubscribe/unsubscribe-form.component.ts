@@ -13,15 +13,10 @@ import { UnsubscribeState } from 'app/unsubscribe/unsubscribe-state';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UnsubscribeFormComponent implements OnInit {
-
   data: DataForEmailUnsubscribe;
   message: string;
 
-  constructor(
-    @Inject(I18nInjectionToken) public i18n: I18n,
-    public state: UnsubscribeState,
-  ) {
-  }
+  constructor(@Inject(I18nInjectionToken) public i18n: I18n, public state: UnsubscribeState) {}
 
   ngOnInit() {
     this.data = this.state.data;

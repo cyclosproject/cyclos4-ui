@@ -12,22 +12,19 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'search-connected',
   templateUrl: 'search-connected.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchConnectedComponent
   extends BaseSearchPageComponent<SessionDataForSearch, SessionQueryFilters, SessionResult>
-  implements OnInit {
-
-  constructor(
-    injector: Injector,
-    private sessionsService: SessionsService,
-  ) {
+  implements OnInit
+{
+  constructor(injector: Injector, private sessionsService: SessionsService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.sessionsService.getSessionDataForSearch().subscribe(data => this.data = data));
+    this.addSub(this.sessionsService.getSessionDataForSearch().subscribe(data => (this.data = data)));
   }
 
   protected toSearchParams(value: any): SessionQueryFilters {
@@ -35,11 +32,12 @@ export class SearchConnectedComponent
   }
 
   public disconnect(session: SessionResult) {
-    this.addSub(this.sessionsService.disconnectSession({ sessionToken: session.sessionToken })
-      .subscribe(() => {
+    this.addSub(
+      this.sessionsService.disconnectSession({ sessionToken: session.sessionToken }).subscribe(() => {
         this.notification.snackBar(this.i18n.connectedUser.disconnected(session.user.display));
         this.update();
-      }));
+      })
+    );
   }
 
   public canDisconnect(session: SessionResult) {
@@ -73,7 +71,6 @@ export class SearchConnectedComponent
   }
 
   resolveMenu() {
-    return this.dataForFrontendHolder.role === RoleEnum.BROKER
-      ? Menu.BROKER_CONNECTED_USERS : Menu.CONNECTED_USERS;
+    return this.dataForFrontendHolder.role === RoleEnum.BROKER ? Menu.BROKER_CONNECTED_USERS : Menu.CONNECTED_USERS;
   }
 }

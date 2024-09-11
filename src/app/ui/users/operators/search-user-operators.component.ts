@@ -11,28 +11,25 @@ import { UserHelperService } from 'app/ui/core/user-helper.service';
 import { BaseSearchPageComponent } from 'app/ui/shared/base-search-page.component';
 import { Menu } from 'app/ui/shared/menu';
 
-type UserOperatorsSearchParams = UserOperatorsQueryFilters & { user: string; };
+type UserOperatorsSearchParams = UserOperatorsQueryFilters & { user: string };
 /**
  * Searches for operators of a given user
  */
 @Component({
   selector: 'search-user-operators',
   templateUrl: 'search-user-operators.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchUserOperatorsComponent
-  extends BaseSearchPageComponent<UserOperatorsDataForSearch, UserOperatorsSearchParams, UserResult> implements OnInit {
-
+  extends BaseSearchPageComponent<UserOperatorsDataForSearch, UserOperatorsSearchParams, UserResult>
+  implements OnInit
+{
   param: string;
   self: boolean;
 
   statusOptions: FieldOption[];
 
-  constructor(
-    injector: Injector,
-    private operatorsService: OperatorsService,
-    private userHelper: UserHelperService,
-  ) {
+  constructor(injector: Injector, private operatorsService: OperatorsService, private userHelper: UserHelperService) {
     super(injector);
   }
 
@@ -46,7 +43,9 @@ export class SearchUserOperatorsComponent
     this.self = this.authHelper.isSelf(this.param);
     this.statusOptions = this.userHelper.statusOptions();
 
-    this.addSub(this.operatorsService.getUserOperatorsDataForSearch({ user: this.param }).subscribe(data => this.data = data));
+    this.addSub(
+      this.operatorsService.getUserOperatorsDataForSearch({ user: this.param }).subscribe(data => (this.data = data))
+    );
   }
 
   onDataInitialized(data: UserOperatorsDataForSearch) {
@@ -56,8 +55,14 @@ export class SearchUserOperatorsComponent
       data.fieldsInList = ['display'];
     }
     if (!this.self && data.canCreateNew) {
-      this.headingActions = [new HeadingAction(SvgIcon.PersonPlus, this.i18n.general.addNew,
-        () => this.router.navigate(['/users', this.param, 'operators', 'registration']), true)];
+      this.headingActions = [
+        new HeadingAction(
+          SvgIcon.PersonPlus,
+          this.i18n.general.addNew,
+          () => this.router.navigate(['/users', this.param, 'operators', 'registration']),
+          true
+        )
+      ];
     }
   }
 

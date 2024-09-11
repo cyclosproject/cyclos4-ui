@@ -1,8 +1,13 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  AccountType, OperatorGroupAccountAccessEnum, OperatorGroupDataForEdit,
-  OperatorGroupDataForNew, OperatorGroupManage, TransferTypeWithCurrency, User
+  AccountType,
+  OperatorGroupAccountAccessEnum,
+  OperatorGroupDataForEdit,
+  OperatorGroupDataForNew,
+  OperatorGroupManage,
+  TransferTypeWithCurrency,
+  User
 } from 'app/api/models';
 import { OperatorGroupsService } from 'app/api/services/operator-groups.service';
 import { FieldOption } from 'app/shared/field-option';
@@ -12,7 +17,7 @@ import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { Observable } from 'rxjs';
 
-export type TokenPermission = "enable" | "block" | "unblock" | "cancel";
+export type TokenPermission = 'enable' | 'block' | 'unblock' | 'cancel';
 
 /**
  * Operator group form - either to create or edit
@@ -20,12 +25,12 @@ export type TokenPermission = "enable" | "block" | "unblock" | "cancel";
 @Component({
   selector: 'operator-group-form',
   templateUrl: 'operator-group-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OperatorGroupFormComponent
   extends BasePageComponent<OperatorGroupDataForEdit | OperatorGroupDataForNew>
-  implements OnInit {
-
+  implements OnInit
+{
   id: string;
   create: boolean;
   user: string;
@@ -38,7 +43,8 @@ export class OperatorGroupFormComponent
   constructor(
     injector: Injector,
     public userHelper: UserHelperService,
-    private operatorGroupsService: OperatorGroupsService) {
+    private operatorGroupsService: OperatorGroupsService
+  ) {
     super(injector);
   }
 
@@ -50,19 +56,21 @@ export class OperatorGroupFormComponent
     const request: Observable<OperatorGroupDataForEdit | OperatorGroupDataForNew> = this.create
       ? this.operatorGroupsService.getOperatorGroupDataForNew({ user: this.user })
       : this.operatorGroupsService.getOperatorGroupDataForEdit({ id: this.id });
-    this.addSub(request.subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      request.subscribe(data => {
+        this.data = data;
+      })
+    );
     const values = [
       OperatorGroupAccountAccessEnum.NONE,
       OperatorGroupAccountAccessEnum.OWN,
       OperatorGroupAccountAccessEnum.INCOMING,
       OperatorGroupAccountAccessEnum.OUTGOING,
-      OperatorGroupAccountAccessEnum.FULL,
+      OperatorGroupAccountAccessEnum.FULL
     ];
     this.accountAccessOptions = values.map(value => ({
       value,
-      text: this.userHelper.operatorGroupAccountAccess(value),
+      text: this.userHelper.operatorGroupAccountAccess(value)
     }));
   }
 
@@ -71,34 +79,40 @@ export class OperatorGroupFormComponent
     const group = data.operatorGroup;
     this.form = this.formBuilder.group({
       name: [group.name, Validators.required],
-      description: group.description,
+      description: group.description
     });
     if (!empty(data.accountTypes)) {
       this.singleAccount = data.accountTypes.length === 1;
       const accountControls: FormGroup = this.formBuilder.group({});
       for (const at of data.accountTypes) {
-        const accountValue = (group.accounts[at.id] || group.accounts[at.internalName]) || {};
+        const accountValue = group.accounts[at.id] || group.accounts[at.internalName] || {};
         const notificationAmount = accountValue.notificationAmount || {};
-        accountControls.setControl(at.id, this.formBuilder.group({
-          access: [accountValue.access || OperatorGroupAccountAccessEnum.NONE, Validators.required],
-          notificationAmount: this.formBuilder.group({
-            min: notificationAmount.min,
-            max: notificationAmount.max,
-          }),
-        }));
+        accountControls.setControl(
+          at.id,
+          this.formBuilder.group({
+            access: [accountValue.access || OperatorGroupAccountAccessEnum.NONE, Validators.required],
+            notificationAmount: this.formBuilder.group({
+              min: notificationAmount.min,
+              max: notificationAmount.max
+            })
+          })
+        );
       }
       this.form.setControl('accounts', accountControls);
     }
     if (!empty(data.paymentTypes)) {
       const paymentControls: FormGroup = this.formBuilder.group({});
       for (const pt of data.paymentTypes) {
-        const paymentValue = (group.payments[pt.id] || group.payments[pt.internalName]) || {};
-        paymentControls.setControl(pt.id, this.formBuilder.group({
-          perform: paymentValue.perform,
-          maxAmountPerDay: paymentValue.perform ? paymentValue.maxAmountPerDay : null,
-          requiresAuthorization: paymentValue.perform && paymentValue.requiresAuthorization,
-          authorize: paymentValue.authorize,
-        }));
+        const paymentValue = group.payments[pt.id] || group.payments[pt.internalName] || {};
+        paymentControls.setControl(
+          pt.id,
+          this.formBuilder.group({
+            perform: paymentValue.perform,
+            maxAmountPerDay: paymentValue.perform ? paymentValue.maxAmountPerDay : null,
+            requiresAuthorization: paymentValue.perform && paymentValue.requiresAuthorization,
+            authorize: paymentValue.authorize
+          })
+        );
       }
       this.form.setControl('payments', paymentControls);
     }
@@ -128,16 +142,16 @@ export class OperatorGroupFormComponent
 
     let tokenOptions: TokenPermission[] = [];
     if (group.enableToken) {
-      tokenOptions.push("enable");
+      tokenOptions.push('enable');
     }
     if (group.blockToken) {
-      tokenOptions.push("block");
+      tokenOptions.push('block');
     }
     if (group.unblockToken) {
-      tokenOptions.push("unblock");
+      tokenOptions.push('unblock');
     }
     if (group.cancelToken) {
-      tokenOptions.push("cancel");
+      tokenOptions.push('cancel');
     }
     this.tokenPermissions = new FormControl(tokenOptions);
 
@@ -177,19 +191,19 @@ export class OperatorGroupFormComponent
         .forEach(key => this.paymentTypesFromId(key).forEach(pt => delete value.payments[pt.id]));
     }
     const tokenPermissions = this.tokenPermissions.value as TokenPermission[];
-    value.enableToken = tokenPermissions.includes("enable");
-    value.blockToken = tokenPermissions.includes("block");
-    value.unblockToken = tokenPermissions.includes("unblock");
-    value.cancelToken = tokenPermissions.includes("cancel");
+    value.enableToken = tokenPermissions.includes('enable');
+    value.blockToken = tokenPermissions.includes('block');
+    value.unblockToken = tokenPermissions.includes('unblock');
+    value.cancelToken = tokenPermissions.includes('cancel');
     const request: Observable<string | void> = this.create
       ? this.operatorGroupsService.createOperatorGroup({ user: this.user, body: value })
       : this.operatorGroupsService.updateOperatorGroup({ id: this.id, body: value });
-    this.addSub(request.subscribe(id => {
-      this.notification.snackBar(this.create
-        ? this.i18n.operatorGroup.created
-        : this.i18n.operatorGroup.saved);
-      this.router.navigate(['/users', 'operator-groups', id || this.id]);
-    }));
+    this.addSub(
+      request.subscribe(id => {
+        this.notification.snackBar(this.create ? this.i18n.operatorGroup.created : this.i18n.operatorGroup.saved);
+        this.router.navigate(['/users', 'operator-groups', id || this.id]);
+      })
+    );
   }
 
   get restrictPaymentsToUsers(): User[] {
@@ -197,7 +211,9 @@ export class OperatorGroupFormComponent
   }
 
   resolveVoucherTransactionsLabel(): string {
-    return this.data.topUpEnabled ? this.i18n.operatorGroup.voucherTransactions : this.i18n.operatorGroup.voucherTransactionsRedeems;
+    return this.data.topUpEnabled
+      ? this.i18n.operatorGroup.voucherTransactions
+      : this.i18n.operatorGroup.voucherTransactionsRedeems;
   }
 
   hasTokenPermissions(): boolean {

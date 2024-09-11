@@ -8,13 +8,10 @@ import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
 @Component({
   selector: 'view-broker-history',
   templateUrl: 'view-broker-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewBrokerHistoryComponent extends BaseViewPageComponent<UserBrokersData> implements OnInit {
-
-  constructor(
-    injector: Injector,
-    private brokeringService: BrokeringService) {
+  constructor(injector: Injector, private brokeringService: BrokeringService) {
     super(injector);
   }
 
@@ -23,9 +20,11 @@ export class ViewBrokerHistoryComponent extends BaseViewPageComponent<UserBroker
   ngOnInit() {
     super.ngOnInit();
     this.param = this.route.snapshot.params.user;
-    this.addSub(this.brokeringService.getUserBrokersData({ user: this.param, fields: ['user', 'history'] }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.brokeringService.getUserBrokersData({ user: this.param, fields: ['user', 'history'] }).subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   showActionLabel(row: BrokeringLog) {

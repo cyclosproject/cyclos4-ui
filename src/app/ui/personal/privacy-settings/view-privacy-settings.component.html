@@ -1,5 +1,6 @@
 <page-layout>
-  <page-content [heading]="i18n.privacySettings.title"
+  <page-content
+    [heading]="i18n.privacySettings.title"
     [mobileHeading]="i18n.privacySettings.mobileTitle"
     [headingActions]="headingActions$ | async">
     <ng-container *ngIf="data$ | async">
@@ -8,19 +9,18 @@
       <ul>
         <li *ngFor="let field of fields()">{{ field }}</li>
       </ul>
-      <user-info *ngIf="data.user && !authHelper.isSelf(data.user)"
-        [user]="data.user"></user-info>
-      <label-value [label]='i18n.general.enabled'>
-        {{ data.enabled ? i18n.general.yes : i18n.general.no }}</label-value>
+      <user-info *ngIf="data.user && !authHelper.isSelf(data.user)" [user]="data.user"></user-info>
+      <label-value [label]="i18n.general.enabled"> {{ data.enabled ? i18n.general.yes : i18n.general.no }}</label-value>
       <ng-container *ngIf="data.enabled">
         <h2>{{ i18n.privacySettings.controlsSection }}</h2>
-        <label-value *ngFor="let control of data.availableControls"
-          [label]="control.name">
-          {{ control.fieldsAlwaysVisible ||
-          data.selectedControls.includes(control.id) ? i18n.general.yes :
-          i18n.general.no }}
+        <label-value *ngFor="let control of data.availableControls" [label]="control.name">
+          {{
+            control.fieldsAlwaysVisible || data.selectedControls.includes(control.id)
+              ? i18n.general.yes
+              : i18n.general.no
+          }}
           <ng-container *ngIf="control.informationText">
-            <br>
+            <br />
             {{ control.informationText }}
           </ng-container>
         </label-value>

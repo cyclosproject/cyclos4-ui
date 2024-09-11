@@ -15,12 +15,9 @@ import { first } from 'rxjs/operators';
 @Component({
   selector: 'login-confirmation',
   templateUrl: 'login-confirmation.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginConfirmationComponent
-  extends BasePageComponent<PasswordInput>
-  implements OnInit {
-
+export class LoginConfirmationComponent extends BasePageComponent<PasswordInput> implements OnInit {
   control = new FormControl(null, Validators.required);
   canConfirm: boolean;
   showSubmit$ = new BehaviorSubject(true);
@@ -30,11 +27,7 @@ export class LoginConfirmationComponent
     return this.data;
   }
 
-  constructor(
-    injector: Injector,
-    private authService: AuthService,
-    private loginState: LoginState,
-  ) {
+  constructor(injector: Injector, private authService: AuthService, private loginState: LoginState) {
     super(injector);
   }
 
@@ -59,13 +52,20 @@ export class LoginConfirmationComponent
     if (!value && !validateBeforeSubmit(this.control)) {
       return;
     }
-    this.addSub(this.authService.confirmLogin({
-      body: value || this.control.value
-    }).subscribe(() => this.reload()));
+    this.addSub(
+      this.authService
+        .confirmLogin({
+          body: value || this.control.value
+        })
+        .subscribe(() => this.reload())
+    );
   }
 
   reload() {
-    this.dataForFrontendHolder.reload().pipe(first()).subscribe(() => this.router.navigateByUrl(this.loginState.redirectUrl || ''));
+    this.dataForFrontendHolder
+      .reload()
+      .pipe(first())
+      .subscribe(() => this.router.navigateByUrl(this.loginState.redirectUrl || ''));
   }
 
   cancel() {

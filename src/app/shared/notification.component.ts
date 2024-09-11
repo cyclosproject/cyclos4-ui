@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Optional } from '@angular/core';
 import { LayoutService } from 'app/core/layout.service';
-import { NotificationType } from 'app/shared/notification-type';
 import { Enter, Escape, ShortcutService } from 'app/core/shortcut.service';
+import { SvgIcon } from 'app/core/svg-icon';
+import { NotificationType } from 'app/shared/notification-type';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
-import { SvgIcon } from 'app/core/svg-icon';
 
 /**
  * Shows a notification message. May be in a popup or directly
@@ -13,10 +13,9 @@ import { SvgIcon } from 'app/core/svg-icon';
   // tslint:disable-next-line:component-selector
   selector: 'notification',
   templateUrl: 'notification.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotificationComponent implements OnInit, OnDestroy {
-
   @Input() type: NotificationType = 'info';
   @Input() message: string;
   @Input() allowClose = true;
@@ -29,8 +28,8 @@ export class NotificationComponent implements OnInit, OnDestroy {
   constructor(
     @Optional() public modalRef: BsModalRef,
     public layout: LayoutService,
-    private shortcut: ShortcutService) {
-  }
+    private shortcut: ShortcutService
+  ) {}
 
   ngOnInit() {
     if (this.modalRef == null) {
@@ -60,5 +59,4 @@ export class NotificationComponent implements OnInit, OnDestroy {
       this.shortcutSub.unsubscribe();
     }
   }
-
 }

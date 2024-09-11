@@ -3,22 +3,22 @@ import { Router } from '@angular/router';
 import { Auth, DataForFrontend, Permissions, User } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
 import { ConfirmationService } from 'app/core/confirmation.service';
-import { NotificationService } from 'app/core/notification.service';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { NextRequestState } from 'app/core/next-request-state';
+import { NotificationService } from 'app/core/notification.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
+import { ApiHelper } from 'app/shared/api-helper';
 import { empty, randomString } from 'app/shared/helper';
 import { LoginState } from 'app/ui/core/login-state';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
-import { ApiHelper } from 'app/shared/api-helper';
 
 /**
  * Service used to manage the login status
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class LoginService {
   user$ = new BehaviorSubject<User>(null);
@@ -33,8 +33,8 @@ export class LoginService {
     @Inject(I18nInjectionToken) private i18n: I18n,
     private confirmation: ConfirmationService,
     private notification: NotificationService,
-    private pushNotifications: PushNotificationsService) {
-
+    private pushNotifications: PushNotificationsService
+  ) {
     // Whenever the data for ui changes, update the current status
     dataForFrontendHolder.subscribe(dataForFrontend => {
       const dataForUi = (dataForFrontend || {}).dataForUi;
@@ -54,13 +54,16 @@ export class LoginService {
 
     // Reload the data for UI whenever the permissions change
     pushNotifications.permissionsChanged$.subscribe(() =>
-      this.dataForFrontendHolder.reload().pipe(first()).subscribe(() => {
-        if (!ApiHelper.isRestrictedAccess(this.dataForFrontendHolder.dataForFrontend)) {
-          // Navigate to the URL whenever there is not a restricted access otherwise it may give
-          // PDE exceptions. Restricted access is handled by initialze.ts service
-          this.router.navigateByUrl(this.router.url);
-        }
-      })
+      this.dataForFrontendHolder
+        .reload()
+        .pipe(first())
+        .subscribe(() => {
+          if (!ApiHelper.isRestrictedAccess(this.dataForFrontendHolder.dataForFrontend)) {
+            // Navigate to the URL whenever there is not a restricted access otherwise it may give
+            // PDE exceptions. Restricted access is handled by initialze.ts service
+            this.router.navigateByUrl(this.router.url);
+          }
+        })
     );
   }
 
@@ -91,7 +94,7 @@ export class LoginService {
       confirmLabel: this.i18n.general.sessionExpired.loginAgain,
       callback: () => {
         this.goToLoginPage(this.router.url);
-      },
+      }
     });
   }
 
@@ -119,10 +122,13 @@ export class LoginService {
       location.assign(url);
     } else {
       // Go to the login page
-      this.dataForFrontendHolder.reload().pipe(first()).subscribe(() => {
-        this.loginState.redirectUrl = redirectUrl;
-        this.router.navigateByUrl('/login');
-      });
+      this.dataForFrontendHolder
+        .reload()
+        .pipe(first())
+        .subscribe(() => {
+          this.loginState.redirectUrl = redirectUrl;
+          this.router.navigateByUrl('/login');
+        });
     }
   }
 
@@ -159,26 +165,29 @@ export class LoginService {
     // Get the user agent id passed on login
     let userAgentId = this.getUserAgentId();
 
-    return this.authService.login({
-      cookie: this.nextRequestState.useCookie,
-      identityProviderRequestId,
-      fields: ['sessionToken', 'identityProviderNotLinkReason'],
-      userAgentId
-    }).pipe(
-      switchMap(auth => {
-        // Store the session token
-        this.nextRequestState.setSessionToken(auth.sessionToken);
+    return this.authService
+      .login({
+        cookie: this.nextRequestState.useCookie,
+        identityProviderRequestId,
+        fields: ['sessionToken', 'identityProviderNotLinkReason'],
+        userAgentId
+      })
+      .pipe(
+        switchMap(auth => {
+          // Store the session token
+          this.nextRequestState.setSessionToken(auth.sessionToken);
 
-        // Then reload the DataForFrontend instance (as user)
-        return this.dataForFrontendHolder.reload();
-      }));
-  };
+          // Then reload the DataForFrontend instance (as user)
+          return this.dataForFrontendHolder.reload();
+        })
+      );
+  }
 
   getUserAgentId(): string {
     let userAgentId = localStorage.getItem('userAgentId');
     if (!userAgentId) {
-      userAgentId = randomString(32) + "_" + new Date().getTime();
-      localStorage.setItem("userAgentId", userAgentId);
+      userAgentId = randomString(32) + '_' + new Date().getTime();
+      localStorage.setItem('userAgentId', userAgentId);
     }
     return userAgentId;
   }
@@ -189,7 +198,7 @@ export class LoginService {
   clear(): void {
     this.loginState.redirectUrl = null;
     this.nextRequestState.setSessionToken(null);
-  };
+  }
 
   /**
    * Performs the logout, optionally redirecting to a custom URL
@@ -217,8 +226,10 @@ export class LoginService {
         });
       }
     };
-    this.authService.logout({
-      cookie: this.nextRequestState.useCookie,
-    }).subscribe(handler, handler);
+    this.authService
+      .logout({
+        cookie: this.nextRequestState.useCookie
+      })
+      .subscribe(handler, handler);
   }
 }

@@ -13,10 +13,9 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'pick-contact',
   templateUrl: 'pick-contact.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PickContactComponent extends BaseComponent implements OnInit {
-
   currentPage = 0;
 
   @Input() usersToExclude: string[];
@@ -24,11 +23,7 @@ export class PickContactComponent extends BaseComponent implements OnInit {
 
   results$ = new BehaviorSubject<PagedResults<ContactResult>>(null);
 
-  constructor(
-    injector: Injector,
-    private contactsService: ContactsService,
-    public modalRef: BsModalRef,
-  ) {
+  constructor(injector: Injector, private contactsService: ContactsService, public modalRef: BsModalRef) {
     super(injector);
   }
 
@@ -43,13 +38,17 @@ export class PickContactComponent extends BaseComponent implements OnInit {
   update(delta = 0) {
     this.currentPage += delta;
     this.results = null;
-    this.addSub(this.contactsService.searchContactList$Response({
-      user: ApiHelper.SELF,
-      fields: ['contact'],
-      pageSize: this.layout.ltmd ? 6 : this.layout.md ? 10 : 20,
-      page: this.currentPage,
-      usersToExclude: this.usersToExclude
-    }).subscribe(response => this.results = PagedResults.from(response)));
+    this.addSub(
+      this.contactsService
+        .searchContactList$Response({
+          user: ApiHelper.SELF,
+          fields: ['contact'],
+          pageSize: this.layout.ltmd ? 6 : this.layout.md ? 10 : 20,
+          page: this.currentPage,
+          usersToExclude: this.usersToExclude
+        })
+        .subscribe(response => (this.results = PagedResults.from(response)))
+    );
   }
 
   emit(row: ContactResult) {
@@ -67,5 +66,4 @@ export class PickContactComponent extends BaseComponent implements OnInit {
   set results(results: PagedResults<ContactResult>) {
     this.results$.next(results);
   }
-
 }

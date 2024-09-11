@@ -23,11 +23,7 @@ export class VoucherDetailsComponent extends VoucherBasePageComponent implements
   redeemOnWeekDays: string;
   transactions$ = new BehaviorSubject<PagedResults<VoucherTransaction>>(null);
 
-  constructor(
-    public format: FormatService,
-    public apiI18n: ApiI18nService,
-    injector: Injector
-  ) {
+  constructor(public format: FormatService, public apiI18n: ApiI18nService, injector: Injector) {
     super(injector);
   }
 
@@ -40,7 +36,8 @@ export class VoucherDetailsComponent extends VoucherBasePageComponent implements
     }
     this.currency = this.voucher.type.configuration.currency;
     if (this.voucher.status === VoucherStatusEnum.OPEN) {
-      this.redeemOnWeekDays = this.format.formatWeekDays(this.voucher.redeemOnWeekDays) || this.i18n.voucher.redeem.onDaysAny;
+      this.redeemOnWeekDays =
+        this.format.formatWeekDays(this.voucher.redeemOnWeekDays) || this.i18n.voucher.redeem.onDaysAny;
     }
 
     if (this.voucher.hasTransactions) {
@@ -54,12 +51,14 @@ export class VoucherDetailsComponent extends VoucherBasePageComponent implements
   }
 
   updateTransactions(pageData?: PageData) {
-    this.voucherService.searchVoucherInfoTransactions$Response({
-      token: this.state.token,
-      pin: this.state.pin,
-      page: pageData?.page,
-      pageSize: pageData?.pageSize ?? 20
-    }).subscribe(resp => this.transactions$.next(PagedResults.from(resp)));
+    this.voucherService
+      .searchVoucherInfoTransactions$Response({
+        token: this.state.token,
+        pin: this.state.pin,
+        page: pageData?.page,
+        pageSize: pageData?.pageSize ?? 20
+      })
+      .subscribe(resp => this.transactions$.next(PagedResults.from(resp)));
   }
 
   hasUser(transactions: PagedResults<VoucherTransaction>) {

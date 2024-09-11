@@ -2,8 +2,16 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable, Injector } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import {
-  Auth, DataForFrontend, DataForUi, FrontendBanner, FrontendEnum,
-  FrontendIcon, FrontendPage, FrontendScreenSizeEnum, RoleEnum, User
+  Auth,
+  DataForFrontend,
+  DataForUi,
+  FrontendBanner,
+  FrontendEnum,
+  FrontendIcon,
+  FrontendPage,
+  FrontendScreenSizeEnum,
+  RoleEnum,
+  User
 } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
 import { FrontendService } from 'app/api/services/frontend.service';
@@ -20,7 +28,7 @@ import { catchError, map, switchMap } from 'rxjs/operators';
  * Injectable used to hold the `DataForFrontend` instance used by the application
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class DataForFrontendHolder {
   private loadHooks: ((dataForFrontend: DataForFrontend) => Observable<DataForFrontend>)[] = [];
@@ -33,8 +41,8 @@ export class DataForFrontendHolder {
     @Inject(I18nInjectionToken) private i18n: I18n,
     private injector: Injector,
     private apiConfiguration: ApiConfiguration,
-    private nextRequestState: NextRequestState) {
-  }
+    private nextRequestState: NextRequestState
+  ) {}
 
   /**
    * Registers a hook that is executed on load
@@ -59,40 +67,49 @@ export class DataForFrontendHolder {
   reload(retry = true): Observable<DataForFrontend> {
     const nextRequestState = this.nextRequestState;
     nextRequestState.ignoreNextError = true;
-    return this.frontendService.dataForFrontend({
-      screenSize: this.screenSize
-    }).pipe(
-      switchMap(dataForFrontend => {
-        if (dataForFrontend.frontend === FrontendEnum.CLASSIC && !environment.standalone && dataForFrontend?.dataForUi?.auth?.user) {
-          // Redirect logged users to the classic frontend
-          this.redirectToClassicFrontend();
-          return of(null);
-        }
-
-
-        return this.performInitialize(dataForFrontend);
-      }),
-      catchError((resp: HttpErrorResponse) => {
-        // Maybe we're using an old session data. In that case, we have to clear the session and try again
-        if (retry && nextRequestState.hasSession && [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
-          // Clear the session token and try again
-          nextRequestState.setSessionToken(null);
-          return this.reload();
-        } else {
-          // The server couldn't be contacted
-          let serverOffline = this.i18n.error.serverOffline;
-          let reloadPage = this.i18n.general.reloadPage;
-          if (serverOffline.startsWith('???')) {
-            // We're so early that we couldn't even fetch translations
-            serverOffline = 'The server couldn\'t be contacted.<br>Please, try again later.';
-            reloadPage = 'Reload';
+    return this.frontendService
+      .dataForFrontend({
+        screenSize: this.screenSize
+      })
+      .pipe(
+        switchMap(dataForFrontend => {
+          if (
+            dataForFrontend.frontend === FrontendEnum.CLASSIC &&
+            !environment.standalone &&
+            dataForFrontend?.dataForUi?.auth?.user
+          ) {
+            // Redirect logged users to the classic frontend
+            this.redirectToClassicFrontend();
+            return of(null);
           }
-          setRootAlert(serverOffline);
-          setReloadButton(reloadPage);
-          return;
-        }
-      }),
-    );
+
+          return this.performInitialize(dataForFrontend);
+        }),
+        catchError((resp: HttpErrorResponse) => {
+          // Maybe we're using an old session data. In that case, we have to clear the session and try again
+          if (
+            retry &&
+            nextRequestState.hasSession &&
+            [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)
+          ) {
+            // Clear the session token and try again
+            nextRequestState.setSessionToken(null);
+            return this.reload();
+          } else {
+            // The server couldn't be contacted
+            let serverOffline = this.i18n.error.serverOffline;
+            let reloadPage = this.i18n.general.reloadPage;
+            if (serverOffline.startsWith('???')) {
+              // We're so early that we couldn't even fetch translations
+              serverOffline = "The server couldn't be contacted.<br>Please, try again later.";
+              reloadPage = 'Reload';
+            }
+            setRootAlert(serverOffline);
+            setReloadButton(reloadPage);
+            return;
+          }
+        })
+      );
   }
 
   private performInitialize(dataForFrontend: DataForFrontend): Observable<DataForFrontend> {
@@ -169,7 +186,11 @@ export class DataForFrontendHolder {
   /**
    * Adds a new observer subscription for DataForFrontend change events
    */
-  subscribe(next?: (dataForFrontend: DataForFrontend) => void, error?: (error: any) => void, complete?: () => void): Subscription {
+  subscribe(
+    next?: (dataForFrontend: DataForFrontend) => void,
+    error?: (error: any) => void,
+    complete?: () => void
+  ): Subscription {
     return this.dataForFrontend$.subscribe(next, error, complete);
   }
 
@@ -184,25 +205,27 @@ export class DataForFrontendHolder {
     // Setup the basic authentication for the login request
     nextRequestState.nextAsGuest();
     nextRequestState.ignoreNextError = true;
-    return this.authService.replaceSession({
-      sessionToken,
-      cookie: nextRequestState.useCookie,
-    }).pipe(
-      map(newSessionToken => {
-        // Store the session token
-        nextRequestState.setSessionToken(newSessionToken);
-        return null;
-      }),
-      catchError((response: HttpErrorResponse) => {
-        let actualSessionValue = null;
-        if (response.status === ErrorStatus.NOT_FOUND) {
-          // Not found means that the server is Cyclos 4.11, which doesn't implement replaceSession
-          actualSessionValue = sessionToken;
-        }
-        nextRequestState.setSessionToken(actualSessionValue);
-        return of(null);
-      }),
-    );
+    return this.authService
+      .replaceSession({
+        sessionToken,
+        cookie: nextRequestState.useCookie
+      })
+      .pipe(
+        map(newSessionToken => {
+          // Store the session token
+          nextRequestState.setSessionToken(newSessionToken);
+          return null;
+        }),
+        catchError((response: HttpErrorResponse) => {
+          let actualSessionValue = null;
+          if (response.status === ErrorStatus.NOT_FOUND) {
+            // Not found means that the server is Cyclos 4.11, which doesn't implement replaceSession
+            actualSessionValue = sessionToken;
+          }
+          nextRequestState.setSessionToken(actualSessionValue);
+          return of(null);
+        })
+      );
   }
 
   /**
@@ -211,12 +234,14 @@ export class DataForFrontendHolder {
   useClassicFrontend(savePreference = true) {
     if (savePreference) {
       // Save the preference first...
-      this.frontendService.saveFrontendSettings({
-        body: { frontend: FrontendEnum.CLASSIC }
-      }).subscribe(() => {
-        // ... then redirect
-        this.redirectToClassicFrontend();
-      });
+      this.frontendService
+        .saveFrontendSettings({
+          body: { frontend: FrontendEnum.CLASSIC }
+        })
+        .subscribe(() => {
+          // ... then redirect
+          this.redirectToClassicFrontend();
+        });
     } else {
       // Just redirect
       this.redirectToClassicFrontend();

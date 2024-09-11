@@ -165,7 +165,7 @@ import { WebcamModule } from 'ngx-webcam';
     PasswordHintsComponent,
     SendOtpFieldComponent,
 
-    AccountPipe,
+    AccountPipe
   ],
   imports: [
     UiLayoutModule,
@@ -263,18 +263,16 @@ import { WebcamModule } from 'ngx-webcam';
     PasswordHintsComponent,
     SendOtpFieldComponent,
 
-    AccountPipe,
+    AccountPipe
   ],
-  entryComponents: [
-    AgreementsContentDialogComponent,
-  ],
+  entryComponents: [AgreementsContentDialogComponent]
 })
 export class UiSharedModule {
   constructor(confirmation: ConfirmationService) {
     confirmation.confirmHandler = (modal: BsModalService, options: ConfirmOptions) => {
       return modal.show(ConfirmationComponent, {
         class: 'modal-form',
-        initialState: options,
+        initialState: options
       });
     };
   }

@@ -12,23 +12,18 @@ import { Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'send-invitation',
   templateUrl: 'send-invitation.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SendInvitationComponent
-  extends BasePageComponent<DataForSendInvitation>
-  implements OnInit {
-
+export class SendInvitationComponent extends BasePageComponent<DataForSendInvitation> implements OnInit {
   form: FormGroup;
 
-  constructor(
-    injector: Injector,
-    private inviteService: InviteService) {
+  constructor(injector: Injector, private inviteService: InviteService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.inviteService.getDataForInvite().subscribe(data => this.data = data));
+    this.addSub(this.inviteService.getDataForInvite().subscribe(data => (this.data = data)));
   }
 
   onDataInitialized(data: DataForSendInvitation) {
@@ -44,14 +39,16 @@ export class SendInvitationComponent
       return;
     }
     const send = this.form.value as SendInvitation;
-    this.addSub(this.inviteService.sendInvitation({ body: send }).subscribe(() => {
-      if (send.toEmails?.length === 1) {
-        this.notification.snackBar(this.i18n.invite.sentSingle);
-      } else {
-        this.notification.snackBar(this.i18n.invite.sentMultiple);
-      }
-      this.form.patchValue(this.data.send);
-    }));
+    this.addSub(
+      this.inviteService.sendInvitation({ body: send }).subscribe(() => {
+        if (send.toEmails?.length === 1) {
+          this.notification.snackBar(this.i18n.invite.sentSingle);
+        } else {
+          this.notification.snackBar(this.i18n.invite.sentMultiple);
+        }
+        this.form.patchValue(this.data.send);
+      })
+    );
   }
 
   resolveMenu() {

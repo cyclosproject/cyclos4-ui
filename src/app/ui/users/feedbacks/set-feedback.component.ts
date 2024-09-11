@@ -1,6 +1,11 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { PaymentFeedbackDataForEdit, PaymentFeedbackDataForGive, PaymentFeedbackView, ReferenceLevelEnum } from 'app/api/models';
+import {
+  PaymentFeedbackDataForEdit,
+  PaymentFeedbackDataForGive,
+  PaymentFeedbackView,
+  ReferenceLevelEnum
+} from 'app/api/models';
 import { PaymentFeedbacksService } from 'app/api/services/payment-feedbacks.service';
 import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
@@ -12,12 +17,9 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'set-feedback',
   templateUrl: 'set-feedback.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SetFeedbackComponent
-  extends BasePageComponent<any>
-  implements OnInit {
-
+export class SetFeedbackComponent extends BasePageComponent<any> implements OnInit {
   ReferenceLevelEnum = ReferenceLevelEnum;
 
   id: string;
@@ -28,9 +30,7 @@ export class SetFeedbackComponent
   dataForEdit: PaymentFeedbackDataForEdit;
   dataForView: PaymentFeedbackView;
 
-  constructor(
-    injector: Injector,
-    protected feedbackService: PaymentFeedbacksService) {
+  constructor(injector: Injector, protected feedbackService: PaymentFeedbacksService) {
     super(injector);
   }
 
@@ -49,36 +49,42 @@ export class SetFeedbackComponent
   }
 
   protected getDataForGive() {
-    this.feedbackService.getPaymentFeedbacksDataForGive({
-      key: this.transactionId ? this.transactionId : this.id
-    }).subscribe(data => {
-      this.dataForGive = data;
-      this.data = {};
-    });
+    this.feedbackService
+      .getPaymentFeedbacksDataForGive({
+        key: this.transactionId ? this.transactionId : this.id
+      })
+      .subscribe(data => {
+        this.dataForGive = data;
+        this.data = {};
+      });
   }
 
   protected getData() {
-    this.feedbackService.viewPaymentFeedback({
-      key: this.id
-    }).subscribe(data => {
-      this.dataForView = data;
-      if (this.dataForView.canGive) {
-        this.getDataForGive();
-      } else if (data.canEdit) {
-        this.getDataForEdit();
-      } else {
-        this.data = {};
-      }
-    });
+    this.feedbackService
+      .viewPaymentFeedback({
+        key: this.id
+      })
+      .subscribe(data => {
+        this.dataForView = data;
+        if (this.dataForView.canGive) {
+          this.getDataForGive();
+        } else if (data.canEdit) {
+          this.getDataForEdit();
+        } else {
+          this.data = {};
+        }
+      });
   }
 
   protected getDataForEdit() {
-    this.feedbackService.getPaymentFeedbackDataForEdit({
-      key: this.id
-    }).subscribe(data => {
-      this.dataForEdit = data;
-      this.data = {};
-    });
+    this.feedbackService
+      .getPaymentFeedbackDataForEdit({
+        key: this.id
+      })
+      .subscribe(data => {
+        this.dataForEdit = data;
+        this.data = {};
+      });
   }
 
   onDataInitialized() {
@@ -88,7 +94,7 @@ export class SetFeedbackComponent
       giveComments: [this.comments, Validators.required],
       replyComments: this.dataForEdit ? this.dataForEdit.feedback.replyComments : null,
       managerComments: this.dataForEdit ? this.dataForEdit.feedback.managerComments : null,
-      version: this.dataForEdit ? this.dataForEdit.feedback.version : null,
+      version: this.dataForEdit ? this.dataForEdit.feedback.version : null
     });
   }
 
@@ -131,18 +137,18 @@ export class SetFeedbackComponent
    */
   save() {
     const value = this.form.value;
-    const request: Observable<string | void> = this.dataForGive ?
-      this.feedbackService.givePaymentFeedback({ body: value, key: this.id ? this.id : this.transactionId }) :
-      this.feedbackService.updatePaymentFeedback({ key: this.id, body: value });
-    this.addSub(request.subscribe(() => {
-      this.notification.snackBar(this.i18n.feedback.feedbackSet);
-      history.back();
-    }));
+    const request: Observable<string | void> = this.dataForGive
+      ? this.feedbackService.givePaymentFeedback({ body: value, key: this.id ? this.id : this.transactionId })
+      : this.feedbackService.updatePaymentFeedback({ key: this.id, body: value });
+    this.addSub(
+      request.subscribe(() => {
+        this.notification.snackBar(this.i18n.feedback.feedbackSet);
+        history.back();
+      })
+    );
   }
 
   resolveMenu() {
-    return this.dataForGive ? Menu.FEEDBACKS :
-      this.menu.userMenu(this.dataForView.from, Menu.FEEDBACKS);
+    return this.dataForGive ? Menu.FEEDBACKS : this.menu.userMenu(this.dataForView.from, Menu.FEEDBACKS);
   }
-
 }

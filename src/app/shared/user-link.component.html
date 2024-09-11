@@ -1,19 +1,19 @@
-<maybe-link *ngIf="path != null && canViewProfile(); else displayTpl"
-  [link]="path" class="d-flex flex-row">
+<maybe-link *ngIf="path != null && canViewProfile(); else displayTpl" [link]="path" class="d-flex flex-row">
   <ng-container *ngTemplateOutlet="displayTpl"></ng-container>
 </maybe-link>
 
 <ng-template #displayTpl>
-  <div class="d-flex flex-row" [ngClass]="{'has-link': !!path}">
-    <avatar *ngIf="!operator && !hideIcon" ngClass="mr-2"
-      [image]="user?.image" [icon]="user ? SvgIcon.Person : SvgIcon.Briefcase"
+  <div class="d-flex flex-row" [ngClass]="{ 'has-link': !!path }">
+    <avatar
+      *ngIf="!operator && !hideIcon"
+      ngClass="mr-2"
+      [image]="user?.image"
+      [icon]="user ? SvgIcon.Person : SvgIcon.Briefcase"
       size="small">
     </avatar>
     <div class="display-text">
       {{ display }}
-      <ng-container *ngIf="account?.number">
-        ({{ account.number }})
-      </ng-container>
+      <ng-container *ngIf="account?.number"> ({{ account.number }}) </ng-container>
     </div>
   </div>
 </ng-template>

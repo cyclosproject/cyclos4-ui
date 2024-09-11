@@ -12,21 +12,18 @@ const builtin = new Set(Object.values(SvgIcon));
  * Loads icons
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class IconLoadingService {
-  private icons: { [key: string]: string; };
+  private icons: { [key: string]: string };
   private otherIcons = new Set<string>();
 
-  constructor(
-    private imageService: ImagesService,
-    private cache: CacheService) {
+  constructor(private imageService: ImagesService, private cache: CacheService) {
     const current = cache.current('icons');
     if (typeof current === 'string') {
       try {
         this.icons = { ...JSON.parse(current) };
-      } catch (e) {
-      }
+      } catch (e) {}
     } else if (typeof current === 'object') {
       this.icons = { ...current };
     } else {
@@ -51,19 +48,22 @@ export class IconLoadingService {
       // Nothing to load
       return of(null);
     }
-    return this.imageService.getSvgIcons({
-      names: [...missing]
-    }).pipe(
-      first(),
-      tap({
-        next: icons => this.store(icons)
-      }));
+    return this.imageService
+      .getSvgIcons({
+        names: [...missing]
+      })
+      .pipe(
+        first(),
+        tap({
+          next: icons => this.store(icons)
+        })
+      );
   }
 
   /**
    * Stores the given icons
    */
-  store(icons: { [key: string]: string; }) {
+  store(icons: { [key: string]: string }) {
     icons = icons || {};
     this.checkOthers(Object.keys(icons));
     this.icons = { ...this.icons, ...icons };

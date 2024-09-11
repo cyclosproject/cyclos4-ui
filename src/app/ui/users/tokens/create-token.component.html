@@ -1,42 +1,42 @@
 <h1>{{ i18n.token.title['new'](type.name) }}</h1>
 <ng-container [formGroup]="form" class="d-flex flex-grow-1 flex-column">
-  <label-value *ngIf="user" [label]="i18n.general.user" kind="fieldView"
-    labelPosition="side">
+  <label-value *ngIf="user" [label]="i18n.general.user" kind="fieldView" labelPosition="side">
     {{ user.display }}
   </label-value>
-  <user-field *ngIf="!user" [label]="i18n.general.user"
-    formControlName="user">
-  </user-field>
-  <single-selection-field *ngIf="(operators$ | async)?.length > 0"
-    formControlName="operator" [label]="i18n.general.operator"
+  <user-field *ngIf="!user" [label]="i18n.general.user" formControlName="user"> </user-field>
+  <single-selection-field
+    *ngIf="(operators$ | async)?.length > 0"
+    formControlName="operator"
+    [label]="i18n.general.operator"
     [emptyOption]="i18n.general.notSet">
-    <field-option *ngFor="let operator of (operators$ | async)"
-      [value]="operator.id" [text]="operator.name">
+    <field-option *ngFor="let operator of operators$ | async" [value]="operator.id" [text]="operator.name">
     </field-option>
   </single-selection-field>
   <label-value kind="field" [label]="i18n.token.value">
-    <input-field #inputField required formControlName="value"
-      [mask]="type.mask" [placeholder]="type.mask? type.mask : ''">
+    <input-field
+      #inputField
+      required
+      formControlName="value"
+      [mask]="type.mask"
+      [placeholder]="type.mask ? type.mask : ''">
     </input-field>
     <div *extraCell>
-      <button *ngIf="type.physicalType === physicalType.QR_CODE" type="button"
-        class="btn btn-icon" #scanQrCodeButton
+      <button
+        *ngIf="type.physicalType === physicalType.QR_CODE"
+        type="button"
+        class="btn btn-icon"
+        #scanQrCodeButton
         [tooltip]="i18n.field.user.scanQrCodeTooltip"
         (click)="showScanQrCode()">
         <icon [icon]="SvgIcon.QrCodeScan"></icon>
       </button>
     </div>
   </label-value>
-  <boolean-field *ngIf="canActivate$ | async" formControlName="activateNow"
-    [label]="i18n.token.action.activate">
+  <boolean-field *ngIf="canActivate$ | async" formControlName="activateNow" [label]="i18n.token.action.activate">
   </boolean-field>
   <actions forceRow>
-    <action-button [label]="i18n.general.submit" (action)="submit()"
-      [disabled]="requesting$ | async">
-    </action-button>
+    <action-button [label]="i18n.general.submit" (action)="submit()" [disabled]="requesting$ | async"> </action-button>
     <ng-template #blank>&nbsp;</ng-template>
-    <action-button outline (action)="modalRef.hide()"
-      [label]="i18n.general.cancel">
-    </action-button>
+    <action-button outline (action)="modalRef.hide()" [label]="i18n.general.cancel"> </action-button>
   </actions>
 </ng-container>

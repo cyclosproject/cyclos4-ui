@@ -1,9 +1,17 @@
 import { Inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
-  Account, AccountKind, AccountType, AccountWithOwner,
-  BaseTransferDataForSearch, Image, PreselectedPeriod, RecurringPaymentStatusEnum,
-  TransactionDataForSearch, TransactionKind, TransactionResult
+  Account,
+  AccountKind,
+  AccountType,
+  AccountWithOwner,
+  BaseTransferDataForSearch,
+  Image,
+  PreselectedPeriod,
+  RecurringPaymentStatusEnum,
+  TransactionDataForSearch,
+  TransactionKind,
+  TransactionResult
 } from 'app/api/models';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { FormatService } from 'app/core/format.service';
@@ -22,16 +30,15 @@ export interface HasTransactionNumberAndId {
  * Helper service for banking functions
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class BankingHelperService {
-
   constructor(
     private dataForFrontendHolder: DataForFrontendHolder,
     private format: FormatService,
     private loginService: LoginService,
-    @Inject(I18nInjectionToken) private i18n: I18n,
-  ) { }
+    @Inject(I18nInjectionToken) private i18n: I18n
+  ) {}
 
   /**
    * Returns the account types from the logged user permissions, optionally filtering by visibility
@@ -42,7 +49,7 @@ export class BankingHelperService {
     const permissions = auth.permissions || {};
     const banking = permissions.banking || {};
     const accounts = banking.accounts || [];
-    return accounts.filter(a => visible ? a.visible : true).map(a => a.account.type);
+    return accounts.filter(a => (visible ? a.visible : true)).map(a => a.account.type);
   }
 
   /**
@@ -152,7 +159,7 @@ export class BankingHelperService {
         return account.type.name;
       }
     }
-    return "";
+    return '';
   }
 
   /**
@@ -188,7 +195,7 @@ export class BankingHelperService {
           if (firstOpen) {
             return this.i18n.transaction.schedulingStatus.openInstallments({
               count: String(count),
-              dueDate: this.format.formatAsDate(firstOpen.dueDate),
+              dueDate: this.format.formatAsDate(firstOpen.dueDate)
             });
           } else {
             return this.i18n.transaction.schedulingStatus.closedInstallments(String(count));
@@ -201,7 +208,9 @@ export class BankingHelperService {
           case RecurringPaymentStatusEnum.CANCELED:
             return this.i18n.transaction.schedulingStatus.canceledRecurring;
           default:
-            return this.i18n.transaction.schedulingStatus.openRecurring(this.format.formatAsDate(row.nextOccurrenceDate));
+            return this.i18n.transaction.schedulingStatus.openRecurring(
+              this.format.formatAsDate(row.nextOccurrenceDate)
+            );
         }
       default:
         return this.i18n.transaction.schedulingStatus.direct;
@@ -213,7 +222,8 @@ export class BankingHelperService {
    * can manage its account visibility.
    */
   noAccountForPaymentErrorMessage() {
-    return this.loginService.permissions.banking.accountVisibilitySettings ?
-      this.i18n.transaction.noVisibleAccounts(this.i18n.user.profile.accountVisibility) : this.i18n.transaction.noAccounts;
+    return this.loginService.permissions.banking.accountVisibilitySettings
+      ? this.i18n.transaction.noVisibleAccounts(this.i18n.user.profile.accountVisibility)
+      : this.i18n.transaction.noAccounts;
   }
 }

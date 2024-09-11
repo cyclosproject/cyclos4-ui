@@ -10,16 +10,13 @@ import { Menu } from 'app/ui/shared/menu';
 @Component({
   selector: 'search-user-alerts',
   templateUrl: 'search-user-alerts.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchUserAlertsComponent
   extends BaseSearchPageComponent<UserAlertDataForSearch, UserAlertQueryFilters, UserAlert>
-  implements OnInit {
-
-  constructor(
-    injector: Injector,
-    private alertsService: AlertsService,
-  ) {
+  implements OnInit
+{
+  constructor(injector: Injector, private alertsService: AlertsService) {
     super(injector);
   }
 
@@ -38,7 +35,7 @@ export class SearchUserAlertsComponent
       page: value.page,
       pageSize: value.pageSize,
       types: value.types,
-      user: value.user,
+      user: value.user
     };
   }
 
@@ -57,5 +54,4 @@ export class SearchUserAlertsComponent
   path(row: UserAlert): string[] {
     return ['/users', row.user.id, 'profile'];
   }
-
 }

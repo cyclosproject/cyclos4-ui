@@ -149,5 +149,5 @@ export enum SvgIcon {
   Wallet2Check = 'wallet2-check',
   Wallet2Person = 'wallet2-person',
   X = 'x',
-  XCircle = 'x-circle',
+  XCircle = 'x-circle'
 }

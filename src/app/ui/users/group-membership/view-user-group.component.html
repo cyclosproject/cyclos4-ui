@@ -1,7 +1,10 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="data"
+  <page-content
+    *ngIf="data"
     [heading]="operator ? i18n.groupMembership.title.groupOperator : i18n.groupMembership.title.groupUser"
-    [mobileHeading]="operator ? i18n.groupMembership.mobileTitle.groupOperator : i18n.groupMembership.mobileTitle.groupUser"
+    [mobileHeading]="
+      operator ? i18n.groupMembership.mobileTitle.groupOperator : i18n.groupMembership.mobileTitle.groupUser
+    "
     [headingActions]="headingActions$ | async">
     <user-info [user]="data.user"></user-info>
 
@@ -10,22 +13,25 @@
     </label-value>
 
     <ng-container *ngIf="editable">
-      <hr>
+      <hr />
       <ng-container [formGroup]="form">
-        <single-selection-field formControlName="group"
-          [label]="i18n.groupMembership['new']" [required]="!allowEmptyGroup"
+        <single-selection-field
+          formControlName="group"
+          [label]="i18n.groupMembership['new']"
+          [required]="!allowEmptyGroup"
           [emptyOption]="allowEmptyGroup ? i18n.user.operatorNoGroup : null">
-          <field-option *ngFor="let group of data.possibleNewGroups"
-            [value]="ApiHelper.internalNameOrId(group)" [id]="group.id"
-            [internalName]="group.internalName" [text]="group.name">
+          <field-option
+            *ngFor="let group of data.possibleNewGroups"
+            [value]="ApiHelper.internalNameOrId(group)"
+            [id]="group.id"
+            [internalName]="group.internalName"
+            [text]="group.name">
           </field-option>
         </single-selection-field>
-        <textarea-field formControlName="comment"
-          [label]="i18n.general.comments"></textarea-field>
+        <textarea-field formControlName="comment" [label]="i18n.general.comments"></textarea-field>
       </ng-container>
       <actions>
-        <action-button (action)="save()" [label]="i18n.general.submit">
-        </action-button>
+        <action-button (action)="save()" [label]="i18n.general.submit"> </action-button>
       </actions>
     </ng-container>
   </page-content>

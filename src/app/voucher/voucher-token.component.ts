@@ -24,10 +24,7 @@ export class VoucherTokenComponent extends VoucherBasePageComponent implements O
 
   @ViewChild('inputField') private inputField: InputFieldComponent;
 
-  constructor(
-    private route: ActivatedRoute,
-    private modal: BsModalService,
-    injector: Injector) {
+  constructor(private route: ActivatedRoute, private modal: BsModalService, injector: Injector) {
     super(injector);
   }
 
@@ -50,7 +47,7 @@ export class VoucherTokenComponent extends VoucherBasePageComponent implements O
 
   showScanQrCode() {
     const ref = this.modal.show(ScanQrCodeComponent, {
-      class: 'modal-form',
+      class: 'modal-form'
     });
     const component = ref.content as ScanQrCodeComponent;
     component.select.pipe(first()).subscribe(value => {
@@ -59,5 +56,4 @@ export class VoucherTokenComponent extends VoucherBasePageComponent implements O
     });
     this.modal.onHide.pipe(first()).subscribe(() => focus(this.inputField, true));
   }
-
 }

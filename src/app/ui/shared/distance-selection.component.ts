@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Address, DistanceUnitEnum, SearchByDistanceData } from 'app/api/models';
 import { LayoutService } from 'app/core/layout.service';
@@ -20,10 +29,9 @@ const MaxDistanceOptions = [1, 5, 10, 15, 25, 50, 75, 100];
 @Component({
   selector: 'distance-selection',
   templateUrl: 'distance-selection.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DistanceSelectionComponent extends BaseComponent implements OnInit {
-
   DistanceUnitEnum = DistanceUnitEnum;
 
   @Input() data: SearchByDistanceData;
@@ -41,11 +49,7 @@ export class DistanceSelectionComponent extends BaseComponent implements OnInit 
 
   value: MaxDistance;
 
-  constructor(
-    injector: Injector,
-    public layout: LayoutService,
-    public modalRef: BsModalRef,
-  ) {
+  constructor(injector: Injector, public layout: LayoutService, public modalRef: BsModalRef) {
     super(injector);
     this.requesting$ = injector.get(NextRequestState).requesting$;
   }
@@ -79,11 +83,15 @@ export class DistanceSelectionComponent extends BaseComponent implements OnInit 
     }
     const address = value.addressId ? this.data.addresses.find(a => a.id === value.addressId) : null;
     const maxDistance: MaxDistance = {
-      name: address ? this.data.addresses.length > 1 ? address.name : this.i18n.general.geolocation.myAddress : this.i18n.general.geolocation.current,
+      name: address
+        ? this.data.addresses.length > 1
+          ? address.name
+          : this.i18n.general.geolocation.myAddress
+        : this.i18n.general.geolocation.current,
       maxDistance: value.maxDistance,
       latitude: address ? address.location?.latitude : afterGeolocate ? value.latitude : null,
       longitude: address ? address.location?.longitude : afterGeolocate ? value.longitude : null,
-      id: address ? address.id : null,
+      id: address ? address.id : null
     };
     if (!afterGeolocate && !address) {
       this.updateCurrentLocation();
@@ -119,32 +127,38 @@ export class DistanceSelectionComponent extends BaseComponent implements OnInit 
 
   private updateCurrentLocation() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(pos => {
-        this.lastPositionError = null;
-        this.form.patchValue({ latitude: pos.coords.latitude, longitude: pos.coords.longitude }, { emitEvent: false });
-        this.updateValue(null, true);
-      }, error => {
-        this.lastPositionError = error;
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            if (!empty(this.data.addresses)) {
-              this.notification.error(this.i18n.error.geolocation.denied);
-              // Select the first address
-              this.address.value = this.resolveFirstGeolocatedAddress().id;
-            } else {
-              this.submit(true);
-              this.notification.error(this.i18n.error.geolocation.deniedNoAddressAvailable);
-            }
-            break;
-          case error.POSITION_UNAVAILABLE:
-          case error.TIMEOUT:
-            this.notification.error(this.i18n.error.geolocation.unavailable);
-            break;
-          default:
-            this.notification.error(this.i18n.error.geolocation.general);
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          this.lastPositionError = null;
+          this.form.patchValue(
+            { latitude: pos.coords.latitude, longitude: pos.coords.longitude },
+            { emitEvent: false }
+          );
+          this.updateValue(null, true);
+        },
+        error => {
+          this.lastPositionError = error;
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              if (!empty(this.data.addresses)) {
+                this.notification.error(this.i18n.error.geolocation.denied);
+                // Select the first address
+                this.address.value = this.resolveFirstGeolocatedAddress().id;
+              } else {
+                this.submit(true);
+                this.notification.error(this.i18n.error.geolocation.deniedNoAddressAvailable);
+              }
+              break;
+            case error.POSITION_UNAVAILABLE:
+            case error.TIMEOUT:
+              this.notification.error(this.i18n.error.geolocation.unavailable);
+              break;
+            default:
+              this.notification.error(this.i18n.error.geolocation.general);
+          }
+          this.updateValue(null, true);
         }
-        this.updateValue(null, true);
-      });
+      );
     } else {
       // Not supported by the browser
       this.notification.warning(this.i18n.error.geolocation.unavailable);
@@ -158,7 +172,9 @@ export class DistanceSelectionComponent extends BaseComponent implements OnInit 
   }
 
   resolveFirstGeolocatedAddress(): Address {
-    return empty(this.data.addresses) ? null : this.data.addresses.find(a => a.location?.latitude && a.location?.longitude);
+    return empty(this.data.addresses)
+      ? null
+      : this.data.addresses.find(a => a.location?.latitude && a.location?.longitude);
   }
 
   protected getFocusableControl() {

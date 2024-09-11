@@ -14,23 +14,16 @@ import { first } from 'rxjs/operators';
 @Component({
   selector: 'accept-pending-agreements',
   templateUrl: 'accept-pending-agreements.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AcceptPendingAgreementsComponent
-  extends BasePageComponent<Agreement[]>
-  implements OnInit {
-
+export class AcceptPendingAgreementsComponent extends BasePageComponent<Agreement[]> implements OnInit {
   title: string;
   mobileTitle: string;
   message: string;
 
   accepted = new FormControl([]);
 
-  constructor(
-    injector: Injector,
-    private agreementsService: AgreementsService,
-    private loginState: LoginState
-  ) {
+  constructor(injector: Injector, private agreementsService: AgreementsService, private loginState: LoginState) {
     super(injector);
   }
 
@@ -57,15 +50,19 @@ export class AcceptPendingAgreementsComponent
       this.message = this.i18n.pendingAgreements.messageFirstTime;
     }
 
-    this.addSub(this.agreementsService.listPendingAgreements({
-      fields: ['-content']
-    }).subscribe(data => {
-      if (empty(data)) {
-        this.router.navigateByUrl(this.loginState.redirectUrl || '');
-        return;
-      }
-      this.data = data;
-    }));
+    this.addSub(
+      this.agreementsService
+        .listPendingAgreements({
+          fields: ['-content']
+        })
+        .subscribe(data => {
+          if (empty(data)) {
+            this.router.navigateByUrl(this.loginState.redirectUrl || '');
+            return;
+          }
+          this.data = data;
+        })
+    );
   }
 
   submit() {
@@ -77,7 +74,10 @@ export class AcceptPendingAgreementsComponent
   }
 
   reload() {
-    this.dataForFrontendHolder.reload().pipe(first()).subscribe(() => this.router.navigateByUrl(this.loginState.redirectUrl || ''));
+    this.dataForFrontendHolder
+      .reload()
+      .pipe(first())
+      .subscribe(() => this.router.navigateByUrl(this.loginState.redirectUrl || ''));
   }
 
   cancel() {

@@ -6,12 +6,8 @@
     <div class="mb-3" [innerHTML]="content | trust"></div>
   </div>
   <actions forceRow>
-    <action-button (action)="print(contentDiv, printOutput)"
-      [label]="i18n.general.print">
-    </action-button>
-    <action-button outline (action)="modalRef.hide()"
-      [label]="i18n.general.close">
-    </action-button>
+    <action-button (action)="print(contentDiv, printOutput)" [label]="i18n.general.print"> </action-button>
+    <action-button outline (action)="modalRef.hide()" [label]="i18n.general.close"> </action-button>
   </actions>
   <iframe class="d-none" #printOutput></iframe>
 </ng-container>

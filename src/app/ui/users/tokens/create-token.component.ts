@@ -18,10 +18,9 @@ import { first } from 'rxjs/operators';
 @Component({
   selector: 'create-token',
   templateUrl: 'create-token.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateTokenComponent extends BaseComponent implements OnInit {
-
   physicalType = PhysicalTokenTypeEnum;
 
   @Input() type: TokenType;
@@ -40,7 +39,8 @@ export class CreateTokenComponent extends BaseComponent implements OnInit {
     public modalRef: BsModalRef,
     private tokensService: TokensService,
     private operatorsService: OperatorsService,
-    private modal: BsModalService) {
+    private modal: BsModalService
+  ) {
     super(injector);
   }
 
@@ -50,7 +50,7 @@ export class CreateTokenComponent extends BaseComponent implements OnInit {
       user: this.user ? this.user.id : null,
       operator: null,
       value: [null, Validators.required],
-      activateNow: false,
+      activateNow: false
     });
     if (!this.user) {
       this.form.get('user').valueChanges.subscribe(() => this.fillOperatorsField());
@@ -61,7 +61,8 @@ export class CreateTokenComponent extends BaseComponent implements OnInit {
     const id = this.form.get('user').value;
     if (id) {
       this.canActivate$.next(true);
-      this.operatorsService.searchUserOperators$Response({ user: id, skipTotalCount: true, pageSize: 9999999 })
+      this.operatorsService
+        .searchUserOperators$Response({ user: id, skipTotalCount: true, pageSize: 9999999 })
         .subscribe(response => {
           if (response.ok && response.body?.length > 0) {
             this.operators$.next(response.body);

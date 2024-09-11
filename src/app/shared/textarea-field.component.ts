@@ -1,6 +1,14 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Host, Injector,
-  Input, Optional, SkipSelf, ViewChild,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Host,
+  Injector,
+  Input,
+  Optional,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
@@ -13,13 +21,9 @@ import autosize from 'autosize';
   selector: 'textarea-field',
   templateUrl: 'textarea-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: TextAreaFieldComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: TextAreaFieldComponent, multi: true }]
 })
-export class TextAreaFieldComponent
-  extends BaseFormFieldComponent<string> implements AfterViewInit {
-
+export class TextAreaFieldComponent extends BaseFormFieldComponent<string> implements AfterViewInit {
   /** A placeholder to be shown inside the component */
   @Input() placeholder = '';
 
@@ -28,9 +32,7 @@ export class TextAreaFieldComponent
 
   @ViewChild('textarea') textareaRef: ElementRef;
 
-  constructor(
-    injector: Injector,
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
+  constructor(injector: Injector, @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
     super(injector, controlContainer);
   }
 

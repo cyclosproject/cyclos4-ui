@@ -1,9 +1,27 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AuthorizationActionEnum, ContactNew, CreateDeviceConfirmation, CustomFieldDetailed, CustomFieldTypeEnum, DeviceConfirmationTypeEnum,
-  ExternalPaymentActionEnum, ExternalPaymentStatusEnum, FailedOccurrenceActionEnum, InstallmentActionEnum, InstallmentStatusEnum, InstallmentView,
-  PaymentRequestActionEnum, PaymentRequestStatusEnum, RecurringPaymentActionEnum,
-  ScheduledPaymentActionEnum, TransactionAuthorizationStatusEnum, TransactionAuthorizationTypeEnum, TransactionKind, TransactionSubjectsEnum, TransactionView, User
+  AuthorizationActionEnum,
+  ContactNew,
+  CreateDeviceConfirmation,
+  CustomFieldDetailed,
+  CustomFieldTypeEnum,
+  DeviceConfirmationTypeEnum,
+  ExternalPaymentActionEnum,
+  ExternalPaymentStatusEnum,
+  FailedOccurrenceActionEnum,
+  InstallmentActionEnum,
+  InstallmentStatusEnum,
+  InstallmentView,
+  PaymentRequestActionEnum,
+  PaymentRequestStatusEnum,
+  RecurringPaymentActionEnum,
+  ScheduledPaymentActionEnum,
+  TransactionAuthorizationStatusEnum,
+  TransactionAuthorizationTypeEnum,
+  TransactionKind,
+  TransactionSubjectsEnum,
+  TransactionView,
+  User
 } from 'app/api/models';
 import { ContactsService } from 'app/api/services/contacts.service';
 import { ExternalPaymentsService } from 'app/api/services/external-payments.service';
@@ -32,11 +50,9 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'view-transaction',
   templateUrl: 'view-transaction.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewTransactionComponent extends BaseViewPageComponent<TransactionView> implements OnInit {
-
-
   title: string;
   mobileTitle: string;
   lastAuthComment: string;
@@ -76,12 +92,14 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.transactionsService.viewTransaction({ key: this.key })
-      .subscribe(transaction => {
+    this.addSub(
+      this.transactionsService.viewTransaction({ key: this.key }).subscribe(transaction => {
         [this.title, this.mobileTitle] = this.titles(transaction.kind);
         this.headingActions = this.initActions(transaction);
         this.hasDueAmount = transaction.dueAmount && !this.format.isZero(transaction.dueAmount);
-        this.hasActions = !!(transaction.installments || transaction.occurrences || []).find(i => i.canProcess || i.canSettle);
+        this.hasActions = !!(transaction.installments || transaction.occurrences || []).find(
+          i => i.canProcess || i.canSettle
+        );
         this.data = transaction;
         if (transaction.transfer) {
           transaction.transfer.transaction = transaction;
@@ -89,93 +107,147 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
         if (!empty(transaction.authorizations)) {
           this.lastAuthComment = transaction.authorizations[0].comments;
         }
-        this.canAddReceiverToContacts$ = new BehaviorSubject(transaction.usersWhichCanAddToContacts === TransactionSubjectsEnum.TO
-          || transaction.usersWhichCanAddToContacts === TransactionSubjectsEnum.BOTH);
-
-      }));
+        this.canAddReceiverToContacts$ = new BehaviorSubject(
+          transaction.usersWhichCanAddToContacts === TransactionSubjectsEnum.TO ||
+            transaction.usersWhichCanAddToContacts === TransactionSubjectsEnum.BOTH
+        );
+      })
+    );
   }
 
   private initActions(transaction: TransactionView): HeadingAction[] {
-    const actions: HeadingAction[] = this.exportHelper.headingActions(transaction.exportFormats,
-      f => this.transactionsService.exportTransaction$Response({
+    const actions: HeadingAction[] = this.exportHelper.headingActions(transaction.exportFormats, f =>
+      this.transactionsService.exportTransaction$Response({
         format: f.internalName,
         key: transaction.id
-      }));
+      })
+    );
     const auth = transaction.authorizationPermissions || {};
     if (!empty(transaction.authorizations)) {
-      actions.push(new HeadingAction(SvgIcon.CheckCircle, this.i18n.transaction.viewAuthorizations,
-        () => this.router.navigate(['/banking', 'transaction', this.key, 'authorization-history'])));
+      actions.push(
+        new HeadingAction(SvgIcon.CheckCircle, this.i18n.transaction.viewAuthorizations, () =>
+          this.router.navigate(['/banking', 'transaction', this.key, 'authorization-history'])
+        )
+      );
     }
     if (auth.authorize) {
-      actions.push(new HeadingAction(SvgIcon.HandThumbsUp, this.i18n.transaction.authorizePending, () => this.authorize()));
+      actions.push(
+        new HeadingAction(SvgIcon.HandThumbsUp, this.i18n.transaction.authorizePending, () => this.authorize())
+      );
     }
     if (auth.deny) {
       actions.push(new HeadingAction(SvgIcon.HandThumbsDown, this.i18n.transaction.denyPending, () => this.deny()));
     }
     if (auth.cancel) {
-      actions.push(new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.cancelAuthorization, () => this.cancelAuthorization()));
+      actions.push(
+        new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.cancelAuthorization, () => this.cancelAuthorization())
+      );
     }
 
     const scheduled = transaction.scheduledPaymentPermissions || {};
     if (scheduled.block) {
-      actions.push(new HeadingAction(SvgIcon.CalendarX, this.i18n.transaction.blockScheduling, () => this.blockScheduled()));
+      actions.push(
+        new HeadingAction(SvgIcon.CalendarX, this.i18n.transaction.blockScheduling, () => this.blockScheduled())
+      );
     }
     if (scheduled.unblock) {
-      actions.push(new HeadingAction(SvgIcon.CalendarCheck, this.i18n.transaction.unblockScheduling, () => this.unblockScheduled()));
+      actions.push(
+        new HeadingAction(SvgIcon.CalendarCheck, this.i18n.transaction.unblockScheduling, () => this.unblockScheduled())
+      );
     }
     if (scheduled.cancel) {
-      actions.push(new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.cancelScheduled, () => this.cancelScheduled()));
+      actions.push(
+        new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.cancelScheduled, () => this.cancelScheduled())
+      );
     }
     if (scheduled.settle) {
-      actions.push(new HeadingAction(SvgIcon.Check2All, this.i18n.transaction.settleScheduled, () => this.settleScheduled()));
+      actions.push(
+        new HeadingAction(SvgIcon.Check2All, this.i18n.transaction.settleScheduled, () => this.settleScheduled())
+      );
     }
-    if (transaction.kind === TransactionKind.SCHEDULED_PAYMENT
-      && transaction.installments.length === 1
-      && transaction.installments[0].canProcess) {
-      actions.push(new HeadingAction(SvgIcon.FilePlay, this.i18n.transaction.processScheduled,
-        () => this.processScheduled(transaction.installments[0])));
+    if (
+      transaction.kind === TransactionKind.SCHEDULED_PAYMENT &&
+      transaction.installments.length === 1 &&
+      transaction.installments[0].canProcess
+    ) {
+      actions.push(
+        new HeadingAction(SvgIcon.FilePlay, this.i18n.transaction.processScheduled, () =>
+          this.processScheduled(transaction.installments[0])
+        )
+      );
     }
 
     if (transaction.recurringPaymentPermissions?.edit) {
       actions.push(new HeadingAction(SvgIcon.Pencil, this.i18n.transaction.editRecurring, () => this.editRecurring()));
     }
     if (transaction.recurringPaymentPermissions?.cancel) {
-      actions.push(new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.cancelRecurring, () => this.cancelRecurring()));
+      actions.push(
+        new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.cancelRecurring, () => this.cancelRecurring())
+      );
     }
     if (transaction.recurringPaymentPermissions?.block) {
-      actions.push(new HeadingAction(SvgIcon.CalendarCheck, this.i18n.transaction.blockRecurring, () => this.blockRecurring()));
+      actions.push(
+        new HeadingAction(SvgIcon.CalendarCheck, this.i18n.transaction.blockRecurring, () => this.blockRecurring())
+      );
     }
     if (transaction.recurringPaymentPermissions?.unblock) {
-      actions.push(new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.unblockRecurring, () => this.unblockRecurring()));
+      actions.push(
+        new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.unblockRecurring, () => this.unblockRecurring())
+      );
     }
 
     const requestPermissions = transaction.paymentRequestPermissions || {};
     if (requestPermissions.accept) {
-      actions.push(new HeadingAction(SvgIcon.HandThumbsUp, this.i18n.transaction.acceptPaymentRequest, () => this.acceptPaymentRequest()));
+      actions.push(
+        new HeadingAction(SvgIcon.HandThumbsUp, this.i18n.transaction.acceptPaymentRequest, () =>
+          this.acceptPaymentRequest()
+        )
+      );
     }
     if (requestPermissions.reject) {
-      actions.push(new HeadingAction(SvgIcon.HandThumbsDown, this.i18n.transaction.rejectPaymentRequest,
-        () => this.rejectPaymentRequest()));
+      actions.push(
+        new HeadingAction(SvgIcon.HandThumbsDown, this.i18n.transaction.rejectPaymentRequest, () =>
+          this.rejectPaymentRequest()
+        )
+      );
     }
     if (requestPermissions.cancel) {
-      actions.push(new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.cancelPaymentRequest, () => this.cancelPaymentRequest()));
+      actions.push(
+        new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.cancelPaymentRequest, () =>
+          this.cancelPaymentRequest()
+        )
+      );
     }
     if (requestPermissions.reschedule) {
-      actions.push(new HeadingAction(SvgIcon.CalendarEvent, this.i18n.transaction.reschedulePaymentRequest,
-        () => this.reschedulePaymentRequest()));
+      actions.push(
+        new HeadingAction(SvgIcon.CalendarEvent, this.i18n.transaction.reschedulePaymentRequest, () =>
+          this.reschedulePaymentRequest()
+        )
+      );
     }
     if (requestPermissions.changeExpiration) {
-      actions.push(new HeadingAction(SvgIcon.CalendarEvent, this.i18n.transaction.changePaymentRequestExpiration,
-        () => this.changePaymentRequestExpiration()));
+      actions.push(
+        new HeadingAction(SvgIcon.CalendarEvent, this.i18n.transaction.changePaymentRequestExpiration, () =>
+          this.changePaymentRequestExpiration()
+        )
+      );
     }
 
     const externalPermissions = transaction.externalPaymentPermissions || {};
     if (externalPermissions.cancel) {
-      actions.push(new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.cancelExternalPayment, () => this.cancelExternalPayment()));
+      actions.push(
+        new HeadingAction(SvgIcon.XCircle, this.i18n.transaction.cancelExternalPayment, () =>
+          this.cancelExternalPayment()
+        )
+      );
     }
 
     if (transaction.transfer?.canChargeback) {
-      actions.push(new HeadingAction(SvgIcon.ArrowCounterclockwise, this.i18n.transaction.chargebackTransfer, () => this.chargeback()));
+      actions.push(
+        new HeadingAction(SvgIcon.ArrowCounterclockwise, this.i18n.transaction.chargebackTransfer, () =>
+          this.chargeback()
+        )
+      );
     }
 
     for (const operation of (transaction.transfer || {}).operations || []) {
@@ -204,7 +276,8 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
             return this.i18n.transaction.awaitingAuthorizationByReceiver;
           }
           if (levelData.allowBroker) {
-            return levelData.brokers?.length > 0 ? this.i18n.transaction.awaitingAuthorizationByBroker
+            return levelData.brokers?.length > 0
+              ? this.i18n.transaction.awaitingAuthorizationByBroker
               : this.i18n.transaction.awaitingAuthorizationByMissingBroker;
           }
           if (levelData.allowAdmin) {
@@ -217,18 +290,20 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
   }
 
   private get authorizationFields(): CustomFieldDetailed[] {
-    return [{
-      internalName: 'comments',
-      name: this.i18n.general.comments,
-      type: CustomFieldTypeEnum.TEXT,
-    }];
+    return [
+      {
+        internalName: 'comments',
+        name: this.i18n.general.comments,
+        type: CustomFieldTypeEnum.TEXT
+      }
+    ];
   }
 
   private authDeviceConfirmation(action: AuthorizationActionEnum): () => CreateDeviceConfirmation {
     return () => ({
       type: DeviceConfirmationTypeEnum.MANAGE_AUTHORIZATION,
       transaction: this.transaction.id,
-      authorizationAction: action,
+      authorizationAction: action
     });
   }
 
@@ -240,20 +315,24 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       passwordInput: this.transaction.confirmationPasswordInput,
       createDeviceConfirmation: this.authDeviceConfirmation(AuthorizationActionEnum.AUTHORIZE),
       callback: res => {
-        this.addSub(this.pendingPaymentsService.authorizePendingPayment({
-          key: this.transaction.id,
-          confirmationPassword: res.confirmationPassword,
-          body: {
-            comments: res.customValues.comments
-          },
-        }).subscribe(nextLevel => {
-          if (nextLevel) {
-            this.notification.warning(this.i18n.transaction.authorizePendingDoneStillPending);
-          } else {
-            this.notification.snackBar(this.i18n.transaction.authorizePendingDone);
-          }
-          this.reload();
-        }));
+        this.addSub(
+          this.pendingPaymentsService
+            .authorizePendingPayment({
+              key: this.transaction.id,
+              confirmationPassword: res.confirmationPassword,
+              body: {
+                comments: res.customValues.comments
+              }
+            })
+            .subscribe(nextLevel => {
+              if (nextLevel) {
+                this.notification.warning(this.i18n.transaction.authorizePendingDoneStillPending);
+              } else {
+                this.notification.snackBar(this.i18n.transaction.authorizePendingDone);
+              }
+              this.reload();
+            })
+        );
       }
     });
   }
@@ -266,13 +345,17 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.authDeviceConfirmation(AuthorizationActionEnum.DENY),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.addSub(this.pendingPaymentsService.denyPendingPayment({
-          key: this.transaction.id,
-          confirmationPassword: res.confirmationPassword,
-          body: {
-            comments: res.customValues.comments,
-          },
-        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.denyPendingDone)));
+        this.addSub(
+          this.pendingPaymentsService
+            .denyPendingPayment({
+              key: this.transaction.id,
+              confirmationPassword: res.confirmationPassword,
+              body: {
+                comments: res.customValues.comments
+              }
+            })
+            .subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.denyPendingDone))
+        );
       }
     });
   }
@@ -285,13 +368,17 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.authDeviceConfirmation(AuthorizationActionEnum.CANCEL),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.addSub(this.pendingPaymentsService.cancelPendingPayment({
-          key: this.transaction.id,
-          confirmationPassword: res.confirmationPassword,
-          body: {
-            comments: res.customValues.comments,
-          },
-        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.cancelAuthorizationDone)));
+        this.addSub(
+          this.pendingPaymentsService
+            .cancelPendingPayment({
+              key: this.transaction.id,
+              confirmationPassword: res.confirmationPassword,
+              body: {
+                comments: res.customValues.comments
+              }
+            })
+            .subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.cancelAuthorizationDone))
+        );
       }
     });
   }
@@ -300,7 +387,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
     return () => ({
       type: DeviceConfirmationTypeEnum.MANAGE_SCHEDULED_PAYMENT,
       transaction: this.transaction.id,
-      scheduledPaymentAction: action,
+      scheduledPaymentAction: action
     });
   }
 
@@ -311,10 +398,14 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.BLOCK),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.addSub(this.scheduledPaymentsService.blockScheduledPayment({
-          key: this.transaction.id,
-          confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.blockSchedulingDone)));
+        this.addSub(
+          this.scheduledPaymentsService
+            .blockScheduledPayment({
+              key: this.transaction.id,
+              confirmationPassword: res.confirmationPassword
+            })
+            .subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.blockSchedulingDone))
+        );
       }
     });
   }
@@ -326,10 +417,14 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.UNBLOCK),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.addSub(this.scheduledPaymentsService.unblockScheduledPayment({
-          key: this.transaction.id,
-          confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.unblockSchedulingDone)));
+        this.addSub(
+          this.scheduledPaymentsService
+            .unblockScheduledPayment({
+              key: this.transaction.id,
+              confirmationPassword: res.confirmationPassword
+            })
+            .subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.unblockSchedulingDone))
+        );
       }
     });
   }
@@ -341,10 +436,14 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.recurringDeviceConfirmation(RecurringPaymentActionEnum.BLOCK),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.addSub(this.recurringPaymentsService.blockRecurringPayment({
-          key: this.transaction.id,
-          confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.blockRecurringDone)));
+        this.addSub(
+          this.recurringPaymentsService
+            .blockRecurringPayment({
+              key: this.transaction.id,
+              confirmationPassword: res.confirmationPassword
+            })
+            .subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.blockRecurringDone))
+        );
       }
     });
   }
@@ -356,10 +455,14 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.recurringDeviceConfirmation(RecurringPaymentActionEnum.UNBLOCK),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.addSub(this.recurringPaymentsService.unblockRecurringPayment({
-          key: this.transaction.id,
-          confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.unblockRecurringDone)));
+        this.addSub(
+          this.recurringPaymentsService
+            .unblockRecurringPayment({
+              key: this.transaction.id,
+              confirmationPassword: res.confirmationPassword
+            })
+            .subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.unblockRecurringDone))
+        );
       }
     });
   }
@@ -371,10 +474,14 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.CANCEL),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.addSub(this.scheduledPaymentsService.cancelScheduledPayment({
-          key: this.transaction.id,
-          confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.cancelScheduledDone)));
+        this.addSub(
+          this.scheduledPaymentsService
+            .cancelScheduledPayment({
+              key: this.transaction.id,
+              confirmationPassword: res.confirmationPassword
+            })
+            .subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.cancelScheduledDone))
+        );
       }
     });
   }
@@ -386,10 +493,14 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.SETTLE),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.addSub(this.scheduledPaymentsService.settleScheduledPayment({
-          key: this.transaction.id,
-          confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.settleScheduledDone)));
+        this.addSub(
+          this.scheduledPaymentsService
+            .settleScheduledPayment({
+              key: this.transaction.id,
+              confirmationPassword: res.confirmationPassword
+            })
+            .subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.settleScheduledDone))
+        );
       }
     });
   }
@@ -398,7 +509,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
     return () => ({
       type: DeviceConfirmationTypeEnum.MANAGE_RECURRING_PAYMENT,
       transaction: this.transaction.id,
-      recurringPaymentAction: action,
+      recurringPaymentAction: action
     });
   }
 
@@ -409,10 +520,14 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.recurringDeviceConfirmation(RecurringPaymentActionEnum.CANCEL),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.addSub(this.recurringPaymentsService.cancelRecurringPayment({
-          key: this.transaction.id,
-          confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.cancelRecurringDone)));
+        this.addSub(
+          this.recurringPaymentsService
+            .cancelRecurringPayment({
+              key: this.transaction.id,
+              confirmationPassword: res.confirmationPassword
+            })
+            .subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.cancelRecurringDone))
+        );
       }
     });
   }
@@ -425,7 +540,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
     return () => ({
       type: DeviceConfirmationTypeEnum.MANAGE_PAYMENT_REQUEST,
       transaction: this.transaction.id,
-      paymentRequestAction: action,
+      paymentRequestAction: action
     });
   }
 
@@ -433,7 +548,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
     return () => ({
       type: DeviceConfirmationTypeEnum.MANAGE_EXTERNAL_PAYMENT,
       transaction: this.transaction.id,
-      externalPaymentAction: action,
+      externalPaymentAction: action
     });
   }
 
@@ -443,17 +558,23 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.paymentRequestDeviceConfirmation(PaymentRequestActionEnum.CANCEL),
       passwordInput: this.transaction.confirmationPasswordInput,
       labelPosition: 'above',
-      customFields: [{
-        internalName: 'comments',
-        name: this.i18n.general.comments,
-        type: CustomFieldTypeEnum.TEXT
-      }],
+      customFields: [
+        {
+          internalName: 'comments',
+          name: this.i18n.general.comments,
+          type: CustomFieldTypeEnum.TEXT
+        }
+      ],
       callback: res => {
-        this.addSub(this.paymentRequestsService.cancelPaymentRequest({
-          key: this.transaction.id,
-          body: res.customValues.comments,
-          confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.cancelPaymentRequestDone)));
+        this.addSub(
+          this.paymentRequestsService
+            .cancelPaymentRequest({
+              key: this.transaction.id,
+              body: res.customValues.comments,
+              confirmationPassword: res.confirmationPassword
+            })
+            .subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.cancelPaymentRequestDone))
+        );
       }
     });
   }
@@ -464,17 +585,23 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.paymentRequestDeviceConfirmation(PaymentRequestActionEnum.DENY),
       passwordInput: this.transaction.confirmationPasswordInput,
       labelPosition: 'above',
-      customFields: [{
-        internalName: 'comments',
-        name: this.i18n.general.comments,
-        type: CustomFieldTypeEnum.TEXT
-      }],
+      customFields: [
+        {
+          internalName: 'comments',
+          name: this.i18n.general.comments,
+          type: CustomFieldTypeEnum.TEXT
+        }
+      ],
       callback: res => {
-        this.addSub(this.paymentRequestsService.rejectPaymentRequest({
-          key: this.transaction.id,
-          body: res.customValues.comments,
-          confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.rejectPaymentRequestDone)));
+        this.addSub(
+          this.paymentRequestsService
+            .rejectPaymentRequest({
+              key: this.transaction.id,
+              body: res.customValues.comments,
+              confirmationPassword: res.confirmationPassword
+            })
+            .subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.rejectPaymentRequestDone))
+        );
       }
     });
   }
@@ -485,23 +612,33 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.paymentRequestDeviceConfirmation(PaymentRequestActionEnum.CHANGE_EXPIRATION),
       passwordInput: this.transaction.confirmationPasswordInput,
       labelPosition: 'above',
-      customFields: [{
-        internalName: 'expiry',
-        name: this.i18n.token.expiryDate,
-        type: CustomFieldTypeEnum.DATE,
-        required: true
-      }, {
-        internalName: 'comments',
-        defaultValue: this.data.changeExpirationDateComments,
-        name: this.i18n.general.comments,
-        type: CustomFieldTypeEnum.TEXT
-      }],
+      customFields: [
+        {
+          internalName: 'expiry',
+          name: this.i18n.token.expiryDate,
+          type: CustomFieldTypeEnum.DATE,
+          required: true
+        },
+        {
+          internalName: 'comments',
+          defaultValue: this.data.changeExpirationDateComments,
+          name: this.i18n.general.comments,
+          type: CustomFieldTypeEnum.TEXT
+        }
+      ],
       callback: res => {
-        this.addSub(this.paymentRequestsService.changePaymentRequestExpirationDate({
-          key: this.transaction.id,
-          confirmationPassword: res.confirmationPassword,
-          body: { comments: res.customValues.comments, newExpirationDate: ApiHelper.shiftToDayEnd(res.customValues.expiry) }
-        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.changePaymentRequestExpirationDone)));
+        this.addSub(
+          this.paymentRequestsService
+            .changePaymentRequestExpirationDate({
+              key: this.transaction.id,
+              confirmationPassword: res.confirmationPassword,
+              body: {
+                comments: res.customValues.comments,
+                newExpirationDate: ApiHelper.shiftToDayEnd(res.customValues.expiry)
+              }
+            })
+            .subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.changePaymentRequestExpirationDone))
+        );
       }
     });
   }
@@ -514,7 +651,11 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
         createDeviceConfirmation: this.paymentRequestDeviceConfirmation(PaymentRequestActionEnum.RESCHEDULE)
       }
     });
-    this.addSub(ref.content.done.subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.reschedulePaymentRequestDone)));
+    this.addSub(
+      ref.content.done.subscribe(() =>
+        this.sendNotificationAndReload(this.i18n.transaction.reschedulePaymentRequestDone)
+      )
+    );
   }
 
   private acceptPaymentRequest() {
@@ -527,17 +668,23 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.externalPaymentDeviceConfirmation(ExternalPaymentActionEnum.CANCEL),
       passwordInput: this.transaction.confirmationPasswordInput,
       labelPosition: 'above',
-      customFields: [{
-        internalName: 'comments',
-        name: this.i18n.general.comments,
-        type: CustomFieldTypeEnum.TEXT
-      }],
+      customFields: [
+        {
+          internalName: 'comments',
+          name: this.i18n.general.comments,
+          type: CustomFieldTypeEnum.TEXT
+        }
+      ],
       callback: res => {
-        this.addSub(this.externalPaymentsService.cancelExternalPayment({
-          key: this.transaction.id,
-          body: res.customValues.comments,
-          confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.cancelExternalPaymentDone)));
+        this.addSub(
+          this.externalPaymentsService
+            .cancelExternalPayment({
+              key: this.transaction.id,
+              body: res.customValues.comments,
+              confirmationPassword: res.confirmationPassword
+            })
+            .subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.cancelExternalPaymentDone))
+        );
       }
     });
   }
@@ -545,7 +692,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
   private chargebackDeviceConfirmation(): () => CreateDeviceConfirmation {
     return () => ({
       type: DeviceConfirmationTypeEnum.CHARGEBACK,
-      transfer: this.transaction.transfer.id,
+      transfer: this.transaction.transfer.id
     });
   }
 
@@ -556,10 +703,14 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.chargebackDeviceConfirmation(),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.addSub(this.transfersService.chargebackTransfer({
-          key: this.transaction.transfer.id,
-          confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.chargebackTransferDone)));
+        this.addSub(
+          this.transfersService
+            .chargebackTransfer({
+              key: this.transaction.transfer.id,
+              confirmationPassword: res.confirmationPassword
+            })
+            .subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.chargebackTransferDone))
+        );
       }
     });
   }
@@ -567,40 +718,19 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
   private titles(kind: TransactionKind): [string, string] {
     switch (kind) {
       case TransactionKind.SCHEDULED_PAYMENT:
-        return [
-          this.i18n.transaction.title.detailsScheduled,
-          this.i18n.transaction.mobileTitle.detailsScheduled,
-        ];
+        return [this.i18n.transaction.title.detailsScheduled, this.i18n.transaction.mobileTitle.detailsScheduled];
       case TransactionKind.RECURRING_PAYMENT:
-        return [
-          this.i18n.transaction.title.detailsRecurring,
-          this.i18n.transaction.mobileTitle.detailsRecurring,
-        ];
+        return [this.i18n.transaction.title.detailsRecurring, this.i18n.transaction.mobileTitle.detailsRecurring];
       case TransactionKind.PAYMENT_REQUEST:
-        return [
-          this.i18n.transaction.title.detailsRequest,
-          this.i18n.transaction.mobileTitle.detailsRequest,
-        ];
+        return [this.i18n.transaction.title.detailsRequest, this.i18n.transaction.mobileTitle.detailsRequest];
       case TransactionKind.CHARGEBACK:
-        return [
-          this.i18n.transaction.title.detailsChargeback,
-          this.i18n.transaction.mobileTitle.detailsChargeback,
-        ];
+        return [this.i18n.transaction.title.detailsChargeback, this.i18n.transaction.mobileTitle.detailsChargeback];
       case TransactionKind.TICKET:
-        return [
-          this.i18n.transaction.title.detailsTicket,
-          this.i18n.transaction.mobileTitle.detailsTicket,
-        ];
+        return [this.i18n.transaction.title.detailsTicket, this.i18n.transaction.mobileTitle.detailsTicket];
       case TransactionKind.EXTERNAL_PAYMENT:
-        return [
-          this.i18n.transaction.title.detailsExternal,
-          this.i18n.transaction.mobileTitle.detailsExternal,
-        ];
+        return [this.i18n.transaction.title.detailsExternal, this.i18n.transaction.mobileTitle.detailsExternal];
       default:
-        return [
-          this.i18n.transaction.title.detailsPayment,
-          this.i18n.transaction.mobileTitle.detailsPayment,
-        ];
+        return [this.i18n.transaction.title.detailsPayment, this.i18n.transaction.mobileTitle.detailsPayment];
     }
   }
 
@@ -617,12 +747,12 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
 
   private installmentDeviceConfirmation(
     action: InstallmentActionEnum,
-    installment: InstallmentView): () => CreateDeviceConfirmation {
-
+    installment: InstallmentView
+  ): () => CreateDeviceConfirmation {
     return () => ({
       type: DeviceConfirmationTypeEnum.MANAGE_INSTALLMENT,
       installment: installment.id,
-      installmentAction: action,
+      installmentAction: action
     });
   }
 
@@ -633,10 +763,14 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.installmentDeviceConfirmation(InstallmentActionEnum.SETTLE, installment),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.addSub(this.installmentsService.settleInstallment({
-          key: installment.id,
-          confirmationPassword: res.confirmationPassword,
-        }).subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.settleInstallmentDone)));
+        this.addSub(
+          this.installmentsService
+            .settleInstallment({
+              key: installment.id,
+              confirmationPassword: res.confirmationPassword
+            })
+            .subscribe(() => this.sendNotificationAndReload(this.i18n.transaction.settleInstallmentDone))
+        );
       }
     });
   }
@@ -659,7 +793,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       message: this.i18n.transaction.processInstallmentMessage(installment.number),
       createDeviceConfirmation: this.installmentDeviceConfirmation(InstallmentActionEnum.PROCESS, installment),
       passwordInput: this.transaction.confirmationPasswordInput,
-      callback: this.processCallback(installment.id, this.i18n.transaction.processInstallmentDone),
+      callback: this.processCallback(installment.id, this.i18n.transaction.processInstallmentDone)
     });
   }
 
@@ -667,9 +801,12 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
     this.confirmation.confirm({
       title: this.i18n.transaction.processFailedOccurrence,
       message: this.i18n.transaction.processFailedOccurrenceMessage(installment.number),
-      createDeviceConfirmation: this.failedOccurreneceDeviceConfirmation(FailedOccurrenceActionEnum.PROCESS, installment),
+      createDeviceConfirmation: this.failedOccurreneceDeviceConfirmation(
+        FailedOccurrenceActionEnum.PROCESS,
+        installment
+      ),
       passwordInput: this.transaction.confirmationPasswordInput,
-      callback: this.processCallback(installment.id, this.i18n.transaction.processFailedOccurrenceDone),
+      callback: this.processCallback(installment.id, this.i18n.transaction.processFailedOccurrenceDone)
     });
   }
 
@@ -679,13 +816,17 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       message: this.i18n.transaction.processScheduledMessage,
       createDeviceConfirmation: this.installmentDeviceConfirmation(InstallmentActionEnum.PROCESS, installment),
       passwordInput: this.transaction.confirmationPasswordInput,
-      callback: this.processCallback(installment.id, this.i18n.transaction.processScheduledDone),
+      callback: this.processCallback(installment.id, this.i18n.transaction.processScheduledDone)
     });
   }
 
   processCallback(key: string, notificationMsg: string): (params: ConfirmCallbackParams) => void {
-    return res => this.addSub(this.installmentsService.processInstallment({ key, confirmationPassword: res.confirmationPassword })
-      .subscribe(() => this.sendNotificationAndReload(notificationMsg)));
+    return res =>
+      this.addSub(
+        this.installmentsService
+          .processInstallment({ key, confirmationPassword: res.confirmationPassword })
+          .subscribe(() => this.sendNotificationAndReload(notificationMsg))
+      );
   }
 
   sendNotificationAndReload(msg: string) {
@@ -695,34 +836,42 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
 
   private failedOccurreneceDeviceConfirmation(
     action: FailedOccurrenceActionEnum,
-    installment: InstallmentView): () => CreateDeviceConfirmation {
-
+    installment: InstallmentView
+  ): () => CreateDeviceConfirmation {
     return () => ({
       type: DeviceConfirmationTypeEnum.MANAGE_FAILED_OCCURRENCE,
       failedOccurrence: installment.id,
-      failedOccurrenceAction: action,
+      failedOccurrenceAction: action
     });
   }
 
   resolveLastPaymentNotificationType(): string {
-    return this.transaction.authorizationStatus === TransactionAuthorizationStatusEnum.PENDING ? "warning" : "info";
+    return this.transaction.authorizationStatus === TransactionAuthorizationStatusEnum.PENDING ? 'warning' : 'info';
   }
 
   resolveLastPaymentNotificationMessage(): string {
     if (this.transaction.paymentRequestStatus === PaymentRequestStatusEnum.OPEN) {
       return this.i18n.transaction.paymentRequestSent;
-    } else if ((this.transaction.paymentRequestStatus === PaymentRequestStatusEnum.PROCESSED
-      || this.transaction.paymentRequestStatus === PaymentRequestStatusEnum.SCHEDULED) && this.transaction.processDate) {
-      return this.i18n.transaction.paymentRequestAcceptScheduled(this.format.formatAsDate(this.transaction.processDate));
+    } else if (
+      (this.transaction.paymentRequestStatus === PaymentRequestStatusEnum.PROCESSED ||
+        this.transaction.paymentRequestStatus === PaymentRequestStatusEnum.SCHEDULED) &&
+      this.transaction.processDate
+    ) {
+      return this.i18n.transaction.paymentRequestAcceptScheduled(
+        this.format.formatAsDate(this.transaction.processDate)
+      );
     } else if (this.transaction.externalPaymentStatus === ExternalPaymentStatusEnum.PENDING) {
       return this.i18n.transaction.externalPaymentPerformed;
     }
-    return this.transaction.authorizationStatus === TransactionAuthorizationStatusEnum.PENDING ? this.i18n.transaction.pending
+    return this.transaction.authorizationStatus === TransactionAuthorizationStatusEnum.PENDING
+      ? this.i18n.transaction.pending
       : this.i18n.transaction.processed;
   }
 
   resolveLastPaymentNotificationIcon(): string {
-    return this.transaction.authorizationStatus === TransactionAuthorizationStatusEnum.PENDING ? SvgIcon.Clock : SvgIcon.Check2;
+    return this.transaction.authorizationStatus === TransactionAuthorizationStatusEnum.PENDING
+      ? SvgIcon.Clock
+      : SvgIcon.Check2;
   }
 
   showNewPaymentButton(): boolean {
@@ -739,11 +888,12 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
 
   addUserToContacts(user: User) {
     const contact: ContactNew = { contact: user.id };
-    this.addSub(this.contactService.createContact({ user: ApiHelper.SELF, body: contact })
-      .subscribe(() => {
+    this.addSub(
+      this.contactService.createContact({ user: ApiHelper.SELF, body: contact }).subscribe(() => {
         this.notification.info(this.i18n.transaction.doneUserAddedToContacts(user.display));
         this.canAddReceiverToContacts$.next(false);
-      }));
+      })
+    );
   }
 
   addReceiverToContacts() {
@@ -753,5 +903,4 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
   resolveMenu(view: TransactionView) {
     return this.menu.accountMenu(view.from, view.to);
   }
-
 }

@@ -11,38 +11,29 @@
         <label-value *ngIf="to" [label]="i18n.reference.to">
           <user-link [user]="to"></user-link>
         </label-value>
-        <single-selection-field formControlName="level"
-          [label]="i18n.reference.level.level" required>
-          <field-option [value]="ReferenceLevelEnum.VERY_BAD"
-            [text]="i18n.reference.level.veryBad">
-          </field-option>
-          <field-option [value]="ReferenceLevelEnum.BAD"
-            [text]="i18n.reference.level.bad">
-          </field-option>
-          <field-option [value]="ReferenceLevelEnum.NEUTRAL"
-            [text]="i18n.reference.level.neutral">
-          </field-option>
-          <field-option [value]="ReferenceLevelEnum.GOOD"
-            [text]="i18n.reference.level.good">
-          </field-option>
-          <field-option [value]="ReferenceLevelEnum.VERY_GOOD"
-            [text]="i18n.reference.level.veryGood">
-          </field-option>
+        <single-selection-field formControlName="level" [label]="i18n.reference.level.level" required>
+          <field-option [value]="ReferenceLevelEnum.VERY_BAD" [text]="i18n.reference.level.veryBad"> </field-option>
+          <field-option [value]="ReferenceLevelEnum.BAD" [text]="i18n.reference.level.bad"> </field-option>
+          <field-option [value]="ReferenceLevelEnum.NEUTRAL" [text]="i18n.reference.level.neutral"> </field-option>
+          <field-option [value]="ReferenceLevelEnum.GOOD" [text]="i18n.reference.level.good"> </field-option>
+          <field-option [value]="ReferenceLevelEnum.VERY_GOOD" [text]="i18n.reference.level.veryGood"> </field-option>
         </single-selection-field>
         <textarea-field
           [formControlName]="dataForEdit ? 'giveComments' : 'comments'"
-          [label]="i18n.general.comments" required>
+          [label]="i18n.general.comments"
+          required>
         </textarea-field>
-        <textarea-field *ngIf="dataForEdit" formControlName="replyComments"
-          [label]="i18n.feedback.reply" required>
+        <textarea-field *ngIf="dataForEdit" formControlName="replyComments" [label]="i18n.feedback.reply" required>
         </textarea-field>
-        <textarea-field *ngIf="dataForEdit" formControlName="managerComments"
-          [label]="i18n.feedback.administrationComment" required>
+        <textarea-field
+          *ngIf="dataForEdit"
+          formControlName="managerComments"
+          [label]="i18n.feedback.administrationComment"
+          required>
         </textarea-field>
       </ng-container>
       <actions forceRow>
-        <action-button [disabled]="requesting$ | async" (action)="save()"
-          [label]="i18n.general.submit">
+        <action-button [disabled]="requesting$ | async" (action)="save()" [label]="i18n.general.submit">
         </action-button>
       </actions>
     </page-content>

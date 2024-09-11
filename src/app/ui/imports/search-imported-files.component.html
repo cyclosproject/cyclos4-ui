@@ -1,55 +1,64 @@
-<page-layout [ready]="(data$ | async)">
-  <ng-container *ngIf="data then content">
-  </ng-container>
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data; then content"> </ng-container>
 </page-layout>
 
 <ng-template #content>
-  <page-content mode="filters" [heading]="title" [mobileHeading]="mobileTitle"
+  <page-content
+    mode="filters"
+    [heading]="title"
+    [mobileHeading]="mobileTitle"
     [headingActions]="headingActions$ | async">
-    <div [formGroup]="form"
-      class="filters-form filters-form-separator border-bottom">
+    <div [formGroup]="form" class="filters-form filters-form-separator border-bottom">
       <div class="row filters-row">
         <div class="col-12">
-          <user-info *ngIf="data.user && !isSelf" [user]="data.user">
-          </user-info>
+          <user-info *ngIf="data.user && !isSelf" [user]="data.user"> </user-info>
         </div>
         <div class="col-12 col-md-6" *ngIf="data.kinds?.length > 1">
-          <multi-selection-field formControlName="kinds"
+          <multi-selection-field
+            formControlName="kinds"
             [label]="i18n.imports.kind.label"
             [emptyLabel]="i18n.general.notApplied">
-            <field-option *ngFor="let kind of data.kinds" [value]="kind"
-              [text]="importsHelper.kindLabel(kind)">
+            <field-option *ngFor="let kind of data.kinds" [value]="kind" [text]="importsHelper.kindLabel(kind)">
             </field-option>
           </multi-selection-field>
         </div>
         <div class="col-12 col-md-6">
-          <multi-selection-field [emptyLabel]="i18n.general.notApplied"
-            formControlName="statuses" [label]="i18n.general.status">
-            <field-option *ngFor="let status of statuses" [value]="status"
+          <multi-selection-field
+            [emptyLabel]="i18n.general.notApplied"
+            formControlName="statuses"
+            [label]="i18n.general.status">
+            <field-option
+              *ngFor="let status of statuses"
+              [value]="status"
               [text]="importsHelper.fileStatusLabel(status)">
             </field-option>
           </multi-selection-field>
         </div>
         <div class="w-100"></div>
         <div class="col-12 col-md-6">
-          <date-field formControlName="beginCreationPeriod"
-            [label]="i18n.user.creationBegin" minDate="past100"
-            maxDate="todayEnd" fieldSize="full" class>
+          <date-field
+            formControlName="beginCreationPeriod"
+            [label]="i18n.user.creationBegin"
+            minDate="past100"
+            maxDate="todayEnd"
+            fieldSize="full"
+            class>
           </date-field>
         </div>
         <div class="col-12 col-md-6">
-          <date-field formControlName="endCreationPeriod"
-            [label]="i18n.user.creationEnd" minDate="past100"
-            maxDate="todayEnd" fieldSize="full">
+          <date-field
+            formControlName="endCreationPeriod"
+            [label]="i18n.user.creationEnd"
+            minDate="past100"
+            maxDate="todayEnd"
+            fieldSize="full">
           </date-field>
         </div>
       </div>
     </div>
   </page-content>
 
-  <results-layout [results]="results$ | async" [toLink]="toLink"
-    (update)="update($event)" [rendering$]="rendering$">
-
+  <results-layout [results]="results$ | async" [toLink]="toLink" (update)="update($event)" [rendering$]="rendering$">
     <mobile-result *mobileResult="let row" [date]="row.creationDate">
       <div class="cell-text">
         {{ row.fileName }}
@@ -69,14 +78,15 @@
         <ng-container *ngFor="let row of (results$ | async)?.results">
           <tr (click)="router.navigate(path(row))">
             <td>{{ row.creationDate | date }}</td>
-            <th *ngIf="data.kinds?.length > 1">{{
-              importsHelper.kindLabel(row.kind) }}</th>
+            <th *ngIf="data.kinds?.length > 1">{{ importsHelper.kindLabel(row.kind) }}</th>
             <td>{{ row.fileName }}</td>
             <td>{{ row.description }}</td>
             <td>{{ importsHelper.fileStatusLabel(row.status) }}</td>
             <td *ngIf="data.manageKinds?.length">
-              <button *ngIf="data.manageKinds.includes(row.kind)"
-                type="button" [tooltip]="i18n.general.remove"
+              <button
+                *ngIf="data.manageKinds.includes(row.kind)"
+                type="button"
+                [tooltip]="i18n.general.remove"
                 class="btn btn-icon"
                 (click)="remove(row); $event.stopPropagation()">
                 <icon [icon]="SvgIcon.Trash"></icon>

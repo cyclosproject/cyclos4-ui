@@ -1,21 +1,23 @@
 <ng-container [ngSwitch]="captchaInput.provider" [formGroup]="form">
   <ng-container *ngSwitchCase="'internal'">
     <div class="flex-grow-1 d-flex justify-content-center mb-1">
-      <img #image alt="captcha">
+      <img #image alt="captcha" />
     </div>
     <div class="d-flex">
-      <input class="form-control mr-1" formControlName="response"
-        [focused]="focused" [ngClass]="{
-        'is-invalid': (form.get('response').statusChanges | async) === 'INVALID' && form.get('response').touched
-      }">
+      <input
+        class="form-control mr-1"
+        formControlName="response"
+        [focused]="focused"
+        [ngClass]="{
+          'is-invalid': (form.get('response').statusChanges | async) === 'INVALID' && form.get('response').touched
+        }" />
       <button type="button" class="btn btn-icon" (click)="newCaptcha()">
         <icon [icon]="SvgIcon.ArrowCounterclockwise"></icon>
       </button>
     </div>
   </ng-container>
   <ng-container *ngSwitchCase="'recaptchaV2'">
-    <re-captcha [siteKey]="captchaInput.recaptchaKey" [theme]="layout.theme"
-      formControlName="response"></re-captcha>
+    <re-captcha [siteKey]="captchaInput.recaptchaKey" [theme]="layout.theme" formControlName="response"></re-captcha>
   </ng-container>
 </ng-container>
 <field-errors [control]="form.get('response')"></field-errors>

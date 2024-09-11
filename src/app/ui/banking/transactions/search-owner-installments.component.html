@@ -1,9 +1,11 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data then content"></ng-container>
+  <ng-container *ngIf="data; then content"></ng-container>
 </page-layout>
 
 <ng-template #content>
-  <page-content mode="filters" [heading]="i18n.transaction.title.scheduled"
+  <page-content
+    mode="filters"
+    [heading]="i18n.transaction.title.scheduled"
     [mobileHeading]="i18n.transaction.mobileTitle.scheduled"
     [headingActions]="headingActions$ | async">
     <div [formGroup]="form" class="filters-form">
@@ -14,66 +16,68 @@
               <user-link [user]="data.user"></user-link>
             </label-value>
           </div>
-          <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
-          </div>
+          <div *ngIf="layout.gtsm$" class="col-12 col-md-6"></div>
         </ng-container>
         <div class="col-12 col-md-6">
-          <single-selection-field formControlName="status"
-            [label]="i18n.general.status" [fieldOptions]="statusOptions">
+          <single-selection-field formControlName="status" [label]="i18n.general.status" [fieldOptions]="statusOptions">
           </single-selection-field>
         </div>
         <div class="col-12 col-md-6" *ngIf="data.accountTypes?.length > 1">
-          <single-selection-field formControlName="accountType"
+          <single-selection-field
+            formControlName="accountType"
             [label]="i18n.transaction.account"
             [emptyOption]="i18n.general.notApplied">
-            <field-option *ngFor="let at of data.accountTypes" [value]="at.id"
-              [text]="at.name"></field-option>
+            <field-option *ngFor="let at of data.accountTypes" [value]="at.id" [text]="at.name"></field-option>
           </single-selection-field>
         </div>
-        <ng-container *ngIf="(moreFilters$ | async)">
+        <ng-container *ngIf="moreFilters$ | async">
           <div class="col-12 col-md-6">
-            <single-selection-field formControlName="direction"
+            <single-selection-field
+              formControlName="direction"
               [label]="i18n.account.direction"
               [emptyOption]="i18n.general.notApplied">
-              <field-option value="credit" [text]="i18n.account.incoming">
-              </field-option>
-              <field-option value="debit" [text]="i18n.account.outgoing">
-              </field-option>
+              <field-option value="credit" [text]="i18n.account.incoming"> </field-option>
+              <field-option value="debit" [text]="i18n.account.outgoing"> </field-option>
             </single-selection-field>
           </div>
           <div *ngIf="hasTransactionNumber" class="col-12 col-md-6">
-            <input-field formControlName="transactionNumber"
+            <input-field
+              formControlName="transactionNumber"
               [mask]="transactionNumberPattern"
               [label]="i18n.transaction.number"></input-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field formControlName="periodBegin"
-              [label]="i18n.general.beginDate" minDate="past5"
-              maxDate="future5" fieldSize="full">
-            </date-field>
-          </div>
-          <div class="col-12 col-md-6">
-            <date-field formControlName="periodEnd"
-              [label]="i18n.general.endDate" minDate="past5" maxDate="future5"
+            <date-field
+              formControlName="periodBegin"
+              [label]="i18n.general.beginDate"
+              minDate="past5"
+              maxDate="future5"
               fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field formControlName="user" [label]="i18n.general.user">
-            </user-field>
+            <date-field
+              formControlName="periodEnd"
+              [label]="i18n.general.endDate"
+              minDate="past5"
+              maxDate="future5"
+              fieldSize="full">
+            </date-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <user-field formControlName="user" [label]="i18n.general.user"> </user-field>
           </div>
           <div class="col-12 col-md-6" *ngFor="let f of fieldsInSearch">
-            <custom-field-filter labelPosition="side" [field]="f"
+            <custom-field-filter
+              labelPosition="side"
+              [field]="f"
               [formControl]="form.get('customFields').get(f.internalName)">
             </custom-field-filter>
           </div>
           <div class="col-12 col-md-6">
-            <single-selection-field formControlName="orderBy"
-              [label]="i18n.general.orderBy">
-              <field-option value="dateDesc"
-                [text]="i18n.transaction.orderBy.dueDateDesc"></field-option>
-              <field-option value="dateAsc"
-                [text]="i18n.transaction.orderBy.dueDateAsc"></field-option>
+            <single-selection-field formControlName="orderBy" [label]="i18n.general.orderBy">
+              <field-option value="dateDesc" [text]="i18n.transaction.orderBy.dueDateDesc"></field-option>
+              <field-option value="dateAsc" [text]="i18n.transaction.orderBy.dueDateAsc"></field-option>
             </single-selection-field>
           </div>
         </ng-container>
@@ -81,14 +85,20 @@
     </div>
   </page-content>
 
-  <results-layout resultType="list" [results]="results$ | async"
-    (update)="update($event)" [toLink]="toLink" [rendering$]="rendering$">
-
-    <mobile-result *mobileResult="let row" [date]="row.date"
+  <results-layout
+    resultType="list"
+    [results]="results$ | async"
+    (update)="update($event)"
+    [toLink]="toLink"
+    [rendering$]="rendering$">
+    <mobile-result
+      *mobileResult="let row"
+      [date]="row.date"
       [amount]="row.amount"
       [avatarImage]="bankingHelper.avatarImage(row.transaction.related)"
       [avatarIcon]="bankingHelper.avatarIcon(row.transaction.related)"
-      [currency]="currencies.get(row.currency)" forceSign>
+      [currency]="currencies.get(row.currency)"
+      forceSign>
       <div class="cell-text cell-main">
         {{ bankingHelper.subjectName(row.transaction.related) }}
       </div>
@@ -107,46 +117,45 @@
       </thead>
       <tbody>
         <ng-container *ngFor="let row of (results$ | async)?.results">
-          <tr
-            (click)="router.navigate(bankingHelper.transactionPath(row.transaction))">
-            <td class="avatar" [ngClass]="{'pb-0': layout.xxs$ | async}">
+          <tr (click)="router.navigate(bankingHelper.transactionPath(row.transaction))">
+            <td class="avatar" [ngClass]="{ 'pb-0': layout.xxs$ | async }">
               <avatar
                 [image]="bankingHelper.avatarImage(row.transaction.related)"
                 [icon]="bankingHelper.avatarIcon(row.transaction.related)">
               </avatar>
             </td>
             <td>
-              <a
-                [routerLink]="bankingHelper.transactionPath(row.transaction)">
+              <a [routerLink]="bankingHelper.transactionPath(row.transaction)">
                 {{ row.dueDate | date }}
               </a>
             </td>
             <td>
-              <a
-                [routerLink]="bankingHelper.transactionPath(row.transaction)">
+              <a [routerLink]="bankingHelper.transactionPath(row.transaction)">
                 {{ bankingHelper.subjectName(row.transaction.related) }}
               </a>
             </td>
             <td>
-              <a class="d-inline-block"
-                [routerLink]="bankingHelper.transactionPath(row.transaction)">
+              <a class="d-inline-block" [routerLink]="bankingHelper.transactionPath(row.transaction)">
                 {{ number(row) }}
               </a>
             </td>
             <td *ngFor="let field of fieldsInList">
-              <format-field-value [fields]="fieldsInList" [plainText]="true"
-                [fieldName]="field.internalName" [object]="row"
+              <format-field-value
+                [fields]="fieldsInList"
+                [plainText]="true"
+                [fieldName]="field.internalName"
+                [object]="row"
                 [customValues]="row.transaction.customValues">
               </format-field-value>
             </td>
             <td class="amount">
-              <a [routerLink]="bankingHelper.transactionPath(row.transaction)"
+              <a
+                [routerLink]="bankingHelper.transactionPath(row.transaction)"
                 [ngClass]="{
-                    positive: format.isPositive(row.amount),
-                    negative: format.isNegative(row.amount)
-                  }">
-                {{ row.amount |
-                currency:currencies.get(row.transaction.currency):true }}
+                  positive: format.isPositive(row.amount),
+                  negative: format.isNegative(row.amount)
+                }">
+                {{ row.amount | currency : currencies.get(row.transaction.currency) : true }}
               </a>
             </td>
           </tr>

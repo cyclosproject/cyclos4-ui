@@ -18,12 +18,9 @@ import { first } from 'rxjs/operators';
   // tslint:disable-next-line:component-selector
   selector: 'login',
   templateUrl: 'login.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginComponent
-  extends BasePageComponent<DataForLogin>
-  implements OnInit {
-
+export class LoginComponent extends BasePageComponent<DataForLogin> implements OnInit {
   form: FormGroup;
 
   private identityProviderRequestId: string;
@@ -40,11 +37,7 @@ export class LoginComponent
     return !empty(dataForUi.publicRegistrationGroups);
   }
 
-  constructor(
-    injector: Injector,
-    private loginState: LoginState,
-    private nextRequestState: NextRequestState
-  ) {
+  constructor(injector: Injector, private loginState: LoginState, private nextRequestState: NextRequestState) {
     super(injector);
   }
 
@@ -52,13 +45,15 @@ export class LoginComponent
     super.ngOnInit();
     this.form = this.formBuilder.group({
       principal: '',
-      password: '',
+      password: ''
     });
     if (this.dataForFrontendHolder.user) {
       // Already logged in
-      this.addSub(this.dataForFrontendHolder.reload().subscribe(() =>
-        this.router.navigateByUrl(this.loginState.redirectUrl || ''),
-      ));
+      this.addSub(
+        this.dataForFrontendHolder
+          .reload()
+          .subscribe(() => this.router.navigateByUrl(this.loginState.redirectUrl || ''))
+      );
       return;
     } else {
       const externalLoginUrl = this.dataForFrontendHolder.dataForFrontend.externalLoginUrl;
@@ -70,10 +65,12 @@ export class LoginComponent
     }
 
     // After closing the error notification, clear and focus the password field
-    this.addSub(this.notification.onClosed.subscribe(() => {
-      this.form.patchValue({ password: '' });
-      this.passwordInput.focus();
-    }));
+    this.addSub(
+      this.notification.onClosed.subscribe(() => {
+        this.form.patchValue({ password: '' });
+        this.passwordInput.focus();
+      })
+    );
 
     const dataForUi = this.dataForFrontendHolder.dataForUi;
     if (dataForUi == null || dataForUi.dataForLogin == null) {
@@ -118,36 +115,49 @@ export class LoginComponent
   }
 
   loginWith(idp: IdentityProvider) {
-    this.authHelper.identityProviderPopup(idp, 'login', null, null, this.login.getUserAgentId()).pipe(first()).subscribe(callback => {
-      switch (callback.status) {
-        case IdentityProviderCallbackStatusEnum.LOGIN_LINK:
-        case IdentityProviderCallbackStatusEnum.LOGIN_EMAIL:
-          // Successful login
-          this.nextRequestState.replaceSession(callback.sessionToken).pipe(first()).subscribe(() => {
-            setRootSpinnerVisible(true);
-            this.dataForFrontendHolder.initialize().pipe(first()).subscribe(() => this.afterLogin());
-          });
-          break;
-        case IdentityProviderCallbackStatusEnum.LOGIN_NO_MATCH:
-          this.identityProviderRequestId = callback.requestId;
-          this.notification.info(this.i18n.identityProvider.loginNoMatch({
-            app: this.dataForFrontendHolder.dataForFrontend.title,
-            email: callback.email,
-            provider: idp.name,
-          }));
-          break;
-        case IdentityProviderCallbackStatusEnum.LOGIN_NO_EMAIL:
-          this.identityProviderRequestId = callback.requestId;
-          this.notification.info(this.i18n.identityProvider.loginNoEmail({
-            app: this.dataForFrontendHolder.dataForFrontend.title,
-            provider: idp.name,
-          }));
-          break;
-        default:
-          this.notification.error(callback.errorMessage || this.i18n.error.general);
-          break;
-      }
-    });
+    this.authHelper
+      .identityProviderPopup(idp, 'login', null, null, this.login.getUserAgentId())
+      .pipe(first())
+      .subscribe(callback => {
+        switch (callback.status) {
+          case IdentityProviderCallbackStatusEnum.LOGIN_LINK:
+          case IdentityProviderCallbackStatusEnum.LOGIN_EMAIL:
+            // Successful login
+            this.nextRequestState
+              .replaceSession(callback.sessionToken)
+              .pipe(first())
+              .subscribe(() => {
+                setRootSpinnerVisible(true);
+                this.dataForFrontendHolder
+                  .initialize()
+                  .pipe(first())
+                  .subscribe(() => this.afterLogin());
+              });
+            break;
+          case IdentityProviderCallbackStatusEnum.LOGIN_NO_MATCH:
+            this.identityProviderRequestId = callback.requestId;
+            this.notification.info(
+              this.i18n.identityProvider.loginNoMatch({
+                app: this.dataForFrontendHolder.dataForFrontend.title,
+                email: callback.email,
+                provider: idp.name
+              })
+            );
+            break;
+          case IdentityProviderCallbackStatusEnum.LOGIN_NO_EMAIL:
+            this.identityProviderRequestId = callback.requestId;
+            this.notification.info(
+              this.i18n.identityProvider.loginNoEmail({
+                app: this.dataForFrontendHolder.dataForFrontend.title,
+                provider: idp.name
+              })
+            );
+            break;
+          default:
+            this.notification.error(callback.errorMessage || this.i18n.error.general);
+            break;
+        }
+      });
   }
 
   private get afterLogin(): () => any {

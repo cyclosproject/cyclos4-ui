@@ -1,14 +1,20 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, Component, ElementRef,
-  Injector, Input, OnDestroy, ViewChild
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Injector,
+  Input,
+  OnDestroy,
+  ViewChild
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CaptchaInput, CaptchaProviderEnum } from 'app/api/models';
 import { CaptchaService } from 'app/api/services/captcha.service';
+import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { LayoutService } from 'app/core/layout.service';
 import { AbstractComponent } from 'app/shared/abstract.component';
 import { switchMap, tap } from 'rxjs/operators';
-import { LayoutService } from 'app/core/layout.service';
-import { ErrorHandlerService } from 'app/core/error-handler.service';
 
 /**
  * Displays a CAPCHA input.
@@ -18,10 +24,9 @@ import { ErrorHandlerService } from 'app/core/error-handler.service';
   // tslint:disable-next-line:component-selector
   selector: 'captcha',
   templateUrl: 'captcha.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CaptchaComponent extends AbstractComponent implements AfterViewInit, OnDestroy {
-
   @Input() captchaInput: CaptchaInput;
 
   @Input() group: string;
@@ -59,7 +64,8 @@ export class CaptchaComponent extends AbstractComponent implements AfterViewInit
     // Remove current challenge if it's pending
     if (this.captchaInput.provider === CaptchaProviderEnum.INTERNAL) {
       this.errorHandler.requestWithCustomErrorHandler(() =>
-        this.addSub(this.captchaService.deleteCaptcha({ id: this.form.value.challenge }).subscribe()));
+        this.addSub(this.captchaService.deleteCaptcha({ id: this.form.value.challenge }).subscribe())
+      );
     }
   }
 
@@ -76,29 +82,37 @@ export class CaptchaComponent extends AbstractComponent implements AfterViewInit
 
   newCaptcha() {
     if (this.captchaInput.provider === CaptchaProviderEnum.INTERNAL) {
-      this.addSub(this.captchaService.newCaptcha({ group: this.group, previousChallenge: this.form.value.challenge }).pipe(
-        switchMap(id => {
-          this.form.patchValue({
-            challenge: id,
-            response: '',
-          });
-          return this.loadImage();
-        })).subscribe());
+      this.addSub(
+        this.captchaService
+          .newCaptcha({ group: this.group, previousChallenge: this.form.value.challenge })
+          .pipe(
+            switchMap(id => {
+              this.form.patchValue({
+                challenge: id,
+                response: ''
+              });
+              return this.loadImage();
+            })
+          )
+          .subscribe()
+      );
     } else if (this.captchaInput.provider === CaptchaProviderEnum.RECAPTCHA_V_2) {
     }
   }
 
   private loadImage() {
     const id = this.form.value.challenge;
-    return this.captchaService.getCaptchaContent({ id, group: this.group }).pipe(tap(blob => {
-      this.revokeCurrent();
-      this.currentUrl = URL.createObjectURL(blob);
-      this.image.nativeElement.style.display = 'none';
-      const tempImage = new Image();
-      tempImage.onload = () => this.updateImage(tempImage);
-      tempImage.onerror = () => setTimeout(() => this.newCaptcha(), 1000);
-      tempImage.src = this.currentUrl;
-    }));
+    return this.captchaService.getCaptchaContent({ id, group: this.group }).pipe(
+      tap(blob => {
+        this.revokeCurrent();
+        this.currentUrl = URL.createObjectURL(blob);
+        this.image.nativeElement.style.display = 'none';
+        const tempImage = new Image();
+        tempImage.onload = () => this.updateImage(tempImage);
+        tempImage.onerror = () => setTimeout(() => this.newCaptcha(), 1000);
+        tempImage.src = this.currentUrl;
+      })
+    );
   }
 
   private updateImage(tempImage: HTMLImageElement) {

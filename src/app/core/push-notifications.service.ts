@@ -1,8 +1,12 @@
 import { Injectable, NgZone } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import {
-  DeviceConfirmationView, IdentityProviderCallbackResult, NewMessagePush, NewNotificationPush,
-  PushNotificationEventKind, TransactionView
+  DeviceConfirmationView,
+  IdentityProviderCallbackResult,
+  NewMessagePush,
+  NewNotificationPush,
+  PushNotificationEventKind,
+  TransactionView
 } from 'app/api/models';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { NextRequestState } from 'app/core/next-request-state';
@@ -25,10 +29,9 @@ interface Message {
  * EventSource.
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class PushNotificationsService {
-
   private clientId: string;
   private id: string;
   private masterId: string;
@@ -51,9 +54,8 @@ export class PushNotificationsService {
     private apiConfiguration: ApiConfiguration,
     private zone: NgZone,
     private dataForFrontendHolder: DataForFrontendHolder,
-    private nextRequestState: NextRequestState,
+    private nextRequestState: NextRequestState
   ) {
-
     dataForFrontendHolder.registerLoadHook(d => {
       if (d?.development) {
         console.log(`Push notifications id = ${this.id}`);
@@ -77,12 +79,12 @@ export class PushNotificationsService {
 
       // The clientId is reused
       if (localStorage) {
-        this.clientId = localStorage.getItem("pushNotificationsClientId");
+        this.clientId = localStorage.getItem('pushNotificationsClientId');
       }
       if (!this.clientId) {
         this.clientId = randomString(32);
         if (localStorage) {
-          localStorage.setItem("pushNotificationsClientId", this.clientId);
+          localStorage.setItem('pushNotificationsClientId', this.clientId);
         }
       }
     } catch (e) {
@@ -107,12 +109,13 @@ export class PushNotificationsService {
     // Close the normal synchronization, if any
     this.close();
     // Open the EventSource only for identity provider
-    const url = urlJoin(this.apiConfiguration.rootUrl, 'push', 'subscribe')
-      + `?clientId=${this.clientId}&kinds=`
-      + PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK
-      + `&identityProviderRequestId=${requestId}`;
+    const url =
+      urlJoin(this.apiConfiguration.rootUrl, 'push', 'subscribe') +
+      `?clientId=${this.clientId}&kinds=` +
+      PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK +
+      `&identityProviderRequestId=${requestId}`;
     this.eventSource = new EventSourcePolyfill(url, {
-      headers: this.nextRequestState.headers,
+      headers: this.nextRequestState.headers
     });
     this.setupListener(PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK, true);
   }
@@ -161,8 +164,8 @@ export class PushNotificationsService {
   }
 
   /**
- * Generates a log if in development mode
- */
+   * Generates a log if in development mode
+   */
   private logIfDevelopment(messageGetter: () => string) {
     if (this.isDevelopment) {
       console.log(messageGetter());
@@ -175,7 +178,7 @@ export class PushNotificationsService {
 
   private closeEventSource() {
     if (this.eventSource != null) {
-      this.logIfDevelopment(() => "Closing event source");
+      this.logIfDevelopment(() => 'Closing event source');
       for (let e of this.eventSourceListeners.entries()) {
         this.eventSource.removeEventListener(e[0], e[1]);
       }
@@ -192,7 +195,7 @@ export class PushNotificationsService {
    * - After a random time between 200 and 1000 ms, if no node is master, promote self as master
    */
   private electMaster() {
-    this.logIfDevelopment(() => "Electing master");
+    this.logIfDevelopment(() => 'Electing master');
 
     this.post('is-master-request');
 
@@ -276,9 +279,9 @@ export class PushNotificationsService {
 
     // Open the event source
     let url = urlJoin(this.apiConfiguration.rootUrl, 'push', 'subscribe') + '?clientId=' + this.clientId;
-    types.forEach(kind => url += '&kinds=' + kind);
+    types.forEach(kind => (url += '&kinds=' + kind));
     this.eventSource = new EventSourcePolyfill(url, {
-      headers: this.nextRequestState.headers,
+      headers: this.nextRequestState.headers
     });
 
     // Setup the event source listeners
@@ -297,7 +300,6 @@ export class PushNotificationsService {
     this.eventSource.addEventListener(kind, listener);
     this.eventSourceListeners.set(kind, listener);
   }
-
 
   private post(type: MessageType, data?: any, to?: string) {
     const message = { type, from: this.id, to, data };

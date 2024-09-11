@@ -3,10 +3,11 @@
 </page-layout>
 
 <ng-template #content>
-  <page-content mode="filters" [heading]="i18n.voucher.title.search"
+  <page-content
+    mode="filters"
+    [heading]="i18n.voucher.title.search"
     [mobileHeading]="i18n.voucher.mobileTitle.search"
     [headingActions]="headingActions$ | async">
-
     <div [formGroup]="form" class="filters-form filters-form-separator">
       <div class="row">
         <ng-container *ngIf="data.user && !self">
@@ -15,32 +16,36 @@
               <user-link [user]="data.user"></user-link>
             </label-value>
           </div>
-          <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
-          </div>
+          <div *ngIf="layout.gtsm$" class="col-12 col-md-6"></div>
         </ng-container>
         <div *ngIf="data.types?.length > 0" class="col-12 col-md-6">
-          <multi-selection-field formControlName="types"
+          <multi-selection-field
+            formControlName="types"
             [emptyLabel]="i18n.general.notApplied"
             [label]="i18n.general.type">
-            <field-option *ngFor="let type of data.types" [value]="type.id"
-              [internalName]="type.internalName" [id]="type.id"
+            <field-option
+              *ngFor="let type of data.types"
+              [value]="type.id"
+              [internalName]="type.internalName"
+              [id]="type.id"
               [text]="type.name">
             </field-option>
           </multi-selection-field>
         </div>
         <div class="col-12 col-md-6">
-          <multi-selection-field formControlName="statuses"
+          <multi-selection-field
+            formControlName="statuses"
             [emptyLabel]="i18n.general.notApplied"
-            [label]="i18n.general.status" [fieldOptions]="statusOptions">
+            [label]="i18n.general.status"
+            [fieldOptions]="statusOptions">
           </multi-selection-field>
         </div>
         <div class="col-12 col-md-6">
-          <input-field formControlName="token" [label]="i18n.voucher.token"
-            [mask]="data.mask">
-          </input-field>
+          <input-field formControlName="token" [label]="i18n.voucher.token" [mask]="data.mask"> </input-field>
         </div>
         <div *ngIf="data.canBuy && data.canSend" class="col-12">
-          <radio-group-field formControlName="creationType"
+          <radio-group-field
+            formControlName="creationType"
             [asColumn]="layout.ltsm$ | async"
             [label]="i18n.voucher.creationType.userLabel"
             [fieldOptions]="creationTypeOptions">
@@ -49,50 +54,65 @@
         <ng-container *ngIf="moreFilters$ | async">
           <div class="w-100"></div>
           <div class="col-12 col-md-6">
-            <date-field formControlName="beginCreationDate"
-              [label]="i18n.voucher.beginCreationDate" minDate="past100"
-              maxDate="todayEnd" fieldSize="full">
+            <date-field
+              formControlName="beginCreationDate"
+              [label]="i18n.voucher.beginCreationDate"
+              minDate="past100"
+              maxDate="todayEnd"
+              fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field formControlName="endCreationDate"
-              [label]="i18n.voucher.endCreationDate" minDate="past100"
-              maxDate="todayEnd" fieldSize="full">
+            <date-field
+              formControlName="endCreationDate"
+              [label]="i18n.voucher.endCreationDate"
+              minDate="past100"
+              maxDate="todayEnd"
+              fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field formControlName="beginExpirationDate"
-              [label]="i18n.voucher.beginExpirationDate" minDate="past100"
-              maxDate="todayEnd" fieldSize="full">
+            <date-field
+              formControlName="beginExpirationDate"
+              [label]="i18n.voucher.beginExpirationDate"
+              minDate="past100"
+              maxDate="todayEnd"
+              fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field formControlName="endExpirationDate"
-              [label]="i18n.voucher.endExpirationDate" minDate="past100"
-              maxDate="todayEnd" fieldSize="full">
+            <date-field
+              formControlName="endExpirationDate"
+              [label]="i18n.voucher.endExpirationDate"
+              minDate="past100"
+              maxDate="todayEnd"
+              fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <decimal-field formControlName="minAmount"
-              [label]="i18n.ad.minPrice" fieldSize="full">
-            </decimal-field>
+            <decimal-field formControlName="minAmount" [label]="i18n.ad.minPrice" fieldSize="full"> </decimal-field>
           </div>
           <div class="col-12 col-md-6">
-            <decimal-field formControlName="maxAmount"
-              [label]="i18n.ad.maxPrice" fieldSize="full">
-            </decimal-field>
+            <decimal-field formControlName="maxAmount" [label]="i18n.ad.maxPrice" fieldSize="full"> </decimal-field>
           </div>
         </ng-container>
       </div>
     </div>
   </page-content>
 
-  <results-layout resultType="list" [results]="results$ | async"
-    [rendering$]="rendering$" (update)="update($event)" [toLink]="toLink">
-
-    <mobile-result *mobileResult="let row" [date]="row.creationDate"
-      [amount]="row.amount" [amountColor]="false"
-      [avatarImage]="row.type.image" [avatarIcon]="SvgIcon.Ticket"
+  <results-layout
+    resultType="list"
+    [results]="results$ | async"
+    [rendering$]="rendering$"
+    (update)="update($event)"
+    [toLink]="toLink">
+    <mobile-result
+      *mobileResult="let row"
+      [date]="row.creationDate"
+      [amount]="row.amount"
+      [amountColor]="false"
+      [avatarImage]="row.type.image"
+      [avatarIcon]="SvgIcon.Ticket"
       [currency]="row.type.configuration.currency">
       <div class="cell-text cell-main">
         {{ row.type.voucherTitle }}
@@ -102,39 +122,34 @@
     <table *resultTable class="table table-hover cursor-pointer">
       <tbody>
         <th class="avatar"></th>
-        <th>{{i18n.voucher.voucher}}</th>
-        <th>{{i18n.general.expirationDate}}</th>
-        <th>{{i18n.general.status}}</th>
-        <th class="amount">{{i18n.transaction.amount}}</th>
-        <th class="amount">{{i18n.voucher.balance}}</th>
-        <tr (click)="router.navigate(path(row))"
-          *ngFor="let row of (results$ | async)?.results">
+        <th>{{ i18n.voucher.voucher }}</th>
+        <th>{{ i18n.general.expirationDate }}</th>
+        <th>{{ i18n.general.status }}</th>
+        <th class="amount">{{ i18n.transaction.amount }}</th>
+        <th class="amount">{{ i18n.voucher.balance }}</th>
+        <tr (click)="router.navigate(path(row))" *ngFor="let row of (results$ | async)?.results">
           <td class="avatar">
-            <avatar [image]="row.type.image" [icon]="SvgIcon.Ticket">
-            </avatar>
+            <avatar [image]="row.type.image" [icon]="SvgIcon.Ticket"> </avatar>
           </td>
           <td>
             <a [routerLink]="path(row)">{{ row.type.voucherTitle }}</a>
           </td>
           <td>
-            <a *ngIf="row.status !== VoucherStatusEnum.REDEEMED"
-              [routerLink]="path(row)">{{ row.expirationDate | dateTime }}</a>
+            <a *ngIf="row.status !== VoucherStatusEnum.REDEEMED" [routerLink]="path(row)">{{
+              row.expirationDate | dateTime
+            }}</a>
           </td>
           <td>
-            <a [routerLink]="path(row)">{{ apiI18n.voucherStatus(row.status)
-              }}</a>
+            <a [routerLink]="path(row)">{{ apiI18n.voucherStatus(row.status) }}</a>
           </td>
           <td class="amount">
-            <a [routerLink]="path(row)">{{ row.amount |
-              currency:row.type.configuration.currency }}</a>
+            <a [routerLink]="path(row)">{{ row.amount | currency : row.type.configuration.currency }}</a>
           </td>
           <td class="amount">
-            <a [routerLink]="path(row)">{{ row.balance |
-              currency:row.type.configuration.currency }}</a>
+            <a [routerLink]="path(row)">{{ row.balance | currency : row.type.configuration.currency }}</a>
           </td>
         </tr>
       </tbody>
     </table>
   </results-layout>
-
 </ng-template>

@@ -1,6 +1,12 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { CustomFieldDetailed, GeneralVouchersDataForSearch, VoucherCreationTypeEnum, VoucherOrderByEnum, VoucherStatusEnum } from 'app/api/models';
+import {
+  CustomFieldDetailed,
+  GeneralVouchersDataForSearch,
+  VoucherCreationTypeEnum,
+  VoucherOrderByEnum,
+  VoucherStatusEnum
+} from 'app/api/models';
 import { HeadingAction } from 'app/shared/action';
 import { BaseComponent } from 'app/shared/base.component';
 import { FieldOption } from 'app/shared/field-option';
@@ -8,10 +14,9 @@ import { FieldOption } from 'app/shared/field-option';
 @Component({
   selector: 'voucher-filters',
   templateUrl: './voucher-filters.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VoucherFiltersComponent extends BaseComponent implements OnInit {
-
   @Input() data: GeneralVouchersDataForSearch;
   @Input() heading: string;
   @Input() mobileHeading: string;
@@ -36,18 +41,14 @@ export class VoucherFiltersComponent extends BaseComponent implements OnInit {
   }
 
   get creationTypeOptions(): FieldOption[] {
-    const statuses = [
-      VoucherCreationTypeEnum.GENERATED,
-      VoucherCreationTypeEnum.BOUGHT,
-      VoucherCreationTypeEnum.SENT
-    ];
+    const statuses = [VoucherCreationTypeEnum.GENERATED, VoucherCreationTypeEnum.BOUGHT, VoucherCreationTypeEnum.SENT];
     return statuses.map(st => ({ value: st, text: this.apiI18n.voucherCreationType(st) }));
   }
 
   get maxScale(): number {
     return this.data.types
       .map(t => t.configuration.currency.decimalDigits)
-      .reduce((previous, current, _index, _array) => previous > current ? previous : current);
+      .reduce((previous, current, _index, _array) => (previous > current ? previous : current));
   }
 
   orderByOptions(): VoucherOrderByEnum[] {

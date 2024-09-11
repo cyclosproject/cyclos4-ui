@@ -1,7 +1,13 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  AccountWithCurrency, AvailabilityEnum, Currency, CustomFieldDetailed, DataForTransaction, ExternalPaymentPreview, TransactionTypeData,
+  AccountWithCurrency,
+  AvailabilityEnum,
+  Currency,
+  CustomFieldDetailed,
+  DataForTransaction,
+  ExternalPaymentPreview,
+  TransactionTypeData,
   TransferType
 } from 'app/api/models';
 import { ExternalPaymentsService } from 'app/api/services/external-payments.service';
@@ -22,10 +28,9 @@ export type ExternalPaymentStep = 'error' | 'form' | 'confirm';
 @Component({
   selector: 'external-payment',
   templateUrl: 'external-payment.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExternalPaymentComponent extends BasePageComponent<DataForTransaction> implements OnInit {
-
   ownerParam: string;
   fromSelf: boolean;
   fromSystem: boolean;
@@ -78,7 +83,8 @@ export class ExternalPaymentComponent extends BasePageComponent<DataForTransacti
   constructor(
     injector: Injector,
     private bankingHelper: BankingHelperService,
-    private externalPaymentsService: ExternalPaymentsService) {
+    private externalPaymentsService: ExternalPaymentsService
+  ) {
     super(injector);
   }
 
@@ -106,20 +112,26 @@ export class ExternalPaymentComponent extends BasePageComponent<DataForTransacti
     this.confirmationPassword = this.formBuilder.control(null);
 
     // Get the payment data
-    this.addSub(this.externalPaymentsService.dataForPerformExternalPayment({
-      owner: this.ownerParam
-    }).subscribe(data => this.data = data));
+    this.addSub(
+      this.externalPaymentsService
+        .dataForPerformExternalPayment({
+          owner: this.ownerParam
+        })
+        .subscribe(data => (this.data = data))
+    );
 
     // When the account changes, update the currency
     this.addSub(this.form.get('account').valueChanges.subscribe(type => this.updateCurrency(this.data, type)));
 
     // When the payment type data changes, update the form validation and fields
-    this.addSub(this.paymentTypeData$.subscribe(typeData => {
-      if (this.lastPaymentTypeData == null || !isEqual(this.lastPaymentTypeData, typeData)) {
-        this.adjustForm(typeData);
-      }
-      this.lastPaymentTypeData = typeData;
-    }));
+    this.addSub(
+      this.paymentTypeData$.subscribe(typeData => {
+        if (this.lastPaymentTypeData == null || !isEqual(this.lastPaymentTypeData, typeData)) {
+          this.adjustForm(typeData);
+        }
+        this.lastPaymentTypeData = typeData;
+      })
+    );
   }
 
   private buildForm(): FormGroup {
@@ -165,10 +177,13 @@ export class ExternalPaymentComponent extends BasePageComponent<DataForTransacti
       this.step = 'form';
       // Set the from account type
       const type = data.accounts[0].type.id;
-      this.form.patchValue({
-        account: type,
-        toPrincipalType: data.principalTypes[0]?.id
-      }, { emitEvent: false });
+      this.form.patchValue(
+        {
+          account: type,
+          toPrincipalType: data.principalTypes[0]?.id
+        },
+        { emitEvent: false }
+      );
       // Update the current currency
       this.updateCurrency(data, type);
     }
@@ -191,7 +206,7 @@ export class ExternalPaymentComponent extends BasePageComponent<DataForTransacti
 
   toConfirm() {
     // Before proceeding, copy the value of all valid custom fields
-    const customValueControls: { [key: string]: AbstractControl; } = {};
+    const customValueControls: { [key: string]: AbstractControl } = {};
     const typeData = this.paymentTypeData;
     if (typeData && typeData.customFields) {
       for (const cf of typeData.customFields) {
@@ -202,21 +217,25 @@ export class ExternalPaymentComponent extends BasePageComponent<DataForTransacti
     if (!validateBeforeSubmit(this.form)) {
       return;
     }
-    this.addSub(this.externalPaymentsService.previewExternalPayment({
-      owner: this.ownerParam,
-      body: this.form.value
-    }).subscribe(preview => {
-      this.preview = preview;
-      // Initialize confirmation mode
-      this.step = 'confirm';
-      this.canConfirm = this.authHelper.canConfirm(preview.confirmationPasswordInput);
-      if (!this.canConfirm) {
-        this.notification.warning(this.authHelper.getConfirmationMessage(preview.confirmationPasswordInput));
-      }
-      const val = preview.confirmationPasswordInput ? Validators.required : null;
-      this.confirmationPassword.setValidators(val);
-      scrollTop();
-    }));
+    this.addSub(
+      this.externalPaymentsService
+        .previewExternalPayment({
+          owner: this.ownerParam,
+          body: this.form.value
+        })
+        .subscribe(preview => {
+          this.preview = preview;
+          // Initialize confirmation mode
+          this.step = 'confirm';
+          this.canConfirm = this.authHelper.canConfirm(preview.confirmationPasswordInput);
+          if (!this.canConfirm) {
+            this.notification.warning(this.authHelper.getConfirmationMessage(preview.confirmationPasswordInput));
+          }
+          const val = preview.confirmationPasswordInput ? Validators.required : null;
+          this.confirmationPassword.setValidators(val);
+          scrollTop();
+        })
+    );
   }
 
   perform(password?: string) {
@@ -227,7 +246,7 @@ export class ExternalPaymentComponent extends BasePageComponent<DataForTransacti
       return;
     }
     // Before proceeding, copy the value of all valid custom fields
-    const customValueControls: { [key: string]: AbstractControl; } = {};
+    const customValueControls: { [key: string]: AbstractControl } = {};
     const typeData = this.paymentTypeData;
     if (typeData && typeData.customFields) {
       for (const cf of typeData.customFields) {
@@ -238,14 +257,18 @@ export class ExternalPaymentComponent extends BasePageComponent<DataForTransacti
     if (!validateBeforeSubmit(this.form)) {
       return;
     }
-    this.externalPaymentsService.performExternalPayment({
-      owner: this.ownerParam,
-      body: this.form.value,
-      confirmationPassword: this.confirmationPassword.value
-    }).pipe(first()).subscribe(performed => {
-      this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(performed)],
-        { state: { url: this.router.url } });
-    });
+    this.externalPaymentsService
+      .performExternalPayment({
+        owner: this.ownerParam,
+        body: this.form.value,
+        confirmationPassword: this.confirmationPassword.value
+      })
+      .pipe(first())
+      .subscribe(performed => {
+        this.router.navigate(['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(performed)], {
+          state: { url: this.router.url }
+        });
+      });
   }
 
   locateControl(locator: FormControlLocator) {
@@ -273,5 +296,4 @@ export class ExternalPaymentComponent extends BasePageComponent<DataForTransacti
       return this.menu.userMenu(data.fromUser, Menu.EXTERNAL_PAYMENTS);
     }
   }
-
 }

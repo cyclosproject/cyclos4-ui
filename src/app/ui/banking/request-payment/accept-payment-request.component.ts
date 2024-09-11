@@ -16,10 +16,9 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'accept-payment-request',
   templateUrl: 'accept-payment-request.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AcceptPaymentRequestComponent extends BasePageComponent<PaymentRequestPreview> implements OnInit {
-
   empty = empty;
 
   transactionKey: string;
@@ -32,7 +31,8 @@ export class AcceptPaymentRequestComponent extends BasePageComponent<PaymentRequ
   constructor(
     injector: Injector,
     private bankingHelper: BankingHelperService,
-    private paymentRequestsService: PaymentRequestsService) {
+    private paymentRequestsService: PaymentRequestsService
+  ) {
     super(injector);
   }
 
@@ -40,7 +40,11 @@ export class AcceptPaymentRequestComponent extends BasePageComponent<PaymentRequ
     super.ngOnInit();
     // Resolve the from and to parameters
     this.transactionKey = this.route.snapshot.params.key;
-    this.addSub(this.paymentRequestsService.previewPaymentRequest({ key: this.transactionKey }).subscribe(preview => this.data = preview));
+    this.addSub(
+      this.paymentRequestsService
+        .previewPaymentRequest({ key: this.transactionKey })
+        .subscribe(preview => (this.data = preview))
+    );
   }
 
   onDataInitialized(data: PaymentRequestPreview) {
@@ -69,14 +73,23 @@ export class AcceptPaymentRequestComponent extends BasePageComponent<PaymentRequ
       this.confirmationPassword.setValue(password);
     }
     const value = cloneDeep(this.form.value);
-    this.addSub(this.paymentRequestsService.acceptPaymentRequest({
-      key: this.transactionKey,
-      confirmationPassword: this.confirmationPassword.value,
-      body: value
-    }).subscribe(performed => {
-      const transactionId = this.form.value.processDate ? this.transactionKey : this.bankingHelper.transactionNumberOrId(performed);
-      this.router.navigate(['/banking', 'transaction', transactionId], { replaceUrl: true, state: { showDoneMessage: true } });
-    }));
+    this.addSub(
+      this.paymentRequestsService
+        .acceptPaymentRequest({
+          key: this.transactionKey,
+          confirmationPassword: this.confirmationPassword.value,
+          body: value
+        })
+        .subscribe(performed => {
+          const transactionId = this.form.value.processDate
+            ? this.transactionKey
+            : this.bankingHelper.transactionNumberOrId(performed);
+          this.router.navigate(['/banking', 'transaction', transactionId], {
+            replaceUrl: true,
+            state: { showDoneMessage: true }
+          });
+        })
+    );
   }
 
   locateControl(locator: FormControlLocator) {

@@ -1,110 +1,96 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data then content"></ng-container>
+  <ng-container *ngIf="data; then content"></ng-container>
 </page-layout>
 
 <ng-template #content>
-  <page-content mode="filters" [heading]="i18n.ad.title.search"
+  <page-content
+    mode="filters"
+    [heading]="i18n.ad.title.search"
     [mobileHeading]="i18n.ad.mobileTitle.search"
     [headingActions]="headingActions$ | async">
-    <div [formGroup]="form"
-      class="filters-form filters-form-separator border-bottom">
+    <div [formGroup]="form" class="filters-form filters-form-separator border-bottom">
       <div class="row no-gutters">
         <div class="col-12 col-md-6">
-          <input-field formControlName="keywords"
-            [label]="i18n.general.keywords"></input-field>
+          <input-field formControlName="keywords" [label]="i18n.general.keywords"></input-field>
         </div>
-        <div
-          *ngIf="dataForFrontendHolder.auth?.permissions?.marketplace?.favorites"
-          class="col-12 col-md-6">
-          <boolean-field formControlName="favoriteFor"
-            [label]="i18n.ad.showFavorites">
-          </boolean-field>
+        <div *ngIf="dataForFrontendHolder.auth?.permissions?.marketplace?.favorites" class="col-12 col-md-6">
+          <boolean-field formControlName="favoriteFor" [label]="i18n.ad.showFavorites"> </boolean-field>
         </div>
         <div class="col-12 col-md-6" *ngIf="manager">
-          <multi-selection-field formControlName="statuses"
-            [label]="i18n.general.status">
-            <field-option value="active" [text]="i18n.ad.status.active">
-            </field-option>
-            <field-option value="disabled" [text]="i18n.ad.status.disabled">
-            </field-option>
-            <field-option *ngIf="canViewPending" value="pending"
-              [text]="i18n.ad.status.pending">
-            </field-option>
-            <field-option value="expired" [text]="i18n.ad.status.expired">
-            </field-option>
-            <field-option value="hidden" [text]="i18n.ad.status.hidden">
-            </field-option>
-            <field-option value="scheduled" [text]="i18n.ad.status.scheduled">
-            </field-option>
+          <multi-selection-field formControlName="statuses" [label]="i18n.general.status">
+            <field-option value="active" [text]="i18n.ad.status.active"> </field-option>
+            <field-option value="disabled" [text]="i18n.ad.status.disabled"> </field-option>
+            <field-option *ngIf="canViewPending" value="pending" [text]="i18n.ad.status.pending"> </field-option>
+            <field-option value="expired" [text]="i18n.ad.status.expired"> </field-option>
+            <field-option value="hidden" [text]="i18n.ad.status.hidden"> </field-option>
+            <field-option value="scheduled" [text]="i18n.ad.status.scheduled"> </field-option>
           </multi-selection-field>
         </div>
         <ng-container *ngIf="layout.gtxxs$ | async">
           <div class="col-12 col-md-6" *ngFor="let cf of basicFields">
-            <custom-field-filter [field]="cf"
-              [formControl]="form.get('customValues').get(cf.internalName)">
+            <custom-field-filter [field]="cf" [formControl]="form.get('customValues').get(cf.internalName)">
             </custom-field-filter>
           </div>
         </ng-container>
         <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
-          <multi-selection-field hierarchyProperty="groupSet"
-            formControlName="groups" [label]="i18n.user.groupFilter">
-            <field-option *ngFor="let group of data.groups"
+          <multi-selection-field hierarchyProperty="groupSet" formControlName="groups" [label]="i18n.user.groupFilter">
+            <field-option
+              *ngFor="let group of data.groups"
               [value]="ApiHelper.internalNameOrId(group)"
-              [internalName]="group.internalName" [id]="group.id"
-              [text]="group.name" [parent]="group.groupSet">
+              [internalName]="group.internalName"
+              [id]="group.id"
+              [text]="group.name"
+              [parent]="group.groupSet">
             </field-option>
           </multi-selection-field>
         </div>
         <ng-container *ngIf="moreFilters$ | async">
           <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
-            <distance-selection-field [data]="data.searchByDistanceData"
+            <distance-selection-field
+              [data]="data.searchByDistanceData"
               formControlName="distanceFilter"
               [label]="i18n.general.distanceFilter">
             </distance-selection-field>
           </div>
           <div class="col-12 col-md-6" *ngFor="let cf of advancedFields">
-            <custom-field-filter [field]="cf"
-              [formControl]="form.get('customValues').get(cf.internalName)">
+            <custom-field-filter [field]="cf" [formControl]="form.get('customValues').get(cf.internalName)">
             </custom-field-filter>
           </div>
-          <div class="col-12 col-md-6"
-            *ngFor="let bf of data.basicProfileFields">
-            <basic-profile-field-filter [field]="bf"
-              [formControl]="form.get('profileFields').get(bf.field)">
+          <div class="col-12 col-md-6" *ngFor="let bf of data.basicProfileFields">
+            <basic-profile-field-filter [field]="bf" [formControl]="form.get('profileFields').get(bf.field)">
             </basic-profile-field-filter>
           </div>
-          <div class="col-12 col-md-6"
-            *ngFor="let cf of data.customProfileFields">
-            <custom-field-filter [field]="cf"
-              [formControl]="form.get('profileFields').get(cf.internalName)">
+          <div class="col-12 col-md-6" *ngFor="let cf of data.customProfileFields">
+            <custom-field-filter [field]="cf" [formControl]="form.get('profileFields').get(cf.internalName)">
             </custom-field-filter>
           </div>
           <div
             *ngIf="marketplacePermissions.userSimple.view && marketplacePermissions.userWebshop.view"
             class="col-12 col-md-6">
-            <single-selection-field formControlName="kind"
+            <single-selection-field
+              formControlName="kind"
               [label]="i18n.general.type"
               [emptyOption]="i18n.general.notApplied">
-              <field-option [text]="i18n.ad.type.simple" value="simple">
-              </field-option>
-              <field-option [text]="i18n.ad.type.webshop" value="webshop">
-              </field-option>
+              <field-option [text]="i18n.ad.type.simple" value="simple"> </field-option>
+              <field-option [text]="i18n.ad.type.webshop" value="webshop"> </field-option>
             </single-selection-field>
-          </div>         
+          </div>
           <div class="col-12 col-md-6">
-            <boolean-field labelPosition="sideForced"
-              formControlName="hasImages" [label]="i18n.ad.hasImages">
+            <boolean-field labelPosition="sideForced" formControlName="hasImages" [label]="i18n.ad.hasImages">
             </boolean-field>
           </div>
           <ng-container *ngIf="!hidePrice">
             <ng-container *ngIf="data.currencies.length > 1">
               <div class="col-12 col-md-6">
-                <single-selection-field formControlName="currency"
+                <single-selection-field
+                  formControlName="currency"
                   [label]="i18n.general.currency"
                   [emptyOption]="i18n.general.notApplied">
-                  <field-option *ngFor="let c of data.currencies"
+                  <field-option
+                    *ngFor="let c of data.currencies"
                     [value]="ApiHelper.internalNameOrId(c)"
-                    [internalName]="c.internalName" [id]="c.id"
+                    [internalName]="c.internalName"
+                    [id]="c.id"
                     [text]="c.name">
                   </field-option>
                 </single-selection-field>
@@ -113,48 +99,63 @@
             <!-- Force a new line to keep price range in same row -->
             <div class="w-100"></div>
             <div class="col-12 col-md-6">
-              <decimal-field formControlName="minAmount"
-                [label]="i18n.ad.minPrice" fieldSize="full"
+              <decimal-field
+                formControlName="minAmount"
+                [label]="i18n.ad.minPrice"
+                fieldSize="full"
                 [scale]="currency?.decimalDigits || 2"
-                [prefix]="currency?.prefix" [suffix]="currency?.suffix">
+                [prefix]="currency?.prefix"
+                [suffix]="currency?.suffix">
               </decimal-field>
             </div>
             <div class="col-12 col-md-6">
-              <decimal-field formControlName="maxAmount"
-                [label]="i18n.ad.maxPrice" fieldSize="full"
+              <decimal-field
+                formControlName="maxAmount"
+                [label]="i18n.ad.maxPrice"
+                fieldSize="full"
                 [scale]="currency?.decimalDigits || 2"
-                [prefix]="currency?.prefix" [suffix]="currency?.suffix">
+                [prefix]="currency?.prefix"
+                [suffix]="currency?.suffix">
               </decimal-field>
             </div>
           </ng-container>
           <!-- Force a new line to keep date range in same row -->
           <div class="w-100"></div>
           <div class="col-12 col-md-6">
-            <date-field formControlName="beginDate"
-              [label]="i18n.ad.beginDate" minDate="past100" maxDate="todayEnd"
+            <date-field
+              formControlName="beginDate"
+              [label]="i18n.ad.beginDate"
+              minDate="past100"
+              maxDate="todayEnd"
               fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
-            <date-field formControlName="endDate" [label]="i18n.ad.endDate"
-              minDate="past100" maxDate="todayEnd" fieldSize="full">
+            <date-field
+              formControlName="endDate"
+              [label]="i18n.ad.endDate"
+              minDate="past100"
+              maxDate="todayEnd"
+              fieldSize="full">
             </date-field>
           </div>
         </ng-container>
       </div>
     </div>
     <div class="row no-gutters filters-row">
-      <div class="d-flex col-xs-7 col-sm-5" [ngClass]="{
-        'col-xs-7 col-sm-5': (resultType$ | async) !== ResultType.CATEGORIES
-      }">
+      <div
+        class="d-flex col-xs-7 col-sm-5"
+        [ngClass]="{
+          'col-xs-7 col-sm-5': (resultType$ | async) !== ResultType.CATEGORIES
+        }">
         <ng-container *ngTemplateOutlet="modeButtons"></ng-container>
       </div>
-      <div class="col-xs-5 col-sm-7 d-flex justify-content-end"
-        *ngIf="(resultType$ | async) !== ResultType.CATEGORIES">
+      <div class="col-xs-5 col-sm-7 d-flex justify-content-end" *ngIf="(resultType$ | async) !== ResultType.CATEGORIES">
         <div *ngIf="layout.gtxs$ | async" class="d-flex pl-3">
           <ng-container *ngTemplateOutlet="orderBy"></ng-container>
         </div>
-        <result-type-field *ngIf="layout.gtxxs$ | async"
+        <result-type-field
+          *ngIf="layout.gtxxs$ | async"
           [allowedResultTypes]="allowedResultTypes$ | async"
           [formControl]="resultTypeControl">
         </result-type-field>
@@ -168,51 +169,62 @@
     <ng-container *ngTemplateOutlet="orderBy"></ng-container>
   </div>
 
-  <page-content
-    [ngClass]="(categoryTrail$ | async)?.length > 1 ? '' : 'd-none'">
+  <page-content [ngClass]="(categoryTrail$ | async)?.length > 1 ? '' : 'd-none'">
     <nav class="breadcrumb">
       <ol class="breadcrumb">
-        <li *ngFor="let cat of categoryTrail$ | async; let last = last"
-          class="breadcrumb-item" [ngClass]="{active: last}">
-          <ng-container *ngIf="last && categoryTrail$.value.length > 1">{{
-            cat.name }}</ng-container>
+        <li
+          *ngFor="let cat of categoryTrail$ | async; let last = last"
+          class="breadcrumb-item"
+          [ngClass]="{ active: last }">
+          <ng-container *ngIf="last && categoryTrail$.value.length > 1">{{ cat.name }}</ng-container>
           <!-- Don't leave trailing spaces or they generate an extra space -->
-          <a *ngIf="!last || categoryTrail$.value.length === 1" href="#"
-            (click)="$event.preventDefault(); onCategorySelected(cat)">{{
-            cat.name }}</a>
+          <a
+            *ngIf="!last || categoryTrail$.value.length === 1"
+            href="#"
+            (click)="$event.preventDefault(); onCategorySelected(cat)"
+            >{{ cat.name }}</a
+          >
         </li>
       </ol>
     </nav>
   </page-content>
 
-  <ads-results [results]="results$ | async" [rendering$]="rendering$"
-    [data]="data$ | async" [resultType]="resultType$ | async"
+  <ads-results
+    [results]="results$ | async"
+    [rendering$]="rendering$"
+    [data]="data$ | async"
+    [resultType]="resultType$ | async"
     [referencePoint]="((form.valueChanges | async) || form.value).distanceFilter"
-    (update)="update($event)" (categorySelected)="onCategorySelected($event)"
+    (update)="update($event)"
+    (categorySelected)="onCategorySelected($event)"
     [defaultResultType]="getDefaultResultType()">
   </ads-results>
 </ng-template>
 
 <ng-template #orderBy>
-  <single-selection-field *ngIf="['tiles', 'list'].includes(resultType)"
-    [ngClass]="{'flex-grow-0 mr-3': layout.gtxs, 'mt-2': layout.ltxs}"
-    [formControl]="form.get('orderBy')" [display]="i18n.general.orderBy"
+  <single-selection-field
+    *ngIf="['tiles', 'list'].includes(resultType)"
+    [ngClass]="{ 'flex-grow-0 mr-3': layout.gtxs, 'mt-2': layout.ltxs }"
+    [formControl]="form.get('orderBy')"
+    [display]="i18n.general.orderBy"
     [emptyOption]="i18n.general.orderByRelevance">
-    <field-option value="date" [text]="i18n.ad.orderBy.date">
-    </field-option>
-    <field-option value="priceAsc" [text]="i18n.ad.orderBy.priceAsc">
-    </field-option>
-    <field-option value="priceDesc" [text]="i18n.ad.orderBy.priceDesc">
-    </field-option>
+    <field-option value="date" [text]="i18n.ad.orderBy.date"> </field-option>
+    <field-option value="priceAsc" [text]="i18n.ad.orderBy.priceAsc"> </field-option>
+    <field-option value="priceDesc" [text]="i18n.ad.orderBy.priceDesc"> </field-option>
   </single-selection-field>
 </ng-template>
 
 <ng-template #modeButtons>
-  <action-button *ngIf="(resultType$ | async) !== ResultType.CATEGORIES"
-    actionKind="flat" (action)="categoriesAction.onClick()"
+  <action-button
+    *ngIf="(resultType$ | async) !== ResultType.CATEGORIES"
+    actionKind="flat"
+    (action)="categoriesAction.onClick()"
     [icon]="categoriesAction.icon"
     [label]="categoriesAction.label"></action-button>
-  <action-button *ngIf="(resultType$ | async) === ResultType.CATEGORIES"
-    actionKind="flat" (action)="adsAction.onClick()" [icon]="adsAction.icon"
+  <action-button
+    *ngIf="(resultType$ | async) === ResultType.CATEGORIES"
+    actionKind="flat"
+    (action)="adsAction.onClick()"
+    [icon]="adsAction.icon"
     [label]="adsAction.label"></action-button>
 </ng-template>

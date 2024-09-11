@@ -17,9 +17,7 @@ import { StateManager } from '../core/state-manager';
  * may become inconsistent.
  */
 @Directive()
-export abstract class BaseComponent
-  extends AbstractComponent {
-
+export abstract class BaseComponent extends AbstractComponent {
   dataForFrontendHolder: DataForFrontendHolder;
   errorHandler: ErrorHandlerService;
   notification: NotificationService;
@@ -46,5 +44,4 @@ export abstract class BaseComponent
       // Some other apps, such as unsubscribe, don't include the router module
     }
   }
-
 }

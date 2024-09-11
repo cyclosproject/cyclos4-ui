@@ -1,16 +1,19 @@
 import { Inject, Injectable } from '@angular/core';
 import {
-  ExternalPaymentStatusEnum, InstallmentStatusEnum,
-  PaymentRequestStatusEnum, RecurringPaymentStatusEnum,
+  ExternalPaymentStatusEnum,
+  InstallmentStatusEnum,
+  PaymentRequestStatusEnum,
+  RecurringPaymentStatusEnum,
   ScheduledPaymentStatusEnum,
-  TicketStatusEnum, TransactionAuthorizationActionEnum,
-  TransactionAuthorizationStatusEnum, TransactionKind, TransactionResult,
+  TicketStatusEnum,
+  TransactionAuthorizationActionEnum,
+  TransactionAuthorizationStatusEnum,
+  TransactionKind,
+  TransactionResult,
   TransactionView,
-
-  TransferKind, VoucherCreationTypeEnum,
-
+  TransferKind,
+  VoucherCreationTypeEnum,
   VoucherPinStatusForRedeemEnum,
-
   VoucherStatusEnum,
   VoucherTransactionKind
 } from 'app/api/models';
@@ -20,12 +23,10 @@ import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
  * Service used to translate API enums
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ApiI18nService {
-
-  constructor(@Inject(I18nInjectionToken) private i18n: I18n) {
-  }
+  constructor(@Inject(I18nInjectionToken) private i18n: I18n) {}
 
   /**
    * Returns the transaction authorization status display
@@ -279,5 +280,4 @@ export class ApiI18nService {
         return this.i18n.voucher.transaction.chargeback;
     }
   }
-
 }

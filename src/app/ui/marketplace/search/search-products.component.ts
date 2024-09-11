@@ -4,8 +4,8 @@ import { FormGroup } from '@angular/forms';
 import { AdKind, AdResult, AdStatusEnum, Currency } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services/marketplace.service';
 import { BaseComponent } from 'app/shared/base.component';
-import { PageData } from 'app/ui/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
+import { PageData } from 'app/ui/shared/page-data';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -15,10 +15,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Component({
   selector: 'search-products',
   templateUrl: 'search-products.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchProductsComponent extends BaseComponent implements OnInit {
-
   private pageSize = 8;
 
   @Input() currency: Currency;
@@ -29,11 +28,7 @@ export class SearchProductsComponent extends BaseComponent implements OnInit {
   results$ = new BehaviorSubject<PagedResults<AdResult>>(null);
   rendering$ = new BehaviorSubject(false);
 
-  constructor(
-    injector: Injector,
-    public modalRef: BsModalRef,
-    private marketplaceService: MarketplaceService,
-  ) {
+  constructor(injector: Injector, public modalRef: BsModalRef, private marketplaceService: MarketplaceService) {
     super(injector);
   }
 
@@ -50,9 +45,7 @@ export class SearchProductsComponent extends BaseComponent implements OnInit {
   update(pageData?: PageData) {
     this.rendering = true;
     this.results = null;
-    this.addSub(this.doSearch(pageData).subscribe(response =>
-      this.results = PagedResults.from(response),
-    ));
+    this.addSub(this.doSearch(pageData).subscribe(response => (this.results = PagedResults.from(response))));
   }
 
   get onClick() {
@@ -75,7 +68,7 @@ export class SearchProductsComponent extends BaseComponent implements OnInit {
       statuses: [AdStatusEnum.ACTIVE],
       pageSize: data.pageSize || this.pageSize,
       page: data.page || 0,
-      keywords: this.form.controls.keywords.value,
+      keywords: this.form.controls.keywords.value
     };
     return this.marketplaceService.searchUserAds$Response(query);
   }
@@ -118,5 +111,4 @@ export class SearchProductsComponent extends BaseComponent implements OnInit {
   isOutOfStock(ad: AdResult): boolean {
     return this.resolveStockLabel(ad) === this.i18n.ad.outOfStock;
   }
-
 }

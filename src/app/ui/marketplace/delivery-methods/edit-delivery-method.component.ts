@@ -1,13 +1,18 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import {
-  Currency, DeliveryMethodBasicData,
-  DeliveryMethodChargeTypeEnum, DeliveryMethodDataForEdit,
-  DeliveryMethodDataForNew, DeliveryMethodEdit, DeliveryMethodTypeEnum, TimeFieldEnum,
+  Currency,
+  DeliveryMethodBasicData,
+  DeliveryMethodChargeTypeEnum,
+  DeliveryMethodDataForEdit,
+  DeliveryMethodDataForNew,
+  DeliveryMethodEdit,
+  DeliveryMethodTypeEnum,
+  TimeFieldEnum
 } from 'app/api/models';
 import { DeliveryMethodsService } from 'app/api/services/delivery-methods.service';
-import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
+import { BasePageComponent } from 'app/ui/shared/base-page.component';
 import { Menu } from 'app/ui/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -17,12 +22,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Component({
   selector: 'edit-delivery-method',
   templateUrl: 'edit-delivery-method.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditDeliveryMethodComponent
   extends BasePageComponent<DeliveryMethodDataForNew | DeliveryMethodDataForEdit>
-  implements OnInit {
-
+  implements OnInit
+{
   DeliveryMethodChargeTypeEnum = DeliveryMethodChargeTypeEnum;
 
   id: string;
@@ -33,9 +38,7 @@ export class EditDeliveryMethodComponent
 
   currency$ = new BehaviorSubject<Currency>(null);
 
-  constructor(
-    injector: Injector,
-    private deliveryMethodService: DeliveryMethodsService) {
+  constructor(injector: Injector, private deliveryMethodService: DeliveryMethodsService) {
     super(injector);
   }
 
@@ -47,16 +50,17 @@ export class EditDeliveryMethodComponent
 
     const request: Observable<DeliveryMethodDataForNew | DeliveryMethodDataForEdit> = this.create
       ? this.deliveryMethodService.getDeliveryMethodDataForNew({
-        user: this.user,
-      })
+          user: this.user
+        })
       : this.deliveryMethodService.getDeliveryMethodDataForEdit({ id: this.id });
-    this.addSub(request.subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      request.subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   onDataInitialized(data: DeliveryMethodDataForNew | DeliveryMethodDataForEdit) {
-
     this.self = this.authHelper.isSelfOrOwner(data.user);
 
     const dm = data.deliveryMethod;
@@ -72,7 +76,7 @@ export class EditDeliveryMethodComponent
       minDeliveryTime: dm.minDeliveryTime,
       maxDeliveryTime: [dm.maxDeliveryTime, Validators.required],
       description: [dm.description, Validators.required],
-      version: (dm as DeliveryMethodEdit).version,
+      version: (dm as DeliveryMethodEdit).version
     });
     this.updateFieldsVisibility(data);
 
@@ -88,11 +92,9 @@ export class EditDeliveryMethodComponent
    */
   protected updateFieldsVisibility(data: DeliveryMethodBasicData) {
     const pickup = this.form.controls.deliveryType.value === DeliveryMethodTypeEnum.PICKUP;
-    if (!empty(data.currencies) &&
-      this.form.controls.chargeType.value === DeliveryMethodChargeTypeEnum.FIXED) {
+    if (!empty(data.currencies) && this.form.controls.chargeType.value === DeliveryMethodChargeTypeEnum.FIXED) {
       const id = this.form.controls.chargeCurrency.value;
-      this.currency = data.currencies.find(c => c.id === id || c.internalName === id)
-        || data.currencies[0];
+      this.currency = data.currencies.find(c => c.id === id || c.internalName === id) || data.currencies[0];
       this.form.patchValue({ chargeCurrency: this.currency.id }, { emitEvent: false });
       this.form.controls.chargeCurrency.setValidators(Validators.required);
       this.form.controls.chargeAmount.setValidators(Validators.required);
@@ -122,15 +124,15 @@ export class EditDeliveryMethodComponent
       return;
     }
     const value = this.form.value;
-    const request: Observable<string | void> = this.create ?
-      this.deliveryMethodService.createDeliveryMethod({ body: value, user: this.user }) :
-      this.deliveryMethodService.updateDeliveryMethod({ id: this.id, body: value });
-    this.addSub(request.subscribe(() => {
-      this.notification.snackBar(this.create
-        ? this.i18n.ad.deliveryMethodCreated
-        : this.i18n.ad.deliveryMethodSaved);
-      history.back();
-    }));
+    const request: Observable<string | void> = this.create
+      ? this.deliveryMethodService.createDeliveryMethod({ body: value, user: this.user })
+      : this.deliveryMethodService.updateDeliveryMethod({ id: this.id, body: value });
+    this.addSub(
+      request.subscribe(() => {
+        this.notification.snackBar(this.create ? this.i18n.ad.deliveryMethodCreated : this.i18n.ad.deliveryMethodSaved);
+        history.back();
+      })
+    );
   }
 
   resolveMenu(data: DeliveryMethodDataForNew | DeliveryMethodDataForEdit) {
@@ -144,5 +146,4 @@ export class EditDeliveryMethodComponent
   set currency(currency: Currency) {
     this.currency$.next(currency);
   }
-
 }

@@ -8,20 +8,15 @@ import { BasePageComponent } from 'app/ui/shared/base-page.component';
 @Component({
   selector: 'list-user-brokers',
   templateUrl: 'list-user-brokers.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListUserBrokersComponent
-  extends BasePageComponent<UserBrokersData>
-  implements OnInit {
-
+export class ListUserBrokersComponent extends BasePageComponent<UserBrokersData> implements OnInit {
   param: string;
   self: boolean;
   brokers: Brokering[];
   hasActions = false;
 
-  constructor(
-    injector: Injector,
-    private brokeringService: BrokeringService) {
+  constructor(injector: Injector, private brokeringService: BrokeringService) {
     super(injector);
   }
 
@@ -30,9 +25,11 @@ export class ListUserBrokersComponent
 
     this.param = this.route.snapshot.params.user;
 
-    this.addSub(this.brokeringService.getUserBrokersData({ user: this.param }).subscribe(data => {
-      this.data = data;
-    }));
+    this.addSub(
+      this.brokeringService.getUserBrokersData({ user: this.param }).subscribe(data => {
+        this.data = data;
+      })
+    );
   }
 
   path(brokering: Brokering) {
@@ -46,12 +43,24 @@ export class ListUserBrokersComponent
     this.brokers = data.brokers;
     this.headingActions = [];
     if (data.editable) {
-      this.headingActions.push(new HeadingAction(SvgIcon.PersonPlus, this.i18n.general.addNew, () =>
-        this.router.navigate(['/users', this.param, 'brokers', 'new']), true));
+      this.headingActions.push(
+        new HeadingAction(
+          SvgIcon.PersonPlus,
+          this.i18n.general.addNew,
+          () => this.router.navigate(['/users', this.param, 'brokers', 'new']),
+          true
+        )
+      );
     }
     if (data.history) {
-      this.headingActions.push(new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
-        this.router.navigate(['/users', this.param, 'brokers', 'history']), true));
+      this.headingActions.push(
+        new HeadingAction(
+          SvgIcon.Clock,
+          this.i18n.general.viewHistory,
+          () => this.router.navigate(['/users', this.param, 'brokers', 'history']),
+          true
+        )
+      );
     }
     this.hasActions = data.brokers.findIndex(b => this.canRemove(b)) >= 0;
   }
@@ -61,29 +70,37 @@ export class ListUserBrokersComponent
   }
 
   setMain(brokering: Brokering) {
-    this.addSub(this.brokeringService.setMainBroker({
-      broker: brokering.broker.id,
-      user: this.param,
-    }).subscribe(() => {
-      this.reload();
-    }));
+    this.addSub(
+      this.brokeringService
+        .setMainBroker({
+          broker: brokering.broker.id,
+          user: this.param
+        })
+        .subscribe(() => {
+          this.reload();
+        })
+    );
   }
 
   remove(brokering: Brokering) {
     this.confirmation.confirm({
       message: this.i18n.general.removeConfirm(brokering.broker.display),
-      callback: () => this.doRemove(brokering),
+      callback: () => this.doRemove(brokering)
     });
   }
 
   private doRemove(brokering: Brokering) {
-    this.addSub(this.brokeringService.removeBroker({
-      broker: brokering.broker.id,
-      user: this.param,
-    }).subscribe(() => {
-      this.notification.snackBar(this.i18n.general.removeDone(brokering.broker.display));
-      this.reload();
-    }));
+    this.addSub(
+      this.brokeringService
+        .removeBroker({
+          broker: brokering.broker.id,
+          user: this.param
+        })
+        .subscribe(() => {
+          this.notification.snackBar(this.i18n.general.removeDone(brokering.broker.display));
+          this.reload();
+        })
+    );
   }
 
   resolveMenu() {
@@ -97,5 +114,4 @@ export class ListUserBrokersComponent
   canSetMain(brokering: Brokering) {
     return this.data?.editable && !brokering.main && brokering.broker.id;
   }
-
 }

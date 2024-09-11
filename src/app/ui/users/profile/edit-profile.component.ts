@@ -1,9 +1,22 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  AddressManage, AvailabilityEnum, ContactInfoManage, CreateDeviceConfirmation,
-  CustomField, CustomFieldDetailed, CustomFieldValue, DataForEditFullProfile,
-  DeviceConfirmationTypeEnum, FieldSection, FullProfileEdit, Image, PhoneEditWithId, PhoneKind, PhoneManage, UserCustomFieldDetailed
+  AddressManage,
+  AvailabilityEnum,
+  ContactInfoManage,
+  CreateDeviceConfirmation,
+  CustomField,
+  CustomFieldDetailed,
+  CustomFieldValue,
+  DataForEditFullProfile,
+  DeviceConfirmationTypeEnum,
+  FieldSection,
+  FullProfileEdit,
+  Image,
+  PhoneEditWithId,
+  PhoneKind,
+  PhoneManage,
+  UserCustomFieldDetailed
 } from 'app/api/models';
 import { ImagesService } from 'app/api/services/images.service';
 import { PhonesService } from 'app/api/services/phones.service';
@@ -37,12 +50,9 @@ let modelIndex = 0;
 @Component({
   selector: 'edit-profile',
   templateUrl: 'edit-profile.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditProfileComponent
-  extends BasePageComponent<DataForEditFullProfile>
-  implements OnInit {
-
+export class EditProfileComponent extends BasePageComponent<DataForEditFullProfile> implements OnInit {
   createDeviceConfirmation: () => CreateDeviceConfirmation;
 
   byManager: boolean;
@@ -103,7 +113,8 @@ export class EditProfileComponent
     private addressHelper: AddressHelperService,
     private modal: BsModalService,
     private camera: CameraService,
-    private changeDetector: ChangeDetectorRef) {
+    private changeDetector: ChangeDetectorRef
+  ) {
     super(injector);
   }
 
@@ -114,40 +125,45 @@ export class EditProfileComponent
     this.createDeviceConfirmation = () => ({ type: DeviceConfirmationTypeEnum.EDIT_PROFILE });
 
     this.headingActions = [
-      new HeadingAction(SvgIcon.Search, this.i18n.general.view, () =>
-        this.router.navigate(['/users', this.param, 'profile']),
-        true),
+      new HeadingAction(
+        SvgIcon.Search,
+        this.i18n.general.view,
+        () => this.router.navigate(['/users', this.param, 'profile']),
+        true
+      )
     ];
 
-    this.addSub(this.usersService.getDataForEditFullProfile({ user: this.param }).subscribe(data => {
-      this.data = data;
+    this.addSub(
+      this.usersService.getDataForEditFullProfile({ user: this.param }).subscribe(data => {
+        this.data = data;
 
-      const role = data.userConfiguration.role;
-      const user = data.userConfiguration.details;
+        const role = data.userConfiguration.role;
+        const user = data.userConfiguration.details;
 
-      const self = this.authHelper.isSelf(user);
-      this.byManager = !this.authHelper.isSelfOrOwner(user);
-      this.operatorOfManagedUser = role === 'operator' && !this.authHelper.isSelf(user.user);
+        const self = this.authHelper.isSelf(user);
+        this.byManager = !this.authHelper.isSelfOrOwner(user);
+        this.operatorOfManagedUser = role === 'operator' && !this.authHelper.isSelf(user.user);
 
-      if (self) {
-        // Update the current user to reflect any changes if editing own profile
-        this.login.user$.next({
-          id: this.login.user.id,
-          display: data.userConfiguration.details.display,
-          image: empty(data.images) ? null : data.images[0],
-        });
-      }
+        if (self) {
+          // Update the current user to reflect any changes if editing own profile
+          this.login.user$.next({
+            id: this.login.user.id,
+            display: data.userConfiguration.details.display,
+            image: empty(data.images) ? null : data.images[0]
+          });
+        }
 
-      this.initialize(data);
+        this.initialize(data);
 
-      // Handle the case that the confirmation password cannot be used
-      this.canConfirm = this.authHelper.canConfirm(data.confirmationPasswordInput);
-      if (!this.canConfirm) {
-        this.notification.warning(this.authHelper.getConfirmationMessage(data.confirmationPasswordInput));
-      }
+        // Handle the case that the confirmation password cannot be used
+        this.canConfirm = this.authHelper.canConfirm(data.confirmationPasswordInput);
+        if (!this.canConfirm) {
+          this.notification.warning(this.authHelper.getConfirmationMessage(data.confirmationPasswordInput));
+        }
 
-      this.ready$.next(true);
-    }));
+        this.ready$.next(true);
+      })
+    );
   }
 
   locateControl(locator: FormControlLocator): AbstractControl {
@@ -168,7 +184,9 @@ export class EditProfileComponent
     } else if (name === 'email') {
       return this.data.userConfiguration.emailRequired;
     } else {
-      const customField = (this.data.userConfiguration?.customFields || []).find(c => c.internalName === name || c.id === name);
+      const customField = (this.data.userConfiguration?.customFields || []).find(
+        c => c.internalName === name || c.id === name
+      );
       return customField && customField.required;
     }
   }
@@ -250,7 +268,7 @@ export class EditProfileComponent
       createAddresses: new FormArray(this.createAddresses),
       modifyAddresses: new FormArray(this.modifyAddresses),
       createContactInfos: new FormArray(this.createContactInfos),
-      modifyContactInfos: new FormArray(this.modifyContactInfos),
+      modifyContactInfos: new FormArray(this.modifyContactInfos)
     });
   }
 
@@ -266,7 +284,7 @@ export class EditProfileComponent
         createDeviceConfirmation: this.createDeviceConfirmation,
         callback: params => {
           this.save(params.confirmationPassword);
-        },
+        }
       });
     } else {
       // Save directly
@@ -290,17 +308,17 @@ export class EditProfileComponent
     const saveUserFullProfileReq = this.usersService.saveUserFullProfile({
       user: this.param,
       confirmationPassword,
-      body: body,
+      body: body
     });
 
     // If the main image has changed reload the user version
     if (this.mainImageChanged()) {
-      this.addSub(this.usersService.getDataForEditFullProfile({ user: this.param, fields: ['user.version'] })
-        .subscribe(data => {
+      this.addSub(
+        this.usersService.getDataForEditFullProfile({ user: this.param, fields: ['user.version'] }).subscribe(data => {
           body.user.version = data.user.version;
           this.addSub(saveUserFullProfileReq.subscribe(onFinish));
-        }
-        ));
+        })
+      );
     } else {
       this.addSub(saveUserFullProfileReq.subscribe(onFinish));
     }
@@ -379,7 +397,7 @@ export class EditProfileComponent
   protected mainImageChanged(): boolean {
     const currentImage = this.images.length > 0 ? this.ApiHelper.internalNameOrId(this.images[0]) : null;
     // Check any change in the main image, either added and removed, or changed
-    return this.mainImage == null && currentImage == null && this.hasRemovedImages || this.mainImage !== currentImage;
+    return (this.mainImage == null && currentImage == null && this.hasRemovedImages) || this.mainImage !== currentImage;
   }
 
   private initialize(data: DataForEditFullProfile) {
@@ -427,9 +445,7 @@ export class EditProfileComponent
     // Prepare the mobile forms
     if (this.mobileAvailability === 'single') {
       if (this.canEdit('phone') || !empty(data.mobilePhones)) {
-        this.singleMobileManage = empty(data.mobilePhones)
-          ? data.phoneConfiguration.mobilePhone
-          : data.mobilePhones[0];
+        this.singleMobileManage = empty(data.mobilePhones) ? data.phoneConfiguration.mobilePhone : data.mobilePhones[0];
         this.singleMobile = this.buildMobileForm(this.singleMobileManage);
       }
     } else {
@@ -437,11 +453,13 @@ export class EditProfileComponent
         const form = this.buildMobileForm(p);
         if (this.mobileAvailability === 'multiple') {
           this.phones.push(p);
-          this.addSub(form.valueChanges.subscribe(() => {
-            if (!this.modifyMobilePhones.includes(form)) {
-              this.modifyMobilePhones.push(form);
-            }
-          }));
+          this.addSub(
+            form.valueChanges.subscribe(() => {
+              if (!this.modifyMobilePhones.includes(form)) {
+                this.modifyMobilePhones.push(form);
+              }
+            })
+          );
         }
       });
     }
@@ -459,11 +477,13 @@ export class EditProfileComponent
         const form = this.buildLandLineForm(p);
         if (this.landLineAvailability === 'multiple') {
           this.phones.push(p);
-          this.addSub(form.valueChanges.subscribe(() => {
-            if (!this.modifyLandLinePhones.includes(form)) {
-              this.modifyLandLinePhones.push(form);
-            }
-          }));
+          this.addSub(
+            form.valueChanges.subscribe(() => {
+              if (!this.modifyLandLinePhones.includes(form)) {
+                this.modifyLandLinePhones.push(form);
+              }
+            })
+          );
         }
       });
     }
@@ -472,21 +492,22 @@ export class EditProfileComponent
     if (this.addressAvailability === 'single') {
       if (this.canEdit('address') || !empty(data.addresses)) {
         this.defineSingleAddress = this.formBuilder.control(
-          !empty(data.addresses) || data.addressConfiguration.availability === 'required');
-        this.singleAddressManage = empty(data.addresses)
-          ? data.addressConfiguration.address
-          : data.addresses[0];
+          !empty(data.addresses) || data.addressConfiguration.availability === 'required'
+        );
+        this.singleAddressManage = empty(data.addresses) ? data.addressConfiguration.address : data.addresses[0];
         this.singleAddress = this.buildAddressForm(this.singleAddressManage);
       }
     } else {
       (data.addresses || []).forEach(p => {
         const form = this.buildAddressForm(p);
         if (this.addressAvailability === 'multiple') {
-          this.addSub(form.valueChanges.subscribe(() => {
-            if (!this.modifyAddresses.includes(form)) {
-              this.modifyAddresses.push(form);
-            }
-          }));
+          this.addSub(
+            form.valueChanges.subscribe(() => {
+              if (!this.modifyAddresses.includes(form)) {
+                this.modifyAddresses.push(form);
+              }
+            })
+          );
         }
       });
       this.addresses = (data.addresses || []).slice();
@@ -495,22 +516,26 @@ export class EditProfileComponent
     // Prepare the contact-info forms
     (data.contactInfos || []).forEach(p => {
       const form = this.buildContactInfoForm(p);
-      this.addSub(form.valueChanges.subscribe(() => {
-        if (!this.modifyContactInfos.includes(form)) {
-          this.modifyContactInfos.push(form);
-        }
-      }));
+      this.addSub(
+        form.valueChanges.subscribe(() => {
+          if (!this.modifyContactInfos.includes(form)) {
+            this.modifyContactInfos.push(form);
+          }
+        })
+      );
     });
     this.contactInfos = (data.contactInfos || []).slice();
 
-    const fields = (data.userConfiguration?.customFields || []);
+    const fields = data.userConfiguration?.customFields || [];
     this.fieldsWithoutSection = fields.filter(field => field.section == null) || [];
     const sections = new Map();
-    fields.map(v => v.section).forEach(s => {
-      if (s != null) {
-        sections.set(s.id, s);
-      }
-    });
+    fields
+      .map(v => v.section)
+      .forEach(s => {
+        if (s != null) {
+          sections.set(s.id, s);
+        }
+      });
     sections.forEach(s => {
       const filter = fields.filter(field => field.section != null && field.section.id === s.id);
       if (!empty(filter)) {
@@ -529,26 +554,35 @@ export class EditProfileComponent
 
     const form = this.formBuilder.group({
       version: user.version,
-      hiddenFields: [user.hiddenFields || []],
+      hiddenFields: [user.hiddenFields || []]
     });
 
     // Process the basic fields
     for (const field of BASIC_FIELDS) {
       if (this.hasField(field)) {
-        form.setControl(field, this.formBuilder.control({
-          value: user[field],
-          disabled: !this.canEdit(field),
-        }, this.isRequired(field) ? Validators.required : null));
+        form.setControl(
+          field,
+          this.formBuilder.control(
+            {
+              value: user[field],
+              disabled: !this.canEdit(field)
+            },
+            this.isRequired(field) ? Validators.required : null
+          )
+        );
       } else {
         form.removeControl(field);
       }
     }
     // Set the custom fields control
-    form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
-      currentValues: user.customValues,
-      disabledProvider: cf => !this.canEdit(cf.internalName),
-      requiredProvider: cf => this.canEdit(cf.internalName) && cf.required
-    }));
+    form.setControl(
+      'customValues',
+      this.fieldHelper.customValuesFormGroup(data.customFields, {
+        currentValues: user.customValues,
+        disabledProvider: cf => !this.canEdit(cf.internalName),
+        requiredProvider: cf => this.canEdit(cf.internalName) && cf.required
+      })
+    );
 
     return form;
   }
@@ -597,7 +631,7 @@ export class EditProfileComponent
       version: null,
       hidden: null,
       name: [null, Validators.required],
-      number: [null, numberRequired ? Validators.required : null],
+      number: [null, numberRequired ? Validators.required : null]
     });
     if (!this.editableFields.has('phone')) {
       form.disable();
@@ -611,12 +645,14 @@ export class EditProfileComponent
     this.stampDataAndInitForm(address, form);
     for (const field of data.enabledFields) {
       let previous = address[field] || null;
-      this.addSub(form.get(field).valueChanges.subscribe(newVal => {
-        if (previous !== newVal) {
-          form.get('location').patchValue({ latitude: null, longitude: null });
-        }
-        previous = newVal;
-      }));
+      this.addSub(
+        form.get(field).valueChanges.subscribe(newVal => {
+          if (previous !== newVal) {
+            form.get('location').patchValue({ latitude: null, longitude: null });
+          }
+          previous = newVal;
+        })
+      );
     }
     if (!this.editableFields.has('address')) {
       form.disable();
@@ -636,7 +672,7 @@ export class EditProfileComponent
       mobilePhone: null,
       landLinePhone: null,
       landLineExtension: null,
-      address: null,
+      address: null
     });
     form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields));
     if (!this.data.contactInfoConfiguration.edit) {
@@ -833,49 +869,51 @@ export class EditProfileComponent
     const ref = this.modal.show(VerifyPhoneComponent, {
       class: 'modal-form',
       initialState: {
-        phone,
-      },
+        phone
+      }
     });
     const comp = ref.content as VerifyPhoneComponent;
-    this.addSub(comp.verified.pipe(take(1)).subscribe(flag => {
-      if (flag) {
-        // As the phone has been modified, we have to fetch it again (the version have changed)
-        this.phonesService.getPhoneDataForEdit({ idOrNumber: phone.id, fields: ['phone'] }).subscribe(data => {
-          const newPhone = data.phone as PhoneEditWithId;
-          newPhone.id = phone.id;
-          newPhone.enabledForSms = true;
-          const form = this.buildMobileForm(newPhone);
-          // Initially touch the form, because we've manually set the enabledForSms
-          form.markAsTouched();
-          const index = (this.phones || []).findIndex(p => p['id'] === phone.id);
-          if (index >= 0) {
-            // Update the phones list
-            const phones = this.phones.slice();
-            phones[index] = newPhone;
-            this.phones = phones;
-            // Update the modify forms
-            const formIndex = this.modifyMobilePhones.findIndex(f => f.value.id === phone.id);
-            const newForms = this.modifyMobilePhones.slice();
-            if (formIndex >= 0) {
-              // Was already modified
-              newForms[formIndex] = form;
-            } else {
-              // Add to the modified list
-              newForms.push(form);
+    this.addSub(
+      comp.verified.pipe(take(1)).subscribe(flag => {
+        if (flag) {
+          // As the phone has been modified, we have to fetch it again (the version have changed)
+          this.phonesService.getPhoneDataForEdit({ idOrNumber: phone.id, fields: ['phone'] }).subscribe(data => {
+            const newPhone = data.phone as PhoneEditWithId;
+            newPhone.id = phone.id;
+            newPhone.enabledForSms = true;
+            const form = this.buildMobileForm(newPhone);
+            // Initially touch the form, because we've manually set the enabledForSms
+            form.markAsTouched();
+            const index = (this.phones || []).findIndex(p => p['id'] === phone.id);
+            if (index >= 0) {
+              // Update the phones list
+              const phones = this.phones.slice();
+              phones[index] = newPhone;
+              this.phones = phones;
+              // Update the modify forms
+              const formIndex = this.modifyMobilePhones.findIndex(f => f.value.id === phone.id);
+              const newForms = this.modifyMobilePhones.slice();
+              if (formIndex >= 0) {
+                // Was already modified
+                newForms[formIndex] = form;
+              } else {
+                // Add to the modified list
+                newForms.push(form);
+              }
+              this.modifyMobilePhones = newForms;
             }
-            this.modifyMobilePhones = newForms;
-          }
-          if (this.singleMobile) {
-            this.singleMobile = form;
-          }
+            if (this.singleMobile) {
+              this.singleMobile = form;
+            }
 
-          // Only now hide the modal
-          ref.hide();
+            // Only now hide the modal
+            ref.hide();
 
-          this.changeDetector.detectChanges();
-        });
-      }
-    }));
+            this.changeDetector.detectChanges();
+          });
+        }
+      })
+    );
   }
 
   /**
@@ -912,7 +950,7 @@ export class EditProfileComponent
       initialState: {
         images: this.images,
         requireAtLeastOne: this.data.imageConfiguration?.availability === AvailabilityEnum.REQUIRED
-      },
+      }
     });
     const component = ref.content as ManageImagesComponent;
     component.result.pipe(first()).subscribe(result => {
@@ -951,10 +989,15 @@ export class EditProfileComponent
   locateAddress(addressForm: FormGroup) {
     const value = addressForm.value;
     addressForm['locating$'].next(true);
-    this.addSub(this.maps.geocode(value).subscribe(coords => {
-      addressForm.patchValue({ location: coords });
-      this.changeDetector.detectChanges();
-    }, () => this.mapShown(addressForm)));
+    this.addSub(
+      this.maps.geocode(value).subscribe(
+        coords => {
+          addressForm.patchValue({ location: coords });
+          this.changeDetector.detectChanges();
+        },
+        () => this.mapShown(addressForm)
+      )
+    );
   }
 
   mapShown(addressForm: FormGroup) {
@@ -971,5 +1014,4 @@ export class EditProfileComponent
     const value = this.user.get('customValues').get(cf.internalName).value;
     return this.fieldHelper.asFieldValue(cf, value, this.data.userConfiguration.binaryValues);
   }
-
 }

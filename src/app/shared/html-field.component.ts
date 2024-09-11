@@ -1,6 +1,14 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, Component, ElementRef,
-  Host, Injector, OnInit, Optional, SkipSelf, ViewChild
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Host,
+  Injector,
+  OnInit,
+  Optional,
+  SkipSelf,
+  ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { RoleEnum } from 'app/api/models';
@@ -26,11 +34,7 @@ interface ActionValue {
 abstract class Action {
   icon?: string;
   expandSelection = false;
-  constructor(
-    public fieldId: string,
-    public widget: ActionWidget,
-    public tooltip: string,
-  ) { }
+  constructor(public fieldId: string, public widget: ActionWidget, public tooltip: string) {}
 
   element(): HTMLElement {
     return document.getElementById(this.fieldId);
@@ -42,22 +46,12 @@ abstract class Action {
   }
 }
 abstract class Command extends Action {
-  constructor(
-    idPrefix: string,
-    public type: ActionWidget,
-    public command: string,
-    tooltip: string,
-  ) {
+  constructor(idPrefix: string, public type: ActionWidget, public command: string, tooltip: string) {
     super(`${idPrefix}_${command}`, type, tooltip);
   }
 }
 class CommandSelect extends Command {
-  constructor(
-    idPrefix: string,
-    command: string,
-    tooltip: string,
-    public values?: ActionValue[],
-  ) {
+  constructor(idPrefix: string, command: string, tooltip: string, public values?: ActionValue[]) {
     super(idPrefix, 'select', command, tooltip);
   }
 
@@ -66,12 +60,7 @@ class CommandSelect extends Command {
   }
 }
 class CommandButton extends Command {
-  constructor(
-    idPrefix: string,
-    command: string,
-    tooltip: string,
-    public icon: SvgIcon,
-  ) {
+  constructor(idPrefix: string, command: string, tooltip: string, public icon: SvgIcon) {
     super(idPrefix, 'button', command, tooltip);
   }
 
@@ -81,12 +70,7 @@ class CommandButton extends Command {
 }
 
 class CustomButton extends Action {
-  constructor(
-    fieldId: string,
-    public callback: () => any,
-    tooltip: string,
-    public icon: SvgIcon,
-  ) {
+  constructor(fieldId: string, public callback: () => any, tooltip: string, public icon: SvgIcon) {
     super(fieldId, 'button', tooltip);
   }
 }
@@ -98,13 +82,9 @@ class CustomButton extends Action {
   selector: 'html-field',
   templateUrl: 'html-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: HtmlFieldComponent, multi: true },
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: HtmlFieldComponent, multi: true }]
 })
-export class HtmlFieldComponent
-  extends BaseFormFieldComponent<string> implements OnInit, AfterViewInit {
-
+export class HtmlFieldComponent extends BaseFormFieldComponent<string> implements OnInit, AfterViewInit {
   @ViewChild('editor') private editor: ElementRef<HTMLElement>;
 
   actions: Action[][];
@@ -116,7 +96,8 @@ export class HtmlFieldComponent
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private modal: BsModalService) {
+    private modal: BsModalService
+  ) {
     super(injector, controlContainer);
   }
 
@@ -125,7 +106,7 @@ export class HtmlFieldComponent
     this.actions = [
       [
         new CommandButton(this.id, 'undo', this.i18n.field.html.undo, SvgIcon.ArrowCounterclockwise),
-        new CommandButton(this.id, 'redo', this.i18n.field.html.redo, SvgIcon.ArrowClockwise),
+        new CommandButton(this.id, 'redo', this.i18n.field.html.redo, SvgIcon.ArrowClockwise)
       ],
       [
         new CommandSelect(this.id, 'formatblock', this.i18n.field.html.block, [
@@ -136,16 +117,16 @@ export class HtmlFieldComponent
           { value: 'h5', label: this.i18n.field.html.blockH5 },
           { value: 'h6', label: this.i18n.field.html.blockH6 },
           { value: 'p', label: this.i18n.field.html.blockP },
-          { value: 'pre', label: this.i18n.field.html.blockPre },
-        ]),
+          { value: 'pre', label: this.i18n.field.html.blockPre }
+        ])
       ],
       [
         new CommandSelect(this.id, 'fontname', this.i18n.field.html.font, [
           { value: getComputedStyle(document.body).fontFamily, label: this.i18n.field.html.fontDefault },
           { value: 'sans-serif', label: this.i18n.field.html.fontSansSerif },
           { value: 'serif', label: this.i18n.field.html.fontSerif },
-          { value: 'monospace', label: this.i18n.field.html.fontMonospace },
-        ]).expand(),
+          { value: 'monospace', label: this.i18n.field.html.fontMonospace }
+        ]).expand()
       ],
       [
         new CommandSelect(this.id, 'fontsize', this.i18n.field.html.size, [
@@ -155,31 +136,34 @@ export class HtmlFieldComponent
           { value: '4', label: this.i18n.field.html.size4 },
           { value: '5', label: this.i18n.field.html.size5 },
           { value: '6', label: this.i18n.field.html.size6 },
-          { value: '7', label: this.i18n.field.html.size7 },
-        ]).expand(),
+          { value: '7', label: this.i18n.field.html.size7 }
+        ]).expand()
       ],
       [
         new CommandButton(this.id, 'bold', this.i18n.field.html.bold, SvgIcon.TypeBold).expand(),
         new CommandButton(this.id, 'italic', this.i18n.field.html.italic, SvgIcon.TypeItalic).expand(),
         new CommandButton(this.id, 'underline', this.i18n.field.html.underline, SvgIcon.TypeUnderline).expand(),
-        new CommandButton(this.id, 'strikethrough', this.i18n.field.html.strikethrough, SvgIcon.TypeStrikethrough).expand(),
+        new CommandButton(
+          this.id,
+          'strikethrough',
+          this.i18n.field.html.strikethrough,
+          SvgIcon.TypeStrikethrough
+        ).expand()
       ],
       [
         new CommandButton(this.id, 'justifyLeft', this.i18n.field.html.alignLeft, SvgIcon.TextLeft),
         new CommandButton(this.id, 'justifyCenter', this.i18n.field.html.alignCenter, SvgIcon.TextCenter),
         new CommandButton(this.id, 'justifyRight', this.i18n.field.html.alignRight, SvgIcon.TextRight),
-        new CommandButton(this.id, 'justifyFull', this.i18n.field.html.alignJustify, SvgIcon.Justify),
+        new CommandButton(this.id, 'justifyFull', this.i18n.field.html.alignJustify, SvgIcon.Justify)
       ],
       [
         new CommandButton(this.id, 'insertUnorderedList', this.i18n.field.html.listBulleted, SvgIcon.ListUl),
         new CommandButton(this.id, 'insertOrderedList', this.i18n.field.html.listNumbered, SvgIcon.ListOl),
         new CommandButton(this.id, 'outdent', this.i18n.field.html.indentLess, SvgIcon.TextIndentRight),
-        new CommandButton(this.id, 'indent', this.i18n.field.html.indentMore, SvgIcon.TextIndentLeft),
+        new CommandButton(this.id, 'indent', this.i18n.field.html.indentMore, SvgIcon.TextIndentLeft)
       ],
       this.actionsWithImage,
-      [
-        new CommandButton(this.id, 'removeformat', this.i18n.field.html.removeFormat, SvgIcon.X).expand(),
-      ],
+      [new CommandButton(this.id, 'removeformat', this.i18n.field.html.removeFormat, SvgIcon.X).expand()]
     ].filter(a => !empty(a));
   }
 
@@ -192,12 +176,27 @@ export class HtmlFieldComponent
     if (imagePermissions.myCustom || auth.role === RoleEnum.ADMINISTRATOR) {
       // Admins can link an external URL or use system images. Users can only use custom images.
       // However, this user don't have this permission, so we can't show the insert image button.
-      actions.push(new CustomButton(`${this.id}_insertImage`, () => this.insertImage(), this.i18n.field.html.image.tooltip, SvgIcon.Image));
+      actions.push(
+        new CustomButton(
+          `${this.id}_insertImage`,
+          () => this.insertImage(),
+          this.i18n.field.html.image.tooltip,
+          SvgIcon.Image
+        )
+      );
     }
 
-    actions.push(new CustomButton(`${this.id}_insertLink`, () => this.insertLink(), this.i18n.field.html.link.tooltip, SvgIcon.Link)
-      .expand());
-    actions.push(new CustomButton(`${this.id}_removeLink`, () => this.unlink(), this.i18n.field.html.unlink, SvgIcon.LinkSlash));
+    actions.push(
+      new CustomButton(
+        `${this.id}_insertLink`,
+        () => this.insertLink(),
+        this.i18n.field.html.link.tooltip,
+        SvgIcon.Link
+      ).expand()
+    );
+    actions.push(
+      new CustomButton(`${this.id}_removeLink`, () => this.unlink(), this.i18n.field.html.unlink, SvgIcon.LinkSlash)
+    );
     return actions;
   }
 
@@ -342,7 +341,7 @@ export class HtmlFieldComponent
   private insertImage() {
     this.focusEditor('store');
     const ref = this.modal.show(InsertImageDialogComponent, {
-      class: 'modal-form modal-form-medium',
+      class: 'modal-form modal-form-medium'
     });
     const component = ref.content as InsertImageDialogComponent;
     component.select.pipe(first()).subscribe(i => this.doInsertImage(i));
@@ -363,8 +362,10 @@ export class HtmlFieldComponent
     if (sel.isCollapsed) {
       // First expand up to the parent anchor
       let el: Node = sel.focusNode;
-      while (el.nodeType === Node.TEXT_NODE
-        || (el.nodeType === Node.ELEMENT_NODE && el.nodeName.toLowerCase() !== 'a')) {
+      while (
+        el.nodeType === Node.TEXT_NODE ||
+        (el.nodeType === Node.ELEMENT_NODE && el.nodeName.toLowerCase() !== 'a')
+      ) {
         el = el.parentElement;
       }
       if (!el || el.nodeName.toLowerCase() !== 'a') {
@@ -416,8 +417,8 @@ export class HtmlFieldComponent
     const ref = this.modal.show(ImagePropertiesDialogComponent, {
       class: 'modal-form modal-form-medium',
       initialState: {
-        img,
-      },
+        img
+      }
     });
     const component = ref.content as ImagePropertiesDialogComponent;
     component.select.pipe(first()).subscribe(props => this.doSetImageProperties(img, props));
@@ -428,8 +429,8 @@ export class HtmlFieldComponent
     const ref = this.modal.show(LinkPropertiesDialogComponent, {
       class: 'modal-form modal-form-medium',
       initialState: {
-        link: a,
-      },
+        link: a
+      }
     });
     const component = ref.content as LinkPropertiesDialogComponent;
     component.select.pipe(first()).subscribe(props => this.doSetLinkProperties(a, props));
@@ -465,7 +466,8 @@ export class HtmlFieldComponent
         case Node.ELEMENT_NODE:
           // The selection was an element which had the link inserted
           htmlCollectionToArray((element as HTMLElement).getElementsByTagName('a')).forEach(
-            (anchor: HTMLAnchorElement) => this.setupLink(anchor));
+            (anchor: HTMLAnchorElement) => this.setupLink(anchor)
+          );
           break;
         case Node.TEXT_NODE:
           if (element.parentElement && element.parentElement.tagName.toLowerCase() === 'a') {
