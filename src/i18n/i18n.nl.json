@@ -2039,6 +2039,7 @@
     "listAds": "Toon advertenties",
     "showFavorites": "Alleen favorieten",
     "warningDisabledAd": "Deze advertentie heeft de status niet actief en kan niet worden bekeken door andere gebruikers. Om de advertentie te activeren, kies dan een prijs en sla de advertentie opnieuw op.",
+    "warningCurrencyNotAvailable": "De advertentie valuta is momenteel niet beschikbaar, selecteer een andere valuta of neem contact op met de administratie.",
     "title": {
       "search": "Zoek advertenties",
       "myAdvertisements": "Mijn advertenties",

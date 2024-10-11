@@ -68,9 +68,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.16.12/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.16.13/api-deprecation.html)
     for this version.
-  version: '4.16.12'
+  version: '4.16.13'
 servers:
   - url: 'http://root/api'
 
@@ -2381,6 +2381,7 @@ paths:
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/RoleEnum'
         - name: skipTotalCount
           in: query
@@ -3609,6 +3610,7 @@ paths:
         - name: addressResult
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/UserAddressResultEnum'
         - name: brokers
@@ -3748,6 +3750,7 @@ paths:
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/UserOrderByEnum'
         - name: page
@@ -3825,6 +3828,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/RoleEnum'
         - name: skipTotalCount
           in: query
@@ -3839,6 +3843,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/UserStatusEnum'
         - name: usersToExclude
           in: query
@@ -4064,6 +4069,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: addressResult
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/UserAddressResultEnum'
         - name: brokers
@@ -4203,6 +4209,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/UserOrderByEnum'
         - name: page
@@ -4280,6 +4287,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/RoleEnum'
         - name: skipTotalCount
           in: query
@@ -4294,6 +4302,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/UserStatusEnum'
         - name: usersToExclude
           in: query
@@ -5182,6 +5191,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: addressResult
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/UserAddressResultEnum'
         - name: brokers
@@ -5321,6 +5331,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/UserOrderByEnum'
         - name: page
@@ -5398,6 +5409,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/RoleEnum'
         - name: skipTotalCount
           in: query
@@ -5412,6 +5424,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/UserStatusEnum'
         - name: usersToExclude
           in: query
@@ -5640,6 +5653,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/UserStatusEnum'
       responses:
         '200':
@@ -5872,46 +5886,64 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - accessClient: []
       parameters:
         - $ref: '#/components/parameters/fields'
-        - $ref: '#/components/parameters/page'
-        - $ref: '#/components/parameters/pageSize'
-        - name: userGroups
-          in: query
-          required: false
-          description: >-
-            Either id or internal names of user groups / group sets
-          schema:
-            type: array
-            items:
-              type: string
         - name: broker
           in: query
           required: false
-          description: >-
-            Either id or a principal (login name, e-mail, etc) of the user broker
+          description: "Either id or a principal (login name, e-mail, etc) of the user broker"
           schema:
             type: string
         - name: creationPeriod
-          description: >-
-            The minimum / maximum user creation date. Only taken into account if
-            searching as administrator or managing broker.
-            Is expressed an array, with the lower bound as first element, and
-            the upper bound as second element. When only one element, will have
-            just the lower bound. To specify only the upper bound, prefix the value
-            with a comma.
           in: query
           required: false
+          description: "The minimum / maximum user creation date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
           schema:
             type: array
             items:
+              description: ''
               type: string
               format: date-time
+        - name: keywords
+          in: query
+          required: false
+          description: "Used to filter operators containing that keywords in the the username or name (case insensitive)"
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
+          description: ''
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/UserStatusEnum'
+        - name: userGroups
+          in: query
+          required: false
+          description: "Either id or internal names of user groups / group sets"
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
       responses:
         '200':
           description: >-
@@ -11927,6 +11959,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: range
           in: query
           required: false
+          description: "The range for returned documents. When not specified, defaults to `shared`."
           schema:
             $ref: '#/components/schemas/DocumentRangeEnum'
         - name: skipTotalCount
@@ -13387,6 +13420,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/ContactOrderByEnum'
         - name: page
@@ -17604,6 +17638,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: direction
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransferDirectionEnum'
         - name: excludedIds
@@ -17643,6 +17678,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransferKind'
         - name: page
           in: query
@@ -17907,6 +17943,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: direction
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransferDirectionEnum'
         - name: excludedIds
@@ -17946,10 +17983,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransferKind'
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransOrderByEnum'
         - name: page
@@ -18181,6 +18220,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: direction
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransferDirectionEnum'
         - name: excludedIds
@@ -18220,10 +18260,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransferKind'
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransOrderByEnum'
         - name: page
@@ -18540,6 +18582,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: addressResult
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/UserAddressResultEnum'
         - name: balanceRange
@@ -18768,6 +18811,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/UserStatusEnum'
         - name: usersToExclude
           in: query
@@ -18876,6 +18920,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: addressResult
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/UserAddressResultEnum'
         - name: balanceRange
@@ -19026,6 +19071,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/UsersWithBalanceOrderByEnum'
         - name: page
@@ -19109,6 +19155,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/UserStatusEnum'
         - name: usersToExclude
           in: query
@@ -19249,6 +19296,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: addressResult
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/UserAddressResultEnum'
         - name: balanceRange
@@ -19399,6 +19447,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/UsersWithBalanceOrderByEnum'
         - name: page
@@ -19482,6 +19531,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/UserStatusEnum'
         - name: usersToExclude
           in: query
@@ -21301,10 +21351,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransferKind'
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransOrderByEnum'
         - name: page
@@ -21587,10 +21639,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransferKind'
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransOrderByEnum'
         - name: page
@@ -21847,10 +21901,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransferKind'
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransOrderByEnum'
         - name: page
@@ -22306,6 +22362,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionAuthorizationStatusEnum'
         - name: authorized
           in: query
@@ -22344,6 +22401,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/PaymentCreationTypeEnum'
         - name: customFields
           in: query
@@ -22368,6 +22426,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: direction
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransferDirectionEnum'
         - name: excludedIds
@@ -22396,6 +22455,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/ExternalPaymentStatusEnum'
         - name: fromCurrentAccessClient
           in: query
@@ -22425,10 +22485,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionKind'
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransOrderByEnum'
         - name: page
@@ -22460,6 +22522,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/PaymentRequestStatusEnum'
         - name: recurringPaymentStatuses
           in: query
@@ -22468,6 +22531,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/RecurringPaymentStatusEnum'
         - name: scheduledPaymentStatuses
           in: query
@@ -22476,6 +22540,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/ScheduledPaymentStatusEnum'
         - name: skipTotalCount
           in: query
@@ -22500,6 +22565,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TicketStatusEnum'
         - name: transactionNumber
           in: query
@@ -22673,6 +22739,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionAuthorizationStatusEnum'
         - name: authorized
           in: query
@@ -22711,6 +22778,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/PaymentCreationTypeEnum'
         - name: customFields
           in: query
@@ -22735,6 +22803,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: direction
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransferDirectionEnum'
         - name: excludedIds
@@ -22763,6 +22832,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/ExternalPaymentStatusEnum'
         - name: fromCurrentAccessClient
           in: query
@@ -22792,10 +22862,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionKind'
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransOrderByEnum'
         - name: page
@@ -22827,6 +22899,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/PaymentRequestStatusEnum'
         - name: recurringPaymentStatuses
           in: query
@@ -22835,6 +22908,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/RecurringPaymentStatusEnum'
         - name: scheduledPaymentStatuses
           in: query
@@ -22843,6 +22917,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/ScheduledPaymentStatusEnum'
         - name: skipTotalCount
           in: query
@@ -22867,6 +22942,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TicketStatusEnum'
         - name: transactionNumber
           in: query
@@ -23077,6 +23153,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionAuthorizationStatusEnum'
         - name: authorized
           in: query
@@ -23115,6 +23192,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/PaymentCreationTypeEnum'
         - name: currencies
           in: query
@@ -23171,6 +23249,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/ExternalPaymentStatusEnum'
         - name: fromAccountTypes
           in: query
@@ -23209,10 +23288,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionKind'
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransOrderByEnum'
         - name: page
@@ -23244,6 +23325,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/PaymentRequestStatusEnum'
         - name: pendingMyAuthorization
           in: query
@@ -23258,6 +23340,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/RecurringPaymentStatusEnum'
         - name: scheduledPaymentStatuses
           in: query
@@ -23266,6 +23349,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/ScheduledPaymentStatusEnum'
         - name: skipTotalCount
           in: query
@@ -23290,6 +23374,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TicketStatusEnum'
         - name: toAccountTypes
           in: query
@@ -23462,6 +23547,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionAuthorizationStatusEnum'
         - name: authorized
           in: query
@@ -23500,6 +23586,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/PaymentCreationTypeEnum'
         - name: currencies
           in: query
@@ -23556,6 +23643,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/ExternalPaymentStatusEnum'
         - name: fromAccountTypes
           in: query
@@ -23594,10 +23682,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionKind'
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransOrderByEnum'
         - name: page
@@ -23629,6 +23719,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/PaymentRequestStatusEnum'
         - name: pendingMyAuthorization
           in: query
@@ -23643,6 +23734,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/RecurringPaymentStatusEnum'
         - name: scheduledPaymentStatuses
           in: query
@@ -23651,6 +23743,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/ScheduledPaymentStatusEnum'
         - name: skipTotalCount
           in: query
@@ -23675,6 +23768,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TicketStatusEnum'
         - name: toAccountTypes
           in: query
@@ -24027,6 +24121,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionAuthorizationStatusEnum'
         - name: authorized
           in: query
@@ -24065,6 +24160,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/PaymentCreationTypeEnum'
         - name: customFields
           in: query
@@ -24089,6 +24185,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: direction
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransferDirectionEnum'
         - name: excludedIds
@@ -24128,10 +24225,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionKind'
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransOrderByEnum'
         - name: page
@@ -24159,6 +24258,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/InstallmentStatusEnum'
         - name: transactionNumber
           in: query
@@ -24323,6 +24423,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionAuthorizationStatusEnum'
         - name: authorized
           in: query
@@ -24361,6 +24462,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/PaymentCreationTypeEnum'
         - name: customFields
           in: query
@@ -24385,6 +24487,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: direction
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransferDirectionEnum'
         - name: excludedIds
@@ -24424,10 +24527,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionKind'
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransOrderByEnum'
         - name: page
@@ -24455,6 +24560,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/InstallmentStatusEnum'
         - name: transactionNumber
           in: query
@@ -24648,6 +24754,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionAuthorizationStatusEnum'
         - name: authorized
           in: query
@@ -24686,6 +24793,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/PaymentCreationTypeEnum'
         - name: currencies
           in: query
@@ -24762,10 +24870,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionKind'
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransOrderByEnum'
         - name: page
@@ -24793,6 +24903,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/InstallmentStatusEnum'
         - name: toAccountTypes
           in: query
@@ -24956,6 +25067,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionAuthorizationStatusEnum'
         - name: authorized
           in: query
@@ -24994,6 +25106,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/PaymentCreationTypeEnum'
         - name: currencies
           in: query
@@ -25070,10 +25183,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TransactionKind'
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/TransOrderByEnum'
         - name: page
@@ -25101,6 +25216,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/InstallmentStatusEnum'
         - name: toAccountTypes
           in: query
@@ -30500,6 +30616,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: destination
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/MessageDestinationEnum'
         - name: keywords
@@ -30511,6 +30628,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: messageBox
           in: query
           required: false
+          description: "The message box to search. Defaults to `inbox`"
           schema:
             $ref: '#/components/schemas/MessageBoxEnum'
         - name: onlyUnread
@@ -31466,6 +31584,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: creationType
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/VoucherCreationTypeEnum'
         - name: customFields
@@ -31503,6 +31622,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/VoucherOrderByEnum'
         - name: page
@@ -31526,6 +31646,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: redeemPeriod
           in: query
           required: false
+          deprecated: true
           description: "Use `transactionPeriod` instead"
           schema:
             type: array
@@ -31536,12 +31657,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: redeemer
           in: query
           required: false
+          deprecated: true
           description: "Use `transactionUser` instead."
           schema:
             type: string
         - name: redeemerGroups
           in: query
           required: false
+          deprecated: true
           description: "Use `transactionUserGroups` instead."
           schema:
             type: array
@@ -31561,6 +31684,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/VoucherStatusEnum'
         - name: token
           in: query
@@ -31731,6 +31855,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: creationType
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/VoucherCreationTypeEnum'
         - name: customFields
@@ -31768,6 +31893,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/VoucherOrderByEnum'
         - name: page
@@ -31791,6 +31917,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: redeemPeriod
           in: query
           required: false
+          deprecated: true
           description: "Use `transactionPeriod` instead"
           schema:
             type: array
@@ -31801,12 +31928,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: redeemer
           in: query
           required: false
+          deprecated: true
           description: "Use `transactionUser` instead."
           schema:
             type: string
         - name: redeemerGroups
           in: query
           required: false
+          deprecated: true
           description: "Use `transactionUserGroups` instead."
           schema:
             type: array
@@ -31826,6 +31955,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/VoucherStatusEnum'
         - name: token
           in: query
@@ -32733,6 +32863,13 @@ A note for dynamic custom fields: If a script is used to generate possible value
             Either the id or token.
           schema:
             type: string
+        - name: user
+          in: query
+          required: false
+          description: >-
+            The user in which the voucher is being redeemed. Generally the shop.
+          schema:
+            type: string
       responses:
         '200':
           description: >-
@@ -33055,6 +33192,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: creationType
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/VoucherCreationTypeEnum'
         - name: expirationPeriod
@@ -33070,6 +33208,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/VoucherOrderByEnum'
         - name: page
@@ -33087,6 +33226,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: redeemBy
           in: query
           required: false
+          deprecated: true
           description: "For redeemed, or starting with 4.15, voucher transactions, use `GET /voucher-transactions` instead.
 
 
@@ -33096,6 +33236,7 @@ The user who perform the transaction action. Only used when searching for redeem
         - name: redeemPeriod
           in: query
           required: false
+          deprecated: true
           description: "For redeemed, or starting with 4.15, voucher transactions, use `GET /voucher-transactions` instead.
 
 
@@ -33109,6 +33250,8 @@ The minimum / maximum voucher transaction date. Only used when searching for red
         - name: relation
           in: query
           required: false
+          deprecated: true
+          description: "For redeemed, or starting with 4.15, voucher transactions, use `GET /voucher-transactions` instead."
           schema:
             $ref: '#/components/schemas/VoucherRelationEnum'
         - name: skipTotalCount
@@ -33124,6 +33267,7 @@ The minimum / maximum voucher transaction date. Only used when searching for red
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/VoucherStatusEnum'
         - name: token
           in: query
@@ -33255,6 +33399,7 @@ The minimum / maximum voucher transaction date. Only used when searching for red
         - name: creationType
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/VoucherCreationTypeEnum'
         - name: expirationPeriod
@@ -33270,6 +33415,7 @@ The minimum / maximum voucher transaction date. Only used when searching for red
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/VoucherOrderByEnum'
         - name: page
@@ -33287,6 +33433,7 @@ The minimum / maximum voucher transaction date. Only used when searching for red
         - name: redeemBy
           in: query
           required: false
+          deprecated: true
           description: "For redeemed, or starting with 4.15, voucher transactions, use `GET /voucher-transactions` instead.
 
 
@@ -33296,6 +33443,7 @@ The user who perform the transaction action. Only used when searching for redeem
         - name: redeemPeriod
           in: query
           required: false
+          deprecated: true
           description: "For redeemed, or starting with 4.15, voucher transactions, use `GET /voucher-transactions` instead.
 
 
@@ -33309,6 +33457,8 @@ The minimum / maximum voucher transaction date. Only used when searching for red
         - name: relation
           in: query
           required: false
+          deprecated: true
+          description: "For redeemed, or starting with 4.15, voucher transactions, use `GET /voucher-transactions` instead."
           schema:
             $ref: '#/components/schemas/VoucherRelationEnum'
         - name: skipTotalCount
@@ -33324,6 +33474,7 @@ The minimum / maximum voucher transaction date. Only used when searching for red
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/VoucherStatusEnum'
         - name: token
           in: query
@@ -34568,6 +34719,7 @@ The minimum / maximum voucher transaction date. Only used when searching for red
         - name: kind
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/VoucherTransactionKind'
         - name: kinds
@@ -34577,6 +34729,7 @@ The minimum / maximum voucher transaction date. Only used when searching for red
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/VoucherTransactionKind'
         - name: page
           in: query
@@ -37460,6 +37613,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/UserStatusEnum'
       responses:
         '200':
@@ -37681,6 +37835,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/UserStatusEnum'
       responses:
         '200':
@@ -37940,6 +38095,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/UserStatusEnum'
       responses:
         '200':
@@ -38163,6 +38319,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/UserStatusEnum'
       responses:
         '200':
@@ -39294,6 +39451,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/TokenStatusEnum'
         - name: user
           in: query
@@ -44798,6 +44956,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/UserAlertTypeEnum'
         - name: user
           in: query
@@ -45020,6 +45179,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: direction
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/ReferenceDirectionEnum'
         - name: levels
@@ -45029,6 +45189,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/ReferenceLevelEnum'
         - name: page
           in: query
@@ -45742,6 +45903,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: addressResult
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/AdAddressResultEnum'
         - name: brokers
@@ -45815,6 +45977,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: kind
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/AdKind'
         - name: latitude
@@ -45841,6 +46004,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/AdOrderByEnum'
         - name: page
@@ -45941,6 +46105,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/AdStatusEnum'
         - name: user
           in: query
@@ -46175,6 +46340,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: addressResult
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/AdAddressResultEnum'
         - name: category
@@ -46230,6 +46396,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: kind
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/AdKind'
         - name: latitude
@@ -46256,6 +46423,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: orderBy
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/AdOrderByEnum'
         - name: page
@@ -46350,6 +46518,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/AdStatusEnum'
       tags:
         - Marketplace
@@ -47609,6 +47778,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: kind
           in: query
           required: false
+          description: "When kind is not specified it will assume simple or webshop based on user permissions"
           schema:
             $ref: '#/components/schemas/AdKind'
         - name: page
@@ -48417,6 +48587,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/OrderStatusEnum'
       responses:
         '200':
@@ -50840,6 +51011,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: direction
           in: query
           required: false
+          description: ''
           schema:
             $ref: '#/components/schemas/ReferenceDirectionEnum'
         - name: levels
@@ -50849,6 +51021,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/ReferenceLevelEnum'
         - name: noReplied
           in: query
@@ -52200,6 +52373,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/ImportedFileKind'
         - name: page
           in: query
@@ -52226,6 +52400,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/ImportedFileStatusEnum'
       responses:
         '200':
@@ -52411,6 +52586,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/ImportedFileKind'
         - name: page
           in: query
@@ -52437,6 +52613,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/ImportedFileStatusEnum'
       responses:
         '200':
@@ -53331,6 +53508,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: array
             items:
+              description: ''
               $ref: '#/components/schemas/ImportedLineStatusEnum'
       responses:
         '200':
@@ -82291,6 +82469,8 @@ components:
                 type: string
                 format: date-time
             redeemBy:
+              deprecated: true
+              x-remove-version: 4.17
               description: >-
                 For redeemed, or starting with 4.15, voucher transactions, use
                 `GET /voucher-transactions` instead.

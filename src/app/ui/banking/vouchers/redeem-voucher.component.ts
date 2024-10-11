@@ -59,7 +59,7 @@ export class RedeemVoucherComponent
 
   resendPin() {
     this.addSub(
-      this.vouchersService.resendPin({ key: this.dataForTransaction.token }).subscribe(res => {
+      this.vouchersService.resendPin({ key: this.dataForTransaction.token, user: this.userId }).subscribe(res => {
         this.notification.info(this.i18n.voucher.pinSent((res || []).join(', ')));
       })
     );

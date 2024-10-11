@@ -32,11 +32,15 @@ export class ViewDocumentComponent extends BasePageComponent<DocumentView> imple
   onDataInitialized(data: DocumentView) {
     super.onDataInitialized(data);
     const headingActions = [];
-    if (data.canEdit) {
-      headingActions.push(new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => this.navigateToEdit(), true));
-    }
-    if (data.canRemove) {
-      headingActions.push(new HeadingAction(SvgIcon.Trash, this.i18n.general.remove, () => this.remove(), true));
+    if (data.kind === DocumentKind.USER) {
+      if (data.canEdit) {
+        headingActions.push(
+          new HeadingAction(SvgIcon.Pencil, this.i18n.general.edit, () => this.navigateToEdit(), true)
+        );
+      }
+      if (data.canRemove) {
+        headingActions.push(new HeadingAction(SvgIcon.Trash, this.i18n.general.remove, () => this.remove(), true));
+      }
     }
     this.headingActions = headingActions;
   }
