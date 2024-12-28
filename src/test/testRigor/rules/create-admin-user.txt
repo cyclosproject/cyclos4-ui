@@ -1,0 +1,12 @@
+navigate-to-users
+click "New" on the left of "Advanced"
+click "administrators" if exists
+check that page contains "New user registration"
+generate unique name, then enter into "Name" and save as "newUserName"
+generate from template "$$$$$$$$", then enter into "Login name" and save as "newUserLoginName"
+generate unique email, then enter into "E-Mail" and save as "newUserEmail"
+click "checkableImage" on the right of "Assign password"
+enter saved value "password" into "Login Password"
+enter saved value "password" into "Confirm Login password"
+click "Save and add new"
+check that "The user has been created" is visible

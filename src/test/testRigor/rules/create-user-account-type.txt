@@ -1,0 +1,7 @@
+navigate-to-system
+click "Account types" below the "Currencies"
+click button exactly "New"
+click "User account type" near the "The requested search did not return any results."
+generate unique name, then enter into "Name" and save as "newAccountType"
+click "Save"
+check that page contains "Saved successfully"

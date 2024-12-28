@@ -1,0 +1,14 @@
+login
+validate-user-logged-in
+navigate-to-system
+create-empty-network
+// validate network created
+click "System"
+check that page contains saved value "newNetworkName" roughly below "Name"
+check that page contains saved value "newNetworkInternalName" roughly below "Internal name"
+// remove empty network
+click "Remove" within the context of table "dataTable" at row saved value "newNetworkName"
+click "Ok"
+click "Networks"
+check that page doesn't contain saved value "newNetworkName" roughly below "Name"
+check that page doesn't contain saved value "newNetworkInternalName" roughly below "Internal name"

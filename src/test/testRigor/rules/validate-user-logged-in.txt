@@ -1,0 +1,2 @@
+check that page contains button saved value "username"
+check that page contains button "Logout"

@@ -1,0 +1,9 @@
+login
+validate-user-logged-in
+create-member-group
+click "Groups" above the "Password types"
+check that page contains saved value "newGroupName" roughly below "Name"
+// delete group
+click "Remove" within the context of table "dataTable" at row saved value "newGroupName"
+click "Ok"
+check that page doesn't contain saved value "newGroupName"

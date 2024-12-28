@@ -1,0 +1,8 @@
+login
+create-network-wizard
+click "Switch to this network"
+create-user
+navigate-to-users
+check that saved value "newUserName" is visible roughly below "Users"
+//clean up
+disable-network

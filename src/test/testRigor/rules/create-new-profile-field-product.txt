@@ -1,0 +1,18 @@
+navigate-to-system
+click "Profile fields"
+click "New"
+generate unique name, then enter into "Display name" and save as "newDisplayName"
+generate unique name, then enter into "Internal name" and save as "newInternalName"
+enter "testing" into "Description"
+click "Save"
+click "Products"
+click "New"
+click "Member"
+generate unique name, then enter into "Name" and save as "newProductName"
+scroll down until "General" is visible
+click "selectionField" on the right of "My profile fields"
+scroll down on "dataTable" until saved value "newDisplayName" is visible
+click on "checkableImage" within the context of table "dataTable" at row containing saved value "newDisplayName" and column "Visible"
+click button "bottom"
+click "Save"
+check that page contains "Saved successfully"

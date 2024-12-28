@@ -1,0 +1,8 @@
+navigate-to-system
+click "Groups" above the "Password types"
+click button exactly "New"
+click "Member group" below the "Broker group" if exists
+generate unique name, then enter into "Name" and save as "newGroupName"
+generate unique name, then enter into "Internal Name" and save as "newGroupInternalName"
+enter "Test Group" into "Description"
+click "Save"

@@ -1,0 +1,46 @@
+login
+validate-user-logged-in
+create-network-wizard
+click "Switch to this network"
+create-user
+save value saved value "newUserName" as "user1name"
+save value saved value "newUserLoginName" as "user1login"
+// add amount to user account
+transfer "2000" from system admin to user
+// create user2 to receive user-to-user transfer
+create-user
+save value saved value "newUserName" as "user2name"
+save value saved value "newUserLoginName" as "user2login"
+// validate amount from system is in user1 account
+save value saved value "user1login" as "username"
+start browser "User1" and switch
+open url string with parameters "${homePrefix}/${newNetworkInternalName}"
+click "Sign in"
+check that page contains "System login"
+login
+validate-user-logged-in
+check that page contains saved value "expectedAmount" on the right of "Balance:"
+navigate-to-banking
+// send transfer to user2
+click "Payment to user" below "Payments"
+enter saved value "user2name" into "User (quick search)"
+check that "itemValue"  within the context of "autoCompleteFieldContainer" is visible
+check that page doesn't contain "inputFieldLarge" within the context of "autoCompleteFieldContainer"
+enter "2000" into "Amount"
+click "Submit"
+check that page contains saved value "expectedAmount" on the right of "Amount"
+click "Confirm"
+check that page contains "The payment was successful"
+// validate amount from user1 is in user2 account
+save value saved value "user2login" as "username"
+start browser "User2" and switch
+open url string with parameters "${homePrefix}/${newNetworkInternalName}"
+click "Sign in"
+check that page contains "System login"
+login
+validate-user-logged-in
+navigate-to-banking
+check that page contains string with parameters "Balance: ${expectedAmount}"
+// clean up
+switch to browser "default"
+disable-network

@@ -1,0 +1,8 @@
+navigate-to-system
+check that page contains "Networks" roughly above "Name"
+click exactly "New"
+click "Empty network" above the "Network wizard"
+generate unique name, then enter into "Name" and save as "newNetworkName"
+generate unique name, then enter into "Internal name" and save as "newNetworkInternalName"
+enter "testing" into "Description"
+click "Save"

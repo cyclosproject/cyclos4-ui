@@ -1,0 +1,11 @@
+navigate-to-banking
+click "To user" below "System payment"
+click "Debit Account"
+enter saved value "newUserName" into "User (quick search)"
+check that "itemValue"  within the context of "autoCompleteFieldContainer" is visible
+check that page doesn't contain "inputFieldLarge" within the context of "autoCompleteFieldContainer"
+enter saved value "amount" into "Amount"
+click "Submit"
+grab value from the right of "Amount" and save it as "expectedAmount"
+click "Confirm"
+check that page contains "The payment was successful"

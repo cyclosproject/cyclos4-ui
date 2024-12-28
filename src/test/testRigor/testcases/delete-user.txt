@@ -1,0 +1,10 @@
+check that page contains "Welcome to Cyclos"
+login
+validate-user-logged-in
+navigate-to-users
+create-admin-user
+navigate-to-users
+check that page contains saved value "newUserName"
+delete-user
+navigate-to-users
+check that page doesn't contain saved value "newUserName"

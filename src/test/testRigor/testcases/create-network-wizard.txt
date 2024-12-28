@@ -1,0 +1,9 @@
+login
+validate-user-logged-in
+check that page contains "Global admin home page"
+create-network-wizard
+// validate network created
+navigate-to-system
+check that page contains saved value "newNetworkName"
+check that page contains saved value "newNetworkInternalName" roughly below "Internal name"
+disable-network

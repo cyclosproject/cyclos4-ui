@@ -1,0 +1,10 @@
+navigate-to-system
+click "Currencies" below "Account configuration"
+click button exactly "New"
+check that page contains "Create new currency"
+generate from template "%$$$$", then enter into "Name" and save as "newCurrencyName"
+generate from template "\$%", then enter into "Symbol" and save as "newCurrencySymbol"
+enter saved value "newCurrencySymbol" into "Currency suffix"
+enter "2" into "Decimal places"
+click "Save"
+check that page contains "Saved successfully"

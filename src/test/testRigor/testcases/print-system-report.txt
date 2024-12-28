@@ -1,0 +1,49 @@
+login
+validate-user-logged-in
+// create network
+create-network-wizard
+click "Switch to this network"
+// create network users
+// create user2 to receive user-to-user transfer
+create-user
+save value saved value "newUserName" as "user2name"
+save value saved value "newUserLoginName" as "user2login"
+create-user
+save value saved value "newUserName" as "user1name"
+save value saved value "newUserLoginName" as "user1login"
+save "200" as "amount"
+transfer saved value "amount" from system admin to user
+// make transfer between users
+save value saved value "user1login" as "username"
+start browser "User1" and switch
+check that page contains "Welcome to Cyclos"
+open url string with parameters "${homePrefix}/${newNetworkInternalName}"
+click "Sign in"
+check that page contains "System login"
+login
+validate-user-logged-in
+check that page contains saved value "expectedAmount" on the right of "Balance:"
+navigate-to-banking
+// send transfer to user2
+click "Payment to user" below "Payments"
+enter saved value "user2name" into "User (quick search)"
+check that "itemValue"  within the context of "autoCompleteFieldContainer" is visible
+check that page doesn't contain "inputFieldLarge" within the context of "autoCompleteFieldContainer"
+enter saved value "amount" into "Amount"
+click "Submit"
+check that page contains saved value "expectedAmount" on the right of "Amount"
+click "Confirm"
+check that page contains "The payment was successful"
+// generate report
+switch to browser "default"
+check that page contains "The payment was successful"
+check that page contains "admin"
+check that page contains button "Logout"
+click "Reports"
+click button "Select all"
+click "No options selected" on the right of "Transfer Types"
+click "ci-checkbox-unchecked" up to 6 times until page contains "8 items selected" roughly on the right of "Transfer Types"
+click button "Print"
+check that downloaded file string with parameters "System reports - ${todayYear}.pdf" contains saved value "expectedAmount"
+check that downloaded file string with parameters "System reports - ${todayYear}.pdf" contains string with parameters "Total sum of all Member account 0.00 ${newCurrencySymbol} ${expectedAmount}"
+check that downloaded file string with parameters "System reports - ${todayYear}.pdf" contains "Number of enabled users 0 2"

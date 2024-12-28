@@ -1,0 +1,25 @@
+login
+validate-user-logged-in
+check that page contains "Global admin home page"
+navigate-to-system
+create-network-wizard
+// validate network created
+click "Switch to"
+click saved value "newNetworkName"
+click "Logout"
+check that page contains string with parameters "Welcome to ${newNetworkName}"
+click "Register"
+generate unique name, then enter into "Name" and save as "newUserName"
+generate from template "$$$$$$$$", then enter into "Login name" and save as "newLoginName"
+generate unique email, then enter into "E-Mail" and save as "newUserEmail"
+enter saved value "password" into "Login password"
+enter saved value "password" into "Confirm Login password"
+scroll down at the bottom of the screen
+// resolve captcha of type image from "captcha element"
+// grab value by description "six digits to the right of 'Verification'" using AI and save it as "captchaText"
+check page "contains text to the right of verification starting with the a question mark" using AI
+grab value by description "text to the right of verification" using AI and save it as "captchaText"
+enter saved value "captchaText" to the left of "New code"
+click "Submit"
+check that page contains "Thank you for registering!"
+click "Close"

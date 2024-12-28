@@ -1,0 +1,11 @@
+login
+validate-user-logged-in
+create-network-wizard
+click "Switch to this network"
+create-new-profile-field-product
+click "Products"
+check that "dataTable" contains saved value "newProductName" at row "Member" and column "Product"
+click "Remove" within the context of table "dataTable" at row saved value "newProductName"
+click "Ok"
+check that page doesn't contain saved value "newProductName"
+disable-network

@@ -1,0 +1,47 @@
+login
+validate-user-logged-in
+create-empty-network
+click "Switch to this network"
+create-currency
+// create payment field
+click "Payment fields"
+click "Add"
+generate from template "$$$$$$$$", then enter into "Display name" and save as "newPaymentField"
+enter "amountofmoney" into "Internal name"
+click "selectionField" on the right of "Data Type"
+click "Decimal"
+click "Save"
+create-user-account-type
+click "Transfer types"
+click "New"
+click "Payment transfer type"
+enter "Payment" into "Name"
+enter "payment" into "Internal Name"
+check that page contains saved value "newAccountType" on the right of "To"
+enter "You have successfully paid someone" into "Confirmation message"
+click "Save"
+// add previously created payment field
+click "Payment fields"
+click string with parameters "Add payment field ${newPaymentField}"
+check that page contains saved value "newPaymentField" below "Display name"
+//create product
+click "Products" below "User configuration"
+click button exactly "New"
+click "Member"
+generate unique name, then enter into "Name" and save as "newProductName"
+scroll down until page contains "Accounts"
+click "selectionField" on the right of "User account"
+click saved value "newAccountType" roughly on the right of "User account"
+click button "Save"
+check that page contains "Saved successfully"
+create-user
+save saved value "newUserLoginName" as "username"
+create-user
+transfer "100" from system admin to user
+start browser "New User" and switch
+open url string with parameters "${homePrefix}/${newNetworkInternalName}/#login"
+login
+navigate-to-banking
+check that page contains string with parameters "Balance: ${expectedAmount} ${newCurrencySymbol}"
+switch to browser "default"
+disable-network
