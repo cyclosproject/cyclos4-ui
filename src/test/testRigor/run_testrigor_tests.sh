@@ -1,6 +1,6 @@
 #!/bin/bash
 
-npm install -g testrigor-cli
+# npm install -g testrigor-cli
 
 BRANCH_NAME="$(git rev-parse --abbrev-ref HEAD)"
 COMMIT_NAME="$(git rev-parse --verify HEAD)"

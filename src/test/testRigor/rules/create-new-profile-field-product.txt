@@ -1,12 +1,13 @@
 navigate-to-system
 click "Profile fields"
-click "New"
+check that page contains button "New" below "Profile fields"
+click button exactly "New"
 generate unique name, then enter into "Display name" and save as "newDisplayName"
 generate unique name, then enter into "Internal name" and save as "newInternalName"
 enter "testing" into "Description"
 click "Save"
 click "Products"
-click "New"
+click button exactly "New"
 click "Member"
 generate unique name, then enter into "Name" and save as "newProductName"
 scroll down until "General" is visible

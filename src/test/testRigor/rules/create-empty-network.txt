@@ -1,3 +1,4 @@
+switch-to-global-administration-network
 navigate-to-system
 check that page contains "Networks" roughly above "Name"
 click exactly "New"

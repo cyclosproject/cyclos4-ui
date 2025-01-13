@@ -1,5 +1,6 @@
 login
 validate-user-logged-in
+switch-to-global-administration-network
 navigate-to-users
 create-new-admin-user
 navigate-to-users

@@ -1,12 +1,12 @@
-// switch to global administration
-click "Switch to Global administration" if exists
-click "Network: " if exists
-click "Global administration" near the "Network: " if exists
+switch-to-global-administration-network
 navigate-to-system
 check that table "dataTable" at row saved value "newNetworkName" and column "Switch" contains "bi-box-arrow-in-down"
 click saved value "newNetworkName" within the context of "dataTable"
 check that page contains "Network details"
-click "checkableImage" on the right of "Enabled"
+click "checked" on the right of "Enabled"
+if "icon-checked" on the right of "Default" is visible
+click "icon-checked" on the right of "Default"
+end
 click "Save"
 check that page contains "Saved successfully"
 click "Networks"

@@ -1,5 +1,6 @@
+switch-to-global-administration-network
 navigate-to-system
-check that page contains "Networks" above "Internal Name" above "Name"
+check that page contains "Networks" roughly above button exactly "New" and stop test if fails
 click exactly "New"
 click "Network wizard"
 generate unique name, then enter into "Name" and save as "newNetworkName"
