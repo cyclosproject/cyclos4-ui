@@ -1880,7 +1880,6 @@
     "chargeType": "Type de charge",
     "chooseSeller": "Choisissez un vendeur dans la liste ci-dessous pour continuer le processus de panier",
     "chooseDeliveryMethod": "Choisir le mode de livraison",
-    "chooseDeliveryAddress": "Choisir l'adresse de livraison",
     "choosePaymentType": "Choisissez un type de paiement ...",
     "customAddress": "Adresse personnalisée",
     "customDeliveryMethod": "Mode de livraison personnalisé",
@@ -1894,7 +1893,6 @@
       "noAvailableAccounts": "L'annonce ne peut pas être enregistrée car il n'y a pas de comptes disponibles et le prix ne peut pas être défini. Veuillez contacter l'administration",
       "insufficientBalance": "Solde insuffisant pour procéder à la confirmation de commande."
     },
-    "deliveryAddress": "Adresse de livraison",
     "deliveryInformation": "Informations sur la livraison",
     "deliveryPrice": "Frais de livraison",
     "deliveryMethod": "Mode de livraison",
@@ -2045,7 +2043,6 @@
       "newOrder": "Créer une commande dans la boutique en ligne",
       "shoppingCart": "Panier d'achat",
       "history": "Historique des commandes",
-      "deliveryAddress": "Adresse de livraison",
       "deliveryMethod": "Mode de livraison",
       "deliveryMethodNew": "Nouveau mode de livraison",
       "deliveryMethods": "Méthodes de livraison",
@@ -2074,7 +2071,6 @@
       "newOrder": "Créer une commande dans la boutique en ligne",
       "shoppingCart": "Panier d'achat",
       "history": "Historique des commandes",
-      "deliveryAddress": "Adresse de livraison",
       "deliveryMethod": "Mode de livraison",
       "deliveryMethodNew": "Nouveau mode de livraison",
       "deliveryMethods": "Méthodes de livraison",
@@ -2233,9 +2229,7 @@
         "orderPendingAuthorization": "Une commande d`achat est en attente d'autorisation de paiement",
         "orderPendingDeliveryData": "La commande en attente des informations de livraison",
         "orderProcessedBySeller": "Commande acceptée par le vendeur",
-        "orderRejectedBySeller": "Commande rejetée par le vendeur",
-        "buyerSalePending": "Commande créée",
-        "buyerSaleRejectedBySeller": "Commande de vente annulée"
+        "buyerSalePending": "Commande créée"
       },
       "feedback": {
         "changed": "Évaluation modifiée",
@@ -2274,7 +2268,6 @@
         "orderPendingAuthorization": "Une commande de vente est en attente d'autorisation de paiement",
         "orderPendingDeliveryData": "Informations de livraison demandées",
         "orderProcessedByBuyer": "Commande acceptée par l'acheteur",
-        "orderRejectedByBuyer": "Commande rejetée",
         "saleProcessedByBuyer": "Vente réalisée"
       }
     }

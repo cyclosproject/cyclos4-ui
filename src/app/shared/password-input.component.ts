@@ -62,7 +62,7 @@ export class PasswordInputComponent extends BaseControlComponent<string> impleme
 
   @Input() placeholder: string;
 
-  @Input() autocomplete = 'new-password';
+  @Input() autocomplete = 'password';
 
   private _disableAutocomplete: boolean | string = false;
   @Input() get disableAutocomplete(): boolean | string {

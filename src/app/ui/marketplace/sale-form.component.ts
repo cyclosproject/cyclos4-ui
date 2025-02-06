@@ -272,7 +272,7 @@ export class SaleFormComponent
     } else {
       deliveryMethod = data.deliveryMethods.find(a => name === a.name);
       this.deliveryForm.patchValue(
-        this.deliveryMethod
+        deliveryMethod
           ? {
               name: deliveryMethod.name,
               price: deliveryMethod.chargeAmount || null,

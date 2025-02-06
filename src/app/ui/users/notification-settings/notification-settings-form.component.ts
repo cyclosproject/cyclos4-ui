@@ -660,6 +660,8 @@ export class NotificationSettingsFormComponent
         return this.i18n.systemAlert.type.accountFeeChargedNoFailures;
       case SystemAlertTypeEnum.ACCOUNT_FEE_CHARGED_WITH_FAILURES:
         return this.i18n.systemAlert.type.accountFeeChargedWithFailures;
+      case SystemAlertTypeEnum.ARCHIVING_FAILED:
+        return this.i18n.systemAlert.type.archivingFailed;
       case SystemAlertTypeEnum.APPLICATION_RESTARTED:
         return this.i18n.systemAlert.type.applicationRestarted;
       case SystemAlertTypeEnum.CUSTOM:

@@ -78,13 +78,11 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
       headingActions.push(new HeadingAction(SvgIcon.HandThumbsDown, this.i18n.ad.reject, () => this.reject()));
     }
 
-    if (data.history) {
-      headingActions.push(
-        new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
-          this.router.navigate(['/marketplace', 'order', this.id, 'history'])
-        )
-      );
-    }
+    headingActions.push(
+      new HeadingAction(SvgIcon.Clock, this.i18n.general.viewHistory, () =>
+        this.router.navigate(['/marketplace', 'order', this.id, 'history'])
+      )
+    );
 
     this.exportHelper
       .headingActions(data.exportFormats, f =>
@@ -106,7 +104,11 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
    * Returns the according label for the current order status
    */
   resolveStatusLabel(): string {
-    return this.marketplaceHelper.resolveOrderStatusLabel(this.data.status);
+    if (this.data.pendingByAdmin) {
+      return this.i18n.ad.orderPendingByAdmin;
+    } else {
+      return this.marketplaceHelper.resolveOrderStatusLabel(this.data.status);
+    }
   }
 
   /**

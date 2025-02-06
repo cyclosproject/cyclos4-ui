@@ -30,6 +30,14 @@ export abstract class BaseSelectionFieldComponent<T>
   @ViewChild('toggleButton') toggleRef: ElementRef;
   @ViewChild('dropdown') dropdown: BsDropdownDirective;
 
+  _forceHierarchy: boolean | string = false;
+  @Input() get forceHierarchy(): boolean | string {
+    return this._forceHierarchy;
+  }
+  set forceHierarchy(flag: boolean | string) {
+    this._forceHierarchy = truthyAttr(flag);
+  }
+
   display$ = new BehaviorSubject('');
   valueSub: Subscription;
   openSub: Subscription;
@@ -155,7 +163,7 @@ export abstract class BaseSelectionFieldComponent<T>
   }
 
   resolveStyle(option: FieldOption, hasCategory: boolean) {
-    return option.style + ' level' + (hasCategory ? option.level || 0 : 0);
+    return option.style + ' level' + (this.forceHierarchy || hasCategory ? option.level || 0 : 0);
   }
 
   /**

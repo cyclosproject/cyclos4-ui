@@ -1884,7 +1884,7 @@
     "chargeType": "Heffing type",
     "chooseSeller": "Kies een verkoper uit de onderstaande lijst om door te gaan met het winkelwagen proces",
     "chooseDeliveryMethod": "Kies leveringsmethode",
-    "chooseDeliveryAddress": "Afleveradres kiezen",
+    "chooseDeliveryAddress": "Adres kiezen",
     "choosePaymentType": "Kies het type betaling",
     "customAddress": "Afleveradres",
     "customDeliveryMethod": "Andere leveringsmethode",
@@ -1898,7 +1898,7 @@
       "noAvailableAccounts": "De advertentie kan niet worden opgeslagen omdat er geen rekeningen beschikbaar zijn en de prijs niet kan worden ingesteld.\nNeem contact op met de administratie",
       "insufficientBalance": "Onvoldoende saldo om door te gaan met de bevestiging van het afrekenen."
     },
-    "deliveryAddress": "Afleveradres",
+    "deliveryAddress": "Adres",
     "deliveryInformation": "Leveringsdetails",
     "deliveryPrice": "Leveringsprijs",
     "deliveryMethod": "Leveringsmethode",
@@ -2000,6 +2000,7 @@
       "webshop": "Webshop"
     },
     "webshopSettingsSaved": "De webshop instellingen zijn opgeslagen",
+    "orderPendingByAdmin": "Wacht op administrator",
     "orderBy": {
       "date": "Laatst gepubliceerd",
       "distance": "Afstand",
@@ -2054,7 +2055,7 @@
       "newOrder": "Maak webshop bestelling aan",
       "shoppingCart": "Winkelwagen",
       "history": "Geschiedenis bestelling",
-      "deliveryAddress": "Afleveradres",
+      "deliveryAddress": "Adres",
       "deliveryMethod": "Leveringsmethode",
       "deliveryMethodNew": "Nieuwe leveringsmethode toevoegen",
       "deliveryMethods": "Leveringsmethoden",
@@ -2083,7 +2084,7 @@
       "newOrder": "Maak webshop bestelling aan",
       "shoppingCart": "Winkelwagen",
       "history": "Geschiedenis bestelling",
-      "deliveryAddress": "Afleveradres",
+      "deliveryAddress": "Adres",
       "deliveryMethod": "Leveringsmethode",
       "deliveryMethodNew": "Nieuwe leveringsmethode toevoegen",
       "deliveryMethods": "Leveringsmethoden",
@@ -2242,9 +2243,9 @@
         "orderPendingAuthorization": "Aankooporder in afwachting van betalingsautorisatie",
         "orderPendingDeliveryData": "Om in afwachting van leveringswijze",
         "orderProcessedBySeller": "Order geaccepteerd door de verkoper",
-        "orderRejectedBySeller": "Order geweigerd door verkoper",
+        "orderRejectedBySeller": "Inkooporder afgewezen door de verkoper",
         "buyerSalePending": "Order aangemaakt",
-        "buyerSaleRejectedBySeller": "Verkooporder geannuleerd"
+        "buyerSaleRejectedBySeller": "Order geweigerd door verkoper"
       },
       "feedback": {
         "changed": "Feedback veranderd",
@@ -2283,7 +2284,7 @@
         "orderPendingAuthorization": "Verkooporder in afwachting van betalingsautorisatie",
         "orderPendingDeliveryData": "Gevraagde leveringswijze",
         "orderProcessedByBuyer": "Order door koper geaccepteerd",
-        "orderRejectedByBuyer": "Order geweigerd",
+        "orderRejectedByBuyer": "Bestelling geweigerd door koper",
         "saleProcessedByBuyer": "Verkoop gerealiseerd"
       }
     }
@@ -2438,6 +2439,7 @@
       "accountBalanceFixed": "Rekeningen met inconsistent cached saldo zijn gecorrigeerd",
       "accountFeeChargedNoFailures": "Heffing is beëindigd zonder fouten",
       "accountFeeChargedWithFailures": "Rekening heffing is afgewerkt met één of meer fouten",
+      "archivingFailed": "Archivering gegevens mislukt",
       "applicationRestarted": "Applicatie opnieuw gestart",
       "custom": "Aangepast",
       "customTranslationsInvalidated": "Aangepaste vertalingen ongeldig gemaakt",

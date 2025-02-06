@@ -528,7 +528,6 @@
     "chargeType": "Heffingtipe",
     "chooseSeller": "Kies 'n verkoper van die lys hieronder om voort te gaan met die inkopiemandjieproses",
     "chooseDeliveryMethod": "Kies afleweringsmetode",
-    "chooseDeliveryAddress": "Kies afleweringsadres",
     "choosePaymentType": "Kies betalingstipe",
     "customAddress": "Pasgemaakte adres",
     "customDeliveryMethod": "Pasgemaakte afleweringmetode",
@@ -537,7 +536,6 @@
     "error": {
       "cannotBuyFromSeller": "Op die oomblik mag u nie produkte by hierdie gebruiker koop nie. Kontak asseblief u administrateur."
     },
-    "deliveryAddress": "Afleweringadres",
     "deliveryInformation": "Afleweringinligting",
     "deliveryPrice": "Afleweringprys",
     "deliveryMethod": "Afleweringsmetode",
@@ -573,7 +571,6 @@
     "title": {
       "edit": "Redigeer advertensie",
       "newOrder": "Skep webwinkel bestelling",
-      "deliveryAddress": "Afleweringadres",
       "deliveryMethod": "Afleweringsmetode",
       "deliveryMethods": "Afleweringsmetodes",
       "confirmOrder": "Bevestig bestelling",
@@ -586,7 +583,6 @@
       "details": "Advertensie",
       "edit": "Redigeer advertensie",
       "newOrder": "Skep webwinkel bestelling",
-      "deliveryAddress": "Afleweringadres",
       "deliveryMethod": "Afleweringsmetode",
       "deliveryMethods": "Afleweringsmetodes",
       "confirmOrder": "Bevestig bestelling",

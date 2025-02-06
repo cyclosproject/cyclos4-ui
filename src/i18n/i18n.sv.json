@@ -1880,7 +1880,6 @@
     "chargeType": "Typ av avgift",
     "chooseSeller": "Välj en säljare från listan nedan för att fortsätta med kundvagnsprocessen",
     "chooseDeliveryMethod": "Välj leveranssätt",
-    "chooseDeliveryAddress": "Välj leveransadress",
     "choosePaymentType": "Välj betalningstyp",
     "customAddress": "Anpassad adress",
     "customDeliveryMethod": "Anpassad leveranssätt",
@@ -1894,7 +1893,6 @@
       "noAvailableAccounts": "Annonsen kan inte sparas eftersom det inte finns tillgängliga konton och priset kan inte anges. Kontakta administrationen",
       "insufficientBalance": "Otillräckligt saldo för att fortsätta med kassan bekräftelse."
     },
-    "deliveryAddress": "Leveransadress",
     "deliveryInformation": "Leveransinformation",
     "deliveryPrice": "Pris för leverans",
     "deliveryMethod": "Leveranssätt",
@@ -2045,7 +2043,6 @@
       "newOrder": "Skapa webbutiksorder",
       "shoppingCart": "Kundvagn",
       "history": "Orderhistorik",
-      "deliveryAddress": "Leveransadress",
       "deliveryMethod": "Leveranssätt",
       "deliveryMethodNew": "Ny leveransmetod",
       "deliveryMethods": "Leveranssätt",
@@ -2074,7 +2071,6 @@
       "newOrder": "Skapa webbutiksorder",
       "shoppingCart": "Kundvagn",
       "history": "Orderhistorik",
-      "deliveryAddress": "Leveransadress",
       "deliveryMethod": "Leveranssätt",
       "deliveryMethodNew": "Ny leveransmetod",
       "deliveryMethods": "Leveranssätt",
@@ -2233,9 +2229,7 @@
         "orderPendingAuthorization": "Inköpsorder väntar på betalningstillstånd",
         "orderPendingDeliveryData": "Beställning väntar på leveransinformation",
         "orderProcessedBySeller": "Order godkänd av säljaren",
-        "orderRejectedBySeller": "Beställning avvisad av säljaren",
-        "buyerSalePending": "Beställning skapad",
-        "buyerSaleRejectedBySeller": "Försäljningsorder avbruten"
+        "buyerSalePending": "Beställning skapad"
       },
       "feedback": {
         "changed": "Feedback ändrad",
@@ -2274,7 +2268,6 @@
         "orderPendingAuthorization": "Försäljningsorder väntar på betalningstillstånd",
         "orderPendingDeliveryData": "Leveransinformation begärd",
         "orderProcessedByBuyer": "Beställning godkänd av köparen",
-        "orderRejectedByBuyer": "Beställning avvisad",
         "saleProcessedByBuyer": "Rea realiserad"
       }
     }

@@ -133,7 +133,7 @@ export class ViewTokenComponent extends BaseViewPageComponent<TokenView> impleme
       );
     }
     // Activate
-    if (token.activate) {
+    if (token.activate && token.status === 'pending') {
       headingActions.push(
         new HeadingAction(this.tokenHelper.icon(token.type), this.i18n.token.action.activate, () => {
           this.tokenService

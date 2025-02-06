@@ -33,22 +33,14 @@ export class OrderProductsComponent extends BaseComponent implements OnInit {
       this.form = this.formBuilder.group({});
       if (!empty(data)) {
         data.forEach(row => {
-          const discount = this.formBuilder.control(this.calculateDiscount(row, +row.price));
+          const discount = this.formBuilder.control(this.toFixed(this.calculateDiscount(row, +row.price), 2));
           this.form.addControl(this.discount(row), discount);
 
           const price = this.formBuilder.control(row.price);
           this.form.addControl(this.price(row), price);
 
-          this.addSub(
-            discount.valueChanges
-              .pipe(distinctUntilChanged(), debounceTime(550))
-              .subscribe(val => this.applyDiscount(row, val))
-          );
-          this.addSub(
-            price.valueChanges
-              .pipe(distinctUntilChanged(), debounceTime(550))
-              .subscribe(val => this.applyPrice(row, val))
-          );
+          this.addSub(discount.valueChanges.subscribe(val => this.applyDiscount(row, val)));
+          this.addSub(price.valueChanges.subscribe(val => this.applyPrice(row, val)));
 
           const quantity = this.formBuilder.control(row.quantity);
           this.form.addControl(this.quantity(row), quantity);
@@ -62,7 +54,16 @@ export class OrderProductsComponent extends BaseComponent implements OnInit {
     });
   }
 
+  private toFixed(num: number, scale?: number) {
+    return this.format.numberToFixed(num, scale ?? this.currency?.decimalDigits);
+  }
+
   protected applyDiscount(row: OrderItem, val: number) {
+    const r = row as any;
+    if (r.applying) {
+      return;
+    }
+    r.applying = true;
     let price: number;
     if (val < 0) {
       price = +row.product.price;
@@ -71,18 +72,25 @@ export class OrderProductsComponent extends BaseComponent implements OnInit {
     } else {
       price = +row.product.price - +row.product.price * (val / 100);
     }
-    this.form.controls[this.price(row)].setValue(price, { emitEvent: false });
-    row.price = price.toString();
+    const fmt = this.toFixed(price);
+    this.form.controls[this.price(row)].setValue(fmt);
+    row.price = fmt;
+    delete r.applying;
   }
 
   protected applyPrice(row: OrderItem, val: number) {
-    const discount = this.calculateDiscount(row, val);
-    if (val > +row.price) {
-      this.form.controls[this.price(row)].setValue(+row.price, { emitEvent: false, onlySelf: true });
-    } else {
-      row.price = val ? val.toString() : '0';
+    const r = row as any;
+    if (r.applying) {
+      return;
     }
-    this.form.controls[this.discount(row)].setValue(discount, { emitEvent: false });
+    r.applying = true;
+    const discount = this.calculateDiscount(row, val);
+    const price = this.form.controls[this.price(row)];
+    if (price.valid) {
+      row.price = this.toFixed(val);
+    }
+    this.form.controls[this.discount(row)].setValue(this.toFixed(discount, 2));
+    delete r.applying;
   }
 
   calculateDiscount(row: OrderItem, price: number): number {

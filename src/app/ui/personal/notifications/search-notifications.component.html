@@ -25,7 +25,7 @@
       </div>
     </mobile-result>
 
-    <table *resultTable class="table table-hover cursor-pointer">
+    <table *resultTable class="table table-hover">
       <thead>
         <th class="avatar"></th>
         <th>{{ i18n.general.date }}</th>
@@ -34,7 +34,7 @@
       </thead>
       <tbody>
         <ng-container *ngFor="let row of (results$ | async)?.results">
-          <tr (click)="rowClick(row)" [ngClass]="{ 'font-weight-bold': !row.read }">
+          <tr (click)="rowClick(row)" [ngClass]="{ 'font-weight-bold': !row.read, 'cursor-pointer': path(row) }">
             <td
               class="avatar"
               [ngClass]="{

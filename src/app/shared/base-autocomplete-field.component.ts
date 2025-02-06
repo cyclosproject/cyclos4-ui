@@ -78,7 +78,9 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
               this.options$.next([]);
             } else {
               this.options$.next(rows);
-              if (!empty(rows)) {
+              if (rows.length === 1) {
+                this.select(rows[0]);
+              } else if (!empty(rows)) {
                 this.open();
               }
             }

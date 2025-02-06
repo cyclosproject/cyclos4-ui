@@ -1884,7 +1884,7 @@
     "chargeType": "Charge type",
     "chooseSeller": "Choose a seller from the list below to continue with the shopping cart process",
     "chooseDeliveryMethod": "Choose delivery method",
-    "chooseDeliveryAddress": "Choose delivery address",
+    "chooseDeliveryAddress": "Choose address",
     "choosePaymentType": "Choose payment type",
     "customAddress": "Custom address",
     "customDeliveryMethod": "Custom delivery method",
@@ -1898,7 +1898,7 @@
       "noAvailableAccounts": "The advertisement can not be saved because there is not available accounts and price can not be set. Please contact the administration",
       "insufficientBalance": "Insufficient balance to proceed with the checkout confirmation."
     },
-    "deliveryAddress": "Delivery address",
+    "deliveryAddress": "Address",
     "deliveryInformation": "Delivery information",
     "deliveryPrice": "Delivery price",
     "deliveryMethod": "Delivery method",
@@ -2000,6 +2000,7 @@
       "webshop": "Web shop"
     },
     "webshopSettingsSaved": "The web shop settings were saved",
+    "orderPendingByAdmin": "Pending by admin",
     "orderBy": {
       "date": "Last published",
       "distance": "Distance",
@@ -2054,7 +2055,7 @@
       "newOrder": "Create web shop order",
       "shoppingCart": "Shopping cart",
       "history": "Order history",
-      "deliveryAddress": "Delivery address",
+      "deliveryAddress": "Address",
       "deliveryMethod": "Delivery method",
       "deliveryMethodNew": "New delivery method",
       "deliveryMethods": "Delivery methods",
@@ -2083,7 +2084,7 @@
       "newOrder": "Create web shop order",
       "shoppingCart": "Shopping cart",
       "history": "Order history",
-      "deliveryAddress": "Delivery address",
+      "deliveryAddress": "Address",
       "deliveryMethod": "Delivery method",
       "deliveryMethodNew": "New delivery method",
       "deliveryMethods": "Delivery methods",
@@ -2242,9 +2243,9 @@
         "orderPendingAuthorization": "Purchase order awaiting payment authorization",
         "orderPendingDeliveryData": "Order awaiting delivery information",
         "orderProcessedBySeller": "Order accepted by seller",
-        "orderRejectedBySeller": "Order rejected by seller",
+        "orderRejectedBySeller": "Purchase order rejected by seller",
         "buyerSalePending": "Order created",
-        "buyerSaleRejectedBySeller": "Sale order canceled"
+        "buyerSaleRejectedBySeller": "Sale order rejected by seller"
       },
       "feedback": {
         "changed": "Feedback changed",
@@ -2283,7 +2284,7 @@
         "orderPendingAuthorization": "Sale order awaiting payment authorization",
         "orderPendingDeliveryData": "Delivery information requested",
         "orderProcessedByBuyer": "Order accepted by buyer",
-        "orderRejectedByBuyer": "Order rejected",
+        "orderRejectedByBuyer": "Order rejected by buyer",
         "saleProcessedByBuyer": "Sale realized"
       }
     }
@@ -2438,6 +2439,7 @@
       "accountBalanceFixed": "Accounts with inconsistent cached balance were fixed",
       "accountFeeChargedNoFailures": "Account fee has finished without any failures",
       "accountFeeChargedWithFailures": "Account fee has finished with at least one failure",
+      "archivingFailed": "Data archiving failed",
       "applicationRestarted": "Application restarted",
       "custom": "Custom",
       "customTranslationsInvalidated": "Custom translations invalidated",

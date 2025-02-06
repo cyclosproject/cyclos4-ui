@@ -1880,7 +1880,6 @@
     "chargeType": "Şarj türü",
     "chooseSeller": "Alışveriş sepeti işlemine devam etmek için aşağıdaki listeden bir satıcı seçin",
     "chooseDeliveryMethod": "Teslimat yöntemini seçin",
-    "chooseDeliveryAddress": "Teslimat adresini seçin",
     "choosePaymentType": "Ödeme türünü seçin",
     "customAddress": "Özel adres",
     "customDeliveryMethod": "Özel teslimat yöntemi",
@@ -1894,7 +1893,6 @@
       "noAvailableAccounts": "Mevcut hesap olmadığı ve fiyat belirlenemediği için ilan kaydedilemiyor. Lütfen yönetimle iletişime geçin",
       "insufficientBalance": "Ödeme onayına devam etmek için yeterli bakiye yok."
     },
-    "deliveryAddress": "Teslimat adresi",
     "deliveryInformation": "Teslimat bilgileri",
     "deliveryPrice": "Teslimat fiyatı",
     "deliveryMethod": "Teslimat yöntemi",
@@ -2045,7 +2043,6 @@
       "newOrder": "Web mağazası siparişi oluşturun",
       "shoppingCart": "Alışveriş sepeti",
       "history": "Sipariş geçmişi",
-      "deliveryAddress": "Teslimat adresi",
       "deliveryMethod": "Teslimat yöntemi",
       "deliveryMethodNew": "Yeni teslimat yöntemi",
       "deliveryMethods": "Teslimat yöntemleri",
@@ -2074,7 +2071,6 @@
       "newOrder": "Web mağazası siparişi oluşturun",
       "shoppingCart": "Alışveriş sepeti",
       "history": "Sipariş geçmişi",
-      "deliveryAddress": "Teslimat adresi",
       "deliveryMethod": "Teslimat yöntemi",
       "deliveryMethodNew": "Yeni teslimat yöntemi",
       "deliveryMethods": "Teslimat yöntemleri",
@@ -2233,9 +2229,7 @@
         "orderPendingAuthorization": "Ödeme onayı bekleyen satın alma siparişi",
         "orderPendingDeliveryData": "Teslimat bekleyen sipariş bilgileri",
         "orderProcessedBySeller": "Satıcı tarafından kabul edilen sipariş",
-        "orderRejectedBySeller": "Sipariş satıcı tarafından reddedildi",
-        "buyerSalePending": "Sipariş oluşturuldu",
-        "buyerSaleRejectedBySeller": "Satış siparişi iptal edildi"
+        "buyerSalePending": "Sipariş oluşturuldu"
       },
       "feedback": {
         "changed": "Geri bildirim değişti",
@@ -2274,7 +2268,6 @@
         "orderPendingAuthorization": "Ödeme onayı bekleyen satış emri",
         "orderPendingDeliveryData": "İstenen teslimat bilgileri",
         "orderProcessedByBuyer": "Alıcı tarafından kabul edilen sipariş",
-        "orderRejectedByBuyer": "Sipariş reddedildi",
         "saleProcessedByBuyer": "Gerçekleşen satış"
       }
     }

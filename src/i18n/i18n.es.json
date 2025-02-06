@@ -1884,7 +1884,7 @@
     "chargeType": "Tipo",
     "chooseSeller": "Seleccione un vendedor de la siguiente lista para continuar con el proceso del carrito de compras",
     "chooseDeliveryMethod": "Seleccione el método de entrega",
-    "chooseDeliveryAddress": "Seleccione la dirección de entrega",
+    "chooseDeliveryAddress": "Seleccione una dirección",
     "choosePaymentType": "Seleccione el tipo de pago",
     "customAddress": "Dirección personalizada",
     "customDeliveryMethod": "Método de entrega personalizado",
@@ -1898,7 +1898,7 @@
       "noAvailableAccounts": "El anuncio no se puede guardar porque no hay cuentas disponibles y el precio no se puede definir.\nPor favor, consulte a la administración.",
       "insufficientBalance": "Saldo insuficiente para finalizar el pedido."
     },
-    "deliveryAddress": "Dirección de entrega",
+    "deliveryAddress": "Dirección",
     "deliveryInformation": "Información de entrega",
     "deliveryPrice": "Precio de entrega",
     "deliveryMethod": "Método de entrega",
@@ -2000,6 +2000,7 @@
       "webshop": "Tienda virtual"
     },
     "webshopSettingsSaved": "Los ajustes de l tienda virtual se han guardado",
+    "orderPendingByAdmin": "Pendiente por administrador",
     "orderBy": {
       "date": "Ultimos publicados",
       "distance": "Distancia",
@@ -2054,7 +2055,7 @@
       "newOrder": "Crear orden de tienda virtual",
       "shoppingCart": "Carrito de compras",
       "history": "Historial de ordenes",
-      "deliveryAddress": "Dirección de entrega",
+      "deliveryAddress": "Dirección",
       "deliveryMethod": "Método de entrega",
       "deliveryMethodNew": "Nuevo método de entrega",
       "deliveryMethods": "Métodos de entrega",
@@ -2083,7 +2084,7 @@
       "newOrder": "Crear orden de tienda virtual",
       "shoppingCart": "Carrito de compras",
       "history": "Historial de ordenes",
-      "deliveryAddress": "Dirección de entrega",
+      "deliveryAddress": "Dirección",
       "deliveryMethod": "Método de entrega",
       "deliveryMethodNew": "Nuevo método de entrega",
       "deliveryMethods": "Métodos de entrega",
@@ -2242,9 +2243,9 @@
         "orderPendingAuthorization": "Orden de compra pendiente de autorización de pago",
         "orderPendingDeliveryData": "Orden aguardando información de entrega",
         "orderProcessedBySeller": "Orden aceptada por el vendedor",
-        "orderRejectedBySeller": "Orden rechazada por el vendedor",
+        "orderRejectedBySeller": "Orden de compra rechazada por el vendedor",
         "buyerSalePending": "Orden creada",
-        "buyerSaleRejectedBySeller": "Orden de venta cancelada"
+        "buyerSaleRejectedBySeller": "Orden de venta rechazada por el vendedor"
       },
       "feedback": {
         "changed": "Calificación cambiada",
@@ -2283,7 +2284,7 @@
         "orderPendingAuthorization": "Orden de venta pendiente de autorización de pago",
         "orderPendingDeliveryData": "Información de entrega solicitada",
         "orderProcessedByBuyer": "Orden aceptada por el comprador",
-        "orderRejectedByBuyer": "Orden rechazada",
+        "orderRejectedByBuyer": "Orden rechazada por el comprador",
         "saleProcessedByBuyer": "Venta realizada"
       }
     }
@@ -2438,6 +2439,7 @@
       "accountBalanceFixed": "Cuentas con balances inconsistentes fueron corregidas",
       "accountFeeChargedNoFailures": "El cargo de cuenta han finalizado sin fallos",
       "accountFeeChargedWithFailures": "El cargos de cuenta ha terminado con al menos un fallo",
+      "archivingFailed": "Falló el archivado de datos",
       "applicationRestarted": "Aplicación reiniciada",
       "custom": "Personalizado",
       "customTranslationsInvalidated": "Traducciones personalizadas invalidadas",

@@ -1861,7 +1861,6 @@
     "chargeType": "نوع الشحن",
     "chooseSeller": "اختر بائعا من القائمة أدناه لمواصلة عملية عربة التسوق",
     "chooseDeliveryMethod": "اختر طريقة التسليم",
-    "chooseDeliveryAddress": "اختر عنوان التسليم",
     "choosePaymentType": "اختر نوع الدفع",
     "customAddress": "عنوان مخصص",
     "customDeliveryMethod": "طريقة التوصيل المخصصة",
@@ -1875,7 +1874,6 @@
       "noAvailableAccounts": "لا يمكن حفظ الإعلان لأنه لا توجد حسابات متاحة ولا يمكن تعيين السعر. الرجاء الاتصال بالمشرف",
       "insufficientBalance": "الرصيد غير كاف للمضي قدما في تأكيد الدفع."
     },
-    "deliveryAddress": "عنوان التوصيل",
     "deliveryInformation": "معلومات التسليم",
     "deliveryPrice": "سعر التسليم",
     "deliveryMethod": "طريقة التسليم",
@@ -2026,7 +2024,6 @@
       "newOrder": "إنشاء طلب متجر ويب",
       "shoppingCart": "سلة التسوق",
       "history": "سجل الطلبات",
-      "deliveryAddress": "عنوان التوصيل",
       "deliveryMethod": "طريقة التسليم",
       "deliveryMethodNew": "طريقة التوصيل الجديدة",
       "deliveryMethods": "طرق التسليم",
@@ -2055,7 +2052,6 @@
       "newOrder": "إنشاء طلب متجر ويب",
       "shoppingCart": "سلة التسوق",
       "history": "سجل الطلبات",
-      "deliveryAddress": "عنوان التوصيل",
       "deliveryMethod": "طريقة التسليم",
       "deliveryMethodNew": "طريقة التوصيل الجديدة",
       "deliveryMethods": "طرق التسليم",
@@ -2214,9 +2210,7 @@
         "orderPendingAuthorization": "أمر الشراء في انتظار تفويض الدفع",
         "orderPendingDeliveryData": "الطلب في انتظار معلومات التسليم",
         "orderProcessedBySeller": "الطلب المقبول من البائع",
-        "orderRejectedBySeller": "تم رفض الطلب من قبل البائع",
-        "buyerSalePending": "تم إنشاء الطلب",
-        "buyerSaleRejectedBySeller": "تم إلغاء طلب البيع"
+        "buyerSalePending": "تم إنشاء الطلب"
       },
       "feedback": {
         "changed": "تم تغيير الملاحظات",
@@ -2255,7 +2249,6 @@
         "orderPendingAuthorization": "أمر البيع في انتظار إذن الدفع",
         "orderPendingDeliveryData": "معلومات التسليم المطلوبة",
         "orderProcessedByBuyer": "الطلب المقبول من قبل المشتري",
-        "orderRejectedByBuyer": "تم رفض الطلب",
         "saleProcessedByBuyer": "المبيعات المحققة"
       }
     }

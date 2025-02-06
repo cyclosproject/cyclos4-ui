@@ -69,7 +69,7 @@ export class SearchTokenComponent
 
   onDataInitialized(data: TokenDataForSearch) {
     super.onDataInitialized(data);
-    if (data.type.physicalType !== PhysicalTokenTypeEnum.NFC_TAG) {
+    if (data.create && data.type.physicalType !== PhysicalTokenTypeEnum.NFC_TAG) {
       this.headingActions = [
         new HeadingAction(
           SvgIcon.PlusCircle,

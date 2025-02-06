@@ -1873,7 +1873,6 @@
     "chargeType": "Tip taxă",
     "chooseSeller": "Alegeți un vânzător din lista de mai jos pentru a continua procesul de coș de cumpărături",
     "chooseDeliveryMethod": "Alege metoda de livrare",
-    "chooseDeliveryAddress": "Alegeți adresa de livrare",
     "choosePaymentType": "Alege tipul de plată",
     "customAddress": "Adresă personalizată",
     "customDeliveryMethod": "Metoda personalizată de livrare",
@@ -1887,7 +1886,6 @@
       "noAvailableAccounts": "Anunţul nu poate fi salvat deoarece nu există conturi disponibile şi preţul nu poate fi setat. Vă rugăm să contactaţi administraţia",
       "insufficientBalance": "Sold insuficient pentru a continua cu confirmarea comenzii."
     },
-    "deliveryAddress": "Adresa de livrare",
     "deliveryInformation": "Informații de livrare",
     "deliveryPrice": "Preț livrare",
     "deliveryMethod": "Metoda de livrare",
@@ -2037,7 +2035,6 @@
       "newOrder": "Creare comandă magazin web",
       "shoppingCart": "Cos de cumparaturi",
       "history": "Istoric comenzi",
-      "deliveryAddress": "Adresa de livrare",
       "deliveryMethod": "Metoda de livrare",
       "deliveryMethodNew": "Metodă nouă de livrare",
       "deliveryMethods": "Metodele de livrare",
@@ -2066,7 +2063,6 @@
       "newOrder": "Creare comandă magazin web",
       "shoppingCart": "Cos de cumparaturi",
       "history": "Istoric comenzi",
-      "deliveryAddress": "Adresa de livrare",
       "deliveryMethod": "Metoda de livrare",
       "deliveryMethodNew": "Metodă nouă de livrare",
       "deliveryMethods": "Metodele de livrare",
@@ -2225,9 +2221,7 @@
         "orderPendingAuthorization": "Comandă de cumpărare în așteptarea autorizației de plată",
         "orderPendingDeliveryData": "Comandă în așteptarea informațiilor de livrare",
         "orderProcessedBySeller": "Comandă acceptată de vânzător",
-        "orderRejectedBySeller": "Comandă respinsă de vânzător",
-        "buyerSalePending": "Comandă creată",
-        "buyerSaleRejectedBySeller": "Comanda de vânzare anulată"
+        "buyerSalePending": "Comandă creată"
       },
       "feedback": {
         "changed": "Feedback modificat",
@@ -2266,7 +2260,6 @@
         "orderPendingAuthorization": "Comandă de vânzare în așteptarea autorizației de plată",
         "orderPendingDeliveryData": "Informații de livrare solicitate",
         "orderProcessedByBuyer": "Comandă acceptată de cumpărător",
-        "orderRejectedByBuyer": "Comandă respinsă",
         "saleProcessedByBuyer": "Vanzare realizata"
       }
     }

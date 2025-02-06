@@ -13,6 +13,7 @@
   </label-value>
   <label-value kind="field" #pinConfirmation [label]="i18n.voucher.changePin.pinConfirmation" required>
     <password-input
+      disableAutocomplete
       [passwordInput]="state.pinInput"
       [formControl]="form.get('pin').get('newPinConfirmation')"
       (enter)="proceed()">

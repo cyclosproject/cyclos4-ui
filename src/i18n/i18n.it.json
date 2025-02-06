@@ -1880,7 +1880,6 @@
     "chargeType": "Tipo di costo",
     "chooseSeller": "Scegli un venditore dalla lista qui sotto per continuare con il processo del carrello",
     "chooseDeliveryMethod": "Seleziona metodo di consegna",
-    "chooseDeliveryAddress": "Scegli l'indirizzo di consegna",
     "choosePaymentType": "Scegli il tipo di pagamento",
     "customAddress": "Indirizzo personalizzato",
     "customDeliveryMethod": "Metodo di consegna personalizzato",
@@ -1894,7 +1893,6 @@
       "noAvailableAccounts": "La pubblicità non può essere salvata perché non ci sono account disponibili e il prezzo non può essere impostato. Si prega di contattare l'amministrazione",
       "insufficientBalance": "Equilibrio insufficiente per procedere con la conferma del checkout."
     },
-    "deliveryAddress": "Indirizzo di consegna",
     "deliveryInformation": "Informazioni per la consegna",
     "deliveryPrice": "Prezzo di consegna",
     "deliveryMethod": "Metodo di consegna",
@@ -2045,7 +2043,6 @@
       "newOrder": "Crea un ordine ",
       "shoppingCart": "Carrello",
       "history": "Cronologia degli ordini",
-      "deliveryAddress": "Indirizzo di consegna",
       "deliveryMethod": "Metodo di consegna",
       "deliveryMethodNew": "Nuovo metodo di consegna",
       "deliveryMethods": "Modalità di consegna",
@@ -2074,7 +2071,6 @@
       "newOrder": "Crea un ordine ",
       "shoppingCart": "Carrello",
       "history": "Storico ordini",
-      "deliveryAddress": "Indirizzo di consegna",
       "deliveryMethod": "Metodo di consegna",
       "deliveryMethodNew": "Nuovo metodo di consegna",
       "deliveryMethods": "Metodi di consegna",
@@ -2233,9 +2229,7 @@
         "orderPendingAuthorization": "Ordine di acquisto in attesa di autorizzazione al pagamento",
         "orderPendingDeliveryData": "Ordine in attesa di informazioni sulla consegna",
         "orderProcessedBySeller": "Ordine accettato dal venditore",
-        "orderRejectedBySeller": "Ordine rifiutato dal venditore",
-        "buyerSalePending": "Ordine creato",
-        "buyerSaleRejectedBySeller": "Ordine di vendita annullato"
+        "buyerSalePending": "Ordine creato"
       },
       "feedback": {
         "changed": "Rating cambiato",
@@ -2274,7 +2268,6 @@
         "orderPendingAuthorization": "Ordine di vendita in attesa di autorizzazione pagamento",
         "orderPendingDeliveryData": "Informazioni sulla consegna richieste",
         "orderProcessedByBuyer": "Ordine accettato dall'acquirente",
-        "orderRejectedByBuyer": "Ordine rifiutato",
         "saleProcessedByBuyer": "Vendita realizzata"
       }
     }

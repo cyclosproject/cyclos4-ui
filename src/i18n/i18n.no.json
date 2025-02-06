@@ -1877,7 +1877,6 @@
     "chargeType": "Ladning type",
     "chooseSeller": "Velg en selger fra listen nedenfor for å fortsette med handlevognprosessen",
     "chooseDeliveryMethod": "Velg leveringsmetode",
-    "chooseDeliveryAddress": "Velg leveringsadresse",
     "choosePaymentType": "Velg betalingsmetode",
     "customAddress": "Egendefinert adresse",
     "customDeliveryMethod": "Standard leveringsmåte (usikker)",
@@ -1891,7 +1890,6 @@
       "noAvailableAccounts": "Annonsen kan ikke lagres fordi det ikke er tilgjengelige kontoer og pris kan ikke angis. Kontakt administrasjonen",
       "insufficientBalance": "Utilstrekkelig saldo til å fortsette med bekreftelsen av utsjekken."
     },
-    "deliveryAddress": "Leveres adresse",
     "deliveryInformation": "Informasjon om levering",
     "deliveryPrice": "Pris for levering",
     "deliveryMethod": "Leverings måte",
@@ -2042,7 +2040,6 @@
       "newOrder": "Opprette nettbutikkordre",
       "shoppingCart": "Handlekurv",
       "history": "Ordrehistorikk",
-      "deliveryAddress": "Leveres adresse",
       "deliveryMethod": "Leverings måte",
       "deliveryMethodNew": "Ny leveringsmåte",
       "deliveryMethods": "Leverings metoder",
@@ -2071,7 +2068,6 @@
       "newOrder": "Opprette nettbutikkordre",
       "shoppingCart": "Handlekurv",
       "history": "Ordrehistorikk",
-      "deliveryAddress": "Leveres adresse",
       "deliveryMethod": "Leverings måte",
       "deliveryMethodNew": "Ny leveringsmåte",
       "deliveryMethods": "Leverings metoder",
@@ -2230,9 +2226,7 @@
         "orderPendingAuthorization": "Innkjøpsordre som venter på betalingsgodkjenning",
         "orderPendingDeliveryData": "Bestillingen avventer leveringsinformasjon",
         "orderProcessedBySeller": "Bestillingen er akseptert av selger",
-        "orderRejectedBySeller": "Bestillingen ble avvist av selger",
-        "buyerSalePending": "Bestilling opprettet",
-        "buyerSaleRejectedBySeller": "Salgsordre avbrutt"
+        "buyerSalePending": "Bestilling opprettet"
       },
       "feedback": {
         "changed": "Tilbakemelding endret",
@@ -2271,7 +2265,6 @@
         "orderPendingAuthorization": "Salgsordre som venter på betalingsgodkjenning",
         "orderPendingDeliveryData": "Anmodning om leveringsopplysninger",
         "orderProcessedByBuyer": "Bestilling akseptert av kjøper",
-        "orderRejectedByBuyer": "Bestilling avvist",
         "saleProcessedByBuyer": "Salg gjennomført"
       }
     }

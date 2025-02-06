@@ -55,7 +55,7 @@ export class ListTokenComponent extends BasePageComponent<UserTokensListData> im
 
     super.onDataInitialized(data);
     this.self = this.authHelper.isSelf(data.user);
-    if (this.canCreate() && data.type.physicalType !== PhysicalTokenTypeEnum.NFC_TAG) {
+    if (data.create && data.type.physicalType !== PhysicalTokenTypeEnum.NFC_TAG) {
       this.headingActions = [
         new HeadingAction(
           SvgIcon.PlusCircle,
@@ -71,7 +71,7 @@ export class ListTokenComponent extends BasePageComponent<UserTokensListData> im
       ];
     }
 
-    if (this.canActivate()) {
+    if (data.activate) {
       this.headingActions = [
         new HeadingAction(
           SvgIcon.CheckCircle,
@@ -105,20 +105,6 @@ export class ListTokenComponent extends BasePageComponent<UserTokensListData> im
 
   isNfc() {
     return this.data.type.physicalType === PhysicalTokenTypeEnum.NFC_TAG;
-  }
-
-  canCreate(): boolean {
-    if (!this.self) {
-      return this.dataForFrontendHolder.auth.permissions.tokens.user.find(p => p.type.id === this.type)?.create;
-    }
-    return false;
-  }
-
-  canActivate(): boolean {
-    if (this.self) {
-      return this.dataForFrontendHolder.auth.permissions.tokens.my.find(p => p.type.id === this.type)?.activate;
-    }
-    return false;
   }
 
   statusDisplay(status: TokenStatusEnum) {

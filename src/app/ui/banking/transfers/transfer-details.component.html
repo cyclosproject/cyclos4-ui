@@ -61,9 +61,7 @@
 <custom-field-value *ngFor="let value of transfer.transaction?.customValues" [fieldValue]="value"> </custom-field-value>
 <!-- The description is sent from the server regardless there are bought vouchers or not. We ignore it in case of bought vouchers -->
 <label-value
-  *ngIf="
-    transfer.transaction?.boughtVouchers?.length == 0 && (transfer.description || transfer.transaction?.description)
-  "
+  *ngIf="!transfer.transaction?.boughtVouchers?.length && (transfer.description || transfer.transaction?.description)"
   [label]="i18n.general.description"
   valueFormat="break"
   [value]="transfer.description || transfer.transaction?.description">

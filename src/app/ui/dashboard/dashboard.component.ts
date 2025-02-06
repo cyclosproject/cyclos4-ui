@@ -16,6 +16,7 @@ import { IconLoadingService } from 'app/core/icon-loading.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
+import { empty } from 'app/shared/helper';
 import { QuickAccessHelperService } from 'app/ui/core/quick-access-helper.service';
 import { RunOperationHelperService } from 'app/ui/core/run-operation-helper.service';
 import { QuickAccessAction } from 'app/ui/dashboard/quick-access-action';
@@ -198,9 +199,8 @@ export class DashboardComponent extends BasePageComponent<DataForFrontendHome> i
         case QuickAccessTypeEnum.ACCOUNT:
           // Skip the quick access icon for accounts already visible in the dashboard
           const allAccounts = permissions.banking.accounts || [];
-          const accounts = allAccounts
-            .filter(p => this.layout.ltmd || (p.visible && !p.viewStatus))
-            .map(p => p.account);
+          const showAccount = this.layout.ltmd || empty(data.accounts);
+          const accounts = allAccounts.filter(p => showAccount || (p.visible && !p.viewStatus)).map(p => p.account);
           if (accounts.length >= ApiHelper.MIN_ACCOUNTS_FOR_SUMMARY) {
             addAction(new ActiveMenu(Menu.ACCOUNTS_SUMMARY));
           } else {

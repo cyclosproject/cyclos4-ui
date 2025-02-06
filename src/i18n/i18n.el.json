@@ -1815,7 +1815,6 @@
     "chargeType": "Τύπος φόρτισης",
     "chooseSeller": "Επιλέξτε έναν πωλητή από την παρακάτω λίστα για να συνεχίσετε με τη διαδικασία του καλαθιού αγορών",
     "chooseDeliveryMethod": "Επιλέξτε τρόπο παράδοσης",
-    "chooseDeliveryAddress": "Επιλέξτε διεύθυνση παράδοσης",
     "choosePaymentType": "Επιλέξτε τύπο πληρωμής",
     "customAddress": "Προσαρμοσμένη διεύθυνση",
     "customDeliveryMethod": "Προσαρμοσμένη μέθοδος παράδοσης",
@@ -1829,7 +1828,6 @@
       "noAvailableAccounts": "Η διαφήμιση δεν μπορεί να αποθηκευτεί επειδή δεν υπάρχουν διαθέσιμοι λογαριασμοί και η τιμή δεν μπορεί να οριστεί. Επικοινωνήστε με τη διοίκηση",
       "insufficientBalance": "Ανεπαρκής ισορροπία για να προχωρήσει με την επιβεβαίωση checkout."
     },
-    "deliveryAddress": "Διεύθυνση παράδοσης",
     "deliveryInformation": "Πληροφορίες παράδοσης",
     "deliveryPrice": "Τιμή παράδοσης",
     "deliveryMethod": "Μέθοδος παράδοσης",
@@ -1978,7 +1976,6 @@
       "newOrder": "Δημιουργία παραγγελίας καταστήματος web",
       "shoppingCart": "Καλάθι αγορών",
       "history": "Ιστορικό παραγγελιών",
-      "deliveryAddress": "Διεύθυνση παράδοσης",
       "deliveryMethod": "Μέθοδος παράδοσης",
       "deliveryMethodNew": "Νέα μέθοδος παράδοσης",
       "deliveryMethods": "Τρόποι παράδοσης",
@@ -2007,7 +2004,6 @@
       "newOrder": "Δημιουργία παραγγελίας καταστήματος web",
       "shoppingCart": "Καλάθι αγορών",
       "history": "Ιστορικό παραγγελιών",
-      "deliveryAddress": "Διεύθυνση παράδοσης",
       "deliveryMethod": "Μέθοδος παράδοσης",
       "deliveryMethodNew": "Νέα μέθοδος παράδοσης",
       "deliveryMethods": "Τρόποι παράδοσης",
@@ -2166,9 +2162,7 @@
         "orderPendingAuthorization": "Παραγγελία αγοράς εν αναμονή εξουσιοδότησης πληρωμής",
         "orderPendingDeliveryData": "Παραγγελία εν αναμονή πληροφοριών παράδοσης",
         "orderProcessedBySeller": "Παραγγελία αποδεκτή από τον πωλητή",
-        "orderRejectedBySeller": "Η παραγγελία απορρίφθηκε από τον πωλητή",
-        "buyerSalePending": "Η παραγγελία δημιουργήθηκε",
-        "buyerSaleRejectedBySeller": "Παραγγελία πώλησης ακυρώθηκε"
+        "buyerSalePending": "Η παραγγελία δημιουργήθηκε"
       },
       "feedback": {
         "changed": "Σχόλια άλλαξε",
@@ -2207,7 +2201,6 @@
         "orderPendingAuthorization": "Παραγγελία πώλησης εν αναμονή εξουσιοδότησης πληρωμής",
         "orderPendingDeliveryData": "Απαιτούμενες πληροφορίες παράδοσης",
         "orderProcessedByBuyer": "Παραγγελία αποδεκτή από τον αγοραστή",
-        "orderRejectedByBuyer": "Η παραγγελία απορρίφθηκε",
         "saleProcessedByBuyer": "Πώληση πραγματοποιήθηκε"
       }
     }

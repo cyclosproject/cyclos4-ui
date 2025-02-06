@@ -68,9 +68,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.16.13/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.16.14/api-deprecation.html)
     for this version.
-  version: '4.16.13'
+  version: '4.16.14'
 servers:
   - url: 'http://root/api'
 
@@ -55692,6 +55692,8 @@ components:
 
         Possible values are:
         
+        - `bulkAction`: An image used to set a custom field value by a bulk action
+        
         - `contactInfo`: An image of a public contact information
         
         - `customFieldValue`: An image used as custom field value
@@ -55719,6 +55721,7 @@ components:
         - `voucherType`: An image of a voucher type
       type: string
       enum:
+        - bulkAction
         - contactInfo
         - customFieldValue
         - identityProvider
@@ -58234,6 +58237,8 @@ components:
         
         - `applicationRestarted`: The application has been restarted, or started for the first time
         
+        - `archivingFailed`: The data archiving process has failed
+        
         - `custom`: Custom alerts thrown by scripts
         
         - `customTranslationsInvalidated`: Custom translations were invalidated because the source (english) text has changed
@@ -58259,6 +58264,7 @@ components:
         - accountFeeChargedNoFailures
         - accountFeeChargedWithFailures
         - applicationRestarted
+        - archivingFailed
         - custom
         - customTranslationsInvalidated
         - emailSendingFailed
@@ -73282,6 +73288,10 @@ components:
             The new status for the order
           allOf:
            - $ref: '#/components/schemas/OrderStatusEnum'
+        pendingByAdmin:
+          type: boolean
+          description: >-
+            Is the order pending for admin approval?
 
 
     OrderManage:
@@ -73410,6 +73420,11 @@ components:
                 - $ref: '#/components/schemas/Image'
             status:
               $ref: '#/components/schemas/OrderStatusEnum'
+            sale:
+              type: boolean
+              description: >-
+                Is it a sale (initiated by the seller)?
+
 
     OrderView:
       description: >-
@@ -73445,10 +73460,10 @@ components:
               description: >-
                 The current order remarks (i.e those for check-out, accept or
                 reject).
-            sale:
+            pendingByAdmin:
               type: boolean
               description: >-
-                Is it a sale (initiated by the seller)?
+                Is the order pending for admin approval?
             canAccept:
               description: >-
                 An order can be accepted only for the following statuses:
@@ -78025,6 +78040,10 @@ components:
             The object that should be modified and posted back.
           allOf:
             - $ref: '#/components/schemas/TokenNew'
+        canActivate:
+          description: >-
+            Can the new token be activated?
+          type: boolean
 
     TokenDataForSearch:
       description: >-
@@ -78208,7 +78227,10 @@ components:
               format: date-time
             activate:
               description: >-
-                Can this token be directly activated?
+                If status is `pending` indicates whether this
+                token can be directly activated and if status is
+                `unassigned` indicates whether it can
+                be activated when assigning.
               type: boolean
             assign:
               description: >-

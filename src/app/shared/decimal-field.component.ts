@@ -110,7 +110,7 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string> implem
   set scale(scale: number) {
     if (scale !== this._scale) {
       this._scale = scale;
-      if (this.inputRef) {
+      if (this.input) {
         this.setInternalControlValue();
       }
     }
@@ -150,7 +150,7 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string> implem
     // As a workaround to https://github.com/angular/angular/issues/13792, manually update the input value
     const input = this.input;
     if (input) {
-      input.value = value;
+      input.value = this.format.formatAsNumber(value, this.scale);
     }
   }
 
@@ -175,7 +175,7 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string> implem
           if (input === 'custom') {
             this.internalControl.setValue(null);
             this.useCustom = true;
-            setTimeout(() => this.inputRef.nativeElement.focus(), 100);
+            setTimeout(() => this.input?.focus(), 100);
           } else {
             this.internalControl.setValue(input);
             this.onBlur();
@@ -186,14 +186,14 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string> implem
     }
   }
 
-  private updateInternalControl(input: string) {
-    if (empty(input)) {
+  private updateInternalControl(raw: string) {
+    if (empty(raw)) {
       this.value = null;
     } else {
       if (this.format.decimalSeparator !== '.') {
-        input = input.replace(this.format.decimalSeparator, '.');
+        raw = raw.replace(this.format.decimalSeparator, '.');
       }
-      this.value = this.format.numberToFixed(input, this.scale);
+      this.value = this.format.numberToFixed(raw, this.scale);
     }
     this.formControl.markAsTouched();
   }
@@ -224,8 +224,9 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string> implem
   }
 
   onDisabledChange(isDisabled: boolean): void {
-    if (this.inputRef && this.inputRef.nativeElement) {
-      this.inputRef.nativeElement.disabled = isDisabled;
+    const input = this.input;
+    if (input) {
+      input.disabled = isDisabled;
     }
   }
 
@@ -238,7 +239,7 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string> implem
   }
 
   protected getFocusableControl() {
-    return this.inputRef ? this.inputRef.nativeElement : null;
+    return this.input;
   }
 
   protected getDisabledValue(): string {

@@ -1880,7 +1880,6 @@
     "chargeType": "Vrsta polnjenja",
     "chooseSeller": "Izberite prodajalca s spodnjega seznama in nadaljujte s postopkom nakupovalne košarice",
     "chooseDeliveryMethod": "Izberite način dostave",
-    "chooseDeliveryAddress": "Izberite naslov za dostavo",
     "choosePaymentType": "Izberite vrsto plačila",
     "customAddress": "Naslov po meri",
     "customDeliveryMethod": "Način dostave po meri",
@@ -1894,7 +1893,6 @@
       "noAvailableAccounts": "Oglasa ni mogoče shraniti, ker ni na voljo računov in ni mogoče določiti cene. Prosimo, da se obrnete na upravo",
       "insufficientBalance": "Nezadostno stanje za nadaljevanje potrditve prijave na blagajni."
     },
-    "deliveryAddress": "Naslov za dostavo",
     "deliveryInformation": "Informacije o dostavi",
     "deliveryPrice": "Cena dostave",
     "deliveryMethod": "Način dostave",
@@ -2045,7 +2043,6 @@
       "newOrder": "Ustvarjanje naročila za spletno trgovino",
       "shoppingCart": "Nakupovalna košarica",
       "history": "Zgodovina naročil",
-      "deliveryAddress": "Naslov za dostavo",
       "deliveryMethod": "Način dostave",
       "deliveryMethodNew": "Nov način dostave",
       "deliveryMethods": "Načini dostave",
@@ -2074,7 +2071,6 @@
       "newOrder": "Ustvarjanje naročila za spletno trgovino",
       "shoppingCart": "Nakupovalna košarica",
       "history": "Zgodovina naročil",
-      "deliveryAddress": "Naslov za dostavo",
       "deliveryMethod": "Način dostave",
       "deliveryMethodNew": "Nov način dostave",
       "deliveryMethods": "Načini dostave",
@@ -2233,9 +2229,7 @@
         "orderPendingAuthorization": "Naročilnica, ki čaka na odobritev plačila",
         "orderPendingDeliveryData": "Informacije o naročilu, ki čaka na dostavo",
         "orderProcessedBySeller": "Naročilo, ki ga je sprejel prodajalec",
-        "orderRejectedBySeller": "Prodajalec je naročilo zavrnil",
-        "buyerSalePending": "Ustvarjeno naročilo",
-        "buyerSaleRejectedBySeller": "Naročilo za prodajo preklicano"
+        "buyerSalePending": "Ustvarjeno naročilo"
       },
       "feedback": {
         "changed": "Spremenjene povratne informacije",
@@ -2274,7 +2268,6 @@
         "orderPendingAuthorization": "Prodajno naročilo čaka na odobritev plačila",
         "orderPendingDeliveryData": "Zahtevani podatki o dostavi",
         "orderProcessedByBuyer": "Naročilo, ki ga je kupec sprejel",
-        "orderRejectedByBuyer": "Zavrnjena odredba",
         "saleProcessedByBuyer": "Realizirana prodaja"
       }
     }

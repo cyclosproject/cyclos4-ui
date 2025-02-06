@@ -167,6 +167,10 @@ export class ApiHelper {
    * @param notification The Cyclos notification
    */
   static notificationPath(notification: Notification): string {
+    if (!notification.entityType || !notification.entityId) {
+      return null;
+    }
+
     switch (notification.entityType) {
       case NotificationEntityTypeEnum.USER:
         return `/users/${notification.entityId}/profile`;
@@ -199,6 +203,8 @@ export class ApiHelper {
         return `/users/references/view/${notification.entityId}`;
       case NotificationEntityTypeEnum.FEEDBACK:
         return `/users/feedbacks/view/${notification.entityId}`;
+      case NotificationEntityTypeEnum.USER_ALERT:
+        return notification.relatedUser?.id ? `/users/${notification.relatedUser.id}/profile` : null;
     }
   }
 

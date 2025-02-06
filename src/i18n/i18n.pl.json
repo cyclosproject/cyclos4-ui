@@ -1876,7 +1876,6 @@
     "chargeType": "Rodzaj ładunku",
     "chooseSeller": "Wybierz sprzedawcę z poniższej listy, aby kontynuować proces koszyka",
     "chooseDeliveryMethod": "Wybierz sposób dostawy",
-    "chooseDeliveryAddress": "Wybierz adres dostawy",
     "choosePaymentType": "Wybierz rodzaj płatności",
     "customAddress": "Niestandardowy adres",
     "customDeliveryMethod": "Niestandardowa metoda dostawy",
@@ -1890,7 +1889,6 @@
       "noAvailableAccounts": "Reklama nie może być zapisana, ponieważ nie ma dostępnych kont i ceny nie mogą być ustawione. Skontaktuj się z administracją",
       "insufficientBalance": "Niewystarczająca równowaga, aby przejść do potwierdzenia zamówienia."
     },
-    "deliveryAddress": "Adres dostawy",
     "deliveryInformation": "Informacje o dostawie",
     "deliveryPrice": "Cena dostawy",
     "deliveryMethod": "Sposób dostawy",
@@ -2041,7 +2039,6 @@
       "newOrder": "Utwórz zamówienie sklepu internetowego",
       "shoppingCart": "Koszyk",
       "history": "Historia zamówień",
-      "deliveryAddress": "Adres dostawy",
       "deliveryMethod": "Sposób dostawy",
       "deliveryMethodNew": "Nowa metoda dostawy",
       "deliveryMethods": "Sposoby dostawy",
@@ -2070,7 +2067,6 @@
       "newOrder": "Utwórz zamówienie sklepu internetowego",
       "shoppingCart": "Koszyk",
       "history": "Historia zamówień",
-      "deliveryAddress": "Adres dostawy",
       "deliveryMethod": "Sposób dostawy",
       "deliveryMethodNew": "Nowa metoda dostawy",
       "deliveryMethods": "Sposoby dostawy",
@@ -2229,9 +2225,7 @@
         "orderPendingAuthorization": "Zamówienie zakupu oczekujące na autoryzację płatności",
         "orderPendingDeliveryData": "Zamówienie oczekujące na informacje o dostawie",
         "orderProcessedBySeller": "Zamówienie zaakceptowane przez sprzedawcę",
-        "orderRejectedBySeller": "Zamówienie odrzucone przez sprzedawcę",
-        "buyerSalePending": "Zamówienie utworzone",
-        "buyerSaleRejectedBySeller": "Zamówienie sprzedaży anulowane"
+        "buyerSalePending": "Zamówienie utworzone"
       },
       "feedback": {
         "changed": "Informacja zwrotna zmieniona",
@@ -2270,7 +2264,6 @@
         "orderPendingAuthorization": "Zamówienie sprzedaży oczekujące na autoryzację płatności",
         "orderPendingDeliveryData": "Żądane informacje o dostawie",
         "orderProcessedByBuyer": "Zamówienie zaakceptowane przez nabywcę",
-        "orderRejectedByBuyer": "Zamówienie odrzucone",
         "saleProcessedByBuyer": "Wyprzedaż zrealizowana"
       }
     }

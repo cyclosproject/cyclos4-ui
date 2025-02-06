@@ -83,34 +83,16 @@
           *ngIf="data.maxCategoriesPerAd == 1"
           formControlName="categories"
           [label]="i18n.general.category"
-          required>
-          <field-option
-            *ngFor="let cat of categories"
-            [value]="ApiHelper.internalNameOrId(cat)"
-            [id]="cat.id"
-            [internalName]="cat.internalName"
-            [text]="cat.name"
-            [style]="cat.leaf ? 'leaf' : 'parent'"
-            [level]="cat.level"
-            [disabled]="!cat.leaf">
-          </field-option>
-        </single-selection-field>
+          [fieldOptions]="categoryOptions"
+          required
+          forceHierarchy></single-selection-field>
         <multi-selection-field
           *ngIf="data.maxCategoriesPerAd > 1"
           [label]="i18n.ad.categories"
           formControlName="categories"
-          required>
-          <field-option
-            *ngFor="let cat of categories"
-            [value]="ApiHelper.internalNameOrId(cat)"
-            [id]="cat.id"
-            [internalName]="cat.internalName"
-            [text]="cat.name"
-            [style]="'hierarchy ' + (cat.leaf ? 'leaf' : 'parent')"
-            [level]="cat.level"
-            [disabled]="!cat.leaf">
-          </field-option>
-        </multi-selection-field>
+          [fieldOptions]="categoryOptions"
+          required
+          forceHierarchy></multi-selection-field>
         <single-selection-field
           *ngIf="data.currencies?.length > 1"
           formControlName="currency"

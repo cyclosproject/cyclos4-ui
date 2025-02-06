@@ -1878,7 +1878,6 @@
     "chargeType": "Typ poplatku",
     "chooseSeller": "Pro pokračování v nákupním košíku vyberte prodejce ze seznamu níže",
     "chooseDeliveryMethod": "Vyberte způsob doručení",
-    "chooseDeliveryAddress": "Vyberte dodací adresu",
     "choosePaymentType": "Zvolte typ platby",
     "customAddress": "Vlastní adresu",
     "customDeliveryMethod": "Vlastní způsob dodání",
@@ -1892,7 +1891,6 @@
       "noAvailableAccounts": "Inzerát nelze uložit, protože nejsou k dispozici účty a cenu nelze nastavit. Kontaktujte prosím administraci.",
       "insufficientBalance": "Nedostatečný zůstatek pro pokračování v potvrzení platby."
     },
-    "deliveryAddress": "Dodací adresu",
     "deliveryInformation": "Informace o doručení",
     "deliveryPrice": "Cena za doručení",
     "deliveryMethod": "Způsob dodání",
@@ -2043,7 +2041,6 @@
       "newOrder": "Vytvořit objednávku na webu",
       "shoppingCart": "Nákupní košík",
       "history": "Historie objednávek",
-      "deliveryAddress": "Dodací adresu",
       "deliveryMethod": "Způsob dodání",
       "deliveryMethodNew": "Nový způsob doručení",
       "deliveryMethods": "Dodací metody",
@@ -2072,7 +2069,6 @@
       "newOrder": "Vytvořit objednávku na webu",
       "shoppingCart": "Nákupní košík",
       "history": "Historie objednávek",
-      "deliveryAddress": "Dodací adresu",
       "deliveryMethod": "Způsob dodání",
       "deliveryMethodNew": "Nový způsob doručení",
       "deliveryMethods": "Dodací metody",
@@ -2231,9 +2227,7 @@
         "orderPendingAuthorization": "Objednávky čeká se na platbu povolení",
         "orderPendingDeliveryData": "Cílem čeká na dodání informace",
         "orderProcessedBySeller": "Přijetí objednávky prodávajícím",
-        "orderRejectedBySeller": "Cílem odmítnut prodávajícího",
-        "buyerSalePending": "Aby vytvořil",
-        "buyerSaleRejectedBySeller": "Prodej příkaz zrušen"
+        "buyerSalePending": "Aby vytvořil"
       },
       "feedback": {
         "changed": "Názor změnil",
@@ -2272,7 +2266,6 @@
         "orderPendingAuthorization": "Prodej objednávky čeká se na platbu povolení",
         "orderPendingDeliveryData": "Doručení požadované informace",
         "orderProcessedByBuyer": "Přijetí objednávky kupujícího prodávajícím",
-        "orderRejectedByBuyer": "Objednávka zamítnuta",
         "saleProcessedByBuyer": "Prodej uvědomil,"
       }
     }

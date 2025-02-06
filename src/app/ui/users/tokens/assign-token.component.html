@@ -6,7 +6,10 @@
     formControlName="operator"
     [label]="i18n.general.operator"
     [emptyOption]="i18n.general.notSet">
-    <field-option *ngFor="let operator of operators$ | async" [value]="operator.id" [text]="operator.display">
+    <field-option
+      *ngFor="let operator of operators$ | async"
+      [value]="operator.id"
+      [text]="operator.name ?? operator.display">
     </field-option>
   </single-selection-field>
   <actions forceRow>

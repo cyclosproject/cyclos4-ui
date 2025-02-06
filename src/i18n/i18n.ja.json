@@ -1871,7 +1871,6 @@
     "chargeType": "充電タイプ",
     "chooseSeller": "ショッピングカートのプロセスを続行するには、以下のリストから販売者を選択してください",
     "chooseDeliveryMethod": "配送方法を選択",
-    "chooseDeliveryAddress": "配送先住所を選択",
     "choosePaymentType": "支払い方法を選択",
     "customAddress": "カスタムアドレス",
     "customDeliveryMethod": "カスタム配送方法",
@@ -1885,7 +1884,6 @@
       "noAvailableAccounts": "利用可能なアカウントと価格が設定できないため、広告を保存できません。管理に連絡してください",
       "insufficientBalance": "残高が不足しているため、チェックアウト確認を続行します。"
     },
-    "deliveryAddress": "配送先住所",
     "deliveryInformation": "配送情報",
     "deliveryPrice": "配送価格",
     "deliveryMethod": "配送方法",
@@ -2036,7 +2034,6 @@
       "newOrder": "ウェブショップの注文を作成",
       "shoppingCart": "ショッピングカート",
       "history": "注文履歴",
-      "deliveryAddress": "配送先住所",
       "deliveryMethod": "配送方法",
       "deliveryMethodNew": "新しい配送方法",
       "deliveryMethods": "配送方法",
@@ -2065,7 +2062,6 @@
       "newOrder": "ウェブショップの注文を作成",
       "shoppingCart": "ショッピングカート",
       "history": "注文履歴",
-      "deliveryAddress": "配送先住所",
       "deliveryMethod": "配送方法",
       "deliveryMethodNew": "新しい配送方法",
       "deliveryMethods": "配送方法",
@@ -2224,9 +2220,7 @@
         "orderPendingAuthorization": "支払い承認待ちの注文書です",
         "orderPendingDeliveryData": "配送情報待機中の注文",
         "orderProcessedBySeller": "売り手によって受け入れられた注文",
-        "orderRejectedBySeller": "販売者によって注文が拒否されました",
-        "buyerSalePending": "注文が作成されました",
-        "buyerSaleRejectedBySeller": "販売注文がキャンセルされました"
+        "buyerSalePending": "注文が作成されました"
       },
       "feedback": {
         "changed": "フィードバックが変更されました",
@@ -2265,7 +2259,6 @@
         "orderPendingAuthorization": "支払い承認待ちのセール注文",
         "orderPendingDeliveryData": "配信情報がリクエストされました",
         "orderProcessedByBuyer": "購入者によって受理された注文",
-        "orderRejectedByBuyer": "注文が却下されました",
         "saleProcessedByBuyer": "販売を実現しました"
       }
     }

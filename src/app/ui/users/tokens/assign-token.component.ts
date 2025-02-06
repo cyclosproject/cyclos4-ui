@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { OperatorResult, User } from 'app/api/models';
+import { OperatorResult, UserStatusEnum } from 'app/api/models';
 import { OperatorsService } from 'app/api/services/operators.service';
 import { TokensService } from 'app/api/services/tokens.service';
 import { BaseComponent } from 'app/shared/base.component';
@@ -38,19 +38,28 @@ export class AssignTokenComponent extends BaseComponent implements OnInit {
       user: [null, Validators.required],
       operator: null
     });
-    this.form.get('user').valueChanges.subscribe(user => this.fillOperatorsField(user));
+    this.form.get('user').valueChanges.subscribe(userId => this.fillOperatorsField(userId));
   }
 
-  fillOperatorsField(user: User) {
-    this.operatorsService
-      .searchUserOperators$Response({ user: user.id, skipTotalCount: true, pageSize: 999999 })
-      .subscribe(response => {
-        if (response.ok) {
-          this.operators$.next(response.body);
-        } else {
-          this.operators$.next(null);
-        }
-      });
+  fillOperatorsField(userId: string) {
+    if (userId) {
+      this.operatorsService
+        .searchUserOperators$Response({
+          user: userId,
+          skipTotalCount: true,
+          pageSize: 999999,
+          statuses: [UserStatusEnum.ACTIVE, UserStatusEnum.BLOCKED, UserStatusEnum.DISABLED]
+        })
+        .subscribe(response => {
+          if (response.ok) {
+            this.operators$.next(response.body);
+          } else {
+            this.operators$.next(null);
+          }
+        });
+    } else {
+      this.operators$.next(null);
+    }
   }
 
   submit() {

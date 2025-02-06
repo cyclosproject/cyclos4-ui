@@ -15,6 +15,8 @@ import {
 import { ImagesService } from 'app/api/services/images.service';
 import { MarketplaceService } from 'app/api/services/marketplace.service';
 import { CameraService } from 'app/core/camera.service';
+import { ApiHelper } from 'app/shared/api-helper';
+import { FieldOption } from 'app/shared/field-option';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { ImageUploadComponent } from 'app/shared/image-upload.component';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
@@ -51,6 +53,7 @@ export class EditAdComponent extends BasePageComponent<AdDataForNew | AdDataForE
   uploadedImages: Image[];
   mainImage: string;
   categories: HierarchyItem[] = [];
+  categoryOptions: FieldOption[] = [];
 
   images$ = new BehaviorSubject<Image[]>([]);
   currency$ = new BehaviorSubject<Currency>(null);
@@ -110,6 +113,15 @@ export class EditAdComponent extends BasePageComponent<AdDataForNew | AdDataForE
     this.owner = this.self ? this.ApiHelper.SELF : data.user.id;
 
     this.marketplaceHelper.populateCategories(this.categories, data.categories, 0);
+    this.categoryOptions = this.categories.map<FieldOption>(cat => ({
+      value: ApiHelper.internalNameOrId(cat),
+      id: cat.id,
+      internalName: cat.internalName,
+      text: cat.name,
+      style: cat.leaf ? 'leaf' : 'parent',
+      level: cat.level,
+      disabled: !cat.leaf
+    }));
 
     const adManage = data.advertisement;
     const adEdit = adManage as AdEdit;

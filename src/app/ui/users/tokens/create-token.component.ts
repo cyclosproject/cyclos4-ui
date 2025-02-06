@@ -1,6 +1,13 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { OperatorResult, PhysicalTokenTypeEnum, TokenType, User } from 'app/api/models';
+import {
+  OperatorResult,
+  PhysicalTokenTypeEnum,
+  TokenDataForNew,
+  TokenType,
+  User,
+  UserStatusEnum
+} from 'app/api/models';
 import { OperatorsService } from 'app/api/services/operators.service';
 import { TokensService } from 'app/api/services/tokens.service';
 import { BaseComponent } from 'app/shared/base.component';
@@ -33,6 +40,7 @@ export class CreateTokenComponent extends BaseComponent implements OnInit {
   form: FormGroup;
   operators$ = new BehaviorSubject<OperatorResult[]>(null);
   canActivate$ = new BehaviorSubject<boolean>(null);
+  data$ = new BehaviorSubject<TokenDataForNew>(null);
 
   constructor(
     injector: Injector,
@@ -45,24 +53,34 @@ export class CreateTokenComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.canActivate$.next(!!this.user);
-    this.form = this.formBuilder.group({
-      user: this.user ? this.user.id : null,
-      operator: null,
-      value: [null, Validators.required],
-      activateNow: false
-    });
-    if (!this.user) {
-      this.form.get('user').valueChanges.subscribe(() => this.fillOperatorsField());
-    }
+    this.addSub(
+      this.tokensService.getTokenDataForNew({ type: this.type.id, user: this.user?.id }).subscribe(data => {
+        this.data$.next(data);
+        this.canActivate$.next(!!this.user && data.canActivate);
+        this.form = this.formBuilder.group({
+          user: this.user ? this.user.id : null,
+          operator: null,
+          value: [null, Validators.required],
+          activateNow: data.token.activateNow
+        });
+        if (!this.user) {
+          this.form.get('user').valueChanges.subscribe(() => this.fillOperatorsField());
+        }
+      })
+    );
   }
 
   fillOperatorsField() {
     const id = this.form.get('user').value;
     if (id) {
-      this.canActivate$.next(true);
+      this.canActivate$.next(this.data$.value.canActivate);
       this.operatorsService
-        .searchUserOperators$Response({ user: id, skipTotalCount: true, pageSize: 9999999 })
+        .searchUserOperators$Response({
+          user: id,
+          skipTotalCount: true,
+          pageSize: 9999999,
+          statuses: [UserStatusEnum.ACTIVE, UserStatusEnum.BLOCKED, UserStatusEnum.DISABLED]
+        })
         .subscribe(response => {
           if (response.ok && response.body?.length > 0) {
             this.operators$.next(response.body);

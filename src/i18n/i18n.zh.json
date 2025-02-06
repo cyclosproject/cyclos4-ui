@@ -1699,7 +1699,6 @@
     "chargeType": "充电类型",
     "chooseSeller": "从下面的列表中选择一个卖家来继续购物车进程",
     "chooseDeliveryMethod": "选择送货方式",
-    "chooseDeliveryAddress": "选择送货地址",
     "choosePaymentType": "选择付款方式",
     "customAddress": "自定义地址",
     "customDeliveryMethod": "自定义送货方式",
@@ -1713,7 +1712,6 @@
       "noAvailableAccounts": "广告无法保存，因为没有可用的帐户，无法设置价格。请联系管理员",
       "insufficientBalance": "余额不足，无法继续结帐确认。"
     },
-    "deliveryAddress": "送货地址",
     "deliveryInformation": "送货信息",
     "deliveryPrice": "交货价格",
     "deliveryMethod": "送货方式",
@@ -1862,7 +1860,6 @@
       "newOrder": "创建网上商店订单",
       "shoppingCart": "购物车",
       "history": "订单历史记录",
-      "deliveryAddress": "送货地址",
       "deliveryMethod": "送货方式",
       "deliveryMethodNew": "新的送货方式",
       "deliveryMethods": "送货方式",
@@ -1891,7 +1888,6 @@
       "newOrder": "创建网上商店订单",
       "shoppingCart": "购物车",
       "history": "订单历史记录",
-      "deliveryAddress": "送货地址",
       "deliveryMethod": "送货方式",
       "deliveryMethodNew": "新的送货方式",
       "deliveryMethods": "送货方式",
@@ -2049,9 +2045,7 @@
         "orderPendingAuthorization": "等待付款授权的购买订单",
         "orderPendingDeliveryData": "等待送货信息的订单",
         "orderProcessedBySeller": "卖方接受的订单",
-        "orderRejectedBySeller": "订单被卖方拒绝",
-        "buyerSalePending": "订单已创建",
-        "buyerSaleRejectedBySeller": "销售订单已取消"
+        "buyerSalePending": "订单已创建"
       },
       "feedback": {
         "changed": "反馈已更改",
@@ -2090,7 +2084,6 @@
         "orderPendingAuthorization": "等待付款授权的销售订单",
         "orderPendingDeliveryData": "请求的送货信息",
         "orderProcessedByBuyer": "买家接受的订单",
-        "orderRejectedByBuyer": "订单被拒绝",
         "saleProcessedByBuyer": "已实现销售"
       }
     }

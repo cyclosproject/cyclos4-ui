@@ -1675,8 +1675,8 @@
     "performPayments.maxAmountPerDay": "Tägliches Limit",
     "authorizePayments": "Zahlungen autorisieren",
     "paymentNotifications": "Zahlungs-Benachrichtigungen",
-    "paymentNotifications.above": "Nur obige Zahlungen benachrichtigen",
-    "paymentNotifications.below": "Nur nachfolgende Zahlungen benachrichtigen",
+    "paymentNotifications.above": "Nur Zahlungen mehr als... benachrichtigen",
+    "paymentNotifications.below": "Nur Zahlungen weniger als...  benachrichtigen",
     "chargebackPayments": "Rückbuchung von Zahlungen",
     "receivePayments": "Zahlungen erhalten",
     "requestPayments": "Zahlungen anfordern",
@@ -1882,7 +1882,6 @@
     "chargeType": "Gebührentyp",
     "chooseSeller": "Wählen Sie einen Verkäufer aus der Liste unten, um mit dem Warenkorb-Prozess fortzufahren",
     "chooseDeliveryMethod": "Versandart auswählen",
-    "chooseDeliveryAddress": "Lieferadresse auswählen",
     "choosePaymentType": "Zahlungsart wählen",
     "customAddress": "Benutzerdefinierte Adresse",
     "customDeliveryMethod": "Eigene Versandart",
@@ -1896,7 +1895,6 @@
       "noAvailableAccounts": "Die Anzeige kann nicht gespeichert werden, da keine Konten verfügbar sind und der Preis nicht festgelegt werden kann. Bitte kontaktieren Sie die Administration",
       "insufficientBalance": "Nicht genügend Guthaben, um mit der Zahlungsbestätigung fortzufahren."
     },
-    "deliveryAddress": "Lieferadresse",
     "deliveryInformation": "Versandinformationen",
     "deliveryPrice": "Versandkosten",
     "deliveryMethod": "Versandmethode",
@@ -2049,7 +2047,6 @@
       "newOrder": "Web-Shop Bestellung erstellen",
       "shoppingCart": "Warenkorb",
       "history": "Bestellverlauf",
-      "deliveryAddress": "Lieferadresse",
       "deliveryMethod": "Versandart",
       "deliveryMethodNew": "Neue Versandart",
       "deliveryMethods": "Versandarten",
@@ -2078,7 +2075,6 @@
       "newOrder": "Web-Shop Bestellung erstellen",
       "shoppingCart": "Warenkorb",
       "history": "Bestellverlauf",
-      "deliveryAddress": "Lieferadresse",
       "deliveryMethod": "Versandart",
       "deliveryMethodNew": "Neue Versandart",
       "deliveryMethods": "Versandarten",
@@ -2237,9 +2233,7 @@
         "orderPendingAuthorization": "Bestellung wartet auf Zahlungsautorisierung",
         "orderPendingDeliveryData": "Bestellung wartet auf Lieferinformationen",
         "orderProcessedBySeller": "Bestellung vom Verkäufer akzeptiert",
-        "orderRejectedBySeller": "Bestellung vom Verkäufer abgelehnt",
-        "buyerSalePending": "Bestellung erstellt",
-        "buyerSaleRejectedBySeller": "Verkaufsbestellung abgebrochen"
+        "buyerSalePending": "Bestellung erstellt"
       },
       "feedback": {
         "changed": "Bewertung geändert",
@@ -2278,7 +2272,6 @@
         "orderPendingAuthorization": "Verkaufsbestellung wartet auf Zahlungsautorisierung",
         "orderPendingDeliveryData": "Lieferinformationen angefordert",
         "orderProcessedByBuyer": "Bestellung vom Käufer akzeptiert",
-        "orderRejectedByBuyer": "Bestellung abgelehnt",
         "saleProcessedByBuyer": "Verkauf realisiert"
       }
     }
@@ -2300,8 +2293,8 @@
     "marketplaceAsSeller": "Marktplatz als Verkäufer",
     "feedbackAndReferences": "Bewertungen und Referenzen",
     "smsCount": "Sie haben diesen Monat {count} von {total} kostenlosen SMS-Nachrichten verwendet.",
-    "paymentNotifications.above": "Nur obige Zahlungen benachrichtigen",
-    "paymentNotifications.below": "Nur nachfolgende Zahlungen benachrichtigen",
+    "paymentNotifications.above": "Nur Zahlungen mehr als... benachrichtigen",
+    "paymentNotifications.below": "Nur Zahlungen weniger als...  benachrichtigen",
     "saved": "Die Benachrichtigungseinstellungen wurden gespeichert",
     "enableAll": "Alle aktivieren",
     "disableAll": "Alle deaktivieren"

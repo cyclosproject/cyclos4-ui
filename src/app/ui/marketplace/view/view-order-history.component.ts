@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { OrderStatusEnum, OrderView } from 'app/api/models';
+import { OrderLog, OrderView } from 'app/api/models';
 import { OrdersService } from 'app/api/services/orders.service';
 import { MarketplaceHelperService } from 'app/ui/core/marketplace-helper.service';
 import { BaseViewPageComponent } from 'app/ui/shared/base-view-page.component';
@@ -46,8 +46,12 @@ export class ViewOrderHistoryComponent extends BaseViewPageComponent<OrderView> 
   /**
    * Resolves the current order status label
    */
-  resolveStatusLabel(status: OrderStatusEnum): string {
-    return this.marketplaceHelper.resolveOrderStatusLabel(status);
+  resolveStatusLabel(log: OrderLog): string {
+    if (log.pendingByAdmin) {
+      return this.i18n.ad.orderPendingByAdmin;
+    } else {
+      return this.marketplaceHelper.resolveOrderStatusLabel(log.status);
+    }
   }
 
   resolveMenu() {

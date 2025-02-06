@@ -1842,7 +1842,6 @@
     "chargeType": "Тип зарядки",
     "chooseSeller": "Виберіть нижче список продавця, щоб продовжити процес кошику",
     "chooseDeliveryMethod": "Вибрати метод доставки",
-    "chooseDeliveryAddress": "Виберіть адресу доставки",
     "choosePaymentType": "Оберіть тип платежу",
     "customAddress": "Користувацька адреса",
     "customDeliveryMethod": "Користувацький спосіб доставки",
@@ -1856,7 +1855,6 @@
       "noAvailableAccounts": "оголошення не може бути збережено, оскільки відсутні наявні рахунки і ціна не може бути встановлена. Будь ласка, зв'яжіться з адміністрацією",
       "insufficientBalance": "Недостатньо коштів для підтвердження."
     },
-    "deliveryAddress": "Адреса доставки",
     "deliveryInformation": "Інформація про доставку",
     "deliveryPrice": "Вартість доставки",
     "deliveryMethod": "Спосіб доставки",
@@ -2007,7 +2005,6 @@
       "newOrder": "Створити замовлення веб-магазину",
       "shoppingCart": "Кошик покупок",
       "history": "Історія замовлень",
-      "deliveryAddress": "Адреса доставки",
       "deliveryMethod": "Спосіб доставки",
       "deliveryMethodNew": "Новий спосіб доставки",
       "deliveryMethods": "Способи доставки",
@@ -2036,7 +2033,6 @@
       "newOrder": "Створити замовлення веб-магазину",
       "shoppingCart": "Кошик покупок",
       "history": "Історія замовлень",
-      "deliveryAddress": "Адреса доставки",
       "deliveryMethod": "Спосіб доставки",
       "deliveryMethodNew": "Новий спосіб доставки",
       "deliveryMethods": "Способи доставки",
@@ -2195,9 +2191,7 @@
         "orderPendingAuthorization": "Замовлення на покупку, що очікує авторизації платежу",
         "orderPendingDeliveryData": "Замовлення, яке очікує на доставку",
         "orderProcessedBySeller": "Замовлення прийнято продавцем",
-        "orderRejectedBySeller": "Замовлення відхилено продавцем",
-        "buyerSalePending": "Замовлення створено",
-        "buyerSaleRejectedBySeller": "Продаж скасовано"
+        "buyerSalePending": "Замовлення створено"
       },
       "feedback": {
         "changed": "Відгук змінено",
@@ -2236,7 +2230,6 @@
         "orderPendingAuthorization": "Оформлення замовлення, що очікує авторизації платежу",
         "orderPendingDeliveryData": "Запит інформації про доставку здійснено",
         "orderProcessedByBuyer": "Замовлення прийнято покупцем",
-        "orderRejectedByBuyer": "Замовлення відхилено",
         "saleProcessedByBuyer": "Продаж реалізована"
       }
     }
