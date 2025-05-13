@@ -50,7 +50,11 @@ export class EditDocumentComponent
   }
 
   download() {
-    this.addSub(this.documentsService.downloadDocumentFile$Response({ id: this.id }).subscribe(downloadResponse));
+    this.addSub(
+      this.documentsService
+        .downloadDocumentFile$Response({ id: this.id })
+        .subscribe(r => downloadResponse(r, this.notification, this.i18n))
+    );
   }
 
   onDataInitialized(data: DocumentDataForEdit | DocumentDataForNew) {

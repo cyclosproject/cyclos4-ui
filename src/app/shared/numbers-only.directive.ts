@@ -58,6 +58,16 @@ export class NumbersOnlyDirective {
     this._allowNegative = truthyAttr(allow);
   }
 
+  @Input() decimalPlaces: number = -1;
+
+  private _useTransferAmount: boolean | string = false;
+  @Input() get useTransferAmount(): boolean | string {
+    return this._useTransferAmount;
+  }
+  set useTransferAmount(useTransferAmount: boolean | string) {
+    this._useTransferAmount = truthyAttr(useTransferAmount);
+  }
+
   get allowedValues() {
     if (this.allowNegative) {
       return ['-'].concat(ALLOWED);
@@ -70,19 +80,40 @@ export class NumbersOnlyDirective {
   @HostListener('keydown', ['$event']) onKeyDown(event: KeyboardEvent) {
     if (this.enabled) {
       let allowed = !event.ctrlKey && !event.altKey;
+      const input = event.target as HTMLInputElement;
       if (allowed) {
-        if (this.allowDecimalSeparator && [',', '.'].includes(event.key)) {
-          // Manually insert the decimal separator
-          const input = event.target as HTMLInputElement;
-          const val = input.value;
-          const sep = this.format.decimalSeparator;
-          const selStart = input.selectionStart;
-          if (!val.includes(sep)) {
-            input.value = val.substring(0, selStart) + sep + val.substring(input.selectionEnd);
-            input.setSelectionRange(selStart + 1, selStart + 1, 'none');
-            input.dispatchEvent(new Event('input'));
+        if (this.allowDecimalSeparator) {
+          if ([',', '.'].includes(event.key)) {
+            // Manually insert the decimal separator
+            const val = input.value;
+            const sep = this.format.decimalSeparator;
+            const selStart = input.selectionStart;
+            if (!val.includes(sep) && this.decimalPlaces > 0) {
+              input.value = val.substring(0, selStart) + sep + val.substring(input.selectionEnd);
+              input.setSelectionRange(selStart + 1, selStart + 1, 'none');
+              input.dispatchEvent(new Event('input'));
+            }
+            allowed = false;
+          } else if (/\d/.test(event.key)) {
+            // Allow decimal digits only if there's not already more than the max integer digits
+            const val = input.value;
+            const sepIndex = val.indexOf(this.format.decimalSeparator);
+            const selStart = input.selectionStart;
+            const maxInts = this._useTransferAmount
+              ? this.format.maxTransferAmountIntegers
+              : this.format.maxTransactionAmountIntegers;
+            if (sepIndex < 0 || selStart < sepIndex) {
+              // The cursor is before the decimal separator - limit to the max integer digits
+              const intPart = sepIndex >= 0 ? val.substring(0, sepIndex) : val;
+              allowed = intPart.length < maxInts;
+            } else if (this.decimalPlaces >= 0) {
+              // The cursor is after the decimal separator - limit to the number of decimal places
+              const decPart = val.substring(sepIndex + 1);
+              allowed = decPart.length < this.decimalPlaces;
+            }
+          } else {
+            allowed = ALLOWED.includes(event.key);
           }
-          allowed = false;
         } else {
           allowed = this.allowedValues.includes(event.key);
         }

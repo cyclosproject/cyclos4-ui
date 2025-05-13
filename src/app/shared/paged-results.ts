@@ -10,6 +10,7 @@ export class PagedResults<T> {
   totalCount: number;
   pageCount: number;
   hasNext: boolean;
+  partialData: boolean;
 
   get hasResults(): boolean {
     return (this.results || []).length > 0;
@@ -34,6 +35,7 @@ export class PagedResults<T> {
     this.totalCount = this.results.length;
     this.pageCount = 1;
     this.hasNext = false;
+    this.partialData = false;
   }
 
   /**
@@ -57,6 +59,7 @@ export class PagedResults<T> {
     paged.totalCount = parseInt(response.headers.get('X-Total-Count'), 10) ?? paged.totalCount;
     paged.pageCount = parseInt(response.headers.get('X-Page-Count'), 10) ?? paged.pageCount;
     paged.hasNext = [true, 'true'].includes(response.headers.get('X-Has-Next-Page') ?? paged.hasNext);
+    paged.partialData = [true, 'true'].includes(response.headers.get('X-Partial-Data') ?? paged.partialData);
   }
 
   toHttpResponse(): HttpResponse<T[]> {
@@ -68,7 +71,8 @@ export class PagedResults<T> {
         'X-Page-Size': String(this.pageSize),
         'X-Total-Count': String(this.totalCount),
         'X-Page-Count': String(this.pageCount),
-        'X-Has-Next-Page': String(this.hasNext)
+        'X-Has-Next-Page': String(this.hasNext),
+        'X-Partial-Data': String(this.partialData)
       })
     });
   }

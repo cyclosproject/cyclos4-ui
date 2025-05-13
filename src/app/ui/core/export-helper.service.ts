@@ -1,6 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ExportFormat } from 'app/api/models';
+import { NotificationService } from 'app/core/notification.service';
 import { SvgIcon } from 'app/core/svg-icon';
 import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { Action, HeadingAction } from 'app/shared/action';
@@ -17,7 +18,7 @@ import { first } from 'rxjs/operators';
 export class ExportHelperService {
   static EXPORT_ACTION = 'exportAction';
 
-  constructor(@Inject(I18nInjectionToken) private i18n: I18n) {}
+  constructor(@Inject(I18nInjectionToken) private i18n: I18n, private notification: NotificationService) {}
 
   /**
    * Return a `HeadingAction` that can be used on pages to export data.
@@ -69,7 +70,7 @@ export class ExportHelperService {
         .subscribe(
           r => {
             setRootSpinnerVisible(false);
-            downloadResponse(r);
+            downloadResponse(r, this.notification, this.i18n);
           },
           () => setRootSpinnerVisible(false)
         );

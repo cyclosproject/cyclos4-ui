@@ -19,7 +19,9 @@
         [type]="isIos() ? 'text' : 'tel'"
         numbersOnly
         [allowNegative]="allowNegative"
+        [decimalPlaces]="scale"
         allowDecimalSeparator
+        [useTransferAmount]="useTransferAmount"
         autocomplete="off"
         [formControl]="internalControl"
         class="form-control"

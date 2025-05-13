@@ -112,7 +112,7 @@
           <div class="col-12 col-md-6">
             <user-field formControlName="user" [label]="i18n.general.user" [allowContacts]="false"> </user-field>
           </div>
-          <div class="col-12 col-md-6">
+          <div *ngIf="dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR" class="col-12 col-md-6">
             <user-field
               formControlName="broker"
               [label]="i18n.general.usersOfBroker"
@@ -120,7 +120,7 @@
               [allowContacts]="false">
             </user-field>
           </div>
-          <div class="col-12 col-md-6">
+          <div *ngIf="dataForFrontendHolder.role === RoleEnum.ADMINISTRATOR" class="col-12 col-md-6">
             <user-field
               formControlName="by"
               [label]="i18n.general.changedBy"

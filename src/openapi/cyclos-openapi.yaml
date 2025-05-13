@@ -68,9 +68,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.16.14/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.16.15/api-deprecation.html)
     for this version.
-  version: '4.16.14'
+  version: '4.16.15'
 servers:
   - url: 'http://root/api'
 
@@ -2429,9 +2429,18 @@ paths:
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -3893,9 +3902,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -5472,9 +5490,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -5683,9 +5710,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -5972,9 +6008,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -12002,9 +12047,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -13341,9 +13395,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -13484,9 +13547,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -18076,9 +18148,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -18835,6 +18916,16 @@ A note for dynamic custom fields: If a script is used to generate possible value
         '200':
           description: >-
             The summary of user balances matching the parameters
+          headers:
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -19203,9 +19294,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -20246,9 +20346,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -20892,9 +21001,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -21453,9 +21571,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -21717,6 +21844,16 @@ A note for dynamic custom fields: If a script is used to generate possible value
         '200':
           description: >-
             The summaries for each account
+          headers:
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -22625,9 +22762,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -23443,9 +23589,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -24318,9 +24473,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -24972,9 +25136,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -25353,42 +25526,13 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Transfer'
-        '401':
-          description: >-
-            Unauthorized access. Missing or invalid crendentials supplied for such
-            operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '403':
-          description: >-
-            Either permission was denied for such operation or an illegal action was attempted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ForbiddenError'
-        '404':
-          description: >-
-            An expected data was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-        '405':
-          description: >-
-            Some required service is unavailable
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnavailableError'
         '500':
           description: >-
-            Unexpected error
+            If a payment error has occurred
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/PaymentError'
 
   /installments/{key}/settle:
     parameters:
@@ -31647,6 +31791,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           deprecated: true
+          x-remove-version: 4.17
           description: "Use `transactionPeriod` instead"
           schema:
             type: array
@@ -31658,6 +31803,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           deprecated: true
+          x-remove-version: 4.17
           description: "Use `transactionUser` instead."
           schema:
             type: string
@@ -31665,6 +31811,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           deprecated: true
+          x-remove-version: 4.17
           description: "Use `transactionUserGroups` instead."
           schema:
             type: array
@@ -31754,9 +31901,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -31918,6 +32074,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           deprecated: true
+          x-remove-version: 4.17
           description: "Use `transactionPeriod` instead"
           schema:
             type: array
@@ -31929,6 +32086,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           deprecated: true
+          x-remove-version: 4.17
           description: "Use `transactionUser` instead."
           schema:
             type: string
@@ -31936,6 +32094,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           deprecated: true
+          x-remove-version: 4.17
           description: "Use `transactionUserGroups` instead."
           schema:
             type: array
@@ -32347,9 +32506,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -33227,6 +33395,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           deprecated: true
+          x-remove-version: 4.17
           description: "For redeemed, or starting with 4.15, voucher transactions, use `GET /voucher-transactions` instead.
 
 
@@ -33237,6 +33406,7 @@ The user who perform the transaction action. Only used when searching for redeem
           in: query
           required: false
           deprecated: true
+          x-remove-version: 4.17
           description: "For redeemed, or starting with 4.15, voucher transactions, use `GET /voucher-transactions` instead.
 
 
@@ -33251,6 +33421,7 @@ The minimum / maximum voucher transaction date. Only used when searching for red
           in: query
           required: false
           deprecated: true
+          x-remove-version: 4.17
           description: "For redeemed, or starting with 4.15, voucher transactions, use `GET /voucher-transactions` instead."
           schema:
             $ref: '#/components/schemas/VoucherRelationEnum'
@@ -33312,9 +33483,18 @@ The minimum / maximum voucher transaction date. Only used when searching for red
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -33434,6 +33614,7 @@ The minimum / maximum voucher transaction date. Only used when searching for red
           in: query
           required: false
           deprecated: true
+          x-remove-version: 4.17
           description: "For redeemed, or starting with 4.15, voucher transactions, use `GET /voucher-transactions` instead.
 
 
@@ -33444,6 +33625,7 @@ The user who perform the transaction action. Only used when searching for redeem
           in: query
           required: false
           deprecated: true
+          x-remove-version: 4.17
           description: "For redeemed, or starting with 4.15, voucher transactions, use `GET /voucher-transactions` instead.
 
 
@@ -33458,6 +33640,7 @@ The minimum / maximum voucher transaction date. Only used when searching for red
           in: query
           required: false
           deprecated: true
+          x-remove-version: 4.17
           description: "For redeemed, or starting with 4.15, voucher transactions, use `GET /voucher-transactions` instead."
           schema:
             $ref: '#/components/schemas/VoucherRelationEnum'
@@ -34786,9 +34969,18 @@ The minimum / maximum voucher transaction date. Only used when searching for red
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -35156,9 +35348,18 @@ The minimum / maximum voucher transaction date. Only used when searching for red
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -36642,9 +36843,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -37643,9 +37853,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -38125,9 +38344,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -39493,9 +39721,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -39732,9 +39969,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -39844,9 +40090,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -40029,9 +40284,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -40139,9 +40403,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -40478,9 +40751,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -40588,9 +40870,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -40840,9 +41131,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -40950,9 +41250,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -41220,9 +41529,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -41336,9 +41654,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -41588,9 +41915,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -41698,9 +42034,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -41953,9 +42298,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -42065,9 +42419,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -42249,9 +42612,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -42359,9 +42731,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -44992,9 +45373,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -45253,9 +45643,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -46143,9 +46542,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -46550,9 +46958,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -48617,9 +49034,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -51091,9 +51517,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -51606,9 +52041,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -52430,9 +52874,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -52643,9 +53096,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -53538,9 +54000,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: boolean
               description: >-
                 Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
+                whether total count is enabled or not. If the total count is not
+                returned, is the only way for clients to know whether more results are
+                available or not.
+            X-Partial-Data:
+              schema:
+                type: boolean
+              description: >-
+                When returned as `true` the data being returned is partial. This means
+                the underlying data store presented some kind of error, and only part of
+                the total data is returned. For example, for systems using OpenSearch,
+                there could have been a failure in some data shard, whereas other data
+                is returned.
           content:
             application/json:
               schema:
@@ -58257,6 +58728,8 @@ components:
         
         - `maxUsersAlmostReached`: Alert when a threshold of the maximum allowed users are registered
         
+        - `partialDataReturned`: Partial data returned to client due to backend error
+        
         - `smsSendingFailed`: An SMS couldn't be sent
       type: string
       enum:
@@ -58274,6 +58747,7 @@ components:
         - maxGlobalSmsReached
         - maxIncorrectLoginAttempts
         - maxUsersAlmostReached
+        - partialDataReturned
         - smsSendingFailed
 
     TempImageTargetEnum:
@@ -61036,7 +61510,11 @@ components:
                 Indicates if the advertisement was already marked as favorite for the user viewing it.
                 For administrators and guest this flag is always false.
               type: boolean
-
+            creationDate:
+              description: >-
+                The advertisement creation date.
+              type: string
+              format: date-time
 
     AdView:
       description: >-
@@ -62139,12 +62617,6 @@ components:
             The granted permissions for the authenticated user or guest
           allOf:
             - $ref: '#/components/schemas/Permissions'
-        sessionToken:
-          description: >-
-            A token that must be passed in on the Session-Token header on subsequent
-            requests instead of the login name and password. Only returned if using
-            a session authentication.
-          type: string
         trustedSession:
           description: >-
             Whether the current session is a trusted one or not. If trusted then no
@@ -66802,6 +67274,20 @@ components:
             The current time in the the user's time zone.
           type: string
           format: date-time
+        maxTransactionAmountIntegers:
+          description: >-
+            The maximum number of integer digits for transaction amounts.
+            This is the power of 10 that is used to multiply the amount before
+            the decimal separator (integer part).
+            The decimal part length will be defined by the currency.
+          type: integer
+        maxTransferAmountIntegers:
+          description: >-
+            The maximum number of integer digits for transfer amounts.
+            This is the power of 10 that is used to multiply the amount before
+            the decimal separator (integer part).
+            The decimal part length will be defined by the currency.
+          type: integer
         auth:
           description: >-
             The logged user authentication. Not returned for guests.
@@ -70562,6 +71048,11 @@ components:
         - $ref: '#/components/schemas/Auth'
         - type: object
           properties:
+            sessionToken:
+              description: >-
+                A token that must be passed in on the Session-Token header on subsequent
+                requests instead of the login name and password.
+              type: string
             identityProviderNotLinkReason:
               $ref: '#/components/schemas/IdentityProviderNotLinkReasonEnum'
             pinCreationToken:
@@ -80159,6 +80650,11 @@ components:
         - $ref: '#/components/schemas/BaseAuth'
         - type: object
           properties:
+            sessionToken:
+              description: >-
+                A token that must be passed in on the Session-Token header on subsequent
+                requests instead of the login name and password.
+              type: string
             configuration:
               description: >-
                 The current configuration

@@ -27,6 +27,11 @@
     *ngIf="tableTemplate && resultType === 'list'"
     (ready)="notifyReady()"
     [ngClass]="{ 'd-none': rendering$ | async }">
+    <notification
+      *ngIf="partialData()"
+      class="mt-ls"
+      type="warning"
+      [message]="i18n.general.partialData"></notification>
     <page-content #listContent [mode]="(layout.ltsm$ | async) ? 'tight' : 'table'" last>
       <ng-container *ngIf="layout.ltsm$ | async; else largeTable">
         <div class="mobile-results">
@@ -54,6 +59,11 @@
     *ngIf="tileTemplate && resultType === 'tiles'"
     (ready)="notifyReady()"
     [ngClass]="{ 'd-none': rendering$ | async }">
+    <notification
+      *ngIf="partialData()"
+      class="mt-ls"
+      type="warning"
+      [message]="i18n.general.partialData"></notification>
     <page-content #tilesContent mode="transparent" [last]="!showPaginator()">
       <div class="row tiled-results">
         <div
@@ -80,6 +90,11 @@
   </content-monitor>
 
   <content-monitor *ngIf="resultType === 'map'" (ready)="notifyReady()">
+    <notification
+      *ngIf="partialData()"
+      class="mt-ls"
+      type="warning"
+      [message]="i18n.general.partialData"></notification>
     <page-content mode="fullHeightTight" [ngClass]="{ 'd-none': rendering$ | async }" last>
       <div #mapContainer class="map-container"></div>
     </page-content>

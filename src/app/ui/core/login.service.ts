@@ -88,14 +88,18 @@ export class LoginService {
   private loggedOutConfirmation() {
     this.notification.close();
     this.confirmation.hide();
-    this.confirmation.confirm({
-      title: this.i18n.general.sessionExpired.title,
-      message: this.i18n.general.sessionExpired.message,
-      confirmLabel: this.i18n.general.sessionExpired.loginAgain,
-      callback: () => {
-        this.goToLoginPage(this.router.url);
-      }
-    });
+    if (!this.confirmation.confirmHandler) {
+      this.goToLoginPage(this.router.url);
+    } else {
+      this.confirmation.confirm({
+        title: this.i18n.general.sessionExpired.title,
+        message: this.i18n.general.sessionExpired.message,
+        confirmLabel: this.i18n.general.sessionExpired.loginAgain,
+        callback: () => {
+          this.goToLoginPage(this.router.url);
+        }
+      });
+    }
   }
 
   /**

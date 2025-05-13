@@ -186,7 +186,9 @@ export class BankingHelperService {
   scheduling(row: TransactionResult) {
     switch (row.kind) {
       case TransactionKind.SCHEDULED_PAYMENT:
-        if (row.installmentCount === 1) {
+        if (row.authorizationStatus === 'pending') {
+          return this.i18n.transaction.schedulingStatus.pendingScheduled;
+        } else if (row.installmentCount === 1) {
           const installment = row.firstInstallment || {};
           return this.i18n.transaction.schedulingStatus.scheduledToDate(installment.dueDate);
         } else {
@@ -202,15 +204,19 @@ export class BankingHelperService {
           }
         }
       case TransactionKind.RECURRING_PAYMENT:
-        switch (row.recurringPaymentStatus) {
-          case RecurringPaymentStatusEnum.CLOSED:
-            return this.i18n.transaction.schedulingStatus.closedRecurring;
-          case RecurringPaymentStatusEnum.CANCELED:
-            return this.i18n.transaction.schedulingStatus.canceledRecurring;
-          default:
-            return this.i18n.transaction.schedulingStatus.openRecurring(
-              this.format.formatAsDate(row.nextOccurrenceDate)
-            );
+        if (row.authorizationStatus === 'pending') {
+          return this.i18n.transaction.schedulingStatus.pendingRecurring;
+        } else {
+          switch (row.recurringPaymentStatus) {
+            case RecurringPaymentStatusEnum.CLOSED:
+              return this.i18n.transaction.schedulingStatus.closedRecurring;
+            case RecurringPaymentStatusEnum.CANCELED:
+              return this.i18n.transaction.schedulingStatus.canceledRecurring;
+            default:
+              return this.i18n.transaction.schedulingStatus.openRecurring(
+                this.format.formatAsDate(row.nextOccurrenceDate)
+              );
+          }
         }
       default:
         return this.i18n.transaction.schedulingStatus.direct;

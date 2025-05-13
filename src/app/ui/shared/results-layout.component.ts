@@ -129,6 +129,13 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent implements After
     }
   }
 
+  partialData(): boolean {
+    if (this.results == null || this.results instanceof Array) {
+      return false;
+    }
+    return this.results.partialData;
+  }
+
   linkUrl(row: R): string {
     let link = this.toLink ? this.toLink(row) : null;
     if (link instanceof Array) {

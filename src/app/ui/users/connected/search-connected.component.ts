@@ -41,7 +41,7 @@ export class SearchConnectedComponent
   }
 
   public canDisconnect(session: SessionResult) {
-    return this.login.auth.permissions.sessions.disconnect && this.login.auth.sessionToken !== session.sessionToken;
+    return this.login.auth.permissions.sessions.disconnect && !session.currentSession;
   }
 
   public get onClick() {

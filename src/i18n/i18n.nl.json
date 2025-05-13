@@ -1,5 +1,6 @@
 {
   "general": {
+    "pleaseSelect": "Selecteer een optie",
     "by": "Door",
     "changedBy": "Gewijzigd door",
     "type": "Type",
@@ -91,6 +92,8 @@
     "usersOfBroker": "Gebruikers van de makelaar",
     "administration": "Administratie",
     "maskHelp": "Deze maskers kunnen beperken welke tekens getypt kunnen worden, de grootte van de maskers beperken en de transformatie van de zaken uitvoeren door de volgende constructeurs te gebruiken.<br><br><ul><li><b>#, 0 of 9</b> - Een nummer.</li><li><b>een of A</b> - Een brief.</li><li><b>? of _</b> - Elk teken.</li><li><b>l of L</b> - een kleine letter.</li><li><b>u of U</b> - Een hoofdletter.</li><li><b>c of C</b> - Een hoofdletter.</li><li><b>\\\\, \\#, \\0, . .</b> - Deze letterlijke karakters. Vergeet niet dat '\\\\' bij het schrijven van een tekenreeks een enkele backslash betekent. Om een backslash op het masker te gebruiken, heb je 4 op de string nodig.</li></ul>",
+    "partialData": "De gepresenteerde gegevens zijn een gedeeltelijke weergave als gevolg van een tijdelijke serverfout. Probeer het later opnieuw voor een volledig resultaat.",
+    "partialDataDownload": "Het gedownloade bestand bevat een gedeeltelijke weergave van de gegevens als gevolg van een tijdelijke serverfout. Probeer het later opnieuw voor een volledig resultaat.",
     "sendMedium": {
       "email": "E-mail",
       "sms": "SMS",
@@ -827,6 +830,8 @@
     "scheduling.installments": "Maandelijkse termijnen",
     "scheduling.recurring": "Periodieke betalingen",
     "schedulingStatus": {
+      "pendingRecurring": "Periodieke betalingen",
+      "pendingScheduled": "Geagendeerde betaling",
       "direct": "Directe betaling",
       "scheduledToDate": "Gepland {date}",
       "openInstallments": "{count} termijnen, volgende op {dueDate}",
@@ -1520,6 +1525,7 @@
     "newEmailConfirmed": "Uw nieuwe e-mailadres is succesvol bevestigd",
     "passwordConfirmation": "{type} bevestiging",
     "securityQuestion.message": "In het geval dat u uw wachtwoord vergeten bent, is het antwoord op de beveiligingsvraag vereist om uw wachtwoord opnieuw in te stellen.<br>Het is mogelijk om de beveiligingsvraag later in te stellen, maar dan kunt u uw wachtwoord niet opnieuw instellen.",
+    "securityQuestion.required.message": "Als u uw wachtwoord vergeet, moet u de beveiligingsvraag correct beantwoorden om het wachtwoord te resetten.",
     "securityQuestion.empty": "Laat dit veld leeg",
     "captcha": "Verificatie",
     "contact": "Contact",
@@ -2445,6 +2451,7 @@
       "customTranslationsInvalidated": "Aangepaste vertalingen ongeldig gemaakt",
       "emailSendingFailed": "Een e-mail kon niet worden verzonden",
       "inconsistentDbSchema": "Het databaseschema bevat onverwachte wijzigingen",
+      "partialDataReturned": "Gedeeltelijke data geretourneerd aan de client door een backend fout",
       "maxBlockedUsersReached": "De maximaal geblokkeerde gebruikers van hetzelfde IP is bereikt",
       "maxGlobalSmsReached": "Het globale maximum van SMS berichten per maand is bereikt",
       "maxIncorrectLoginAttempts": "Maximum foutieve inlogpogingen voor niet geldige gebruiker",

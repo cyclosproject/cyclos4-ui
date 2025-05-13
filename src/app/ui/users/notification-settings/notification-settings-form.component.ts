@@ -672,6 +672,8 @@ export class NotificationSettingsFormComponent
         return this.i18n.systemAlert.type.emailSendingFailed;
       case SystemAlertTypeEnum.INCONSISTENT_DB_SCHEMA:
         return this.i18n.systemAlert.type.inconsistentDbSchema;
+      case SystemAlertTypeEnum.PARTIAL_DATA_RETURNED:
+        return this.i18n.systemAlert.type.partialDataReturned;
       case SystemAlertTypeEnum.MAX_BLOCKED_USERS_REACHED:
         return this.i18n.systemAlert.type.maxBlockedUsersReached;
       case SystemAlertTypeEnum.MAX_GLOBAL_SMS_REACHED:
@@ -680,7 +682,6 @@ export class NotificationSettingsFormComponent
         return this.i18n.systemAlert.type.maxIncorrectLoginAttempts;
       case SystemAlertTypeEnum.SMS_SENDING_FAILED:
         return this.i18n.systemAlert.type.smsSendingFailed;
-
       case UserAlertTypeEnum.CUSTOM:
         return this.i18n.userAlert.type.custom;
       case UserAlertTypeEnum.GIVEN_VERY_BAD_REFS:

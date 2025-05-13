@@ -76,6 +76,12 @@ export class FormatService {
   /** Time field in plural form. Eg. days */
   pluralTimeFieldNames: Map<TimeFieldEnum, string>;
 
+  /** The maximum number of integer digits allowed in transaction amounts */
+  maxTransactionAmountIntegers: number;
+
+  /** The maximum number of integer digits allowed in transfer amounts */
+  maxTransferAmountIntegers: number;
+
   private _dataForUi: DataForUi;
 
   /**
@@ -120,6 +126,8 @@ export class FormatService {
     this.timeFormat = (dataForUi.timeFormat || 'HH:mm').replace('a', 'A');
     this.groupingSeparator = dataForUi.groupingSeparator || ',';
     this.decimalSeparator = dataForUi.decimalSeparator || '.';
+    this.maxTransactionAmountIntegers = dataForUi.maxTransactionAmountIntegers || 9;
+    this.maxTransferAmountIntegers = dataForUi.maxTransferAmountIntegers || 12;
 
     this.longMonthNames = [
       this.i18n.general.month.long.jan,

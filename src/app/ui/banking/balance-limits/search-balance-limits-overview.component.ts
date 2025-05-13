@@ -47,6 +47,7 @@ export class SearchBalanceLimitsOverviewComponent
   >
   implements OnInit
 {
+  RoleEnum = RoleEnum;
   isCustomLimit$ = new BehaviorSubject<boolean>(false);
   isCustomUpperLimit$ = new BehaviorSubject<boolean>(false);
   currencies: Currency[] = [];

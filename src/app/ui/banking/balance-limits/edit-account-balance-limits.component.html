@@ -40,6 +40,7 @@
       <decimal-field
         [hidden]="(isDefaultUpperCreditLimit$ | async) || (isUnlimitedUpperCreditLimit$ | async)"
         formControlName="upperCreditLimit"
+        useTransferAmount
         [required]="!((isDefaultUpperCreditLimit$ | async) || (isUnlimitedUpperCreditLimit$ | async))"
         [label]="i18n.account.balanceLimits.positiveLimit"
         [scale]="data.account.currency.decimalDigits"

@@ -93,6 +93,14 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string> implem
     this._allowNegative = truthyAttr(show);
   }
 
+  private _useTransferAmount: boolean | string = false;
+  @Input() get useTransferAmount(): boolean | string {
+    return this._useTransferAmount;
+  }
+  set useTransferAmount(useTransferAmount: boolean | string) {
+    this._useTransferAmount = truthyAttr(useTransferAmount);
+  }
+
   @ViewChild('inputField') private inputRef: ElementRef;
 
   internalControl: FormControl;
@@ -211,8 +219,16 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string> implem
   }
 
   private setInternalControlValue() {
-    const value = this.value;
+    let value = this.value;
     if (!empty(value)) {
+      const parts = value.split('.');
+      const intPart = parts[0];
+      const maxInts = this.useTransferAmount
+        ? this.format.maxTransferAmountIntegers
+        : this.format.maxTransactionAmountIntegers;
+      if (intPart.length > maxInts) {
+        value = intPart.substring(0, maxInts) + (parts[1] ? '.' + parts[1] : '');
+      }
       let input = this.format.numberToFixed(value, this.scale);
       if (this.format.decimalSeparator !== '.') {
         input = input.replace('.', this.format.decimalSeparator);

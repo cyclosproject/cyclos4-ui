@@ -89,7 +89,11 @@ export class SearchDocumentsComponent
 
   download(document: Document) {
     if (document.file) {
-      this.addSub(this.documentsService.downloadDocumentFile$Response({ id: document.id }).subscribe(downloadResponse));
+      this.addSub(
+        this.documentsService
+          .downloadDocumentFile$Response({ id: document.id })
+          .subscribe(r => downloadResponse(r, this.notification, this.i18n))
+      );
     } else {
       this.notification.info(this.i18n.document.errorNoFile);
     }

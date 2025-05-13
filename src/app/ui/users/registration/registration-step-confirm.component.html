@@ -70,14 +70,17 @@
     <!-- The following are only for public registration -->
     <ng-container *ngIf="data.securityQuestions?.length > 0">
       <h2>{{ i18n.securityQuestion.question }}</h2>
-      <div class="mb-2">
-        {{ i18n.user.securityQuestionMessage }}
-      </div>
+      <div
+        class="mb-2"
+        [innerHTML]="
+          (data.requireSecurityQuestion ? i18n.user.securityQuestionRequiredMessage : i18n.user.securityQuestionMessage)
+            | trust
+        "></div>
       <single-selection-field
         formControlName="securityQuestion"
         [label]="i18n.securityQuestion.question"
         [required]="data.requireSecurityQuestion"
-        [emptyOption]="i18n.user.securityQuestionEmpty">
+        [emptyOption]="data.requireSecurityQuestion ? i18n.general.pleaseSelect : i18n.user.securityQuestionEmpty">
         <field-option *ngFor="let q of data.securityQuestions" [value]="q.internalName" [text]="q.name"> </field-option>
       </single-selection-field>
       <input-field

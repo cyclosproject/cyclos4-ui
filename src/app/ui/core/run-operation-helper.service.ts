@@ -1,5 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Params, Router } from '@angular/router';
 import {
   DeviceConfirmationTypeEnum,
@@ -18,6 +18,7 @@ import { ConfirmationService } from 'app/core/confirmation.service';
 import { DataForFrontendHolder } from 'app/core/data-for-frontend-holder';
 import { NextRequestState } from 'app/core/next-request-state';
 import { NotificationService } from 'app/core/notification.service';
+import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { downloadResponse, empty } from 'app/shared/helper';
@@ -61,7 +62,8 @@ export class RunOperationHelperService {
     private operationsService: OperationsService,
     private nextRequestState: NextRequestState,
     private confirmation: ConfirmationService,
-    private uiLayout: UiLayoutService
+    private uiLayout: UiLayoutService,
+    @Inject(I18nInjectionToken) private i18n: I18n
   ) {}
 
   /**
@@ -340,7 +342,7 @@ export class RunOperationHelperService {
    */
   handleResult(response: HttpResponse<any>): boolean {
     if (response.body instanceof Blob) {
-      downloadResponse(response);
+      downloadResponse(response, this.notification, this.i18n);
       return true;
     }
     // According to TypesRunDirectly, can only be notification, URL or external redirect

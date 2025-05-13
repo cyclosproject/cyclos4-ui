@@ -4,7 +4,9 @@ import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/for
 import { environment } from 'app/../environments/environment';
 import { Image } from 'app/api/models';
 import { LayoutService } from 'app/core/layout.service';
+import { NotificationService } from 'app/core/notification.service';
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, End, Home, PageDown, PageUp } from 'app/core/shortcut.service';
+import { I18n } from 'app/i18n/i18n';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import download from 'downloadjs';
 import { deburr, random, times } from 'lodash-es';
@@ -709,11 +711,14 @@ export function words(text: string, maxLength: number): string {
 /**
  * Downloads the content of a response, attempting to get the filename from the `Content-Disposition` header
  */
-export function downloadResponse(response: HttpResponse<Blob>) {
+export function downloadResponse(response: HttpResponse<Blob>, notificationService: NotificationService, i18n: I18n) {
   const matcher = (response.headers.get('Content-Disposition') || '').match(/filename=\"([^;]+)\"/);
   let filename = null;
   if (matcher) {
     filename = matcher[1];
+  }
+  if (response.headers.get('X-Partial-Data') === 'true') {
+    notificationService.warning(i18n.general.partialDataDownload);
   }
   const blob = response.body;
   download(blob, filename);

@@ -148,6 +148,7 @@
       *ngIf="form.get('payments').get(pt.id).get('perform').value"
       [label]="i18n.operatorGroup.performPaymentsMaxAmountPerDay"
       formControlName="maxAmountPerDay"
+      useTransferAmount
       [scale]="pt.currency.decimalDigits"
       [prefix]="pt.currency.prefix"
       [suffix]="pt.currency.suffix">

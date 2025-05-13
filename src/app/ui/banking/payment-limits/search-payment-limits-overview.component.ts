@@ -54,6 +54,7 @@ export class SearchPaymentLimitsOverviewComponent
   >
   implements OnInit
 {
+  RoleEnum = RoleEnum;
   isCustomPaymentLimit$ = new BehaviorSubject<boolean>(false);
   isCustomDailyLimit$ = new BehaviorSubject<boolean>(false);
   isCustomWeeklyLimit$ = new BehaviorSubject<boolean>(false);

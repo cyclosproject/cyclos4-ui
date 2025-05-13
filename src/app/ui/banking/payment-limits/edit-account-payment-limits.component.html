@@ -41,6 +41,7 @@
         formControlName="amountPerDayLimit"
         [required]="!(isDefaultDailyLimit$ | async)"
         [label]="i18n.account.paymentLimits.dailyLimit"
+        useTransferAmount
         [scale]="data.account.currency.decimalDigits"
         [prefix]="data.account.currency.prefix"
         [suffix]="data.account.currency.suffix">
@@ -60,6 +61,7 @@
         formControlName="amountPerWeekLimit"
         [required]="!(isDefaultWeeklyLimit$ | async)"
         [label]="i18n.account.paymentLimits.weeklyLimit"
+        useTransferAmount
         [scale]="data.account.currency.decimalDigits"
         [prefix]="data.account.currency.prefix"
         [suffix]="data.account.currency.suffix">
@@ -79,6 +81,7 @@
         formControlName="amountPerMonthLimit"
         [required]="!(isDefaultMonthlyLimit$ | async)"
         [label]="i18n.account.paymentLimits.monthlyLimit"
+        useTransferAmount
         [scale]="data.account.currency.decimalDigits"
         [prefix]="data.account.currency.prefix"
         [suffix]="data.account.currency.suffix">
@@ -98,6 +101,7 @@
         formControlName="amountPerYearLimit"
         [required]="!(isDefaultYearlyLimit$ | async)"
         [label]="i18n.account.paymentLimits.yearlyLimit"
+        useTransferAmount
         [scale]="data.account.currency.decimalDigits"
         [prefix]="data.account.currency.prefix"
         [suffix]="data.account.currency.suffix">

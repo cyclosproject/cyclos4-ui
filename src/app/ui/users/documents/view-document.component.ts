@@ -62,7 +62,11 @@ export class ViewDocumentComponent extends BasePageComponent<DocumentView> imple
   }
 
   download() {
-    this.addSub(this.documentsService.downloadDocumentFile$Response({ id: this.id }).subscribe(downloadResponse));
+    this.addSub(
+      this.documentsService
+        .downloadDocumentFile$Response({ id: this.id })
+        .subscribe(r => downloadResponse(r, this.notification, this.i18n))
+    );
   }
 
   navigateToEdit() {
