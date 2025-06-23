@@ -460,8 +460,11 @@ export class UserRegistrationComponent extends BasePageComponent<UserDataForNew>
     // Copy the fields in the confirmation form
     copyProperties(this.confirmForm.value, user);
 
-    // The inviteToken isn't stored in the form, but in a cookie
+    // The inviteToken isn't stored in the form, but in a cookie or localStorage
     user.inviteToken = Cookies.get('inviteToken');
+    if (empty(user.inviteToken)) {
+      user.inviteToken = localStorage.getItem('inviteToken');
+    }
 
     user.externalPaymentToken = this.route.snapshot.params.externalPaymentToken;
     user.userAgentId = this.login.getUserAgentId();

@@ -117,6 +117,10 @@
     </div>
   </page-content>
 
+  <page-content *ngIf="(runDirectly$ | async) && (executed$ | async) && !(result$ | async)">
+    <spinner></spinner>
+  </page-content>
+
   <page-content
     *ngIf="isContent && (result$ | async)"
     [heading]="result.title || data.name"

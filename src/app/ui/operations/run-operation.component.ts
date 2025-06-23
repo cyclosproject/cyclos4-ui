@@ -65,6 +65,7 @@ export class RunOperationComponent extends BasePageComponent<OperationDataForRun
   isContent: boolean;
   canRunDirectly = true;
   runDirectly$ = new BehaviorSubject(false);
+  executed$ = new BehaviorSubject(false);
   showCloseButton: boolean;
   reRun: boolean;
   startNewOperation: boolean;
@@ -371,6 +372,8 @@ export class RunOperationComponent extends BasePageComponent<OperationDataForRun
       exportFormat?: ExportFormat;
     }
   ) {
+    this.executed$.next(true);
+
     params = params || {};
     // Get the request from OperationHelperService
     const request = this.runOperationHelper.runRequest(data, {
@@ -450,6 +453,7 @@ export class RunOperationComponent extends BasePageComponent<OperationDataForRun
   reload() {
     this.clearCloseTimer();
     this.runOperationHelper.startNewOperation = true;
+    this.executed$.next(false);
     super.reload();
   }
 

@@ -384,11 +384,15 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
    * Removes a question with the given id
    */
   removeQuestion(id: string) {
-    this.addSub(
-      this.adQuestionService.deleteAdQuestion({ id }).subscribe(() => {
-        this.notification.snackBar(this.i18n.ad.questionRemoved);
-        this.reload();
-      })
-    );
+    this.confirmation.confirm({
+      message: this.i18n.general.removeItemConfirm,
+      callback: () =>
+        this.addSub(
+          this.adQuestionService.deleteAdQuestion({ id }).subscribe(() => {
+            this.notification.snackBar(this.i18n.ad.questionRemoved);
+            this.reload();
+          })
+        )
+    });
   }
 }

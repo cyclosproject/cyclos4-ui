@@ -1,4 +1,4 @@
-<ng-container *ngIf="data$ | async">
+<ng-container *ngIf="data$ | async; else loading">
   <ng-container *ngIf="page.layout === FrontendContentLayoutEnum.FULL">
     <div
       *ngIf="page.type === 'iframe'; else content"
@@ -16,4 +16,7 @@
 </ng-container>
 <ng-template #content>
   <div class="custom-content-container" [innerHTML]="page.content | trust"></div>
+</ng-template>
+<ng-template #loading>
+  <spinner></spinner>
 </ng-template>

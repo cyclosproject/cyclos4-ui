@@ -5,12 +5,14 @@ import { AuthService } from 'app/api/services/auth.service';
 import { empty } from 'app/shared/helper';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { ThemeKey } from './layout.service';
 
 export const Channel = 'Channel';
 export const Authorization = 'Authorization';
 export const SessionToken = 'Session-Token';
 export const SessionPrefix = 'Session-Prefix';
 export const PreferredLocale = 'Preferred-Locale';
+export const SelectedTheme = 'X-Theme';
 
 /**
  * Stores data which will be set in the next API request
@@ -69,6 +71,12 @@ export class NextRequestState {
 
     // This front-end is presented as main channel
     headers[Channel] = 'main';
+
+    // Pass the the selected theme
+    const theme = localStorage.getItem(ThemeKey);
+    if (!empty(theme)) {
+      headers[SelectedTheme] = theme;
+    }
 
     // Pass in the preferred locale
     const locale = localStorage.getItem(PreferredLocale);
@@ -153,7 +161,9 @@ export class NextRequestState {
    * @param password The user password
    */
   nextAsBasic(principal: string, password: string): void {
-    this.nextAuth = 'Basic ' + btoa(principal + ':' + password);
+    const encoder = new TextEncoder();
+    const data = encoder.encode(principal + ':' + password); // Encode to Uint8Array
+    this.nextAuth = 'Basic ' + btoa(String.fromCharCode.apply(null, data));
   }
 
   /**

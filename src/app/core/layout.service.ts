@@ -10,7 +10,7 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 
 export type Theme = 'light' | 'dark';
 export const Themes: Theme[] = ['light', 'dark'];
-const ThemeKey = 'theme';
+export const ThemeKey = 'theme';
 
 const ColorVariables = ['primary', 'theme-color', 'body-color', 'border-color', 'text-muted'];
 

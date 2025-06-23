@@ -14,6 +14,7 @@ import { I18n, I18nInjectionToken } from 'app/i18n/i18n';
 import { empty, urlJoin } from 'app/shared/helper';
 import moment from 'moment-mini-ts';
 import { DataForFrontendHolder } from './data-for-frontend-holder';
+import Decimal from 'decimal.js';
 
 export const ISO_DATE = 'YYYY-MM-DD';
 
@@ -126,8 +127,8 @@ export class FormatService {
     this.timeFormat = (dataForUi.timeFormat || 'HH:mm').replace('a', 'A');
     this.groupingSeparator = dataForUi.groupingSeparator || ',';
     this.decimalSeparator = dataForUi.decimalSeparator || '.';
-    this.maxTransactionAmountIntegers = dataForUi.maxTransactionAmountIntegers || 9;
-    this.maxTransferAmountIntegers = dataForUi.maxTransferAmountIntegers || 12;
+    this.maxTransactionAmountIntegers = dataForUi.maxTransactionAmountIntegers || 15;
+    this.maxTransferAmountIntegers = dataForUi.maxTransferAmountIntegers || 18;
 
     this.longMonthNames = [
       this.i18n.general.month.long.jan,
@@ -317,25 +318,37 @@ export class FormatService {
    * @param scale The number of decimal digits
    * @returns The string representing the number, or `undefined` if the input is invalid
    */
-  numberToFixed(input: number | string, scale: number): string {
+  numberToFixed(input: number | Decimal | string, scale: number): string {
     if (input == null) {
       return null;
     }
 
-    let num: number;
+    let num: Decimal;
     try {
-      num = Number(input);
+      num = input instanceof Decimal ? input : new Decimal(input);
     } catch (Error) {
       return undefined;
     }
 
-    return num.toFixed(scale == null ? 0 : scale);
+    const result = num.toDecimalPlaces(scale == null ? 0 : scale, Decimal.ROUND_HALF_UP).toFixed();
+    // Add right-padding if needed, as Decimal.js doesn't add trailing zeros
+    if (scale > 0) {
+      const parts = result.split('.');
+      if (parts.length === 1) {
+        // No decimal point, add one with trailing zeros
+        return result + '.' + '0'.repeat(scale);
+      } else if (parts.length === 2 && parts[1].length < scale) {
+        // Has decimal point but not enough trailing zeros
+        return result + '0'.repeat(scale - parts[1].length);
+      }
+    }
+    return result;
   }
 
   /**
    * Returns whether both numbers represent the same number, optionally with a given scale
    */
-  sameNumbers(n1: number | string, n2: number | string, scale = 9): boolean {
+  sameNumbers(n1: number | Decimal | string, n2: number | Decimal | string, scale = 9): boolean {
     return n1 != null && n2 != null && this.numberToFixed(n1, scale) === this.numberToFixed(n2, scale);
   }
 
@@ -343,26 +356,29 @@ export class FormatService {
    * Returns whether the given number (or string) represents a positive number
    * @param num The input number or string representation of a number
    */
-  isPositive(num: number | string): boolean {
+  isPositive(num: number | Decimal | string): boolean {
     if (num == null) {
       return false;
     }
     if (typeof num === 'number') {
       return num > 0;
     }
-    return !num.startsWith('-') && !this.isZero(num);
+    return new Decimal(num).isPositive();
   }
 
   /**
    * Returns the absolute numeric value as string, or null for null input
    * @param num The input number or string representation of a number
    */
-  abs(num: number | string): string {
+  abs(num: number | Decimal | string): string {
     if (num == null) {
       return null;
     }
     if (typeof num === 'number') {
       return Math.abs(num).toFixed();
+    }
+    if (num instanceof Decimal) {
+      return num.abs().toString();
     }
     return num.startsWith('-') ? num.substring(1) : num;
   }
@@ -371,14 +387,14 @@ export class FormatService {
    * Returns whether the given number (or string) represents a negative number
    * @param num The input number or string representation of a number
    */
-  isNegative(num: number | string): boolean {
+  isNegative(num: number | Decimal | string): boolean {
     if (num == null) {
       return false;
     }
     if (typeof num === 'number') {
       return num < 0;
     }
-    return num.startsWith('-');
+    return new Decimal(num).isNegative();
   }
 
   /**
@@ -389,7 +405,7 @@ export class FormatService {
     if (num == null) {
       return false;
     }
-    return this.numberToFixed(num, 6) === '0.000000';
+    return this.numberToFixed(num, 9) === '0.000000000';
   }
 
   /**
@@ -398,8 +414,11 @@ export class FormatService {
    * @param scale The number of decimal digits. When negative will just toString() the number
    * @param forceSign If true will output + for positive numbers
    */
-  formatAsNumber(num: number | string, scale: number, forceSign: boolean = false): string {
-    const fixed = scale < 0 ? String(num) : this.numberToFixed(num, scale);
+  formatAsNumber(num: number | Decimal | string, scale: number, forceSign: boolean = false): string {
+    if (scale < 0) {
+      return String(num);
+    }
+    const fixed = this.numberToFixed(num, scale);
     if (fixed == null) {
       return '';
     }
@@ -444,7 +463,7 @@ export class FormatService {
    * @param num The number to format
    * @param forceSign If true will output + for positive numbers
    */
-  formatAsCurrency(currency: Currency, num: number | string, forceSign: boolean = false): string {
+  formatAsCurrency(currency: Currency, num: number | Decimal | string, forceSign: boolean = false): string {
     if (num == null || num === '') {
       return '';
     }

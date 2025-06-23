@@ -3,7 +3,7 @@
   "displayName": "Cyclos 4 UI",
   "description": "The new Cyclos 4 frontend",
   "icon": "cyclos.png",
-  "version": "4.16.15",
+  "version": "4.16.16",
   "license": "MIT",
   "author": {
     "name": "Cyclos development team",
@@ -43,6 +43,7 @@
     "bootstrap": "~4.6.1",
     "configurable-date-input-polyfill": "^3.1.5",
     "core-js": "^3.21.1",
+    "decimal.js": "^10.5.0",
     "downloadjs": "^1.4.7",
     "hammerjs": "^2.0.8",
     "jquery": "^3.6.3",
