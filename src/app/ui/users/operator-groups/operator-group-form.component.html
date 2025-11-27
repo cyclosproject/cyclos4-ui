@@ -69,6 +69,18 @@
             [text]="op.name">
           </field-option>
         </multi-selection-field>
+        <multi-selection-field
+          *ngIf="data.wizards?.length > 0"
+          [label]="i18n.operatorGroup.runWizards"
+          formControlName="wizards">
+          <field-option
+            *ngFor="let wi of data.wizards"
+            [value]="ApiHelper.internalNameOrId(wi)"
+            [id]="wi.id"
+            [internalName]="wi.internalName"
+            [text]="wi.name">
+          </field-option>
+        </multi-selection-field>
         <boolean-field *ngIf="data.broker" [label]="i18n.operatorGroup.brokering" formControlName="brokering">
         </boolean-field>
 

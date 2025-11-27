@@ -409,6 +409,7 @@
     "oldPassword": "Contraseña actual",
     "newPassword": "Nueva contraseña",
     "passwordConfirmation": "Confirmación de contraseña",
+    "forceChange": "Forzar el cambio por el usuario",
     "error": {
       "indefinitelyBlocked": "Su contraseña ha sido deshabilitada por exceder el número máximo de intentos incorrectos permitidos. Por favor contacte a la administración.",
       "temporarilyBlocked": "Su contraseña ha sido temporalmente bloqueada por exceder el número máximo de intentos incorrectos permitidos.",
@@ -1699,6 +1700,7 @@
     "records": "Registros",
     "brokering": "Realiza operaciones de broker",
     "runOperations": "Ejecutar operaciones",
+    "runWizards": "Ejecutar asistentes",
     "created": "El grupo de operador fue creado",
     "saved": "El grupo de operador fue guardado",
     "tokens": {
@@ -2450,11 +2452,13 @@
       "custom": "Personalizado",
       "customTranslationsInvalidated": "Traducciones personalizadas invalidadas",
       "emailSendingFailed": "No se ha podido enviar un correo",
+      "inconsistentBalanceBelowLimit": "Cuenta de sistema con un saldo inconsistente por debajo del límite de crédito",
       "inconsistentDbSchema": "El esquema de base de datos contiene cambios inesperados",
       "partialDataReturned": "Datos parciales devueltos al cliente debido a un error del backend.",
       "maxBlockedUsersReached": "Se ha alcanzado el máximo de usuarios bloqueados desde la misma IP",
       "maxGlobalSmsReached": "Se ha alcanzado el máximo de mensajes SMS global mensual",
       "maxIncorrectLoginAttempts": "Máxima cantidad de intentos de acceso para usuario no válido",
+      "maxUsersAlmostReached": "El máximo de usuarios permitidos va a ser alcanzado.",
       "smsSendingFailed": "No se pudo enviar un SMS saliente"
     }
   },

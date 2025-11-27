@@ -164,6 +164,9 @@ export class OperatorGroupFormComponent
     if (!empty(data.operations)) {
       this.form.addControl('operations', new FormControl(group.operations));
     }
+    if (!empty(data.wizards)) {
+      this.form.addControl('wizards', new FormControl(group.wizards));
+    }
     if (!empty(data.recordTypes)) {
       this.form.addControl('records', new FormControl(group.records));
     }

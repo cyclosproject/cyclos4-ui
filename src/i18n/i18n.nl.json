@@ -409,6 +409,7 @@
     "oldPassword": "Oud wachtwoord",
     "newPassword": "Nieuw wachtwoord",
     "passwordConfirmation": "Bevestiging van het wachtwoord",
+    "forceChange": "Gebruiker dwingen om te wijzigen",
     "error": {
       "indefinitelyBlocked": "Uw wachtwoord is uitgeschakeld door de overschrijding van het maximale aantal pogingen. Gelieve contact op te nemen met de administratie.",
       "temporarilyBlocked": "Uw wachtwoord wordt tijdelijk geblokkeerd door overschrijding van het maximaal aantal pogingen. Probeer het later opnieuw.",
@@ -1699,6 +1700,7 @@
     "records": "Records",
     "brokering": "Makelaarsacties uitvoeren",
     "runOperations": "Operaties uitvoeren",
+    "runWizards": "Wizards uitvoeren",
     "created": "De operatorgroep is aangemaakt",
     "saved": "De operatorgroep is opgeslagen",
     "tokens": {
@@ -2450,11 +2452,13 @@
       "custom": "Aangepast",
       "customTranslationsInvalidated": "Aangepaste vertalingen ongeldig gemaakt",
       "emailSendingFailed": "Een e-mail kon niet worden verzonden",
+      "inconsistentBalanceBelowLimit": "Systeemrekening met een inconsistent saldo onder de kredietlimiet",
       "inconsistentDbSchema": "Het databaseschema bevat onverwachte wijzigingen",
       "partialDataReturned": "Gedeeltelijke data geretourneerd aan de client door een backend fout",
       "maxBlockedUsersReached": "De maximaal geblokkeerde gebruikers van hetzelfde IP is bereikt",
       "maxGlobalSmsReached": "Het globale maximum van SMS berichten per maand is bereikt",
       "maxIncorrectLoginAttempts": "Maximum foutieve inlogpogingen voor niet geldige gebruiker",
+      "maxUsersAlmostReached": "Maximaal aantal toegestane gebruikers per licentie bijna bereikt",
       "smsSendingFailed": "Een uitgaande SMS kon niet worden verzonden"
     }
   },

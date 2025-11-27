@@ -1,6 +1,7 @@
 openapi: '3.0.0'
 info:
-  title: 'Cyclos API'
+  title: >-
+    Cyclos API
   description: >-
     The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the
     api can be downloaded in both [YAML](http://root/api/openapi.yaml) or
@@ -68,9 +69,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.16.16/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.16.17/api-deprecation.html)
     for this version.
-  version: '4.16.16'
+  version: '4.16.17'
 servers:
   - url: 'http://root/api'
 
@@ -61841,12 +61842,20 @@ components:
               type: boolean
               description: >-
                 Is contact information, such as email, phones and custom values,
-                enabled for addresses of this user?
+                enabled for addresses of this user?.
+                Is always false when registering a user as member.
+                Not returned if this `AddressConfigurationForUserProfile` is in a
+                `DataForEditFullProfile`, instead use the
+                `ContactInfoConfigurationForUserProfile`.
             contactInfoFields:
               description: >-
                 The contact information custom fields for the address.
-                Only sent if `contactInfoEnabled` is true and there are available
-                custom fields.
+                Only sent if `contactInfoEnabled` is true, there are available
+                custom fields and is not a member registering a user.
+                Not returned if this `AddressConfigurationForUserProfile` is in a
+                `DataForEditFullProfile`, instead use the
+                `ContactInfoConfigurationForUserProfile`, taking into account that
+                contact information custom fields are never required for addresses.
               type: array
               items:
                 $ref: '#/components/schemas/CustomFieldDetailed'
@@ -61894,10 +61903,21 @@ components:
           items:
             $ref: '#/components/schemas/CustomFieldValue'
 
+    AddressContactInfoEditWithId:
+      description: >-
+        Common fields for editing the public contact information of an address
+      allOf:
+        - $ref: '#/components/schemas/AddressContactInfoManage'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: >-
+                The internal entity identifier
+
     AddressContactInfoManage:
       description: >-
-        Common fields for either creating or editing a public contact
-        information
+        Common fields for creating the public contact information of an address
       type: object
       x-implements: IContactInfo
       properties:
@@ -61981,6 +62001,9 @@ components:
                 no longer match, and an error will be raised. This is used to prevent
                 multiple users (or processes) from updating the same object and unwilingly
                 overridding the property values, leading to data loss.
+            contactInfo:
+              $ref: '#/components/schemas/AddressContactInfoEditWithId'
+
 
     AddressEditWithId:
       description: >-
@@ -62062,8 +62085,6 @@ components:
           type: boolean
           description: >-
             Whether this address should be hidden for other users
-        contactInfo:
-          $ref: '#/components/schemas/AddressContactInfoManage'
 
     AddressNew:
       description: >-
@@ -62071,6 +62092,10 @@ components:
         the user configuration.
       allOf:
         - $ref: '#/components/schemas/AddressManage'
+        - type: object
+          properties:
+            contactInfo:
+              $ref: '#/components/schemas/AddressContactInfoManage'
 
     AddressResult:
       description: >-
@@ -65100,7 +65125,8 @@ components:
 
     ContactInfoConfigurationForUserProfile:
       description: >-
-        User public contacts data sent when editing the full profile
+        User public contacts data sent when registering a new user or editing the
+        full profile
       type: object
       properties:
         contactInfo:
@@ -65110,7 +65136,9 @@ components:
             - $ref: '#/components/schemas/ContactInfoNew'
         customFields:
           description: >-
-            The custom fields for public contact informations
+            Custom fields for public contact information. When these fields are
+            included in addresses, they are not enforced as required; they are
+            treated as optional.
           type: array
           items:
             $ref: '#/components/schemas/CustomFieldDetailed'
@@ -73062,6 +73090,12 @@ components:
             $ref: '#/components/schemas/Operation'
           description: >-
             Custom operations that can be granted
+        wizards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Wizard'
+          description: >-
+            Custom wizards that can be granted
         recordTypes:
           type: array
           items:
@@ -73244,6 +73278,13 @@ components:
           description: >-
             Ids / internal names of custom operators that operators of this group
             will only be able to run
+        wizards:
+          type: array
+          items:
+            type: string
+          description: >-
+            Ids / internal names of custom wizards that operators of this group
+            will only be able to run
         records:
           type: array
           items:
@@ -73411,6 +73452,12 @@ components:
                 $ref: '#/components/schemas/Operation'
               description: >-
                 Custom operators that operators of this group will only be able to run
+            wizards:
+              type: array
+              items:
+                $ref: '#/components/schemas/Wizard'
+              description: >-
+                Custom wizards that operators of this group will only be able to run
             records:
               type: array
               items:
@@ -81019,7 +81066,11 @@ components:
             addressConfiguration:
               $ref: '#/components/schemas/AddressConfigurationForUserProfile'
             contactInfoConfiguration:
-              $ref: '#/components/schemas/ContactInfoConfigurationForUserProfile'
+              description: >-
+                User public contacts data. Is not returned when registering a user
+                as member.
+              allOf:
+                - $ref: '#/components/schemas/ContactInfoConfigurationForUserProfile'
             imageConfiguration:
               $ref: '#/components/schemas/ImageConfigurationForUserProfile'
             user:
@@ -81036,13 +81087,14 @@ components:
             contactInfoImage:
               description: >-
                 The image which is already assigned to the new user public contact
-                information.
+                information. Is not returned when registering a user as member.
               allOf:
                 - $ref: '#/components/schemas/Image'
             contactInfoBinaryValues:
               description: >-
                 Holds the current values for file / image custom fields of the new
                 user public contact information as lists of `StoredFile`s / `Image`s.
+                Is not returned when registering a user as member.
               allOf:
                 - $ref: '#/components/schemas/CustomFieldBinaryValues'
             agreements:

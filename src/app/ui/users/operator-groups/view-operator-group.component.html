@@ -28,7 +28,8 @@
           group.brokering ||
           group.enableToken ||
           group.records?.length > 0 ||
-          group.operations?.length > 0
+          group.operations?.length > 0 ||
+          group.wizards?.length > 0
         ">
         {{ (layout.ltsm$ | async) ? i18n.operatorGroup.mobileTitle.general : i18n.operatorGroup.title.general }}
       </h2>
@@ -61,6 +62,11 @@
       <label-value *ngIf="group.operations?.length > 0" [label]="i18n.operatorGroup.runOperations">
         <ng-container *ngFor="let op of group.operations; let last = last"
           >{{ op.name }}<ng-container *ngIf="!last">, </ng-container>
+        </ng-container>
+      </label-value>
+      <label-value *ngIf="group.wizards?.length > 0" [label]="i18n.operatorGroup.runWizards">
+        <ng-container *ngFor="let wi of group.wizards; let last = last"
+          >{{ wi.name }}<ng-container *ngIf="!last">, </ng-container>
         </ng-container>
       </label-value>
       <label-value *ngIf="group.brokering" [label]="i18n.operatorGroup.brokering" [value]="i18n.general.yes">

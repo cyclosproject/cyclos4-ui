@@ -274,7 +274,6 @@
       <ng-container *ngIf="defineSingleAddress.value">
         <address-form
           [addressForm]="singleAddress"
-          ignoreContactFields
           [configuration]="data.addressConfiguration"
           [managePrivacy]="data.addressConfiguration.managePrivacy"
           [binaryValues]="data.addressBinaryValues?.[data.addresses[0]?.id]">
@@ -442,7 +441,6 @@
         </input-field>
         <address-form
           [addressForm]="address['form']"
-          [ignoreContactFields]="addresses.length === 1"
           [configuration]="data.addressConfiguration"
           idPrefix="address_"
           [idSuffix]="address['idSuffix']"

@@ -409,6 +409,7 @@
     "oldPassword": "Senha antiga",
     "newPassword": "Nova senha",
     "passwordConfirmation": "Confirmação da senha",
+    "forceChange": "Forçar o usuário a alterar",
     "error": {
       "indefinitelyBlocked": "Sua senha foi desabilitada por exceder o número máximo de tentativas. Por favor, entre em contato com a administração.",
       "temporarilyBlocked": "Sua senha foi bloqueada temporariamente por exceder o número máximo de tentativas.",
@@ -1699,6 +1700,7 @@
     "records": "Registros",
     "brokering": "Realizar operações de corretagem",
     "runOperations": "Executar operações",
+    "runWizards": "Executar assistentes",
     "created": "O grupo de operadores foi criado",
     "saved": "O grupo de operadores foi salvo",
     "tokens": {
@@ -2450,11 +2452,13 @@
       "custom": "Personalizado",
       "customTranslationsInvalidated": "Traduções personalizadas invalidadas",
       "emailSendingFailed": "Não foi possível enviar um e-mail ",
+      "inconsistentBalanceBelowLimit": "Conta de sistema com um saldo inconsistente abaixo do limite de crédito",
       "inconsistentDbSchema": "O esquema da base de dados contém alterações inesperadas",
       "partialDataReturned": "Dados parciais retornados ao cliente devido a um erro de backend",
       "maxBlockedUsersReached": "O máximo de usuários bloqueados desde o mesmo IP foi alcançado.",
       "maxGlobalSmsReached": "O limite máximo global de mensagens SMS por mês foi alcançado",
       "maxIncorrectLoginAttempts": "Máximo de tentativas de acesso com nome de utilizador inválido",
+      "maxUsersAlmostReached": "Máximo de usuários permitidos pela licença está quase atingido",
       "smsSendingFailed": "Um SMS de saída não pôde ser enviado"
     }
   },

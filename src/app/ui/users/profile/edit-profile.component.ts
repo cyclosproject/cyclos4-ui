@@ -412,7 +412,9 @@ export class EditProfileComponent extends BasePageComponent<DataForEditFullProfi
     if (data.contactInfoConfiguration && data.contactInfoConfiguration.availability !== AvailabilityEnum.DISABLED) {
       // Public contacts are enabled. Copy the fields to the address configuration
       data.addressConfiguration.contactInfoEnabled = true;
-      data.addressConfiguration.contactInfoFields = data.contactInfoConfiguration.customFields;
+      const fields = [];
+      (data.contactInfoConfiguration.customFields ?? []).forEach(cf => fields.push({ ...cf, required: false }));
+      data.addressConfiguration.contactInfoFields = fields;
     }
 
     // Cache the field actions to avoid having to calculate every time

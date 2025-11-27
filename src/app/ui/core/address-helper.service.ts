@@ -41,6 +41,7 @@ export class AddressHelperService {
     const forProfile = config as AddressConfigurationForUserProfile;
     if (forProfile.contactInfoEnabled) {
       const contactInfo = this.formBuilder.group({
+        id: null,
         email: null,
         mobilePhone: null,
         landLinePhone: null,

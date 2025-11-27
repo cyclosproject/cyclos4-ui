@@ -56,7 +56,8 @@ export class ChangePasswordDialogComponent extends BaseComponent implements OnIn
 
     this.form = this.formBuilder.group({
       newPassword: [null, Validators.required],
-      newPasswordConfirmation: [null, Validators.compose([Validators.required, PASSWORDS_MATCH_VAL])]
+      newPasswordConfirmation: [null, Validators.compose([Validators.required, PASSWORDS_MATCH_VAL])],
+      forceChange: false
     });
 
     if (this.requireOld) {

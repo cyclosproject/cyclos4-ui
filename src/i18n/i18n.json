@@ -409,6 +409,7 @@
     "oldPassword": "Old password",
     "newPassword": "New password",
     "passwordConfirmation": "Password confirmation",
+    "forceChange": "Force user to change",
     "error": {
       "indefinitelyBlocked": "Your password has been disabled by exceeding the maximum tries. Please, contact the administration.",
       "temporarilyBlocked": "Your password is temporarily blocked by exceeding the maximum tries.",
@@ -1699,6 +1700,7 @@
     "records": "Records",
     "brokering": "Perform brokering operations",
     "runOperations": "Run operations",
+    "runWizards": "Run wizards",
     "created": "The operator group was created",
     "saved": "The operator group was saved",
     "tokens": {
@@ -2450,11 +2452,13 @@
       "custom": "Custom",
       "customTranslationsInvalidated": "Custom translations invalidated",
       "emailSendingFailed": "An e-mail couldn't be sent",
+	  "inconsistentBalanceBelowLimit": "System account with an inconsistent balance below the credit limit",
       "inconsistentDbSchema": "The database schema contains unexpected changes",
       "partialDataReturned": "Partial data returned to client due to backend error",
       "maxBlockedUsersReached": "The maximum blocked users from the same IP has been reached",
       "maxGlobalSmsReached": "The global maximum of SMS messages per month has been reached",
       "maxIncorrectLoginAttempts": "Max incorrect login attempts for invalid user",
+	  "maxUsersAlmostReached": "Maximum allowed users by license almost reached",
       "smsSendingFailed": "An outbound SMS couldn't be sent"
     }
   },

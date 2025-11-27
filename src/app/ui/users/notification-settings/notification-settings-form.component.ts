@@ -196,7 +196,7 @@ export class NotificationSettingsFormComponent
    * Returns if there are any settings to edit (notifications / message categories)
    */
   protected hasSettings(data: NotificationSettingsDataForEdit) {
-    return !empty(data.settings.notifications) && (this.adminSettings ? !empty(data.messageCategories) : true);
+    return !empty(data.settings.notifications) || (this.adminSettings && !empty(data.messageCategories));
   }
 
   /**
@@ -623,12 +623,12 @@ export class NotificationSettingsFormComponent
       case NotificationTypeEnum.SYSTEM_ALERT:
         alerts = Object.values(SystemAlertTypeEnum) as SystemAlertTypeEnum[];
         values = data.settings.systemAlerts;
-        property = 'systemAlert';
+        property = 'systemAlerts';
         break;
       case NotificationTypeEnum.USER_ALERT:
         alerts = Object.values(UserAlertTypeEnum) as UserAlertTypeEnum[];
         values = data.settings.userAlerts;
-        property = 'userAlert';
+        property = 'userAlerts';
         break;
     }
 
@@ -672,6 +672,8 @@ export class NotificationSettingsFormComponent
         return this.i18n.systemAlert.type.emailSendingFailed;
       case SystemAlertTypeEnum.INCONSISTENT_DB_SCHEMA:
         return this.i18n.systemAlert.type.inconsistentDbSchema;
+	  case SystemAlertTypeEnum.INCONSISTENT_BALANCE_BELOW_LIMIT:
+		return this.i18n.systemAlert.type.inconsistentBalanceBelowLimit;
       case SystemAlertTypeEnum.PARTIAL_DATA_RETURNED:
         return this.i18n.systemAlert.type.partialDataReturned;
       case SystemAlertTypeEnum.MAX_BLOCKED_USERS_REACHED:
@@ -680,6 +682,8 @@ export class NotificationSettingsFormComponent
         return this.i18n.systemAlert.type.maxGlobalSmsReached;
       case SystemAlertTypeEnum.MAX_INCORRECT_LOGIN_ATTEMPTS:
         return this.i18n.systemAlert.type.maxIncorrectLoginAttempts;
+	  case SystemAlertTypeEnum.MAX_USERS_ALMOST_REACHED:
+		return this.i18n.systemAlert.type.maxUsersAlmostReached;
       case SystemAlertTypeEnum.SMS_SENDING_FAILED:
         return this.i18n.systemAlert.type.smsSendingFailed;
       case UserAlertTypeEnum.CUSTOM:

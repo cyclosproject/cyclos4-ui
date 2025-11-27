@@ -235,7 +235,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
       this.notification.error(this.i18n.transaction.noTypes);
     }
     // Filter the payment types from the selected account type
-    const paymentTypes = allPaymentTypes.filter(tt => tt.from.id === value.account);
+    const paymentTypes = allPaymentTypes.filter(tt => (this.pos ? tt.to.id : tt.from.id) === value.account);
     let type: string = this.form.value.type;
     let error: any = null;
     if (empty(paymentTypes)) {

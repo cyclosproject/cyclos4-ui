@@ -68,7 +68,7 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
       this.addSub(
         this.inputFieldControl.valueChanges
           .pipe(
-            filter(text => !blank(text)),
+            filter(text => !blank(text) && !this.selection$.value),
             debounceTime(ApiHelper.DEBOUNCE_TIME),
             distinctUntilChanged(),
             switchMap(text => this.query(text))
