@@ -142,12 +142,14 @@ export class PasswordInputComponent extends BaseControlComponent<string> impleme
       }
     }
 
+    const passwordType = input.passwordType || input;
+
     if (this.disableAutocomplete) {
       const mockInput = document.createElement('input');
       mockInput.style.setProperty('-webkit-text-security', 'disc');
       const supportTextSecurity = mockInput.style.getPropertyValue('-webkit-text-security');
       if (!!supportTextSecurity || this.hasTextSecurityDisc()) {
-        this.passwordFieldType = input.passwordType.onlyNumeric ? 'tel' : 'text';
+        this.passwordFieldType = passwordType.onlyNumeric ? 'tel' : 'text';
       } else {
         this.passwordFieldType = 'password';
       }
@@ -156,7 +158,7 @@ export class PasswordInputComponent extends BaseControlComponent<string> impleme
     }
 
     // Initialize the virtual keyboard fields
-    this.virtualKeyboard = input.passwordType.inputMethod === PasswordInputMethodEnum.VIRTUAL_KEYBOARD;
+    this.virtualKeyboard = passwordType.inputMethod === PasswordInputMethodEnum.VIRTUAL_KEYBOARD;
     if (this.virtualKeyboard) {
       this.enteredVKPassword = [];
       this.updateVKButtons();
@@ -164,7 +166,7 @@ export class PasswordInputComponent extends BaseControlComponent<string> impleme
 
     // Ensure we have a proper placeholder
     if (this.placeholder == null) {
-      this.placeholder = this.passwordInput.name;
+      this.placeholder = passwordType.name;
     }
   }
 
@@ -229,7 +231,7 @@ export class PasswordInputComponent extends BaseControlComponent<string> impleme
           this.notificationService.snackBar(
             this.i18n.password.otp.sent(
               this.pos
-                ? this.paymentPreview.fromOperator?.display ?? this.paymentPreview.fromAccount.user.display
+                ? (this.paymentPreview.fromOperator?.display ?? this.paymentPreview.fromAccount.user.display)
                 : (res || []).join(', ')
             )
           );

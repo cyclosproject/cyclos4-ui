@@ -2518,7 +2518,8 @@
         "unblocked": "The token was unblocked"
       },
       "message": {
-        "cancel": "You are about to cancel the token. Be aware that this is a permanent action. Are you sure you want to change the token status to canceled?"
+        "cancel": "You are about to cancel the token. Be aware that this is a permanent action. Are you sure you want to change the token status to canceled?",
+        "activate": "Please enter the token code you received from the administration below."
       }
     },
     "status": {

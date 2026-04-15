@@ -371,7 +371,7 @@
         "notActive": {
           "password": "Om uw aanmelding te voltooien, heeft u een {password}nodig, maar u heeft het niet actief. Activeer het en ga verder.",
           "totp": "Om uw aanmelding te voltooien, heeft u uw authenticator app nodig, maar deze is niet actief. Activeer deze en ga verder.",
-          "multiple": "Om je aanmelding te voltooien, heb je een {password} of je authenticatie app nodig, maar u heeft geen van beide actief. Activeer één van hen en ga verder."
+          "multiple": "Om uw aanmelding te voltooien, heeft u een {password} of uw authenticatie app nodig, maar u heeft geen van beide actief. Activeer één van hen en ga verder."
         }
       }
     }
@@ -383,7 +383,7 @@
     "confirmation": {
       "device": "Scan deze QR-code in met uw mobiele telefoon, om te bevestigen.",
       "password": "Om te bevestigen, voer uw {passwordType} in.",
-      "totp": "Geef om te bevestigen een code op die is gegenereerd door je authenticator app.",
+      "totp": "Geef om te bevestigen een code op die is gegenereerd door uw authenticatie-app.",
       "notPossible": "Door een configuratiefout is het niet mogelijk om deze bewerking te bevestigen. Neem contact op met de administratie.",
       "notActive": {
         "multiple": "Om te bevestigen heeft u een van de volgende gegevens nodig, maar die heeft u niet: {credentials}.",
@@ -400,7 +400,7 @@
       "sendToPhone": "Stuur naar telefoon {phone}",
       "noMediums": "Geen mogelijk medium om verificatiecode te ontvangen",
       "send": "Stuur verificatiecode",
-      "countdownLabel": "* Je kunt de e-mail / sms opnieuw verzenden over {seconds} seconden.",
+      "countdownLabel": "* U kunt de e-mail / sms opnieuw verzenden over {seconds} seconden.",
       "receiveBy.sent": "{medium} verzonden",
       "sent": "Het wachtwoord is verstuurd naar {dest}",
       "sentToEmail": "E-mail verzonden naar {mail}",
@@ -524,7 +524,7 @@
       "neverCreated.managers": "De authenticator app is niet geconfigureerd voor deze gebruiker.",
       "neverCreated.message": "Schakel een authenticatie-app in zodat u de bewerkingen kunt bevestigen: <ul><li>Download en installeer eerst een RFC 6238 compatibele authenticator app (zoals Google Authenticator of Microsoft Authenticator) uit uw App Store (Google Play of App Store);</li><li>Stuur een verificatiecode naar je e-mail / telefoon (via SMS), zodat we uw identiteit kunnen verifiëren;</li><li>Typ de verificatiecode in het veld hieronder en druk op 'Verzenden';</li><li>Een QR-code zal worden weergegeven;</li><li>Open de authenticator app op uw telefoon en scan de QR-code. Er wordt een numerieke reeks weergegeven (en elke 30 seconden vernieuwd);</li><li>Type die numerieke reeks in en bevestig;</li><li>Uw authenticator app wordt geconfigureerd en zal de numerieke sequenties genereren die u in het vervolg nodig hebt om verdere handelingen te bevestigen.</li></ul>",
       "neverCreated.message.mobile": "Schakel een authenticator app in zodat u de bewerkingen kunt bevestigen: <ul><li>Download en installeer eerst een RFC 6238 compatibele authenticator app (zoals Google Authenticator of Microsoft Authenticator) uit uw App Store (Google Play of App Store);</li><li>Stuur een verificatiecode naar je e-mail / telefoon (via SMS), zodat we uw identiteit kunnen verifiëren;</li><li>Typ de verificatiecode in het veld hieronder en druk op 'Verzenden';</li><li>Een knop om de authenticator app te openen wordt weergegeven. Klik erop en voeg je account toe aan de app.</li><li>Er wordt een numerieke reeks weergegeven (en elke 30 seconden vernieuwd);</li><li>Type die numerieke reeks in en bevestig;</li><li>Uw authenticator app wordt geconfigureerd en zal de numerieke sequenties genereren die u in het vervolg nodig hebt om verdere handelingen te bevestigen.</li></ul>",
-      "activated": "Je authenticator app is geconfigureerd. Je kunt deze nu gebruiken om de bewerking te bevestigen.",
+      "activated": "Uw authenticator app is geconfigureerd. Je kunt deze nu gebruiken om de bewerking te bevestigen.",
       "firstTotp": "Numerieke reeks gegenereerd door de authenticator app",
       "scanQr": "Scan nu de QR-code met de authenticator app en typ de numerieke reeks in.",
       "openApp": "Open de authenticator app",
@@ -1020,7 +1020,7 @@
     "chargebackTransfer.message": "Dit zal het bedrag van deze overdracht aan de betaler",
     "chargebackTransfer.done": "Deze overdracht was terug in rekening gebracht",
     "processInstallment": "Verwerk deze termijn",
-    "processInstallment.message": "Wil je termijn {number} nu verwerken?",
+    "processInstallment.message": "Wilt u termijn {number} nu verwerken?",
     "processInstallment.done": "De termijnbetaling is verwerkt",
     "settleInstallment": "Termijnbetaling schikken",
     "settleInstallment.message": "Weet u zeker dat u de termijnbetaling met nummer {number} wilt schikken?",
@@ -1718,8 +1718,8 @@
       "active": "Weet u zeker dat u {user} wilt activeren?",
       "blocked": "Weet u zeker dat u de toegang tot {user} wilt blokkeren?",
       "disabled": "Weet u zeker dat u {user} wilt uitschakelen?",
-      "purged": "Weet je zeker dat je {user} permanent wilt verwijderen en alle privé data wilt verwijderen?\nDeze actie is onomkeerbaar!",
-      "removed": "Weet je zeker dat je {user}permanent wilt verwijderen?\nDeze actie is onomkeerbaar!"
+      "purged": "Weet u zeker dat u {user} en alle privé data permanent wilt verwijderen?\nDeze actie is onomkeerbaar!",
+      "removed": "Weet u zeker dat u {user} en alle privé data permanent wilt verwijderen?\nDeze actie is onomkeerbaar!"
     },
     "done": {
       "active": "{user} is geactiveerd",
@@ -1927,7 +1927,7 @@
     "itemNotAvailable": "Niet beschikbaar",
     "itemsNoLongerAvailable": "- niet langer beschikbaar.<br>",
     "itemsOutOfStock": "- niet op voorraad.<br>",
-    "lowBalance": "- overschrijdt je saldo van {currency}.",
+    "lowBalance": "- overschrijdt uw saldo van {currency}.",
     "minPrice": "Minimale prijs",
     "maxPrice": "Max. prijs",
     "minDeliveryTime": "Minimale levertijd",
@@ -2313,7 +2313,7 @@
     "marketplaceAsBuyer": "Marktplaats als koper",
     "marketplaceAsSeller": "Marktplaats als verkoper",
     "feedbackAndReferences": "Feedback en referenties",
-    "smsCount": "Je hebt deze maand {count} van de {total} gratis SMS-berichten gebruikt.",
+    "smsCount": "U heeft deze maand {count} van de {total} gratis SMS-berichten gebruikt.",
     "paymentNotifications.above": "Alleen meldingen over betalingen boven",
     "paymentNotifications.below": "Alleen meldingen over betalingen onder",
     "saved": "De instellingen voor meldingen zijn opgeslagen",
@@ -2356,7 +2356,7 @@
       "connect": "Verbinden",
       "connect.done": "U kunt nu inloggen als {name} met behulp van {provider}",
       "disconnect": "Verbreken",
-      "disconnect.confirm": "Dit zal de functionaliteit 'Doorgaan met {provider}' uitschakelen. Weet je het zeker?",
+      "disconnect.confirm": "Dit zal de functionaliteit 'Doorgaan met {provider}' uitschakelen. Weet u het zeker?",
       "disconnect.done": "De login met {provider} is uitgeschakeld"
     },
     "connectedOn": "Verbonden op {date}",
@@ -2379,8 +2379,8 @@
       "sentToEmail": "De verificatiecode is verzonden naar het e-mailadres <b>{email}</b>.<br>Controleer uw mailbox en kopieer de ontvangen code naar het veld hieronder.",
       "sentToPhone": "De verificatiecode is verzonden via SMS naar <b>{phone}</b>.<br>Controleer uw mobiele telefoon en kopieer de ontvangen code naar het veld hieronder.",
       "new": {
-        "seconds": "Je kunt een nieuwe code aanvragen over {seconds} seconden",
-        "request": "Heb je geen verificatiecode ontvangen? Vraag een nieuwe aan."
+        "seconds": "U kunt een nieuwe code aanvragen over {seconds} seconden",
+        "request": "Heeft u geen verificatiecode ontvangen? Vraag een nieuwe aan."
       }
     }
   },
@@ -2518,7 +2518,8 @@
         "unblocked": "Het token is gedeblokkeerd"
       },
       "message": {
-        "cancel": "U gaat het token annuleren. Wees ervan bewust dat dit een permanente actie is. Weet u zeker dat u het token wilt annuleren?"
+        "cancel": "U gaat het token annuleren. Wees ervan bewust dat dit een permanente actie is. Weet u zeker dat u het token wilt annuleren?",
+        "activate": "Voer de token code in die u van de onderstaande administratie hebt ontvangen."
       }
     },
     "status": {
@@ -2786,7 +2787,7 @@
     },
     "privacyPolicy": "Privacybeleid",
     "termsOfService": "Gebruiksvoorwaarden",
-    "title": "Autoriseer {client} om toegang te krijgen tot je {app} account?",
+    "title": "Autoriseer {client} om toegang te krijgen tot uw {app} account?",
     "titleOpenidOnly": "{client} toestaan om uw {app} identiteit te valideren?",
     "dynamicDomain": "Zorg ervoor dat <b>{domain}</b> de website is die u autoriseert",
     "permission": {
@@ -2798,8 +2799,8 @@
     "title": "E-mail uitschrijven",
     "message.notification": "{name}, u staat op het punt het e-mailadres af te melden <b>{email}</b> van e-mails gegenereerd door meldingen.",
     "message.message": "{name}, u staat op het punt om het e-mailadres <b>{email}</b> af te melden van e-mails gegenereerd van interne berichten.",
-    "message.mailing": "{name}, je staat op het punt om je e-mailadres af te melden <b>{email}</b> van mailinglijsten.",
-    "message.settings": "Je kunt hier je <a href=\"{url}\">meldingsinstellingen beheren</a>.",
+    "message.mailing": "{name}, u staat op het punt om uw e-mailadres af te melden <b>{email}</b> van mailinglijsten.",
+    "message.settings": "U kunt hier uw <a href=\"{url}\">meldingsinstellingen beheren</a>.",
     "message.confirm": "Weet u zeker dat u wilt doorgaan?",
     "message.yes": "Ja, afmelden",
     "message.no": "Nee, houd me geabonneerd",

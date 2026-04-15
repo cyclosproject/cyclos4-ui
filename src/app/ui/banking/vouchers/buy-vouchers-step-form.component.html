@@ -5,13 +5,13 @@
     {{ data.account.type.name }}
   </label-value>
   <label-value [label]="i18n.account.availableBalance" kind="fieldView">
-    {{ data.account.status.availableBalance | currency : currency }}
+    {{ data.account.status.availableBalance | currency: currency }}
   </label-value>
   <label-value *ngIf="data.minimumTimeToRedeem" kind="fieldView" [label]="i18n.voucher.buy.minTimeToRedeem">
     {{ i18n.voucher.buy.minTimeToRedeemAfterBuy(format.formatTimeInterval(data.minimumTimeToRedeem)) }}
   </label-value>
   <label-value *ngIf="data.expirationDate" kind="fieldView" [label]="i18n.general.expirationDate">
-    {{ data.expirationDate | date }}
+    {{ data.expirationDate | dateTime }}
   </label-value>
   <label-value *ngIf="data.redeemOnWeekDays" kind="fieldView" [label]="i18n.voucher.redeem.onDays">
     {{ format.formatWeekDays(data.redeemOnWeekDays) || i18n.voucher.redeem.onDaysAny }}
@@ -25,7 +25,7 @@
     [label]="i18n.voucher.numberOfVouchers">
   </input-field>
   <label-value *ngIf="fixedAmount; else regularAmount" kind="fieldView" [label]="countLabel$ | async">
-    {{ fixedAmount | currency : currency }}
+    {{ fixedAmount | currency: currency }}
   </label-value>
   <ng-template #regularAmount>
     <label-value kind="field" required [label]="countLabel$ | async" fieldSize="medium">
@@ -43,8 +43,8 @@
       [label]="i18n.voucher.buy.amountRange"
       [value]="
         format.formatRange({
-          min: data.amountRange.min | currency : currency,
-          max: data.amountRange.max | currency : currency
+          min: data.amountRange.min | currency: currency,
+          max: data.amountRange.max | currency: currency
         })
       ">
     </label-value>
@@ -52,13 +52,13 @@
       kind="fieldView"
       *ngIf="data.amountRange?.min && !data.amountRange?.max"
       [label]="i18n.voucher.buy.minimumAmount"
-      [value]="data.amountRange.min | currency : currency">
+      [value]="data.amountRange.min | currency: currency">
     </label-value>
     <label-value
       kind="fieldView"
       *ngIf="!data.amountRange?.min && data.amountRange?.max"
       [label]="i18n.voucher.buy.maximumAmount"
-      [value]="data.amountRange.max | currency : currency">
+      [value]="data.amountRange.max | currency: currency">
     </label-value>
   </ng-template>
   <radio-group-field

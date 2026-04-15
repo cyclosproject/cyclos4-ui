@@ -9,7 +9,15 @@ import {
   SkipSelf,
   ViewChild
 } from '@angular/core';
-import { ControlContainer, FormArray, FormBuilder, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from '@angular/forms';
+import {
+  ControlContainer,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  Validator
+} from '@angular/forms';
 import {
   CustomFieldDetailed,
   CustomFieldSizeEnum,
@@ -78,6 +86,7 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
   fieldOptions: FieldOption[];
 
   range: FormArray;
+  dynamicFieldControl: FormControl;
 
   @ViewChild('inputField') inputField: InputFieldComponent;
   @ViewChild('multiSelectionField') multiSelectionField: MultiSelectionFieldComponent;
@@ -118,15 +127,38 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
         })
       );
     }
+
+    if (
+      (this.type === CustomFieldTypeEnum.DYNAMIC_SELECTION ||
+        this.type === CustomFieldTypeEnum.DYNAMIC_MULTI_SELECTION) &&
+      !this.field.hasValuesList
+    ) {
+      this.dynamicFieldControl = this.formBuilder.control('');
+      this.addSub(
+        this.dynamicFieldControl.valueChanges.subscribe((val: string) => {
+          this.setValue(val.startsWith("'") ? val : `'${val}`);
+        })
+      );
+    }
   }
 
   preprocessValue(value: any): string {
     if (value == null) {
       return '';
     }
-    if (this.type === CustomFieldTypeEnum.DYNAMIC_SELECTION && typeof value === 'string') {
+    if (
+      (this.type === CustomFieldTypeEnum.DYNAMIC_SELECTION ||
+        this.type === CustomFieldTypeEnum.DYNAMIC_MULTI_SELECTION) &&
+      typeof value === 'string'
+    ) {
       // The dynamic can have a separator between value and text. Keep only the value
-      return value.split(ApiHelper.VALUE_SEPARATOR)[0];
+      const dynaValue = value.split(ApiHelper.VALUE_SEPARATOR)[0];
+      if (this.dynamicFieldControl) {
+        this.dynamicFieldControl.setValue(dynaValue.startsWith("'") ? dynaValue.substring(1) : dynaValue, {
+          emitEvent: false
+        });
+      }
+      return dynaValue;
     }
 
     if (RANGE.includes(this.type)) {

@@ -259,6 +259,19 @@ export class FieldHelperService {
       asyncValProvider?: (field: CustomFieldDetailed) => AsyncValidatorFn;
     }
   ): FormGroup {
+    if (options && options.currentValues) {
+      customFields.forEach(field => {
+        if (field.hasValuesList && (options.currentValues[field.internalName]?.length || 0) > 0) {
+          const fieldOptions = this.fieldOptions(field);
+          let values = options.currentValues[field.internalName].split(ApiHelper.VALUE_SEPARATOR);
+          values = values.filter(val =>
+            fieldOptions.find(pv => pv.value === val || pv.internalName === val || pv.id === val)
+          );
+          options.currentValues[field.internalName] = values.join(ApiHelper.VALUE_SEPARATOR);
+        }
+      });
+    }
+
     const controls = this.customValuesFormControlMap(customFields, options);
     const group = this.formBuilder.group({});
     for (const [name, control] of controls) {

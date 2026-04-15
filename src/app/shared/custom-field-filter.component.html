@@ -25,7 +25,7 @@
     [labelPosition]="labelPosition"
     [fieldSize]="fieldSize"
     [required]="required"
-    [formControl]="formControl"
+    [formControl]="dynamicFieldControl ?? formControl"
     [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'"
     [mask]="field.pattern"></input-field>
 

@@ -750,7 +750,7 @@ export class EditProfileComponent extends BasePageComponent<DataForEditFullProfi
   }
 
   get canCreateContactInfo(): boolean {
-    if (!this.data.contactInfoConfiguration.edit || this.contactInfoAvailability !== 'multiple') {
+    if (!this.data.contactInfoConfiguration.edit || this.contactInfoAvailability === 'disabled') {
       return false;
     }
     const max = this.data.contactInfoConfiguration.maxContactInfos;

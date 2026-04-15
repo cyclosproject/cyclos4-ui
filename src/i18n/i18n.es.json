@@ -2518,7 +2518,8 @@
         "unblocked": "El token fue desbloqueado"
       },
       "message": {
-        "cancel": "Está a punto de cancelar el token. Considere que esta es una acción permanente. Está seguro de que desea cancelar el token?"
+        "cancel": "Está a punto de cancelar el token. Considere que esta es una acción permanente. Está seguro de que desea cancelar el token?",
+        "activate": "Por favor, ingrese en la parte inferior el código de token recibido de la administración."
       }
     },
     "status": {

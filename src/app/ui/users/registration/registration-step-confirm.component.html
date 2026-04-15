@@ -37,26 +37,24 @@
         formControlName="defined"
         [label]="i18n.user.registration.passwordAssign"></boolean-field>
       <ng-container *ngIf="passwordForm(i).get('defined').value">
-        <input-field
-          required
-          formControlName="value"
-          type="password"
-          autocomplete="new-password"
-          [label]="pt.name"
-          [maxLength]="pt.maxLength">
-        </input-field>
+        <label-value [label]="pt.name" kind="field" required>
+          <password-input
+            required
+            formControlName="value"
+            autocomplete="new-password"
+            [passwordInput]="pt"></password-input>
+        </label-value>
         <label-value *ngIf="layout.gtxs$ | async" label=" ">
           <password-hints [passwordType]="pt" [control]="passwordForm(i).controls.value"> </password-hints>
         </label-value>
         <password-hints *ngIf="layout.ltsm$ | async" [passwordType]="pt" [control]="passwordForm(i).controls.value">
         </password-hints>
-        <input-field
-          required
-          formControlName="confirmationValue"
-          type="password"
-          autocomplete="new-password"
-          [label]="i18n.user.passwordConfirmation(pt.name)">
-        </input-field>
+        <label-value [label]="i18n.user.passwordConfirmation(pt.name)" kind="field" required>
+          <password-input
+            formControlName="confirmationValue"
+            autocomplete="new-password"
+            [passwordInput]="pt"></password-input>
+        </label-value>
         <boolean-field
           *ngIf="pt.canForceChange"
           formControlName="forceChange"

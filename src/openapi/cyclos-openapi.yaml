@@ -69,9 +69,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.16.17/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.16.18/api-deprecation.html)
     for this version.
-  version: '4.16.17'
+  version: '4.16.18'
 servers:
   - url: 'http://root/api'
 
@@ -231,14 +231,9 @@ tags:
       configuration,
         can require authorization to be processed.
 
-      - __Chargeback__: A chargeback triggers a transfer with the same
-      origin
-        and destination as an original transfer, but with negative amount,
-        effectively returning the balance to the original account.
-
       - __Payment request__: A payment filled-in by the payee. Once the
       payer
-        accepts the reqiest, either a direct or scheduled payment is created
+        accepts the request, either a direct or scheduled payment is created
         (which could, depending on the configuration, be pending authorization).
 
       - __External payment__: A payment to a user not yet registered on the
@@ -22301,13 +22296,13 @@ A note for dynamic custom fields: If a script is used to generate possible value
       summary: >-
         Perform the chargeback of a transfer
       description: >-
-        The chargeback generates a new transaction with `kind` = `chargeback`. A
-        new transfer is generated with the same from / to, and negative amount.
-        This will effectively return the amount to the original account. Only
-        top-level transfers can be charged back. For example, a transfer used to
-        charge a fee cannot be charged back. Also, the hability to chargeback a
-        transfer depends on permissions and configuration like the maximum allowed
-        time for the chargeback.
+        A charge back generates a transfer with the same amount and type as the
+        original transfer, but with reversed from and to. This will effectively
+        return the amount to the original account. Only top-level transfers can be
+        charged back, and they will automatically charged back any generated fees.
+        Fee transfers cannot be individually charged back. Also, the ability to
+        charge back a transfer depends on permissions and configuration like the
+        maximum allowed time for the charge back.
       tags:
         - Transfers
       parameters:
@@ -29193,6 +29188,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
             will be returned only when changed. When blank will always return it.
           schema:
             type: string
+        - name: onlyCustomizedTranslations
+          in: query
+          required: false
+          description: >-
+            When true, only translations that have been customized will be returned.
+            Otherwise, all translations will be returned.
+          schema:
+            type: boolean
         - name: deviceId
           in: query
           required: false
@@ -29285,6 +29288,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
             will be returned only when changed. When blank will always return it.
           schema:
             type: string
+        - name: onlyCustomizedTranslations
+          in: query
+          required: false
+          description: >-
+            When true, only translations that have been customized will be returned.
+            Otherwise, all translations will be returned.
+          schema:
+            type: boolean
         - name: mobileHelpIf
           in: query
           required: false
@@ -61768,6 +61779,12 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CustomFieldDetailed'
+            contactInfoBinaryValues:
+              description: >-
+                Holds the current values for file / image custom fields as lists of
+                `StoredFile`s / `Image`s for the contact info.
+              allOf:
+                - $ref: '#/components/schemas/CustomFieldBinaryValues'
             phoneConfiguration:
               description: >-
                 Configuration for settings contact phone numbers.
@@ -75175,7 +75192,7 @@ components:
     PerformInternalTransaction:
       description: >-
         Base definitions to performing a transaction to an internal account (any
-        except `externalPayment`, or `chargeback` which is performed distinctly).
+        except `externalPayment` which is performed distinctly).
       allOf:
         - $ref: '#/components/schemas/PerformTransaction'
         - type: object

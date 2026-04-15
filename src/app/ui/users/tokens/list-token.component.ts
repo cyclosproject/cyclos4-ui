@@ -79,6 +79,7 @@ export class ListTokenComponent extends BasePageComponent<UserTokensListData> im
           () => {
             this.confirmation.confirm({
               title: this.i18n.token.action.activate,
+              message: this.i18n.token.action.message.activate,
               customFields: [
                 {
                   internalName: 'value',

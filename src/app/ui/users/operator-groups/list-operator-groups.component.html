@@ -23,6 +23,7 @@
               </td>
               <td class="actions">
                 <button
+                  *ngIf="data.canEdit"
                   type="button"
                   [tooltip]="i18n.general.removeTooltip(row.name)"
                   class="btn btn-icon"
