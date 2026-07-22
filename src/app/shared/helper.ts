@@ -338,15 +338,18 @@ export function getAllErrors(control: AbstractControl): { [key: string]: any } |
     return errors;
   } else if (control instanceof FormGroup) {
     let hasError = false;
-    const result = Object.keys(control.controls).reduce((acc, key) => {
-      const current = control.get(key);
-      const errors = getAllErrors(current);
-      if (errors) {
-        acc[key] = errors;
-        hasError = true;
-      }
-      return acc;
-    }, {} as { [key: string]: any });
+    const result = Object.keys(control.controls).reduce(
+      (acc, key) => {
+        const current = control.get(key);
+        const errors = getAllErrors(current);
+        if (errors) {
+          acc[key] = errors;
+          hasError = true;
+        }
+        return acc;
+      },
+      {} as { [key: string]: any }
+    );
     return hasError ? result : null;
   } else {
     return null;
@@ -712,10 +715,10 @@ export function words(text: string, maxLength: number): string {
  * Downloads the content of a response, attempting to get the filename from the `Content-Disposition` header
  */
 export function downloadResponse(response: HttpResponse<Blob>, notificationService: NotificationService, i18n: I18n) {
-  const matcher = (response.headers.get('Content-Disposition') || '').match(/filename=\"([^;]+)\"/);
+  const matcher = (response.headers.get('Content-Disposition') || '').match(/filename\*=UTF-8''([^;]+)/);
   let filename = null;
   if (matcher) {
-    filename = matcher[1];
+    filename = decodeURIComponent(matcher[1]);
   }
   if (response.headers.get('X-Partial-Data') === 'true') {
     notificationService.warning(i18n.general.partialDataDownload);

@@ -69,9 +69,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.16.18/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.16.19/api-deprecation.html)
     for this version.
-  version: '4.16.18'
+  version: '4.16.19'
 servers:
   - url: 'http://root/api'
 
