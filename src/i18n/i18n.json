@@ -672,8 +672,8 @@
       "beginNegativeSince": "Negative after",
       "endNegativeSince": "Negative before",
       "orderBy": {
-        "alphabeticallyDesc": "Name (A-Z)",
-        "alphabeticallyAsc": "Name (Z-A)",
+        "alphabeticallyDesc": "Name (Z-A)",
+        "alphabeticallyAsc": "Name (A-Z)",
         "balanceAsc": "Balance (lowest first)",
         "balanceDesc": "Balance (highest first)"
       }

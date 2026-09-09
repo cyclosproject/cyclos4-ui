@@ -672,8 +672,8 @@
       "beginNegativeSince": "Negatief na",
       "endNegativeSince": "Negatief voor",
       "orderBy": {
-        "alphabeticallyDesc": "Naam (A-Z)",
-        "alphabeticallyAsc": "Naam (Z-A)",
+        "alphabeticallyDesc": "Naam (Z-A)",
+        "alphabeticallyAsc": "Naam (A-Z)",
         "balanceAsc": "Saldo (laagste eerste)",
         "balanceDesc": "Saldo (hoogste eerst)"
       }

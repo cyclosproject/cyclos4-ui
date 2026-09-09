@@ -656,8 +656,8 @@
       "beginNegativeSince": "سالبة بعد",
       "endNegativeSince": "سلبي قبل",
       "orderBy": {
-        "alphabeticallyDesc": "الاسم (A-Z)",
-        "alphabeticallyAsc": "الاسم (Z-A)",
+        "alphabeticallyDesc": "الاسم (Z-A)",
+        "alphabeticallyAsc": "الاسم (A-Z)",
         "balanceAsc": "الرصيد (الأدنى أولا)",
         "balanceDesc": "الرصيد (أعلى أولا)"
       }

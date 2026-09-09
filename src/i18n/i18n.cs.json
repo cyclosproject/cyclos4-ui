@@ -664,8 +664,8 @@
       "beginNegativeSince": "Negativní po",
       "endNegativeSince": "Negativní před",
       "orderBy": {
-        "alphabeticallyDesc": "Název (A-Z)",
-        "alphabeticallyAsc": "Název (Z-A)",
+        "alphabeticallyDesc": "Název (Z-A)",
+        "alphabeticallyAsc": "Název (A-Z)",
         "balanceAsc": "Zůstatek (od nejnižší)",
         "balanceDesc": "Zůstatek (od nejvyšší)"
       }

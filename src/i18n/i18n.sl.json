@@ -666,8 +666,8 @@
       "beginNegativeSince": "Negativno po",
       "endNegativeSince": "Negativno pred",
       "orderBy": {
-        "alphabeticallyDesc": "Ime (od A do Ž)",
-        "alphabeticallyAsc": "Ime (Z-A)",
+        "alphabeticallyDesc": "Ime (od Z do A)",
+        "alphabeticallyAsc": "Ime (A-Z)",
         "balanceAsc": "Bilanca (najprej najnižja)",
         "balanceDesc": "Bilanca (najprej najvišja)"
       }

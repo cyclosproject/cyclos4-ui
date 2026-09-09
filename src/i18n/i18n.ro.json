@@ -664,8 +664,8 @@
       "beginNegativeSince": "Negativ după",
       "endNegativeSince": "Negativ înainte",
       "orderBy": {
-        "alphabeticallyDesc": "Nume (A-Z)",
-        "alphabeticallyAsc": "Nume (Z-A)",
+        "alphabeticallyDesc": "Nume (Z-A)",
+        "alphabeticallyAsc": "Nume (A-Z)",
         "balanceAsc": "Sold (cel mai scăzut)",
         "balanceDesc": "Soldul (cel mai mare întâi)"
       }

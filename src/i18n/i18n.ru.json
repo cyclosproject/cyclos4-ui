@@ -660,8 +660,8 @@
       "beginNegativeSince": "Отрицательный после",
       "endNegativeSince": "Отрицательный перед",
       "orderBy": {
-        "alphabeticallyDesc": "Имя (А-Я)",
-        "alphabeticallyAsc": "Имя (Я-А)",
+        "alphabeticallyDesc": "Имя (Я-A)",
+        "alphabeticallyAsc": "Имя (A-Я)",
         "balanceAsc": "Баланс (нижний сначала)",
         "balanceDesc": "Баланс (сначала наивысший)"
       }

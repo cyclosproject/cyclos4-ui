@@ -661,8 +661,8 @@
       "beginNegativeSince": "負の後",
       "endNegativeSince": "負の前",
       "orderBy": {
-        "alphabeticallyDesc": "名前 (A-Z)",
-        "alphabeticallyAsc": "名前 (Z-A)",
+        "alphabeticallyDesc": "名前 (Z-A)",
+        "alphabeticallyAsc": "名前 (A-Z)",
         "balanceAsc": "残高 (最も低い順)",
         "balanceDesc": "残高 (最初の高値)"
       }

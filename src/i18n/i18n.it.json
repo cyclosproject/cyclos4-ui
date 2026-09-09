@@ -666,8 +666,8 @@
       "beginNegativeSince": "Negativo dopo",
       "endNegativeSince": "Negativo prima",
       "orderBy": {
-        "alphabeticallyDesc": "Nome (A-Z)",
-        "alphabeticallyAsc": "Nome (Z-A)",
+        "alphabeticallyDesc": "Nome (Z-A)",
+        "alphabeticallyAsc": "Nome (A-Z)",
         "balanceAsc": "Saldo (più basso primo)",
         "balanceDesc": "Saldo (più alto primo)"
       }

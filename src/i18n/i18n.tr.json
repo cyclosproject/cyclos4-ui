@@ -666,8 +666,8 @@
       "beginNegativeSince": "Negatif sonra",
       "endNegativeSince": "Önce negatif",
       "orderBy": {
-        "alphabeticallyDesc": "İsim (A-Z)",
-        "alphabeticallyAsc": "İsim (Z-A)",
+        "alphabeticallyDesc": "İsim (Z-A)",
+        "alphabeticallyAsc": "İsim (A-Z)",
         "balanceAsc": "Bakiye (en düşük ilk)",
         "balanceDesc": "Bakiye (en yüksek ilk)"
       }

@@ -631,8 +631,8 @@
       "beginNegativeSince": "Αρνητικό μετά",
       "endNegativeSince": "Αρνητικό πριν",
       "orderBy": {
-        "alphabeticallyDesc": "Όνομα (Α-Ω)",
-        "alphabeticallyAsc": "Όνομα (Ω-Α)",
+        "alphabeticallyDesc": "Όνομα (Ω-A)",
+        "alphabeticallyAsc": "Όνομα (A-Ω)",
         "balanceAsc": "Υπόλοιπο (χαμηλότερο πρώτα)",
         "balanceDesc": "Υπόλοιπο (υψηλότερη πρώτα)"
       }

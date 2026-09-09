@@ -667,8 +667,8 @@
       "beginNegativeSince": "Negativ nach",
       "endNegativeSince": "Negativ vor",
       "orderBy": {
-        "alphabeticallyDesc": "Name (A-Z)",
-        "alphabeticallyAsc": "Name (Z-A)",
+        "alphabeticallyDesc": "Name (Z-A)",
+        "alphabeticallyAsc": "Name (A-Z)",
         "balanceAsc": "Kontostand (niedrigstes zuerst)",
         "balanceDesc": "Kontostand (höchstes zuerst)"
       }

@@ -582,8 +582,8 @@
       "beginNegativeSince": "负后",
       "endNegativeSince": "负前",
       "orderBy": {
-        "alphabeticallyDesc": "名称 (A-Z)",
-        "alphabeticallyAsc": "名称 (Z-A)",
+        "alphabeticallyDesc": "名称 (Z-A)",
+        "alphabeticallyAsc": "名称 (A-Z)",
         "balanceAsc": "余额(最早)",
         "balanceDesc": "余额 (最高优先)"
       }

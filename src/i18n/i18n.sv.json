@@ -666,8 +666,8 @@
       "beginNegativeSince": "Negativ efter",
       "endNegativeSince": "Negativ före",
       "orderBy": {
-        "alphabeticallyDesc": "Namn (A-Ö)",
-        "alphabeticallyAsc": "Namn (Ö-A)",
+        "alphabeticallyDesc": "Namn (Ö-A)",
+        "alphabeticallyAsc": "Namn (A-Ö)",
         "balanceAsc": "Saldo (lägsta först)",
         "balanceDesc": "Saldo (högsta först)"
       }
