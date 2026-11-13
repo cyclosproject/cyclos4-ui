@@ -5,6 +5,7 @@ import {
   ElementRef,
   EventEmitter,
   Injector,
+  NgZone,
   OnDestroy,
   Output,
   ViewChild
@@ -39,7 +40,11 @@ export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit,
 
   @Output() select = new EventEmitter<string>();
 
-  constructor(injector: Injector, public modalRef: BsModalRef) {
+  constructor(
+    injector: Injector,
+    private zone: NgZone,
+    public modalRef: BsModalRef
+  ) {
     super(injector);
   }
 
@@ -95,7 +100,9 @@ export class ScanQrCodeComponent extends BaseComponent implements AfterViewInit,
   }
 
   emit(qrCode: string) {
-    this.select.emit(qrCode);
+    // The QR result is delivered outside the Angular zone (requestVideoFrameCallback / Web Worker),
+    // so re-enter it, otherwise OnPush components won't be refreshed after the navigation
+    this.zone.run(() => this.select.emit(qrCode));
     this.close();
   }
 
